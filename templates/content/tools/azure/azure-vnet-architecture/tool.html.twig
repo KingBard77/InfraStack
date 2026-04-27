@@ -1,0 +1,456 @@
+{# tool.html.twig #}
+
+<div class="azure-vnet-architecture-tool">
+  <div class="tool-box">
+    <div class="tool-shell tool-prompt-shell">
+      <div class="tool-main-row">
+        <label for="azureVnetPrompt" class="tool-main-label">Architecture prompt</label>
+        <div class="tool-main-input-grid azure-vnet-main-input-grid">
+          <textarea
+            id="azureVnetPrompt"
+            class="form-control azure-vnet-prompt"
+            placeholder="Describe the Azure VNet layout, region, availability zones, ingress path, workload tier, data tier, and supporting services."
+          >Create an Azure VNet architecture in eastus with 2 availability zones. Use public subnets for an internet-facing Application Gateway, private app subnets for Virtual Machine Scale Sets, and private data subnets for Azure SQL. Add a single NAT gateway, Private Endpoints for Blob Storage and Key Vault, Azure Monitor, and NSG flow logs.</textarea>
+
+        </div>
+      </div>
+
+      <p class="tool-control-hint azure-vnet-prompt-hint">
+        Use one brief prompt with region, AZ count, ingress, private tiers, and supporting Azure services. Presets below can prefill and instantly generate a working layout.
+      </p>
+
+      <div class="azure-vnet-main-actions">
+        <button type="button" class="tool-action-btn tool-action-btn-primary" id="azureVnetGenerate">Generate Diagram</button>
+        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="azureVnetReset">Load Default</button>
+      </div>
+    </div>
+
+    <div class="tool-error-state d-none" id="azureVnetErrorState"></div>
+
+    <div class="azure-vnet-advanced-grid">
+      <aside class="tool-shell tool-inspector-shell">
+        <div class="tool-shell-header">
+          <div>
+            <h2 class="tool-shell-title">Basic</h2>
+          </div>
+        </div>
+
+        <div class="tool-shell-body">
+          <div class="tool-inspector-section azure-vnet-basic-preset-section">
+            <div class="azure-vnet-basic-grid">
+              <div class="azure-vnet-control-stack">
+                <label class="tool-control-label" for="azureVnetPreset">Preset</label>
+                <select id="azureVnetPreset" class="form-select">
+                  <option value="three-tier-web" selected>3-Tier Web</option>
+                  <option value="ecs-fargate">Azure Container Apps</option>
+                  <option value="eks-platform">Private AKS</option>
+                  <option value="hybrid-shared">Hybrid Shared Services</option>
+                </select>
+                <p class="tool-control-hint" id="azureVnetPresetDescription">Public App Gateway, private VM scale sets, Azure SQL, single NAT.</p>
+              </div>
+
+              <div class="azure-vnet-control-stack">
+                <label class="tool-control-label" for="azureVnetRegion">Region</label>
+                <select id="azureVnetRegion" class="form-select">
+                  <option value="eastus">eastus</option>
+                  <option value="eastus2">eastus2</option>
+                  <option value="centralus">centralus</option>
+                  <option value="westus2">westus2</option>
+                  <option value="westeurope">westeurope</option>
+                  <option value="southeastasia">southeastasia</option>
+                  <option value="australiaeast">australiaeast</option>
+                </select>
+              </div>
+
+              <div class="azure-vnet-control-stack">
+                <label class="tool-control-label" for="azureVnetAzCount">Availability zones</label>
+                <select id="azureVnetAzCount" class="form-select">
+                  <option value="1">1 AZ</option>
+                  <option value="2" selected>2 AZ</option>
+                  <option value="3">3 AZ</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <details class="azure-vnet-custom-panel">
+            <summary class="azure-vnet-custom-panel-summary">
+              <span>Custom</span>
+              <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            </summary>
+
+            <div class="azure-vnet-custom-panel-body">
+              <div class="azure-vnet-config-tabs" role="tablist" aria-label="Azure VNet custom configuration">
+                <button type="button" class="azure-vnet-config-tab active" id="azureVnetNetworkConfigTab" data-config-tab-target="azureVnetNetworkConfigPanel" role="tab" aria-controls="azureVnetNetworkConfigPanel" aria-selected="true" tabindex="0">Network layout</button>
+                <button type="button" class="azure-vnet-config-tab" id="azureVnetWorkloadConfigTab" data-config-tab-target="azureVnetWorkloadConfigPanel" role="tab" aria-controls="azureVnetWorkloadConfigPanel" aria-selected="false" tabindex="-1">Workload</button>
+                <button type="button" class="azure-vnet-config-tab" id="azureVnetServicesConfigTab" data-config-tab-target="azureVnetServicesConfigPanel" role="tab" aria-controls="azureVnetServicesConfigPanel" aria-selected="false" tabindex="-1">Services and controls</button>
+              </div>
+
+              <div class="tool-inspector-section azure-vnet-config-panel active" id="azureVnetNetworkConfigPanel" data-config-panel role="tabpanel" aria-labelledby="azureVnetNetworkConfigTab">
+                <div class="azure-vnet-config-grid">
+                  <div class="azure-vnet-control-stack">
+                    <label class="tool-control-label" for="azureVnetCidr">VNet CIDR</label>
+                    <input type="text" id="azureVnetCidr" class="form-control" value="10.0.0.0/16">
+                  </div>
+
+                  <div class="azure-vnet-control-stack">
+                    <label class="tool-control-label" for="azureVnetNatMode">NAT mode</label>
+                    <select id="azureVnetNatMode" class="form-select">
+                      <option value="none">No NAT</option>
+                      <option value="single" selected>Single NAT</option>
+                      <option value="per-az">One per AZ</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tool-inspector-section azure-vnet-config-panel" id="azureVnetWorkloadConfigPanel" data-config-panel role="tabpanel" aria-labelledby="azureVnetWorkloadConfigTab" hidden>
+                <div class="azure-vnet-config-grid">
+                  <div class="azure-vnet-control-stack">
+                    <label class="tool-control-label" for="azureVnetAppTier">App tier</label>
+                    <select id="azureVnetAppTier" class="form-select">
+                      <option value="ec2">Virtual Machine Scale Sets</option>
+                      <option value="ecs">Azure Container Apps</option>
+                      <option value="eks">AKS</option>
+                      <option value="lambda">Azure Functions in VNet</option>
+                    </select>
+                  </div>
+
+                  <div class="azure-vnet-control-stack">
+                    <label class="tool-control-label" for="azureVnetDatabase">Database tier</label>
+                    <select id="azureVnetDatabase" class="form-select">
+                      <option value="none">No database tier</option>
+                      <option value="rds" selected>Azure SQL</option>
+                      <option value="aurora">Azure Database for PostgreSQL</option>
+                      <option value="dynamodb">Azure Cosmos DB</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tool-inspector-section azure-vnet-config-panel" id="azureVnetServicesConfigPanel" data-config-panel role="tabpanel" aria-labelledby="azureVnetServicesConfigTab" hidden>
+                <div class="azure-vnet-toggle-grid">
+                  <label class="azure-vnet-toggle-item">
+                    <span class="azure-vnet-toggle-copy">Azure DNS</span>
+                    <input type="checkbox" id="azureVnetRoute53" checked>
+                  </label>
+
+                  <label class="azure-vnet-toggle-item">
+                    <span class="azure-vnet-toggle-copy">Azure Front Door</span>
+                    <input type="checkbox" id="azureVnetCloudFront">
+                  </label>
+
+                  <label class="azure-vnet-toggle-item">
+                    <span class="azure-vnet-toggle-copy">Azure WAF</span>
+                    <input type="checkbox" id="azureVnetWaf">
+                  </label>
+
+                  <label class="azure-vnet-toggle-item">
+                    <span class="azure-vnet-toggle-copy">Application Gateway</span>
+                    <input type="checkbox" id="azureVnetAlb" checked>
+                  </label>
+
+                  <label class="azure-vnet-toggle-item">
+                    <span class="azure-vnet-toggle-copy">Azure Bastion</span>
+                    <input type="checkbox" id="azureVnetBastion">
+                  </label>
+
+                  <label class="azure-vnet-toggle-item">
+                    <span class="azure-vnet-toggle-copy">Private Endpoints</span>
+                    <input type="checkbox" id="azureVnetEndpoints" checked>
+                  </label>
+
+                  <label class="azure-vnet-toggle-item">
+                    <span class="azure-vnet-toggle-copy">NSG flow logs</span>
+                    <input type="checkbox" id="azureVnetFlowLogs" checked>
+                  </label>
+
+                  <label class="azure-vnet-toggle-item">
+                    <span class="azure-vnet-toggle-copy">Azure Monitor</span>
+                    <input type="checkbox" id="azureVnetCloudWatch" checked>
+                  </label>
+
+                  <label class="azure-vnet-toggle-item">
+                    <span class="azure-vnet-toggle-copy">VPN Gateway</span>
+                    <input type="checkbox" id="azureVnetSiteToSiteVpn">
+                  </label>
+
+                  <label class="azure-vnet-toggle-item">
+                    <span class="azure-vnet-toggle-copy">Virtual WAN</span>
+                    <input type="checkbox" id="azureVnetTransitGateway">
+                  </label>
+
+                  <label class="azure-vnet-toggle-item">
+                    <span class="azure-vnet-toggle-copy">Azure Cache for Redis</span>
+                    <input type="checkbox" id="azureVnetCache">
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </details>
+
+          <div class="tool-inspector-section azure-vnet-selected-section">
+            <h3 class="azure-vnet-section-title">Selected item</h3>
+
+            <p class="azure-vnet-selected-empty" id="azureVnetSelectedEmpty">Select any draggable item in the stage to adjust its position and size. Keyboard: arrow keys move, Alt + arrow keys resize.</p>
+
+            <div class="azure-vnet-selected-editor d-none" id="azureVnetSelectedEditor">
+              <div class="azure-vnet-selected-name" id="azureVnetSelectedName"></div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="azureVnetSelectedX">X position</label>
+                <div class="tool-control-field">
+                  <input type="number" id="azureVnetSelectedX" class="form-control" min="0" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="azureVnetSelectedY">Y position</label>
+                <div class="tool-control-field">
+                  <input type="number" id="azureVnetSelectedY" class="form-control" min="0" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="azureVnetSelectedWidth">Width</label>
+                <div class="tool-control-field">
+                  <input type="number" id="azureVnetSelectedWidth" class="form-control" min="96" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="azureVnetSelectedHeight">Height</label>
+                <div class="tool-control-field">
+                  <input type="number" id="azureVnetSelectedHeight" class="form-control" min="44" step="4">
+                </div>
+              </div>
+
+              <div class="azure-vnet-selected-actions">
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="azureVnetApplyCardSize">Apply item</button>
+                <button type="button" class="tool-action-btn tool-action-btn-ghost" id="azureVnetResetCardSize">Reset item</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="tool-shell tool-stage-shell" id="azureVnetStageShell">
+      <div class="tool-shell-header azure-vnet-stage-header">
+        <div>
+          <h2 class="tool-shell-title" id="azureVnetStageTitle">Visualizer Azure VNet Architecture</h2>
+          <p class="tool-shell-subtitle" id="azureVnetStageSubtitle">Generate a prompt-driven VNet layout with editable controls and export-ready output.</p>
+        </div>
+        <div class="azure-vnet-stage-meta" id="azureVnetStageMeta"></div>
+      </div>
+
+      <div class="tool-stage-toolbar">
+        <div class="azure-vnet-stage-toolbar-actions">
+          <div class="azure-vnet-zoom-control" id="azureVnetZoomControl">
+            <button type="button" class="azure-vnet-zoom-step" id="azureVnetZoomOut" aria-label="Zoom out" title="Zoom out">
+              <i class="bi bi-dash" aria-hidden="true"></i>
+            </button>
+            <input type="number" id="azureVnetZoomInput" class="azure-vnet-zoom-input" value="50" min="35" max="240" step="10" aria-label="Zoom percentage">
+            <span class="azure-vnet-zoom-label" id="azureVnetZoomLabel">%</span>
+            <button type="button" class="azure-vnet-zoom-step" id="azureVnetZoomIn" aria-label="Zoom in" title="Zoom in">
+              <i class="bi bi-plus" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <button type="button" class="azure-vnet-icon-btn" id="azureVnetZoomFit" aria-label="Zoom to fit" title="Zoom to fit">
+            <i class="bi bi-arrows-angle-contract" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="azure-vnet-icon-btn" id="azureVnetZoomActual" aria-label="Zoom to 100%" title="Zoom to 100%">
+            <span>100</span>
+          </button>
+          <button type="button" class="azure-vnet-icon-btn" id="azureVnetZoomHideUi" aria-label="Hide UI" title="Hide UI">
+            <i class="bi bi-eye-slash" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="azure-vnet-icon-btn" id="azureVnetFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
+            <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost azure-vnet-stage-toolbar-btn" id="azureVnetResetLayout">Reset layout</button>
+        </div>
+      </div>
+
+      <div class="tool-stage-body">
+        <div class="tool-stage-empty" id="azureVnetStageEmpty">Generate a diagram to populate the VNet workspace.</div>
+        <div class="tool-stage-canvas azure-vnet-stage-canvas d-none" id="azureVnetStageCanvas"></div>
+      </div>
+
+      <div class="azure-vnet-stage-footer">
+        <div class="azure-vnet-stage-toolbar-chips">
+          <span class="tool-helper-chip tool-helper-chip-prompt" data-tip="Prompt + Preset Aware" aria-label="Prompt + Preset Aware" tabindex="0">
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span class="azure-vnet-visually-hidden">Prompt + Preset Aware</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-inspector" data-tip="Editable Inspector" aria-label="Editable Inspector" tabindex="0">
+            <i class="bi bi-sliders2" aria-hidden="true"></i>
+            <span class="azure-vnet-visually-hidden">Editable Inspector</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-drag" data-tip="Drag Cards To Customize" aria-label="Drag Cards To Customize" tabindex="0">
+            <i class="bi bi-arrows-move" aria-hidden="true"></i>
+            <span class="azure-vnet-visually-hidden">Drag Cards To Customize</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-svg" data-tip="SVG Workspace" aria-label="SVG Workspace" tabindex="0">
+            <i class="bi bi-bezier2" aria-hidden="true"></i>
+            <span class="azure-vnet-visually-hidden">SVG Workspace</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="tool-shell tool-output-shell">
+      <div class="tool-empty-state" id="azureVnetOutputEmpty">Generate a diagram to unlock exports, technical inventory, and prompt interpretation output.</div>
+
+      <div class="azure-vnet-output-content d-none" id="azureVnetOutputContent">
+        <div class="azure-vnet-output-shell">
+          <div class="azure-vnet-output-summary">
+            <div class="azure-vnet-output-status-card" aria-live="polite">
+              <div class="azure-vnet-score-card" id="azureVnetOutputStatus">
+                <div class="azure-vnet-score-kicker">Architecture Score</div>
+                <div class="azure-vnet-score-value">Ready</div>
+                <div class="azure-vnet-score-summary">Generate a diagram to score the current VNet baseline.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="azure-vnet-toolbar-shell">
+            <div class="azure-vnet-toolbar tool-output-toolbar">
+              <div class="azure-vnet-toolbar-main">
+                <label for="azureVnetInventorySort" class="azure-vnet-sort-label">Sort</label>
+                <div class="azure-vnet-sort-wrap">
+                  <details class="azure-vnet-sort-select" id="azureVnetInventorySortSelect">
+                    <summary class="azure-vnet-sort-summary">
+                      <span id="azureVnetInventorySortSummary">ID</span>
+                    </summary>
+
+                    <div class="azure-vnet-sort-menu">
+                      <div class="azure-vnet-sort-grid">
+                        <button type="button" class="azure-vnet-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
+                        <button type="button" class="azure-vnet-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
+                        <button type="button" class="azure-vnet-sort-option" data-sort-value="component" aria-pressed="false">Component</button>
+                        <button type="button" class="azure-vnet-sort-option" data-sort-value="placement" aria-pressed="false">Placement</button>
+                        <button type="button" class="azure-vnet-sort-option" data-sort-value="purpose" aria-pressed="false">Purpose</button>
+                      </div>
+                    </div>
+                  </details>
+                  <input type="hidden" id="azureVnetInventorySort" value="id">
+                </div>
+              </div>
+
+              <div class="tool-output-actions">
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="azureVnetExportPng">
+                  <i class="bi bi-image" aria-hidden="true"></i>
+                  <span data-button-label>Export PNG</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="azureVnetDownloadSvg">
+                  <i class="bi bi-download" aria-hidden="true"></i>
+                  <span data-button-label>Download SVG</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="azureVnetCopyJson">
+                  <i class="bi bi-clipboard" aria-hidden="true"></i>
+                  <span data-button-label>Copy JSON</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="azureVnetDownloadJson">
+                  <i class="bi bi-download" aria-hidden="true"></i>
+                  <span data-button-label>Download JSON</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-ghost" id="azureVnetImportJsonButton">
+                  <i class="bi bi-upload" aria-hidden="true"></i>
+                  <span data-button-label>Import JSON</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="azure-vnet-tabs-shell">
+            <div class="tool-tabs" role="tablist" aria-label="Azure VNet output views">
+              <button type="button" class="tool-tab-btn azure-vnet-tab-btn active" id="azureVnetInventoryTab" data-tab-target="azureVnetInventoryPanel" role="tab" aria-controls="azureVnetInventoryPanel" aria-selected="true" tabindex="0">
+                <i class="bi bi-list-check" aria-hidden="true"></i>
+                <span>Technical Inventory</span>
+              </button>
+              <button type="button" class="tool-tab-btn azure-vnet-tab-btn" id="azureVnetNotesTab" data-tab-target="azureVnetNotesPanel" role="tab" aria-controls="azureVnetNotesPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-card-text" aria-hidden="true"></i>
+                <span>Prompt Notes</span>
+              </button>
+              <button type="button" class="tool-tab-btn azure-vnet-tab-btn" id="azureVnetJsonTab" data-tab-target="azureVnetJsonPanel" role="tab" aria-controls="azureVnetJsonPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-braces" aria-hidden="true"></i>
+                <span>JSON</span>
+              </button>
+            </div>
+
+            <div class="tool-tab-panel azure-vnet-tab-panel active" id="azureVnetInventoryPanel" role="tabpanel" aria-labelledby="azureVnetInventoryTab">
+              <div class="azure-vnet-inventory-panel">
+                <div class="azure-vnet-table-card">
+                  <h3 class="azure-vnet-result-section-title">Technical Inventory</h3>
+                  <div class="azure-vnet-table-wrap">
+                    <table class="table azure-vnet-table mb-0">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Component</th>
+                          <th>Placement</th>
+                          <th>Purpose</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="azureVnetInventoryTableBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-tab-panel azure-vnet-tab-panel" id="azureVnetNotesPanel" role="tabpanel" aria-labelledby="azureVnetNotesTab" hidden>
+              <div class="azure-vnet-prompt-notes-card">
+                <h3 class="azure-vnet-result-section-title">Prompt Notes</h3>
+                <div class="azure-vnet-note-grid">
+                  <section class="azure-vnet-note-card">
+                    <h3 class="azure-vnet-note-title">Prompt summary</h3>
+                    <p class="azure-vnet-note-copy" id="azureVnetPromptSummary"></p>
+                  </section>
+
+                  <section class="azure-vnet-note-card">
+                    <h3 class="azure-vnet-note-title">Detected keywords</h3>
+                    <ul class="azure-vnet-note-list" id="azureVnetKeywordList"></ul>
+                  </section>
+
+                  <section class="azure-vnet-note-card">
+                    <h3 class="azure-vnet-note-title">Applied assumptions</h3>
+                    <ul class="azure-vnet-note-list" id="azureVnetAssumptionList"></ul>
+                  </section>
+
+                  <section class="azure-vnet-note-card">
+                    <h3 class="azure-vnet-note-title">Current model</h3>
+                    <ul class="azure-vnet-note-list" id="azureVnetModelList"></ul>
+                  </section>
+
+                  <section class="azure-vnet-note-card">
+                    <h3 class="azure-vnet-note-title">Architecture pros</h3>
+                    <ul class="azure-vnet-note-list" id="azureVnetProsList"></ul>
+                  </section>
+
+                  <section class="azure-vnet-note-card">
+                    <h3 class="azure-vnet-note-title">Architecture cons</h3>
+                    <ul class="azure-vnet-note-list" id="azureVnetConsList"></ul>
+                  </section>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-tab-panel azure-vnet-tab-panel" id="azureVnetJsonPanel" role="tabpanel" aria-labelledby="azureVnetJsonTab" hidden>
+              <div class="tool-json-shell">
+                <div class="azure-vnet-json-header">JSON Output</div>
+                <pre class="azure-vnet-json-code" id="azureVnetJsonOutput"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <input type="file" id="azureVnetImportJson" class="d-none" accept="application/json">
+  </div>
+</div>

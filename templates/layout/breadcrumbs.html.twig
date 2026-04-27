@@ -1,0 +1,32 @@
+{% set breadcrumbItems = breadcrumbs|default([]) %}
+{% if breadcrumbItems|length > 0 %}
+  <div class="page-title">
+    <div class="breadcrumbs">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          {% for item in breadcrumbItems %}
+            {% if loop.last %}
+              <li class="breadcrumb-item active current">{{ item.label }}</li>
+            {% else %}
+              <li class="breadcrumb-item">
+                {% if item.url is defined %}
+                  <a href="{{ item.url }}">
+                    {% if item.icon is defined %}
+                      <i class="{{ item.icon }}"></i>
+                    {% endif %}
+                    {{ item.label }}
+                  </a>
+                {% else %}
+                  {% if item.icon is defined %}
+                    <i class="{{ item.icon }}"></i>
+                  {% endif %}
+                  {{ item.label }}
+                {% endif %}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+    </div>
+  </div>
+{% endif %}

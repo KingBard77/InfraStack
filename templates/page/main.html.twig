@@ -1,0 +1,268 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {% for post_template in home_post_templates|default([]) %}
+    {{ include(post_template, { variant: 'style' }) }}
+  {% endfor %}
+{% endblock %}
+
+{% block body %}
+
+{{ include('layout/breadcrumbs.html.twig') }}
+
+{% set posts = home_posts|default([]) %}
+{% set heroPosts = hero_posts|default([]) %}
+{% set featuredPosts = featured_posts|default([]) %}
+{% set categoryFeaturedPosts = category_featured_posts|default([]) %}
+{% set primaryPost = posts|first %}
+{% set featuredHasOverflow = featuredPosts|length > 3 %}
+{% set categoryHasOverflow = categoryFeaturedPosts|length > 3 %}
+{% set featuredAutoplay = featuredHasOverflow ? '{"delay": 3600, "disableOnInteraction": false, "pauseOnMouseEnter": true}' : 'false' %}
+{% set categoryAutoplay = categoryHasOverflow ? '{"delay": 4200, "disableOnInteraction": false, "pauseOnMouseEnter": true}' : 'false' %}
+{% set categoryLabels = [] %}
+{% for post in categoryFeaturedPosts %}
+  {% set categoryLabels = categoryLabels|merge([post.category]) %}
+{% endfor %}
+
+{% if heroPosts|length > 0 %}
+<section id="blog-hero" class="blog-hero section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="blog-grid blog-grid-count-{{ heroPosts|length }}">
+      {% for post in heroPosts %}
+        <article class="blog-item {{ loop.first ? 'featured' : '' }}" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+          <a href="{{ post.url }}" class="blog-item-media" aria-label="{{ post.title }}">
+            {{ include(post.post_template, { post: post, variant: loop.first ? 'hero' : 'hero-small' }) }}
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if primaryPost %}
+<section id="home-landing" class="home-landing section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="home-landing-inner">
+      <div class="home-landing-content">
+        <span class="home-landing-badge">Don't Miss</span>
+        <h1>Great Prompts Comes With The Great Tools</h1>
+        <p>InfraStack turns cloud, network, and compliance briefs into practical workspaces you can inspect, refine, export, and share with your team.</p>
+
+        <div class="home-landing-features">
+          <span><i class="bi bi-check-circle-fill"></i> Prompt-driven tools</span>
+          <span><i class="bi bi-check-circle-fill"></i> Export-ready output</span>
+          <span><i class="bi bi-check-circle-fill"></i> Cloud and security coverage</span>
+        </div>
+
+        <div class="home-landing-actions">
+          <a href="{{ path('app_category') }}" class="btn btn-primary">
+            <i class="bi bi-grid-3x3-gap"></i>
+            Browse Tools
+          </a>
+          <a href="{{ primaryPost.url }}" class="btn btn-outline">
+            <i class="bi bi-arrow-right-circle"></i>
+            Open Latest Tool
+          </a>
+        </div>
+      </div>
+
+      <div class="home-landing-media">
+        <img src="{{ asset('images/main/misc-1.webp') }}" alt="InfraStack workspace preview">
+        <a href="{{ path('app_category') }}" class="home-landing-stat" aria-label="{{ posts|length }} tools online">
+          <span><i class="bi bi-graph-up-arrow"></i></span>
+          <strong>{{ posts|length }}</strong>
+          <small>Tools Online</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if featuredPosts|length > 0 %}
+<section id="featured-posts" class="featured-posts section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Featured Posts</h2>
+    <div><span>Check Our</span> <span class="description-title">Featured Posts</span></div>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="home-card-slider home-featured-slider swiper init-swiper">
+      <script type="application/json" class="swiper-config">
+        {
+          "loop": {{ featuredHasOverflow ? 'true' : 'false' }},
+          "speed": 700,
+          "autoplay": {{ featuredAutoplay|raw }},
+          "slidesPerView": 1,
+          "spaceBetween": 24,
+          "watchOverflow": true,
+          "pagination": {
+            "el": ".home-featured-pagination",
+            "clickable": true
+          },
+          "breakpoints": {
+            "768": {
+              "slidesPerView": 2
+            },
+            "992": {
+              "slidesPerView": 3
+            }
+          }
+        }
+      </script>
+
+      <div class="swiper-wrapper">
+      {% for post in featuredPosts %}
+        {% set summary = post.card_summary|default(post.summary|default('')) %}
+        <div class="swiper-slide">
+          <article class="home-featured-card">
+            <a href="{{ post.url }}" class="home-featured-media" aria-label="{{ post.title }}">
+              {{ include(post.post_template, { post: post, variant: 'featured' }) }}
+            </a>
+            <div class="home-featured-content">
+              <div class="home-featured-meta">
+                <span><i class="bi bi-person"></i> {{ post.author }}</span>
+                <span><i class="bi bi-calendar3"></i> {{ post.date_display }}</span>
+                <span><i class="bi bi-chat-dots"></i> {{ post.comments }}</span>
+              </div>
+              <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+              <p>{{ summary|length > 135 ? summary|slice(0, 135) ~ '...' : summary }}</p>
+              <a href="{{ post.url }}" class="home-featured-read">
+                Read More
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+        </div>
+      {% endfor %}
+      </div>
+
+      <div class="home-slider-pagination home-featured-pagination"></div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if categoryFeaturedPosts|length > 0 %}
+<section id="category-section" class="category-section section home-category-section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Tool Categories</h2>
+    <div><span class="description-title">{{ categoryLabels|join(', ') }}</span></div>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="home-card-slider home-category-slider swiper init-swiper">
+      <script type="application/json" class="swiper-config">
+        {
+          "loop": {{ categoryHasOverflow ? 'true' : 'false' }},
+          "speed": 700,
+          "autoplay": {{ categoryAutoplay|raw }},
+          "slidesPerView": 1,
+          "spaceBetween": 24,
+          "watchOverflow": true,
+          "pagination": {
+            "el": ".home-category-pagination",
+            "clickable": true
+          },
+          "breakpoints": {
+            "768": {
+              "slidesPerView": 2
+            },
+            "992": {
+              "slidesPerView": 3
+            }
+          }
+        }
+      </script>
+
+      <div class="swiper-wrapper">
+      {% for post in categoryFeaturedPosts %}
+        {% set categorySummary = post.intro|default(post.summary|default('')) %}
+        <div class="swiper-slide">
+          <article class="home-category-card">
+            <a href="{{ path('app_category', { category: post.category_slug }) }}" class="home-category-media" aria-label="{{ post.category }} tools">
+              {{ include(post.post_template, { post: post, variant: 'category' }) }}
+            </a>
+            <div class="home-category-content">
+              <span class="home-category-label">{{ post.category }}</span>
+              <h3><a href="{{ path('app_category', { category: post.category_slug }) }}">{{ post.category }} Tools</a></h3>
+              <p>{{ categorySummary|length > 120 ? categorySummary|slice(0, 120) ~ '...' : categorySummary }}</p>
+              <a href="{{ path('app_category', { category: post.category_slug }) }}" class="home-category-read">
+                View Category
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+        </div>
+      {% endfor %}
+      </div>
+
+      <div class="home-slider-pagination home-category-pagination"></div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section id="call-to-action" class="call-to-action section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4 justify-content-between align-items-center">
+      <div class="col-lg-7">
+        <div class="cta-content" data-aos="fade-up" data-aos-delay="200">
+          <span class="cta-kicker">
+            <i class="bi bi-envelope-check"></i>
+            InfraStack Briefing
+          </span>
+          <h2>Get practical cloud and security updates</h2>
+          <p>Receive new tools, architecture patterns, benchmark notes, and export-ready workflow updates without sorting through the noise.</p>
+          <div class="cta-benefits">
+            <span><i class="bi bi-diagram-3"></i> Architecture patterns</span>
+            <span><i class="bi bi-shield-check"></i> Security notes</span>
+            <span><i class="bi bi-tools"></i> Tool updates</span>
+          </div>
+          <form action="forms/newsletter.php" method="post" class="php-email-form cta-form" data-aos="fade-up" data-aos-delay="300">
+            <div class="input-group mb-3">
+              <input type="email" class="form-control" placeholder="Email address..." aria-label="Email address" aria-describedby="button-subscribe">
+              <button class="btn btn-primary" type="submit" id="button-subscribe">
+                <i class="bi bi-send"></i>
+                Subscribe
+              </button>
+            </div>
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your subscription request has been sent. Thank you!</div>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="cta-image" data-aos="zoom-out" data-aos-delay="200">
+          <div class="newsletter-visual">
+            <div class="newsletter-visual-top">
+              <span><i class="bi bi-cloud-check"></i></span>
+              <span><i class="bi bi-hdd-network"></i></span>
+              <span><i class="bi bi-shield-lock"></i></span>
+            </div>
+            <div class="newsletter-envelope">
+              <i class="bi bi-envelope-paper"></i>
+            </div>
+            <div class="newsletter-lines">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="newsletter-compact-card">
+              <i class="bi bi-lightning-charge"></i>
+              <strong>Weekly</strong>
+              <small>Focused updates</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,456 @@
+{# tool.html.twig #}
+
+<div class="aws-vpc-architecture-tool">
+  <div class="tool-box">
+    <div class="tool-shell tool-prompt-shell">
+      <div class="tool-main-row">
+        <label for="awsVpcPrompt" class="tool-main-label">Architecture prompt</label>
+        <div class="tool-main-input-grid aws-vpc-main-input-grid">
+          <textarea
+            id="awsVpcPrompt"
+            class="form-control aws-vpc-prompt"
+            placeholder="Describe the AWS VPC layout, region, availability zones, ingress path, compute tier, database tier, and shared services."
+          >Create an AWS VPC architecture in us-east-1 with 2 availability zones. Use public subnets for an internet-facing Application Load Balancer, private app subnets for EC2 application servers, and private data subnets for a Multi-AZ RDS PostgreSQL database. Add a single NAT gateway, VPC endpoints for S3 and Systems Manager, CloudWatch, and VPC flow logs.</textarea>
+
+        </div>
+      </div>
+
+      <p class="tool-control-hint aws-vpc-prompt-hint">
+        Use one brief prompt with region, AZ count, ingress, private tiers, and supporting AWS services. Presets below can prefill and instantly generate a working layout.
+      </p>
+
+      <div class="aws-vpc-main-actions">
+        <button type="button" class="tool-action-btn tool-action-btn-primary" id="awsVpcGenerate">Generate Diagram</button>
+        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="awsVpcReset">Load Default</button>
+      </div>
+    </div>
+
+    <div class="tool-error-state d-none" id="awsVpcErrorState"></div>
+
+    <div class="aws-vpc-advanced-grid">
+      <aside class="tool-shell tool-inspector-shell">
+        <div class="tool-shell-header">
+          <div>
+            <h2 class="tool-shell-title">Basic</h2>
+          </div>
+        </div>
+
+        <div class="tool-shell-body">
+          <div class="tool-inspector-section aws-vpc-basic-preset-section">
+            <div class="aws-vpc-basic-grid">
+              <div class="aws-vpc-control-stack">
+                <label class="tool-control-label" for="awsVpcPreset">Preset</label>
+                <select id="awsVpcPreset" class="form-select">
+                  <option value="three-tier-web" selected>3-Tier Web</option>
+                  <option value="ecs-fargate">ECS Fargate</option>
+                  <option value="eks-platform">Private EKS</option>
+                  <option value="hybrid-shared">Hybrid Shared Services</option>
+                </select>
+                <p class="tool-control-hint" id="awsVpcPresetDescription">Public ALB, private EC2 app tier, Multi-AZ RDS, single NAT.</p>
+              </div>
+
+              <div class="aws-vpc-control-stack">
+                <label class="tool-control-label" for="awsVpcRegion">Region</label>
+                <select id="awsVpcRegion" class="form-select">
+                  <option value="us-east-1">us-east-1</option>
+                  <option value="us-east-2">us-east-2</option>
+                  <option value="us-west-2">us-west-2</option>
+                  <option value="eu-west-1">eu-west-1</option>
+                  <option value="ap-southeast-1">ap-southeast-1</option>
+                  <option value="ap-southeast-2">ap-southeast-2</option>
+                  <option value="ap-northeast-1">ap-northeast-1</option>
+                </select>
+              </div>
+
+              <div class="aws-vpc-control-stack">
+                <label class="tool-control-label" for="awsVpcAzCount">Availability zones</label>
+                <select id="awsVpcAzCount" class="form-select">
+                  <option value="1">1 AZ</option>
+                  <option value="2" selected>2 AZ</option>
+                  <option value="3">3 AZ</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <details class="aws-vpc-custom-panel">
+            <summary class="aws-vpc-custom-panel-summary">
+              <span>Custom</span>
+              <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            </summary>
+
+            <div class="aws-vpc-custom-panel-body">
+              <div class="aws-vpc-config-tabs" role="tablist" aria-label="AWS VPC custom configuration">
+                <button type="button" class="aws-vpc-config-tab active" id="awsVpcNetworkConfigTab" data-config-tab-target="awsVpcNetworkConfigPanel" role="tab" aria-controls="awsVpcNetworkConfigPanel" aria-selected="true" tabindex="0">Network layout</button>
+                <button type="button" class="aws-vpc-config-tab" id="awsVpcWorkloadConfigTab" data-config-tab-target="awsVpcWorkloadConfigPanel" role="tab" aria-controls="awsVpcWorkloadConfigPanel" aria-selected="false" tabindex="-1">Workload</button>
+                <button type="button" class="aws-vpc-config-tab" id="awsVpcServicesConfigTab" data-config-tab-target="awsVpcServicesConfigPanel" role="tab" aria-controls="awsVpcServicesConfigPanel" aria-selected="false" tabindex="-1">Services and controls</button>
+              </div>
+
+              <div class="tool-inspector-section aws-vpc-config-panel active" id="awsVpcNetworkConfigPanel" data-config-panel role="tabpanel" aria-labelledby="awsVpcNetworkConfigTab">
+                <div class="aws-vpc-config-grid">
+                  <div class="aws-vpc-control-stack">
+                    <label class="tool-control-label" for="awsVpcCidr">VPC CIDR</label>
+                    <input type="text" id="awsVpcCidr" class="form-control" value="10.0.0.0/16">
+                  </div>
+
+                  <div class="aws-vpc-control-stack">
+                    <label class="tool-control-label" for="awsVpcNatMode">NAT mode</label>
+                    <select id="awsVpcNatMode" class="form-select">
+                      <option value="none">No NAT</option>
+                      <option value="single" selected>Single NAT</option>
+                      <option value="per-az">One per AZ</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tool-inspector-section aws-vpc-config-panel" id="awsVpcWorkloadConfigPanel" data-config-panel role="tabpanel" aria-labelledby="awsVpcWorkloadConfigTab" hidden>
+                <div class="aws-vpc-config-grid">
+                  <div class="aws-vpc-control-stack">
+                    <label class="tool-control-label" for="awsVpcAppTier">App tier</label>
+                    <select id="awsVpcAppTier" class="form-select">
+                      <option value="ec2">EC2 Auto Scaling</option>
+                      <option value="ecs">ECS / Fargate</option>
+                      <option value="eks">EKS</option>
+                      <option value="lambda">Lambda in VPC</option>
+                    </select>
+                  </div>
+
+                  <div class="aws-vpc-control-stack">
+                    <label class="tool-control-label" for="awsVpcDatabase">Database tier</label>
+                    <select id="awsVpcDatabase" class="form-select">
+                      <option value="none">No database tier</option>
+                      <option value="rds" selected>RDS</option>
+                      <option value="aurora">Aurora</option>
+                      <option value="dynamodb">DynamoDB</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tool-inspector-section aws-vpc-config-panel" id="awsVpcServicesConfigPanel" data-config-panel role="tabpanel" aria-labelledby="awsVpcServicesConfigTab" hidden>
+                <div class="aws-vpc-toggle-grid">
+                  <label class="aws-vpc-toggle-item">
+                    <span class="aws-vpc-toggle-copy">Route 53</span>
+                    <input type="checkbox" id="awsVpcRoute53" checked>
+                  </label>
+
+                  <label class="aws-vpc-toggle-item">
+                    <span class="aws-vpc-toggle-copy">CloudFront</span>
+                    <input type="checkbox" id="awsVpcCloudFront">
+                  </label>
+
+                  <label class="aws-vpc-toggle-item">
+                    <span class="aws-vpc-toggle-copy">AWS WAF</span>
+                    <input type="checkbox" id="awsVpcWaf">
+                  </label>
+
+                  <label class="aws-vpc-toggle-item">
+                    <span class="aws-vpc-toggle-copy">Application Load Balancer</span>
+                    <input type="checkbox" id="awsVpcAlb" checked>
+                  </label>
+
+                  <label class="aws-vpc-toggle-item">
+                    <span class="aws-vpc-toggle-copy">Bastion host</span>
+                    <input type="checkbox" id="awsVpcBastion">
+                  </label>
+
+                  <label class="aws-vpc-toggle-item">
+                    <span class="aws-vpc-toggle-copy">VPC endpoints</span>
+                    <input type="checkbox" id="awsVpcEndpoints" checked>
+                  </label>
+
+                  <label class="aws-vpc-toggle-item">
+                    <span class="aws-vpc-toggle-copy">VPC flow logs</span>
+                    <input type="checkbox" id="awsVpcFlowLogs" checked>
+                  </label>
+
+                  <label class="aws-vpc-toggle-item">
+                    <span class="aws-vpc-toggle-copy">CloudWatch</span>
+                    <input type="checkbox" id="awsVpcCloudWatch" checked>
+                  </label>
+
+                  <label class="aws-vpc-toggle-item">
+                    <span class="aws-vpc-toggle-copy">Site-to-site VPN</span>
+                    <input type="checkbox" id="awsVpcSiteToSiteVpn">
+                  </label>
+
+                  <label class="aws-vpc-toggle-item">
+                    <span class="aws-vpc-toggle-copy">Transit gateway</span>
+                    <input type="checkbox" id="awsVpcTransitGateway">
+                  </label>
+
+                  <label class="aws-vpc-toggle-item">
+                    <span class="aws-vpc-toggle-copy">ElastiCache</span>
+                    <input type="checkbox" id="awsVpcCache">
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </details>
+
+          <div class="tool-inspector-section aws-vpc-selected-section">
+            <h3 class="aws-vpc-section-title">Selected item</h3>
+
+            <p class="aws-vpc-selected-empty" id="awsVpcSelectedEmpty">Select any draggable item in the stage to adjust its position and size. Keyboard: arrow keys move, Alt + arrow keys resize.</p>
+
+            <div class="aws-vpc-selected-editor d-none" id="awsVpcSelectedEditor">
+              <div class="aws-vpc-selected-name" id="awsVpcSelectedName"></div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="awsVpcSelectedX">X position</label>
+                <div class="tool-control-field">
+                  <input type="number" id="awsVpcSelectedX" class="form-control" min="0" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="awsVpcSelectedY">Y position</label>
+                <div class="tool-control-field">
+                  <input type="number" id="awsVpcSelectedY" class="form-control" min="0" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="awsVpcSelectedWidth">Width</label>
+                <div class="tool-control-field">
+                  <input type="number" id="awsVpcSelectedWidth" class="form-control" min="96" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="awsVpcSelectedHeight">Height</label>
+                <div class="tool-control-field">
+                  <input type="number" id="awsVpcSelectedHeight" class="form-control" min="44" step="4">
+                </div>
+              </div>
+
+              <div class="aws-vpc-selected-actions">
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="awsVpcApplyCardSize">Apply item</button>
+                <button type="button" class="tool-action-btn tool-action-btn-ghost" id="awsVpcResetCardSize">Reset item</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="tool-shell tool-stage-shell" id="awsVpcStageShell">
+      <div class="tool-shell-header aws-vpc-stage-header">
+        <div>
+          <h2 class="tool-shell-title" id="awsVpcStageTitle">AWS VPC Architecture</h2>
+          <p class="tool-shell-subtitle" id="awsVpcStageSubtitle">Generate a prompt-driven VPC layout with editable controls and export-ready output.</p>
+        </div>
+        <div class="aws-vpc-stage-meta" id="awsVpcStageMeta"></div>
+      </div>
+
+      <div class="tool-stage-toolbar">
+        <div class="aws-vpc-stage-toolbar-actions">
+          <div class="aws-vpc-zoom-control" id="awsVpcZoomControl">
+            <button type="button" class="aws-vpc-zoom-step" id="awsVpcZoomOut" aria-label="Zoom out" title="Zoom out">
+              <i class="bi bi-dash" aria-hidden="true"></i>
+            </button>
+            <input type="number" id="awsVpcZoomInput" class="aws-vpc-zoom-input" value="50" min="35" max="240" step="10" aria-label="Zoom percentage">
+            <span class="aws-vpc-zoom-label" id="awsVpcZoomLabel">%</span>
+            <button type="button" class="aws-vpc-zoom-step" id="awsVpcZoomIn" aria-label="Zoom in" title="Zoom in">
+              <i class="bi bi-plus" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <button type="button" class="aws-vpc-icon-btn" id="awsVpcZoomFit" aria-label="Zoom to fit" title="Zoom to fit">
+            <i class="bi bi-arrows-angle-contract" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="aws-vpc-icon-btn" id="awsVpcZoomActual" aria-label="Zoom to 100%" title="Zoom to 100%">
+            <span>100</span>
+          </button>
+          <button type="button" class="aws-vpc-icon-btn" id="awsVpcZoomHideUi" aria-label="Hide UI" title="Hide UI">
+            <i class="bi bi-eye-slash" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="aws-vpc-icon-btn" id="awsVpcFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
+            <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost aws-vpc-stage-toolbar-btn" id="awsVpcResetLayout">Reset layout</button>
+        </div>
+      </div>
+
+      <div class="tool-stage-body">
+        <div class="tool-stage-empty" id="awsVpcStageEmpty">Generate a diagram to populate the VPC workspace.</div>
+        <div class="tool-stage-canvas aws-vpc-stage-canvas d-none" id="awsVpcStageCanvas"></div>
+      </div>
+
+      <div class="aws-vpc-stage-footer">
+        <div class="aws-vpc-stage-toolbar-chips">
+          <span class="tool-helper-chip tool-helper-chip-prompt" data-tip="Prompt + Preset Aware" aria-label="Prompt + Preset Aware" tabindex="0">
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span class="aws-vpc-visually-hidden">Prompt + Preset Aware</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-inspector" data-tip="Editable Inspector" aria-label="Editable Inspector" tabindex="0">
+            <i class="bi bi-sliders2" aria-hidden="true"></i>
+            <span class="aws-vpc-visually-hidden">Editable Inspector</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-drag" data-tip="Drag Cards To Customize" aria-label="Drag Cards To Customize" tabindex="0">
+            <i class="bi bi-arrows-move" aria-hidden="true"></i>
+            <span class="aws-vpc-visually-hidden">Drag Cards To Customize</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-svg" data-tip="SVG Workspace" aria-label="SVG Workspace" tabindex="0">
+            <i class="bi bi-bezier2" aria-hidden="true"></i>
+            <span class="aws-vpc-visually-hidden">SVG Workspace</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="tool-shell tool-output-shell">
+      <div class="tool-empty-state" id="awsVpcOutputEmpty">Generate a diagram to unlock exports, technical inventory, and prompt interpretation output.</div>
+
+      <div class="aws-vpc-output-content d-none" id="awsVpcOutputContent">
+        <div class="aws-vpc-output-shell">
+          <div class="aws-vpc-output-summary">
+            <div class="aws-vpc-output-status-card" aria-live="polite">
+              <div class="aws-vpc-score-card" id="awsVpcOutputStatus">
+                <div class="aws-vpc-score-kicker">Architecture Score</div>
+                <div class="aws-vpc-score-value">Ready</div>
+                <div class="aws-vpc-score-summary">Generate a diagram to score the current VPC baseline.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="aws-vpc-toolbar-shell">
+            <div class="aws-vpc-toolbar tool-output-toolbar">
+              <div class="aws-vpc-toolbar-main">
+                <label for="awsVpcInventorySort" class="aws-vpc-sort-label">Sort</label>
+                <div class="aws-vpc-sort-wrap">
+                  <details class="aws-vpc-sort-select" id="awsVpcInventorySortSelect">
+                    <summary class="aws-vpc-sort-summary">
+                      <span id="awsVpcInventorySortSummary">ID</span>
+                    </summary>
+
+                    <div class="aws-vpc-sort-menu">
+                      <div class="aws-vpc-sort-grid">
+                        <button type="button" class="aws-vpc-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
+                        <button type="button" class="aws-vpc-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
+                        <button type="button" class="aws-vpc-sort-option" data-sort-value="component" aria-pressed="false">Component</button>
+                        <button type="button" class="aws-vpc-sort-option" data-sort-value="placement" aria-pressed="false">Placement</button>
+                        <button type="button" class="aws-vpc-sort-option" data-sort-value="purpose" aria-pressed="false">Purpose</button>
+                      </div>
+                    </div>
+                  </details>
+                  <input type="hidden" id="awsVpcInventorySort" value="id">
+                </div>
+              </div>
+
+              <div class="tool-output-actions">
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="awsVpcExportPng">
+                  <i class="bi bi-image" aria-hidden="true"></i>
+                  <span data-button-label>Export PNG</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="awsVpcDownloadSvg">
+                  <i class="bi bi-download" aria-hidden="true"></i>
+                  <span data-button-label>Download SVG</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="awsVpcCopyJson">
+                  <i class="bi bi-clipboard" aria-hidden="true"></i>
+                  <span data-button-label>Copy JSON</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="awsVpcDownloadJson">
+                  <i class="bi bi-download" aria-hidden="true"></i>
+                  <span data-button-label>Download JSON</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-ghost" id="awsVpcImportJsonButton">
+                  <i class="bi bi-upload" aria-hidden="true"></i>
+                  <span data-button-label>Import JSON</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="aws-vpc-tabs-shell">
+            <div class="tool-tabs" role="tablist" aria-label="AWS VPC output views">
+              <button type="button" class="tool-tab-btn aws-vpc-tab-btn active" id="awsVpcInventoryTab" data-tab-target="awsVpcInventoryPanel" role="tab" aria-controls="awsVpcInventoryPanel" aria-selected="true" tabindex="0">
+                <i class="bi bi-list-check" aria-hidden="true"></i>
+                <span>Technical Inventory</span>
+              </button>
+              <button type="button" class="tool-tab-btn aws-vpc-tab-btn" id="awsVpcNotesTab" data-tab-target="awsVpcNotesPanel" role="tab" aria-controls="awsVpcNotesPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-card-text" aria-hidden="true"></i>
+                <span>Prompt Notes</span>
+              </button>
+              <button type="button" class="tool-tab-btn aws-vpc-tab-btn" id="awsVpcJsonTab" data-tab-target="awsVpcJsonPanel" role="tab" aria-controls="awsVpcJsonPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-braces" aria-hidden="true"></i>
+                <span>JSON</span>
+              </button>
+            </div>
+
+            <div class="tool-tab-panel aws-vpc-tab-panel active" id="awsVpcInventoryPanel" role="tabpanel" aria-labelledby="awsVpcInventoryTab">
+              <div class="aws-vpc-inventory-panel">
+                <div class="aws-vpc-table-card">
+                  <h3 class="aws-vpc-result-section-title">Technical Inventory</h3>
+                  <div class="aws-vpc-table-wrap">
+                    <table class="table aws-vpc-table mb-0">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Component</th>
+                          <th>Placement</th>
+                          <th>Purpose</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="awsVpcInventoryTableBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-tab-panel aws-vpc-tab-panel" id="awsVpcNotesPanel" role="tabpanel" aria-labelledby="awsVpcNotesTab" hidden>
+              <div class="aws-vpc-prompt-notes-card">
+                <h3 class="aws-vpc-result-section-title">Prompt Notes</h3>
+                <div class="aws-vpc-note-grid">
+                  <section class="aws-vpc-note-card">
+                    <h3 class="aws-vpc-note-title">Prompt summary</h3>
+                    <p class="aws-vpc-note-copy" id="awsVpcPromptSummary"></p>
+                  </section>
+
+                  <section class="aws-vpc-note-card">
+                    <h3 class="aws-vpc-note-title">Detected keywords</h3>
+                    <ul class="aws-vpc-note-list" id="awsVpcKeywordList"></ul>
+                  </section>
+
+                  <section class="aws-vpc-note-card">
+                    <h3 class="aws-vpc-note-title">Applied assumptions</h3>
+                    <ul class="aws-vpc-note-list" id="awsVpcAssumptionList"></ul>
+                  </section>
+
+                  <section class="aws-vpc-note-card">
+                    <h3 class="aws-vpc-note-title">Current model</h3>
+                    <ul class="aws-vpc-note-list" id="awsVpcModelList"></ul>
+                  </section>
+
+                  <section class="aws-vpc-note-card">
+                    <h3 class="aws-vpc-note-title">Architecture pros</h3>
+                    <ul class="aws-vpc-note-list" id="awsVpcProsList"></ul>
+                  </section>
+
+                  <section class="aws-vpc-note-card">
+                    <h3 class="aws-vpc-note-title">Architecture cons</h3>
+                    <ul class="aws-vpc-note-list" id="awsVpcConsList"></ul>
+                  </section>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-tab-panel aws-vpc-tab-panel" id="awsVpcJsonPanel" role="tabpanel" aria-labelledby="awsVpcJsonTab" hidden>
+              <div class="tool-json-shell">
+                <div class="aws-vpc-json-header">JSON Output</div>
+                <pre class="aws-vpc-json-code" id="awsVpcJsonOutput"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <input type="file" id="awsVpcImportJson" class="d-none" accept="application/json">
+  </div>
+</div>

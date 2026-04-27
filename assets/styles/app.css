@@ -1,0 +1,9 @@
+/* assets/styles/page/*.css */
+@import './page/main.css';
+@import './page/category.css';
+
+/* assets/styles/content/*.css */
+@import './content/content.css';
+
+/* assets/styles/layout/*.css */
+@import 'layout/advertisement.css';

@@ -1,0 +1,73 @@
+{# templates/layout/sidebar.html.twig #}
+<div class="col-lg-4 sidebar">
+  <div class="widgets-container" data-aos="fade-up" data-aos-delay="200">
+
+    {{ include('layout/advertisement.html.twig') }}
+
+    <div class="tags-widget widget-item professional-tags-widget">
+      <h3 class="widget-title">Popular Tags</h3>
+      <ul>
+        {% for tag in popular_tags|default([]) %}
+          <li>
+            <a
+              href="{{ path('app_category', {
+                tag: tag.name,
+                q: search_query|default(''),
+                sort: sort|default('newest'),
+                category: category_filter|default('')
+              }) }}"
+              class="tag-chip {{ tag_filter|default('') == tag.name ? 'active' : '' }}"
+            >
+              <i class="bi bi-tag"></i>
+              <span>{{ tag.name }}</span>
+              <small>{{ tag.count }}</small>
+            </a>
+          </li>
+        {% else %}
+          <li>
+            <span class="tag-chip tag-chip-empty">
+              <i class="bi bi-tags"></i>
+              <span>No tags found</span>
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="discussion-widget widget-item">
+      <h3 class="widget-title">
+        Discussion
+        <span>{{ sidebar_discussions|default([])|length }}</span>
+      </h3>
+      <div class="sidebar-discussion-list">
+        {% for discussion in sidebar_discussions|default([]) %}
+          <a
+            href="{{ path('tool_detail', { category: discussion.category_slug, slug: discussion.slug }) }}"
+            class="sidebar-discussion-item {{ loop.index == 2 ? 'is-highlighted' : '' }}"
+          >
+            <span class="sidebar-discussion-avatar">{{ discussion.author_initial }}</span>
+            <span class="sidebar-discussion-content">
+              <span class="sidebar-discussion-author">{{ discussion.author }}</span>
+              <span class="sidebar-discussion-date">
+                <i class="bi bi-calendar2"></i>
+                {{ discussion.date }}
+              </span>
+              <span class="sidebar-discussion-title">{{ discussion.title }}</span>
+              <span class="sidebar-discussion-excerpt">{{ discussion.excerpt }}</span>
+              <span class="sidebar-discussion-actions">
+                <span><i class="bi bi-hand-thumbs-up"></i> {{ discussion.likes }}</span>
+                <span><i class="bi bi-reply"></i> Reply</span>
+              </span>
+            </span>
+          </a>
+        {% else %}
+          <div class="sidebar-discussion-empty">
+            <i class="bi bi-chat-dots"></i>
+            <span>No discussion yet.</span>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</div>

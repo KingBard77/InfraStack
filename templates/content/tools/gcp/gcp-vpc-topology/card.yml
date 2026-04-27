@@ -1,0 +1,9 @@
+card_summary: Generate a GCP VPC topology diagram from a prompt and tune the layout with live infrastructure controls.
+card_gradient_start: "#4285F4"
+card_gradient_end: "#34A853"
+card_text_color: "#FFFFFF"
+card_kicker: "GCP"
+card_image_title: "Visualizer GCP VPC Topology"
+card_icon_class: "bi bi-diagram-3"
+card_icon_animation: "random"
+card_image: null

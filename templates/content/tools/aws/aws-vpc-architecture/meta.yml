@@ -1,0 +1,19 @@
+# meta.yml
+
+title: AWS VPC Architecture
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "Apr. 18th, 2026"
+comments: Interactive tool
+category_label: AWS
+reading_time: 4 min read
+summary: Generate an AWS VPC architecture diagram from a prompt, preset, and live inspector controls.
+intro: Turn a plain-English AWS brief into a clean VPC architecture workspace with presets, layout controls, and exportable SVG, PNG, and JSON output.
+tags:
+    - AWS
+    - VPC
+    - Architecture
+    - Diagram
+    - Topology
+    - Visualizer

@@ -1,0 +1,64 @@
+{% set visualVariant = variant|default('card') %}
+{% set showPostDetail = visualVariant in ['hero', 'hero-small'] %}
+{% if visualVariant == 'style' %}
+<style>
+.azure-vnet-post-visual {
+    --post-start: #0369a1;
+    --post-end: #0ea5e9;
+    --post-accent: #22c55e;
+}
+
+.azure-vnet-post-visual .tool-post-node:nth-child(1),
+.azure-vnet-post-visual .tool-post-node:nth-child(3),
+.azure-vnet-post-visual .tool-post-node:nth-child(5) {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.azure-vnet-post-visual .tool-post-icon {
+    background: rgba(14, 165, 233, 0.24);
+}
+</style>
+{% else %}
+<div
+  class="tool-post-visual azure-vnet-post-visual tool-post-visual-{{ visualVariant }}"
+  style="--post-start: {{ post.card_gradient_start|default('#0369a1') }}; --post-end: {{ post.card_gradient_end|default('#0ea5e9') }};"
+>
+  <div class="tool-post-bg-icons" aria-hidden="true">
+    <i class="bi bi-cloud-check"></i>
+    <i class="bi bi-diagram-3"></i>
+    <i class="bi bi-hdd-network"></i>
+    <i class="bi bi-boxes"></i>
+    <i class="bi bi-globe2"></i>
+  </div>
+  <div class="tool-post-header">
+    <span class="tool-post-kicker">{{ post.card_kicker|default(post.category|default('Azure')) }}</span>
+    <span class="tool-post-icon"><i class="{{ post.card_icon_class|default('bi bi-diagram-3') }}"></i></span>
+  </div>
+  <div class="tool-post-title">{{ post.card_image_title|default(post.title|default('Azure VNet Architecture')) }}</div>
+  <div class="tool-post-map" aria-hidden="true">
+    <span class="tool-post-node"><i class="bi bi-cloud-check"></i></span>
+    <span class="tool-post-node"></span>
+    <span class="tool-post-node"><i class="bi bi-boxes"></i></span>
+    <span class="tool-post-node"></span>
+    <span class="tool-post-node"><i class="bi bi-hdd-network"></i></span>
+  </div>
+  <div class="tool-post-footer">
+    <span>{{ post.reading_time|default('4 min read') }}</span>
+    <span>{{ post.category|default('Azure') }}</span>
+  </div>
+  {% if showPostDetail %}
+    <div class="tool-post-detail">
+      <div class="tool-post-meta">
+        <span><i class="bi bi-chevron-down"></i> {{ post.date_display|default('Apr. 18th, 2026') }}</span>
+        <span><i class="bi bi-three-dots-vertical"></i> {{ post.category|default('Azure') }}</span>
+        <span><i class="bi bi-clock"></i> {{ post.reading_time|default('4 min read') }}</span>
+      </div>
+      <div class="tool-post-detail-title">{{ post.title|default('Visualizer Azure VNet Architecture') }}</div>
+      <span class="tool-post-read-more">
+        Read More
+        <i class="bi bi-arrow-right"></i>
+      </span>
+    </div>
+  {% endif %}
+</div>
+{% endif %}

@@ -1,0 +1,136 @@
+{# templates/page/author-profile.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+
+{{ include('layout/breadcrumbs.html.twig') }}
+
+<!-- Author Profile Section -->
+<section id="author-profile" class="author-profile section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="author-profile-1">
+      <div class="row">
+        <!-- Author Info -->
+        <div class="col-lg-4 mb-4 mb-lg-0">
+          <div class="author-card" data-aos="fade-up">
+            <div class="author-image">
+              <img
+                src="{{ asset('images/profile/profile-author-bg-black.png') }}"
+                alt="Badrul Amin"
+                class="img-fluid rounded profile-photo"
+              >
+            </div>
+
+            <div class="author-info">
+              <h2>Badrul Amin</h2>
+              <p class="designation">Infrastructure & DevOps Specialist · Software Engineer</p>
+
+              <div class="author-bio">
+                I am a detail-oriented technology professional based in Selangor, with a background in software engineering and hands-on experience across web development, infrastructure, system setup, and technical project delivery.
+              </div>
+
+              <div class="author-stats d-flex justify-content-between text-center my-4">
+                <div class="stat-item">
+                  <h4 data-purecounter-start="0" data-purecounter-end="147" data-purecounter-duration="1" class="purecounter"></h4>
+                  <p>Articles</p>
+                </div>
+                <div class="stat-item">
+                  <h4 data-purecounter-start="0" data-purecounter-end="13" data-purecounter-duration="1" class="purecounter"></h4>
+                  <p>Awards</p>
+                </div>
+                <div class="stat-item">
+                  <h4 data-purecounter-start="0" data-purecounter-end="25" data-purecounter-duration="1" class="purecounter">K</h4>
+                  <p>Followers</p>
+                </div>
+              </div>
+
+              <div class="social-links">
+                <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Author Content -->
+        <div class="col-lg-8">
+          <div class="author-content" data-aos="fade-up" data-aos-delay="200">
+            <div class="content-header">
+              <h3>About Me</h3>
+            </div>
+            <div class="content-body">
+              <p>
+                Hi, I’m Author. I bring a software engineering foundation together with practical exposure in infrastructure, systems, and platform-related work. My experience includes building and supporting technical solutions while keeping usability, structure, and maintainability in mind.
+              </p>
+              <p class="mt-2">
+                <a href="https://www.badrulamin.com" target="_blank" rel="noopener noreferrer" class="website-link">
+                    <i class="bi bi-globe"></i> badrulamin.com
+                </a>
+              </p>
+
+              <p>
+                This website is my space to organize tools, guides, and technical references in a way that is useful, practical, and easy to revisit. It reflects how I work: structured, hands-on, and always looking for cleaner ways to solve real technical problems.
+              </p>
+
+              <div class="expertise-areas">
+                <h4>Areas of Expertise</h4>
+                <div class="tags">
+                  <span>Software Engineering</span>
+                  <span>Linux Systems</span>
+                  <span>Cloud & Infrastructure</span>
+                  <span>Virtualization</span>
+                  <span>Web Development</span>
+                  <span>Automation & Scripting</span>
+                </div>
+              </div>
+
+              <div class="featured-articles mt-5">
+                <h4>What You’ll Find Here</h4>
+                <div class="row g-4">
+                  <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <article class="article-card">
+                      <div class="article-img">
+                        <img src="https://placehold.co/600x400?text=Infrastructure+Tools" alt="Infrastructure Tools" class="img-fluid">
+                      </div>
+                      <div class="article-details">
+                        <div class="post-category">Tools</div>
+                        <h5><a href="{{ path('app_category') }}">Infrastructure Utilities and Quick References</a></h5>
+                        <div class="post-meta">
+                          <span><i class="bi bi-tools"></i> Practical Helpers</span>
+                          <span><i class="bi bi-grid"></i> Structured by Category</span>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+
+                  <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <article class="article-card">
+                      <div class="article-img">
+                        <img src="https://placehold.co/600x400?text=Infrastructure+Guide" alt="Infrastructure Guide" class="img-fluid">
+                      </div>
+                      <div class="article-details">
+                        <div class="post-category">Guides</div>
+                        <h5><a href="#">Technical Guides, Setup Notes, and Learnings</a></h5>
+                        <div class="post-meta">
+                          <span><i class="bi bi-journal-text"></i> Step-by-Step Content</span>
+                          <span><i class="bi bi-lightbulb"></i> Built from Real Practice</span>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /Author Profile Section -->
+
+{% endblock %}

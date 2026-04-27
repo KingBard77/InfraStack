@@ -1,0 +1,283 @@
+{# tool.html.twig #}
+
+<div class="tool-box mb-4">
+  <form class="cisbench-form" id="cisbenchForm">
+    <div class="cisbench-main-row">
+      <label for="cisbenchQuery" class="cisbench-main-label">
+        Control filter:
+        <span class="info-dot" title="Filter by control ID, title, section path, or script name">i</span>
+      </label>
+
+      <div class="cisbench-main-input-grid">
+        <input
+          type="text"
+          id="cisbenchQuery"
+          class="form-control"
+          placeholder="1.1.1.1, cramfs, ssh, auditd, pam_unix"
+        >
+
+        <button type="submit" class="btn btn-primary cisbench-submit-btn" id="cisbenchSubmit">Explore</button>
+      </div>
+    </div>
+
+    <div class="cisbench-basic-panel">
+      <div class="cisbench-inner-panel">
+        <div class="cisbench-setting-row">
+          <label for="cisbenchFamily" class="cisbench-setting-label">
+            Top-level section:
+            <span class="info-dot" title="Narrow the benchmark to one family such as initial, firewall, or access control">i</span>
+          </label>
+
+          <div class="cisbench-setting-field">
+            <div class="cisbench-select-tools">
+              <button type="button" class="cisbench-select-mini-btn" id="cisbenchFamilyReset">All sections</button>
+            </div>
+
+            <details class="cisbench-select" id="cisbenchFamilySelect">
+              <summary class="cisbench-select-summary">
+                <span id="cisbenchFamilySummary">All sections</span>
+              </summary>
+
+              <div class="cisbench-select-body">
+                <div class="cisbench-select-grid" id="cisbenchFamilyOptions"></div>
+              </div>
+            </details>
+
+            <input type="hidden" id="cisbenchFamily" value="all">
+          </div>
+        </div>
+
+        <div class="cisbench-setting-row">
+          <label for="cisbenchSectionPath" class="cisbench-setting-label">
+            Section path:
+            <span class="info-dot" title="Choose a benchmark path or keep the whole current family in scope">i</span>
+          </label>
+
+          <div class="cisbench-setting-field">
+            <div class="cisbench-select-tools">
+              <button type="button" class="cisbench-select-mini-btn" id="cisbenchSectionReset">All paths</button>
+            </div>
+
+            <details class="cisbench-select" id="cisbenchSectionSelect">
+              <summary class="cisbench-select-summary">
+                <span id="cisbenchSectionSummary">All paths</span>
+              </summary>
+
+              <div class="cisbench-select-body cisbench-select-body-scroll">
+                <div class="cisbench-select-grid" id="cisbenchSectionOptions"></div>
+              </div>
+            </details>
+
+            <input type="hidden" id="cisbenchSectionPath" value="all">
+          </div>
+        </div>
+
+        <div class="cisbench-setting-row">
+          <label for="cisbenchCriticality" class="cisbench-setting-label">
+            Criticality:
+            <span class="info-dot" title="Filter controls by declared benchmark criticality or missing metadata">i</span>
+          </label>
+
+          <div class="cisbench-setting-field">
+            <details class="cisbench-select" id="cisbenchCriticalitySelect">
+              <summary class="cisbench-select-summary">
+                <span id="cisbenchCriticalitySummary">All criticality</span>
+              </summary>
+
+              <div class="cisbench-select-body">
+                <div class="cisbench-select-grid" id="cisbenchCriticalityOptions"></div>
+              </div>
+            </details>
+
+            <input type="hidden" id="cisbenchCriticality" value="all">
+          </div>
+        </div>
+
+        <div class="cisbench-setting-row">
+          <label for="cisbenchSelectedControl" class="cisbench-setting-label">
+            Script source:
+            <span class="info-dot" title="Pick the exact CIS control script to inspect and copy">i</span>
+          </label>
+
+          <div class="cisbench-setting-field">
+            <div class="cisbench-select-tools">
+              <button type="button" class="cisbench-select-mini-btn" id="cisbenchControlReset">First match</button>
+            </div>
+
+            <details class="cisbench-select" id="cisbenchControlSelect">
+              <summary class="cisbench-select-summary">
+                <span id="cisbenchControlSummary">First matched script</span>
+              </summary>
+
+              <div class="cisbench-select-body cisbench-select-body-scroll">
+                <div class="cisbench-select-grid" id="cisbenchControlOptions"></div>
+              </div>
+            </details>
+
+            <input type="hidden" id="cisbenchSelectedControl" value="">
+          </div>
+        </div>
+
+        <div class="cisbench-setting-row">
+          <label class="cisbench-setting-label">
+            Criticality map:
+            <span class="info-dot" title="This reflects the metadata declared in the copied benchmark scripts under assets/bin">i</span>
+          </label>
+
+          <div class="cisbench-setting-field">
+            <div class="cisbench-criticality-row" id="cisbenchCriticalityRow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <details class="cisbench-advanced">
+      <summary class="cisbench-advanced-summary">
+        <span>Advanced</span>
+      </summary>
+
+      <div class="cisbench-advanced-body">
+        <div class="cisbench-inner-panel">
+          <div class="cisbench-setting-row">
+            <label for="cisbenchSort" class="cisbench-setting-label">
+              Sort controls:
+              <span class="info-dot" title="Change the visible order in the controls table and script selector">i</span>
+            </label>
+
+            <div class="cisbench-setting-field">
+              <details class="cisbench-select" id="cisbenchSortSelect">
+                <summary class="cisbench-select-summary">
+                  <span id="cisbenchSortSummary">Benchmark order</span>
+                </summary>
+
+                <div class="cisbench-select-body">
+                  <div class="cisbench-select-grid" id="cisbenchSortOptions"></div>
+                </div>
+              </details>
+
+              <input type="hidden" id="cisbenchSort" value="benchmark">
+            </div>
+          </div>
+
+          <div class="cisbench-setting-row">
+            <label for="cisbenchRowLimit" class="cisbench-setting-label">
+              Visible rows:
+              <span class="info-dot" title="Limit the controls table while keeping the selected script available">i</span>
+            </label>
+
+            <div class="cisbench-setting-field">
+              <details class="cisbench-select" id="cisbenchRowLimitSelect">
+                <summary class="cisbench-select-summary">
+                  <span id="cisbenchRowLimitSummary">50 rows</span>
+                </summary>
+
+                <div class="cisbench-select-body">
+                  <div class="cisbench-select-grid cisbench-select-grid-two" id="cisbenchRowLimitOptions"></div>
+                </div>
+              </details>
+
+              <input type="hidden" id="cisbenchRowLimit" value="50">
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </form>
+
+  <div class="cisbench-result-panel" id="cisbenchResultPanel">
+    <div class="cisbench-result-empty" id="cisbenchResultEmpty">Load the copied Ubuntu CIS benchmark tree to inspect one control script at a time and copy the selected source block directly.</div>
+
+    <div class="cisbench-result-error d-none" id="cisbenchResultError"></div>
+
+    <div class="cisbench-result-content d-none" id="cisbenchResultContent">
+      <div class="cisbench-result-summary" id="cisbenchResultSummary"></div>
+
+      <div class="cisbench-toolbar tool-result-toolbar">
+        <div class="cisbench-toolbar-left tool-result-toolbar-main" id="cisbenchToolbarMeta"></div>
+
+        <div class="cisbench-toolbar-actions tool-result-toolbar-actions">
+          <button type="button" class="cisbench-action-btn tool-result-action-btn" id="cisbenchCopyScript" disabled>Copy script</button>
+          <button type="button" class="cisbench-action-btn tool-result-action-btn" id="cisbenchDownloadScript" disabled>Download script</button>
+          <button type="button" class="cisbench-action-btn tool-result-action-btn" id="cisbenchExportPdf">Export PDF</button>
+          <button type="button" class="cisbench-action-btn tool-result-action-btn" id="cisbenchDownloadCsv">Download CSV</button>
+          <button type="button" class="cisbench-action-btn tool-result-action-btn" id="cisbenchCopyJson">Copy JSON</button>
+          <button type="button" class="cisbench-action-btn tool-result-action-btn" id="cisbenchDownloadJson">Download JSON</button>
+        </div>
+      </div>
+
+      <div class="cisbench-tabs">
+        <div class="cisbench-tab-list" role="tablist" aria-label="Ubuntu CIS benchmark views">
+          <button type="button" class="cisbench-tab-btn active" data-tab-target="cisbenchControlsPanel" role="tab" aria-selected="true">Controls</button>
+          <button type="button" class="cisbench-tab-btn" data-tab-target="cisbenchSectionsPanel" role="tab" aria-selected="false">Sections</button>
+          <button type="button" class="cisbench-tab-btn" data-tab-target="cisbenchScriptPanel" role="tab" aria-selected="false">Script</button>
+          <button type="button" class="cisbench-tab-btn" data-tab-target="cisbenchJsonPanel" role="tab" aria-selected="false">JSON</button>
+        </div>
+
+        <div class="cisbench-tab-panel active" id="cisbenchControlsPanel" role="tabpanel">
+          <section class="cisbench-section-card">
+            <h3 class="cisbench-section-title">Controls</h3>
+
+            <div class="cisbench-table-wrap tool-result-table-wrap">
+              <table class="table cisbench-table cisbench-controls-table mb-0 tool-result-table">
+                <thead>
+                  <tr>
+                    <th scope="col" class="cisbench-col-index tool-generated-rownum-head">#</th>
+                    <th scope="col" class="cisbench-col-id">Control</th>
+                    <th scope="col" class="cisbench-col-title">Title</th>
+                    <th scope="col" class="cisbench-col-section">Section</th>
+                    <th scope="col" class="cisbench-col-criticality">Criticality</th>
+                    <th scope="col" class="cisbench-col-script">Script</th>
+                  </tr>
+                </thead>
+                <tbody id="cisbenchControlsTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <div class="cisbench-tab-panel" id="cisbenchSectionsPanel" role="tabpanel">
+          <section class="cisbench-section-card">
+            <h3 class="cisbench-section-title">Sections</h3>
+
+            <div class="cisbench-table-wrap cisbench-table-wrap-compact tool-result-table-wrap">
+              <table class="table cisbench-table cisbench-sections-table mb-0 tool-result-table tool-result-table--compact">
+                <thead>
+                  <tr>
+                    <th scope="col" class="cisbench-col-index tool-generated-rownum-head">#</th>
+                    <th scope="col" class="cisbench-col-path">Section path</th>
+                    <th scope="col" class="cisbench-col-depth">Depth</th>
+                    <th scope="col" class="cisbench-col-controls">Controls</th>
+                    <th scope="col" class="cisbench-col-children">Children</th>
+                    <th scope="col" class="cisbench-col-range">Range</th>
+                  </tr>
+                </thead>
+                <tbody id="cisbenchSectionsTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <div class="cisbench-tab-panel" id="cisbenchScriptPanel" role="tabpanel">
+          <section class="cisbench-section-card">
+            <h3 class="cisbench-section-title">Selected Script</h3>
+
+            <div class="cisbench-script-meta" id="cisbenchScriptMeta"></div>
+
+            <div class="cisbench-script-shell">
+              <pre class="cisbench-script-pre"><code id="cisbenchScriptOutput"></code></pre>
+            </div>
+          </section>
+        </div>
+
+        <div class="cisbench-tab-panel" id="cisbenchJsonPanel" role="tabpanel">
+          <div class="cisbench-json-shell tool-json-panel">
+            <div class="cisbench-json-head tool-json-head">
+              <span class="cisbench-json-title tool-json-title">JSON Output</span>
+            </div>
+            <pre class="cisbench-json-pre tool-json-output"><code id="cisbenchJsonOutput"></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

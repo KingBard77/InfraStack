@@ -1,0 +1,18 @@
+# meta.yml
+
+title: CIS Ubuntu Benchmark 2204
+author: Author
+author_role: Infrastructure Engineer
+author_image: "images/author/author-bg-black.png"
+date: "Mar. 20th, 2026"
+comments: 3 Comments
+category_label: CIS
+reading_time: 7 min read
+intro: CIS Ubuntu Benchmark 2204 maps the copied benchmark tree into a searchable tool surface so you can filter by section, title, and criticality, then copy the exact control script body you need without digging through 297 shell files by hand.
+tags:
+    - CIS
+    - Ubuntu
+    - Benchmark
+    - Compliance
+    - Hardening
+    - Shell
