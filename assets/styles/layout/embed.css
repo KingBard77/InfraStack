@@ -2,12 +2,12 @@
 
 .blog-details .article-content .embed-share-section {
     display: grid;
-    gap: 0.5rem;
-    margin-top: 0.55rem;
+    gap: 0.65rem;
+    margin-top: 0.85rem;
 }
 
 .blog-details .article-content > .meta-bottom.article-share-panel-linked + .embed-share-section {
-    margin-top: 0.55rem;
+    margin-top: 0.85rem;
 }
 
 .blog-details .article-content .embed-share-divider {

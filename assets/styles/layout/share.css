@@ -402,7 +402,7 @@ body[class*="-share-lock"] {
 
 .blog-details .article-content .article-share-panel-linked {
     margin-top: 0 !important;
-    padding-top: 0.35rem !important;
+    padding-top: 0.5rem !important;
 }
 
 .blog-details .article-content .share-actions {
