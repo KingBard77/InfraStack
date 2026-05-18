@@ -1,0 +1,24 @@
+# meta.yml
+
+title: Physical Server Architecture
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "May. 14th, 2026"
+comments: Interactive tool
+category_label: Infrastructure
+group: infrastructure
+family: architecture
+reading_time: 4 min read
+summary: Generate on-prem physical server architecture diagrams from a prompt, preset, editable controls, and restorable JSON state.
+intro: >-
+    Turn a physical server brief into an on-prem infrastructure workspace for racks, hypervisor nodes, storage, switching, and operations planning.
+    Map users, gateway, firewall, core switching, compute cluster, virtualization, Synology or shared storage, segmented VLANs, monitoring, backup, and facility foundations.
+    Refine live controls, adjust the stage, inspect inventory and review notes, then export the diagram state for handoff or comparison.
+tags:
+    - Infrastructure
+    - Physical Server
+    - On-Premises
+    - Hypervisor
+    - Storage
+    - Architecture

@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: Build chmod modes from permission bits, symbolic operations, special flags, and umask previews with copy-ready command output.
+card_gradient_start: "#0F766E"
+card_gradient_end: "#14B8A6"
+card_text_color: "#FFFFFF"
+card_kicker: "Shell"
+card_image_title: "Chmod Command Generator"
+card_icon_class: "bi bi-shield-lock"
+card_icon_animation: "random"
+card_image: null

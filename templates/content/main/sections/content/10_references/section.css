@@ -1,0 +1,100 @@
+.markdown-content .__PREFIX__-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 0 12px;
+    border-bottom: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.52);
+}
+
+.markdown-content .__PREFIX__-section-heading i {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: var(--tool-accent-pale, #f5f3ff);
+    color: var(--tool-accent-strong, #6d28d9);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--tool-font-size-md, 15px);
+    line-height: 1;
+}
+
+.markdown-content .__PREFIX__-section-heading > span {
+    min-width: 0;
+}
+
+.markdown-content > .__PREFIX__-markdown-card-references > h2:first-child {
+    margin: 0 0 18px;
+    color: var(--tool-heading, #1f1433);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-3xl, 20px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.markdown-content .__PREFIX__-citation-link,
+.markdown-content .__PREFIX__-citation-backlink {
+    color: inherit;
+    text-decoration: none;
+}
+
+.markdown-content .__PREFIX__-citation-link:focus,
+.markdown-content .__PREFIX__-citation-link:hover,
+.markdown-content .__PREFIX__-citation-backlink:focus,
+.markdown-content .__PREFIX__-citation-backlink:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.markdown-content .__PREFIX__-citation-inline {
+    color: var(--tool-danger, #b91c1c);
+    font-weight: 800;
+}
+
+.markdown-content > [class*="-markdown-card"] li,
+.markdown-content > [class*="-markdown-card"] li p {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
+}
+
+.markdown-content > .__PREFIX__-markdown-card-references .__PREFIX__-citation-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.markdown-content > .__PREFIX__-markdown-card-references .__PREFIX__-citation-table thead th:first-child,
+.markdown-content > .__PREFIX__-markdown-card-references .__PREFIX__-citation-table tbody td:first-child {
+    width: 18%;
+}
+
+.markdown-content > .__PREFIX__-markdown-card-references .__PREFIX__-citation-table thead th:nth-child(2),
+.markdown-content > .__PREFIX__-markdown-card-references .__PREFIX__-citation-table tbody td:nth-child(2) {
+    width: 24%;
+}
+
+.markdown-content > .__PREFIX__-markdown-card-references .__PREFIX__-citation-table a:not(.__PREFIX__-citation-backlink) {
+    color: var(--tool-accent-deep, #5b21b6);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.markdown-content > .__PREFIX__-markdown-card-references tr:target {
+    outline: 3px solid rgba(var(--tool-accent-rgb, 124, 58, 237), 0.24);
+    outline-offset: -3px;
+}
+
+@media (max-width: 767.98px) {
+    .markdown-content > .__PREFIX__-markdown-card-references .__PREFIX__-citation-table {
+        table-layout: auto;
+    }
+}

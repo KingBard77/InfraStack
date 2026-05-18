@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture Sort Card Demo</title>
+  <style>
+:root { --default-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f8fafc; font-family: var(--default-font); color: #111827; }
+.demo-shell { width: min(1180px, calc(100% - 32px)); margin: 40px auto; }
+.demo-title { margin: 0 0 16px; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: 0; }
+.demo-stack { display: grid; gap: 16px; }
+.__TOOL_CLASS__ { color: #111827; }
+  </style>
+  <link rel="stylesheet" href="section.css">
+</head>
+<body>
+  <main class="demo-shell">
+    <h1 class="demo-title">Architecture Sort Card Demo</h1>
+    <div class="__TOOL_CLASS__ demo-stack">
+      <div class="tool-empty-state">Sort and export actions stay unavailable until a diagram is generated.</div>
+
+      <div class="__TOOL_CLASS__bar-shell" data-section="sort-card">
+        <div class="__TOOL_CLASS__bar tool-output-toolbar">
+          <div class="__TOOL_CLASS__bar-main">
+            <label for="__DOM_PREFIX__InventorySort" class="__PREFIX__-sort-label">Sort</label>
+            <div class="__PREFIX__-sort-wrap">
+              <details class="__PREFIX__-sort-select" id="__DOM_PREFIX__InventorySortSelect">
+                <summary class="__PREFIX__-sort-summary">
+                  <span id="__DOM_PREFIX__InventorySortSummary">ID</span>
+                </summary>
+                <div class="__PREFIX__-sort-menu">
+                  <div class="__PREFIX__-sort-grid">
+                    <button type="button" class="__PREFIX__-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
+                    <button type="button" class="__PREFIX__-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
+                    <button type="button" class="__PREFIX__-sort-option" data-sort-value="component" aria-pressed="false">Component</button>
+                    <button type="button" class="__PREFIX__-sort-option" data-sort-value="placement" aria-pressed="false">Placement</button>
+                    <button type="button" class="__PREFIX__-sort-option" data-sort-value="purpose" aria-pressed="false">Purpose</button>
+                  </div>
+                </div>
+              </details>
+              <input type="hidden" id="__DOM_PREFIX__InventorySort" value="id">
+            </div>
+          </div>
+
+          <div class="tool-output-actions">
+            <button type="button" class="tool-action-btn tool-action-btn-secondary" id="__DOM_PREFIX__ExportPng"><i class="bi bi-image" aria-hidden="true"></i><span data-button-label>Export PNG</span></button>
+            <button type="button" class="tool-action-btn tool-action-btn-secondary" id="__DOM_PREFIX__DownloadSvg"><i class="bi bi-download" aria-hidden="true"></i><span data-button-label>Download SVG</span></button>
+            <button type="button" class="tool-action-btn tool-action-btn-secondary" id="__DOM_PREFIX__CopyJson"><i class="bi bi-clipboard" aria-hidden="true"></i><span data-button-label>Copy JSON</span></button>
+            <button type="button" class="tool-action-btn tool-action-btn-secondary" id="__DOM_PREFIX__DownloadJson"><i class="bi bi-download" aria-hidden="true"></i><span data-button-label>Download JSON</span></button>
+            <button type="button" class="tool-action-btn tool-action-btn-ghost" id="__DOM_PREFIX__ImportJsonButton"><i class="bi bi-upload" aria-hidden="true"></i><span data-button-label>Import JSON</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scanning Selected Item Slot</title>
+  <link rel="stylesheet" href="section.css">
+</head>
+<body>
+  <main class="demo-shell">
+    <h1>Selected Item</h1>
+    <p>Optional selected-item inspector slot. The family keeps this empty unless the workspace supports selected objects, artifacts, rows, or editable detail panes.</p>
+    <section class="__TOOL_CLASS__">
+      <div class="tool-box">
+        <div class="__PREFIX__-section-card tool-result-section-card">
+          <h2 class="__PREFIX__-section-title tool-result-section-title">Reference Selected Finding</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td><strong>ID</strong></td>
+                <td>WS-002</td>
+              </tr>
+              <tr>
+                <td><strong>Finding</strong></td>
+                <td>Content-Security-Policy is present but allows inline scripts.</td>
+              </tr>
+              <tr>
+                <td><strong>Evidence</strong></td>
+                <td>content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline'</td>
+              </tr>
+              <tr>
+                <td><strong>Next action</strong></td>
+                <td>Move inline behavior to hashed or nonce-based script execution.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="section.js"></script>
+</body>
+</html>

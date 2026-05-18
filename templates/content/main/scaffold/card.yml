@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: __CARD_SUMMARY__
+card_gradient_start: "__GRADIENT_START__"
+card_gradient_end: "__GRADIENT_END__"
+card_text_color: "#FFFFFF"
+card_kicker: "__CATEGORY_LABEL__"
+card_image_title: "__TOOL_TITLE__"
+card_icon_class: "bi bi-diagram-3"
+card_icon_animation: "random"
+card_image: null

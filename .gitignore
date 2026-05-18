@@ -17,10 +17,12 @@
 ###> symfony/asset-mapper ###
 /public/assets/
 /assets/vendor/
+/public/snapshot/
 ###< symfony/asset-mapper ###
 
 ###> local ###
 .DS_Store
+.playwright-mcp/
 .idea/
 .vscode/
 *.swp
@@ -34,11 +36,24 @@
 .env.test
 ###< env ###
 
+###> dependencies ###
+/node_modules/
+###< dependencies ###
+
+###> compose ###
+/compose.yaml
+/compose.override.yaml
+###< compose ###
+
 ###> codex ###
 /codex/
 ###< codex ###
 
+###> validation ###
+/validation/
+###< validation ###
+
 ###> script ###
 setup.sh
 deployer.sh
-###> script ###
+###< script ###

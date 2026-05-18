@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: Generate IBM Cloud VPC diagrams from a prompt, then refine zones, subnet tiers, ingress, services, security, and exports.
+card_gradient_start: "#2563EB"
+card_gradient_end: "#0F766E"
+card_text_color: "#FFFFFF"
+card_kicker: "IBM Cloud"
+card_image_title: "IBM Cloud Architecture"
+card_icon_class: "bi bi-cloud"
+card_icon_animation: "pulse"
+card_image: null

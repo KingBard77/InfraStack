@@ -1,0 +1,342 @@
+{# tool.html.twig #}
+
+{# ns:start family.assessment.workspace.01_input-brief #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.assessment.workspace.01_input-brief #}
+{# ns:start family.assessment.workspace.02_basic-settings #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.assessment.workspace.02_basic-settings #}
+{# ns:start family.assessment.workspace.03_advanced-settings #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.assessment.workspace.03_advanced-settings #}
+{# ns:start family.assessment.workspace.04_selected-item #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.assessment.workspace.04_selected-item #}
+{# ns:start family.assessment.workspace.05_result-summary #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.assessment.workspace.05_result-summary #}
+{# ns:start family.assessment.workspace.06_result-view #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.assessment.workspace.06_result-view #}
+{# ns:start family.assessment.workspace.07_table-export #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.assessment.workspace.07_table-export #}
+{# ns:start family.assessment.workspace.08_json-restore #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.assessment.workspace.08_json-restore #}
+
+<div class="tool-box mb-4">
+  <form class="assess-ubuntu-2204-cis-form" id="assessUbuntu2204CisForm">
+    <div class="assess-ubuntu-2204-cis-main-row">
+      <label for="assessUbuntu2204CisQuery" class="assess-ubuntu-2204-cis-main-label">
+        Control filter:
+        <span class="info-dot" title="Filter by control ID, title, section path, or script name">i</span>
+      </label>
+
+      <div class="assess-ubuntu-2204-cis-main-input-grid">
+        <input
+          type="text"
+          id="assessUbuntu2204CisQuery"
+          class="form-control"
+          placeholder="1.1.1.1, cramfs, ssh, auditd, pam_unix"
+        >
+
+        <button type="submit" class="btn btn-primary assess-ubuntu-2204-cis-submit-btn" id="assessUbuntu2204CisSubmit">Explore</button>
+      </div>
+    </div>
+
+    <div class="assess-ubuntu-2204-cis-basic-panel">
+      <div class="assess-ubuntu-2204-cis-inner-panel">
+        <div class="assess-ubuntu-2204-cis-setting-row">
+          <label for="assessUbuntu2204CisFamily" class="assess-ubuntu-2204-cis-setting-label">
+            Top-level section:
+            <span class="info-dot" title="Narrow the benchmark to one family such as initial, firewall, or access control">i</span>
+          </label>
+
+          <div class="assess-ubuntu-2204-cis-setting-field">
+            <div class="assess-ubuntu-2204-cis-select-tools">
+              <button type="button" class="assess-ubuntu-2204-cis-select-mini-btn" id="assessUbuntu2204CisFamilyReset">All sections</button>
+            </div>
+
+            <details class="assess-ubuntu-2204-cis-select" id="assessUbuntu2204CisFamilySelect">
+              <summary class="assess-ubuntu-2204-cis-select-summary">
+                <span id="assessUbuntu2204CisFamilySummary">All sections</span>
+              </summary>
+
+              <div class="assess-ubuntu-2204-cis-select-body">
+                <div class="assess-ubuntu-2204-cis-select-grid" id="assessUbuntu2204CisFamilyOptions"></div>
+              </div>
+            </details>
+
+            <input type="hidden" id="assessUbuntu2204CisFamily" value="all">
+          </div>
+        </div>
+
+        <div class="assess-ubuntu-2204-cis-setting-row">
+          <label for="assessUbuntu2204CisSectionPath" class="assess-ubuntu-2204-cis-setting-label">
+            Section path:
+            <span class="info-dot" title="Choose a benchmark path or keep the whole current family in scope">i</span>
+          </label>
+
+          <div class="assess-ubuntu-2204-cis-setting-field">
+            <div class="assess-ubuntu-2204-cis-select-tools">
+              <button type="button" class="assess-ubuntu-2204-cis-select-mini-btn" id="assessUbuntu2204CisSectionReset">All paths</button>
+            </div>
+
+            <details class="assess-ubuntu-2204-cis-select" id="assessUbuntu2204CisSectionSelect">
+              <summary class="assess-ubuntu-2204-cis-select-summary">
+                <span id="assessUbuntu2204CisSectionSummary">All paths</span>
+              </summary>
+
+              <div class="assess-ubuntu-2204-cis-select-body assess-ubuntu-2204-cis-select-body-scroll">
+                <div class="assess-ubuntu-2204-cis-select-grid" id="assessUbuntu2204CisSectionOptions"></div>
+              </div>
+            </details>
+
+            <input type="hidden" id="assessUbuntu2204CisSectionPath" value="all">
+          </div>
+        </div>
+
+        <div class="assess-ubuntu-2204-cis-setting-row">
+          <label for="assessUbuntu2204CisCriticality" class="assess-ubuntu-2204-cis-setting-label">
+            Criticality:
+            <span class="info-dot" title="Filter controls by declared benchmark criticality or missing metadata">i</span>
+          </label>
+
+          <div class="assess-ubuntu-2204-cis-setting-field">
+            <details class="assess-ubuntu-2204-cis-select" id="assessUbuntu2204CisCriticalitySelect">
+              <summary class="assess-ubuntu-2204-cis-select-summary">
+                <span id="assessUbuntu2204CisCriticalitySummary">All criticality</span>
+              </summary>
+
+              <div class="assess-ubuntu-2204-cis-select-body">
+                <div class="assess-ubuntu-2204-cis-select-grid" id="assessUbuntu2204CisCriticalityOptions"></div>
+              </div>
+            </details>
+
+            <input type="hidden" id="assessUbuntu2204CisCriticality" value="all">
+          </div>
+        </div>
+
+        <div class="assess-ubuntu-2204-cis-setting-row">
+          <label for="assessUbuntu2204CisSelectedControl" class="assess-ubuntu-2204-cis-setting-label">
+            Script source:
+            <span class="info-dot" title="Pick the exact CIS control script to inspect and copy">i</span>
+          </label>
+
+          <div class="assess-ubuntu-2204-cis-setting-field">
+            <div class="assess-ubuntu-2204-cis-select-tools">
+              <button type="button" class="assess-ubuntu-2204-cis-select-mini-btn" id="assessUbuntu2204CisControlReset">First match</button>
+            </div>
+
+            <details class="assess-ubuntu-2204-cis-select" id="assessUbuntu2204CisControlSelect">
+              <summary class="assess-ubuntu-2204-cis-select-summary">
+                <span id="assessUbuntu2204CisControlSummary">First matched script</span>
+              </summary>
+
+              <div class="assess-ubuntu-2204-cis-select-body assess-ubuntu-2204-cis-select-body-scroll">
+                <div class="assess-ubuntu-2204-cis-select-grid" id="assessUbuntu2204CisControlOptions"></div>
+              </div>
+            </details>
+
+            <input type="hidden" id="assessUbuntu2204CisSelectedControl" value="">
+          </div>
+        </div>
+
+        <div class="assess-ubuntu-2204-cis-setting-row">
+          <label class="assess-ubuntu-2204-cis-setting-label">
+            Criticality map:
+            <span class="info-dot" title="This reflects the metadata declared in the copied benchmark scripts under assets/bin">i</span>
+          </label>
+
+          <div class="assess-ubuntu-2204-cis-setting-field">
+            <div class="assess-ubuntu-2204-cis-criticality-row" id="assessUbuntu2204CisCriticalityRow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <details class="assess-ubuntu-2204-cis-advanced">
+      <summary class="assess-ubuntu-2204-cis-advanced-summary">
+        <span>Advanced</span>
+      </summary>
+
+      <div class="assess-ubuntu-2204-cis-advanced-body">
+        <div class="assess-ubuntu-2204-cis-inner-panel">
+          <div class="assess-ubuntu-2204-cis-setting-row">
+            <label for="assessUbuntu2204CisRowLimit" class="assess-ubuntu-2204-cis-setting-label">
+              Visible rows:
+              <span class="info-dot" title="Limit the controls table while keeping the selected script available">i</span>
+            </label>
+
+            <div class="assess-ubuntu-2204-cis-setting-field">
+              <details class="assess-ubuntu-2204-cis-select" id="assessUbuntu2204CisRowLimitSelect">
+                <summary class="assess-ubuntu-2204-cis-select-summary">
+                  <span id="assessUbuntu2204CisRowLimitSummary">50 rows</span>
+                </summary>
+
+                <div class="assess-ubuntu-2204-cis-select-body">
+                  <div class="assess-ubuntu-2204-cis-select-grid assess-ubuntu-2204-cis-select-grid-two" id="assessUbuntu2204CisRowLimitOptions"></div>
+                </div>
+              </details>
+
+              <input type="hidden" id="assessUbuntu2204CisRowLimit" value="50">
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </form>
+
+  <div class="assess-ubuntu-2204-cis-result-panel" id="assessUbuntu2204CisResultPanel">
+    <div class="assess-ubuntu-2204-cis-result-empty" id="assessUbuntu2204CisResultEmpty">Run Explore to review matching controls, section rollups, the selected script, and exportable JSON.</div>
+
+    <div class="assess-ubuntu-2204-cis-result-error d-none" id="assessUbuntu2204CisResultError"></div>
+
+    <div class="assess-ubuntu-2204-cis-result-content d-none" id="assessUbuntu2204CisResultContent">
+      <div class="assess-ubuntu-2204-cis-output-shell">
+        <div class="assess-ubuntu-2204-cis-result-summary" id="assessUbuntu2204CisResultSummary"></div>
+
+        <div class="assess-ubuntu-2204-cis-toolbar-shell">
+          <div class="assess-ubuntu-2204-cis-toolbar tool-result-toolbar">
+            <div class="assess-ubuntu-2204-cis-toolbar-left tool-result-toolbar-main">
+              <div class="assess-ubuntu-2204-cis-sort-shell">
+                <label for="assessUbuntu2204CisSort" class="assess-ubuntu-2204-cis-sort-label">Sort</label>
+                <div class="assess-ubuntu-2204-cis-sort-wrap">
+                  <details class="assess-ubuntu-2204-cis-sort-select" id="assessUbuntu2204CisSortSelect">
+                    <summary class="assess-ubuntu-2204-cis-sort-summary">
+                      <span id="assessUbuntu2204CisSortSummary">ID</span>
+                    </summary>
+
+                    <div class="assess-ubuntu-2204-cis-sort-menu">
+                      <div class="assess-ubuntu-2204-cis-sort-grid" id="assessUbuntu2204CisSortOptions"></div>
+                    </div>
+                  </details>
+                  <input type="hidden" id="assessUbuntu2204CisSort" value="id">
+                </div>
+              </div>
+
+              <div class="assess-ubuntu-2204-cis-toolbar-meta" id="assessUbuntu2204CisToolbarMeta"></div>
+            </div>
+
+            <div class="assess-ubuntu-2204-cis-toolbar-actions tool-result-toolbar-actions">
+              <button type="button" class="assess-ubuntu-2204-cis-action-btn tool-result-action-btn" id="assessUbuntu2204CisCopyScript" disabled>
+                <i class="bi bi-clipboard" aria-hidden="true"></i>
+                <span data-button-label>Copy script</span>
+              </button>
+              <button type="button" class="assess-ubuntu-2204-cis-action-btn tool-result-action-btn" id="assessUbuntu2204CisDownloadScript" disabled>
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download script</span>
+              </button>
+              <button type="button" class="assess-ubuntu-2204-cis-action-btn tool-result-action-btn" id="assessUbuntu2204CisExportPdf">
+                <i class="bi bi-filetype-pdf" aria-hidden="true"></i>
+                <span data-button-label>Export PDF</span>
+              </button>
+              <button type="button" class="assess-ubuntu-2204-cis-action-btn tool-result-action-btn" id="assessUbuntu2204CisDownloadCsv">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download CSV</span>
+              </button>
+              <button type="button" class="assess-ubuntu-2204-cis-action-btn tool-result-action-btn" id="assessUbuntu2204CisCopyJson">
+                <i class="bi bi-clipboard" aria-hidden="true"></i>
+                <span data-button-label>Copy JSON</span>
+              </button>
+              <button type="button" class="assess-ubuntu-2204-cis-action-btn tool-result-action-btn" id="assessUbuntu2204CisDownloadJson">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download JSON</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="assess-ubuntu-2204-cis-tabs-shell">
+          <div class="assess-ubuntu-2204-cis-tabs">
+            <div class="assess-ubuntu-2204-cis-tab-list tool-tabs" role="tablist" aria-label="Ubuntu CIS benchmark views">
+              <button type="button" class="tool-tab-btn assess-ubuntu-2204-cis-tab-btn active" id="assessUbuntu2204CisControlsTab" data-tab-target="assessUbuntu2204CisControlsPanel" role="tab" aria-controls="assessUbuntu2204CisControlsPanel" aria-selected="true" tabindex="0">
+                <i class="bi bi-list-check" aria-hidden="true"></i>
+                <span>Controls</span>
+              </button>
+              <button type="button" class="tool-tab-btn assess-ubuntu-2204-cis-tab-btn" id="assessUbuntu2204CisSectionsTab" data-tab-target="assessUbuntu2204CisSectionsPanel" role="tab" aria-controls="assessUbuntu2204CisSectionsPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-diagram-3" aria-hidden="true"></i>
+                <span>Sections</span>
+              </button>
+              <button type="button" class="tool-tab-btn assess-ubuntu-2204-cis-tab-btn" id="assessUbuntu2204CisScriptTab" data-tab-target="assessUbuntu2204CisScriptPanel" role="tab" aria-controls="assessUbuntu2204CisScriptPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-terminal" aria-hidden="true"></i>
+                <span>Script</span>
+              </button>
+              <button type="button" class="tool-tab-btn assess-ubuntu-2204-cis-tab-btn" id="assessUbuntu2204CisJsonTab" data-tab-target="assessUbuntu2204CisJsonPanel" role="tab" aria-controls="assessUbuntu2204CisJsonPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-braces" aria-hidden="true"></i>
+                <span>JSON</span>
+              </button>
+            </div>
+
+            <div class="tool-tab-panel assess-ubuntu-2204-cis-tab-panel active" id="assessUbuntu2204CisControlsPanel" role="tabpanel" aria-labelledby="assessUbuntu2204CisControlsTab">
+              <section class="assess-ubuntu-2204-cis-section-card assess-ubuntu-2204-cis-table-card">
+                <h3 class="assess-ubuntu-2204-cis-section-title">Controls</h3>
+
+                <div class="assess-ubuntu-2204-cis-table-wrap tool-result-table-wrap">
+                  <table class="table assess-ubuntu-2204-cis-table assess-ubuntu-2204-cis-controls-table mb-0 tool-result-table">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-index tool-generated-rownum-head">#</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-id">Control</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-title">Title</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-section">Section</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-criticality">Criticality</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-script">Script</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-copy">Copy</th>
+                      </tr>
+                    </thead>
+                    <tbody id="assessUbuntu2204CisControlsTableBody"></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+
+            <div class="tool-tab-panel assess-ubuntu-2204-cis-tab-panel" id="assessUbuntu2204CisSectionsPanel" role="tabpanel" aria-labelledby="assessUbuntu2204CisSectionsTab" hidden>
+              <section class="assess-ubuntu-2204-cis-section-card assess-ubuntu-2204-cis-table-card">
+                <h3 class="assess-ubuntu-2204-cis-section-title">Sections</h3>
+
+                <div class="assess-ubuntu-2204-cis-table-wrap assess-ubuntu-2204-cis-table-wrap-compact tool-result-table-wrap">
+                  <table class="table assess-ubuntu-2204-cis-table assess-ubuntu-2204-cis-sections-table mb-0 tool-result-table tool-result-table--compact">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-index tool-generated-rownum-head">#</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-path">Section path</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-depth">Depth</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-controls">Controls</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-children">Children</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-range">Range</th>
+                      </tr>
+                    </thead>
+                    <tbody id="assessUbuntu2204CisSectionsTableBody"></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+
+            <div class="tool-tab-panel assess-ubuntu-2204-cis-tab-panel" id="assessUbuntu2204CisScriptPanel" role="tabpanel" aria-labelledby="assessUbuntu2204CisScriptTab" hidden>
+              <section class="assess-ubuntu-2204-cis-section-card">
+                <h3 class="assess-ubuntu-2204-cis-section-title">Selected Script</h3>
+
+                <div class="assess-ubuntu-2204-cis-script-meta" id="assessUbuntu2204CisScriptMeta"></div>
+
+                <div class="assess-ubuntu-2204-cis-script-shell">
+                  <pre class="assess-ubuntu-2204-cis-script-pre"><code id="assessUbuntu2204CisScriptOutput"></code></pre>
+                </div>
+              </section>
+            </div>
+
+            <div class="tool-tab-panel assess-ubuntu-2204-cis-tab-panel" id="assessUbuntu2204CisJsonPanel" role="tabpanel" aria-labelledby="assessUbuntu2204CisJsonTab" hidden>
+              <div class="assess-ubuntu-2204-cis-json-shell tool-json-panel">
+                <div class="assess-ubuntu-2204-cis-json-head tool-json-head">
+                  <span class="assess-ubuntu-2204-cis-json-title tool-json-title">JSON Output</span>
+                </div>
+                <pre class="assess-ubuntu-2204-cis-json-pre tool-json-output"><code id="assessUbuntu2204CisJsonOutput"></code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

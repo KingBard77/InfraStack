@@ -14,7 +14,9 @@
                 tag: tag.name,
                 q: search_query|default(''),
                 sort: sort|default('newest'),
-                category: category_filter|default('')
+                group: group_filter|default(''),
+                category: category_filter|default(''),
+                family: family_filter|default('')
               }) }}"
               class="tag-chip {{ tag_filter|default('') == tag.name ? 'active' : '' }}"
             >

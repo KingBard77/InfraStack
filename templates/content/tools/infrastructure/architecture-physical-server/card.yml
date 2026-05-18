@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: Generate on-prem physical server diagrams from plain-English briefs, then refine compute, storage, network, backup, and exports with live controls.
+card_gradient_start: "#06B6D4"
+card_gradient_end: "#10B981"
+card_text_color: "#FFFFFF"
+card_kicker: "Infrastructure"
+card_image_title: "Physical Server Architecture"
+card_icon_class: "bi bi-hdd-rack"
+card_icon_animation: "random"
+card_image: null

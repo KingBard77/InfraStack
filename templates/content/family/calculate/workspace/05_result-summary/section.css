@@ -1,0 +1,63 @@
+/* section.css */
+.__PREFIX__-form,
+.__PREFIX__-basic-panel,
+.__PREFIX__-advanced-body,
+.__PREFIX__-field-stack,
+.__PREFIX__-inline-grid,
+.__PREFIX__-card-grid,
+.__PREFIX__-basis-grid,
+.__PREFIX__-toggle-grid,
+.__PREFIX__-service-grid,
+.__PREFIX__-override-grid,
+.__PREFIX__-stat-grid,
+.__PREFIX__-recommendation-grid,
+.__PREFIX__-method-grid,
+.__PREFIX__-result-panel,
+.__PREFIX__-result-content,
+.__PREFIX__-result-summary,
+.__TOOL_CLASS__bar-left,
+.__TOOL_CLASS__bar-actions,
+.__PREFIX__-tab-panel {
+    display: grid;
+    gap: 16px;
+}
+
+.__PREFIX__-form,
+.__PREFIX__-setting-field,
+.__PREFIX__-field-stack,
+.__PREFIX__-inline-grid,
+.__PREFIX__-card-grid,
+.__PREFIX__-basis-grid,
+.__PREFIX__-toggle-grid,
+.__PREFIX__-service-grid,
+.__PREFIX__-override-grid,
+.__PREFIX__-stat-grid,
+.__PREFIX__-recommendation-grid,
+.__PREFIX__-method-grid,
+.__PREFIX__-result-panel,
+.__PREFIX__-result-content,
+.__PREFIX__-result-summary,
+.__TOOL_CLASS__bar-shell,
+.__TOOL_CLASS__bar.tool-result-toolbar,
+.__TOOL_CLASS__bar-left,
+.__TOOL_CLASS__bar-actions,
+.__PREFIX__-tabs,
+.__PREFIX__-tab-panel,
+.__PREFIX__-section-card.tool-result-section-card,
+.__PREFIX__-json-wrap.tool-json-panel {
+    min-width: 0;
+}
+
+.__PREFIX__-result-empty,
+.__PREFIX__-result-error {
+    padding: 18px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.__PREFIX__-result-empty {
+    border: 1px dashed #f2c7a4;
+    background: linear-gradient(180deg, #fffaf5 0%, #fff5ec 100%);
+    color: var(--__PREFIX__-text);
+}

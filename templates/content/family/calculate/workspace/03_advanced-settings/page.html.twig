@@ -1,0 +1,614 @@
+{# Source section: 03_advanced-settings #}
+        <div class="__PREFIX__-service-grid">
+          <section class="__PREFIX__-service-card" data-service-card="ec2">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">EC2 Compute</h3>
+                <p class="__PREFIX__-service-copy">Instance count, runtime, and purchase model.</p>
+              </div>
+
+              <label class="switch __PREFIX__-switch-wrap">
+                <input type="checkbox" id="__DOM_PREFIX__IncludeEc2" checked>
+                <span class="slider"></span>
+                <span class="__PREFIX__-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="__PREFIX__-service-body" id="__DOM_PREFIX__Ec2Body">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__Ec2Instance" class="__PREFIX__-field-label">Instance type</label>
+                  <details class="__PREFIX__-select" id="__DOM_PREFIX__Ec2InstanceSelect">
+                    <summary class="__PREFIX__-select-summary">
+                      <span id="__DOM_PREFIX__Ec2InstanceSummary">t4g.medium • 2 vCPU • 4 GiB</span>
+                    </summary>
+
+                    <div class="__PREFIX__-select-body">
+                      <div class="__PREFIX__-select-grid __PREFIX__-select-grid-list">
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="t4g.micro">
+                          <span class="__PREFIX__-select-title">t4g.micro • 2 vCPU • 1 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="t4g.small">
+                          <span class="__PREFIX__-select-title">t4g.small • 2 vCPU • 2 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="t4g.medium" checked>
+                          <span class="__PREFIX__-select-title">t4g.medium • 2 vCPU • 4 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="t4g.large">
+                          <span class="__PREFIX__-select-title">t4g.large • 2 vCPU • 8 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="t4g.xlarge">
+                          <span class="__PREFIX__-select-title">t4g.xlarge • 4 vCPU • 16 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="t3.micro">
+                          <span class="__PREFIX__-select-title">t3.micro • 2 vCPU • 1 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="t3.small">
+                          <span class="__PREFIX__-select-title">t3.small • 2 vCPU • 2 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="t3.medium">
+                          <span class="__PREFIX__-select-title">t3.medium • 2 vCPU • 4 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="t3.large">
+                          <span class="__PREFIX__-select-title">t3.large • 2 vCPU • 8 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="t3.xlarge">
+                          <span class="__PREFIX__-select-title">t3.xlarge • 4 vCPU • 16 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="c6g.medium">
+                          <span class="__PREFIX__-select-title">c6g.medium • 1 vCPU • 2 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="c6g.large">
+                          <span class="__PREFIX__-select-title">c6g.large • 2 vCPU • 4 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="c7g.medium">
+                          <span class="__PREFIX__-select-title">c7g.medium • 1 vCPU • 2 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="c7g.large">
+                          <span class="__PREFIX__-select-title">c7g.large • 2 vCPU • 4 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="m6g.medium">
+                          <span class="__PREFIX__-select-title">m6g.medium • 1 vCPU • 4 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="m6g.large">
+                          <span class="__PREFIX__-select-title">m6g.large • 2 vCPU • 8 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="m7g.medium">
+                          <span class="__PREFIX__-select-title">m7g.medium • 1 vCPU • 4 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="m7g.large">
+                          <span class="__PREFIX__-select-title">m7g.large • 2 vCPU • 8 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="r6g.medium">
+                          <span class="__PREFIX__-select-title">r6g.medium • 1 vCPU • 8 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="r6g.large">
+                          <span class="__PREFIX__-select-title">r6g.large • 2 vCPU • 16 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="r7g.medium">
+                          <span class="__PREFIX__-select-title">r7g.medium • 1 vCPU • 8 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="r7g.large">
+                          <span class="__PREFIX__-select-title">r7g.large • 2 vCPU • 16 GiB</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2InstanceOption" value="custom">
+                          <span class="__PREFIX__-select-title" id="__DOM_PREFIX__Ec2CustomOptionLabel">Custom size • user defined</span>
+                        </label>
+                      </div>
+                    </div>
+                  </details>
+                  <input type="hidden" id="__DOM_PREFIX__Ec2Instance" value="t4g.medium">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__Ec2Purchase" class="__PREFIX__-field-label">Purchase model</label>
+                  <details class="__PREFIX__-select" id="__DOM_PREFIX__Ec2PurchaseSelect">
+                    <summary class="__PREFIX__-select-summary">
+                      <span id="__DOM_PREFIX__Ec2PurchaseSummary">On-Demand</span>
+                    </summary>
+
+                    <div class="__PREFIX__-select-body">
+                      <div class="__PREFIX__-select-grid __PREFIX__-select-grid-two">
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2PurchaseOption" value="onDemand" checked>
+                          <span class="__PREFIX__-select-title">On-Demand</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2PurchaseOption" value="spot">
+                          <span class="__PREFIX__-select-title">Spot</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2PurchaseOption" value="savings1">
+                          <span class="__PREFIX__-select-title">Savings Plan 1yr</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2PurchaseOption" value="savings3">
+                          <span class="__PREFIX__-select-title">Savings Plan 3yr</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2PurchaseOption" value="reserved1">
+                          <span class="__PREFIX__-select-title">Reserved 1yr</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__Ec2PurchaseOption" value="reserved3">
+                          <span class="__PREFIX__-select-title">Reserved 3yr</span>
+                        </label>
+                      </div>
+                    </div>
+                  </details>
+                  <input type="hidden" id="__DOM_PREFIX__Ec2Purchase" value="onDemand">
+                </div>
+
+                <div class="__PREFIX__-custom-instance-grid __PREFIX__-card-span-two d-none" id="__DOM_PREFIX__Ec2CustomFields">
+                  <div class="__PREFIX__-field-stack">
+                    <label for="__DOM_PREFIX__Ec2CustomLabel" class="__PREFIX__-field-label">Custom profile label</label>
+                    <input
+                      type="text"
+                      id="__DOM_PREFIX__Ec2CustomLabel"
+                      class="form-control"
+                      placeholder="Custom instance profile"
+                      value=""
+                    >
+                  </div>
+
+                  <div class="__PREFIX__-field-stack">
+                    <label for="__DOM_PREFIX__Ec2CustomVcpu" class="__PREFIX__-field-label">Custom vCPU</label>
+                    <input
+                      type="number"
+                      id="__DOM_PREFIX__Ec2CustomVcpu"
+                      class="form-control"
+                      min="1"
+                      step="1"
+                      value="4"
+                    >
+                  </div>
+
+                  <div class="__PREFIX__-field-stack">
+                    <label for="__DOM_PREFIX__Ec2CustomMemoryGiB" class="__PREFIX__-field-label">Custom memory GiB</label>
+                    <input
+                      type="number"
+                      id="__DOM_PREFIX__Ec2CustomMemoryGiB"
+                      class="form-control"
+                      min="1"
+                      step="0.5"
+                      value="16"
+                    >
+                  </div>
+                </div>
+
+                <p class="__PREFIX__-field-hint __PREFIX__-card-span-two d-none" id="__DOM_PREFIX__Ec2CustomHint">Custom size uses the EC2 hourly override in Advanced. Set the custom vCPU and memory here, then price it with the override field.</p>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__Ec2Count" class="__PREFIX__-field-label">Instance count</label>
+                  <input type="number" id="__DOM_PREFIX__Ec2Count" class="form-control" min="0" step="1" value="2">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__Ec2Hours" class="__PREFIX__-field-label">Monthly hours</label>
+                  <input type="number" id="__DOM_PREFIX__Ec2Hours" class="form-control" min="0" max="744" step="1" value="730">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="__PREFIX__-service-card" data-service-card="ebs">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">EBS Storage</h3>
+                <p class="__PREFIX__-service-copy">gp3 capacity plus optional IOPS and throughput.</p>
+              </div>
+
+              <label class="switch __PREFIX__-switch-wrap">
+                <input type="checkbox" id="__DOM_PREFIX__IncludeEbs" checked>
+                <span class="slider"></span>
+                <span class="__PREFIX__-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="__PREFIX__-service-body" id="__DOM_PREFIX__EbsBody">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__EbsStorageGb" class="__PREFIX__-field-label">Storage GB</label>
+                  <input type="number" id="__DOM_PREFIX__EbsStorageGb" class="form-control" min="0" step="1" value="160">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__EbsIops" class="__PREFIX__-field-label">Provisioned IOPS</label>
+                  <input type="number" id="__DOM_PREFIX__EbsIops" class="form-control" min="0" step="100" value="3000">
+                </div>
+
+                <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                  <label for="__DOM_PREFIX__EbsThroughput" class="__PREFIX__-field-label">Throughput MB/s</label>
+                  <input type="number" id="__DOM_PREFIX__EbsThroughput" class="form-control" min="0" step="1" value="125">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="__PREFIX__-service-card" data-service-card="s3">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">S3 Storage</h3>
+                <p class="__PREFIX__-service-copy">Object storage, request volume, and outbound transfer.</p>
+              </div>
+
+              <label class="switch __PREFIX__-switch-wrap">
+                <input type="checkbox" id="__DOM_PREFIX__IncludeS3" checked>
+                <span class="slider"></span>
+                <span class="__PREFIX__-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="__PREFIX__-service-body" id="__DOM_PREFIX__S3Body">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__S3StorageGb" class="__PREFIX__-field-label">Storage GB</label>
+                  <input type="number" id="__DOM_PREFIX__S3StorageGb" class="form-control" min="0" step="1" value="250">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__S3EgressGb" class="__PREFIX__-field-label">Transfer out GB</label>
+                  <input type="number" id="__DOM_PREFIX__S3EgressGb" class="form-control" min="0" step="1" value="180">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__S3GetRequestsK" class="__PREFIX__-field-label">GET requests (1k)</label>
+                  <input type="number" id="__DOM_PREFIX__S3GetRequestsK" class="form-control" min="0" step="1" value="2200">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__S3PutRequestsK" class="__PREFIX__-field-label">PUT/LIST requests (1k)</label>
+                  <input type="number" id="__DOM_PREFIX__S3PutRequestsK" class="form-control" min="0" step="1" value="120">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="__PREFIX__-service-card" data-service-card="lambda">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">Lambda</h3>
+                <p class="__PREFIX__-service-copy">Requests, duration, and memory drive the bill.</p>
+              </div>
+
+              <label class="switch __PREFIX__-switch-wrap">
+                <input type="checkbox" id="__DOM_PREFIX__IncludeLambda" checked>
+                <span class="slider"></span>
+                <span class="__PREFIX__-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="__PREFIX__-service-body" id="__DOM_PREFIX__LambdaBody">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__LambdaRequestsMillion" class="__PREFIX__-field-label">Requests (million)</label>
+                  <input type="number" id="__DOM_PREFIX__LambdaRequestsMillion" class="form-control" min="0" step="0.1" value="1.2">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__LambdaDurationMs" class="__PREFIX__-field-label">Avg duration ms</label>
+                  <input type="number" id="__DOM_PREFIX__LambdaDurationMs" class="form-control" min="0" step="1" value="140">
+                </div>
+
+                <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                  <label for="__DOM_PREFIX__LambdaMemoryMb" class="__PREFIX__-field-label">Memory MB</label>
+                  <input type="number" id="__DOM_PREFIX__LambdaMemoryMb" class="form-control" min="128" step="128" value="512">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="__PREFIX__-service-card" data-service-card="api">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">API Gateway</h3>
+                <p class="__PREFIX__-service-copy">HTTP and REST requests with response egress.</p>
+              </div>
+
+              <label class="switch __PREFIX__-switch-wrap">
+                <input type="checkbox" id="__DOM_PREFIX__IncludeApi" checked>
+                <span class="slider"></span>
+                <span class="__PREFIX__-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="__PREFIX__-service-body" id="__DOM_PREFIX__ApiBody">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__ApiType" class="__PREFIX__-field-label">API type</label>
+                  <details class="__PREFIX__-select" id="__DOM_PREFIX__ApiTypeSelect">
+                    <summary class="__PREFIX__-select-summary">
+                      <span id="__DOM_PREFIX__ApiTypeSummary">HTTP API</span>
+                    </summary>
+
+                    <div class="__PREFIX__-select-body">
+                      <div class="__PREFIX__-select-grid __PREFIX__-select-grid-two">
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__ApiTypeOption" value="http" checked>
+                          <span class="__PREFIX__-select-title">HTTP API</span>
+                        </label>
+
+                        <label class="__PREFIX__-select-card">
+                          <input type="radio" name="__DOM_PREFIX__ApiTypeOption" value="rest">
+                          <span class="__PREFIX__-select-title">REST API</span>
+                        </label>
+                      </div>
+                    </div>
+                  </details>
+                  <input type="hidden" id="__DOM_PREFIX__ApiType" value="http">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__ApiRequestsMillion" class="__PREFIX__-field-label">Requests (million)</label>
+                  <input type="number" id="__DOM_PREFIX__ApiRequestsMillion" class="form-control" min="0" step="0.1" value="8">
+                </div>
+
+                <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                  <label for="__DOM_PREFIX__ApiResponseKb" class="__PREFIX__-field-label">Avg response KB</label>
+                  <input type="number" id="__DOM_PREFIX__ApiResponseKb" class="form-control" min="0" step="1" value="32">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="__PREFIX__-service-card" data-service-card="overhead">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">Shared Egress And Overhead</h3>
+                <p class="__PREFIX__-service-copy">Network, support uplift, and blended buffer.</p>
+              </div>
+            </div>
+
+            <div class="__PREFIX__-service-body">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__SharedEgressGb" class="__PREFIX__-field-label">Shared egress GB</label>
+                  <input type="number" id="__DOM_PREFIX__SharedEgressGb" class="form-control" min="0" step="1" value="120">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__SupportPct" class="__PREFIX__-field-label">Support uplift %</label>
+                  <input type="number" id="__DOM_PREFIX__SupportPct" class="form-control" min="0" step="0.1" value="8">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__ContingencyPct" class="__PREFIX__-field-label">Contingency %</label>
+                  <input type="number" id="__DOM_PREFIX__ContingencyPct" class="form-control" min="0" step="0.1" value="10">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_PREFIX__ManualAdjustment" class="__PREFIX__-field-label">Manual adjustment $</label>
+                  <input type="number" id="__DOM_PREFIX__ManualAdjustment" class="form-control" step="0.01" value="0">
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+{# Source section: 03_advanced-settings #}
+    <details class="__PREFIX__-advanced" id="__DOM_PREFIX__Advanced">
+      <summary class="__PREFIX__-advanced-summary">Advanced</summary>
+
+      <div class="__PREFIX__-advanced-body">
+        <div class="__PREFIX__-inner-panel">
+          <div class="__PREFIX__-setting-row">
+            <label class="__PREFIX__-setting-label">
+              Free tier toggles:
+              <span class="info-dot" title="Apply the starter free-tier allowances that most affect this model">i</span>
+            </label>
+
+            <div class="__PREFIX__-setting-field">
+              <div class="__PREFIX__-toggle-grid">
+                <label class="switch __PREFIX__-switch-wrap __PREFIX__-switch-card">
+                  <input type="checkbox" id="__DOM_PREFIX__FreeTierLambda" checked>
+                  <span class="slider"></span>
+                  <span class="__PREFIX__-switch-label">Lambda requests + GB-s</span>
+                </label>
+
+                <label class="switch __PREFIX__-switch-wrap __PREFIX__-switch-card">
+                  <input type="checkbox" id="__DOM_PREFIX__FreeTierApi" checked>
+                  <span class="slider"></span>
+                  <span class="__PREFIX__-switch-label">API Gateway calls</span>
+                </label>
+
+                <label class="switch __PREFIX__-switch-wrap __PREFIX__-switch-card">
+                  <input type="checkbox" id="__DOM_PREFIX__FreeTierEgress" checked>
+                  <span class="slider"></span>
+                  <span class="__PREFIX__-switch-label">Shared 100 GB egress</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="__PREFIX__-setting-row">
+            <label for="__DOM_PREFIX__RegionalUpliftPct" class="__PREFIX__-setting-label">
+              Regional uplift:
+              <span class="info-dot" title="Apply a percentage uplift to starter rates when you want to approximate a pricier region">i</span>
+            </label>
+
+            <div class="__PREFIX__-setting-field">
+              <div class="__PREFIX__-inline-grid __PREFIX__-inline-grid-regional">
+                <div class="__PREFIX__-field-stack __PREFIX__-field-stack-compact">
+                  <input type="number" id="__DOM_PREFIX__RegionalUpliftPct" class="form-control" min="0" step="0.1" value="0">
+                </div>
+                <div class="__PREFIX__-inline-note">Use direct overrides below when you know the real regional rate.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="__PREFIX__-setting-row __PREFIX__-setting-row-stacked">
+            <label class="__PREFIX__-setting-label">
+              Rate overrides:
+              <span class="info-dot" title="Set a value here to override the bundled starter rate for that specific cost component">i</span>
+            </label>
+
+            <div class="__PREFIX__-setting-field">
+              <div class="__PREFIX__-override-grid">
+                <section class="__PREFIX__-override-card __PREFIX__-override-card--single">
+                  <div class="__PREFIX__-override-card-head">
+                    <h4 class="__PREFIX__-override-card-title">EC2</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-card-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_PREFIX__Ec2HourlyOverride" class="__PREFIX__-field-label">Hourly rate</label>
+                      <input type="number" id="__DOM_PREFIX__Ec2HourlyOverride" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="__PREFIX__-override-card">
+                  <div class="__PREFIX__-override-card-head">
+                    <h4 class="__PREFIX__-override-card-title">EBS</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-card-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_PREFIX__EbsStorageRate" class="__PREFIX__-field-label">Storage rate</label>
+                      <input type="number" id="__DOM_PREFIX__EbsStorageRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_PREFIX__EbsIopsRate" class="__PREFIX__-field-label">IOPS rate</label>
+                      <input type="number" id="__DOM_PREFIX__EbsIopsRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                      <label for="__DOM_PREFIX__EbsThroughputRate" class="__PREFIX__-field-label">Throughput rate</label>
+                      <input type="number" id="__DOM_PREFIX__EbsThroughputRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="__PREFIX__-override-card">
+                  <div class="__PREFIX__-override-card-head">
+                    <h4 class="__PREFIX__-override-card-title">S3</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-card-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_PREFIX__S3StorageRate" class="__PREFIX__-field-label">Storage rate</label>
+                      <input type="number" id="__DOM_PREFIX__S3StorageRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_PREFIX__S3GetRate" class="__PREFIX__-field-label">GET rate</label>
+                      <input type="number" id="__DOM_PREFIX__S3GetRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                      <label for="__DOM_PREFIX__S3PutRate" class="__PREFIX__-field-label">PUT/LIST rate</label>
+                      <input type="number" id="__DOM_PREFIX__S3PutRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="__PREFIX__-override-card">
+                  <div class="__PREFIX__-override-card-head">
+                    <h4 class="__PREFIX__-override-card-title">Lambda</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-card-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_PREFIX__LambdaRequestRate" class="__PREFIX__-field-label">Request rate</label>
+                      <input type="number" id="__DOM_PREFIX__LambdaRequestRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_PREFIX__LambdaGbSecondRate" class="__PREFIX__-field-label">Compute rate</label>
+                      <input type="number" id="__DOM_PREFIX__LambdaGbSecondRate" class="form-control" min="0" step="0.0000000001" value="">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="__PREFIX__-override-card">
+                  <div class="__PREFIX__-override-card-head">
+                    <h4 class="__PREFIX__-override-card-title">API Gateway</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-card-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_PREFIX__ApiHttpFirstRate" class="__PREFIX__-field-label">HTTP first tier</label>
+                      <input type="number" id="__DOM_PREFIX__ApiHttpFirstRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_PREFIX__ApiHttpNextRate" class="__PREFIX__-field-label">HTTP next tier</label>
+                      <input type="number" id="__DOM_PREFIX__ApiHttpNextRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                      <label for="__DOM_PREFIX__ApiRestRate" class="__PREFIX__-field-label">REST rate</label>
+                      <input type="number" id="__DOM_PREFIX__ApiRestRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="__PREFIX__-override-card __PREFIX__-override-card--single">
+                  <div class="__PREFIX__-override-card-head">
+                    <h4 class="__PREFIX__-override-card-title">Network</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-card-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_PREFIX__EgressRate" class="__PREFIX__-field-label">Egress rate</label>
+                      <input type="number" id="__DOM_PREFIX__EgressRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>

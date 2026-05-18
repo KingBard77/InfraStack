@@ -1,0 +1,504 @@
+{# tool.html.twig #}
+
+{% set cronFields = [
+  {
+    key: 'minute',
+    id_suffix: 'Minute',
+    label: 'Minute',
+    info: 'Minute field from 0 to 59',
+    primary_placeholder: '15',
+    secondary_placeholder: '45',
+    raw_placeholder: '*/15 or 0,15,30,45'
+  },
+  {
+    key: 'hour',
+    id_suffix: 'Hour',
+    label: 'Hour',
+    info: 'Hour field from 0 to 23',
+    primary_placeholder: '2',
+    secondary_placeholder: '6',
+    raw_placeholder: '*/2 or 1,5,9,13'
+  },
+  {
+    key: 'day_of_month',
+    id_suffix: 'DayOfMonth',
+    label: 'Day of month',
+    info: 'Day-of-month field from 1 to 31',
+    primary_placeholder: '1',
+    secondary_placeholder: '15',
+    raw_placeholder: '1,15 or 1-7'
+  },
+  {
+    key: 'month',
+    id_suffix: 'Month',
+    label: 'Month',
+    info: 'Month field from 1 to 12 or JAN to DEC',
+    primary_placeholder: 'JAN',
+    secondary_placeholder: 'MAR',
+    raw_placeholder: 'JAN,MAR,JUL or 1-12/3'
+  },
+  {
+    key: 'day_of_week',
+    id_suffix: 'DayOfWeek',
+    label: 'Day of week',
+    info: 'Day-of-week field from 0 to 7 or SUN to SAT',
+    primary_placeholder: 'MON',
+    secondary_placeholder: 'FRI',
+    raw_placeholder: '1-5 or MON,WED,FRI'
+  }
+] %}
+
+<div class="generate-crontab-shell-tool tool-box mb-4" data-tool-slug="generate-crontab-shell" data-tool-category="Shell">
+  {# ns:start family.shell.workspace.01_input-target #}
+  <form class="generate-crontab-shell-form" id="generateCrontabShellForm" aria-label="Crontab command builder">
+    <div class="generate-crontab-shell-main-row">
+      <label for="generateCrontabShellCommand" class="generate-crontab-shell-main-label">
+        Command:
+        <span class="info-dot" title="Enter the command or script you want cron to run">i</span>
+      </label>
+
+      <div class="generate-crontab-shell-main-input-grid">
+        <input
+          type="text"
+          id="generateCrontabShellCommand"
+          class="form-control"
+          placeholder="/usr/bin/php /srv/app/artisan schedule:run"
+          value="/usr/bin/rotate-logs --quiet"
+        >
+
+        <div class="generate-crontab-shell-main-actions">
+          <button type="submit" class="btn btn-primary generate-crontab-shell-submit-btn" id="generateCrontabShellSubmit">Generate</button>
+          <button type="button" class="generate-crontab-shell-secondary-btn generate-crontab-shell-secondary-btn-ghost generate-crontab-shell-reset-btn" id="generateCrontabShellReset">Reset</button>
+        </div>
+      </div>
+    </div>
+
+  {# ns:end family.shell.workspace.01_input-target #}
+    {# ns:start family.shell.workspace.02_basic-setting #}
+    <div class="generate-crontab-shell-basic-panel">
+      <div class="generate-crontab-shell-inner-panel">
+        <div class="generate-crontab-shell-setting-row">
+          <label for="generateCrontabShellPreset" class="generate-crontab-shell-setting-label">
+            Preset:
+            <span class="info-dot" title="Load a schedule pattern for common cron jobs">i</span>
+          </label>
+
+          <div class="generate-crontab-shell-setting-field">
+            <div class="generate-crontab-shell-inline-grid generate-crontab-shell-inline-grid-two">
+              <select id="generateCrontabShellPreset" class="form-select">
+                <option value="daily-midnight" selected>Daily at midnight</option>
+                <option value="every-five-minutes">Every 5 minutes</option>
+                <option value="every-fifteen-minutes">Every 15 minutes</option>
+                <option value="hourly-top">Hourly at minute 0</option>
+                <option value="weekday-morning">Weekdays at 09:30</option>
+                <option value="monthly-first">Monthly on day 1 at 03:00</option>
+                <option value="yearly-first">Yearly on January 1 at 00:00</option>
+                <option value="macro-hourly">Macro @hourly</option>
+                <option value="macro-daily">Macro @daily</option>
+                <option value="macro-weekly">Macro @weekly</option>
+                <option value="macro-reboot">Macro @reboot</option>
+              </select>
+
+              <button type="button" class="generate-crontab-shell-secondary-btn" id="generateCrontabShellApplyPreset">Apply preset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="generate-crontab-shell-setting-row">
+          <label for="generateCrontabShellMacro" class="generate-crontab-shell-setting-label">
+            Schedule mode:
+            <span class="info-dot" title="Macros override the five-field expression with shorthand cron tokens">i</span>
+          </label>
+
+          <div class="generate-crontab-shell-setting-field">
+            <div class="generate-crontab-shell-stacked-grid">
+              <select id="generateCrontabShellMacro" class="form-select">
+                <option value="none" selected>Field expression</option>
+                <option value="@reboot">@reboot</option>
+                <option value="@hourly">@hourly</option>
+                <option value="@daily">@daily</option>
+                <option value="@midnight">@midnight</option>
+                <option value="@weekly">@weekly</option>
+                <option value="@monthly">@monthly</option>
+                <option value="@yearly">@yearly</option>
+                <option value="@annually">@annually</option>
+              </select>
+
+              <div class="generate-crontab-shell-flag-hint" id="generateCrontabShellMacroNote">Field expression mode is active. The generated schedule uses the five timing fields below.</div>
+            </div>
+          </div>
+        </div>
+
+        {% for field in cronFields %}
+          <div class="generate-crontab-shell-setting-row">
+            <label for="generateCrontabShell{{ field.id_suffix }}Kind" class="generate-crontab-shell-setting-label">
+              {{ field.label }}:
+              <span class="info-dot" title="{{ field.info }}">i</span>
+            </label>
+
+            <div class="generate-crontab-shell-setting-field">
+              <div class="generate-crontab-shell-field-card" data-field-key="{{ field.key }}">
+                <div class="generate-crontab-shell-field-topbar">
+                  <div class="generate-crontab-shell-mode-switch" role="group" aria-label="{{ field.label }} editor mode">
+                    <button
+                      type="button"
+                      class="generate-crontab-shell-mode-btn is-active"
+                      data-field-mode="simple"
+                    >
+                      Simple
+                    </button>
+
+                    <button
+                      type="button"
+                      class="generate-crontab-shell-mode-btn"
+                      data-field-mode="advanced"
+                    >
+                      Raw
+                    </button>
+                  </div>
+
+                  <span class="generate-crontab-shell-token-chip" data-field-preview>*</span>
+                </div>
+
+                <div class="generate-crontab-shell-field-panel" data-field-panel="simple">
+                  <div class="generate-crontab-shell-inline-grid generate-crontab-shell-inline-grid-three">
+                    <select id="generateCrontabShell{{ field.id_suffix }}Kind" class="form-select generate-crontab-shell-field-kind">
+                      <option value="every" selected>Every</option>
+                      <option value="value">Value</option>
+                      <option value="every_n">Every n</option>
+                      <option value="range">Range</option>
+                      <option value="list">List</option>
+                    </select>
+
+                    <input
+                      type="text"
+                      id="generateCrontabShell{{ field.id_suffix }}Primary"
+                      class="form-control generate-crontab-shell-field-primary d-none"
+                      placeholder="{{ field.primary_placeholder }}"
+                    >
+
+                    <input
+                      type="text"
+                      id="generateCrontabShell{{ field.id_suffix }}Secondary"
+                      class="form-control generate-crontab-shell-field-secondary d-none"
+                      placeholder="{{ field.secondary_placeholder }}"
+                    >
+                  </div>
+                </div>
+
+                <div class="generate-crontab-shell-field-panel d-none" data-field-panel="advanced">
+                  <input
+                    type="text"
+                    id="generateCrontabShell{{ field.id_suffix }}Raw"
+                    class="form-control generate-crontab-shell-field-raw"
+                    placeholder="{{ field.raw_placeholder }}"
+                  >
+                </div>
+
+                <div class="generate-crontab-shell-field-hint" data-field-hint>Every {{ field.label|lower }}.</div>
+                <div class="generate-crontab-shell-feedback d-none" data-field-feedback></div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {# ns:end family.shell.workspace.02_basic-setting #}
+    {# ns:start family.shell.workspace.03_advanced-setting #}
+    <details class="generate-crontab-shell-advanced">
+      <summary class="generate-crontab-shell-advanced-summary">
+        <span>Custom</span>
+      </summary>
+
+      <div class="generate-crontab-shell-advanced-body">
+        <div class="generate-crontab-shell-inner-panel">
+          <div class="generate-crontab-shell-setting-row">
+            <label for="generateCrontabShellParseInput" class="generate-crontab-shell-setting-label">
+              Parse line:
+              <span class="info-dot" title="Paste a five-field line, a macro line, or a system-style line with a user column">i</span>
+            </label>
+
+            <div class="generate-crontab-shell-setting-field">
+              <div class="generate-crontab-shell-stacked-grid">
+                <textarea
+                  id="generateCrontabShellParseInput"
+                  class="form-control generate-crontab-shell-textarea"
+                  rows="4"
+                  placeholder="0 3 * * 1-5 /usr/local/bin/report --send"
+                ></textarea>
+
+                <div class="generate-crontab-shell-inline-grid generate-crontab-shell-inline-grid-two">
+                  <button type="button" class="generate-crontab-shell-secondary-btn" id="generateCrontabShellParseButton">Parse line</button>
+                  <button type="button" class="generate-crontab-shell-secondary-btn generate-crontab-shell-secondary-btn-ghost" id="generateCrontabShellParseClear">Clear parse</button>
+                </div>
+
+                <div class="generate-crontab-shell-feedback d-none" id="generateCrontabShellParseFeedback"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="generate-crontab-shell-setting-row">
+            <label for="generateCrontabShellUser" class="generate-crontab-shell-setting-label">
+              Metadata:
+              <span class="info-dot" title="Optional metadata is recorded in the result output and JSON export">i</span>
+            </label>
+
+            <div class="generate-crontab-shell-setting-field">
+              <div class="generate-crontab-shell-stacked-grid">
+                <div class="generate-crontab-shell-inline-grid generate-crontab-shell-inline-grid-three">
+                  <input
+                    type="text"
+                    id="generateCrontabShellUser"
+                    class="form-control"
+                    placeholder="System user, for example root"
+                  >
+
+                  <input
+                    type="text"
+                    id="generateCrontabShellMailto"
+                    class="form-control"
+                    placeholder="MAILTO=email@example.com"
+                  >
+
+                  <input
+                    type="text"
+                    id="generateCrontabShellShell"
+                    class="form-control"
+                    placeholder="SHELL=/bin/bash"
+                  >
+                </div>
+
+                <div class="generate-crontab-shell-inline-grid generate-crontab-shell-inline-grid-two">
+                  <input
+                    type="text"
+                    id="generateCrontabShellPath"
+                    class="form-control"
+                    placeholder="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+                  >
+
+                  <input
+                    type="text"
+                    id="generateCrontabShellTimezone"
+                    class="form-control"
+                    placeholder="TZ=UTC"
+                  >
+                </div>
+
+                <input
+                  type="text"
+                  id="generateCrontabShellComment"
+                  class="form-control"
+                  placeholder="Job note or change-ticket reference"
+                >
+
+                <div class="generate-crontab-shell-flag-hint">Optional metadata stays in the result view and exported JSON. It is not inserted into the generated cron line.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </form>
+    {# ns:end family.shell.workspace.03_advanced-setting #}
+
+  {# ns:start family.shell.workspace.04_result-text #}
+  <div class="generate-crontab-shell-result-panel" id="generateCrontabShellResultPanel" aria-label="Command output">
+    <div class="tool-empty-state generate-crontab-shell-result-empty" id="generateCrontabShellResultEmpty">Generate a schedule to inspect the expression, full line, upcoming run preview, warnings, and normalized JSON output.</div>
+
+    <div class="generate-crontab-shell-output-content generate-crontab-shell-result-content d-none" id="generateCrontabShellResultContent">
+      <div class="generate-crontab-shell-output-inner generate-crontab-shell-result-shell">
+  {# ns:end family.shell.workspace.04_result-text #}
+        {# ns:start family.shell.workspace.05_score-card #}
+        <div class="generate-crontab-shell-result-summary" id="generateCrontabShellResultSummary"></div>
+
+        {# ns:end family.shell.workspace.05_score-card #}
+        {# ns:start family.shell.workspace.06_sort-card #}
+        <div class="generate-crontab-shell-toolbar-shell">
+          <div class="generate-crontab-shell-toolbar tool-output-toolbar tool-result-toolbar">
+            <div class="generate-crontab-shell-toolbar-main">
+              <label for="generateCrontabShellSort" class="generate-crontab-shell-sort-label">Sort</label>
+              <div class="generate-crontab-shell-sort-wrap">
+                <details class="generate-crontab-shell-sort-select" id="generateCrontabShellSortSelect">
+                  <summary class="generate-crontab-shell-sort-summary">
+                    <span id="generateCrontabShellSortSummary">ID</span>
+                  </summary>
+
+                  <div class="generate-crontab-shell-sort-menu">
+                    <div class="generate-crontab-shell-sort-grid">
+                      <button type="button" class="generate-crontab-shell-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
+                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
+                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="field" aria-pressed="false">Field</button>
+                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="value" aria-pressed="false">Value</button>
+                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="length" aria-pressed="false">Length</button>
+                    </div>
+                  </div>
+                </details>
+                <input type="hidden" id="generateCrontabShellSort" value="id">
+              </div>
+            </div>
+
+            <div class="tool-output-actions generate-crontab-shell-toolbar-actions tool-result-toolbar-actions">
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-crontab-shell-action-btn tool-result-action-btn" id="generateCrontabShellExportPdf">
+                <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+                <span data-button-label>Export PDF</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-crontab-shell-action-btn tool-result-action-btn" id="generateCrontabShellDownloadCsv">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download CSV</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-crontab-shell-action-btn tool-result-action-btn" id="generateCrontabShellCopyJson">
+                <i class="bi bi-clipboard" aria-hidden="true"></i>
+                <span data-button-label>Copy JSON</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-crontab-shell-action-btn tool-result-action-btn" id="generateCrontabShellDownloadJson">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download JSON</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-ghost generate-crontab-shell-action-btn tool-result-action-btn" id="generateCrontabShellImportJsonButton">
+                <i class="bi bi-upload" aria-hidden="true"></i>
+                <span data-button-label>Import JSON</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {# ns:end family.shell.workspace.06_sort-card #}
+        {# ns:start family.shell.workspace.07_table #}
+        <div class="generate-crontab-shell-tabs-shell">
+          <div class="tool-tabs generate-crontab-shell-tabs" role="tablist" aria-label="crontab command output views">
+            <button type="button" class="tool-tab-btn generate-crontab-shell-tab-btn" id="generateCrontabShellCommandTab" data-tab-target="generateCrontabShellCommandPanel" role="tab" aria-controls="generateCrontabShellCommandPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-terminal" aria-hidden="true"></i>
+              <span>Command</span>
+            </button>
+            <button type="button" class="tool-tab-btn generate-crontab-shell-tab-btn active" id="generateCrontabShellFieldsTab" data-tab-target="generateCrontabShellFieldsPanel" role="tab" aria-controls="generateCrontabShellFieldsPanel" aria-selected="true" tabindex="0">
+              <i class="bi bi-list-check" aria-hidden="true"></i>
+              <span>Operations</span>
+            </button>
+            <button type="button" class="tool-tab-btn generate-crontab-shell-tab-btn" id="generateCrontabShellWarningsTab" data-tab-target="generateCrontabShellWarningsPanel" role="tab" aria-controls="generateCrontabShellWarningsPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-card-text" aria-hidden="true"></i>
+              <span>Warnings</span>
+            </button>
+            <button type="button" class="tool-tab-btn generate-crontab-shell-tab-btn" id="generateCrontabShellJsonTab" data-tab-target="generateCrontabShellJsonPanel" role="tab" aria-controls="generateCrontabShellJsonPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-braces" aria-hidden="true"></i>
+              <span>JSON</span>
+            </button>
+          </div>
+
+          <div class="tool-tab-panel generate-crontab-shell-tab-panel" id="generateCrontabShellCommandPanel" data-tab-panel="generateCrontabShellCommandPanel" role="tabpanel" aria-labelledby="generateCrontabShellCommandTab" hidden>
+            <div class="generate-crontab-shell-surface-stack tool-result-section-stack">
+              <section class="generate-crontab-shell-section-card tool-result-section-card">
+                <div class="generate-crontab-shell-section-head">
+                  <h3 class="generate-crontab-shell-section-title tool-result-section-title">Generated Expression</h3>
+                  <div class="generate-crontab-shell-section-actions">
+                    <button type="button" class="generate-crontab-shell-action-btn" id="generateCrontabShellCopyExpression">
+                      <i class="bi bi-clipboard"></i>
+                      <span class="generate-crontab-shell-command-copy-label">Copy</span>
+                    </button>
+                  </div>
+                </div>
+                <pre class="generate-crontab-shell-code-pre"><code id="generateCrontabShellExpressionOutput"></code></pre>
+              </section>
+
+              <section class="generate-crontab-shell-section-card tool-result-section-card">
+                <div class="generate-crontab-shell-section-head">
+                  <h3 class="generate-crontab-shell-section-title tool-result-section-title">Full Crontab Line</h3>
+                  <div class="generate-crontab-shell-section-actions">
+                    <button type="button" class="generate-crontab-shell-action-btn" id="generateCrontabShellCopyLine">
+                      <i class="bi bi-clipboard"></i>
+                      <span class="generate-crontab-shell-command-copy-label">Copy</span>
+                    </button>
+                  </div>
+                </div>
+                <pre class="generate-crontab-shell-code-pre"><code id="generateCrontabShellLineOutput"></code></pre>
+              </section>
+
+              <section class="generate-crontab-shell-section-card tool-result-section-card">
+                <h3 class="generate-crontab-shell-section-title tool-result-section-title">Upcoming Runs</h3>
+                <div class="generate-crontab-shell-table-wrap tool-result-table-wrap">
+                  <table class="table generate-crontab-shell-upcoming-table mb-0 tool-result-table tool-result-table--compact">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="tool-generated-rownum-head">#</th>
+                        <th scope="col">Next run</th>
+                        <th scope="col">Relative</th>
+                        <th scope="col">Local clock</th>
+                      </tr>
+                    </thead>
+                    <tbody id="generateCrontabShellUpcomingTableBody"></tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section class="generate-crontab-shell-section-card tool-result-section-card">
+                <h3 class="generate-crontab-shell-section-title tool-result-section-title">Recorded Metadata</h3>
+                <div class="generate-crontab-shell-table-wrap tool-result-table-wrap">
+                  <table class="table generate-crontab-shell-metadata-table mb-0 tool-result-table tool-result-table--compact">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="tool-generated-rownum-head">#</th>
+                        <th scope="col">Field</th>
+                        <th scope="col">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody id="generateCrontabShellMetadataTableBody"></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="tool-tab-panel generate-crontab-shell-tab-panel active" id="generateCrontabShellFieldsPanel" data-tab-panel="generateCrontabShellFieldsPanel" role="tabpanel" aria-labelledby="generateCrontabShellFieldsTab">
+            <div class="generate-crontab-shell-inventory-panel" aria-labelledby="generateCrontabShellFieldsTitle">
+              <div class="generate-crontab-shell-table-card">
+                <h3 class="generate-crontab-shell-result-section-title" id="generateCrontabShellFieldsTitle">Schedule Field Summary</h3>
+                <div class="generate-crontab-shell-table-wrap tool-result-table-wrap">
+                  <table class="table generate-crontab-shell-table generate-crontab-shell-fields-table mb-0 tool-result-table tool-result-table--compact">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="tool-generated-rownum-head">#</th>
+                        <th scope="col">Field</th>
+                        <th scope="col">Token</th>
+                        <th scope="col">Source</th>
+                        <th scope="col">Meaning</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="generateCrontabShellFieldsTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-tab-panel generate-crontab-shell-tab-panel" id="generateCrontabShellWarningsPanel" data-tab-panel="generateCrontabShellWarningsPanel" role="tabpanel" aria-labelledby="generateCrontabShellWarningsTab" hidden>
+            <div class="generate-crontab-shell-warning-grid">
+              <div class="generate-crontab-shell-message-card">
+                <h3 class="generate-crontab-shell-message-title">Warnings</h3>
+                <ul class="generate-crontab-shell-message-list" id="generateCrontabShellWarningsList"></ul>
+              </div>
+
+              <div class="generate-crontab-shell-message-card">
+                <h3 class="generate-crontab-shell-message-title">Errors</h3>
+                <ul class="generate-crontab-shell-message-list" id="generateCrontabShellErrorsList"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-tab-panel generate-crontab-shell-tab-panel" id="generateCrontabShellJsonPanel" data-tab-panel="generateCrontabShellJsonPanel" role="tabpanel" aria-labelledby="generateCrontabShellJsonTab" hidden>
+            <div class="generate-crontab-shell-command-wrap tool-json-panel">
+              <div class="tool-json-head">
+                <span class="tool-json-title">JSON Output</span>
+              </div>
+              <pre class="generate-crontab-shell-code-pre tool-json-output"><code id="generateCrontabShellJsonOutput"></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="generate-crontab-shell-result-error d-none" id="generateCrontabShellResultError"></div>
+    <input type="file" id="generateCrontabShellImportJson" class="d-none" accept="application/json">
+  </div>
+        {# ns:end family.shell.workspace.07_table #}
+</div>

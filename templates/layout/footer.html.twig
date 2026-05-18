@@ -1,125 +1,64 @@
 {# templates/layout/footer.html.twig #}
 {% block footer %}
-  <!-- Footer -->
-  <footer id="footer" class="footer">
-
+  <footer id="footer" class="footer infrastack-footer">
     <div class="container footer-top">
       <div class="row gy-4">
-
-        {# Brand / About #}
         <div class="col-lg-4 col-md-6 footer-about">
-          <a
-            href="{{ path('app_main') }}"
-            class="logo d-flex align-items-center"
-            style="gap: 10px; text-decoration: none;"
-          >
+          <a href="{{ path('app_main') }}" class="infrastack-footer-logo">
             <svg
-              width="40"
-              height="40"
+              width="36"
+              height="36"
               viewBox="0 0 64 64"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
-              style="display: block; flex-shrink: 0;"
             >
               <polygon points="14,10 32,3 50,10 32,17" fill="#F7A24D"/>
               <polygon points="14,10 14,18 32,25 32,17" fill="#F28B2E"/>
               <polygon points="50,10 50,18 32,25 32,17" fill="#FFBC76"/>
-
               <polygon points="14,19 32,26 50,19 50,22 32,29 14,22" fill="#EAF1FF"/>
               <polygon points="14,24 32,31 50,24 50,28 32,35 14,28" fill="#4F86F7"/>
-
               <polygon points="14,29 32,36 50,29 50,32 32,39 14,32" fill="#EAF1FF"/>
               <polygon points="14,34 32,41 50,34 50,38 32,45 14,38" fill="#2F67E3"/>
             </svg>
-
-            <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
-              <span style="font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 800; color: #0f172a; letter-spacing: -0.03em;">
-                InfraStack
-              </span>
-              <span style="font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; color: #475569; margin-top: 4px; letter-spacing: 0.01em;">
-                Knowledge, Guides &amp; Resources
-              </span>
-            </div>
+            <span>InfraStack</span>
           </a>
 
           <div class="footer-contact pt-3">
-            <p>InfraStack provides infrastructure tools, guides, references, and technical resources for daily operations and learning.</p>
-            <p class="mt-3"><strong>Email:</strong> <span>hello@infrastack.my</span></p>
-            <p><strong>Website:</strong> <span>www.infrastack.my</span></p>
-          </div>
-
-          <div class="social-links d-flex mt-4">
-            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.linkedin.com/in/your-linkedin-id" target="_blank" rel="noopener noreferrer" class="linkedin" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-            <a href="https://www.infrastack.my" target="_blank" rel="noopener noreferrer" class="website" aria-label="Website"><i class="bi bi-globe"></i></a>
+            <p>Interactive infrastructure tools for architecture, cloud cost planning, security review, scanning, and shell command work.</p>
+            <p class="mt-3"><strong>Email:</strong> <a href="mailto:hello@infrastack.my">hello@infrastack.my</a></p>
+            <p><strong>Website:</strong> <a href="https://www.infrastack.my">www.infrastack.my</a></p>
           </div>
         </div>
 
-        {# Navigation #}
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Navigation</h4>
+          <h4>Product</h4>
           <ul>
-            <li>
-              <a href="{{ path('app_main') }}"
-                 class="{{ app.request.attributes.get('_route') == 'app_main' ? 'active' : '' }}">
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="{{ path('app_category', {
-                q: '',
-                sort: 'newest',
-                category: '',
-                tag: ''
-              }) }}"
-                 class="{{ app.request.attributes.get('_route') == 'app_category' ? 'active' : '' }}">
-                Tools
-              </a>
-            </li>
-            <li>
-              <a href="{{ path('app_author') }}"
-                 class="{{ app.request.attributes.get('_route') == 'app_author' ? 'active' : '' }}">
-                Author Profile
-              </a>
-            </li>
-            <li>
-              <a href="{{ path('app_contact') }}"
-                 class="{{ app.request.attributes.get('_route') == 'app_contact' ? 'active' : '' }}">
-                Contact
-              </a>
-            </li>
+            <li><a href="{{ path('app_category') }}">All Tools</a></li>
+            <li><a href="{{ path('app_category', { family: 'architecture' }) }}">Architecture</a></li>
+            <li><a href="{{ path('app_category', { family: 'calculate' }) }}">Calculators</a></li>
+            <li><a href="{{ path('app_category', { family: 'assessment' }) }}">Assessments</a></li>
+            <li><a href="{{ path('app_category', { family: 'shell' }) }}">Shell Tools</a></li>
           </ul>
         </div>
 
-        {# Tool Categories - same pattern as sidebar #}
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Tool Categories</h4>
+          <h4>Categories</h4>
           <ul>
             {% for item in sidebar_categories|default([])|slice(0, 5) %}
               <li>
-                <a
-                  href="{{ path('app_category', {
-                    category: item.slug,
-                    q: search_query|default(''),
-                    sort: sort|default('newest'),
-                    tag: tag_filter|default('')
-                  }) }}"
-                  class="{{ category_filter|default('') == item.slug ? 'active' : '' }}"
-                >
+                <a href="{{ path('app_category', { category: item.slug }) }}">
                   {{ item.name }}
                 </a>
               </li>
             {% else %}
-              <li><a href="#">No categories found</a></li>
+              <li><a href="{{ path('app_category') }}">Browse tools</a></li>
             {% endfor %}
           </ul>
         </div>
 
-        {# Recent Topics / Recent Tools - use direct tool_detail route #}
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Recent Topics</h4>
+          <h4>Recent Tools</h4>
           <ul>
             {% for tool in recent_tools|default([])|slice(0, 5) %}
               <li>
@@ -128,52 +67,33 @@
                 </a>
               </li>
             {% else %}
-              <li><a href="#">No recent topics found</a></li>
+              <li><a href="{{ path('app_category') }}">No recent tools</a></li>
             {% endfor %}
           </ul>
         </div>
 
-        {# Popular Tags - same pattern as sidebar #}
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Popular Tags</h4>
+          <h4>Resources</h4>
           <ul>
-            {% for tag in popular_tags|default([])|slice(0, 5) %}
-              <li>
-                <a
-                  href="{{ path('app_category', {
-                    tag: tag.name,
-                    q: search_query|default(''),
-                    sort: sort|default('newest'),
-                    category: category_filter|default('')
-                  }) }}"
-                  class="{{ tag_filter|default('') == tag.name ? 'active' : '' }}"
-                >
-                  {{ tag.name }}
-                </a>
-              </li>
-            {% else %}
-              <li><a href="#">No tags found</a></li>
-            {% endfor %}
+            <li><a href="{{ path('app_author') }}">Author Profile</a></li>
+            <li><a href="{{ path('app_contact') }}">Contact</a></li>
+            <li><a href="{{ path('app_privacy') }}">Privacy Policy</a></li>
+            <li><a href="{{ path('app_category') }}">Tools</a></li>
+            <li><a href="{{ path('app_main') }}#home-categories">Categories</a></li>
           </ul>
         </div>
-
       </div>
     </div>
 
-    <div class="container copyright text-center mt-4">
+    <div class="container copyright">
       <p>
         © <span>{{ "now"|date("Y") }}</span>
         <strong class="px-1 sitename">InfraStack</strong>
         <span>All Rights Reserved</span>
       </p>
-        <div class="credits">
-          Built for infrastructure specialists with
-          <strong class="px-1 sitename">Knowledge</strong>,
-          <strong class="px-1 sitename">Guides</strong>, and
-          <strong class="px-1 sitename">Resources</strong>.
-        </div>
+      <div class="credits">
+        Built for practical infrastructure planning, review, and operations.
+      </div>
     </div>
-
   </footer>
-  <!-- End Footer -->
 {% endblock %}

@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: Build cURL commands for APIs, downloads, and diagnostics with headers, auth, body payloads, retries, and copy-ready output.
+card_gradient_start: "#0F766E"
+card_gradient_end: "#14B8A6"
+card_text_color: "#FFFFFF"
+card_kicker: "Shell"
+card_image_title: "cURL Command Generator"
+card_icon_class: "bi bi-terminal"
+card_icon_animation: "random"
+card_image: null

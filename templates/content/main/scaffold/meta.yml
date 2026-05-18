@@ -1,0 +1,18 @@
+# meta.yml
+
+title: __TOOL_TITLE__
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "__DATE__"
+comments: Interactive tool
+category_label: __CATEGORY_LABEL__
+reading_time: 4 min read
+summary: __CARD_SUMMARY__
+intro: >-
+    __INTRO_LINE_1__
+    __INTRO_LINE_2__
+    __INTRO_LINE_3__
+tags:
+    - __CATEGORY_LABEL__
+    - Visualizer

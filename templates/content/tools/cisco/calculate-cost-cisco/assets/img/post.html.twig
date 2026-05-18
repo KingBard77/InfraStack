@@ -1,0 +1,64 @@
+{% set visualVariant = variant|default('card') %}
+{% set showPostDetail = visualVariant in ['hero', 'hero-small'] %}
+{% if visualVariant == 'style' %}
+<style>
+.calculate-cost-cisco-post-visual {
+    --post-start: #10B981;
+    --post-end: #10B981;
+    --post-accent: #fed7aa;
+}
+
+.calculate-cost-cisco-post-visual .tool-post-node:nth-child(1),
+.calculate-cost-cisco-post-visual .tool-post-node:nth-child(3),
+.calculate-cost-cisco-post-visual .tool-post-node:nth-child(5) {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.calculate-cost-cisco-post-visual .tool-post-icon {
+    background: rgba(16, 185, 129, 0.24);
+}
+</style>
+{% else %}
+<div
+  class="tool-post-visual calculate-cost-cisco-post-visual tool-post-visual-{{ visualVariant }}"
+  style="--post-start: {{ post.card_gradient_start|default('#10B981') }}; --post-end: {{ post.card_gradient_end|default('#10B981') }};"
+>
+  <div class="tool-post-bg-icons" aria-hidden="true">
+    <i class="bi bi-cash-stack"></i>
+    <i class="bi bi-cloud"></i>
+    <i class="bi bi-cpu"></i>
+    <i class="bi bi-hdd-stack"></i>
+    <i class="bi bi-graph-up-arrow"></i>
+  </div>
+  <div class="tool-post-header">
+    <span class="tool-post-kicker">{{ post.card_kicker|default(post.category|default('Cisco')) }}</span>
+    <span class="tool-post-icon"><i class="{{ post.card_icon_class|default('bi bi-cash-stack') }}"></i></span>
+  </div>
+  <div class="tool-post-title">{{ post.card_image_title|default(post.title|default('Cisco Network Cost Calculator')) }}</div>
+  <div class="tool-post-map" aria-hidden="true">
+    <span class="tool-post-node"><i class="bi bi-cloud"></i></span>
+    <span class="tool-post-node"></span>
+    <span class="tool-post-node"><i class="bi bi-calculator"></i></span>
+    <span class="tool-post-node"></span>
+    <span class="tool-post-node"><i class="bi bi-filetype-json"></i></span>
+  </div>
+  <div class="tool-post-footer">
+    <span>{{ post.reading_time|default('5 min read') }}</span>
+    <span>{{ post.category|default('Cisco') }}</span>
+  </div>
+  {% if showPostDetail %}
+    <div class="tool-post-detail">
+      <div class="tool-post-meta">
+        <span><i class="bi bi-chevron-down"></i> {{ post.date_display|default('May. 11th, 2026') }}</span>
+        <span><i class="bi bi-three-dots-vertical"></i> {{ post.category|default('Cisco') }}</span>
+        <span><i class="bi bi-clock"></i> {{ post.reading_time|default('5 min read') }}</span>
+      </div>
+      <div class="tool-post-detail-title">{{ post.title|default('Cisco Network Cost Calculator') }}</div>
+      <span class="tool-post-read-more">
+        Read More
+        <i class="bi bi-arrow-right"></i>
+      </span>
+    </div>
+  {% endif %}
+</div>
+{% endif %}

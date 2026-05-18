@@ -4,6 +4,48 @@
    CONTENT PAGE STYLES
    ========================================================= */
 
+#blog-details.blog-details.section {
+    padding-bottom: 24px;
+}
+
+.blog-details .article-content > :last-child {
+    margin-bottom: 0;
+}
+
+.tool-intro .tool-main-description {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    color: color-mix(in srgb, var(--default-color), transparent 12%);
+    font-family: var(--page-font);
+    font-size: clamp(1rem, 0.96rem + 0.22vw, 1.12rem);
+    font-weight: 400;
+    line-height: 1.72;
+    letter-spacing: 0;
+    text-align: start;
+    text-wrap: pretty;
+}
+
+@media (min-width: 768px) {
+    .tool-intro .tool-main-description {
+        min-height: calc(1em * 1.72 * 3);
+        text-align: justify;
+        text-justify: inter-word;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .tool-intro {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .tool-intro .tool-main-description {
+        font-size: 1rem;
+        line-height: 1.7;
+        word-spacing: normal;
+    }
+}
+
 /* =========================================================
    CONTENT SECTION CARDS
    ========================================================= */
@@ -169,8 +211,25 @@
     font-size: 17px;
     font-family: var(--default-font);
     line-height: 1.9;
-    text-align: justify;
-    text-justify: inter-word;
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
+}
+
+.markdown-content li p {
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
+}
+
+.markdown-content > [class*="-markdown-card"] li,
+.markdown-content > [class*="-markdown-card"] li p {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
 }
 
 .markdown-content :not(pre) > code {
@@ -179,7 +238,7 @@
     padding: 2px 8px;
     border: 1px solid #e5e7eb;
     border-radius: 6px;
-    font-size: 0.92em;
+    font-size: 0.875em;
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
@@ -266,12 +325,13 @@
 .markdown-content pre > code::after {
     content: "user@host:~/projects";
     position: absolute;
-    top: -42px;
+    top: -43px;
     left: 50%;
     transform: translateX(-50%);
     color: #ffffff;
     font-size: 12px;
     font-weight: 600;
+    line-height: 1;
     opacity: 0.95;
     white-space: nowrap;
     pointer-events: none;
@@ -426,6 +486,7 @@
     .markdown-content pre > code::after {
         top: -39px;
         font-size: 11px;
+        line-height: 1;
     }
 
     .markdown-copy-btn {

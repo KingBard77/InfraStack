@@ -1,0 +1,39 @@
+# meta.yml
+
+title: cURL Command Generator
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "Apr. 2nd, 2026"
+comments: Interactive tool
+category_label: Shell
+group: shell
+family: shell
+reading_time: 7 min read
+summary: Build repeatable cURL commands with headers, auth, body payloads, retries, transport flags, and copy-ready output.
+intro: >-
+    Assemble repeatable curl requests for APIs, downloads, forms, webhooks, and scripted diagnostics.
+    Tune headers, payloads, auth, retries, redirects, TLS flags, request method, output handling, and transport options.
+    Review the command, option summary, warnings, and normalized output before running the request or handing it to a script.
+tags:
+    - Shell
+    - cURL
+    - HTTP
+    - CLI
+    - API
+    - Automation
+related_links_summary: >-
+    Compare this cURL workspace with external embeddable tools from Simplified Tools.
+related_links:
+    - title: Simplified cURL Command Generator
+      label: External tool
+      description: Open the embeddable Simplified cURL command generator frame.
+      url: https://www.simplified.tools/generate_curl_command
+      embed_url: https://www.simplified.tools/embed/generate_curl_command?share=embed
+      icon: bi-tools
+    - title: Simplified API Testing Tool
+      label: External tool
+      description: Open the embeddable Simplified API testing tool frame.
+      url: https://www.simplified.tools/test_api
+      embed_url: https://www.simplified.tools/embed/test_api?share=embed
+      icon: bi-tools

@@ -1,0 +1,24 @@
+# meta.yml
+
+title: IBM Cloud Architecture
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "Apr. 29th, 2026"
+comments: Interactive tool
+category_label: IBM Cloud
+group: cloud
+family: architecture
+reading_time: 4 min read
+summary: Generate IBM Cloud architecture diagrams from a prompt, preset, editable controls, heuristic score ring, and restorable JSON state.
+intro: >-
+    Turn an IBM Cloud brief into a VPC architecture workspace for zones, subnets, ingress, workload runtime, and services.
+    Map security controls, operations, hybrid connectivity, Cloud Internet Services, Transit Gateway, and generated inventory.
+    Refine the stage, inspect score and design notes, then export the diagram state for documentation or handoff.
+tags:
+    - IBM Cloud
+    - VPC
+    - Architecture
+    - Cloud Internet Services
+    - Transit Gateway
+    - Hybrid Connectivity

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">InfraStack placeholder icon</title>
+  <desc id="desc">Neutral stacked infrastructure blocks for scaffolded tools.</desc>
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <rect x="10" y="12" width="44" height="12" rx="3" />
+    <rect x="10" y="28" width="44" height="12" rx="3" />
+    <rect x="10" y="44" width="44" height="8" rx="3" />
+    <path d="M18 18h.01M18 34h.01M18 48h.01M28 18h18M28 34h18M28 48h18" />
+  </g>
+</svg>

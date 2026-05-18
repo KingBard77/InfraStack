@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: Estimate blended Azure monthly spend across compute, storage, serverless, and egress with visible assumptions and exportable results.
+card_gradient_start: "#2563EB"
+card_gradient_end: "#06B6D4"
+card_text_color: "#FFFFFF"
+card_kicker: "Azure"
+card_image_title: "Azure Cost Calculator"
+card_icon_class: "bi bi-calculator"
+card_icon_animation: "random"
+card_image: null

@@ -1,0 +1,590 @@
+{# tool.html.twig #}
+
+<div class="architecture-campus-network-cisco-tool" data-tool-slug="architecture-campus-network-cisco" data-tool-category="cisco" data-tool-family="architecture" data-tool-canonical="architecture_campus_network_cisco">
+  <div class="tool-box">
+    {# ns:start family.architecture.workspace.01_input-brief #}
+    <section class="tool-shell tool-prompt-shell architecture-campus-network-cisco-prompt-shell" id="architectureCampusNetworkCiscoPromptShell" data-section="architecture-prompt" data-root-selector=".architecture-campus-network-cisco-tool" aria-label="Cisco campus architecture prompt">
+      <div class="tool-main-row">
+        <label for="architectureCampusNetworkCiscoPrompt" class="tool-main-label">Architecture prompt</label>
+        <div class="tool-main-input-grid architecture-campus-network-cisco-main-input-grid">
+          <textarea
+            id="architectureCampusNetworkCiscoPrompt"
+            class="form-control architecture-campus-network-cisco-prompt"
+            rows="5"
+            placeholder="Describe the Cisco campus size, access blocks, VLANs, routing, wireless, firewall, WAN edge, services, and redundancy."
+          >Create a medium Cisco campus topology with 3 access blocks. Use VLAN 10 Staff, VLAN 20 Voice, VLAN 30 Guest, VLAN 40 Servers. Add wireless controller, WAN edge, Cisco Secure Firewall, ACL policy boundary, NAT at the edge, DHCP, DNS, monitoring, HSRP, EtherChannel trunks, and OSPF routing.</textarea>
+        </div>
+      </div>
+
+      <p class="tool-control-hint architecture-campus-network-cisco-prompt-hint">
+        Use one brief prompt with campus size, access blocks, VLANs, routing mode, wireless, security edge, WAN, services, and redundancy. Preset selection or Generate Topology creates the editable workspace.
+      </p>
+
+      <div class="architecture-campus-network-cisco-main-actions">
+        <button type="button" class="tool-action-btn tool-action-btn-primary" id="architectureCampusNetworkCiscoGenerate">
+          <i class="bi bi-stars" aria-hidden="true"></i>
+          <span data-button-label>Generate Topology</span>
+        </button>
+        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCampusNetworkCiscoReset">
+          <span data-button-label>Load Default</span>
+        </button>
+      </div>
+    </section>
+    {# ns:end family.architecture.workspace.01_input-brief #}
+
+    <div class="tool-error-state d-none" id="architectureCampusNetworkCiscoErrorState" hidden></div>
+
+    <section class="tool-shell tool-inspector-shell" id="architectureCampusNetworkCiscoConfigShell" aria-labelledby="architectureCampusNetworkCiscoConfigTitle">
+      <div class="tool-shell-header">
+        <div>
+          <h2 class="tool-shell-title" id="architectureCampusNetworkCiscoConfigTitle">Basic</h2>
+        </div>
+      </div>
+
+      <div class="tool-shell-body">
+        {# ns:start family.architecture.workspace.02_basic-settings #}
+        <div class="tool-inspector-section architecture-campus-network-cisco-basic-section" id="architectureCampusNetworkCiscoBasicConfig" data-section="basic-tab" data-root-selector=".architecture-campus-network-cisco-tool">
+          <div class="architecture-campus-network-cisco-basic-grid">
+            <div class="architecture-campus-network-cisco-control-stack">
+              <label class="tool-control-label" for="architectureCampusNetworkCiscoPreset">Preset</label>
+              <select id="architectureCampusNetworkCiscoPreset" class="form-select">
+                <option value="enterprise-campus" selected>Enterprise Campus</option>
+                <option value="branch-campus">Branch Campus</option>
+                <option value="wireless-campus">Wireless Campus</option>
+                <option value="data-center-edge">Data Center Edge</option>
+              </select>
+            </div>
+
+            <div class="architecture-campus-network-cisco-control-stack">
+              <label class="tool-control-label" for="architectureCampusNetworkCiscoSize">Campus size</label>
+              <select id="architectureCampusNetworkCiscoSize" class="form-select">
+                <option value="small">Small</option>
+                <option value="medium" selected>Medium</option>
+                <option value="large">Large</option>
+              </select>
+            </div>
+
+            <div class="architecture-campus-network-cisco-control-stack">
+              <label class="tool-control-label" for="architectureCampusNetworkCiscoAccessBlocks">Access blocks</label>
+              <select id="architectureCampusNetworkCiscoAccessBlocks" class="form-select">
+                <option value="1">1 block</option>
+                <option value="2">2 blocks</option>
+                <option value="3" selected>3 blocks</option>
+                <option value="4">4 blocks</option>
+                <option value="5">5 blocks</option>
+                <option value="6">6 blocks</option>
+              </select>
+            </div>
+            <p class="tool-control-hint" id="architectureCampusNetworkCiscoPresetDescription">Redundant core, dual distribution, access blocks, OSPF, HSRP, services, wireless, and edge security.</p>
+          </div>
+        </div>
+        {# ns:end family.architecture.workspace.02_basic-settings #}
+
+        {# ns:start family.architecture.workspace.03_advanced-settings #}
+        <details class="architecture-campus-network-cisco-custom-panel" id="architectureCampusNetworkCiscoCustomControls" data-section="custom-tab" data-root-selector=".architecture-campus-network-cisco-tool">
+          <summary class="architecture-campus-network-cisco-custom-panel-summary">
+            <span>Custom</span>
+            <i class="bi bi-chevron-down" aria-hidden="true"></i>
+          </summary>
+
+          <div class="architecture-campus-network-cisco-custom-panel-body">
+            <div class="architecture-campus-network-cisco-config-tabs" role="tablist" aria-label="Cisco campus custom configuration">
+              <button type="button" class="architecture-campus-network-cisco-config-tab active" id="architectureCampusNetworkCiscoNetworkTab" data-config-tab-target="architectureCampusNetworkCiscoNetworkPanel" role="tab" aria-controls="architectureCampusNetworkCiscoNetworkPanel" aria-selected="true" tabindex="0">Network</button>
+              <button type="button" class="architecture-campus-network-cisco-config-tab" id="architectureCampusNetworkCiscoServicesTab" data-config-tab-target="architectureCampusNetworkCiscoServicesPanel" role="tab" aria-controls="architectureCampusNetworkCiscoServicesPanel" aria-selected="false" tabindex="-1">Services</button>
+              <button type="button" class="architecture-campus-network-cisco-config-tab" id="architectureCampusNetworkCiscoSecurityTab" data-config-tab-target="architectureCampusNetworkCiscoSecurityPanel" role="tab" aria-controls="architectureCampusNetworkCiscoSecurityPanel" aria-selected="false" tabindex="-1">Security</button>
+            </div>
+
+            <div class="tool-inspector-section architecture-campus-network-cisco-config-panel active" id="architectureCampusNetworkCiscoNetworkPanel" data-config-panel role="tabpanel" aria-labelledby="architectureCampusNetworkCiscoNetworkTab">
+              <div class="architecture-campus-network-cisco-config-grid">
+                <div class="architecture-campus-network-cisco-control-stack">
+                  <label class="tool-control-label" for="architectureCampusNetworkCiscoRouting">Routing mode</label>
+                  <select id="architectureCampusNetworkCiscoRouting" class="form-select">
+                    <option value="static">Static</option>
+                    <option value="ospf" selected>OSPF</option>
+                    <option value="eigrp">EIGRP</option>
+                    <option value="bgp">BGP</option>
+                  </select>
+                </div>
+
+                <div class="architecture-campus-network-cisco-control-stack architecture-campus-network-cisco-vlan-stack">
+                  <label class="tool-control-label" for="architectureCampusNetworkCiscoVlans">VLANs</label>
+                  <textarea id="architectureCampusNetworkCiscoVlans" class="form-control architecture-campus-network-cisco-vlan-input">VLAN 10 Staff
+VLAN 20 Voice
+VLAN 30 Guest
+VLAN 40 Servers</textarea>
+                </div>
+
+                <div class="architecture-campus-network-cisco-control-stack">
+                  <label class="tool-control-label" for="architectureCampusNetworkCiscoTrunkVlans">Trunk allowed VLANs</label>
+                  <input type="text" id="architectureCampusNetworkCiscoTrunkVlans" class="form-control" value="10,20,30,40">
+                </div>
+
+                <div class="architecture-campus-network-cisco-control-stack">
+                  <label class="tool-control-label" for="architectureCampusNetworkCiscoNativeVlan">Native VLAN</label>
+                  <input type="number" id="architectureCampusNetworkCiscoNativeVlan" class="form-control" min="1" max="4094" value="999">
+                </div>
+
+                <div class="architecture-campus-network-cisco-control-stack">
+                  <label class="tool-control-label" for="architectureCampusNetworkCiscoAccessVlan">Access VLAN</label>
+                  <input type="number" id="architectureCampusNetworkCiscoAccessVlan" class="form-control" min="1" max="4094" value="10">
+                </div>
+
+                <div class="architecture-campus-network-cisco-control-stack">
+                  <label class="tool-control-label" for="architectureCampusNetworkCiscoSviGateway">SVI gateway</label>
+                  <input type="text" id="architectureCampusNetworkCiscoSviGateway" class="form-control" value="10.10.10.1">
+                </div>
+
+                <div class="architecture-campus-network-cisco-control-stack">
+                  <label class="tool-control-label" for="architectureCampusNetworkCiscoOspfArea">OSPF area</label>
+                  <input type="text" id="architectureCampusNetworkCiscoOspfArea" class="form-control" value="0">
+                </div>
+
+                <div class="architecture-campus-network-cisco-control-stack">
+                  <label class="tool-control-label" for="architectureCampusNetworkCiscoBgpAsn">BGP ASN</label>
+                  <input type="text" id="architectureCampusNetworkCiscoBgpAsn" class="form-control" value="65010">
+                </div>
+
+                <div class="architecture-campus-network-cisco-control-stack">
+                  <label class="tool-control-label" for="architectureCampusNetworkCiscoRedundancyVip">HSRP / VRRP VIP</label>
+                  <input type="text" id="architectureCampusNetworkCiscoRedundancyVip" class="form-control" value="10.10.10.254">
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-inspector-section architecture-campus-network-cisco-config-panel" id="architectureCampusNetworkCiscoServicesPanel" data-config-panel role="tabpanel" aria-labelledby="architectureCampusNetworkCiscoServicesTab" hidden>
+              <div class="architecture-campus-network-cisco-toggle-grid">
+                <label class="architecture-campus-network-cisco-toggle-item">
+                  <span class="architecture-campus-network-cisco-toggle-copy">Wireless controller</span>
+                  <input type="checkbox" id="architectureCampusNetworkCiscoWireless" checked>
+                </label>
+
+                <label class="architecture-campus-network-cisco-toggle-item">
+                  <span class="architecture-campus-network-cisco-toggle-copy">Cisco Secure Firewall</span>
+                  <input type="checkbox" id="architectureCampusNetworkCiscoFirewall" checked>
+                </label>
+
+                <label class="architecture-campus-network-cisco-toggle-item">
+                  <span class="architecture-campus-network-cisco-toggle-copy">WAN edge</span>
+                  <input type="checkbox" id="architectureCampusNetworkCiscoWan" checked>
+                </label>
+
+                <label class="architecture-campus-network-cisco-toggle-item">
+                  <span class="architecture-campus-network-cisco-toggle-copy">Monitoring / Syslog</span>
+                  <input type="checkbox" id="architectureCampusNetworkCiscoMonitoring" checked>
+                </label>
+
+                <label class="architecture-campus-network-cisco-toggle-item">
+                  <span class="architecture-campus-network-cisco-toggle-copy">DHCP / DNS</span>
+                  <input type="checkbox" id="architectureCampusNetworkCiscoDhcpDns" checked>
+                </label>
+
+                <label class="architecture-campus-network-cisco-toggle-item">
+                  <span class="architecture-campus-network-cisco-toggle-copy">HSRP</span>
+                  <input type="checkbox" id="architectureCampusNetworkCiscoHsrp" checked>
+                </label>
+
+                <label class="architecture-campus-network-cisco-toggle-item">
+                  <span class="architecture-campus-network-cisco-toggle-copy">EtherChannel</span>
+                  <input type="checkbox" id="architectureCampusNetworkCiscoEtherChannel" checked>
+                </label>
+              </div>
+            </div>
+
+            <div class="tool-inspector-section architecture-campus-network-cisco-config-panel" id="architectureCampusNetworkCiscoSecurityPanel" data-config-panel role="tabpanel" aria-labelledby="architectureCampusNetworkCiscoSecurityTab" hidden>
+              <div class="architecture-campus-network-cisco-toggle-grid">
+                <label class="architecture-campus-network-cisco-toggle-item">
+                  <span class="architecture-campus-network-cisco-toggle-copy">ACL policy boundary</span>
+                  <input type="checkbox" id="architectureCampusNetworkCiscoAcl" checked>
+                </label>
+
+                <label class="architecture-campus-network-cisco-toggle-item">
+                  <span class="architecture-campus-network-cisco-toggle-copy">NAT at edge</span>
+                  <input type="checkbox" id="architectureCampusNetworkCiscoNat" checked>
+                </label>
+
+                <label class="architecture-campus-network-cisco-toggle-item">
+                  <span class="architecture-campus-network-cisco-toggle-copy">VPN tunnel</span>
+                  <input type="checkbox" id="architectureCampusNetworkCiscoVpn">
+                </label>
+              </div>
+            </div>
+          </div>
+        </details>
+        {# ns:end family.architecture.workspace.03_advanced-settings #}
+
+        {# ns:start family.architecture.workspace.04_selected-item #}
+        <div class="tool-inspector-section architecture-campus-network-cisco-selected-section" id="architectureCampusNetworkCiscoSelectedShell" data-section="selected-item" data-root-selector=".architecture-campus-network-cisco-tool">
+          <h3 class="architecture-campus-network-cisco-section-title">Selected item</h3>
+          <p class="architecture-campus-network-cisco-selected-empty architecture-campus-network-cisco-selected-empty-chips" id="architectureCampusNetworkCiscoSelectedEmpty" aria-label="Select a node or boundary box to move, resize, or highlight it. Arrow keys move the selected item; Shift moves faster; Alt + arrow keys resize; Cmd/Ctrl + Z undoes the last stage edit.">
+            <span class="architecture-campus-network-cisco-selected-empty-copy">
+              <span class="architecture-campus-network-cisco-selected-hint-chip architecture-campus-network-cisco-selected-hint-chip-select"><i class="bi bi-cursor" aria-hidden="true"></i>Select a node or boundary box</span>
+              <span class="architecture-campus-network-cisco-selected-hint-chip architecture-campus-network-cisco-selected-hint-chip-action"><i class="bi bi-arrows-move" aria-hidden="true"></i>Move, resize, or highlight</span>
+              <span class="architecture-campus-network-cisco-selected-hint-chip architecture-campus-network-cisco-selected-hint-chip-keyboard"><i class="bi bi-arrow-up-right-square" aria-hidden="true"></i>Arrow keys move selected item</span>
+              <span class="architecture-campus-network-cisco-selected-hint-chip architecture-campus-network-cisco-selected-hint-chip-keyboard"><i class="bi bi-shift" aria-hidden="true"></i>Shift moves faster</span>
+              <span class="architecture-campus-network-cisco-selected-hint-chip architecture-campus-network-cisco-selected-hint-chip-resize"><i class="bi bi-aspect-ratio" aria-hidden="true"></i>Alt + arrow keys resize</span>
+              <span class="architecture-campus-network-cisco-selected-hint-chip architecture-campus-network-cisco-selected-hint-chip-undo"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>Cmd/Ctrl + Z undoes last edit</span>
+            </span>
+          </p>
+
+          <div class="architecture-campus-network-cisco-selected-editor d-none" id="architectureCampusNetworkCiscoSelectedEditor">
+            <div class="architecture-campus-network-cisco-selected-name" id="architectureCampusNetworkCiscoSelectedName"></div>
+
+            <div class="architecture-campus-network-cisco-selected-grid">
+              <div class="architecture-campus-network-cisco-control-stack">
+                <label class="tool-control-label" for="architectureCampusNetworkCiscoSelectedX">X position</label>
+                <input type="number" id="architectureCampusNetworkCiscoSelectedX" class="form-control" min="0" step="4">
+              </div>
+
+              <div class="architecture-campus-network-cisco-control-stack">
+                <label class="tool-control-label" for="architectureCampusNetworkCiscoSelectedY">Y position</label>
+                <input type="number" id="architectureCampusNetworkCiscoSelectedY" class="form-control" min="0" step="4">
+              </div>
+
+              <div class="architecture-campus-network-cisco-control-stack">
+                <label class="tool-control-label" for="architectureCampusNetworkCiscoSelectedWidth">Width</label>
+                <input type="number" id="architectureCampusNetworkCiscoSelectedWidth" class="form-control" min="120" step="4">
+              </div>
+
+              <div class="architecture-campus-network-cisco-control-stack">
+                <label class="tool-control-label" for="architectureCampusNetworkCiscoSelectedHeight">Height</label>
+                <input type="number" id="architectureCampusNetworkCiscoSelectedHeight" class="form-control" min="58" step="4">
+              </div>
+            </div>
+
+            <div class="architecture-campus-network-cisco-selected-actions">
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCampusNetworkCiscoHighlightNode">
+                <i class="bi bi-highlighter" aria-hidden="true"></i>
+                <span data-button-label>Highlight</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCampusNetworkCiscoApplyNode">
+                <i class="bi bi-check2" aria-hidden="true"></i>
+                <span data-button-label>Apply</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-ghost" id="architectureCampusNetworkCiscoResetNode">
+                <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+                <span data-button-label>Reset</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        {# ns:end family.architecture.workspace.04_selected-item #}
+      </div>
+    </section>
+
+    <section class="tool-shell tool-stage-shell architecture-campus-network-cisco-stage-shell" id="architectureCampusNetworkCiscoStageShell" data-section="diagram-buttons" data-root-selector=".architecture-campus-network-cisco-tool" aria-labelledby="architectureCampusNetworkCiscoStageTitle">
+      {# ns:start family.architecture.workspace.05_result-text #}
+      <div class="tool-shell-header architecture-campus-network-cisco-stage-header" id="architectureCampusNetworkCiscoStageHeader" data-section="title" data-root-selector=".architecture-campus-network-cisco-tool">
+        <div class="architecture-campus-network-cisco-stage-heading">
+          <h2 class="tool-shell-title" id="architectureCampusNetworkCiscoStageTitle">Cisco Campus Network Architecture</h2>
+          <p class="tool-shell-subtitle" id="architectureCampusNetworkCiscoStageSubtitle">
+            <span class="architecture-campus-network-cisco-stage-preset-chip">Enterprise Campus preset</span>
+          </p>
+        </div>
+        <div class="architecture-campus-network-cisco-stage-meta" id="architectureCampusNetworkCiscoStageMeta"></div>
+      </div>
+      {# ns:end family.architecture.workspace.05_result-text #}
+
+      {# ns:start family.architecture.workspace.06_result-diagram #}
+      <div class="tool-stage-toolbar">
+        <div class="architecture-campus-network-cisco-stage-toolbar-actions">
+          <div class="architecture-campus-network-cisco-zoom-control" id="architectureCampusNetworkCiscoZoomControl">
+            <button type="button" class="architecture-campus-network-cisco-zoom-step" id="architectureCampusNetworkCiscoZoomOut" aria-label="Zoom out" title="Zoom out">
+              <i class="bi bi-dash" aria-hidden="true"></i>
+            </button>
+            <input type="number" id="architectureCampusNetworkCiscoZoomInput" class="architecture-campus-network-cisco-zoom-input" value="50" min="15" max="240" step="1" aria-label="Zoom percentage">
+            <span class="architecture-campus-network-cisco-zoom-label" id="architectureCampusNetworkCiscoZoomLabel">%</span>
+            <button type="button" class="architecture-campus-network-cisco-zoom-step" id="architectureCampusNetworkCiscoZoomIn" aria-label="Zoom in" title="Zoom in">
+              <i class="bi bi-plus" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <button type="button" class="architecture-campus-network-cisco-icon-btn" id="architectureCampusNetworkCiscoZoomFit" aria-label="Zoom to fit" title="Zoom to fit">
+            <i class="bi bi-arrows-angle-contract" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-campus-network-cisco-icon-btn" id="architectureCampusNetworkCiscoZoomActual" aria-label="Zoom to 100%" title="Zoom to 100%">
+            <span>100</span>
+          </button>
+          <button type="button" class="architecture-campus-network-cisco-icon-btn" id="architectureCampusNetworkCiscoUndoStageEdit" aria-label="Undo stage edit" title="Undo stage edit" disabled>
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-campus-network-cisco-icon-btn" id="architectureCampusNetworkCiscoHighlightAll" aria-label="Highlight entire diagram" title="Highlight entire diagram" aria-pressed="false">
+            <i class="bi bi-bounding-box" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-campus-network-cisco-icon-btn" id="architectureCampusNetworkCiscoZoomHideUi" aria-label="Hide UI" title="Hide UI">
+            <i class="bi bi-eye-slash" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-campus-network-cisco-icon-btn" id="architectureCampusNetworkCiscoFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
+            <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-campus-network-cisco-stage-toolbar-btn" id="architectureCampusNetworkCiscoResetLayout">Reset layout</button>
+        </div>
+      </div>
+
+      <div class="tool-stage-body">
+        <div class="tool-stage-empty" id="architectureCampusNetworkCiscoStageEmpty">Choose a preset to generate diagram.</div>
+        <div class="tool-stage-canvas architecture-campus-network-cisco-stage-canvas d-none" id="architectureCampusNetworkCiscoStageCanvas"></div>
+      </div>
+
+      <div class="architecture-campus-network-cisco-stage-footer">
+        <div class="architecture-campus-network-cisco-stage-toolbar-chips">
+          <span class="tool-helper-chip tool-helper-chip-prompt" title="Prompt and preset aware" aria-label="Prompt and preset aware" tabindex="0">
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span class="architecture-campus-network-cisco-visually-hidden">Prompt and preset aware</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-inspector" title="Editable inspector controls" aria-label="Editable inspector controls" tabindex="0">
+            <i class="bi bi-sliders2" aria-hidden="true"></i>
+            <span class="architecture-campus-network-cisco-visually-hidden">Editable inspector controls</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-drag" title="Drag nodes or boundary boxes to customize layout" aria-label="Drag nodes or boundary boxes to customize layout" tabindex="0">
+            <i class="bi bi-arrows-move" aria-hidden="true"></i>
+            <span class="architecture-campus-network-cisco-visually-hidden">Drag nodes or boundary boxes to customize layout</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-svg" title="SVG workspace" aria-label="SVG workspace" tabindex="0">
+            <i class="bi bi-bezier2" aria-hidden="true"></i>
+            <span class="architecture-campus-network-cisco-visually-hidden">SVG workspace</span>
+          </span>
+          <button type="button" class="tool-helper-chip tool-helper-chip-keyboard" id="architectureCampusNetworkCiscoUsageHelpButton" title="Keyboard shortcuts and usage" aria-label="Open keyboard help" aria-controls="architectureCampusNetworkCiscoUsageHelpPopup" aria-expanded="false">
+            <i class="bi bi-keyboard" aria-hidden="true"></i>
+            <span class="architecture-campus-network-cisco-visually-hidden">Keyboard Help</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="architecture-campus-network-cisco-usage-overlay d-none" id="architectureCampusNetworkCiscoUsageHelpPopup" role="dialog" aria-modal="false" aria-labelledby="architectureCampusNetworkCiscoUsageHelpTitle">
+        <div class="architecture-campus-network-cisco-usage-card">
+          <button type="button" class="architecture-campus-network-cisco-usage-close" id="architectureCampusNetworkCiscoUsageHelpClose" aria-label="Close keyboard help">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+          </button>
+
+          <h3 class="architecture-campus-network-cisco-usage-title" id="architectureCampusNetworkCiscoUsageHelpTitle">Diagram Controls</h3>
+          <p class="architecture-campus-network-cisco-usage-copy">Select a box in the diagram, then adjust it without leaving the stage.</p>
+
+          <div class="architecture-campus-network-cisco-usage-panel">Hold the selected box in place visually while you tune layout, size, and zoom.</div>
+
+          <div class="architecture-campus-network-cisco-usage-divider"></div>
+
+          <div class="architecture-campus-network-cisco-usage-list" aria-label="Keyboard and pointer controls">
+            <div class="architecture-campus-network-cisco-usage-row">
+              <span class="architecture-campus-network-cisco-usage-keys">
+                <kbd>←</kbd>
+                <kbd>↑</kbd>
+                <kbd>↓</kbd>
+                <kbd>→</kbd>
+              </span>
+              <span>move selected box</span>
+            </div>
+            <div class="architecture-campus-network-cisco-usage-row">
+              <span class="architecture-campus-network-cisco-usage-keys">
+                <kbd>Shift</kbd>
+                <kbd>+</kbd>
+                <kbd>Arrows</kbd>
+              </span>
+              <span>move faster</span>
+            </div>
+            <div class="architecture-campus-network-cisco-usage-row">
+              <span class="architecture-campus-network-cisco-usage-keys">
+                <kbd>Alt</kbd>
+                <kbd>+</kbd>
+                <kbd>Arrows</kbd>
+              </span>
+              <span>resize selected box</span>
+            </div>
+            <div class="architecture-campus-network-cisco-usage-row">
+              <span class="architecture-campus-network-cisco-usage-keys">
+                <kbd>Mouse</kbd>
+                <kbd>Drag</kbd>
+              </span>
+              <span>reposition box</span>
+            </div>
+            <div class="architecture-campus-network-cisco-usage-row">
+              <span class="architecture-campus-network-cisco-usage-keys">
+                <kbd>Cmd / Ctrl</kbd>
+                <kbd>+</kbd>
+                <kbd>Z</kbd>
+              </span>
+              <span>undo stage edit</span>
+            </div>
+            <div class="architecture-campus-network-cisco-usage-row">
+              <span class="architecture-campus-network-cisco-usage-keys">
+                <kbd>Ctrl / Cmd</kbd>
+                <kbd>Wheel</kbd>
+              </span>
+              <span>zoom stage by 1%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {# ns:end family.architecture.workspace.06_result-diagram #}
+    </section>
+
+    <section class="tool-shell tool-output-shell" id="architectureCampusNetworkCiscoOutputShell" data-section="table-export" data-root-selector=".architecture-campus-network-cisco-tool">
+      <div class="tool-empty-state" id="architectureCampusNetworkCiscoOutputEmpty">Generate an architecture diagram to review technical inventory, service mix, and exportable JSON.</div>
+
+      <div class="architecture-campus-network-cisco-output-content d-none" id="architectureCampusNetworkCiscoOutputContent">
+        <div class="architecture-campus-network-cisco-output-shell">
+          {# ns:start family.architecture.workspace.07_score-card #}
+          <div class="architecture-campus-network-cisco-output-summary">
+            <div class="architecture-campus-network-cisco-output-status-card" data-section="score-card" data-root-selector=".architecture-campus-network-cisco-tool" aria-live="polite">
+              <div class="architecture-campus-network-cisco-score-card" id="architectureCampusNetworkCiscoOutputStatus">
+                <div class="architecture-campus-network-cisco-score-kicker">Architecture Score</div>
+                <div class="architecture-campus-network-cisco-score-summary">Ready</div>
+                <div class="architecture-campus-network-cisco-score-detail">Generate a topology to score the campus draft.</div>
+              </div>
+            </div>
+          </div>
+          {# ns:end family.architecture.workspace.07_score-card #}
+
+          {# ns:start family.architecture.workspace.08_sort-card #}
+          <div class="architecture-campus-network-cisco-toolbar tool-output-toolbar">
+            <div class="architecture-campus-network-cisco-toolbar-main">
+              <label for="architectureCampusNetworkCiscoInventorySort" class="architecture-campus-network-cisco-sort-label">Sort</label>
+              <div class="architecture-campus-network-cisco-sort-wrap">
+                <details class="architecture-campus-network-cisco-sort-select" id="architectureCampusNetworkCiscoInventorySortSelect">
+                  <summary class="architecture-campus-network-cisco-sort-summary">
+                    <span id="architectureCampusNetworkCiscoInventorySortSummary">ID</span>
+                  </summary>
+
+                  <div class="architecture-campus-network-cisco-sort-menu">
+                    <div class="architecture-campus-network-cisco-sort-grid">
+                      <button type="button" class="architecture-campus-network-cisco-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
+                      <button type="button" class="architecture-campus-network-cisco-sort-option" data-sort-value="component" aria-pressed="false">Component</button>
+                      <button type="button" class="architecture-campus-network-cisco-sort-option" data-sort-value="placement" aria-pressed="false">Placement</button>
+                    </div>
+                  </div>
+                </details>
+                <input type="hidden" id="architectureCampusNetworkCiscoInventorySort" value="id">
+              </div>
+            </div>
+
+            <div class="tool-output-actions">
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCampusNetworkCiscoExportPng">
+                <i class="bi bi-image" aria-hidden="true"></i>
+                <span data-button-label>Export PNG</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCampusNetworkCiscoDownloadSvg">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download SVG</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCampusNetworkCiscoCopyJson">
+                <i class="bi bi-clipboard" aria-hidden="true"></i>
+                <span data-button-label>Copy JSON</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCampusNetworkCiscoDownloadJson">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download JSON</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-ghost" id="architectureCampusNetworkCiscoImportJsonButton">
+                <i class="bi bi-upload" aria-hidden="true"></i>
+                <span data-button-label>Import JSON</span>
+              </button>
+            </div>
+          </div>
+          {# ns:end family.architecture.workspace.08_sort-card #}
+
+          {# ns:start family.architecture.workspace.09_result-table #}
+          <div class="architecture-campus-network-cisco-tabs-shell">
+            <div class="tool-tabs" role="tablist" aria-label="Cisco campus output views">
+              <button type="button" class="tool-tab-btn architecture-campus-network-cisco-tab-btn active" id="architectureCampusNetworkCiscoInventoryTab" data-output-tab-target="architectureCampusNetworkCiscoInventoryPanel" data-tab-target="architectureCampusNetworkCiscoInventoryPanel" role="tab" aria-controls="architectureCampusNetworkCiscoInventoryPanel" aria-selected="true" tabindex="0">
+                <i class="bi bi-list-check" aria-hidden="true"></i>
+                <span>Technical Inventory</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-campus-network-cisco-tab-btn" id="architectureCampusNetworkCiscoNotesTab" data-output-tab-target="architectureCampusNetworkCiscoNotesPanel" data-tab-target="architectureCampusNetworkCiscoNotesPanel" role="tab" aria-controls="architectureCampusNetworkCiscoNotesPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-card-text" aria-hidden="true"></i>
+                <span>Prompt Notes</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-campus-network-cisco-tab-btn" id="architectureCampusNetworkCiscoPillarTab" data-output-tab-target="architectureCampusNetworkCiscoPillarPanel" data-tab-target="architectureCampusNetworkCiscoPillarPanel" role="tab" aria-controls="architectureCampusNetworkCiscoPillarPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-bar-chart-line" aria-hidden="true"></i>
+                <span>Pillar Breakdown</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-campus-network-cisco-tab-btn" id="architectureCampusNetworkCiscoRiskTab" data-output-tab-target="architectureCampusNetworkCiscoRiskPanel" data-tab-target="architectureCampusNetworkCiscoRiskPanel" role="tab" aria-controls="architectureCampusNetworkCiscoRiskPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-shield-check" aria-hidden="true"></i>
+                <span>Risk Level</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-campus-network-cisco-tab-btn" id="architectureCampusNetworkCiscoJsonTab" data-output-tab-target="architectureCampusNetworkCiscoJsonPanel" data-tab-target="architectureCampusNetworkCiscoJsonPanel" role="tab" aria-controls="architectureCampusNetworkCiscoJsonPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-braces" aria-hidden="true"></i>
+                <span>JSON</span>
+              </button>
+            </div>
+
+            <div class="tool-tab-panel architecture-campus-network-cisco-tab-panel active" id="architectureCampusNetworkCiscoInventoryPanel" data-output-panel role="tabpanel" aria-labelledby="architectureCampusNetworkCiscoInventoryTab">
+              <div class="architecture-campus-network-cisco-table-card" id="architectureCampusNetworkCiscoInventorySection">
+                <div class="architecture-campus-network-cisco-table-header">
+                  <h3 class="architecture-campus-network-cisco-result-section-title" id="architectureCampusNetworkCiscoInventoryTitle">Technical Inventory</h3>
+                </div>
+                <div class="architecture-campus-network-cisco-table-wrap">
+                  <table class="table architecture-campus-network-cisco-table mb-0">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Component</th>
+                        <th scope="col">Placement</th>
+                        <th scope="col">Purpose</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="architectureCampusNetworkCiscoInventoryTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-tab-panel architecture-campus-network-cisco-tab-panel" id="architectureCampusNetworkCiscoNotesPanel" data-output-panel role="tabpanel" aria-labelledby="architectureCampusNetworkCiscoNotesTab" hidden>
+              <div class="architecture-campus-network-cisco-prompt-notes-card" id="architectureCampusNetworkCiscoPromptNotes">
+                <h3 class="architecture-campus-network-cisco-result-section-title">Prompt Notes</h3>
+                <div class="architecture-campus-network-cisco-note-grid">
+                  <section class="architecture-campus-network-cisco-note-card">
+                    <h4 class="architecture-campus-network-cisco-note-title">Prompt summary</h4>
+                    <p class="architecture-campus-network-cisco-note-copy" id="architectureCampusNetworkCiscoPromptSummary"></p>
+                  </section>
+                  <section class="architecture-campus-network-cisco-note-card">
+                    <h4 class="architecture-campus-network-cisco-note-title">Detected keywords</h4>
+                    <ul class="architecture-campus-network-cisco-note-list" id="architectureCampusNetworkCiscoKeywordList"></ul>
+                  </section>
+                  <section class="architecture-campus-network-cisco-note-card">
+                    <h4 class="architecture-campus-network-cisco-note-title">Applied assumptions</h4>
+                    <ul class="architecture-campus-network-cisco-note-list" id="architectureCampusNetworkCiscoAssumptionList"></ul>
+                  </section>
+                  <section class="architecture-campus-network-cisco-note-card">
+                    <h4 class="architecture-campus-network-cisco-note-title">Current model</h4>
+                    <ul class="architecture-campus-network-cisco-note-list" id="architectureCampusNetworkCiscoModelList"></ul>
+                  </section>
+                  <section class="architecture-campus-network-cisco-note-card">
+                    <h4 class="architecture-campus-network-cisco-note-title">Pros</h4>
+                    <ul class="architecture-campus-network-cisco-note-list" id="architectureCampusNetworkCiscoProsList"></ul>
+                  </section>
+                  <section class="architecture-campus-network-cisco-note-card">
+                    <h4 class="architecture-campus-network-cisco-note-title">Review points</h4>
+                    <ul class="architecture-campus-network-cisco-note-list" id="architectureCampusNetworkCiscoConsList"></ul>
+                  </section>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-tab-panel architecture-campus-network-cisco-tab-panel" id="architectureCampusNetworkCiscoPillarPanel" data-output-panel role="tabpanel" aria-labelledby="architectureCampusNetworkCiscoPillarTab" hidden>
+              <section class="architecture-campus-network-cisco-assessment-card architecture-campus-network-cisco-pillar-card" id="architectureCampusNetworkCiscoPillarBreakdown" aria-label="Pillar breakdown"></section>
+            </div>
+
+            <div class="tool-tab-panel architecture-campus-network-cisco-tab-panel" id="architectureCampusNetworkCiscoRiskPanel" data-output-panel role="tabpanel" aria-labelledby="architectureCampusNetworkCiscoRiskTab" hidden>
+              <section class="architecture-campus-network-cisco-assessment-card architecture-campus-network-cisco-risk-card" id="architectureCampusNetworkCiscoRiskLevel" aria-label="Risk level"></section>
+            </div>
+
+            <div class="tool-tab-panel architecture-campus-network-cisco-tab-panel" id="architectureCampusNetworkCiscoJsonPanel" data-output-panel role="tabpanel" aria-labelledby="architectureCampusNetworkCiscoJsonTab" hidden>
+              <div class="tool-json-shell architecture-campus-network-cisco-json-shell" id="architectureCampusNetworkCiscoJsonShell">
+                <div class="architecture-campus-network-cisco-json-header">
+                  <div>
+                    <h3 class="architecture-campus-network-cisco-json-title">Restorable state</h3>
+                    <p>JSON preserves editable Cisco campus topology state.</p>
+                  </div>
+                </div>
+                <pre class="architecture-campus-network-cisco-json-code" id="architectureCampusNetworkCiscoJsonOutput"></pre>
+              </div>
+            </div>
+          </div>
+          {# ns:end family.architecture.workspace.09_result-table #}
+        </div>
+      </div>
+
+      <input type="file" id="architectureCampusNetworkCiscoImportJson" class="d-none" accept="application/json">
+    </section>
+  </div>
+</div>

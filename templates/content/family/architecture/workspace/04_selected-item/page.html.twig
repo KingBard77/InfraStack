@@ -1,0 +1,54 @@
+{# Source section: 04_selected-item #}
+          <div class="tool-inspector-section __PREFIX__-selected-section" id="__DOM_PREFIX__SelectedShell">
+            <h3 class="__PREFIX__-section-title">Selected item</h3>
+
+            <p class="__PREFIX__-selected-empty __PREFIX__-selected-empty-chips" id="__DOM_PREFIX__SelectedEmpty" aria-label="Select a draggable box in the stage to move, resize, or highlight it. Select a line to adjust its arrow handles. Arrow keys move the selected box; Shift moves faster; Alt + arrow keys resize; Cmd/Ctrl + Z undoes the last stage edit.">
+              <span class="__PREFIX__-selected-empty-copy">
+                <span class="__PREFIX__-selected-hint-chip __PREFIX__-selected-hint-chip-select"><i class="bi bi-cursor" aria-hidden="true"></i>Select a draggable box</span>
+                <span class="__PREFIX__-selected-hint-chip __PREFIX__-selected-hint-chip-action"><i class="bi bi-bezier2" aria-hidden="true"></i>Select a line to adjust arrows</span>
+                <span class="__PREFIX__-selected-hint-chip __PREFIX__-selected-hint-chip-action"><i class="bi bi-arrows-move" aria-hidden="true"></i>Move, resize, or highlight</span>
+                <span class="__PREFIX__-selected-hint-chip __PREFIX__-selected-hint-chip-keyboard"><i class="bi bi-arrow-up-right-square" aria-hidden="true"></i>Arrow keys move selected box</span>
+                <span class="__PREFIX__-selected-hint-chip __PREFIX__-selected-hint-chip-keyboard"><i class="bi bi-shift" aria-hidden="true"></i>Shift moves faster</span>
+                <span class="__PREFIX__-selected-hint-chip __PREFIX__-selected-hint-chip-resize"><i class="bi bi-aspect-ratio" aria-hidden="true"></i>Alt + arrow keys resize</span>
+                <span class="__PREFIX__-selected-hint-chip __PREFIX__-selected-hint-chip-undo"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>Cmd/Ctrl + Z undoes last edit</span>
+              </span>
+            </p>
+
+            <div class="__PREFIX__-selected-editor d-none" id="__DOM_PREFIX__SelectedEditor">
+              <div class="__PREFIX__-selected-name" id="__DOM_PREFIX__SelectedName"></div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="__DOM_PREFIX__SelectedX">X position</label>
+                <div class="tool-control-field">
+                  <input type="number" id="__DOM_PREFIX__SelectedX" class="form-control" min="0" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="__DOM_PREFIX__SelectedY">Y position</label>
+                <div class="tool-control-field">
+                  <input type="number" id="__DOM_PREFIX__SelectedY" class="form-control" min="0" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="__DOM_PREFIX__SelectedWidth">Width</label>
+                <div class="tool-control-field">
+                  <input type="number" id="__DOM_PREFIX__SelectedWidth" class="form-control" min="96" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="__DOM_PREFIX__SelectedHeight">Height</label>
+                <div class="tool-control-field">
+                  <input type="number" id="__DOM_PREFIX__SelectedHeight" class="form-control" min="44" step="4">
+                </div>
+              </div>
+
+              <div class="__PREFIX__-selected-actions">
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="__DOM_PREFIX__HighlightCard">Highlight box</button>
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="__DOM_PREFIX__ApplyCardSize">Apply item</button>
+                <button type="button" class="tool-action-btn tool-action-btn-ghost" id="__DOM_PREFIX__ResetCardSize">Reset item</button>
+              </div>
+            </div>
+          </div>

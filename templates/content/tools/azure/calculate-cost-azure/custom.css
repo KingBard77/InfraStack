@@ -1,0 +1,3516 @@
+/* custom.css */
+
+/* ns:start family.calculate.workspace.01_input-brief */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.01_input-brief */
+/* ns:start family.calculate.workspace.02_basic-settings */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.02_basic-settings */
+/* ns:start family.calculate.workspace.03_advanced-settings */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.03_advanced-settings */
+/* ns:start family.calculate.workspace.04_selected-item */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.04_selected-item */
+/* ns:start family.calculate.workspace.05_result-summary */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.05_result-summary */
+/* ns:start family.calculate.workspace.06_result-view */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.06_result-view */
+/* ns:start family.calculate.workspace.07_table-export */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.07_table-export */
+/* ns:start family.calculate.workspace.08_json-restore */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.08_json-restore */
+
+.calculate-cost-azure-tool .tool-box {
+    --calculate-cost-azure-bg-shell: #f5fbff;
+    --calculate-cost-azure-bg-soft: #e8f6ff;
+    --calculate-cost-azure-bg-muted: #f8fbff;
+    --calculate-cost-azure-bg-strong: #dff3ff;
+    --calculate-cost-azure-bg-panel: #ffffff;
+    --calculate-cost-azure-bg-code: #f4f7fb;
+    --calculate-cost-azure-border: #cfe7f8;
+    --calculate-cost-azure-border-soft: #dcecf7;
+    --calculate-cost-azure-border-strong: #67E8F9;
+    --calculate-cost-azure-text: #1E3A8A;
+    --calculate-cost-azure-text-strong: #111827;
+    --calculate-cost-azure-text-body: #1f2937;
+    --calculate-cost-azure-text-muted: #526070;
+    --calculate-cost-azure-text-subtle: #64748b;
+    --calculate-cost-azure-accent: #2563EB;
+    --calculate-cost-azure-accent-strong: #1E3A8A;
+    --calculate-cost-azure-accent-soft: #06B6D4;
+    background: linear-gradient(180deg, #e8f6ff 0%, var(--calculate-cost-azure-bg-shell) 100%);
+    border: 1px solid var(--calculate-cost-azure-border);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 32px;
+}
+
+.tool-intro:has(+ .calculate-cost-azure-tool) .tool-main-description {
+    width: 100%;
+    max-width: none;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.calculate-cost-azure-form,
+.calculate-cost-azure-basic-panel,
+.calculate-cost-azure-advanced-body,
+.calculate-cost-azure-field-stack,
+.calculate-cost-azure-inline-grid,
+.calculate-cost-azure-card-grid,
+.calculate-cost-azure-basis-grid,
+.calculate-cost-azure-toggle-grid,
+.calculate-cost-azure-service-grid,
+.calculate-cost-azure-override-grid,
+.calculate-cost-azure-stat-grid,
+.calculate-cost-azure-recommendation-grid,
+.calculate-cost-azure-method-grid,
+.calculate-cost-azure-result-panel,
+.calculate-cost-azure-result-content,
+.calculate-cost-azure-result-summary,
+.calculate-cost-azure-toolbar-left,
+.calculate-cost-azure-toolbar-actions,
+.calculate-cost-azure-tab-panel {
+    display: grid;
+    gap: 16px;
+}
+
+.calculate-cost-azure-form {
+    gap: 18px;
+}
+
+.calculate-cost-azure-form,
+.calculate-cost-azure-setting-field,
+.calculate-cost-azure-field-stack,
+.calculate-cost-azure-inline-grid,
+.calculate-cost-azure-card-grid,
+.calculate-cost-azure-basis-grid,
+.calculate-cost-azure-toggle-grid,
+.calculate-cost-azure-service-grid,
+.calculate-cost-azure-override-grid,
+.calculate-cost-azure-stat-grid,
+.calculate-cost-azure-recommendation-grid,
+.calculate-cost-azure-method-grid,
+.calculate-cost-azure-result-panel,
+.calculate-cost-azure-result-content,
+.calculate-cost-azure-result-summary,
+.calculate-cost-azure-toolbar-shell,
+.calculate-cost-azure-toolbar.tool-result-toolbar,
+.calculate-cost-azure-toolbar-left,
+.calculate-cost-azure-toolbar-actions,
+.calculate-cost-azure-tabs,
+.calculate-cost-azure-tab-panel,
+.calculate-cost-azure-section-card.tool-result-section-card,
+.calculate-cost-azure-json-wrap.tool-json-panel {
+    min-width: 0;
+}
+
+.calculate-cost-azure-main-row {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 16px;
+    align-items: center;
+}
+
+.calculate-cost-azure-main-label,
+.calculate-cost-azure-setting-label {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--calculate-cost-azure-text);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.calculate-cost-azure-setting-label {
+    font-size: 14px;
+}
+
+.calculate-cost-azure-main-input-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.calculate-cost-azure-main-actions {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.calculate-cost-azure-main-actions > .calculate-cost-azure-submit-btn,
+.calculate-cost-azure-main-actions > .calculate-cost-azure-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    width: auto;
+    padding: 0 22px;
+    white-space: nowrap;
+}
+
+.calculate-cost-azure-form .form-control,
+.calculate-cost-azure-form .form-select {
+    min-height: 46px;
+    border: 1px solid #b9d9ef;
+    border-radius: 12px;
+    background: var(--calculate-cost-azure-bg-panel);
+    color: #3f3f46;
+    box-shadow: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.calculate-cost-azure-form .form-control::placeholder,
+.calculate-cost-azure-form textarea.form-control::placeholder {
+    color: #a8a29e;
+    opacity: 1;
+}
+
+.calculate-cost-azure-form .form-control:hover,
+.calculate-cost-azure-form .form-select:hover {
+    border-color: #8fc5e8;
+}
+
+.calculate-cost-azure-form .form-control:focus,
+.calculate-cost-azure-form .form-select:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.calculate-cost-azure-form .form-control:disabled,
+.calculate-cost-azure-form .form-select:disabled {
+    background: #f4fbff;
+    border-color: #cfe7f8;
+    color: #a8a29e;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.calculate-cost-azure-input-group {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+    min-height: 46px;
+    border: 1px solid #b9d9ef;
+    border-radius: 12px;
+    background: var(--calculate-cost-azure-bg-panel);
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.calculate-cost-azure-input-group:hover {
+    border-color: #8fc5e8;
+}
+
+.calculate-cost-azure-input-group:focus-within {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.calculate-cost-azure-input-group:has(.form-control:disabled) {
+    background: #f4fbff;
+    border-color: #cfe7f8;
+}
+
+.calculate-cost-azure-input-group > .form-control.calculate-cost-azure-input-group-control {
+    min-height: 44px;
+    width: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.calculate-cost-azure-input-group > .form-control.calculate-cost-azure-input-group-control:hover,
+.calculate-cost-azure-input-group > .form-control.calculate-cost-azure-input-group-control:focus,
+.calculate-cost-azure-input-group > .form-control.calculate-cost-azure-input-group-control:focus-visible {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+}
+
+.calculate-cost-azure-input-group > .form-control.calculate-cost-azure-input-group-control:disabled {
+    background: transparent;
+}
+
+.calculate-cost-azure-input-addon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    background: #e8f6ff;
+    color: var(--calculate-cost-azure-text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.calculate-cost-azure-input-addon--prefix {
+    border-right: 1px solid #b9d9ef;
+    color: var(--calculate-cost-azure-text);
+}
+
+.calculate-cost-azure-input-addon--suffix {
+    border-left: 1px solid #b9d9ef;
+}
+
+.calculate-cost-azure-input-group:has(.form-control:disabled) .calculate-cost-azure-input-addon {
+    background: #f4fbff;
+    border-color: #cfe7f8;
+    color: #a8a29e;
+}
+
+.calculate-cost-azure-submit-btn,
+.calculate-cost-azure-submit-btn.btn,
+.calculate-cost-azure-submit-btn.btn-primary {
+    --bs-btn-bg: var(--calculate-cost-azure-accent);
+    --bs-btn-border-color: var(--calculate-cost-azure-accent);
+    --bs-btn-hover-bg: var(--calculate-cost-azure-accent-strong);
+    --bs-btn-hover-border-color: var(--calculate-cost-azure-accent-strong);
+    --bs-btn-active-bg: var(--calculate-cost-azure-accent-strong);
+    --bs-btn-active-border-color: var(--calculate-cost-azure-accent-strong);
+    --bs-btn-disabled-bg: var(--calculate-cost-azure-accent);
+    --bs-btn-disabled-border-color: var(--calculate-cost-azure-accent);
+    --bs-btn-color: #ffffff;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-disabled-color: #ffffff;
+    --bs-btn-focus-shadow-rgb: 194, 65, 12;
+    min-height: 46px;
+    border-radius: 12px;
+    background: var(--calculate-cost-azure-accent);
+    border-color: var(--calculate-cost-azure-accent);
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.calculate-cost-azure-submit-btn:hover,
+.calculate-cost-azure-submit-btn:focus,
+.calculate-cost-azure-submit-btn:focus-visible,
+.calculate-cost-azure-submit-btn:active {
+    background: var(--calculate-cost-azure-accent-strong) !important;
+    border-color: var(--calculate-cost-azure-accent-strong) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.calculate-cost-azure-submit-btn[disabled] {
+    opacity: 0.78;
+    cursor: wait;
+}
+
+.calculate-cost-azure-secondary-btn,
+.calculate-cost-azure-action-btn,
+.calculate-cost-azure-copy-btn {
+    border: 1px solid #b9d9ef;
+    background: var(--calculate-cost-azure-bg-panel);
+    color: var(--calculate-cost-azure-text);
+    font-weight: 700;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calculate-cost-azure-secondary-btn {
+    min-height: 46px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.calculate-cost-azure-action-btn {
+    min-height: 40px;
+    border-radius: 999px;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.calculate-cost-azure-action-btn i {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.calculate-cost-azure-copy-btn {
+    width: 30px;
+    height: 30px;
+    min-height: 0;
+    border-radius: 8px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.calculate-cost-azure-secondary-btn:hover,
+.calculate-cost-azure-secondary-btn:focus,
+.calculate-cost-azure-secondary-btn:focus-visible,
+.calculate-cost-azure-action-btn:hover,
+.calculate-cost-azure-action-btn:focus,
+.calculate-cost-azure-action-btn:focus-visible,
+.calculate-cost-azure-copy-btn:hover,
+.calculate-cost-azure-copy-btn:focus,
+.calculate-cost-azure-copy-btn:focus-visible {
+    border-color: #67E8F9;
+    background: var(--calculate-cost-azure-bg-strong);
+    color: var(--calculate-cost-azure-accent);
+    box-shadow: none;
+    outline: none;
+}
+
+.calculate-cost-azure-copy-btn.copied {
+    border-color: #86efac;
+    background: #ecfdf5;
+    color: #15803d;
+}
+
+.calculate-cost-azure-copy-btn.failed {
+    border-color: #fecaca;
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.calculate-cost-azure-reset-btn {
+    min-width: 104px;
+}
+
+.calculate-cost-azure-inner-panel,
+.calculate-cost-azure-service-card,
+.calculate-cost-azure-basis-card,
+.calculate-cost-azure-recommendation-card,
+.calculate-cost-azure-method-card,
+.calculate-cost-azure-summary-panel,
+.calculate-cost-azure-section-card.tool-result-section-card {
+    border: 1px solid var(--calculate-cost-azure-border);
+    border-radius: 18px;
+    background: var(--calculate-cost-azure-bg-panel);
+}
+
+.calculate-cost-azure-inner-panel {
+    padding: 18px;
+    overflow: visible;
+}
+
+.calculate-cost-azure-setting-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 18px;
+    align-items: start;
+    padding: 12px 0;
+}
+
+.calculate-cost-azure-setting-row:not(:last-child) {
+    border-bottom: 1px solid #cfe7f8;
+}
+
+.calculate-cost-azure-setting-row-stacked {
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.calculate-cost-azure-setting-field {
+    min-width: 0;
+}
+
+.calculate-cost-azure-inline-grid-two,
+.calculate-cost-azure-card-grid-two,
+.calculate-cost-azure-basis-grid,
+.calculate-cost-azure-service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.calculate-cost-azure-inline-grid-preset {
+    grid-template-columns: minmax(0, 1.35fr) minmax(180px, 0.65fr);
+    align-items: end;
+}
+
+.calculate-cost-azure-card-grid-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.calculate-cost-azure-card-span-two {
+    grid-column: 1 / -1;
+}
+
+.calculate-cost-azure-toggle-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.calculate-cost-azure-override-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 18px;
+}
+
+.calculate-cost-azure-service-grid {
+    margin-top: 18px;
+    align-items: stretch;
+}
+
+.calculate-cost-azure-service-card {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    padding: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    overflow: visible;
+}
+
+.calculate-cost-azure-service-card.is-disabled {
+    border-color: #dcecf7;
+    background: linear-gradient(180deg, #f8fbff 0%, #f4fbff 100%);
+}
+
+.calculate-cost-azure-service-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.calculate-cost-azure-service-title {
+    margin: 0 0 4px;
+    color: var(--calculate-cost-azure-text);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.calculate-cost-azure-service-copy {
+    margin: 0;
+    color: var(--calculate-cost-azure-text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.calculate-cost-azure-service-body {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+}
+
+.calculate-cost-azure-field-stack {
+    gap: 8px;
+    align-content: start;
+    position: relative;
+}
+
+.calculate-cost-azure-field-stack > .form-control,
+.calculate-cost-azure-field-stack > .calculate-cost-azure-select,
+.calculate-cost-azure-field-stack > .calculate-cost-azure-input-group {
+    width: 100%;
+}
+
+.calculate-cost-azure-field-label,
+.calculate-cost-azure-basis-label,
+.calculate-cost-azure-method-label,
+.calculate-cost-azure-stat-label,
+.calculate-cost-azure-summary-route-label {
+    color: var(--calculate-cost-azure-accent-strong);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.calculate-cost-azure-field-label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    line-height: 1.45;
+}
+
+.calculate-cost-azure-basis-card,
+.calculate-cost-azure-recommendation-card,
+.calculate-cost-azure-method-card,
+.calculate-cost-azure-stat-card {
+    display: grid;
+    gap: 8px;
+    padding: 16px;
+}
+
+.calculate-cost-azure-basis-card,
+.calculate-cost-azure-recommendation-card,
+.calculate-cost-azure-method-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.calculate-cost-azure-basis-value,
+.calculate-cost-azure-method-title {
+    color: var(--calculate-cost-azure-text-body);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.calculate-cost-azure-basis-note,
+.calculate-cost-azure-recommendation-copy,
+.calculate-cost-azure-method-copy,
+.calculate-cost-azure-stat-note {
+    color: var(--calculate-cost-azure-text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.calculate-cost-azure-inline-note {
+    display: flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid #67E8F9;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #f8fbff 0%, #e8f6ff 100%);
+    color: var(--calculate-cost-azure-text);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.calculate-cost-azure-inline-grid-regional {
+    grid-template-columns: minmax(0, 180px) minmax(280px, 1fr);
+    align-items: start;
+    max-width: 760px;
+    gap: 14px;
+}
+
+.calculate-cost-azure-field-stack-compact {
+    max-width: 180px;
+}
+
+.calculate-cost-azure-override-card {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    padding: 16px;
+    border: 1px solid var(--calculate-cost-azure-border);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.calculate-cost-azure-override-card-head {
+    display: grid;
+    gap: 4px;
+}
+
+.calculate-cost-azure-override-card-title {
+    margin: 0;
+    color: var(--calculate-cost-azure-text);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.calculate-cost-azure-override-card-body {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr;
+    align-items: start;
+}
+
+.calculate-cost-azure-override-card--single .calculate-cost-azure-override-card-body {
+    grid-template-columns: 1fr;
+}
+
+.calculate-cost-azure-override-card-body .calculate-cost-azure-card-span-two {
+    grid-column: auto;
+}
+
+.calculate-cost-azure-custom-instance-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.calculate-cost-azure-custom-instance-grid .calculate-cost-azure-field-stack:first-child {
+    grid-column: 1 / -1;
+}
+
+.calculate-cost-azure-field-hint {
+    margin: -2px 0 0;
+    color: var(--calculate-cost-azure-text-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.calculate-cost-azure-select {
+    position: relative;
+    width: 100%;
+    border: 1px solid #b9d9ef;
+    border-radius: 12px;
+    background: var(--calculate-cost-azure-bg-panel);
+    overflow: visible;
+}
+
+.calculate-cost-azure-select[open] {
+    z-index: 80;
+}
+
+.calculate-cost-azure-select.is-disabled {
+    opacity: 0.72;
+    pointer-events: none;
+}
+
+.calculate-cost-azure-select-summary {
+    list-style: none;
+    position: relative;
+    min-height: 46px;
+    padding: 11px 40px 11px 14px;
+    border-radius: 12px;
+    background: var(--calculate-cost-azure-bg-panel);
+    color: #3f3f46;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.calculate-cost-azure-select-summary span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.calculate-cost-azure-select-summary::-webkit-details-marker {
+    display: none;
+}
+
+.calculate-cost-azure-select-summary::after {
+    content: "";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--calculate-cost-azure-text);
+    border-bottom: 2px solid var(--calculate-cost-azure-text);
+    transform: translateY(-50%) rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.calculate-cost-azure-select[open] .calculate-cost-azure-select-summary::after {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.calculate-cost-azure-select:not([open]) .calculate-cost-azure-select-summary::after {
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+.calculate-cost-azure-select-body {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 90;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    max-height: min(70vh, 420px);
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #b9d9ef;
+    border-radius: 14px;
+    background: var(--calculate-cost-azure-bg-panel);
+    box-shadow: 0 18px 42px rgba(7, 89, 133, 0.16);
+}
+
+.calculate-cost-azure-select-grid {
+    display: grid;
+    gap: 8px;
+}
+
+.calculate-cost-azure-select-grid-two {
+    grid-template-columns: 1fr;
+}
+
+.calculate-cost-azure-select-grid-list {
+    grid-template-columns: 1fr;
+}
+
+.calculate-cost-azure-select-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: var(--calculate-cost-azure-bg-panel);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calculate-cost-azure-select-card:hover {
+    border-color: #67E8F9;
+    background: #e8f6ff;
+}
+
+.calculate-cost-azure-select-card input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.calculate-cost-azure-select-card:has(input:checked) {
+    border-color: #67E8F9;
+    background: var(--calculate-cost-azure-bg-strong);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.14);
+}
+
+.calculate-cost-azure-select-title {
+    color: var(--calculate-cost-azure-text-body);
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+#calculateCostAzureSortSelect .calculate-cost-azure-select-body {
+    padding: 6px;
+    border-radius: 10px;
+}
+
+#calculateCostAzureSortSelect .calculate-cost-azure-select-card {
+    min-height: 38px;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+#calculateCostAzureSortSelect .calculate-cost-azure-select-title {
+    font-size: 13px;
+    line-height: 1.25;
+}
+
+.calculate-cost-azure-field-stack:has(.calculate-cost-azure-select[open]),
+.calculate-cost-azure-toolbar-left:has(.calculate-cost-azure-select[open]) {
+    z-index: 80;
+}
+
+.calculate-cost-azure-advanced {
+    border: 1px solid var(--calculate-cost-azure-border);
+    border-radius: 18px;
+    background: var(--calculate-cost-azure-bg-muted);
+    overflow: hidden;
+}
+
+.calculate-cost-azure-advanced-summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #e8f6ff;
+    border-bottom: 1px solid #cfe7f8;
+    color: var(--calculate-cost-azure-text);
+    font-size: 15px;
+    font-weight: 700;
+    user-select: none;
+}
+
+.calculate-cost-azure-advanced-summary::-webkit-details-marker {
+    display: none;
+}
+
+.calculate-cost-azure-advanced-summary::after {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--calculate-cost-azure-text);
+    border-bottom: 2px solid var(--calculate-cost-azure-text);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.calculate-cost-azure-advanced:not([open]) .calculate-cost-azure-advanced-summary::after {
+    transform: rotate(-45deg);
+}
+
+.calculate-cost-azure-advanced-body {
+    padding: 14px;
+    background: var(--calculate-cost-azure-bg-muted);
+}
+
+.calculate-cost-azure-switch-card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    min-height: 54px;
+    padding: 10px 12px;
+    border: 1px solid var(--calculate-cost-azure-border);
+    border-radius: 14px;
+    background: var(--calculate-cost-azure-bg-panel);
+}
+
+.calculate-cost-azure-switch-wrap {
+    flex-shrink: 0;
+}
+
+.info-dot {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #67E8F9;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f6ff;
+    color: var(--calculate-cost-azure-accent-strong);
+    cursor: help;
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.info-dot:hover,
+.info-dot:focus-visible {
+    border-color: var(--calculate-cost-azure-border-strong);
+    background: var(--calculate-cost-azure-bg-strong);
+    color: var(--calculate-cost-azure-accent);
+    outline: none;
+}
+
+.switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.switch input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+
+.slider {
+    position: relative;
+    width: 48px;
+    height: 28px;
+    border-radius: 999px;
+    background: #e7e5e4;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.switch input:checked + .slider {
+    background: var(--calculate-cost-azure-accent-soft);
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(20px);
+}
+
+.switch input:disabled + .slider {
+    opacity: 0.75;
+}
+
+.calculate-cost-azure-switch-label {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.calculate-cost-azure-result-panel {
+    margin-top: 18px;
+}
+
+.calculate-cost-azure-result-empty,
+.calculate-cost-azure-result-error {
+    padding: 18px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.calculate-cost-azure-result-empty {
+    border: 1px dashed #67E8F9;
+    background: linear-gradient(180deg, #f8fbff 0%, #e8f6ff 100%);
+    color: var(--calculate-cost-azure-text);
+}
+
+.calculate-cost-azure-result-error {
+    border: 1px solid #fecaca;
+    background: #fff5f5;
+    color: #b91c1c;
+}
+
+.calculate-cost-azure-result-content {
+    gap: 18px;
+}
+
+.calculate-cost-azure-overview {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.68fr) minmax(0, 1.32fr);
+    gap: 16px;
+    align-items: stretch;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid rgba(125, 211, 252, 0.54);
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 12% 20%, rgba(224, 242, 254, 0.54), transparent 28%),
+        linear-gradient(180deg, rgba(240, 249, 255, 0.96) 0%, rgba(248, 251, 255, 0.98) 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+        0 14px 30px rgba(7, 89, 133, 0.05);
+}
+
+.calculate-cost-azure-spend-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: 16px;
+    align-content: center;
+    justify-items: center;
+    min-height: 100%;
+    padding: 22px 18px;
+    border: 1px solid rgba(125, 211, 252, 0.58);
+    border-radius: 16px;
+    background:
+        radial-gradient(circle at 74% 18%, rgba(6, 182, 212, 0.18), transparent 30%),
+        radial-gradient(circle at 18% 90%, rgba(224, 242, 254, 0.84), transparent 38%),
+        linear-gradient(180deg, #f8fbff 0%, #e8f6ff 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.82),
+        0 10px 24px rgba(7, 89, 133, 0.06);
+}
+
+.calculate-cost-azure-spend-ring {
+    position: relative;
+    width: 158px;
+    height: 158px;
+    display: grid;
+    place-items: center;
+    justify-self: center;
+    border-radius: 999px;
+    background:
+        conic-gradient(from -90deg, #06B6D4 var(--progress-angle), rgba(224, 242, 254, 0.96) 0deg),
+        linear-gradient(145deg, #ffffff, #dff3ff);
+    box-shadow:
+        0 18px 34px rgba(7, 89, 133, 0.14),
+        inset 0 0 0 1px rgba(125, 211, 252, 0.26);
+    isolation: isolate;
+}
+
+.calculate-cost-azure-spend-ring[data-chart-ready="true"] {
+    background:
+        radial-gradient(circle at 50% 50%, #f8fbff 0 56%, rgba(224, 242, 254, 0.74) 57% 71%, #f8fbff 72% 100%),
+        linear-gradient(145deg, #ffffff, #dff3ff);
+}
+
+.calculate-cost-azure-spend-chart {
+    position: absolute;
+    inset: 3px;
+    z-index: 0;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.calculate-cost-azure-spend-ring::before {
+    content: "";
+    width: 108px;
+    height: 108px;
+    grid-area: 1 / 1;
+    border-radius: 999px;
+    background:
+        radial-gradient(circle at 50% 22%, #ffffff 0%, #f8fbff 48%, #e8f6ff 100%);
+    box-shadow:
+        inset 0 0 0 1px rgba(125, 211, 252, 0.38),
+        0 8px 18px rgba(7, 89, 133, 0.08);
+    z-index: 1;
+}
+
+.calculate-cost-azure-spend-ring::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.66);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.calculate-cost-azure-spend-value {
+    position: relative;
+    z-index: 3;
+    grid-area: 1 / 1;
+    text-align: center;
+}
+
+.calculate-cost-azure-spend-value strong {
+    display: block;
+    color: var(--calculate-cost-azure-text);
+    font-size: 26px;
+    line-height: 1.1;
+    letter-spacing: 0;
+}
+
+.calculate-cost-azure-spend-value span {
+    display: block;
+    margin-top: 4px;
+    color: var(--calculate-cost-azure-text-subtle);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.calculate-cost-azure-spend-label {
+    justify-self: stretch;
+    color: var(--calculate-cost-azure-text);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: left;
+}
+
+.calculate-cost-azure-spend-copy {
+    justify-self: stretch;
+    color: var(--calculate-cost-azure-text-muted);
+    font-size: 13px;
+    line-height: 1.65;
+    text-align: left;
+}
+
+.calculate-cost-azure-score-panel {
+    width: 100%;
+    min-height: 228px;
+    border: 1px solid rgba(125, 211, 252, 0.66);
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 16% 36%, rgba(224, 242, 254, 0.72), transparent 34%),
+        linear-gradient(100deg, #e8f6ff 0%, #f8fbff 46%, #faf7ff 100%);
+    box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.58);
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+}
+
+.calculate-cost-azure-score-card {
+    display: grid;
+    grid-template-columns: 152px minmax(0, 1fr);
+    align-items: center;
+    gap: 24px;
+    width: min(100%, 760px);
+    min-width: 0;
+    text-align: center;
+}
+
+.calculate-cost-azure-score-ring-card {
+    --calculate-cost-azure-score-label-bg: rgba(240, 249, 255, 0.96);
+    --calculate-cost-azure-score-label-border: rgba(6, 182, 212, 0.32);
+    --calculate-cost-azure-score-label-color: var(--calculate-cost-azure-accent-strong);
+    position: relative;
+    width: 152px;
+    min-height: 166px;
+    border: 0;
+    border-radius: 18px;
+    background: transparent;
+    display: grid;
+    grid-template-rows: auto auto;
+    justify-items: center;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px 10px;
+    outline: none;
+    overflow: visible;
+    transition: transform 0.2s ease;
+}
+
+.calculate-cost-azure-score-ring-card::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    width: 138px;
+    height: 138px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.98) 0 48%, rgba(224, 242, 254, 0.84) 66%, rgba(224, 242, 254, 0.36) 100%);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+        0 18px 34px rgba(7, 89, 133, 0.13),
+        0 0 0 8px rgba(255, 255, 255, 0.42);
+    transform: translateX(-50%);
+    z-index: 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.calculate-cost-azure-score-ring-card-production {
+    --calculate-cost-azure-score-label-bg: rgba(236, 253, 245, 0.96);
+    --calculate-cost-azure-score-label-border: rgba(16, 185, 129, 0.24);
+    --calculate-cost-azure-score-label-color: #047857;
+}
+
+.calculate-cost-azure-score-ring-card-balanced {
+    --calculate-cost-azure-score-label-bg: rgba(245, 243, 255, 0.96);
+    --calculate-cost-azure-score-label-border: rgba(124, 58, 237, 0.22);
+    --calculate-cost-azure-score-label-color: #5b21b6;
+}
+
+.calculate-cost-azure-score-ring-card-review {
+    --calculate-cost-azure-score-label-bg: rgba(254, 242, 242, 0.96);
+    --calculate-cost-azure-score-label-border: rgba(239, 68, 68, 0.22);
+    --calculate-cost-azure-score-label-color: #b91c1c;
+}
+
+.calculate-cost-azure-score-ring-card:hover,
+.calculate-cost-azure-score-ring-card:focus,
+.calculate-cost-azure-score-ring-card:focus-within {
+    transform: translateY(-1px);
+}
+
+.calculate-cost-azure-score-ring-card:hover::before,
+.calculate-cost-azure-score-ring-card:focus::before,
+.calculate-cost-azure-score-ring-card:focus-within::before {
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.92),
+        0 20px 36px rgba(7, 89, 133, 0.16),
+        0 0 0 8px rgba(255, 255, 255, 0.5),
+        0 0 0 12px rgba(6, 182, 212, 0.12);
+}
+
+.calculate-cost-azure-score-value {
+    position: relative;
+    z-index: 1;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    color: var(--calculate-cost-azure-text-strong);
+    display: grid;
+    place-items: center;
+    text-align: center;
+    isolation: isolate;
+}
+
+.calculate-cost-azure-score-value::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.96) 0 34%, rgba(240, 249, 255, 0.72) 58%, rgba(6, 182, 212, 0.16) 100%);
+    filter: drop-shadow(0 10px 14px rgba(6, 182, 212, 0.18));
+    z-index: 0;
+    transition: opacity 0.2s ease;
+}
+
+.calculate-cost-azure-score-value::after {
+    content: "";
+    position: absolute;
+    inset: 25px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow:
+        inset 0 0 0 1px rgba(125, 211, 252, 0.22),
+        inset 0 10px 20px rgba(240, 249, 255, 0.68),
+        0 8px 18px rgba(7, 89, 133, 0.07);
+    z-index: 1;
+}
+
+.calculate-cost-azure-score-value[data-chart-ready="true"]::before,
+.calculate-cost-azure-score-value[data-chart-ready="true"] .calculate-cost-azure-score-ring {
+    opacity: 0;
+}
+
+.calculate-cost-azure-score-echart {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    z-index: 0;
+}
+
+.calculate-cost-azure-score-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    z-index: 0;
+    transition: opacity 0.2s ease;
+}
+
+.calculate-cost-azure-score-ring-track,
+.calculate-cost-azure-score-ring-glow,
+.calculate-cost-azure-score-ring-fill {
+    fill: none;
+}
+
+.calculate-cost-azure-score-ring-track {
+    stroke: rgba(224, 242, 254, 0.96);
+    stroke-linecap: round;
+    stroke-width: 11;
+}
+
+.calculate-cost-azure-score-ring-glow {
+    stroke: var(--calculate-cost-azure-accent-soft);
+    stroke-linecap: round;
+    stroke-width: 18;
+    opacity: 0.16;
+}
+
+.calculate-cost-azure-score-ring-fill {
+    stroke-linecap: round;
+    stroke-width: 11;
+    filter:
+        drop-shadow(0 4px 6px rgba(6, 182, 212, 0.22))
+        drop-shadow(0 0 10px rgba(6, 182, 212, 0.28));
+}
+
+.calculate-cost-azure-score-center {
+    position: relative;
+    z-index: 2;
+    width: 72px;
+    min-width: 0;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 2px;
+    text-align: center;
+}
+
+.calculate-cost-azure-score-value-number {
+    color: var(--calculate-cost-azure-text-strong);
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 0.9;
+    font-variant-numeric: tabular-nums;
+}
+
+.calculate-cost-azure-score-caption {
+    color: var(--calculate-cost-azure-text-muted);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.calculate-cost-azure-score-label {
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    min-height: 28px;
+    border-radius: 999px;
+    border: 1px solid var(--calculate-cost-azure-score-label-border);
+    background: var(--calculate-cost-azure-score-label-bg);
+    color: var(--calculate-cost-azure-score-label-color);
+    padding: 5px 11px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.calculate-cost-azure-score-copy {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 10px;
+    min-width: 0;
+    text-align: center;
+}
+
+.calculate-cost-azure-score-kicker {
+    color: var(--calculate-cost-azure-text-muted);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.calculate-cost-azure-score-summary {
+    color: #5b21b6;
+    font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+    font-weight: 900;
+    line-height: 1.18;
+}
+
+.calculate-cost-azure-score-detail {
+    max-width: 540px;
+    margin: 0 auto;
+    color: var(--calculate-cost-azure-text-muted);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.55;
+}
+
+.calculate-cost-azure-score-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+}
+
+.calculate-cost-azure-score-tag {
+    min-height: 34px;
+    border-radius: 999px;
+    border: 1px solid rgba(6, 182, 212, 0.24);
+    background: rgba(240, 249, 255, 0.92);
+    color: var(--calculate-cost-azure-accent-strong);
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    white-space: nowrap;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.calculate-cost-azure-score-tag i {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.calculate-cost-azure-score-tag-status-production,
+.calculate-cost-azure-score-tag-services {
+    border-color: rgba(16, 185, 129, 0.22);
+    background: rgba(236, 253, 245, 0.9);
+    color: #047857;
+}
+
+.calculate-cost-azure-score-tag-status-balanced,
+.calculate-cost-azure-score-tag-preset {
+    border-color: rgba(124, 58, 237, 0.22);
+    background: rgba(245, 243, 255, 0.92);
+    color: #5b21b6;
+}
+
+.calculate-cost-azure-score-tag-status-review {
+    border-color: rgba(239, 68, 68, 0.2);
+    background: rgba(254, 242, 242, 0.94);
+    color: #b91c1c;
+}
+
+.calculate-cost-azure-score-tag-driver,
+.calculate-cost-azure-score-tag-run-rate,
+.calculate-cost-azure-score-tag-annual {
+    border-color: rgba(6, 182, 212, 0.3);
+    background: rgba(240, 249, 255, 0.96);
+    color: var(--calculate-cost-azure-accent-strong);
+}
+
+.calculate-cost-azure-score-tag-egress {
+    border-color: rgba(6, 182, 212, 0.22);
+    background: rgba(240, 249, 255, 0.92);
+    color: #1E3A8A;
+}
+
+.calculate-cost-azure-score-tag-overrides,
+.calculate-cost-azure-score-tag-updated {
+    border-color: rgba(100, 116, 139, 0.2);
+    background: rgba(248, 250, 252, 0.94);
+    color: #475569;
+}
+
+.calculate-cost-azure-summary-panel {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    min-width: 0;
+    padding: 16px;
+    border-color: rgba(125, 211, 252, 0.58);
+    border-radius: 16px;
+    background:
+        radial-gradient(circle at 94% 12%, rgba(245, 243, 255, 0.58), transparent 26%),
+        linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.84),
+        0 10px 24px rgba(7, 89, 133, 0.05);
+}
+
+.calculate-cost-azure-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.calculate-cost-azure-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border-radius: 999px;
+    background: rgba(240, 249, 255, 0.94);
+    border: 1px solid rgba(6, 182, 212, 0.32);
+    color: var(--calculate-cost-azure-accent-strong);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.calculate-cost-azure-badge-muted {
+    background: rgba(248, 250, 252, 0.94);
+    border-color: rgba(148, 163, 184, 0.34);
+    color: #64748b;
+}
+
+.calculate-cost-azure-summary-route {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+    padding: 16px 18px;
+    border: 1px solid rgba(125, 211, 252, 0.56);
+    border-radius: 16px;
+    background:
+        radial-gradient(circle at 96% 18%, rgba(224, 242, 254, 0.6), transparent 30%),
+        linear-gradient(180deg, #f8fbff 0%, #e8f6ff 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.calculate-cost-azure-summary-route-value {
+    color: var(--calculate-cost-azure-text-body);
+    font-size: 16px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.calculate-cost-azure-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.calculate-cost-azure-stat-card {
+    min-height: 124px;
+    padding: 15px;
+    border: 1px solid rgba(125, 211, 252, 0.56);
+    border-radius: 16px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(240, 249, 255, 0.96) 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.78),
+        0 8px 18px rgba(7, 89, 133, 0.04);
+}
+
+.calculate-cost-azure-stat-value {
+    color: var(--calculate-cost-azure-text);
+    font-size: clamp(1.12rem, 1.65vw, 1.35rem);
+    font-weight: 800;
+    line-height: 1.2;
+    overflow-wrap: normal;
+    white-space: nowrap;
+}
+
+.calculate-cost-azure-toolbar-shell,
+.calculate-cost-azure-tabs-shell {
+    border: 1px solid rgba(125, 211, 252, 0.56);
+    border-radius: 16px;
+    background: #ffffff;
+    min-width: 0;
+}
+
+.calculate-cost-azure-toolbar-shell {
+    padding: 16px 18px;
+    min-height: 120px;
+    display: grid;
+    align-items: center;
+}
+
+.calculate-cost-azure-toolbar.tool-result-toolbar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 416px);
+    align-items: flex-start;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+.calculate-cost-azure-toolbar-left {
+    display: grid;
+    grid-template-columns: auto minmax(160px, 220px);
+    align-items: center;
+    gap: 12px;
+    justify-content: start;
+    min-width: 0;
+}
+
+.calculate-cost-azure-sort-label {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.calculate-cost-azure-sort-select {
+    width: 100%;
+    min-width: 0;
+    max-width: 220px;
+    border: 0;
+    background: transparent;
+}
+
+.calculate-cost-azure-sort-wrap {
+    width: 220px;
+    min-width: 0;
+    max-width: 220px;
+}
+
+.calculate-cost-azure-sort-select .calculate-cost-azure-select-summary {
+    height: 46px;
+    min-height: 46px;
+    padding: 12px 40px 8px 14px;
+    border: 1px solid rgba(125, 211, 252, 0.72);
+    border-radius: 10px;
+    background: #ffffff;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.calculate-cost-azure-toolbar-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-content: end;
+    justify-self: end;
+    gap: 10px;
+    margin-left: auto;
+    max-width: 416px;
+    min-width: 0;
+    width: 100%;
+}
+
+.calculate-cost-azure-toolbar-actions .calculate-cost-azure-action-btn {
+    width: 100%;
+    min-height: 38px;
+    border-radius: 8px;
+    padding: 0 10px;
+    font-size: 13px;
+}
+
+.calculate-cost-azure-toolbar-actions .calculate-cost-azure-action-btn:nth-child(4) {
+    grid-column: 2;
+}
+
+.calculate-cost-azure-toolbar-actions .calculate-cost-azure-action-btn:nth-child(5) {
+    grid-column: 3;
+    background: #f8fbff;
+}
+
+.calculate-cost-azure-tabs-shell {
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+    min-width: 0;
+}
+
+.calculate-cost-azure-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.calculate-cost-azure-tab-btn {
+    min-height: 42px;
+    border: 1px solid var(--calculate-cost-azure-border);
+    border-radius: 999px;
+    background: var(--calculate-cost-azure-bg-panel);
+    color: var(--calculate-cost-azure-text);
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calculate-cost-azure-tab-btn i {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.calculate-cost-azure-tab-btn:hover,
+.calculate-cost-azure-tab-btn:focus,
+.calculate-cost-azure-tab-btn:focus-visible {
+    border-color: var(--calculate-cost-azure-border-strong);
+    background: #e8f6ff;
+    color: var(--calculate-cost-azure-accent);
+    outline: none;
+}
+
+.calculate-cost-azure-tab-btn.active {
+    border-color: var(--calculate-cost-azure-accent-soft);
+    background: linear-gradient(180deg, #dff3ff 0%, #dff3ff 100%);
+    color: var(--calculate-cost-azure-accent-strong);
+    box-shadow: 0 10px 24px rgba(6, 182, 212, 0.16);
+    transform: translateY(-1px);
+}
+
+.calculate-cost-azure-tab-panel {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+}
+
+.calculate-cost-azure-section-card.tool-result-section-card {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    width: 100%;
+    border: 1px solid rgba(125, 211, 252, 0.56);
+    border-radius: 14px;
+    background: #ffffff;
+    padding: 12px;
+}
+
+.calculate-cost-azure-section-title.tool-result-section-title {
+    margin: 0;
+    color: var(--calculate-cost-azure-text);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.calculate-cost-azure-table-wrap.tool-result-table-wrap {
+    border: 1px solid rgba(125, 211, 252, 0.48);
+    border-radius: 10px;
+    background: var(--calculate-cost-azure-bg-panel);
+    overflow-x: auto;
+    --tool-result-shadow-surface: #ffffff;
+    width: 100%;
+}
+
+.calculate-cost-azure-table-wrap .table {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    color: var(--calculate-cost-azure-text-body);
+    table-layout: fixed;
+}
+
+.calculate-cost-azure-breakdown-table {
+    min-width: 0;
+}
+
+.calculate-cost-azure-table-wrap-compact .table {
+    min-width: 0;
+}
+
+.calculate-cost-azure-table-wrap thead th {
+    padding: 12px;
+    border-bottom: 1px solid rgba(125, 211, 252, 0.64);
+    background: #e8f6ff;
+    color: var(--calculate-cost-azure-text-muted);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.calculate-cost-azure-table-wrap tbody td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(125, 211, 252, 0.32);
+    border-color: rgba(125, 211, 252, 0.32);
+    color: var(--calculate-cost-azure-text-body);
+    font-size: 13px;
+    line-height: 1.6;
+    vertical-align: top;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+.calculate-cost-azure-table-wrap tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.calculate-cost-azure-table-wrap .tool-generated-rownum-head,
+.calculate-cost-azure-table-wrap .tool-generated-rownum-cell {
+    width: 42px;
+    text-align: center;
+}
+
+.calculate-cost-azure-table-wrap .tool-generated-rownum-cell {
+    color: var(--calculate-cost-azure-text-subtle);
+}
+
+.calculate-cost-azure-breakdown-table thead th:nth-child(2),
+.calculate-cost-azure-breakdown-table tbody td:nth-child(2) {
+    width: 11%;
+}
+
+.calculate-cost-azure-breakdown-table thead th:nth-child(3),
+.calculate-cost-azure-breakdown-table tbody td:nth-child(3) {
+    width: 13%;
+}
+
+.calculate-cost-azure-breakdown-table thead th:nth-child(4),
+.calculate-cost-azure-breakdown-table tbody td:nth-child(4) {
+    width: 21%;
+}
+
+.calculate-cost-azure-breakdown-table thead th:nth-child(5),
+.calculate-cost-azure-breakdown-table tbody td:nth-child(5) {
+    width: 18%;
+}
+
+.calculate-cost-azure-breakdown-table thead th:nth-child(6),
+.calculate-cost-azure-breakdown-table tbody td:nth-child(6),
+.calculate-cost-azure-breakdown-table thead th:nth-child(7),
+.calculate-cost-azure-breakdown-table tbody td:nth-child(7) {
+    width: 11%;
+    text-align: right;
+}
+
+.calculate-cost-azure-service-table thead th:last-child,
+.calculate-cost-azure-service-table tbody td:last-child,
+.calculate-cost-azure-assumption-table thead th:last-child,
+.calculate-cost-azure-assumption-table tbody td:last-child,
+.calculate-cost-azure-breakdown-table thead th:last-child,
+.calculate-cost-azure-breakdown-table tbody td:last-child {
+    width: 48px;
+    text-align: center;
+}
+
+.calculate-cost-azure-breakdown-table td:nth-child(4),
+.calculate-cost-azure-breakdown-table td:nth-child(5),
+.calculate-cost-azure-assumption-table td:nth-child(4) {
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.calculate-cost-azure-copy-cell {
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.calculate-cost-azure-breakdown-table td:last-child .calculate-cost-azure-copy-btn,
+.calculate-cost-azure-service-table td:last-child .calculate-cost-azure-copy-btn,
+.calculate-cost-azure-assumption-table td:last-child .calculate-cost-azure-copy-btn {
+    margin: 0 auto;
+}
+
+.calculate-cost-azure-currency {
+    color: var(--calculate-cost-azure-text-strong);
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.calculate-cost-azure-signal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.calculate-cost-azure-signal-heavy {
+    background: #dff3ff;
+    color: var(--calculate-cost-azure-accent);
+}
+
+.calculate-cost-azure-signal-medium {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.calculate-cost-azure-signal-light {
+    background: #ecfccb;
+    color: #4d7c0f;
+}
+
+.calculate-cost-azure-recommendation-grid,
+.calculate-cost-azure-method-grid {
+    margin-top: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.calculate-cost-azure-recommendation-card strong,
+.calculate-cost-azure-method-card strong {
+    color: var(--calculate-cost-azure-text-strong);
+}
+
+.calculate-cost-azure-json-wrap.tool-json-panel {
+    border: 1px solid var(--calculate-cost-azure-border);
+    border-radius: 18px;
+    background: var(--calculate-cost-azure-bg-panel);
+    overflow: hidden;
+}
+
+.calculate-cost-azure-json-wrap.tool-json-panel .tool-json-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--calculate-cost-azure-border-soft);
+    background: var(--calculate-cost-azure-bg-muted);
+}
+
+.calculate-cost-azure-json-head {
+    min-width: 0;
+}
+
+.calculate-cost-azure-json-wrap.tool-json-panel .tool-json-title {
+    color: var(--calculate-cost-azure-text);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.calculate-cost-azure-json-title {
+    color: inherit;
+}
+
+.calculate-cost-azure-json-wrap.tool-json-panel .calculate-cost-azure-json-output.tool-json-output {
+    margin: 0;
+    padding: 18px;
+    background: var(--calculate-cost-azure-bg-code);
+    color: var(--calculate-cost-azure-text-body);
+    font-size: 13px;
+    line-height: 1.7;
+    overflow: auto;
+}
+
+.calculate-cost-azure-json-wrap.tool-json-panel .tool-json-output code {
+    white-space: pre;
+}
+
+.calculate-cost-azure-json-wrap.tool-json-panel .tool-json-key {
+    color: #0f766e;
+}
+
+.calculate-cost-azure-json-wrap.tool-json-panel .tool-json-string {
+    color: #1E3A8A;
+}
+
+.calculate-cost-azure-json-wrap.tool-json-panel .tool-json-number {
+    color: #1d4ed8;
+}
+
+.calculate-cost-azure-json-wrap.tool-json-panel .tool-json-boolean {
+    color: #7c3aed;
+}
+
+.calculate-cost-azure-json-wrap.tool-json-panel .tool-json-null {
+    color: #64748b;
+}
+
+.markdown-content {
+    --calculate-cost-azure-bg-shell: #f5fbff;
+    --calculate-cost-azure-bg-soft: #e8f6ff;
+    --calculate-cost-azure-bg-muted: #f8fbff;
+    --calculate-cost-azure-bg-strong: #dff3ff;
+    --calculate-cost-azure-bg-panel: #ffffff;
+    --calculate-cost-azure-bg-code: #f4f7fb;
+    --calculate-cost-azure-border: #cfe7f8;
+    --calculate-cost-azure-border-soft: #dcecf7;
+    --calculate-cost-azure-border-strong: #67E8F9;
+    --calculate-cost-azure-text: #1E3A8A;
+    --calculate-cost-azure-text-strong: #111827;
+    --calculate-cost-azure-text-body: #1f2937;
+    --calculate-cost-azure-text-muted: #526070;
+    --calculate-cost-azure-text-subtle: #64748b;
+    --calculate-cost-azure-accent: #2563EB;
+    --calculate-cost-azure-accent-strong: #1E3A8A;
+    --calculate-cost-azure-accent-soft: #06B6D4;
+}
+
+.markdown-content .calculate-cost-azure-term-accent {
+    color: var(--calculate-cost-azure-accent);
+    font-weight: 700;
+}
+
+.markdown-content > [class*="-markdown-card"] li,
+.markdown-content > [class*="-markdown-card"] li p {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card {
+    margin: 0 0 28px;
+    padding: 22px 24px;
+    border: 1px solid rgba(125, 211, 252, 0.58);
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 249, 255, 0.98) 100%);
+    box-shadow: 0 14px 28px rgba(7, 89, 133, 0.06);
+    color: var(--calculate-cost-azure-text-body);
+    font-family: var(--default-font);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card > h2:first-child {
+    margin: 0 0 18px;
+    color: var(--calculate-cost-azure-text-strong);
+    font-family: var(--default-font);
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card h3 {
+    margin: 24px 0 10px;
+    color: var(--calculate-cost-azure-text-strong);
+    font-family: var(--default-font);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card p {
+    margin: 0 0 14px;
+    color: var(--calculate-cost-azure-text-body);
+    font-family: var(--default-font);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.68;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card p:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card ul,
+.markdown-content > .calculate-cost-azure-markdown-card ol {
+    margin: 0 0 16px;
+    padding-left: 18px;
+    color: var(--calculate-cost-azure-text-body);
+    font-family: var(--default-font);
+    font-size: 15px;
+    line-height: 1.68;
+    letter-spacing: 0;
+    list-style-position: outside;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card ul:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card ol:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card li {
+    margin: 0;
+    padding-left: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card li + li {
+    margin-top: 6px;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card ul li::marker {
+    color: var(--calculate-cost-azure-accent);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card ol li::marker {
+    color: var(--calculate-cost-azure-accent);
+    font-weight: 800;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card code:not(pre code) {
+    display: inline;
+    border: 1px solid rgba(125, 211, 252, 0.58);
+    border-radius: 8px;
+    background: #e8f6ff;
+    color: var(--calculate-cost-azure-accent-strong);
+    padding: 0.08em 0.42em;
+    font-size: 0.875em;
+    font-weight: 600;
+    line-height: inherit;
+    vertical-align: 0.02em;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card table {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    min-width: 0;
+    margin: 18px 0 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid rgba(125, 211, 252, 0.56);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card thead {
+    display: table-header-group;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card tbody {
+    display: table-row-group;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card tr {
+    display: table-row;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card th,
+.markdown-content > .calculate-cost-azure-markdown-card td {
+    display: table-cell;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card th:first-child,
+.markdown-content > .calculate-cost-azure-markdown-card td:first-child {
+    width: 26%;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card th:nth-child(2),
+.markdown-content > .calculate-cost-azure-markdown-card td:nth-child(2) {
+    width: 37%;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card th:nth-child(3),
+.markdown-content > .calculate-cost-azure-markdown-card td:nth-child(3) {
+    width: 37%;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card .calculate-cost-azure-markdown-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card thead th {
+    background: linear-gradient(180deg, #e8f6ff 0%, #dff3ff 100%);
+    border-bottom: 1px solid rgba(125, 211, 252, 0.56);
+    color: var(--calculate-cost-azure-text-strong);
+    font-family: var(--default-font);
+    padding: 14px 16px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    vertical-align: top;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card tbody td {
+    border-bottom: 1px solid rgba(125, 211, 252, 0.28);
+    color: var(--calculate-cost-azure-text-body);
+    font-family: var(--default-font);
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.65;
+    vertical-align: top;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card tbody td:first-child {
+    color: var(--calculate-cost-azure-text-strong);
+    font-weight: 800;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-examples > p:first-of-type {
+    margin: 0 0 14px;
+    color: var(--calculate-cost-azure-text-body);
+    font-family: var(--default-font);
+    font-size: 14px;
+    line-height: 1.72;
+}
+
+.markdown-content pre.calculate-cost-azure-prompt-pre {
+    position: relative;
+    margin: 0 0 18px;
+    border: 1px solid rgba(7, 89, 133, 0.32);
+    border-radius: 18px;
+    background: #18202f;
+    color: #f8fafc;
+    box-shadow: 0 12px 24px rgba(17, 24, 39, 0.12);
+    overflow-x: auto;
+    padding: 56px 20px 20px;
+}
+
+.markdown-content pre.calculate-cost-azure-prompt-pre code {
+    display: block;
+    color: inherit;
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 0 90px 0 0;
+    white-space: pre-wrap;
+}
+
+.markdown-content pre.calculate-cost-azure-prompt-pre code::before {
+    content: "prompt> ";
+    color: #67E8F9;
+}
+
+.markdown-content pre.calculate-cost-azure-prompt-pre > code::after {
+    content: "Azure Cost Prompt";
+    position: absolute;
+    top: -43px;
+    right: 0;
+    left: 0;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    opacity: 0.95;
+    pointer-events: none;
+    text-align: center;
+    transform: none;
+    white-space: nowrap;
+}
+
+.markdown-content .markdown-copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    min-height: 30px;
+    border: 1px solid rgba(125, 211, 252, 0.5);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--calculate-cost-azure-accent);
+    padding: 0 12px;
+    font-family: var(--default-font);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.markdown-content .markdown-copy-btn:hover,
+.markdown-content .markdown-copy-btn:focus,
+.markdown-content .markdown-copy-btn:focus-visible {
+    background: #e8f6ff;
+    border-color: var(--calculate-cost-azure-border-strong);
+    color: var(--calculate-cost-azure-accent-strong);
+    outline: none;
+}
+
+.markdown-content .calculate-cost-azure-input-note {
+    margin: 0 0 24px;
+    display: block;
+}
+
+.markdown-content .calculate-cost-azure-input-note-last {
+    margin-bottom: 0;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note {
+    margin: 0 0 28px;
+    display: block;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note-last {
+    margin-bottom: 0;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    color: inherit;
+    font-family: var(--default-font);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note-label {
+    min-height: 34px;
+    border: 1px solid rgba(125, 211, 252, 0.56);
+    border-radius: 999px;
+    background: #e8f6ff;
+    color: var(--calculate-cost-azure-accent-strong);
+    padding: 0 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note-label::before {
+    content: "+";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: #dff3ff;
+    color: var(--calculate-cost-azure-accent-strong);
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note-label-open {
+    display: none;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note[open] summary {
+    margin-bottom: 12px;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note[open] .calculate-cost-azure-prompt-note-label-closed {
+    display: none;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note[open] .calculate-cost-azure-prompt-note-label-open {
+    display: inline-flex;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note[open] .calculate-cost-azure-prompt-note-label-open::before {
+    content: "-";
+}
+
+.markdown-content .calculate-cost-azure-prompt-note summary:hover .calculate-cost-azure-prompt-note-label,
+.markdown-content .calculate-cost-azure-prompt-note summary:focus .calculate-cost-azure-prompt-note-label,
+.markdown-content .calculate-cost-azure-prompt-note summary:focus-visible .calculate-cost-azure-prompt-note-label {
+    background: #dff3ff;
+    border-color: var(--calculate-cost-azure-border-strong);
+    color: var(--calculate-cost-azure-accent);
+    outline: none;
+}
+
+.markdown-content .calculate-cost-azure-prompt-copy-btn {
+    min-height: 34px;
+    border: 1px solid rgba(125, 211, 252, 0.56);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--calculate-cost-azure-accent-strong);
+    padding: 0 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--default-font);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-content .calculate-cost-azure-prompt-copy-btn i {
+    color: var(--calculate-cost-azure-accent-strong);
+    font-size: 14px;
+    line-height: 1;
+}
+
+.markdown-content .calculate-cost-azure-prompt-copy-btn:hover,
+.markdown-content .calculate-cost-azure-prompt-copy-btn:focus,
+.markdown-content .calculate-cost-azure-prompt-copy-btn:focus-visible {
+    background: #e8f6ff;
+    border-color: var(--calculate-cost-azure-border-strong);
+    color: var(--calculate-cost-azure-accent);
+    outline: none;
+}
+
+.markdown-content .calculate-cost-azure-prompt-copy-btn.copied {
+    background: #ecfdf5;
+    border-color: #86efac;
+    color: #15803d;
+}
+
+.markdown-content .calculate-cost-azure-prompt-copy-btn.copied i {
+    color: #15803d;
+}
+
+.markdown-content .calculate-cost-azure-prompt-note .alert,
+.markdown-content .calculate-cost-azure-prompt-note .alert div {
+    font-family: var(--default-font);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.markdown-content .calculate-cost-azure-input-note summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    width: fit-content;
+    padding: 8px 14px;
+    border: 1px solid var(--calculate-cost-azure-border);
+    border-radius: 999px;
+    background: var(--calculate-cost-azure-bg-soft);
+    color: var(--calculate-cost-azure-text);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-content .calculate-cost-azure-input-note summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content .calculate-cost-azure-input-note summary::before {
+    content: "+";
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #dff3ff;
+    color: var(--calculate-cost-azure-accent);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.markdown-content .calculate-cost-azure-input-note summary:hover {
+    border-color: #67E8F9;
+    background: #e8f6ff;
+    color: var(--calculate-cost-azure-accent);
+}
+
+.markdown-content .calculate-cost-azure-input-note[open] summary {
+    margin-bottom: 12px;
+}
+
+.markdown-content .calculate-cost-azure-input-note[open] summary::before {
+    content: "-";
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-item,
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item,
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item {
+    margin: 0;
+    border: 1px solid rgba(125, 211, 252, 0.5);
+    border-radius: 14px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 10px 22px rgba(7, 89, 133, 0.055);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-item + .tool-guidance-item,
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item + .tool-guidance-item,
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item + .tool-export-item {
+    margin-top: 12px;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-item summary,
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item summary,
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item summary {
+    position: relative;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 58px;
+    cursor: pointer;
+    padding: 15px 56px 15px 16px;
+    background: linear-gradient(135deg, #ffffff 0%, #e8f6ff 100%);
+    color: var(--calculate-cost-azure-text-strong);
+    font-family: var(--default-font);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-item summary::-webkit-details-marker,
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item summary::-webkit-details-marker,
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-item summary::after,
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item summary::after,
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--calculate-cost-azure-accent-strong);
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1;
+    box-shadow: inset 0 0 0 1px rgba(125, 211, 252, 0.45);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-item[open] summary::after,
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item[open] summary::after,
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item[open] summary::after {
+    content: "-";
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-item summary > span,
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item summary > span,
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item summary > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-icon,
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-icon,
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-icon {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: #dff3ff;
+    color: var(--calculate-cost-azure-accent-strong);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-answer,
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-answer,
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-answer {
+    border-top: 1px solid rgba(125, 211, 252, 0.36);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    color: var(--calculate-cost-azure-text-body);
+    font-family: var(--default-font);
+    padding: 15px 18px 17px;
+    font-size: 15px;
+    line-height: 1.68;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-answer p:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-answer p:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-answer p:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-answer ul:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-answer ul:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card .faq-item {
+    margin: 0;
+    border: 1px solid rgba(125, 211, 252, 0.56);
+    border-radius: 14px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card .faq-item + .faq-item {
+    margin-top: 12px;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card .faq-item summary {
+    position: relative;
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 56px 16px 18px;
+    color: var(--calculate-cost-azure-text-strong);
+    font-family: var(--default-font);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.5;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card .faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card .faq-item summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: #dff3ff;
+    color: var(--calculate-cost-azure-accent-strong);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card .faq-item[open] summary::after {
+    content: "-";
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card .faq-answer {
+    border-top: 1px solid rgba(125, 211, 252, 0.4);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    color: var(--calculate-cost-azure-text-body);
+    font-family: var(--default-font);
+    padding: 15px 18px 17px;
+    font-size: 15px;
+    line-height: 1.68;
+}
+
+.markdown-content .calculate-cost-azure-command-note {
+    margin: -8px 0 24px;
+}
+
+.markdown-content .calculate-cost-azure-command-note-last {
+    margin-bottom: 0;
+}
+
+.markdown-content .calculate-cost-azure-command-note summary {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 14px;
+    border: 1px solid var(--calculate-cost-azure-border);
+    border-radius: 999px;
+    background: var(--calculate-cost-azure-bg-soft);
+    color: var(--calculate-cost-azure-text);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-content .calculate-cost-azure-command-note summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content .calculate-cost-azure-command-note summary::before {
+    content: "+";
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #dff3ff;
+    color: var(--calculate-cost-azure-accent);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.markdown-content .calculate-cost-azure-command-note summary:hover {
+    border-color: #67E8F9;
+    background: #e8f6ff;
+    color: var(--calculate-cost-azure-accent);
+}
+
+.markdown-content .calculate-cost-azure-command-note[open] summary {
+    margin-bottom: 12px;
+}
+
+.markdown-content .calculate-cost-azure-command-note[open] summary::before {
+    content: "-";
+}
+
+.markdown-content .calculate-cost-azure-command-note-label-open {
+    display: none;
+}
+
+.markdown-content .calculate-cost-azure-command-note[open] .calculate-cost-azure-command-note-label-closed {
+    display: none;
+}
+
+.markdown-content .calculate-cost-azure-command-note[open] .calculate-cost-azure-command-note-label-open {
+    display: inline;
+}
+
+.markdown-content .calculate-cost-azure-markdown-table-wrap,
+.calculate-cost-azure-glossary-table-wrap {
+    overflow-x: auto;
+}
+
+.markdown-content .calculate-cost-azure-markdown-table-wrap table,
+.calculate-cost-azure-glossary-table-wrap table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+.markdown-content .calculate-cost-azure-markdown-table-wrap table {
+    min-width: 0;
+}
+
+.calculate-cost-azure-glossary-table-wrap table {
+    min-width: 760px;
+}
+
+.markdown-content .calculate-cost-azure-markdown-table-wrap th,
+.markdown-content .calculate-cost-azure-markdown-table-wrap td,
+.calculate-cost-azure-glossary-table-wrap th,
+.calculate-cost-azure-glossary-table-wrap td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--calculate-cost-azure-border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.markdown-content .calculate-cost-azure-markdown-table-wrap th,
+.calculate-cost-azure-glossary-table-wrap th {
+    background: var(--calculate-cost-azure-bg-muted);
+    color: var(--calculate-cost-azure-text);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.markdown-content .calculate-cost-azure-markdown-table-wrap tr:last-child td,
+.calculate-cost-azure-glossary-table-wrap tr:last-child td {
+    border-bottom: 0;
+}
+
+@media (max-width: 1199.98px) {
+    .calculate-cost-azure-overview {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .calculate-cost-azure-main-row,
+    .calculate-cost-azure-setting-row {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-azure-score-card {
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+        gap: 14px;
+    }
+
+    .calculate-cost-azure-score-panel {
+        padding: 16px;
+    }
+
+    .calculate-cost-azure-main-label,
+    .calculate-cost-azure-setting-label {
+        white-space: normal;
+    }
+
+    .calculate-cost-azure-main-input-grid,
+    .calculate-cost-azure-inline-grid-preset,
+    .calculate-cost-azure-inline-grid-regional,
+    .calculate-cost-azure-basis-grid,
+    .calculate-cost-azure-toggle-grid,
+    .calculate-cost-azure-service-grid,
+    .calculate-cost-azure-recommendation-grid,
+    .calculate-cost-azure-method-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-azure-override-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-azure-field-stack-compact {
+        max-width: none;
+    }
+
+    .calculate-cost-azure-toolbar.tool-result-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: stretch;
+    }
+
+    .calculate-cost-azure-toolbar-left {
+        justify-content: flex-start;
+    }
+
+    .calculate-cost-azure-toolbar-actions {
+        justify-content: stretch;
+        justify-self: stretch;
+        margin-left: 0;
+        max-width: none;
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .calculate-cost-azure-toolbar-actions .calculate-cost-azure-action-btn:nth-child(4),
+    .calculate-cost-azure-toolbar-actions .calculate-cost-azure-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+
+    .calculate-cost-azure-action-btn {
+        width: 100%;
+    }
+
+    .calculate-cost-azure-toolbar-left {
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .calculate-cost-azure-sort-wrap,
+    .calculate-cost-azure-sort-select {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .calculate-cost-azure-select-grid-two {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-azure-select-body {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+}
+
+@media (max-width: 767.98px) {
+    .markdown-content pre.calculate-cost-azure-prompt-pre > code::after {
+        top: -39px;
+    }
+
+    .calculate-cost-azure-tool .tool-box {
+        padding: 14px;
+        border-radius: 16px;
+    }
+
+    .markdown-content > .calculate-cost-azure-markdown-card {
+        margin-bottom: 22px;
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .markdown-content > .calculate-cost-azure-markdown-card > h2:first-child {
+        font-size: 18px;
+    }
+
+    .markdown-content > .calculate-cost-azure-markdown-card h3,
+    .markdown-content > .calculate-cost-azure-markdown-card p,
+    .markdown-content > .calculate-cost-azure-markdown-card ul,
+    .markdown-content > .calculate-cost-azure-markdown-card ol,
+    .markdown-content > .calculate-cost-azure-markdown-card .faq-answer,
+    .markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-answer,
+    .markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-answer,
+    .markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-answer {
+        font-size: 14px;
+    }
+
+    .markdown-content > .calculate-cost-azure-markdown-card-examples pre code {
+        padding: 42px 14px 14px;
+        font-size: 12px;
+    }
+
+    .markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-item summary,
+    .markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item summary,
+    .markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item summary {
+        min-height: 54px;
+        padding: 13px 50px 13px 14px;
+    }
+
+    .calculate-cost-azure-toolbar-shell,
+    .calculate-cost-azure-tabs-shell {
+        padding: 12px;
+        border-radius: 14px;
+    }
+
+    .calculate-cost-azure-tabs {
+        justify-content: flex-start;
+    }
+
+    .calculate-cost-azure-toolbar-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-azure-inner-panel,
+    .calculate-cost-azure-service-card,
+    .calculate-cost-azure-override-card,
+    .calculate-cost-azure-summary-panel,
+    .calculate-cost-azure-spend-card,
+    .calculate-cost-azure-section-card.tool-result-section-card,
+    .calculate-cost-azure-basis-card,
+    .calculate-cost-azure-recommendation-card,
+    .calculate-cost-azure-method-card,
+    .calculate-cost-azure-stat-card {
+        padding: 14px;
+    }
+
+    .calculate-cost-azure-inline-grid-two,
+    .calculate-cost-azure-card-grid-two,
+    .calculate-cost-azure-card-grid-three,
+    .calculate-cost-azure-custom-instance-grid,
+    .calculate-cost-azure-override-grid,
+    .calculate-cost-azure-override-card-body,
+    .calculate-cost-azure-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-azure-main-actions {
+        flex-wrap: wrap;
+    }
+
+    .calculate-cost-azure-main-actions > .calculate-cost-azure-submit-btn,
+    .calculate-cost-azure-main-actions > .calculate-cost-azure-reset-btn {
+        width: 100%;
+    }
+
+    .calculate-cost-azure-toolbar-shell {
+        padding: 12px;
+    }
+
+    .calculate-cost-azure-toolbar-actions {
+        width: 100%;
+    }
+
+    .calculate-cost-azure-action-btn {
+        flex: 1 1 160px;
+    }
+
+    .calculate-cost-azure-tabs {
+        display: grid;
+    }
+
+    .calculate-cost-azure-tab-btn {
+        width: 100%;
+    }
+}
+
+.markdown-content .calculate-cost-azure-citation-inline {
+    color: var(--tool-danger, #b91c1c);
+    font-weight: 800;
+}
+
+.markdown-content .calculate-cost-azure-citation-link,
+.markdown-content .calculate-cost-azure-citation-backlink {
+    color: inherit;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.markdown-content .calculate-cost-azure-citation-link:hover,
+.markdown-content .calculate-cost-azure-citation-link:focus-visible,
+.markdown-content .calculate-cost-azure-citation-backlink:hover,
+.markdown-content .calculate-cost-azure-citation-backlink:focus-visible {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-citations .calculate-cost-azure-citation-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-citations .calculate-cost-azure-citation-table thead th:first-child,
+.markdown-content > .calculate-cost-azure-markdown-card-citations .calculate-cost-azure-citation-table tbody td:first-child {
+    width: 18%;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-citations .calculate-cost-azure-citation-table thead th:nth-child(2),
+.markdown-content > .calculate-cost-azure-markdown-card-citations .calculate-cost-azure-citation-table tbody td:nth-child(2) {
+    width: 24%;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-citations .calculate-cost-azure-citation-table a:not(.calculate-cost-azure-citation-backlink) {
+    color: var(--tool-accent-deep, #5b21b6);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-citations .calculate-cost-azure-citation-table .calculate-cost-azure-citation-backlink {
+    color: inherit;
+    font-weight: 800;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-citations .calculate-cost-azure-citation-table tr:target td {
+    background: rgba(var(--tool-danger-rgb, 185, 28, 28), 0.08);
+}
+
+/* ns:start main.content.06_export-notes */
+.markdown-content > .calculate-cost-azure-markdown-card-export {
+    margin: 0 0 28px;
+    padding: 22px 24px;
+    border: 1px solid var(--calculate-cost-azure-border-strong, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.52));
+    border-radius: 20px;
+    background: linear-gradient(180deg, var(--calculate-cost-azure-bg-panel, #ffffff) 0%, var(--calculate-cost-azure-bg-muted, var(--tool-accent-panel, #faf7ff)) 100%);
+    box-shadow: 0 14px 28px rgba(var(--tool-shadow-rgb, 76, 29, 149), 0.06);
+    color: var(--calculate-cost-azure-text-body, var(--calculate-cost-azure-text, var(--tool-text, #2f2542)));
+    font-family: var(--default-font);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .calculate-cost-azure-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    color: var(--calculate-cost-azure-text-strong, var(--tool-heading, #1f1433));
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-3xl, 20px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .calculate-cost-azure-section-heading > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .calculate-cost-azure-section-heading-icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--calculate-cost-azure-bg-soft, var(--tool-accent-tint, #ede9fe));
+    color: var(--calculate-cost-azure-accent-strong, var(--tool-accent-strong, #6d28d9));
+    font-size: var(--tool-font-size-base, 14px);
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export > p {
+    margin: 0 0 18px;
+    color: var(--calculate-cost-azure-text-body, var(--calculate-cost-azure-text, var(--tool-text, #2f2542)));
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-md, 15px);
+    font-weight: 400;
+    line-height: 1.68;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item {
+    margin: 0;
+    border: 1px solid var(--calculate-cost-azure-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
+    border-radius: 14px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 10px 22px rgba(var(--tool-shadow-rgb, 76, 29, 149), 0.055);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item + .tool-export-item {
+    margin-top: 12px;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 58px;
+    padding: 15px 56px 15px 16px;
+    list-style: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ffffff 0%, var(--calculate-cost-azure-bg-soft, var(--tool-accent-pale, #f5f3ff)) 100%);
+    color: var(--calculate-cost-azure-text-strong, var(--tool-heading, #1f1433));
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-base, 14px);
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--calculate-cost-azure-accent-strong, var(--tool-accent-strong, #6d28d9));
+    box-shadow: inset 0 0 0 1px var(--calculate-cost-azure-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
+    font-size: var(--tool-font-size-md, 15px);
+    font-weight: 900;
+    line-height: 1;
+    transform: translateY(-50%);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item[open] summary::after {
+    content: "-";
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item summary > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--calculate-cost-azure-bg-soft, var(--tool-accent-tint, #ede9fe));
+    color: var(--calculate-cost-azure-accent-strong, var(--tool-accent-strong, #6d28d9));
+    font-size: var(--tool-font-size-base, 14px);
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-answer {
+    border-top: 1px solid var(--calculate-cost-azure-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
+    background: linear-gradient(180deg, var(--calculate-cost-azure-bg-panel, #ffffff) 0%, var(--calculate-cost-azure-bg-muted, var(--tool-accent-panel, #faf7ff)) 100%);
+    color: var(--calculate-cost-azure-text-body, var(--calculate-cost-azure-text, var(--tool-text, #2f2542)));
+    font-family: var(--default-font);
+    padding: 15px 18px 17px;
+    font-size: var(--tool-font-size-md, 15px);
+    line-height: 1.68;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-answer p {
+    margin: 0 0 14px;
+    color: var(--calculate-cost-azure-text-body, var(--calculate-cost-azure-text, var(--tool-text, #2f2542)));
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-answer ul {
+    margin: 0 0 14px;
+    padding-left: 20px;
+    color: var(--calculate-cost-azure-text-body, var(--calculate-cost-azure-text, var(--tool-text, #2f2542)));
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    word-spacing: normal;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-answer li {
+    padding-left: 0;
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    word-spacing: normal;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-answer p:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-answer ul:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-export code:not(pre code) {
+    display: inline;
+    border: 1px solid var(--calculate-cost-azure-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
+    border-radius: 8px;
+    background: var(--calculate-cost-azure-bg-soft, var(--tool-accent-pale, #f5f3ff));
+    color: var(--calculate-cost-azure-accent-strong, var(--tool-accent-strong, #6d28d9));
+    padding: 0.08em 0.42em;
+    font-size: var(--tool-font-size-inline-code, 0.875em);
+    font-weight: 600;
+    line-height: inherit;
+    vertical-align: 0.02em;
+}
+
+@media (max-width: 640px) {
+    .markdown-content > .calculate-cost-azure-markdown-card-export {
+        padding: 18px;
+        border-radius: 16px;
+    }
+
+    .markdown-content > .calculate-cost-azure-markdown-card-export .tool-export-item summary {
+        min-height: 54px;
+        padding-right: 50px;
+    }
+}
+/* ns:end main.content.06_export-notes */
+
+/* ns:start main.content.05_how-to-use */
+.markdown-content > .calculate-cost-azure-markdown-card-how-to {
+    margin: 0 0 28px;
+    padding: 22px 24px;
+    border: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.52);
+    border-radius: 20px;
+    background: var(--tool-panel-gradient-soft, var(--tool-surface, #ffffff));
+    box-shadow: 0 14px 28px rgba(var(--tool-shadow-rgb, 76, 29, 149), 0.06);
+    color: var(--tool-text, #2f2542);
+    font-family: var(--default-font, inherit);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to > h2:first-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    color: var(--tool-heading, #1f1433);
+    font-family: var(--default-font, inherit);
+    font-size: var(--tool-font-size-3xl, 20px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .calculate-cost-azure-section-heading > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .calculate-cost-azure-section-heading-icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--tool-accent-tint, rgba(124, 58, 237, 0.12));
+    color: var(--tool-accent-strong, var(--tool-accent, #7c3aed));
+    font-size: var(--tool-font-size-base, 14px);
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item {
+    overflow: hidden;
+    border: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.58);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item + .tool-guidance-item {
+    margin-top: 12px;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item summary {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    min-height: 58px;
+    padding: 14px 52px 14px 16px;
+    color: var(--tool-heading, #1f1433);
+    font-family: var(--default-font, inherit);
+    font-size: var(--tool-font-size-md, 15px);
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: 0;
+    cursor: pointer;
+    list-style: none;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.72);
+    border-radius: 999px;
+    background: var(--tool-surface, #ffffff);
+    color: var(--tool-accent-strong, var(--tool-accent, #7c3aed));
+    font-size: var(--tool-font-size-md, 15px);
+    font-weight: 900;
+    line-height: 1;
+    transform: translateY(-50%);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item[open] summary::after {
+    content: "-";
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item summary > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--tool-accent-tint, rgba(124, 58, 237, 0.12));
+    color: var(--tool-accent-strong, var(--tool-accent, #7c3aed));
+    font-size: var(--tool-font-size-base, 14px);
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-answer {
+    border-top: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.36);
+    padding: 14px 18px 18px;
+    color: var(--tool-text, #2f2542);
+    font-family: var(--default-font, inherit);
+    font-size: var(--tool-font-size-md, 15px);
+    line-height: 1.68;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-answer p {
+    margin: 0;
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-answer code {
+    font-size: var(--tool-font-size-inline-code, 0.875em);
+    line-height: inherit;
+    padding: 0 6px;
+    border-radius: 6px;
+}
+
+@media (max-width: 640px) {
+    .markdown-content > .calculate-cost-azure-markdown-card-how-to {
+        padding: 18px 16px;
+    }
+
+    .markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-item summary {
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 10px;
+        padding: 13px 48px 13px 14px;
+        font-size: var(--tool-font-size-base, 14px);
+    }
+
+    .markdown-content > .calculate-cost-azure-markdown-card-how-to .tool-guidance-answer {
+        padding: 13px 14px 16px;
+        font-size: var(--tool-font-size-base, 14px);
+    }
+}
+/* ns:end main.content.05_how-to-use */
+
+/* ns:start main.content.04_tips-prompts */
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-answer p:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .tool-guidance-answer ul:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card-input-tips .tool-guidance-answer p:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card-input-tips .tool-guidance-answer ul:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips .calculate-cost-azure-markdown-table-wrap:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card-prompt-tips table:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card-input-tips .calculate-cost-azure-markdown-table-wrap:last-child,
+.markdown-content > .calculate-cost-azure-markdown-card-input-tips table:last-child {
+    margin-bottom: 0;
+}
+/* ns:end main.content.04_tips-prompts */
+
+/* ns:start main.content.02_technical-details.refresh */
+.markdown-content > .content-card.calculate-cost-azure-markdown-card {
+    max-width: 100%;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-acronyms,
+.markdown-content > .calculate-cost-azure-markdown-card-acronym {
+    max-width: 100%;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-technical {
+    --tool-technical-bg-soft: #e8f6ff;
+    --tool-technical-bg-muted: #f8fbff;
+    --tool-technical-border: #cfe7f8;
+    --tool-technical-border-strong: #67e8f9;
+    --tool-technical-text-body: #1f2937;
+    --tool-technical-heading: #111827;
+    --tool-technical-accent: #2563eb;
+    --tool-technical-accent-strong: #1e3a8a;
+}
+
+.markdown-content > .content-card.calculate-cost-azure-markdown-card-technical {
+    border-color: var(--tool-technical-border);
+    background: linear-gradient(180deg, #ffffff 0%, var(--tool-technical-bg-muted) 100%);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card .calculate-cost-azure-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    padding: 0 0 12px;
+    border-bottom: 1px solid var(--tool-technical-border-strong);
+    color: var(--tool-technical-heading);
+    font-family: var(--default-font, inherit);
+    font-size: var(--tool-font-size-3xl, 20px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card .calculate-cost-azure-section-heading i {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--tool-technical-bg-soft);
+    color: var(--tool-technical-accent-strong);
+    font-size: var(--tool-font-size-base, 14px);
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card .calculate-cost-azure-section-heading > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-technical h3.calculate-cost-azure-technical-step-heading {
+    margin: 24px 0 10px;
+    color: var(--tool-technical-accent-strong);
+    font-family: var(--default-font, inherit);
+    font-size: var(--tool-font-size-md, 15px);
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-technical h3.calculate-cost-azure-technical-step-heading:not(:first-of-type) {
+    margin-top: 26px;
+    padding-top: 18px;
+    border-top: 1px solid var(--tool-technical-border);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-scan-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 18px 0 24px;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-scan-card {
+    min-width: 0;
+    padding: 14px 15px;
+    border: 1px solid var(--tool-technical-border);
+    border-radius: var(--tool-radius-sm, 12px);
+    background: linear-gradient(180deg, #ffffff 0%, var(--tool-technical-bg-muted) 100%);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-scan-card strong {
+    display: block;
+    margin: 4px 0 8px;
+    color: var(--tool-technical-heading);
+    font-size: var(--tool-font-size-sm-plus, 13.5px);
+    line-height: 1.35;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-scan-kicker {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    border-radius: 999px;
+    padding: 3px 8px;
+    border: 1px solid var(--tool-technical-border);
+    background: var(--tool-technical-bg-soft);
+    color: var(--tool-technical-accent-strong);
+    font-size: var(--tool-font-size-xs, 12px);
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-scan-card ul,
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-checklist,
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-warning-list {
+    margin: 10px 0 0;
+    padding-left: 20px;
+    text-align: left;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-scan-card li,
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-checklist li,
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-warning-list li {
+    margin: 0 0 8px;
+    color: var(--tool-technical-text-body);
+    font-size: var(--tool-font-size-sm-plus, 13.5px);
+    line-height: 1.62;
+    text-align: left;
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-technical li::marker {
+    color: var(--tool-technical-accent-strong);
+}
+
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-checklist,
+.markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-warning-list {
+    margin: 14px 0 18px;
+    padding: 0 0 0 20px;
+    background: transparent;
+}
+
+@media (max-width: 767.98px) {
+    .markdown-content > .calculate-cost-azure-markdown-card-technical .tool-technical-scan-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* ns:end main.content.02_technical-details.refresh */

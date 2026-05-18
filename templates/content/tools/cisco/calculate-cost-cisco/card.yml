@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: Estimate Cisco campus planning costs across switching, wireless, licensing, support, edge, and management assumptions.
+card_gradient_start: "#06B6D4"
+card_gradient_end: "#10B981"
+card_text_color: "#FFFFFF"
+card_kicker: "Cisco"
+card_image_title: "Cisco Network Cost Calculator"
+card_icon_class: "bi bi-calculator"
+card_icon_animation: "random"
+card_image: null

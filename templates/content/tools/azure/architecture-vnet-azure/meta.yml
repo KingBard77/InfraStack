@@ -1,0 +1,23 @@
+# meta.yml
+
+title: Azure VNet Architecture
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "Apr. 18th, 2026"
+comments: Interactive tool
+category_label: Azure
+group: cloud
+family: architecture
+reading_time: 4 min read
+summary: Generate an Azure VNet architecture diagram from a prompt, preset, and live inspector controls.
+intro: >-
+    Build an Azure VNet from a brief and turn it into an architecture workspace for subnet and connectivity planning.
+    Map address spaces, subnet tiers, gateways, private endpoints, monitoring, managed services, and Azure network boundaries.
+    Refine live controls, inspect generated inventory and layout decisions, then export the diagram state for handoff or review.
+tags:
+    - Azure
+    - VNet
+    - Architecture
+    - Diagram
+    - Topology

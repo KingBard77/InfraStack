@@ -1,0 +1,24 @@
+# meta.yml
+
+title: AWS Cost Calculator
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "Apr. 6th, 2026"
+comments: Interactive tool
+category_label: AWS
+group: cloud
+family: calculate
+reading_time: 5 min read
+summary: Estimate blended AWS monthly spend with visible service inputs, assumptions, buffers, and exportable results.
+intro: >-
+    Estimate AWS monthly spend across EC2, EBS, S3, Lambda, API Gateway, shared egress, and blended usage assumptions.
+    Tune purchase models, quantities, buffers, data transfer, and service-level cost drivers before sharing a planning number.
+    Review visible assumptions and export CSV or JSON snapshots for team review, archive notes, or later estimate comparison.
+tags:
+    - AWS
+    - Pricing
+    - FinOps
+    - EC2
+    - Lambda
+    - Cost

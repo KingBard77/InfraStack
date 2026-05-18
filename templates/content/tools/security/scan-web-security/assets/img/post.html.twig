@@ -1,0 +1,64 @@
+{% set visualVariant = variant|default('card') %}
+{% set showPostDetail = visualVariant in ['hero', 'hero-small'] %}
+{% if visualVariant == 'style' %}
+<style>
+.scan-web-security-post-visual {
+    --post-start: #16A34A;
+    --post-end: #166534;
+    --post-accent: #bbf7d0;
+}
+
+.scan-web-security-post-visual .tool-post-node:nth-child(1),
+.scan-web-security-post-visual .tool-post-node:nth-child(3),
+.scan-web-security-post-visual .tool-post-node:nth-child(5) {
+    background: rgba(187, 247, 208, 0.2);
+}
+
+.scan-web-security-post-visual .tool-post-icon {
+    background: rgba(22, 163, 74, 0.28);
+}
+</style>
+{% else %}
+<div
+  class="tool-post-visual scan-web-security-post-visual tool-post-visual-{{ visualVariant }}"
+  style="--post-start: {{ post.card_gradient_start|default('#16A34A') }}; --post-end: {{ post.card_gradient_end|default('#166534') }};"
+>
+  <div class="tool-post-bg-icons" aria-hidden="true">
+    <i class="bi bi-shield-check"></i>
+    <i class="bi bi-globe2"></i>
+    <i class="bi bi-lock"></i>
+    <i class="bi bi-braces"></i>
+    <i class="bi bi-list-check"></i>
+  </div>
+  <div class="tool-post-header">
+    <span class="tool-post-kicker">{{ post.card_kicker|default(post.category|default('Security')) }}</span>
+    <span class="tool-post-icon"><i class="{{ post.card_icon_class|default('bi bi-shield-check') }}"></i></span>
+  </div>
+  <div class="tool-post-title">{{ post.card_image_title|default(post.title|default('Web Security Scanner')) }}</div>
+  <div class="tool-post-map" aria-hidden="true">
+    <span class="tool-post-node"><i class="bi bi-globe2"></i></span>
+    <span class="tool-post-node"></span>
+    <span class="tool-post-node"><i class="bi bi-shield-check"></i></span>
+    <span class="tool-post-node"></span>
+    <span class="tool-post-node"><i class="bi bi-filetype-json"></i></span>
+  </div>
+  <div class="tool-post-footer">
+    <span>{{ post.reading_time|default('5 min read') }}</span>
+    <span>{{ post.category|default('Security') }}</span>
+  </div>
+  {% if showPostDetail %}
+    <div class="tool-post-detail">
+      <div class="tool-post-meta">
+        <span><i class="bi bi-chevron-down"></i> {{ post.date_display|default('Apr. 3rd, 2026') }}</span>
+        <span><i class="bi bi-three-dots-vertical"></i> {{ post.category|default('Security') }}</span>
+        <span><i class="bi bi-clock"></i> {{ post.reading_time|default('5 min read') }}</span>
+      </div>
+      <div class="tool-post-detail-title">{{ post.title|default('Web Security Scanner') }}</div>
+      <span class="tool-post-read-more">
+        Read More
+        <i class="bi bi-arrow-right"></i>
+      </span>
+    </div>
+  {% endif %}
+</div>
+{% endif %}

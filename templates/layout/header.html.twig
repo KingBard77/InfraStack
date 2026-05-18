@@ -1,132 +1,87 @@
 {# templates/layout/header.html.twig #}
 {% block header %}
-  <!-- Header -->
-  <header id="header" class="header position-relative">
-    <div class="container-fluid container-xl position-relative">
-
-      <div class="top-row d-flex align-items-center justify-content-between">
+  <header id="header" class="header infrastack-header">
+    <div class="container-xl">
+      <div class="infrastack-header-row">
         <a
           href="{{ path('app_main') }}"
-          class="logo d-flex align-items-center {{ app.request.attributes.get('_route') == 'app_main' ? 'active' : '' }}"
-          style="gap: 10px; text-decoration: none;"
+          class="infrastack-logo {{ app.request.attributes.get('_route') == 'app_main' ? 'active' : '' }}"
+          aria-label="InfraStack home"
         >
           <svg
-            width="44"
-            height="44"
+            width="36"
+            height="36"
             viewBox="0 0 64 64"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
-            style="display: block; flex-shrink: 0;"
           >
             <polygon points="14,10 32,3 50,10 32,17" fill="#F7A24D"/>
             <polygon points="14,10 14,18 32,25 32,17" fill="#F28B2E"/>
             <polygon points="50,10 50,18 32,25 32,17" fill="#FFBC76"/>
-
             <polygon points="14,19 32,26 50,19 50,22 32,29 14,22" fill="#EAF1FF"/>
             <polygon points="14,24 32,31 50,24 50,28 32,35 14,28" fill="#4F86F7"/>
-
             <polygon points="14,29 32,36 50,29 50,32 32,39 14,32" fill="#EAF1FF"/>
             <polygon points="14,34 32,41 50,34 50,38 32,45 14,38" fill="#2F67E3"/>
           </svg>
-
-          <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
-            <span style="font-family: 'Poppins', sans-serif; font-size: 26px; font-weight: 800; color: #0f172a; letter-spacing: -0.03em;">
-              InfraStack
-            </span>
-            <span style="font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; color: #475569; margin-top: 4px; letter-spacing: 0.01em;">
-              Knowledge, Guides &amp; Resources
-            </span>
-          </div>
+          <span>InfraStack</span>
         </a>
 
-        <div class="d-flex align-items-center">
-          <div class="social-links">
-            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.linkedin.com/in/your-linkedin-id" target="_blank" rel="noopener noreferrer" class="linkedin" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-            <a href="https://www.infrastack.my" target="_blank" rel="noopener noreferrer" class="website" aria-label="Website"><i class="bi bi-globe"></i></a>
-          </div>
-
-            <form method="get" action="{{ path('app_category') }}" class="search-form ms-4">
-              <input
-                type="text"
-                name="q"
-                value="{{ app.request.query.get('q') }}"
-                placeholder="Search tools..."
-                class="form-control"
-              >
-              <button type="submit" class="btn" title="Search">
-                <i class="bi bi-search"></i>
-              </button>
-            </form>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="nav-wrap">
-      <div class="container d-flex justify-content-center position-relative">
-        <nav id="navmenu" class="navmenu">
-          <ul>
+        <nav id="navmenu" class="navmenu infrastack-nav">
+          <ul id="infrastack-nav-list">
             <li>
-              <a href="{{ path('app_main') }}"
-                 class="{{ app.request.attributes.get('_route') == 'app_main' ? 'active' : '' }}">
+              <a href="{{ path('app_main') }}" class="{{ app.request.attributes.get('_route') == 'app_main' ? 'active' : '' }}">
                 Home
               </a>
             </li>
-
-            {% set activeCategory = category_filter|default(app.request.query.get('category')|default(app.request.attributes.get('category')|default(''))) %}
-            <li class="dropdown">
-              <a href="{{ path('app_category') }}"
-                 class="{{ app.request.attributes.get('_route') in ['app_category', 'tool_detail'] ? 'active' : '' }}">
-                <span>Category</span>
-                <i class="bi bi-chevron-down toggle-dropdown"></i>
-              </a>
-              <ul>
-                {% for item in sidebar_categories|default([]) %}
-                  <li>
-                    <a
-                      href="{{ path('app_category', {
-                        category: item.slug,
-                        q: search_query|default(''),
-                        sort: sort|default('newest'),
-                        tag: tag_filter|default('')
-                      }) }}"
-                      class="{{ activeCategory == item.slug ? 'active' : '' }}"
-                    >
-                      {{ item.name }}
-                    </a>
-                  </li>
-                {% else %}
-                  <li>
-                    <a href="{{ path('app_category') }}">
-                      Tools
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
-            </li>
-
             <li>
-              <a href="{{ path('app_author') }}"
-                 class="{{ app.request.attributes.get('_route') == 'app_author' ? 'active' : '' }}">
+              <a href="{{ path('app_category') }}" class="{{ app.request.attributes.get('_route') in ['app_category', 'tool_detail'] ? 'active' : '' }}">
+                Tools
+              </a>
+            </li>
+            <li>
+              <a href="{{ path('app_author') }}" class="{{ app.request.attributes.get('_route') == 'app_author' ? 'active' : '' }}">
                 Author Profile
               </a>
             </li>
-
             <li>
-              <a href="{{ path('app_contact') }}"
-                 class="{{ app.request.attributes.get('_route') == 'app_contact' ? 'active' : '' }}">
+              <a href="{{ path('app_contact') }}" class="{{ app.request.attributes.get('_route') == 'app_contact' ? 'active' : '' }}">
                 Contact
+              </a>
+            </li>
+            <li>
+              <a href="{{ path('app_privacy') }}" class="{{ app.request.attributes.get('_route') == 'app_privacy' ? 'active' : '' }}">
+                Privacy
               </a>
             </li>
           </ul>
 
-          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+          <button
+            type="button"
+            class="mobile-nav-toggle d-xl-none"
+            aria-label="Open navigation menu"
+            aria-controls="infrastack-nav-list"
+            aria-expanded="false"
+          >
+            <i class="bi bi-list" aria-hidden="true"></i>
+          </button>
         </nav>
+
+        <form method="get" action="{{ path('app_category') }}" class="search-form infrastack-header-search" role="search">
+          <label for="infrastack-header-search-input" class="visually-hidden">Search tools</label>
+          <input
+            id="infrastack-header-search-input"
+            type="search"
+            name="q"
+            value="{{ app.request.query.get('q') }}"
+            placeholder="Search tools..."
+            class="form-control"
+          >
+          <button type="submit" class="btn" title="Search">
+            <i class="bi bi-search"></i>
+          </button>
+        </form>
       </div>
     </div>
   </header>
-  <!-- End Header -->
 {% endblock %}

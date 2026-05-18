@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt Tips Content Demo</title>
+  <style>
+:root { --default-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+body { margin: 0; background: #f8fafc; font-family: var(--default-font); }
+.demo-shell { width: min(1180px, calc(100% - 32px)); margin: 40px auto; }
+.demo-title { margin: 0 0 16px; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: 0; }
+</style>
+  <link rel="stylesheet" href="../../workspace/tool-skin/section.css">
+  <link rel="stylesheet" href="section.css">
+</head>
+<body>
+  <main class="demo-shell">
+    <h1 class="demo-title">Prompt Tips Content Demo</h1>
+    <article class="markdown-content"><div class="content-card __PREFIX__-markdown-card __PREFIX__-markdown-card-prompt-tips">
+  <h2 class="__PREFIX__-section-heading"><i class="bi bi-lightbulb" aria-hidden="true"></i><span>Prompt Tips</span></h2>
+  <p>The generator works best when the prompt names the important __DOMAIN__ decisions directly. Write for the parser and the reviewer, not for a marketing brief.</p>
+
+  <details class="tool-guidance-item" open>
+    <summary><span class="tool-guidance-icon"><i class="bi bi-bullseye" aria-hidden="true"></i></span> <span>What should the prompt include?</span></summary>
+    <div class="tool-guidance-answer">
+      <p>Good prompts name the technical intent directly before listing optional detail.</p>
+      <ul>
+        <li>Name the scope, environment, region, zone count, or placement model when those values matter.</li>
+        <li>Describe the main entry path, internal tiers, protected components, and private access choices.</li>
+        <li>Call out observability, logging, routing, security controls, and dependency boundaries explicitly.</li>
+        <li>State negative choices directly when they matter, such as <code>no public entry</code>, <code>no database tier</code>, or <code>private only</code>.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="tool-guidance-item">
+    <summary><span class="tool-guidance-icon"><i class="bi bi-pencil-square" aria-hidden="true"></i></span> <span>What prompt habits produce cleaner diagrams?</span></summary>
+    <div class="tool-guidance-answer">
+      <p>Clean prompts isolate one scenario and use exact domain terms the parser can map consistently.</p>
+      <ul>
+        <li>Keep one environment or scenario per prompt.</li>
+        <li>Prefer exact domain terms over broad phrases such as <code>secure backend</code> or <code>high availability</code>.</li>
+        <li>Use a preset for a stable baseline, then refine the generated model with controls and the inspector.</li>
+        <li>Separate design intent from implementation detail when the workspace only models the higher-level view.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="tool-guidance-item">
+    <summary><span class="tool-guidance-icon"><i class="bi bi-shield-check" aria-hidden="true"></i></span> <span>What needs explicit review after generation?</span></summary>
+    <div class="tool-guidance-answer">
+      <p>Generated output still needs human review where assumptions, risk, and unsupported details matter.</p>
+      <ul>
+        <li>Assumptions created from short or ambiguous prompts.</li>
+        <li>Security-sensitive, regulated, hybrid, or shared-service patterns.</li>
+        <li>Exact routing, identity, encryption, backup, retention, sizing, cost, and operations decisions.</li>
+        <li>Any service, dependency, or constraint that is outside the workspace model.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+</article>
+  </main>
+</body>
+</html>

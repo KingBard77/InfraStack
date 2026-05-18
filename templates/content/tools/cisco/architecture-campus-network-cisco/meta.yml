@@ -1,0 +1,24 @@
+# meta.yml
+
+title: Cisco Campus Network Architecture
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "Apr. 29th, 2026"
+comments: Interactive tool
+category_label: Cisco
+group: network
+family: architecture
+reading_time: 4 min read
+summary: Generate Cisco campus architecture diagrams from a prompt, preset, editable controls, heuristic score ring, and restorable JSON state.
+intro: >-
+    Turn a Cisco campus brief into a layered workspace for core, distribution, access, wireless, and edge planning.
+    Map VLANs, routing, firewall, WAN edge, DHCP, DNS, HSRP, monitoring, EtherChannel, and generated topology inventory.
+    Refine the stage, inspect score and design notes, then export the topology state for documentation, review, or handoff.
+tags:
+    - Cisco
+    - Campus Network
+    - Topology
+    - VLAN
+    - Routing
+    - Architecture

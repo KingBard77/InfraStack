@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assessment Output Toolbar Demo</title>
+  <style>
+:root { --default-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f8fafc; font-family: var(--default-font); color: #111827; }
+.demo-shell { width: min(1180px, calc(100% - 32px)); margin: 40px auto; }
+.demo-title { margin: 0 0 16px; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: 0; }
+.__TOOL_CLASS__ { color: #111827; }
+.__TOOL_CLASS__ .tool-box { border: 1px solid #d7e3f5; border-radius: 18px; background: #f8fbff; padding: 20px; }
+.__TOOL_CLASS__ .tool-shell, .__TOOL_CLASS__ .tool-inspector-section, .__TOOL_CLASS__ .tool-result-section-card { border: 1px solid #dbeafe; border-radius: 16px; background: #fff; }
+.__TOOL_CLASS__ .tool-shell { padding: 18px; box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08); }
+.__TOOL_CLASS__ .form-control, .__TOOL_CLASS__ .form-select { width: 100%; border: 1px solid #cbd5e1; border-radius: 10px; background: #fff; padding: 10px 12px; color: #111827; font: 700 14px/1.4 var(--default-font); }
+.__TOOL_CLASS__ .btn, .__TOOL_CLASS__ button { font: 800 13px/1.2 var(--default-font); }
+.__TOOL_CLASS__ .d-none, .__TOOL_CLASS__ [hidden] { display: none !important; }
+.__TOOL_CLASS__ table { width: 100%; border-collapse: collapse; }
+.__TOOL_CLASS__ th, .__TOOL_CLASS__ td { border-bottom: 1px solid #e2e8f0; padding: 10px; text-align: left; vertical-align: top; }
+  </style>
+  <link rel="stylesheet" href="section.css">
+</head>
+<body>
+  <main class="demo-shell">
+    <h1 class="demo-title">Assessment Output Toolbar Demo</h1>
+    <div class="__TOOL_CLASS__">
+      <div class="tool-box">
+                <div class="__TOOL_CLASS__bar-shell">
+                  <div class="__TOOL_CLASS__bar tool-result-toolbar">
+                    <div class="__TOOL_CLASS__bar-left tool-result-toolbar-main">
+                      <div class="__PREFIX__-sort-shell">
+                        <label for="__DOM_PREFIX__Sort" class="__PREFIX__-sort-label">Sort</label>
+                        <div class="__PREFIX__-sort-wrap">
+                          <details class="__PREFIX__-sort-select" id="__DOM_PREFIX__SortSelect">
+                            <summary class="__PREFIX__-sort-summary">
+                              <span id="__DOM_PREFIX__SortSummary">ID</span>
+                            </summary>
+
+                            <div class="__PREFIX__-sort-menu">
+                              <div class="__PREFIX__-sort-grid" id="__DOM_PREFIX__SortOptions"></div>
+                            </div>
+                          </details>
+                          <input type="hidden" id="__DOM_PREFIX__Sort" value="id">
+                        </div>
+                      </div>
+
+                      <div class="__TOOL_CLASS__bar-meta" id="__DOM_PREFIX__ToolbarMeta"></div>
+                    </div>
+
+                    <div class="__TOOL_CLASS__bar-actions tool-result-toolbar-actions">
+                      <button type="button" class="__PREFIX__-action-btn tool-result-action-btn" id="__DOM_PREFIX__CopyScript" disabled>
+                        <i class="bi bi-clipboard" aria-hidden="true"></i>
+                        <span data-button-label>Copy script</span>
+                      </button>
+                      <button type="button" class="__PREFIX__-action-btn tool-result-action-btn" id="__DOM_PREFIX__DownloadScript" disabled>
+                        <i class="bi bi-download" aria-hidden="true"></i>
+                        <span data-button-label>Download script</span>
+                      </button>
+                      <button type="button" class="__PREFIX__-action-btn tool-result-action-btn" id="__DOM_PREFIX__ExportPdf">
+                        <i class="bi bi-filetype-pdf" aria-hidden="true"></i>
+                        <span data-button-label>Export PDF</span>
+                      </button>
+                      <button type="button" class="__PREFIX__-action-btn tool-result-action-btn" id="__DOM_PREFIX__DownloadCsv">
+                        <i class="bi bi-download" aria-hidden="true"></i>
+                        <span data-button-label>Download CSV</span>
+                      </button>
+                      <button type="button" class="__PREFIX__-action-btn tool-result-action-btn" id="__DOM_PREFIX__CopyJson">
+                        <i class="bi bi-clipboard" aria-hidden="true"></i>
+                        <span data-button-label>Copy JSON</span>
+                      </button>
+                      <button type="button" class="__PREFIX__-action-btn tool-result-action-btn" id="__DOM_PREFIX__DownloadJson">
+                        <i class="bi bi-download" aria-hidden="true"></i>
+                        <span data-button-label>Download JSON</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+      </div>
+    </div>
+  </main>
+  <script src="section.js"></script>
+  <script>
+    if (window.InfraStackAssessmentWorkspaceSections && typeof window.InfraStackAssessmentWorkspaceSections.outputToolbar === 'function') {
+      window.InfraStackAssessmentWorkspaceSections.outputToolbar(document);
+    }
+  </script>
+</body>
+</html>

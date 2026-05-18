@@ -1,0 +1,145 @@
+<details class="__PREFIX__-advanced">
+      <summary class="__PREFIX__-advanced-summary">
+        <span>Custom</span>
+      </summary>
+
+      <div class="__PREFIX__-advanced-body">
+        <div class="__PREFIX__-inner-panel">
+          <div class="__PREFIX__-setting-row">
+            <label for="__DOM_PREFIX__ProxyType" class="__PREFIX__-setting-label">
+              Proxy path:
+              <span class="info-dot" title="Proxy routing is only meaningful for outbound client sessions and is translated per implementation when supported">i</span>
+            </label>
+
+            <div class="__PREFIX__-setting-field">
+              <div class="__PREFIX__-stacked-grid">
+                <div class="__PREFIX__-inline-grid __PREFIX__-inline-grid-three">
+                  <select id="__DOM_PREFIX__ProxyType" class="form-select">
+                    <option value="none" selected>No proxy</option>
+                    <option value="http">HTTP CONNECT</option>
+                    <option value="socks4">SOCKS4</option>
+                    <option value="socks5">SOCKS5</option>
+                  </select>
+
+                  <div class="d-none" id="__DOM_PREFIX__ProxyHostWrap">
+                    <input
+                      type="text"
+                      id="__DOM_PREFIX__ProxyHost"
+                      class="form-control"
+                      placeholder="proxy.local"
+                    >
+                  </div>
+
+                  <div class="d-none" id="__DOM_PREFIX__ProxyPortWrap">
+                    <input
+                      type="number"
+                      id="__DOM_PREFIX__ProxyPort"
+                      class="form-control"
+                      min="1"
+                      max="65535"
+                      step="1"
+                      placeholder="Proxy port"
+                    >
+                  </div>
+                </div>
+
+                <div class="d-none" id="__DOM_PREFIX__ProxyAuthWrap">
+                  <input
+                    type="text"
+                    id="__DOM_PREFIX__ProxyAuth"
+                    class="form-control"
+                    placeholder="Proxy auth, for example user:pass"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="__PREFIX__-setting-row">
+            <label for="__DOM_PREFIX__IdleTimeout" class="__PREFIX__-setting-label">
+              Session extras:
+              <span class="info-dot" title="Idle cut-offs, listener caps, and stream logging mainly apply to richer ncat-style workflows">i</span>
+            </label>
+
+            <div class="__PREFIX__-setting-field">
+              <div class="__PREFIX__-inline-grid __PREFIX__-inline-grid-three">
+                <input
+                  type="number"
+                  id="__DOM_PREFIX__IdleTimeout"
+                  class="form-control"
+                  min="0"
+                  step="1"
+                  placeholder="Idle timeout"
+                >
+
+                <input
+                  type="number"
+                  id="__DOM_PREFIX__MaxConnections"
+                  class="form-control"
+                  min="0"
+                  step="1"
+                  placeholder="Max connections"
+                >
+
+                <input
+                  type="text"
+                  id="__DOM_PREFIX__LogOutput"
+                  class="form-control"
+                  placeholder="Log output file"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="__PREFIX__-setting-row">
+            <label for="__DOM_PREFIX__ReceiveOnly" class="__PREFIX__-setting-label">
+              Direction:
+              <span class="info-dot" title="Receive-only, send-only, and shutdown-after-stdin EOF are flavour-specific, so the warning panel stays honest about anything dropped">i</span>
+            </label>
+
+            <div class="__PREFIX__-setting-field">
+              <div class="__PREFIX__-inline-grid __PREFIX__-inline-grid-three">
+                <label class="switch __PREFIX__-switch-wrap">
+                  <input type="checkbox" id="__DOM_PREFIX__ReceiveOnly">
+                  <span class="slider"></span>
+                  <span class="__PREFIX__-switch-label">Receive only</span>
+                </label>
+
+                <label class="switch __PREFIX__-switch-wrap">
+                  <input type="checkbox" id="__DOM_PREFIX__SendOnly">
+                  <span class="slider"></span>
+                  <span class="__PREFIX__-switch-label">Send only</span>
+                </label>
+
+                <label class="switch __PREFIX__-switch-wrap">
+                  <input type="checkbox" id="__DOM_PREFIX__ShutdownAfterEof">
+                  <span class="slider"></span>
+                  <span class="__PREFIX__-switch-label">Shutdown after stdin EOF (-N)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="__PREFIX__-setting-row">
+            <label for="__DOM_PREFIX__ExtraFlags" class="__PREFIX__-setting-label">
+              Extra flags:
+              <span class="info-dot" title="Append raw flags when a runbook needs something narrower than the builder currently exposes">i</span>
+            </label>
+
+            <div class="__PREFIX__-setting-field">
+              <div class="__PREFIX__-stacked-grid">
+                <input
+                  type="text"
+                  id="__DOM_PREFIX__ExtraFlags"
+                  class="form-control"
+                  placeholder="Raw extras, for example --allow 10.0.0.0/8"
+                >
+
+                <div class="__PREFIX__-flag-hint">The generator keeps the main socket role and target tokens ordered for you. Extra flags are appended before the final host and port tokens so they behave like real command-line switches instead of freelancing in the destination slot.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    </form>

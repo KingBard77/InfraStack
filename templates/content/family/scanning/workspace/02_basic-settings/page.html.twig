@@ -1,0 +1,146 @@
+          <details class="__PREFIX__-advanced">
+            <summary class="__PREFIX__-advanced-summary">
+              <span>Custom</span>
+            </summary>
+
+            <div class="__PREFIX__-advanced-body">
+              <div class="__PREFIX__-inner-panel">
+                <div class="__PREFIX__-setting-row">
+                  <label for="__DOM_PREFIX__Method" class="__PREFIX__-setting-label">
+                    Method preference:
+                    <span class="info-dot" title="Use HEAD for lightweight checks or GET when the server behaves differently for normal content delivery">i</span>
+                  </label>
+
+                  <div class="__PREFIX__-setting-field">
+                    <details class="__PREFIX__-select" id="__DOM_PREFIX__MethodSelect">
+                      <summary class="__PREFIX__-select-summary">
+                        <span id="__DOM_PREFIX__MethodSummary">HEAD</span>
+                      </summary>
+
+                      <div class="__PREFIX__-select-body">
+                        <div class="__PREFIX__-select-grid">
+                          <button type="button" class="__PREFIX__-select-option is-active" data-option-value="HEAD" aria-pressed="true">HEAD</button>
+                          <button type="button" class="__PREFIX__-select-option" data-option-value="GET" aria-pressed="false">GET</button>
+                        </div>
+                      </div>
+                    </details>
+                    <input type="hidden" id="__DOM_PREFIX__Method" value="HEAD">
+                  </div>
+                </div>
+
+                <div class="__PREFIX__-setting-row">
+                  <label for="__DOM_PREFIX__FollowRedirects" class="__PREFIX__-setting-label">
+                    Follow redirects:
+                    <span class="info-dot" title="Keep enabled to inspect the final destination reached by the target">i</span>
+                  </label>
+
+                  <div class="__PREFIX__-setting-field">
+                    <label class="switch">
+                      <input type="checkbox" id="__DOM_PREFIX__FollowRedirects" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="__PREFIX__-setting-row">
+                  <label for="__DOM_PREFIX__Timeout" class="__PREFIX__-setting-label">
+                    Timeout (seconds):
+                    <span class="info-dot" title="Maximum wait time for the primary scan and companion probes">i</span>
+                  </label>
+
+                  <div class="__PREFIX__-setting-field __PREFIX__-timeout-wrap">
+                    <input
+                      type="number"
+                      id="__DOM_PREFIX__Timeout"
+                      class="form-control"
+                      value="12"
+                      min="1"
+                      max="30"
+                      step="1"
+                    >
+                    <span class="__PREFIX__-timeout-unit">s</span>
+                  </div>
+                </div>
+
+                <div class="__PREFIX__-setting-row">
+                  <label for="__DOM_PREFIX__ValidateTls" class="__PREFIX__-setting-label">
+                    Validate TLS certificate:
+                    <span class="info-dot" title="Keep enabled unless you are intentionally reviewing an invalid or staging certificate">i</span>
+                  </label>
+
+                  <div class="__PREFIX__-setting-field">
+                    <label class="switch">
+                      <input type="checkbox" id="__DOM_PREFIX__ValidateTls" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="__PREFIX__-setting-row">
+                  <label for="__DOM_PREFIX__FallbackGet" class="__PREFIX__-setting-label">
+                    Fallback GET on 405:
+                    <span class="info-dot" title="Retry the target with GET when HEAD is rejected by the server">i</span>
+                  </label>
+
+                  <div class="__PREFIX__-setting-field">
+                    <label class="switch">
+                      <input type="checkbox" id="__DOM_PREFIX__FallbackGet" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="__PREFIX__-setting-row">
+                  <label for="__DOM_PREFIX__UserAgent" class="__PREFIX__-setting-label">
+                    User-Agent profile:
+                    <span class="info-dot" title="Use a different client profile when response behavior depends on the requester">i</span>
+                  </label>
+
+                  <div class="__PREFIX__-setting-field">
+                    <details class="__PREFIX__-select" id="__DOM_PREFIX__UserAgentSelect">
+                      <summary class="__PREFIX__-select-summary">
+                        <span id="__DOM_PREFIX__UserAgentSummary">Default client</span>
+                      </summary>
+
+                      <div class="__PREFIX__-select-body">
+                        <div class="__PREFIX__-select-grid">
+                          <button type="button" class="__PREFIX__-select-option is-active" data-option-value="default" aria-pressed="true">Default client</button>
+                          <button type="button" class="__PREFIX__-select-option" data-option-value="desktop" aria-pressed="false">Desktop browser</button>
+                          <button type="button" class="__PREFIX__-select-option" data-option-value="mobile" aria-pressed="false">Mobile browser</button>
+                        </div>
+                      </div>
+                    </details>
+                    <input type="hidden" id="__DOM_PREFIX__UserAgent" value="default">
+                  </div>
+                </div>
+
+                <div class="__PREFIX__-setting-row">
+                  <label for="__DOM_PREFIX__WellKnown" class="__PREFIX__-setting-label">
+                    Check well-known files:
+                    <span class="info-dot" title="Probe for standard public files such as security.txt and robots.txt">i</span>
+                  </label>
+
+                  <div class="__PREFIX__-setting-field">
+                    <label class="switch">
+                      <input type="checkbox" id="__DOM_PREFIX__WellKnown" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="__PREFIX__-setting-row">
+                  <label for="__DOM_PREFIX__HttpUpgrade" class="__PREFIX__-setting-label">
+                    Probe HTTP upgrade path:
+                    <span class="info-dot" title="Test whether the HTTP version of the target upgrades to HTTPS">i</span>
+                  </label>
+
+                  <div class="__PREFIX__-setting-field">
+                    <label class="switch">
+                      <input type="checkbox" id="__DOM_PREFIX__HttpUpgrade" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>

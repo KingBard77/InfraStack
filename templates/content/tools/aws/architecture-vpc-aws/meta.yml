@@ -1,0 +1,23 @@
+# meta.yml
+
+title: AWS VPC Architecture
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "Apr. 18th, 2026"
+comments: Interactive tool
+category_label: AWS
+group: cloud
+family: architecture
+reading_time: 4 min read
+summary: Generate an AWS VPC architecture diagram from a prompt, preset, and live inspector controls.
+intro: >-
+    Build an AWS VPC from a brief and turn it into a clear architecture workspace for subnet planning and review.
+    Map public ingress, private app tiers, data subnets, NAT routing, endpoints, route flow, observability, and AWS service placement.
+    Refine live controls, inspect generated inventory and layout decisions, then export the diagram state for handoff or comparison.
+tags:
+    - AWS
+    - VPC
+    - Architecture
+    - Diagram
+    - Topology

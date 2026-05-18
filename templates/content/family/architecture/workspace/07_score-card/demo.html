@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture Score Card Demo</title>
+  <style>
+:root { --default-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f8fafc; font-family: var(--default-font); color: #111827; }
+.demo-shell { width: min(1180px, calc(100% - 32px)); margin: 40px auto; }
+.demo-title { margin: 0 0 16px; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: 0; }
+.demo-stack { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.__TOOL_CLASS__ { color: #111827; }
+  </style>
+  <link rel="stylesheet" href="section.css">
+</head>
+<body>
+  <main class="demo-shell">
+    <h1 class="demo-title">Architecture Score Card Demo</h1>
+    <div class="__TOOL_CLASS__ demo-stack">
+      <div class="__PREFIX__-output-summary" data-section="score-card-before">
+        <div class="__PREFIX__-output-status-card" aria-live="polite">
+          <div class="__PREFIX__-score-card" id="__DOM_PREFIX__OutputStatusBefore">
+            <div class="__PREFIX__-score-ring-card __PREFIX__-score-ring-card-review" tabindex="0" role="group" aria-label="Architecture score pending">
+              <div class="__PREFIX__-score-value" style="--progress-angle: 0deg;" aria-label="Architecture score pending">
+                <div class="__PREFIX__-score-center">
+                  <span class="__PREFIX__-score-value-number">--</span>
+                  <span class="__PREFIX__-score-caption">/100</span>
+                </div>
+              </div>
+              <span class="__PREFIX__-score-label">
+                <span class="__PREFIX__-score-label-orb" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>
+                <span class="__PREFIX__-score-label-text">Pending</span>
+              </span>
+            </div>
+            <div class="__PREFIX__-score-copy">
+              <div class="__PREFIX__-score-kicker">Architecture Score</div>
+              <div class="__PREFIX__-score-summary">Generate First</div>
+              <div class="__PREFIX__-score-detail">Generate a diagram to score the current architecture model.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="__PREFIX__-output-summary" data-section="score-card-after">
+        <div class="__PREFIX__-output-status-card" aria-live="polite">
+          <div class="__PREFIX__-score-card" id="__DOM_PREFIX__OutputStatus">
+            <div class="__PREFIX__-score-ring-card __PREFIX__-score-ring-card-ready" tabindex="0" role="group" aria-label="Architecture score 86 out of 100">
+              <div class="__PREFIX__-score-value" style="--progress-angle: 310deg;" aria-label="Architecture score 86 out of 100">
+                <div class="__PREFIX__-score-center">
+                  <span class="__PREFIX__-score-value-number">86</span>
+                  <span class="__PREFIX__-score-caption">/100</span>
+                </div>
+              </div>
+              <span class="__PREFIX__-score-label">
+                <span class="__PREFIX__-score-label-orb" aria-hidden="true"><i class="bi bi-check2-circle"></i></span>
+                <span class="__PREFIX__-score-label-text">Ready</span>
+              </span>
+            </div>
+            <div class="__PREFIX__-score-copy">
+              <div class="__PREFIX__-score-kicker">Architecture Score</div>
+              <div class="__PREFIX__-score-summary">Advisory Review</div>
+              <div class="__PREFIX__-score-detail">Redundancy, private placement, and export state are represented. This is not validation proof.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,142 @@
+source: scanning-family-workspace
+family: scanning
+version: 1.0.6
+status: active
+description: Family-specific workspace grammar for InfraStack scanner tools using the current Web Security Scanner target, options, hidden-first result, output toolbar, evidence tabs, JSON restore, and example input baseline.
+agent_map: templates/content/family/scanning/AGENTS.md
+
+family_path: templates/content/family/scanning/
+workspace_path: templates/content/family/scanning/workspace/
+scaffold_path: templates/content/main/scaffold/
+main_sections_path: templates/content/main/sections/
+
+reference_workspace:
+    title: Web Security Scanner
+    path: templates/content/tools/security/scan-web-security/
+    aliases:
+        - Web Security Scanner
+        - Web security scanner
+        - web-security-scanner
+        - scan-web-security
+    role: Current working baseline reference for scanning workspace grammar.
+
+runtime_baseline:
+    source_tool: templates/content/tools/security/scan-web-security/
+    source_snapshot: templates/content/family/scanning/baseline/source/
+    workspace_sections: templates/content/family/scanning/workspace/
+    model_core: templates/content/family/scanning/workspace/assets/bin/model-core.js
+    copy_mode: section_owned
+    css_js_mode: section_owned
+    model_core_sha256: 9846dafe6227ebb04bfc0021c826370fc747c371a6d2f264369d5dc599582073
+    source_hashes:
+        tool_html_twig: 9b2466749811fbd509b27d760e3f4b4c35733419d1fdc995e67a9c3843bfad84
+        custom_css: b2ec94965596e728eb675604d387ab0d823b095421372e680dd7804950e216b8
+        custom_js: 16620ae5a075b062f6a3083f662a8dc8ed7e8142e956497248c14f5dec2e9f2a
+        model_core: 9846dafe6227ebb04bfc0021c826370fc747c371a6d2f264369d5dc599582073
+
+selection_triggers:
+    - scan
+    - scanner
+    - probe
+    - inspect endpoint
+    - check headers
+    - check tls
+    - check cookies
+    - public endpoint review
+    - evidence scanner
+
+workspace_flow:
+    - target_input
+    - scan_options
+    - hidden_first_result_empty_state
+    - result_summary
+    - output_toolbar_sort_copy_export_import
+    - result_tabs_evidence_tables
+    - json_payload_output_restore
+
+workspace_sections:
+    01_input-brief: primary target input and scan action
+    02_basic-settings: request method, redirects, timeout, validation, client profile, and companion probes
+    03_advanced-settings: optional advanced scan options; no-op unless a scanner separates them from basic options
+    04_selected-item: optional selected finding/evidence inspector; no-op unless the scanner supports selection
+    05_result-summary: hidden-first result shell, score/status, metrics, chips, and final target details
+    06_result-view: findings, evidence tables, surface details, and result tabs
+    07_table-export: ID-first sort, row copy, CSV/report/JSON, optional import, and output actions
+    08_json-restore: scanner JSON payload output and optional restore handling
+
+section_file_contract:
+    required_per_section:
+        - README.md
+        - demo.html
+        - page.html.twig
+        - section.css
+        - section.js
+    role: Keep scanning workspace sections structurally equivalent to architecture workspace sections while preserving scanner-specific behavior.
+
+scaffold_content_adaptation:
+    01_overview: scanner purpose, target boundary, evidence boundary, and review boundary
+    02_technical-details: request model, validation, probes, finding generation, payload shape, and restore behavior
+    03_example-prompts: Example Scan Inputs with Copy input controls unless the scanner is prompt-driven
+    09_example-commands: literal scanner commands with Copy command controls when the scanner is command-oriented
+    example_terminal_title: centered title case
+    04_tips-prompts: scan input tips, scope tips, and evidence interpretation guidance
+    05_how-to-use: target, options, scan, review evidence, export, and restore workflow
+    06_export-notes: PDF/report, CSV, JSON, copy, and import restore boundaries
+    07_faq: scanner trust boundaries and coverage limitations
+    08_acronyms: optional abbreviation expansion table; domain, protocol, and scan acronyms
+    11_glossary: optional broader terminology table; broader domain, command, workflow, platform, or estimate terminology
+    10_references: complete factual content delivery, valid source-backed citations, and References rows when final scanning content cites sources
+
+state_contract:
+    - target
+    - scan_options
+    - companion_probes
+    - normalized_query
+    - result_summary
+    - findings
+    - evidence_tables
+    - row_copy_payloads
+    - output_toolbar
+    - exports
+    - json_output
+    - json_restore_when_implemented
+
+generation_rules:
+    - Select this workspace source for scanning-family tool requests.
+    - Use this workspace source for scanner-specific workspace sections.
+    - Keep full copied scanning source under baseline/source/ as a reference-only snapshot when refreshing this baseline.
+    - Keep reusable scanning runtime behavior in section-owned page.html.twig, section.css, section.js, and demo.html files.
+    - Keep workspace/assets/bin/model-core.js as the reusable model-core source when the source tool ships one.
+    - Use shared main content sections for reusable content rhythm.
+    - Apply shared main content sections as a full contract: content.md markup, section.css visual behavior, and section.js helper behavior when present.
+    - Final tool custom.css and custom.js must preserve the applied section card frame, heading divider, typography, table, list, details, FAQ, copy, citation, prompt, or command behavior unless a documented shared include exists.
+    - Use 10_references for complete factual content delivery and when final content includes valid source-backed citations, with in-text citation links targeting matching References row IDs.
+    - Do not create a family-local sections/ directory.
+    - Do not copy web-header-specific language into non-web scanners.
+    - Preserve scanning-family target-to-result grammar while adapting labels, icons, category/provider tokens, examples, checks, evidence, and model logic.
+    - Keep first refresh output hidden unless validated restore intentionally loads output.
+    - Keep dropdown menus visible above following cards.
+    - Keep custom preference controls inside the scanner shell without nested card framing unless a separate inspector section is justified.
+    - Keep the compact circular score ring with centered score and denominator text.
+    - Keep summary, toolbar, tabs, and table shells visually separated without unintended divider lines between them.
+    - Keep result table copy columns sticky or frozen when horizontal scrolling is needed.
+    - Keep result tables and JSON generated from the same normalized payload.
+    - Keep paired Example Scan Input copy controls free from duplicate generic copy buttons.
+    - Generate final runtime files under templates/content/tools/<category>/<tool-slug>/.
+
+validation_rules:
+    - workspace/README.md exists.
+    - workspace/manifest.yml exists.
+    - reference workspace path exists when used.
+    - scanning workspace section folders exist.
+    - every scanning workspace section folder contains README.md, demo.html, page.html.twig, section.css, and section.js.
+    - baseline/source/tool.html.twig, baseline/source/custom.css, baseline/source/custom.js, and baseline/source/assets/bin/model-core.js exist.
+    - root workspace/custom.css and workspace/custom.js do not exist.
+    - workspace/assets/bin/model-core.js exists and matches the declared reusable model-core hash.
+    - shared main content section source exists.
+    - Applied shared content sections are validated in the final tool package for namespace markers, unresolved placeholders, required custom.css selectors, and helper hooks when used.
+    - citation links and References rows are paired when 10_references is used.
+    - no family-local sections/ directory exists.
+    - final tool query, summary, tables, exports, and JSON use one normalized payload.
+    - output toolbar, tabs shell, table shell, and JSON panel match implemented behavior.
+    - import restore is validated when shown.

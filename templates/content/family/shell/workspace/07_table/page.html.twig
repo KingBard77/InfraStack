@@ -1,0 +1,85 @@
+<div class="__PREFIX__-tabs-shell">
+          <div class="tool-tabs __PREFIX__-tabs" role="tablist" aria-label="Netcat command output views">
+            <button type="button" class="tool-tab-btn __PREFIX__-tab-btn" id="__DOM_PREFIX__CommandTab" data-tab-target="__DOM_PREFIX__CommandPanel" role="tab" aria-controls="__DOM_PREFIX__CommandPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-terminal" aria-hidden="true"></i>
+              <span>Command</span>
+            </button>
+            <button type="button" class="tool-tab-btn __PREFIX__-tab-btn active" id="__DOM_PREFIX__OptionsTab" data-tab-target="__DOM_PREFIX__OptionsPanel" role="tab" aria-controls="__DOM_PREFIX__OptionsPanel" aria-selected="true" tabindex="0">
+              <i class="bi bi-list-check" aria-hidden="true"></i>
+              <span>Operations</span>
+            </button>
+            <button type="button" class="tool-tab-btn __PREFIX__-tab-btn" id="__DOM_PREFIX__WarningsTab" data-tab-target="__DOM_PREFIX__WarningsPanel" role="tab" aria-controls="__DOM_PREFIX__WarningsPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-card-text" aria-hidden="true"></i>
+              <span>Warnings</span>
+            </button>
+            <button type="button" class="tool-tab-btn __PREFIX__-tab-btn" id="__DOM_PREFIX__JsonTab" data-tab-target="__DOM_PREFIX__JsonPanel" role="tab" aria-controls="__DOM_PREFIX__JsonPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-braces" aria-hidden="true"></i>
+              <span>JSON</span>
+            </button>
+          </div>
+
+          <div class="tool-tab-panel __PREFIX__-tab-panel" id="__DOM_PREFIX__CommandPanel" data-tab-panel="__DOM_PREFIX__CommandPanel" role="tabpanel" aria-labelledby="__DOM_PREFIX__CommandTab" hidden>
+            <div class="__PREFIX__-command-wrap">
+              <div class="__PREFIX__-command-head">
+                <h3 class="__PREFIX__-command-title">Generated netcat Command</h3>
+                <div class="__PREFIX__-command-actions">
+                  <button type="button" class="__PREFIX__-action-btn" id="__DOM_PREFIX__CopyCommand">
+                    <i class="bi bi-clipboard"></i>
+                    <span class="__PREFIX__-command-copy-label">Copy</span>
+                  </button>
+                </div>
+              </div>
+              <pre class="__PREFIX__-command-pre"><code id="__DOM_PREFIX__CommandOutput"></code></pre>
+            </div>
+          </div>
+
+          <div class="tool-tab-panel __PREFIX__-tab-panel active" id="__DOM_PREFIX__OptionsPanel" data-tab-panel="__DOM_PREFIX__OptionsPanel" role="tabpanel" aria-labelledby="__DOM_PREFIX__OptionsTab">
+            <div class="__PREFIX__-inventory-panel" aria-labelledby="__DOM_PREFIX__OptionsTitle">
+              <div class="__PREFIX__-table-card">
+                <h3 class="__PREFIX__-result-section-title" id="__DOM_PREFIX__OptionsTitle">Operation Summary</h3>
+                <div class="__PREFIX__-table-wrap">
+                  <table class="table __PREFIX__-table __PREFIX__-options-table mb-0">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Field</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="__DOM_PREFIX__OptionsTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-tab-panel __PREFIX__-tab-panel" id="__DOM_PREFIX__WarningsPanel" data-tab-panel="__DOM_PREFIX__WarningsPanel" role="tabpanel" aria-labelledby="__DOM_PREFIX__WarningsTab" hidden>
+            <div class="__PREFIX__-warning-grid">
+              <div class="__PREFIX__-message-card">
+                <h3 class="__PREFIX__-message-title">Warnings</h3>
+                <ul class="__PREFIX__-message-list" id="__DOM_PREFIX__WarningsList"></ul>
+              </div>
+
+              <div class="__PREFIX__-message-card">
+                <h3 class="__PREFIX__-message-title">Errors</h3>
+                <ul class="__PREFIX__-message-list" id="__DOM_PREFIX__ErrorsList"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-tab-panel __PREFIX__-tab-panel" id="__DOM_PREFIX__JsonPanel" data-tab-panel="__DOM_PREFIX__JsonPanel" role="tabpanel" aria-labelledby="__DOM_PREFIX__JsonTab" hidden>
+            <div class="__PREFIX__-command-wrap tool-json-panel">
+              <div class="tool-json-head">
+                <span class="tool-json-title">JSON Output</span>
+              </div>
+              <pre class="__PREFIX__-command-pre tool-json-output"><code id="__DOM_PREFIX__JsonOutput"></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+    <div class="__PREFIX__-result-error d-none" id="__DOM_PREFIX__ResultError"></div>
+    </div>
+    <input type="file" id="__DOM_PREFIX__ImportJson" class="d-none" accept="application/json">

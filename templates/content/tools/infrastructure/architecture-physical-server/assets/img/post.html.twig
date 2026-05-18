@@ -1,0 +1,157 @@
+<div class="architecture-physical-server-post-visual" aria-hidden="true">
+  <style>
+    .architecture-physical-server-post-visual,
+    .architecture-physical-server-post-visual * {
+      box-sizing: border-box;
+    }
+
+    .architecture-physical-server-post-visual {
+      position: relative;
+      display: grid;
+      gap: 12px;
+      width: 100%;
+      min-height: 260px;
+      padding: 18px;
+      overflow: hidden;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #ecfeff 0%, #ecfdf5 100%);
+      color: #0f172a;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .architecture-physical-server-post-visual::after {
+      content: "";
+      position: absolute;
+      inset: auto -44px -70px auto;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(6, 182, 212, 0.18);
+    }
+
+    .architecture-physical-server-post-header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .architecture-physical-server-post-kicker {
+      color: #0f766e;
+      font-size: 0.76rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .architecture-physical-server-post-title {
+      margin-top: 2px;
+      color: #0f172a;
+      font-size: 1.05rem;
+      font-weight: 950;
+    }
+
+    .architecture-physical-server-post-icon {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #0f766e;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+    }
+
+    .architecture-physical-server-post-stage {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      align-items: center;
+      min-height: 128px;
+      padding: 12px;
+      border: 1px solid rgba(6, 182, 212, 0.22);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .architecture-physical-server-post-node {
+      display: grid;
+      place-items: center;
+      min-height: 56px;
+      border: 1px solid #bae6fd;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 0.72rem;
+      font-weight: 850;
+      text-align: center;
+    }
+
+    .architecture-physical-server-post-line {
+      position: relative;
+      height: 2px;
+      background: #2563eb;
+    }
+
+    .architecture-physical-server-post-line::after {
+      content: "";
+      position: absolute;
+      top: -4px;
+      right: -2px;
+      border-width: 5px 0 5px 8px;
+      border-style: solid;
+      border-color: transparent transparent transparent #2563eb;
+    }
+
+    .architecture-physical-server-post-footer {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .architecture-physical-server-post-pill {
+      border: 1px solid rgba(16, 185, 129, 0.24);
+      border-radius: 999px;
+      padding: 7px 8px;
+      background: #ffffff;
+      color: #0f766e;
+      font-size: 0.66rem;
+      font-weight: 850;
+      text-align: center;
+      white-space: nowrap;
+    }
+  </style>
+
+  <div class="architecture-physical-server-post-header">
+    <div>
+      <div class="architecture-physical-server-post-kicker">Infrastructure</div>
+      <div class="architecture-physical-server-post-title">Physical Server Architecture</div>
+    </div>
+    <div class="architecture-physical-server-post-icon"><i class="bi bi-hdd-rack" aria-hidden="true"></i></div>
+  </div>
+
+  <div class="architecture-physical-server-post-stage">
+    <div class="architecture-physical-server-post-node">Gateway</div>
+    <div class="architecture-physical-server-post-line"></div>
+    <div class="architecture-physical-server-post-node">Firewall</div>
+    <div class="architecture-physical-server-post-node">Switching</div>
+    <div class="architecture-physical-server-post-line"></div>
+    <div class="architecture-physical-server-post-node">Hypervisors</div>
+    <div class="architecture-physical-server-post-node">Storage</div>
+    <div class="architecture-physical-server-post-line"></div>
+    <div class="architecture-physical-server-post-node">Backup</div>
+  </div>
+
+  <div class="architecture-physical-server-post-footer">
+    <span class="architecture-physical-server-post-pill">Compute</span>
+    <span class="architecture-physical-server-post-pill">Storage</span>
+    <span class="architecture-physical-server-post-pill">Network</span>
+    <span class="architecture-physical-server-post-pill">Ops</span>
+  </div>
+</div>

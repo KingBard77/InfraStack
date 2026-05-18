@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Huawei Cloud virtual server instance">
+  <rect x="4" y="10" width="24" height="12" rx="3" fill="#C7000B"/>
+  <rect x="8" y="14" width="3" height="3" rx=".8" fill="#FEF2F2"/>
+  <rect x="13" y="14" width="3" height="3" rx=".8" fill="#FEF2F2"/>
+  <rect x="18" y="14" width="3" height="3" rx=".8" fill="#FEF2F2"/>
+  <rect x="23" y="14" width="3" height="3" rx=".8" fill="#FEF2F2"/>
+  <path d="M9 24h14" stroke="#991B1B" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,25 @@
+# meta.yml
+
+title: TM Cloud Alpha Architecture
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "May. 13th, 2026"
+comments: Interactive tool
+category_label: TM Cloud Alpha
+group: cloud
+family: architecture
+reading_time: 4 min read
+summary: Generate TM Cloud Alpha architecture diagrams from a prompt, preset, editable controls, heuristic score ring, and restorable JSON state.
+intro: >-
+    Turn a TM Cloud Alpha brief into a VPC architecture workspace for zones, subnets, ingress, workload runtime, and services.
+    Map security controls, operations, hybrid connectivity, Cloud Alpha Edge, Cloud Managed Platform, Secure Digital Connectivity, and generated inventory.
+    Refine the stage, inspect score and design notes, then export the diagram state for documentation or handoff.
+tags:
+    - TM Cloud Alpha
+    - VPC
+    - Architecture
+    - Cloud Alpha Edge
+    - Cloud Managed Platform
+    - Secure Digital Connectivity
+    - Hybrid Connectivity

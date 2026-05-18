@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glossary Content Demo</title>
+  <style>
+:root { --default-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+body { margin: 0; background: #f8fafc; font-family: var(--default-font); }
+.demo-shell { width: min(1180px, calc(100% - 32px)); margin: 40px auto; }
+.demo-title { margin: 0 0 16px; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: 0; }
+.alert { border: 1px solid rgba(126, 193, 232, 0.52); border-radius: 12px; padding: 14px 16px; background: #ffffff; color: #123047; }
+.alert-primary { background: #f3fbff; }
+.alert-success { background: #ecfdf5; }
+.alert-warning { background: #fffbeb; }
+.alert-secondary { background: #f8fafc; }
+.d-flex { display: flex; }
+.align-items-start { align-items: flex-start; }
+.gap-3 { gap: 1rem; }
+.mb-0 { margin-bottom: 0; }
+.fs-5 { font-size: 1.25rem; }
+</style>
+  <link rel="stylesheet" href="../../workspace/tool-skin/section.css">
+  <link rel="stylesheet" href="section.css">
+</head>
+<body>
+  <main class="demo-shell">
+    <h1 class="demo-title">Glossary Content Demo</h1>
+    <article class="markdown-content"><div class="content-card __PREFIX__-markdown-card __PREFIX__-markdown-card-glossary">
+  <h2 class="__PREFIX__-section-heading"><i class="bi bi-book" aria-hidden="true"></i><span>Glossary</span></h2>
+  <p>Use this glossary to define technical terms and explain why each term matters in the current tool workflow.</p>
+  <table>
+    <thead><tr><th>Term</th><th>Meaning</th><th>Why it matters in this tool</th></tr></thead>
+    <tbody>
+      <tr><td>Workspace state</td><td>The normalized values, controls, and output data used by the current tool.</td><td>Used to explain what the browser can export or restore.</td></tr>
+      <tr><td>Review artifact</td><td>A generated command, diagram, table, or export that still needs human verification.</td><td>Useful when output should not be treated as final authority.</td></tr>
+      <tr><td>Preset</td><td>A predefined configuration that seeds common values for a tool workflow.</td><td>Helps users start from a controlled baseline instead of a blank form.</td></tr>
+      <tr><td>Boundary</td><td>The scope that separates what the tool models from what it leaves outside the workspace.</td><td>Clarifies assumptions, limits, and handoff notes.</td></tr>
+    </tbody>
+  </table>
+</div>
+</article>
+  </main>
+</body>
+</html>

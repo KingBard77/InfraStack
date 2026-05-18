@@ -1,0 +1,24 @@
+# meta.yml
+
+title: IBM Cloud Cost Calculator
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "May. 11th, 2026"
+comments: Interactive tool
+category_label: IBM Cloud
+group: cloud
+family: calculate
+reading_time: 5 min read
+summary: Estimate blended IBM Cloud monthly spend with visible service inputs, assumptions, buffers, and exportable results.
+intro: >-
+    Estimate IBM Cloud monthly spend across Virtual Servers for VPC, Block Storage, Cloud Object Storage, Code Engine, API Connect, shared egress, and blended usage assumptions.
+    Tune purchase models, quantities, buffers, data transfer, and service-level cost drivers before sharing a planning number.
+    Review visible assumptions and export CSV or JSON snapshots for team review, archive notes, or later estimate comparison.
+tags:
+    - IBM Cloud
+    - Pricing
+    - FinOps
+    - VPC
+    - Code Engine
+    - Cost

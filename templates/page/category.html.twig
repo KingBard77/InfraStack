@@ -12,83 +12,110 @@
   <div class="container-xl" data-aos="fade-up" data-aos-delay="100">
     <div class="row g-4 align-items-start">
       <div class="col-lg-8">
-        {% if tools|default([])|length > 0 %}
-          <div class="tool-card-grid">
-            {% for tool in tools|default([]) %}
-              <article class="tool-card-item">
-                <a
-                  href="{{ path('tool_detail', { category: tool.category_slug, slug: tool.slug }) }}"
-                  class="tool-card-link"
-                  aria-label="{{ tool.title }}"
-                >
-                  {% if tool.card_image is defined and tool.card_image %}
-                    <div class="tool-card-media">
-                      <img src="{{ tool.card_image }}" alt="{{ tool.title }}" class="img-fluid tool-card-image">
-                    </div>
-                  {% else %}
-                    <div
-                      class="tool-card-media tool-card-cover"
-                      style="
-                        --cover-start: {{ tool.card_gradient_start|default('#cbd5e1') }};
-                        --cover-end: {{ tool.card_gradient_end|default('#94a3b8') }};
-                        --cover-text: {{ tool.card_text_color|default('#ffffff') }};
-                      "
-                    >
-                      <div class="tool-card-cover-kicker">
-                        {{ tool.card_kicker|default(tool.category|default('Tool')) }}
-                      </div>
-
-                      <div class="tool-card-cover-icon">
-                        <i class="{{ tool.card_icon_class|default('bi bi-tools') }} tool-card-icon-anim-{{ tool.card_icon_animation|default('fade') }}"></i>
-                      </div>
-
-                      <div class="tool-card-cover-title">
-                        {{ tool.card_image_title|default(tool.title) }}
-                      </div>
-                    </div>
-                  {% endif %}
-
-                  <div class="tool-card-body">
-                    {% if tool.card_summary is defined and tool.card_summary %}
-                      <p class="tool-card-summary">{{ tool.card_summary }}</p>
-                    {% else %}
-                      <p class="tool-card-summary tool-card-summary-empty">&nbsp;</p>
-                    {% endif %}
-
-                    <div class="tool-card-meta">
-                      <div class="tool-card-author">
-                        {% set authorImage = tool.author_image|default('') %}
-                        {% set authorImageUrl = authorImage %}
-                        {% if authorImage and authorImage is not same as('') and not (
-                          authorImage starts with 'http://'
-                          or authorImage starts with 'https://'
-                          or authorImage starts with '//'
-                          or authorImage starts with 'data:'
-                        ) %}
-                          {% set authorImageUrl = asset(authorImage|trim('/')) %}
-                        {% endif %}
-
-                        {% if authorImageUrl %}
-                          <img
-                            src="{{ authorImageUrl }}"
-                            alt="{{ tool.author }}"
-                            class="tool-card-avatar-image"
-                          >
-                        {% else %}
-                          <span class="tool-card-avatar">{{ tool.author_initial|default('T') }}</span>
-                        {% endif %}
-
-                        <div class="tool-card-author-copy">
-                          <p class="tool-card-author-name">{{ tool.author }}</p>
-                          <p class="tool-card-author-date">
-                            <time datetime="{{ tool.date }}">{{ tool.date }}</time>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+        {% if family_groups|default([])|length > 0 %}
+          <div class="tool-family-list">
+            {% for family in family_groups|default([]) %}
+              <section
+                class="tool-family-section"
+                {% if family.label|default('') %}
+                  aria-labelledby="tool-family-{{ family.slug|default(loop.index) }}"
+                {% else %}
+                  aria-label="Tools"
+                {% endif %}
+              >
+                {% if family.label|default('') %}
+                  <div class="tool-family-heading">
+                    <h2 id="tool-family-{{ family.slug|default(loop.index) }}">
+                      {{ family.label|default('Tools') }}
+                    </h2>
+                    <span>{{ family.tools|default([])|length }} {{ family.tools|default([])|length == 1 ? 'tool' : 'tools' }}</span>
                   </div>
-                </a>
-              </article>
+                {% endif %}
+
+                <div class="tool-card-grid">
+                  {% for tool in family.tools|default([]) %}
+                    <article class="tool-card-item">
+                      <a
+                        href="{{ path('tool_detail', { category: tool.category_slug, slug: tool.slug }) }}"
+                        class="tool-card-link"
+                        aria-label="{{ tool.title }}"
+                      >
+                        {% if tool.card_image is defined and tool.card_image %}
+                          <div class="tool-card-media">
+                            <img src="{{ tool.card_image }}" alt="{{ tool.title }}" class="img-fluid tool-card-image">
+                          </div>
+                        {% else %}
+                          <div
+                            class="tool-card-media tool-card-cover"
+                            style="
+                              --cover-start: {{ tool.card_gradient_start|default('#cbd5e1') }};
+                              --cover-end: {{ tool.card_gradient_end|default('#94a3b8') }};
+                              --cover-text: {{ tool.card_text_color|default('#ffffff') }};
+                            "
+                          >
+                            <div class="tool-card-cover-kicker">
+                              {{ tool.card_kicker|default(tool.category|default('Tool')) }}
+                            </div>
+
+                            <div class="tool-card-cover-icon">
+                              <i class="{{ tool.card_icon_class|default('bi bi-tools') }} tool-card-icon-anim-{{ tool.card_icon_animation|default('fade') }}"></i>
+                            </div>
+
+                            <div class="tool-card-cover-title">
+                              {{ tool.card_image_title|default(tool.title) }}
+                            </div>
+                          </div>
+                        {% endif %}
+
+                        <div class="tool-card-body">
+                          {% if tool.card_summary is defined and tool.card_summary %}
+                            <p class="tool-card-summary">{{ tool.card_summary }}</p>
+                          {% else %}
+                            <p class="tool-card-summary tool-card-summary-empty">&nbsp;</p>
+                          {% endif %}
+
+                          <div class="tool-card-taxonomy">
+                            <span>{{ tool.family|default('Tool') }}</span>
+                            <span>{{ tool.category|default('Tool') }}</span>
+                          </div>
+
+                          <div class="tool-card-meta">
+                            <div class="tool-card-author">
+                              {% set authorImage = tool.author_image|default('') %}
+                              {% set authorImageUrl = authorImage %}
+                              {% if authorImage and authorImage is not same as('') and not (
+                                authorImage starts with 'http://'
+                                or authorImage starts with 'https://'
+                                or authorImage starts with '//'
+                                or authorImage starts with 'data:'
+                              ) %}
+                                {% set authorImageUrl = asset(authorImage|trim('/')) %}
+                              {% endif %}
+
+                              {% if authorImageUrl %}
+                                <img
+                                  src="{{ authorImageUrl }}"
+                                  alt="{{ tool.author }}"
+                                  class="tool-card-avatar-image"
+                                >
+                              {% else %}
+                                <span class="tool-card-avatar">{{ tool.author_initial|default('T') }}</span>
+                              {% endif %}
+
+                              <div class="tool-card-author-copy">
+                                <p class="tool-card-author-name">{{ tool.author }}</p>
+                                <p class="tool-card-author-date">
+                                  <time datetime="{{ tool.date }}">{{ tool.date }}</time>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                    </article>
+                  {% endfor %}
+                </div>
+              </section>
             {% endfor %}
           </div>
         {% else %}
@@ -105,7 +132,9 @@
                   {% if current_page > 1 %}
                     <a href="{{ path('app_category', {
                       page: current_page - 1,
+                      group: group_filter|default(''),
                       category: category_filter|default(''),
+                      family: family_filter|default(''),
                       tag: tag_filter|default(''),
                       q: search_query|default(''),
                       sort: sort|default('newest')
@@ -121,9 +150,11 @@
                   <li>
                     <a
                       href="{{ path('app_category', {
-                        page: i,
-                        category: category_filter|default(''),
-                        tag: tag_filter|default(''),
+                      page: i,
+                      group: group_filter|default(''),
+                      category: category_filter|default(''),
+                      family: family_filter|default(''),
+                      tag: tag_filter|default(''),
                         q: search_query|default(''),
                         sort: sort|default('newest')
                       }) }}"
@@ -138,7 +169,9 @@
                   {% if current_page < total_pages %}
                     <a href="{{ path('app_category', {
                       page: current_page + 1,
+                      group: group_filter|default(''),
                       category: category_filter|default(''),
+                      family: family_filter|default(''),
                       tag: tag_filter|default(''),
                       q: search_query|default(''),
                       sort: sort|default('newest')

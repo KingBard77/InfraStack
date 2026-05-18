@@ -1,0 +1,143 @@
+# Architecture Family Agent Map
+
+This file is the source of truth for the current architecture family baseline.
+
+Baseline snapshot: `2026-05-18`.
+
+## Source Files
+
+- `README.md`: family explanation and final package expectations.
+- `manifest.yml`: structured baseline metadata and validation rules.
+- `baseline/source/`: full copied AWS VPC Architecture source snapshot for traceability only.
+- `workspace/README.md`: workspace grammar.
+- `workspace/manifest.yml`: structured workspace section metadata.
+- `workspace/01_input-brief/` through `workspace/09_result-table/`: reusable section sources.
+- `workspace/assets/bin/model-core.js`: reusable model-core reference when a final architecture tool needs one.
+- `templates/content/main/scaffold/README.md`: package skeleton source.
+- `templates/content/main/sections/content/`: shared content delivery section source.
+- `templates/content/main/sections/content/10_references/`: shared source-backed citation and References section source when final content cites sources.
+
+## Reference
+
+Working reference implementation:
+
+```text
+templates/content/tools/aws/architecture-vpc-aws/
+```
+
+Use it for interaction grammar and implementation quality.
+
+Do not copy AWS-visible wording, services, examples, icons, category/provider token lineage, or assumptions into non-AWS tools.
+
+## Current Baseline
+
+Section-owned workspace baseline:
+
+```text
+source: templates/content/tools/aws/architecture-vpc-aws/
+snapshot: templates/content/family/architecture/baseline/source/
+workspace sections: templates/content/family/architecture/workspace/01_input-brief/ through 09_result-table/
+model-core reference: templates/content/family/architecture/workspace/assets/bin/model-core.js
+package scaffold: templates/content/main/scaffold/
+content sections: templates/content/main/sections/content/
+```
+
+The full copied source snapshot is reference-only. Architecture workspace CSS and JavaScript are fully extracted into each section folder as `section.css` and `section.js`. Source ownership uses `ns:start/ns:end family.architecture.workspace.<section>` markers plus section-owned line maps. Do not keep root `workspace/custom.css`, root `workspace/custom.js`, or full custom runtime copies inside section folders.
+
+- `01_input-brief`: prompt shell, helper body text, and body-only info marker helper.
+- `02_basic-settings`: preset, region, availability zone or scope controls, baseline select wrapper, custom dropdown enhancement, no placeholder-chip overlay, preset helper text, and body-only info marker helper.
+- `03_advanced-settings`: network layout, workload, and services/controls grouped custom controls.
+- `04_selected-item`: selected draggable-box or connector inspector and empty-state hint chips.
+- `05_result-text`: stage title, preset chip, model metadata, exact pre-generate notice, and generated text summary.
+- `06_result-diagram`: diagram stage, toolbar, helper chips, usage help, movement controls, connector controls, zoom, fullscreen, hide UI, reset, and visual output.
+- `07_score-card`: advisory score, quality, status, readiness, risk, or assumption summary card.
+- `08_sort-card`: Basic-height Sort dropdown, selected-label-only sort summary, and implemented export/import actions.
+- `09_result-table`: Technical Inventory, secondary table cards, Prompt Notes, Pillar Breakdown, Risk Level, JSON output, JSON import, restore, and generated dummy assessment/table demo.
+
+## Diagram Layout Quality Baseline
+
+This is the architecture-family source of truth for generated diagram structure.
+
+Apply it to architecture, topology, flow, dependency, cloud, network, security path, and editable visual model tools.
+
+Primary color identity is intentionally outside this family baseline. Final tools must use the category/provider token lineage and visual weight rules from `codex/COLOR.md`, but color changes must not weaken the layout, spacing, connector, typography, or preset consistency rules below.
+
+Default generated diagrams must:
+
+- use a minimal modern architecture-infographic style
+- keep the main traffic path centered against the generated diagram
+- align top-level flow boxes on a clean edge or ingress lane
+- keep edge or ingress controls above the main network, region, VPC, VNet, or equivalent boundary
+- keep all container gaps, subnet gaps, and repeated section gaps visually equal
+- keep two-zone or two-AZ layouts symmetrical unless the model explicitly says otherwise
+- use balanced whitespace inside outer boundaries, zones, subnets, and cards
+- use rounded corners in the 16px to 20px range for primary cards and containers
+- use thin soft-blue structural borders and soft shadows so the diagram reads cleanly without heavy decoration
+- use bold headers, smaller muted subtitles, and predictable text hierarchy
+- keep text clear of borders, badges, resize handles, connector paths, and neighboring content
+- keep small-box text wrapped inside the box without ellipsis, clipping, or overflow
+- on click or tap, every diagram item must enter a visible selected state; only selected items may show resize handles
+- auto-fit first generated views from rendered diagram bounds when the stage size is known
+
+Generated connectors must:
+
+- be persistent SVG paths, not transient overlay lines
+- prefer straight orthogonal routing with clean 90-degree bends
+- keep thin visual strokes with consistent caps and joins
+- keep fixed arrowhead sizing independent from stage zoom
+- render invisible wide hit targets so connector lines are cursor-selectable
+- expose connector anchor or bend handles when connector editing is implemented
+- use centered trunks for shared ingress or fan-out paths
+- route branches through reserved gaps or gutters before landing on targets
+- land on target card centers unless a side anchor is clearer
+- for mirrored left/right column diagrams, use outside-edge side anchors for vertical fan-out and tier-to-tier paths so left columns enter left-center and right columns enter right-center
+- keep horizontal peer, standby, failover, or replication connectors on the natural inner sides when the relationship spans columns
+- avoid crossing boxes, labels, badges, and handles where practical
+- preserve connector anchors and bend overrides through JSON when connector editing exists
+- redraw affected paths whenever connected boxes move or resize
+
+Preset archetypes must:
+
+- reuse the same visual grammar, spacing rhythm, connector style, typography, radius, and shadow treatment
+- adapt only the generated content, service mix, labels, and provider/domain terms
+- avoid one-off layout shortcuts that make one preset look lower quality than another
+- expand width or height for extra zones, hybrid rails, or service rails without breaking alignment
+
+## Non-Negotiables
+
+- Apply `More info` markers to helper/body text only.
+- Do not apply info markers to all headings, field labels, tab labels, button text, or every workspace text node.
+- Keep the pre-generate output notice exact:
+
+```text
+Generate an architecture diagram to review technical inventory, service mix, and exportable JSON.
+```
+
+- Before generation, show only the dashed generate notice box in the output area.
+- After generation, use result text, diagram, score card, Sort toolbar, export actions, output tabs, inventory table, prompt notes, advisory pillar breakdown, advisory risk level, and JSON output. Compose `07_score-card` separately when a score/status banner is needed.
+- Sort defaults to `ID`.
+- Basic tab dropdowns keep their wrapper, custom styled menu, trigger-width dropdown menu, and 46px control height without placeholder chips; the Sort dropdown uses the same 46px control height and trigger-width menu but shows only the selected sort label and no placeholder chip.
+- Output tabs are `Technical Inventory`, `Prompt Notes`, `Pillar Breakdown`, `Risk Level`, and `JSON` unless a domain-specific label change is documented.
+- Inventory table columns are `#`, `Component`, `Placement`, `Purpose`, and `Action`.
+- Secondary output tables may be used for routing, control, or domain summary rows when those rows are backed by normalized model data.
+- Before/after section demos should stack as two rows in one column, not side-by-side columns.
+- Standalone `demo.html` files must own demo chrome separately from architecture runtime extraction. Include any icon stylesheet needed by the demo, render `demo-title` with `demo-title-icon` and `demo-title-text`, and use an architecture placeholder icon such as `bi bi-diagram-3`.
+- `workspace/04_selected-item/demo.html`, `workspace/06_result-diagram/demo.html`, and `workspace/09_result-table/demo.html` should show before/after dummy states where practical.
+- `workspace/09_result-table/demo.html` must open or clearly demonstrate generated dummy inventory rows, secondary table rows, pillar rows, risk copy, and JSON output.
+- Result table dummy rows may use placeholder model data, but the `Action` column must render copy-row buttons, not long text.
+- Pillar Breakdown and Risk Level are advisory model summaries. They must not claim compliance, certification, security validation, reliability validation, or production readiness beyond the generated model facts.
+- Selected-item empty states use draggable-box wording when the stage contains movable boxes.
+- Connector-capable stages also expose line-selection wording and keep connector selection synchronized with the inspector.
+- Usage help and helper chips must describe only implemented behavior.
+- Example prompt terminal titles stay centered and title case, such as `AWS VPC Prompt`.
+- Source-backed citations use `templates/content/main/sections/content/10_references/` and link each in-text citation to its matching References row. Substantial `Technical Details` sections must be 1500+ words, cite at least two official or source-of-truth websites or docs when they make technical claims, and use structured review aids such as bullets or tables when they clarify behavior. Factual `content.md` should carry at least three real references. Tool behavior and trust claims must match implemented code and validation.
+
+## Final Tool Rule
+
+The family baseline is not a runtime package.
+
+Read `templates/content/main/scaffold/README.md` for the package skeleton. Read `templates/content/main/sections/content/` for content delivery. Read architecture workspace section folders for workspace delivery.
+
+Copy or adapt the relevant section patterns into the final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and `assets/bin/model-core.js`.
+
+Keep the final tool independently understandable, namespaced, exportable, restorable when state exists, and provider/domain-native.

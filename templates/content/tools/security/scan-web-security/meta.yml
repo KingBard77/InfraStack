@@ -1,0 +1,37 @@
+# meta.yml
+
+title: Web Security Scanner
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "Apr. 3rd, 2026"
+comments: Interactive tool
+category_label: Security
+group: security
+family: scanning
+reading_time: 5 min read
+summary: Scan a public URL for visible web hardening signals, response headers, cookie attributes, redirect posture, CORS exposure, and well-known files.
+intro: >-
+    Review a public HTTP or HTTPS endpoint from the InfraStack server and collect visible response evidence for edge posture review.
+    Check HTTPS, HSTS, CSP, frame protection, cookie flags, redirects, disclosure headers, CORS exposure, and public security files.
+    Inspect findings, evidence, and normalized output before exporting notes for remediation tracking or a later comparison pass.
+tags:
+    - Security
+    - Hardening
+    - Headers
+    - TLS
+    - Cookies
+    - CORS
+related_links_summary: >-
+    Compare this scanner output with external web security scanners when you need a second review surface.
+related_links:
+    - title: MDN HTTP Observatory
+      label: External scanner
+      description: Run a separate Mozilla-backed HTTP header and security configuration scan.
+      url: https://observatory.mozilla.org/
+      icon: bi-shield-check
+    - title: Security Headers
+      label: External scanner
+      description: Compare response-header posture with a public Security Headers scan.
+      url: https://securityheaders.com/
+      icon: bi-shield-lock

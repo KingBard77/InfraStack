@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculate Basic Settings Demo</title>
+  <style>
+:root { --default-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f8fafc; font-family: var(--default-font); color: #111827; }
+.demo-shell { width: min(1180px, calc(100% - 32px)); margin: 40px auto; }
+.demo-title { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: 0; }
+.demo-title-icon { width: 32px; height: 32px; border: 1px solid #fdba74; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: #fff7ed; color: #c2410c; flex: 0 0 auto; }
+.demo-title-icon i { font-size: 16px; line-height: 1; }
+.demo-title-text { min-width: 0; }
+.__TOOL_CLASS__ { color: #111827; }
+.__TOOL_CLASS__ .tool-box { border: 1px solid #d7e3f5; border-radius: 18px; background: #f8fbff; padding: 20px; }
+.__TOOL_CLASS__ .tool-shell, .__TOOL_CLASS__ .tool-inspector-section, .__TOOL_CLASS__ .tool-result-section-card { border: 1px solid #dbeafe; border-radius: 16px; background: #fff; }
+.__TOOL_CLASS__ .tool-shell { padding: 18px; box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08); }
+.__TOOL_CLASS__ .form-control, .__TOOL_CLASS__ .form-select { width: 100%; border: 1px solid #cbd5e1; border-radius: 10px; background: #fff; padding: 10px 12px; color: #111827; font: 700 14px/1.4 var(--default-font); }
+.__TOOL_CLASS__ .btn, .__TOOL_CLASS__ button { font: 800 13px/1.2 var(--default-font); }
+.__TOOL_CLASS__ .d-none, .__TOOL_CLASS__ [hidden] { display: none !important; }
+.__TOOL_CLASS__ table { width: 100%; border-collapse: collapse; }
+.__TOOL_CLASS__ th, .__TOOL_CLASS__ td { border-bottom: 1px solid #e2e8f0; padding: 10px; text-align: left; vertical-align: top; }
+  </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="section.css">
+</head>
+<body>
+  <main class="demo-shell">
+    <h1 class="demo-title"><span class="demo-title-icon"><i class="bi bi-calculator" aria-hidden="true"></i></span><span class="demo-title-text">Calculate Basic Settings Demo</span></h1>
+    <div class="__TOOL_CLASS__">
+      <div class="tool-box">
+            <div class="__PREFIX__-basic-panel">
+              <div class="__PREFIX__-inner-panel">
+                <div class="__PREFIX__-setting-row">
+                  <label for="__DOM_PREFIX__Preset" class="__PREFIX__-setting-label">
+                    Preset:
+                    <span class="info-dot" title="Load a starting cost shape for a common AWS workload">i</span>
+                  </label>
+
+                  <div class="__PREFIX__-setting-field">
+                    <div class="__PREFIX__-inline-grid __PREFIX__-inline-grid-preset">
+                      <details class="__PREFIX__-select" id="__DOM_PREFIX__PresetSelect">
+                        <summary class="__PREFIX__-select-summary">
+                          <span id="__DOM_PREFIX__PresetSummary">Lean web platform</span>
+                        </summary>
+
+                        <div class="__PREFIX__-select-body">
+                          <div class="__PREFIX__-select-grid __PREFIX__-select-grid-list">
+                            <label class="__PREFIX__-select-card">
+                              <input type="radio" name="__DOM_PREFIX__PresetOption" value="lean-web" checked>
+                              <span class="__PREFIX__-select-title">Lean web platform</span>
+                            </label>
+
+                            <label class="__PREFIX__-select-card">
+                              <input type="radio" name="__DOM_PREFIX__PresetOption" value="serverless-api">
+                              <span class="__PREFIX__-select-title">Serverless API</span>
+                            </label>
+
+                            <label class="__PREFIX__-select-card">
+                              <input type="radio" name="__DOM_PREFIX__PresetOption" value="steady-platform">
+                              <span class="__PREFIX__-select-title">Steady application platform</span>
+                            </label>
+
+                            <label class="__PREFIX__-select-card">
+                              <input type="radio" name="__DOM_PREFIX__PresetOption" value="blank">
+                              <span class="__PREFIX__-select-title">Blank estimate</span>
+                            </label>
+                          </div>
+                        </div>
+                      </details>
+                      <input type="hidden" id="__DOM_PREFIX__Preset" value="lean-web">
+
+                      <button type="button" class="__PREFIX__-secondary-btn" id="__DOM_PREFIX__ApplyPreset">Apply preset</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="__PREFIX__-setting-row">
+                  <label class="__PREFIX__-setting-label">
+                    Pricing basis:
+                    <span class="info-dot" title="Starter prices are visible and editable in Advanced so the estimate stays auditable">i</span>
+                  </label>
+
+                  <div class="__PREFIX__-setting-field">
+                    <div class="__PREFIX__-basis-grid">
+                      <div class="__PREFIX__-basis-card">
+                        <span class="__PREFIX__-basis-label">Catalog</span>
+                        <span class="__PREFIX__-basis-value">Starter AWS mix</span>
+                        <span class="__PREFIX__-basis-note">EC2 uses a compact purchase-model catalog. Storage, Lambda, API, and egress use visible starter rates that you can override.</span>
+                      </div>
+
+                      <div class="__PREFIX__-basis-card">
+                        <span class="__PREFIX__-basis-label">Output</span>
+                        <span class="__PREFIX__-basis-value">USD monthly run rate</span>
+                        <span class="__PREFIX__-basis-note">Use the result as a planning estimate, then verify material decisions in AWS pricing or billing data.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+      </div>
+    </div>
+  </main>
+  <script src="section.js"></script>
+  <script>
+    if (window.InfraStackCalculateWorkspaceSections && typeof window.InfraStackCalculateWorkspaceSections.basicSettings === 'function') {
+      window.InfraStackCalculateWorkspaceSections.basicSettings(document);
+    }
+  </script>
+</body>
+</html>

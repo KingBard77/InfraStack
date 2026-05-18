@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assessment Result Summary Demo</title>
+  <style>
+:root { --default-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f8fafc; font-family: var(--default-font); color: #111827; }
+.demo-shell { width: min(1180px, calc(100% - 32px)); margin: 40px auto; }
+.demo-title { margin: 0 0 16px; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: 0; }
+.__TOOL_CLASS__ { color: #111827; }
+.__TOOL_CLASS__ .tool-box { border: 1px solid #d7e3f5; border-radius: 18px; background: #f8fbff; padding: 20px; }
+.__TOOL_CLASS__ .tool-shell, .__TOOL_CLASS__ .tool-inspector-section, .__TOOL_CLASS__ .tool-result-section-card { border: 1px solid #dbeafe; border-radius: 16px; background: #fff; }
+.__TOOL_CLASS__ .tool-shell { padding: 18px; box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08); }
+.__TOOL_CLASS__ .form-control, .__TOOL_CLASS__ .form-select { width: 100%; border: 1px solid #cbd5e1; border-radius: 10px; background: #fff; padding: 10px 12px; color: #111827; font: 700 14px/1.4 var(--default-font); }
+.__TOOL_CLASS__ .btn, .__TOOL_CLASS__ button { font: 800 13px/1.2 var(--default-font); }
+.__TOOL_CLASS__ .d-none, .__TOOL_CLASS__ [hidden] { display: none !important; }
+.__TOOL_CLASS__ table { width: 100%; border-collapse: collapse; }
+.__TOOL_CLASS__ th, .__TOOL_CLASS__ td { border-bottom: 1px solid #e2e8f0; padding: 10px; text-align: left; vertical-align: top; }
+  </style>
+  <link rel="stylesheet" href="section.css">
+</head>
+<body>
+  <main class="demo-shell">
+    <h1 class="demo-title">Assessment Result Summary Demo</h1>
+    <div class="__TOOL_CLASS__">
+      <div class="tool-box">
+            <div class="__PREFIX__-result-empty" id="__DOM_PREFIX__ResultEmpty">Run Explore to review matching controls, section rollups, the selected script, and exportable JSON.</div>
+
+            <div class="__PREFIX__-result-error d-none" id="__DOM_PREFIX__ResultError"></div>
+
+                <div class="__PREFIX__-result-summary" id="__DOM_PREFIX__ResultSummary"></div>
+      </div>
+    </div>
+  </main>
+  <script src="section.js"></script>
+  <script>
+    if (window.InfraStackAssessmentWorkspaceSections && typeof window.InfraStackAssessmentWorkspaceSections.resultSummary === 'function') {
+      window.InfraStackAssessmentWorkspaceSections.resultSummary(document);
+    }
+  </script>
+</body>
+</html>

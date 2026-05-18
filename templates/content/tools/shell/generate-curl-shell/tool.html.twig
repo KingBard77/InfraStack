@@ -1,0 +1,641 @@
+{# tool.html.twig #}
+
+<div class="generate-curl-shell-tool tool-box mb-4" data-tool-slug="generate-curl-shell" data-tool-category="Shell">
+  {# ns:start family.shell.workspace.01_input-target #}
+  <form class="generate-curl-shell-form" id="generateCurlShellForm" aria-label="cURL command builder">
+    <div class="generate-curl-shell-main-row">
+      <label for="generateCurlShellUrl" class="generate-curl-shell-main-label">
+        URL target:
+        <span class="info-dot" title="Enter the request URL you want to turn into a cURL command">i</span>
+      </label>
+
+      <div class="generate-curl-shell-main-input-grid">
+        <input
+          type="text"
+          id="generateCurlShellUrl"
+          class="form-control"
+          placeholder="https://api.example.com/v1/resource"
+          value="https://api.example.com/v1/resource"
+        >
+
+        <div class="generate-curl-shell-main-actions">
+          <button type="submit" class="btn btn-primary generate-curl-shell-submit-btn" id="generateCurlShellSubmit">Generate</button>
+          <button type="button" class="generate-curl-shell-secondary-btn generate-curl-shell-secondary-btn-ghost generate-curl-shell-reset-btn" id="generateCurlShellReset">Reset</button>
+        </div>
+      </div>
+    </div>
+
+  {# ns:end family.shell.workspace.01_input-target #}
+    {# ns:start family.shell.workspace.02_basic-setting #}
+    <div class="generate-curl-shell-basic-panel">
+      <div class="generate-curl-shell-inner-panel">
+        <div class="generate-curl-shell-setting-row">
+          <label for="generateCurlShellPreset" class="generate-curl-shell-setting-label">
+            Preset:
+            <span class="info-dot" title="Load a starting configuration for a common request pattern">i</span>
+          </label>
+
+          <div class="generate-curl-shell-setting-field">
+            <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-two">
+              <select id="generateCurlShellPreset" class="form-select">
+                <option value="blank" selected>Blank canvas</option>
+                <option value="api-get">JSON API GET</option>
+                <option value="api-post">JSON API POST</option>
+                <option value="form-post">Form submit</option>
+                <option value="download">Artifact download</option>
+                <option value="bearer">Bearer API</option>
+              </select>
+
+              <button type="button" class="generate-curl-shell-secondary-btn" id="generateCurlShellApplyPreset">Apply preset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="generate-curl-shell-setting-row">
+          <label for="generateCurlShellShell" class="generate-curl-shell-setting-label">
+            Shell:
+            <span class="info-dot" title="Choose the quoting and line continuation style for the generated command">i</span>
+          </label>
+
+          <div class="generate-curl-shell-setting-field">
+            <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-three">
+              <select id="generateCurlShellShell" class="form-select">
+                <option value="bash" selected>Bash / Zsh</option>
+                <option value="powershell">PowerShell</option>
+                <option value="cmd">Windows CMD</option>
+              </select>
+
+              <select id="generateCurlShellMethod" class="form-select">
+                <option value="GET" selected>GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="PATCH">PATCH</option>
+                <option value="DELETE">DELETE</option>
+                <option value="HEAD">HEAD</option>
+                <option value="OPTIONS">OPTIONS</option>
+              </select>
+
+              <label class="switch generate-curl-shell-switch-wrap">
+                <input type="checkbox" id="generateCurlShellMultiline" checked>
+                <span class="slider"></span>
+                <span class="generate-curl-shell-switch-label">Multi-line</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="generate-curl-shell-setting-row">
+          <label for="generateCurlShellQueryString" class="generate-curl-shell-setting-label">
+            Query string:
+            <span class="info-dot" title="Append raw query parameters without changing the base URL">i</span>
+          </label>
+
+          <div class="generate-curl-shell-setting-field">
+            <input
+              type="text"
+              id="generateCurlShellQueryString"
+              class="form-control"
+              placeholder="page=1&limit=20"
+            >
+          </div>
+        </div>
+
+        <div class="generate-curl-shell-setting-row">
+          <label for="generateCurlShellUserAgentPreset" class="generate-curl-shell-setting-label">
+            Client identity:
+            <span class="info-dot" title="Set a user agent profile or a custom string for the request">i</span>
+          </label>
+
+          <div class="generate-curl-shell-setting-field">
+            <div class="generate-curl-shell-stacked-grid">
+              <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-two">
+                <select id="generateCurlShellUserAgentPreset" class="form-select">
+                  <option value="default" selected>Default cURL</option>
+                  <option value="browser">Desktop browser</option>
+                  <option value="monitor">Monitoring probe</option>
+                  <option value="custom">Custom</option>
+                </select>
+
+                <input
+                  type="text"
+                  id="generateCurlShellCustomUserAgent"
+                  class="form-control"
+                  placeholder="MyApp/1.0 (+https://example.com)"
+                  disabled
+                >
+              </div>
+
+              <input
+                type="text"
+                id="generateCurlShellReferer"
+                class="form-control"
+                placeholder="Referer URL"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="generate-curl-shell-setting-row">
+          <label for="generateCurlShellBodyMode" class="generate-curl-shell-setting-label">
+            Body:
+            <span class="info-dot" title="Choose how the request body should be encoded in the generated command">i</span>
+          </label>
+
+          <div class="generate-curl-shell-setting-field">
+            <div class="generate-curl-shell-stacked-grid">
+              <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-two">
+                <select id="generateCurlShellBodyMode" class="form-select">
+                  <option value="none" selected>No body</option>
+                  <option value="json">JSON</option>
+                  <option value="form">Form URL encoded</option>
+                  <option value="raw">Raw text</option>
+                  <option value="binary">Binary file</option>
+                </select>
+
+                <input
+                  type="text"
+                  id="generateCurlShellBodyFile"
+                  class="form-control d-none"
+                  placeholder="@./payload.bin"
+                >
+              </div>
+
+              <textarea
+                id="generateCurlShellBody"
+                class="form-control generate-curl-shell-textarea d-none"
+                rows="6"
+                placeholder='{"name":"example","enabled":true}'
+              ></textarea>
+
+              <p class="generate-curl-shell-field-hint" id="generateCurlShellBodyHint">No request body will be added.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="generate-curl-shell-setting-row">
+          <label for="generateCurlShellHeaderName" class="generate-curl-shell-setting-label">
+            Headers:
+            <span class="info-dot" title="Add extra request headers one row at a time">i</span>
+          </label>
+
+          <div class="generate-curl-shell-setting-field">
+            <div class="generate-curl-shell-stacked-grid">
+              <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-header">
+                <input
+                  type="text"
+                  id="generateCurlShellHeaderName"
+                  class="form-control"
+                  placeholder="Header name"
+                >
+
+                <input
+                  type="text"
+                  id="generateCurlShellHeaderValue"
+                  class="form-control"
+                  placeholder="Header value"
+                >
+
+                <button type="button" class="generate-curl-shell-secondary-btn" id="generateCurlShellAddHeader">Add header</button>
+              </div>
+
+              <div class="generate-curl-shell-feedback d-none" id="generateCurlShellHeaderFeedback"></div>
+
+              <div class="generate-curl-shell-header-table-wrap tool-result-table-wrap">
+                <table class="table generate-curl-shell-header-table mb-0 tool-result-table tool-result-table--compact">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="tool-generated-rownum-head">#</th>
+                      <th scope="col">Header</th>
+                      <th scope="col">Value</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="generateCurlShellHeaderTableBody">
+                    <tr class="generate-curl-shell-table-empty-row">
+                      <td colspan="4">No extra headers added yet.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="generate-curl-shell-setting-row">
+          <label for="generateCurlShellAuthMode" class="generate-curl-shell-setting-label">
+            Auth:
+            <span class="info-dot" title="Add basic auth, a bearer token, or an API key header helper">i</span>
+          </label>
+
+          <div class="generate-curl-shell-setting-field">
+            <div class="generate-curl-shell-stacked-grid">
+              <select id="generateCurlShellAuthMode" class="form-select">
+                <option value="none" selected>None</option>
+                <option value="basic">HTTP Basic</option>
+                <option value="bearer">Bearer token</option>
+                <option value="header">API key header</option>
+              </select>
+
+              <div class="generate-curl-shell-auth-grid d-none" id="generateCurlShellBasicAuthFields">
+                <input
+                  type="text"
+                  id="generateCurlShellBasicUsername"
+                  class="form-control"
+                  placeholder="Username"
+                >
+
+                <input
+                  type="password"
+                  id="generateCurlShellBasicPassword"
+                  class="form-control"
+                  placeholder="Password"
+                >
+              </div>
+
+              <input
+                type="password"
+                id="generateCurlShellBearerToken"
+                class="form-control d-none"
+                placeholder="Bearer token"
+              >
+
+              <div class="generate-curl-shell-auth-grid d-none" id="generateCurlShellHeaderAuthFields">
+                <input
+                  type="text"
+                  id="generateCurlShellApiKeyHeader"
+                  class="form-control"
+                  placeholder="X-API-Key"
+                >
+
+                <input
+                  type="password"
+                  id="generateCurlShellApiKeyValue"
+                  class="form-control"
+                  placeholder="your-key"
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# ns:end family.shell.workspace.02_basic-setting #}
+    {# ns:start family.shell.workspace.03_advanced-setting #}
+    <details class="generate-curl-shell-advanced">
+      <summary class="generate-curl-shell-advanced-summary">
+        <span>Custom</span>
+      </summary>
+
+      <div class="generate-curl-shell-advanced-body">
+        <div class="generate-curl-shell-inner-panel">
+          <div class="generate-curl-shell-setting-row">
+            <label for="generateCurlShellFlagStyle" class="generate-curl-shell-setting-label">
+              Transport flags:
+              <span class="info-dot" title="Control flag naming, shell output shape, and protocol behavior">i</span>
+            </label>
+
+            <div class="generate-curl-shell-setting-field">
+              <div class="generate-curl-shell-stacked-grid">
+                <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-two">
+                  <select id="generateCurlShellFlagStyle" class="form-select">
+                    <option value="mixed" selected>Mixed</option>
+                    <option value="long">Long flags</option>
+                    <option value="short">Short flags when possible</option>
+                  </select>
+
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellCombineShortFlags" checked>
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Combine short flags</span>
+                  </label>
+                </div>
+
+                <div class="generate-curl-shell-toggle-grid">
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellFollowRedirects" checked>
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Follow redirects</span>
+                  </label>
+
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellInsecureTls">
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Insecure TLS</span>
+                  </label>
+
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellCompressed" checked>
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Use compression</span>
+                  </label>
+
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellFailWithBody">
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Fail with body</span>
+                  </label>
+
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellIncludeHeaders">
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Include response headers</span>
+                  </label>
+
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellSilentErrors" checked>
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Silent except errors</span>
+                  </label>
+
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellRetryAllErrors">
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Retry all errors</span>
+                  </label>
+
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellVerbose">
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Verbose</span>
+                  </label>
+
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellDisableKeepAlive">
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Disable keep-alive</span>
+                  </label>
+
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellTraceTiming">
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Trace timing</span>
+                  </label>
+
+                  <label class="switch generate-curl-shell-switch-wrap">
+                    <input type="checkbox" id="generateCurlShellForceRequest">
+                    <span class="slider"></span>
+                    <span class="generate-curl-shell-switch-label">Force -X</span>
+                  </label>
+                </div>
+
+                <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-three">
+                  <select id="generateCurlShellHttpVersion" class="form-select">
+                    <option value="default" selected>HTTP version: Default</option>
+                    <option value="http2">HTTP version: HTTP/2</option>
+                    <option value="http3">HTTP version: HTTP/3</option>
+                  </select>
+
+                  <input
+                    type="number"
+                    id="generateCurlShellTimeout"
+                    class="form-control"
+                    min="0"
+                    step="1"
+                    value="20"
+                    placeholder="Timeout (s)"
+                  >
+
+                  <input
+                    type="text"
+                    id="generateCurlShellOutputFile"
+                    class="form-control"
+                    placeholder="response.json"
+                  >
+                </div>
+
+                <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-four">
+                  <input
+                    type="number"
+                    id="generateCurlShellConnectTimeout"
+                    class="form-control"
+                    min="0"
+                    step="1"
+                    placeholder="Connect timeout (s)"
+                  >
+
+                  <input
+                    type="number"
+                    id="generateCurlShellMaxRedirects"
+                    class="form-control"
+                    min="0"
+                    step="1"
+                    placeholder="Max redirects"
+                  >
+
+                  <input
+                    type="number"
+                    id="generateCurlShellRetryAttempts"
+                    class="form-control"
+                    min="0"
+                    step="1"
+                    value="0"
+                    placeholder="Retry attempts"
+                  >
+
+                  <input
+                    type="number"
+                    id="generateCurlShellRetryDelay"
+                    class="form-control"
+                    min="0"
+                    step="1"
+                    placeholder="Retry delay (s)"
+                  >
+                </div>
+
+                <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-two">
+                  <input
+                    type="text"
+                    id="generateCurlShellLimitRate"
+                    class="form-control"
+                    placeholder="Limit rate, for example 500k or 5M"
+                  >
+
+                  <div class="generate-curl-shell-flag-hint">
+                    Non-sensitive values restore from the page URL. Secrets stay local and do not sync into shareable state.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="generate-curl-shell-setting-row">
+            <label for="generateCurlShellImportInput" class="generate-curl-shell-setting-label">
+              Import command:
+              <span class="info-dot" title="Paste an existing curl command to rebuild supported fields">i</span>
+            </label>
+
+            <div class="generate-curl-shell-setting-field">
+              <div class="generate-curl-shell-stacked-grid">
+                <textarea
+                  id="generateCurlShellImportInput"
+                  class="form-control generate-curl-shell-textarea"
+                  rows="4"
+                  placeholder="curl -L -H 'Accept: application/json' https://api.example.com/v1/resource"
+                ></textarea>
+
+                <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-two">
+                  <button type="button" class="generate-curl-shell-secondary-btn" id="generateCurlShellImportButton">Import command</button>
+                  <button type="button" class="generate-curl-shell-secondary-btn generate-curl-shell-secondary-btn-ghost" id="generateCurlShellImportClear">Clear import</button>
+                </div>
+
+                <div class="generate-curl-shell-feedback d-none" id="generateCurlShellImportFeedback"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </form>
+    {# ns:end family.shell.workspace.03_advanced-setting #}
+
+  {# ns:start family.shell.workspace.04_result-text #}
+  <div class="generate-curl-shell-result-panel" id="generateCurlShellResultPanel" aria-label="Command output">
+    <div class="tool-empty-state generate-curl-shell-result-empty" id="generateCurlShellResultEmpty">Generate a request to inspect the final command, option summary, warnings, and normalized JSON payload.</div>
+
+    <div class="generate-curl-shell-output-content generate-curl-shell-result-content d-none" id="generateCurlShellResultContent">
+      <div class="generate-curl-shell-output-inner generate-curl-shell-result-shell">
+  {# ns:end family.shell.workspace.04_result-text #}
+        {# ns:start family.shell.workspace.05_score-card #}
+        <div class="generate-curl-shell-result-summary" id="generateCurlShellResultSummary"></div>
+
+        {# ns:end family.shell.workspace.05_score-card #}
+        {# ns:start family.shell.workspace.06_sort-card #}
+        <div class="generate-curl-shell-toolbar-shell">
+          <div class="generate-curl-shell-toolbar tool-output-toolbar tool-result-toolbar">
+            <div class="generate-curl-shell-toolbar-main">
+              <label for="generateCurlShellSort" class="generate-curl-shell-sort-label">Sort</label>
+              <div class="generate-curl-shell-sort-wrap">
+                <details class="generate-curl-shell-sort-select" id="generateCurlShellSortSelect">
+                  <summary class="generate-curl-shell-sort-summary">
+                    <span id="generateCurlShellSortSummary">ID</span>
+                  </summary>
+
+                  <div class="generate-curl-shell-sort-menu">
+                    <div class="generate-curl-shell-sort-grid">
+                      <button type="button" class="generate-curl-shell-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
+                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
+                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="field" aria-pressed="false">Field</button>
+                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="value" aria-pressed="false">Value</button>
+                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="length" aria-pressed="false">Length</button>
+                    </div>
+                  </div>
+                </details>
+                <input type="hidden" id="generateCurlShellSort" value="id">
+              </div>
+            </div>
+
+            <div class="tool-output-actions generate-curl-shell-toolbar-actions tool-result-toolbar-actions">
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-curl-shell-action-btn tool-result-action-btn" id="generateCurlShellExportPdf">
+                <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+                <span data-button-label>Export PDF</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-curl-shell-action-btn tool-result-action-btn" id="generateCurlShellDownloadCsv">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download CSV</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-curl-shell-action-btn tool-result-action-btn" id="generateCurlShellCopyJson">
+                <i class="bi bi-clipboard" aria-hidden="true"></i>
+                <span data-button-label>Copy JSON</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-curl-shell-action-btn tool-result-action-btn" id="generateCurlShellDownloadJson">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download JSON</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-ghost generate-curl-shell-action-btn tool-result-action-btn" id="generateCurlShellImportJsonButton">
+                <i class="bi bi-upload" aria-hidden="true"></i>
+                <span data-button-label>Import JSON</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {# ns:end family.shell.workspace.06_sort-card #}
+        {# ns:start family.shell.workspace.07_table #}
+        <div class="generate-curl-shell-tabs-shell">
+          <div class="tool-tabs generate-curl-shell-tabs" role="tablist" aria-label="cURL command output views">
+            <button type="button" class="tool-tab-btn generate-curl-shell-tab-btn" id="generateCurlShellCommandTab" data-tab-target="generateCurlShellCommandPanel" role="tab" aria-controls="generateCurlShellCommandPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-terminal" aria-hidden="true"></i>
+              <span>Command</span>
+            </button>
+            <button type="button" class="tool-tab-btn generate-curl-shell-tab-btn active" id="generateCurlShellOptionsTab" data-tab-target="generateCurlShellOptionsPanel" role="tab" aria-controls="generateCurlShellOptionsPanel" aria-selected="true" tabindex="0">
+              <i class="bi bi-list-check" aria-hidden="true"></i>
+              <span>Operations</span>
+            </button>
+            <button type="button" class="tool-tab-btn generate-curl-shell-tab-btn" id="generateCurlShellWarningsTab" data-tab-target="generateCurlShellWarningsPanel" role="tab" aria-controls="generateCurlShellWarningsPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-card-text" aria-hidden="true"></i>
+              <span>Warnings</span>
+            </button>
+            <button type="button" class="tool-tab-btn generate-curl-shell-tab-btn" id="generateCurlShellJsonTab" data-tab-target="generateCurlShellJsonPanel" role="tab" aria-controls="generateCurlShellJsonPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-braces" aria-hidden="true"></i>
+              <span>JSON</span>
+            </button>
+          </div>
+
+          <div class="tool-tab-panel generate-curl-shell-tab-panel" id="generateCurlShellCommandPanel" data-tab-panel="generateCurlShellCommandPanel" role="tabpanel" aria-labelledby="generateCurlShellCommandTab" hidden>
+            <div class="generate-curl-shell-command-wrap">
+              <div class="generate-curl-shell-command-head">
+                <h3 class="generate-curl-shell-command-title">Generated cURL Command</h3>
+                <div class="generate-curl-shell-command-actions">
+                  <button type="button" class="generate-curl-shell-action-btn" id="generateCurlShellCopyCommand">
+                    <i class="bi bi-clipboard"></i>
+                    <span class="generate-curl-shell-command-copy-label">Copy</span>
+                  </button>
+                </div>
+              </div>
+              <pre class="generate-curl-shell-command-pre"><code id="generateCurlShellCommandOutput"></code></pre>
+            </div>
+          </div>
+
+          <div class="tool-tab-panel generate-curl-shell-tab-panel active" id="generateCurlShellOptionsPanel" data-tab-panel="generateCurlShellOptionsPanel" role="tabpanel" aria-labelledby="generateCurlShellOptionsTab">
+            <div class="generate-curl-shell-inventory-panel" aria-labelledby="generateCurlShellOptionsTitle">
+              <div class="generate-curl-shell-table-card">
+                <h3 class="generate-curl-shell-result-section-title" id="generateCurlShellOptionsTitle">Request Summary</h3>
+                <div class="generate-curl-shell-table-wrap tool-result-table-wrap">
+                  <table class="table generate-curl-shell-table generate-curl-shell-options-table mb-0 tool-result-table tool-result-table--compact">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="tool-generated-rownum-head">#</th>
+                        <th scope="col">Field</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="generateCurlShellOptionsTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-tab-panel generate-curl-shell-tab-panel" id="generateCurlShellWarningsPanel" data-tab-panel="generateCurlShellWarningsPanel" role="tabpanel" aria-labelledby="generateCurlShellWarningsTab" hidden>
+            <div class="generate-curl-shell-warning-grid">
+              <div class="generate-curl-shell-message-card">
+                <h3 class="generate-curl-shell-message-title">Warnings</h3>
+                <ul class="generate-curl-shell-message-list" id="generateCurlShellWarningsList"></ul>
+              </div>
+
+              <div class="generate-curl-shell-message-card">
+                <h3 class="generate-curl-shell-message-title">Errors</h3>
+                <ul class="generate-curl-shell-message-list" id="generateCurlShellErrorsList"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-tab-panel generate-curl-shell-tab-panel" id="generateCurlShellJsonPanel" data-tab-panel="generateCurlShellJsonPanel" role="tabpanel" aria-labelledby="generateCurlShellJsonTab" hidden>
+            <div class="generate-curl-shell-command-wrap tool-json-panel">
+              <div class="tool-json-head">
+                <span class="tool-json-title">JSON Output</span>
+              </div>
+              <pre class="generate-curl-shell-command-pre tool-json-output"><code id="generateCurlShellJsonOutput"></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="generate-curl-shell-result-error d-none" id="generateCurlShellResultError"></div>
+    <input type="file" id="generateCurlShellImportJson" class="d-none" accept="application/json">
+  </div>
+        {# ns:end family.shell.workspace.07_table #}
+</div>

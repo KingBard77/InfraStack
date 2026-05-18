@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example Prompts Content Demo</title>
+  <style>
+:root { --default-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+body { margin: 0; background: #f8fafc; font-family: var(--default-font); }
+.demo-shell { width: min(1180px, calc(100% - 32px)); margin: 40px auto; }
+.demo-title { margin: 0 0 16px; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: 0; }
+.alert { border: 1px solid rgba(126, 193, 232, 0.52); border-radius: 12px; padding: 14px 16px; background: #ffffff; color: #123047; }
+.alert-primary { background: #f3fbff; }
+.alert-success { background: #ecfdf5; }
+.alert-warning { background: #fffbeb; }
+.alert-secondary { background: #f8fafc; }
+.d-flex { display: flex; }
+.align-items-start { align-items: flex-start; }
+.gap-3 { gap: 1rem; }
+.mb-0 { margin-bottom: 0; }
+.fs-5 { font-size: 1.25rem; }
+.markdown-content .bi-clipboard::before { content: "▯"; font-size: 18px; line-height: 1; }
+</style>
+  <link rel="stylesheet" href="../../workspace/tool-skin/section.css">
+  <link rel="stylesheet" href="section.css">
+  <style>
+.markdown-content pre.__PREFIX__-prompt-pre > code::after { content: "Scaffold Prompt"; }
+</style>
+</head>
+<body>
+  <main class="demo-shell">
+    <h1 class="demo-title">Example Prompts Content Demo</h1>
+    <article class="markdown-content"><div class="content-card __PREFIX__-markdown-card __PREFIX__-markdown-card-examples">
+  <h2 class="__PREFIX__-section-heading"><i class="bi bi-chat-square-text" aria-hidden="true"></i><span>Example Prompts</span></h2>
+  <p>Paste one of these prompts into the workspace prompt box, generate the first pass, then verify the prompt notes and technical inventory before exporting or sharing the result.</p>
+
+  <pre class="__PREFIX__-prompt-pre"><code>Create a production __DOMAIN__ workspace model with two zones, a public entry point, private application components, a protected data tier, observability, and export-ready labels.</code></pre>
+  <details class="__PREFIX__-prompt-note">
+    <summary>
+      <span class="__PREFIX__-prompt-note-label __PREFIX__-prompt-note-label-closed">Show prompt use</span>
+      <span class="__PREFIX__-prompt-note-label __PREFIX__-prompt-note-label-open">Hide prompt use</span>
+      <button type="button" class="__PREFIX__-prompt-copy-btn" data-prompt-copy-index="0"><i class="bi bi-clipboard" aria-hidden="true"></i><span>Copy prompt</span></button>
+    </summary>
+    <div class="alert alert-primary d-flex align-items-start gap-3 mb-0" role="alert"><div><strong>Classic baseline:</strong> Good default for public entry, private placement, data isolation, and operational visibility.</div></div>
+  </details>
+
+  <pre class="__PREFIX__-prompt-pre"><code>Build a compact __DOMAIN__ planning diagram with three groups, a request path from source to target, security controls, logging, failure points, and assumptions.</code></pre>
+  <details class="__PREFIX__-prompt-note">
+    <summary>
+      <span class="__PREFIX__-prompt-note-label __PREFIX__-prompt-note-label-closed">Show prompt use</span>
+      <span class="__PREFIX__-prompt-note-label __PREFIX__-prompt-note-label-open">Hide prompt use</span>
+      <button type="button" class="__PREFIX__-prompt-copy-btn" data-prompt-copy-index="1"><i class="bi bi-clipboard" aria-hidden="true"></i><span>Copy prompt</span></button>
+    </summary>
+    <div class="alert alert-success d-flex align-items-start gap-3 mb-0" role="alert"><div><strong>Request path:</strong> Useful when the route, controls, and review assumptions need to appear in one diagram.</div></div>
+  </details>
+
+  <pre class="__PREFIX__-prompt-pre"><code>Generate a platform topology for __DOMAIN__ with private runtime components, controlled admin access, observability, and shared dependencies.</code></pre>
+  <details class="__PREFIX__-prompt-note">
+    <summary>
+      <span class="__PREFIX__-prompt-note-label __PREFIX__-prompt-note-label-closed">Show prompt use</span>
+      <span class="__PREFIX__-prompt-note-label __PREFIX__-prompt-note-label-open">Hide prompt use</span>
+      <button type="button" class="__PREFIX__-prompt-copy-btn" data-prompt-copy-index="2"><i class="bi bi-clipboard" aria-hidden="true"></i><span>Copy prompt</span></button>
+    </summary>
+    <div class="alert alert-secondary d-flex align-items-start gap-3 mb-0" role="alert"><div><strong>Platform layout:</strong> Useful when runtime, admin access, observability, and shared dependencies need one review view.</div></div>
+  </details>
+
+  <pre class="__PREFIX__-prompt-pre"><code>Design a hybrid or shared-services view for __DOMAIN__ that shows public ingress, private routes, external connectivity, dependency boundaries, and review assumptions.</code></pre>
+  <details class="__PREFIX__-prompt-note __PREFIX__-prompt-note-last">
+    <summary>
+      <span class="__PREFIX__-prompt-note-label __PREFIX__-prompt-note-label-closed">Show prompt use</span>
+      <span class="__PREFIX__-prompt-note-label __PREFIX__-prompt-note-label-open">Hide prompt use</span>
+      <button type="button" class="__PREFIX__-prompt-copy-btn" data-prompt-copy-index="3"><i class="bi bi-clipboard" aria-hidden="true"></i><span>Copy prompt</span></button>
+    </summary>
+    <div class="alert alert-warning d-flex align-items-start gap-3 mb-0" role="alert"><div><strong>Dependency review:</strong> Use this when ownership, links, and missing inputs need to be visible before implementation.</div></div>
+  </details>
+</div>
+</article>
+  </main>
+  <script src="section.js"></script><script>window.InfraStackScaffoldSectionPatterns.examplePrompts.initMarkdownCopyButtons(document);</script>
+</body>
+</html>

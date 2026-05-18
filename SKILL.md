@@ -1,121 +1,139 @@
 ---
 name: infrastack-project
-description: Work with the InfraStack Symfony, Twig, Asset Mapper tool platform, especially creating, auditing, or revising interactive infrastructure tools under templates/content/tools, including AWS VPC and Azure VNet architecture visualizers, tool metadata, model-core tests, scoped CSS, scoped JavaScript, and project guidance docs.
+description: Work with InfraStack Symfony, Twig, Asset Mapper tool packages, DevOps task records, family baselines, metadata, state, export, restore, scoped CSS, JavaScript, and validation.
 ---
 
 # InfraStack Project Skill
 
-Use this skill when working inside the InfraStack repository on interactive tools, tool packages, project guidance, visual workspaces, metadata, cards, support content, or provider-specific architecture visualizers.
+Use this skill inside the InfraStack repository for interactive tools, tool packages, project guidance, family baselines, task records, metadata, support content, visual workspaces, and model-core validation.
 
-## Start Here
+## Start
 
-Read these files before changing a tool:
+- Run `git status --short`; the worktree is often dirty. Treat unrelated edits, deletes, and rename states as user-owned.
+- Create or resume a DevOps task record before implementation, audit, or validation:
 
-- `AGENT.md`
-- `codex/PROMPT.md`
-- `codex/DESIGN.md` when the task touches layout, interaction, controls, stage behavior, or output presentation
+```bash
+codex/bin/_init.sh <action_first_task_name> --kind tool|baseline|audit|fix|platform|general
+```
 
-Inspect the specific tool package before editing. Let the existing package shape guide the change.
+- If `_init.sh` fails with `sed: RE error: illegal byte sequence`, retry with:
 
-## Repository Shape
+```bash
+LC_ALL=C LANG=C LC_CTYPE=C codex/bin/_init.sh <task_name> --kind <kind>
+```
 
-Interactive tools live under:
+- For resumed work, read `tracking/status.md`, `tracking/session-log.md`, and `tracking/open-questions.md`.
+- Before tool work, read `AGENTS.md`, `codex/PROMPT.md`, and the narrow contracts needed for the surface: `codex/DESIGN.md`, `codex/COLOR.md`, `codex/CONTENT.md`, `codex/TOOL.md`, `codex/FAMILY.md`.
+- For paths under `templates/content/`, also read `templates/content/AGENTS.md`, `templates/content/tools/AGENTS.md`, nearest local `AGENTS.md`, and the matching `manifest.yml`.
+- Before implementation, name the dominant family and the family source checked. If no shared source exists, state that the tool uses a tool-local pattern.
 
-- `templates/content/tools/<category>/<slug>/`
+## Families And Naming
 
-A complete tool package normally includes:
+- Runtime taxonomy lives in `templates/content/tools/manifest.yml`; `meta.yml` must include matching `group` and `family`.
+- Active family baselines: `architecture`, `assessment`, `calculate`, `scanning`, `shell`.
+- Use a baseline only when `templates/content/family/<family>/README.md` and `manifest.yml` exist.
+- Architecture replaced the old visualizer language. Do not use `templates/content/family/visualizer/`.
+- Final runtime packages stay category-based: `templates/content/tools/<category>/<tool-slug>/`.
+- New tool canonical identity is verb-led: `<verb>_<content>_<group>`, with kebab-case folder slugs.
+- Preferred family verbs: `architecture`, `calculate`, `scan`, `generate`, `analyze`, `check`, `plan`, `map`, `compare`, `monitor`, `summarize`.
+- Current reference packages:
 
-- `meta.yml`
-- `card.yml`
-- `content.md`
-- `tool.html.twig`
-- `custom.css`
-- `custom.js`
-- `assets/` when local icons, images, data, or model logic are needed
+```text
+templates/content/tools/aws/architecture-vpc-aws/
+templates/content/tools/azure/architecture-vnet-azure/
+templates/content/tools/gcp/architecture-vpc-gcp/
+templates/content/tools/aws/calculate-cost-aws/
+templates/content/tools/azure/calculate-cost-azure/
+templates/content/tools/ibm/calculate-cost-ibm/
+templates/content/tools/cis/assess-ubuntu-2204-cis/
+templates/content/tools/security/scan-web-security/
+```
 
-Backend code belongs under `src/Controller/Tools/` only when browser-owned behavior is not enough.
+- Old slugs such as `aws-vpc-architecture`, `azure-vnet-architecture`, and `gcp-vpc-topology` are stale unless a migration task is explicitly in scope.
 
-## Current Cloud References
+## Tool Package
 
-Use these as the current architecture-generator references:
+- Complete tools normally own:
 
-- `templates/content/tools/aws/aws-vpc-architecture/`
-- `templates/content/tools/azure/azure-vnet-architecture/`
+```text
+assets/bin/model-core.js
+assets/icon/
+assets/img/post.html.twig
+card.yml
+content.md
+custom.css
+custom.js
+meta.yml
+tool.html.twig
+```
 
-The AWS VPC tool is the strongest implementation reference. The Azure VNet tool follows the same pattern but has compatibility debt from AWS-derived internal values and IDs.
+- Required first-line markers:
 
-## Working Rules
+```text
+content.md: [//]: # (content.md)
+card.yml: # card.yml
+custom.css: /* custom.css */
+custom.js: // custom.js
+meta.yml: # meta.yml
+tool.html.twig: {# tool.html.twig #}
+```
 
-Prefer browser-first implementation for interactive tools. Add backend behavior only for protected integrations, server-side generation, secure transformation, heavyweight processing, or filesystem operations.
+- Use `templates/content/main/scaffold/assets/` for default asset placeholders.
+- Do not create root-level `post.html.twig`; use `assets/img/post.html.twig`.
+- Do not reference removed root fallback `templates/content/main/tool-post-visual.html.twig`.
+- Family workspace sections use section bundles: `README.md`, `demo.html`, `page.html.twig`, `section.css`, `section.js`.
+- Final packages do not automatically load main section CSS/JS. Copy or adapt the full content, selector, JavaScript, and visual contract into the tool package.
+- Namespace copied/adapted source blocks only, using IDs such as `family.<family>.workspace.<section>` or `main.content.<section>`.
 
-Keep tool behavior local to its package unless a shared abstraction is already established or clearly reduces maintenance cost.
+## Implementation Rules
 
-Preserve stable names, routes, IDs, classes, exported JSON keys, and tool slugs unless a versioned migration is part of the task.
+- InfraStack is Symfony 8, Twig, attribute routes, Asset Mapper, plain JavaScript, and filesystem-driven tool packages.
+- Build browser-first tools. Add backend code only under `src/Controller/Tools/<Category>/<Tool>/CustomController.php` when browser-owned behavior is not enough.
+- `src/Service/ToolCatalogService.php` owns shared catalogue reads; controllers, sidebars, and listings should consume it instead of scanning files again.
+- `codex/bin/_tool.sh` owns create, validate, namespace, and family parity entry points.
+- Keep one normalized state model as the source of truth for controls, selected items, layout edits, connector edits, output tabs, exports, imports, and restore.
+- Treat JSON import/export restore as first-class when state exists. Do not make restore depend on prompt replay.
+- Keep CSS scoped under one tool namespace root.
+- Preserve stable routes, slugs, IDs, classes, and exported JSON keys unless a deliberate migration is part of the task.
+- Keep visible labels, examples, icons, content, metadata, and token lineage native to the provider or domain. Search for copied provider terms before closeout.
+- Do not ship fake controls, fake exports, unresolved placeholders, stale copied content, broken assets, or unmanaged colors outside `codex/COLOR.md` lineage.
+- `card_summary` is one concrete, domain-native sentence for the `/tools` card rhythm.
+- `meta.intro` is folded YAML that renders as one justified detail-page paragraph.
+- Do not claim compliance, security, reliability, production readiness, certification, current pricing, or browser verification without actual evidence.
 
-Keep the normalized state model as the source of truth. Prompt parsing may seed state, but users must be able to edit the model after generation.
+## Preferred Commands
 
-Treat JSON import and restore as first-class behavior. Do not make restore depend on prompt replay alone.
+```bash
+rg --files
+rg '<term>' <path>
+codex/bin/_tool.sh list-families
+codex/bin/_tool.sh list-categories
+codex/bin/_tool.sh validate templates/content/tools/<category>/<tool-slug>
+codex/bin/_tool.sh family-parity validate-tools <family>
+codex/bin/_tool.sh audit-namespace <namespace>
+node --check templates/content/tools/<category>/<tool-slug>/custom.js
+node --test tests/<target>.test.cjs
+ruby -e 'require "yaml"; YAML.load_file(ARGV[0])' templates/content/tools/<category>/<tool-slug>/meta.yml
+php -l src/Controller/Tools/<Category>/<Tool>/CustomController.php
+```
 
-Keep content markdown concise and supportive. The tool is the product surface.
+- For VM-side Symfony, Twig, PHP, Composer, or cache checks:
 
-For Azure work, keep visible labels, content, headings, and output Azure-native. Do not expose AWS terminology to users unless the task explicitly discusses compatibility keys or migration.
+```bash
+ssh vm-host-infrastack
+xxcd.iad.infrastack
+xxcomposercache
+```
 
-When Asset Mapper output is already checked into `public/assets/`, update the mapped public file only when the runtime currently depends on it and the normal asset build path is unavailable.
-
-## Audit Checklist
-
-For tool audits, inspect:
-
-- Metadata consistency in `meta.yml`
-- Card consistency in `card.yml`
-- Support content accuracy in `content.md`
-- Required markup IDs and controls in `tool.html.twig`
-- Scoped selectors and responsive behavior in `custom.css`
-- State flow, DOM references, exports, imports, and event bindings in `custom.js`
-- Parser, validation, schema, and restore behavior in `assets/bin/model-core.js`
-- Tests under `tests/`
-- Runtime asset references and mapped public assets
-
-Search for:
-
-- provider terminology leaks
-- stale IDs after copying a tool
-- duplicate IDs
-- missing icon or asset references
-- placeholder text
-- fake controls
-- schema drift between export and import
-- tests that still assert copied provider names
-
-## AWS and Azure Audit Baseline
-
-Known AWS and Azure gaps:
-
-- Azure keeps AWS-derived compatibility values such as `ec2`, `ecs`, `eks`, `rds`, `aurora`, `dynamodb`, `route53`, `cloudFront`, and `cloudWatch`.
-- Azure keeps some AWS-derived layout and connector IDs in exported override examples.
-- Azure support content has AWS terminology that should be converted to Azure-native concepts.
-- AWS and Azure duplicate large JavaScript and CSS files.
-- Region and availability-zone validation is coarse.
-- CIDR validation does not yet perform subnet math, overlap detection, or usable-address analysis.
-- Architecture scores are heuristic and must not be represented as certification.
-- Browser behavior needs coverage for stage interactions, import, export, fullscreen, hide UI, and responsive layout.
-
-Treat these gaps as compatibility-aware debt. Fix visible provider wording first. Rename internal keys only through a deliberate schema migration.
+- Only update mapped files under `public/assets/` when the runtime depends on them and the normal Asset Mapper build path is unavailable.
 
 ## Validation
 
-Use targeted validation for the surface changed.
-
-For model-core changes, run:
-
-`node --test tests/aws-vpc-architecture.core.test.cjs tests/azure-vnet-architecture.core.test.cjs`
-
-For JavaScript changes, verify syntax and required DOM references.
-
-For CSS changes, verify brace balance and responsive behavior.
-
-For Twig changes, verify required IDs, includes, and duplicate IDs.
-
-For PHP changes, run targeted `php -l` when PHP is available.
-
-For browser-facing changes, verify the local runtime in a browser when available and state clearly when browser verification cannot be performed.
+- Validate the changed surface: YAML syntax, Twig IDs/includes/variables, CSS brace balance and overflow, JavaScript syntax and DOM references, PHP lint, model-core tests, and import/export restore checks when relevant.
+- Use `codex/bin/_tool.sh validate <tool-path>` after package or metadata changes.
+- When a family baseline is applied or reapplied, run the matching family parity gate against final runtime packages. Namespace markers and `_tool.sh validate` alone are not enough.
+- Store task-local evidence under `codex/devops/tasks/processing/<task_name>/validation/`.
+- Browser-facing checks must use Browser Use with `https://infrastack.my`.
+- Do not use VM IPs, tunnels, local port forwarding, ad hoc PHP servers, local proxies, standalone Playwright MCP, or Chrome DevTools fallbacks for InfraStack browser validation unless the user explicitly approves that fallback.
+- If Browser Use is unavailable, report the browser validation gap.
+- For namespace, baseline, factory, or batch changes, closeout must include `X / total` coverage, not-applied paths and reasons, family/main/runtime sources changed, parity evidence, validation commands, and browser result or gap.

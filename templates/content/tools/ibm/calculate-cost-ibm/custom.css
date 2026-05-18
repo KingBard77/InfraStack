@@ -1,0 +1,3516 @@
+/* custom.css */
+
+/* ns:start family.calculate.workspace.01_input-brief */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.01_input-brief */
+/* ns:start family.calculate.workspace.02_basic-settings */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.02_basic-settings */
+/* ns:start family.calculate.workspace.03_advanced-settings */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.03_advanced-settings */
+/* ns:start family.calculate.workspace.04_selected-item */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.04_selected-item */
+/* ns:start family.calculate.workspace.05_result-summary */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.05_result-summary */
+/* ns:start family.calculate.workspace.06_result-view */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.06_result-view */
+/* ns:start family.calculate.workspace.07_table-export */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.07_table-export */
+/* ns:start family.calculate.workspace.08_json-restore */
+/* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.08_json-restore */
+
+.calculate-cost-ibm-tool .tool-box {
+    --calculate-cost-ibm-bg-shell: #f6fbff;
+    --calculate-cost-ibm-bg-soft: #e7f7f7;
+    --calculate-cost-ibm-bg-muted: #f6fbff;
+    --calculate-cost-ibm-bg-strong: #ddf7f7;
+    --calculate-cost-ibm-bg-panel: #ffffff;
+    --calculate-cost-ibm-bg-code: #f4f7fb;
+    --calculate-cost-ibm-border: #c9e4ee;
+    --calculate-cost-ibm-border-soft: #d9edf1;
+    --calculate-cost-ibm-border-strong: #0F766E;
+    --calculate-cost-ibm-text: #0f3f8f;
+    --calculate-cost-ibm-text-strong: #111827;
+    --calculate-cost-ibm-text-body: #1f2937;
+    --calculate-cost-ibm-text-muted: #526070;
+    --calculate-cost-ibm-text-subtle: #64748b;
+    --calculate-cost-ibm-accent: #2563EB;
+    --calculate-cost-ibm-accent-strong: #1D4ED8;
+    --calculate-cost-ibm-accent-soft: #0F766E;
+    background: linear-gradient(180deg, #e7f7f7 0%, var(--calculate-cost-ibm-bg-shell) 100%);
+    border: 1px solid var(--calculate-cost-ibm-border);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 32px;
+}
+
+.tool-intro:has(+ .calculate-cost-ibm-tool) .tool-main-description {
+    width: 100%;
+    max-width: none;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.calculate-cost-ibm-form,
+.calculate-cost-ibm-basic-panel,
+.calculate-cost-ibm-advanced-body,
+.calculate-cost-ibm-field-stack,
+.calculate-cost-ibm-inline-grid,
+.calculate-cost-ibm-card-grid,
+.calculate-cost-ibm-basis-grid,
+.calculate-cost-ibm-toggle-grid,
+.calculate-cost-ibm-service-grid,
+.calculate-cost-ibm-override-grid,
+.calculate-cost-ibm-stat-grid,
+.calculate-cost-ibm-recommendation-grid,
+.calculate-cost-ibm-method-grid,
+.calculate-cost-ibm-result-panel,
+.calculate-cost-ibm-result-content,
+.calculate-cost-ibm-result-summary,
+.calculate-cost-ibm-toolbar-left,
+.calculate-cost-ibm-toolbar-actions,
+.calculate-cost-ibm-tab-panel {
+    display: grid;
+    gap: 16px;
+}
+
+.calculate-cost-ibm-form {
+    gap: 18px;
+}
+
+.calculate-cost-ibm-form,
+.calculate-cost-ibm-setting-field,
+.calculate-cost-ibm-field-stack,
+.calculate-cost-ibm-inline-grid,
+.calculate-cost-ibm-card-grid,
+.calculate-cost-ibm-basis-grid,
+.calculate-cost-ibm-toggle-grid,
+.calculate-cost-ibm-service-grid,
+.calculate-cost-ibm-override-grid,
+.calculate-cost-ibm-stat-grid,
+.calculate-cost-ibm-recommendation-grid,
+.calculate-cost-ibm-method-grid,
+.calculate-cost-ibm-result-panel,
+.calculate-cost-ibm-result-content,
+.calculate-cost-ibm-result-summary,
+.calculate-cost-ibm-toolbar-shell,
+.calculate-cost-ibm-toolbar.tool-result-toolbar,
+.calculate-cost-ibm-toolbar-left,
+.calculate-cost-ibm-toolbar-actions,
+.calculate-cost-ibm-tabs,
+.calculate-cost-ibm-tab-panel,
+.calculate-cost-ibm-section-card.tool-result-section-card,
+.calculate-cost-ibm-json-wrap.tool-json-panel {
+    min-width: 0;
+}
+
+.calculate-cost-ibm-main-row {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 16px;
+    align-items: center;
+}
+
+.calculate-cost-ibm-main-label,
+.calculate-cost-ibm-setting-label {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--calculate-cost-ibm-text);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.calculate-cost-ibm-setting-label {
+    font-size: 14px;
+}
+
+.calculate-cost-ibm-main-input-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.calculate-cost-ibm-main-actions {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.calculate-cost-ibm-main-actions > .calculate-cost-ibm-submit-btn,
+.calculate-cost-ibm-main-actions > .calculate-cost-ibm-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    width: auto;
+    padding: 0 22px;
+    white-space: nowrap;
+}
+
+.calculate-cost-ibm-form .form-control,
+.calculate-cost-ibm-form .form-select {
+    min-height: 46px;
+    border: 1px solid #bad8e4;
+    border-radius: 12px;
+    background: var(--calculate-cost-ibm-bg-panel);
+    color: #3f3f46;
+    box-shadow: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.calculate-cost-ibm-form .form-control::placeholder,
+.calculate-cost-ibm-form textarea.form-control::placeholder {
+    color: #a8a29e;
+    opacity: 1;
+}
+
+.calculate-cost-ibm-form .form-control:hover,
+.calculate-cost-ibm-form .form-select:hover {
+    border-color: #8fcbd5;
+}
+
+.calculate-cost-ibm-form .form-control:focus,
+.calculate-cost-ibm-form .form-select:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.calculate-cost-ibm-form .form-control:disabled,
+.calculate-cost-ibm-form .form-select:disabled {
+    background: #f6fbff;
+    border-color: #c9e4ee;
+    color: #a8a29e;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.calculate-cost-ibm-input-group {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+    min-height: 46px;
+    border: 1px solid #bad8e4;
+    border-radius: 12px;
+    background: var(--calculate-cost-ibm-bg-panel);
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.calculate-cost-ibm-input-group:hover {
+    border-color: #8fcbd5;
+}
+
+.calculate-cost-ibm-input-group:focus-within {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.calculate-cost-ibm-input-group:has(.form-control:disabled) {
+    background: #f6fbff;
+    border-color: #c9e4ee;
+}
+
+.calculate-cost-ibm-input-group > .form-control.calculate-cost-ibm-input-group-control {
+    min-height: 44px;
+    width: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.calculate-cost-ibm-input-group > .form-control.calculate-cost-ibm-input-group-control:hover,
+.calculate-cost-ibm-input-group > .form-control.calculate-cost-ibm-input-group-control:focus,
+.calculate-cost-ibm-input-group > .form-control.calculate-cost-ibm-input-group-control:focus-visible {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+}
+
+.calculate-cost-ibm-input-group > .form-control.calculate-cost-ibm-input-group-control:disabled {
+    background: transparent;
+}
+
+.calculate-cost-ibm-input-addon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    background: #e7f7f7;
+    color: var(--calculate-cost-ibm-text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.calculate-cost-ibm-input-addon--prefix {
+    border-right: 1px solid #bad8e4;
+    color: var(--calculate-cost-ibm-text);
+}
+
+.calculate-cost-ibm-input-addon--suffix {
+    border-left: 1px solid #bad8e4;
+}
+
+.calculate-cost-ibm-input-group:has(.form-control:disabled) .calculate-cost-ibm-input-addon {
+    background: #f6fbff;
+    border-color: #c9e4ee;
+    color: #a8a29e;
+}
+
+.calculate-cost-ibm-submit-btn,
+.calculate-cost-ibm-submit-btn.btn,
+.calculate-cost-ibm-submit-btn.btn-primary {
+    --bs-btn-bg: var(--calculate-cost-ibm-accent);
+    --bs-btn-border-color: var(--calculate-cost-ibm-accent);
+    --bs-btn-hover-bg: var(--calculate-cost-ibm-accent-strong);
+    --bs-btn-hover-border-color: var(--calculate-cost-ibm-accent-strong);
+    --bs-btn-active-bg: var(--calculate-cost-ibm-accent-strong);
+    --bs-btn-active-border-color: var(--calculate-cost-ibm-accent-strong);
+    --bs-btn-disabled-bg: var(--calculate-cost-ibm-accent);
+    --bs-btn-disabled-border-color: var(--calculate-cost-ibm-accent);
+    --bs-btn-color: #ffffff;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-disabled-color: #ffffff;
+    --bs-btn-focus-shadow-rgb: 194, 65, 12;
+    min-height: 46px;
+    border-radius: 12px;
+    background: var(--calculate-cost-ibm-accent);
+    border-color: var(--calculate-cost-ibm-accent);
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.calculate-cost-ibm-submit-btn:hover,
+.calculate-cost-ibm-submit-btn:focus,
+.calculate-cost-ibm-submit-btn:focus-visible,
+.calculate-cost-ibm-submit-btn:active {
+    background: var(--calculate-cost-ibm-accent-strong) !important;
+    border-color: var(--calculate-cost-ibm-accent-strong) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.calculate-cost-ibm-submit-btn[disabled] {
+    opacity: 0.78;
+    cursor: wait;
+}
+
+.calculate-cost-ibm-secondary-btn,
+.calculate-cost-ibm-action-btn,
+.calculate-cost-ibm-copy-btn {
+    border: 1px solid #bad8e4;
+    background: var(--calculate-cost-ibm-bg-panel);
+    color: var(--calculate-cost-ibm-text);
+    font-weight: 700;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calculate-cost-ibm-secondary-btn {
+    min-height: 46px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.calculate-cost-ibm-action-btn {
+    min-height: 40px;
+    border-radius: 999px;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.calculate-cost-ibm-action-btn i {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.calculate-cost-ibm-copy-btn {
+    width: 30px;
+    height: 30px;
+    min-height: 0;
+    border-radius: 8px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.calculate-cost-ibm-secondary-btn:hover,
+.calculate-cost-ibm-secondary-btn:focus,
+.calculate-cost-ibm-secondary-btn:focus-visible,
+.calculate-cost-ibm-action-btn:hover,
+.calculate-cost-ibm-action-btn:focus,
+.calculate-cost-ibm-action-btn:focus-visible,
+.calculate-cost-ibm-copy-btn:hover,
+.calculate-cost-ibm-copy-btn:focus,
+.calculate-cost-ibm-copy-btn:focus-visible {
+    border-color: #0F766E;
+    background: var(--calculate-cost-ibm-bg-strong);
+    color: var(--calculate-cost-ibm-accent);
+    box-shadow: none;
+    outline: none;
+}
+
+.calculate-cost-ibm-copy-btn.copied {
+    border-color: #86efac;
+    background: #ecfdf5;
+    color: #15803d;
+}
+
+.calculate-cost-ibm-copy-btn.failed {
+    border-color: #fecaca;
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.calculate-cost-ibm-reset-btn {
+    min-width: 104px;
+}
+
+.calculate-cost-ibm-inner-panel,
+.calculate-cost-ibm-service-card,
+.calculate-cost-ibm-basis-card,
+.calculate-cost-ibm-recommendation-card,
+.calculate-cost-ibm-method-card,
+.calculate-cost-ibm-summary-panel,
+.calculate-cost-ibm-section-card.tool-result-section-card {
+    border: 1px solid var(--calculate-cost-ibm-border);
+    border-radius: 18px;
+    background: var(--calculate-cost-ibm-bg-panel);
+}
+
+.calculate-cost-ibm-inner-panel {
+    padding: 18px;
+    overflow: visible;
+}
+
+.calculate-cost-ibm-setting-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 18px;
+    align-items: start;
+    padding: 12px 0;
+}
+
+.calculate-cost-ibm-setting-row:not(:last-child) {
+    border-bottom: 1px solid #c9e4ee;
+}
+
+.calculate-cost-ibm-setting-row-stacked {
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.calculate-cost-ibm-setting-field {
+    min-width: 0;
+}
+
+.calculate-cost-ibm-inline-grid-two,
+.calculate-cost-ibm-card-grid-two,
+.calculate-cost-ibm-basis-grid,
+.calculate-cost-ibm-service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.calculate-cost-ibm-inline-grid-preset {
+    grid-template-columns: minmax(0, 1.35fr) minmax(180px, 0.65fr);
+    align-items: end;
+}
+
+.calculate-cost-ibm-card-grid-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.calculate-cost-ibm-card-span-two {
+    grid-column: 1 / -1;
+}
+
+.calculate-cost-ibm-toggle-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.calculate-cost-ibm-override-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 18px;
+}
+
+.calculate-cost-ibm-service-grid {
+    margin-top: 18px;
+    align-items: stretch;
+}
+
+.calculate-cost-ibm-service-card {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    padding: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #f6fbff 100%);
+    overflow: visible;
+}
+
+.calculate-cost-ibm-service-card.is-disabled {
+    border-color: #d9edf1;
+    background: linear-gradient(180deg, #f6fbff 0%, #f6fbff 100%);
+}
+
+.calculate-cost-ibm-service-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.calculate-cost-ibm-service-title {
+    margin: 0 0 4px;
+    color: var(--calculate-cost-ibm-text);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.calculate-cost-ibm-service-copy {
+    margin: 0;
+    color: var(--calculate-cost-ibm-text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.calculate-cost-ibm-service-body {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+}
+
+.calculate-cost-ibm-field-stack {
+    gap: 8px;
+    align-content: start;
+    position: relative;
+}
+
+.calculate-cost-ibm-field-stack > .form-control,
+.calculate-cost-ibm-field-stack > .calculate-cost-ibm-select,
+.calculate-cost-ibm-field-stack > .calculate-cost-ibm-input-group {
+    width: 100%;
+}
+
+.calculate-cost-ibm-field-label,
+.calculate-cost-ibm-basis-label,
+.calculate-cost-ibm-method-label,
+.calculate-cost-ibm-stat-label,
+.calculate-cost-ibm-summary-route-label {
+    color: var(--calculate-cost-ibm-accent-strong);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.calculate-cost-ibm-field-label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    line-height: 1.45;
+}
+
+.calculate-cost-ibm-basis-card,
+.calculate-cost-ibm-recommendation-card,
+.calculate-cost-ibm-method-card,
+.calculate-cost-ibm-stat-card {
+    display: grid;
+    gap: 8px;
+    padding: 16px;
+}
+
+.calculate-cost-ibm-basis-card,
+.calculate-cost-ibm-recommendation-card,
+.calculate-cost-ibm-method-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f6fbff 100%);
+}
+
+.calculate-cost-ibm-basis-value,
+.calculate-cost-ibm-method-title {
+    color: var(--calculate-cost-ibm-text-body);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.calculate-cost-ibm-basis-note,
+.calculate-cost-ibm-recommendation-copy,
+.calculate-cost-ibm-method-copy,
+.calculate-cost-ibm-stat-note {
+    color: var(--calculate-cost-ibm-text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.calculate-cost-ibm-inline-note {
+    display: flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid #0F766E;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #f6fbff 0%, #e7f7f7 100%);
+    color: var(--calculate-cost-ibm-text);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.calculate-cost-ibm-inline-grid-regional {
+    grid-template-columns: minmax(0, 180px) minmax(280px, 1fr);
+    align-items: start;
+    max-width: 760px;
+    gap: 14px;
+}
+
+.calculate-cost-ibm-field-stack-compact {
+    max-width: 180px;
+}
+
+.calculate-cost-ibm-override-card {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    padding: 16px;
+    border: 1px solid var(--calculate-cost-ibm-border);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #f6fbff 100%);
+}
+
+.calculate-cost-ibm-override-card-head {
+    display: grid;
+    gap: 4px;
+}
+
+.calculate-cost-ibm-override-card-title {
+    margin: 0;
+    color: var(--calculate-cost-ibm-text);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.calculate-cost-ibm-override-card-body {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr;
+    align-items: start;
+}
+
+.calculate-cost-ibm-override-card--single .calculate-cost-ibm-override-card-body {
+    grid-template-columns: 1fr;
+}
+
+.calculate-cost-ibm-override-card-body .calculate-cost-ibm-card-span-two {
+    grid-column: auto;
+}
+
+.calculate-cost-ibm-custom-instance-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.calculate-cost-ibm-custom-instance-grid .calculate-cost-ibm-field-stack:first-child {
+    grid-column: 1 / -1;
+}
+
+.calculate-cost-ibm-field-hint {
+    margin: -2px 0 0;
+    color: var(--calculate-cost-ibm-text-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.calculate-cost-ibm-select {
+    position: relative;
+    width: 100%;
+    border: 1px solid #bad8e4;
+    border-radius: 12px;
+    background: var(--calculate-cost-ibm-bg-panel);
+    overflow: visible;
+}
+
+.calculate-cost-ibm-select[open] {
+    z-index: 80;
+}
+
+.calculate-cost-ibm-select.is-disabled {
+    opacity: 0.72;
+    pointer-events: none;
+}
+
+.calculate-cost-ibm-select-summary {
+    list-style: none;
+    position: relative;
+    min-height: 46px;
+    padding: 11px 40px 11px 14px;
+    border-radius: 12px;
+    background: var(--calculate-cost-ibm-bg-panel);
+    color: #3f3f46;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.calculate-cost-ibm-select-summary span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.calculate-cost-ibm-select-summary::-webkit-details-marker {
+    display: none;
+}
+
+.calculate-cost-ibm-select-summary::after {
+    content: "";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--calculate-cost-ibm-text);
+    border-bottom: 2px solid var(--calculate-cost-ibm-text);
+    transform: translateY(-50%) rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.calculate-cost-ibm-select[open] .calculate-cost-ibm-select-summary::after {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.calculate-cost-ibm-select:not([open]) .calculate-cost-ibm-select-summary::after {
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+.calculate-cost-ibm-select-body {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 90;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    max-height: min(70vh, 420px);
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #bad8e4;
+    border-radius: 14px;
+    background: var(--calculate-cost-ibm-bg-panel);
+    box-shadow: 0 18px 42px rgba(15, 63, 143, 0.16);
+}
+
+.calculate-cost-ibm-select-grid {
+    display: grid;
+    gap: 8px;
+}
+
+.calculate-cost-ibm-select-grid-two {
+    grid-template-columns: 1fr;
+}
+
+.calculate-cost-ibm-select-grid-list {
+    grid-template-columns: 1fr;
+}
+
+.calculate-cost-ibm-select-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: var(--calculate-cost-ibm-bg-panel);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calculate-cost-ibm-select-card:hover {
+    border-color: #0F766E;
+    background: #e7f7f7;
+}
+
+.calculate-cost-ibm-select-card input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.calculate-cost-ibm-select-card:has(input:checked) {
+    border-color: #0F766E;
+    background: var(--calculate-cost-ibm-bg-strong);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+}
+
+.calculate-cost-ibm-select-title {
+    color: var(--calculate-cost-ibm-text-body);
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+#calculateCostIbmSortSelect .calculate-cost-ibm-select-body {
+    padding: 6px;
+    border-radius: 10px;
+}
+
+#calculateCostIbmSortSelect .calculate-cost-ibm-select-card {
+    min-height: 38px;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+#calculateCostIbmSortSelect .calculate-cost-ibm-select-title {
+    font-size: 13px;
+    line-height: 1.25;
+}
+
+.calculate-cost-ibm-field-stack:has(.calculate-cost-ibm-select[open]),
+.calculate-cost-ibm-toolbar-left:has(.calculate-cost-ibm-select[open]) {
+    z-index: 80;
+}
+
+.calculate-cost-ibm-advanced {
+    border: 1px solid var(--calculate-cost-ibm-border);
+    border-radius: 18px;
+    background: var(--calculate-cost-ibm-bg-muted);
+    overflow: hidden;
+}
+
+.calculate-cost-ibm-advanced-summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #e7f7f7;
+    border-bottom: 1px solid #c9e4ee;
+    color: var(--calculate-cost-ibm-text);
+    font-size: 15px;
+    font-weight: 700;
+    user-select: none;
+}
+
+.calculate-cost-ibm-advanced-summary::-webkit-details-marker {
+    display: none;
+}
+
+.calculate-cost-ibm-advanced-summary::after {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--calculate-cost-ibm-text);
+    border-bottom: 2px solid var(--calculate-cost-ibm-text);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.calculate-cost-ibm-advanced:not([open]) .calculate-cost-ibm-advanced-summary::after {
+    transform: rotate(-45deg);
+}
+
+.calculate-cost-ibm-advanced-body {
+    padding: 14px;
+    background: var(--calculate-cost-ibm-bg-muted);
+}
+
+.calculate-cost-ibm-switch-card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    min-height: 54px;
+    padding: 10px 12px;
+    border: 1px solid var(--calculate-cost-ibm-border);
+    border-radius: 14px;
+    background: var(--calculate-cost-ibm-bg-panel);
+}
+
+.calculate-cost-ibm-switch-wrap {
+    flex-shrink: 0;
+}
+
+.info-dot {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #0F766E;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e7f7f7;
+    color: var(--calculate-cost-ibm-accent-strong);
+    cursor: help;
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.info-dot:hover,
+.info-dot:focus-visible {
+    border-color: var(--calculate-cost-ibm-border-strong);
+    background: var(--calculate-cost-ibm-bg-strong);
+    color: var(--calculate-cost-ibm-accent);
+    outline: none;
+}
+
+.switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.switch input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+
+.slider {
+    position: relative;
+    width: 48px;
+    height: 28px;
+    border-radius: 999px;
+    background: #e7e5e4;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.switch input:checked + .slider {
+    background: var(--calculate-cost-ibm-accent-soft);
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(20px);
+}
+
+.switch input:disabled + .slider {
+    opacity: 0.75;
+}
+
+.calculate-cost-ibm-switch-label {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.calculate-cost-ibm-result-panel {
+    margin-top: 18px;
+}
+
+.calculate-cost-ibm-result-empty,
+.calculate-cost-ibm-result-error {
+    padding: 18px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.calculate-cost-ibm-result-empty {
+    border: 1px dashed #0F766E;
+    background: linear-gradient(180deg, #f6fbff 0%, #e7f7f7 100%);
+    color: var(--calculate-cost-ibm-text);
+}
+
+.calculate-cost-ibm-result-error {
+    border: 1px solid #fecaca;
+    background: #fff5f5;
+    color: #b91c1c;
+}
+
+.calculate-cost-ibm-result-content {
+    gap: 18px;
+}
+
+.calculate-cost-ibm-overview {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.68fr) minmax(0, 1.32fr);
+    gap: 16px;
+    align-items: stretch;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid rgba(15, 118, 110, 0.54);
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 12% 20%, rgba(221, 247, 247, 0.54), transparent 28%),
+        linear-gradient(180deg, rgba(231, 247, 247, 0.96) 0%, rgba(246, 251, 255, 0.98) 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+        0 14px 30px rgba(15, 63, 143, 0.05);
+}
+
+.calculate-cost-ibm-spend-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: 16px;
+    align-content: center;
+    justify-items: center;
+    min-height: 100%;
+    padding: 22px 18px;
+    border: 1px solid rgba(15, 118, 110, 0.58);
+    border-radius: 16px;
+    background:
+        radial-gradient(circle at 74% 18%, rgba(15, 118, 110, 0.18), transparent 30%),
+        radial-gradient(circle at 18% 90%, rgba(221, 247, 247, 0.84), transparent 38%),
+        linear-gradient(180deg, #f6fbff 0%, #e7f7f7 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.82),
+        0 10px 24px rgba(15, 63, 143, 0.06);
+}
+
+.calculate-cost-ibm-spend-ring {
+    position: relative;
+    width: 158px;
+    height: 158px;
+    display: grid;
+    place-items: center;
+    justify-self: center;
+    border-radius: 999px;
+    background:
+        conic-gradient(from -90deg, #0F766E var(--progress-angle), rgba(221, 247, 247, 0.96) 0deg),
+        linear-gradient(145deg, #ffffff, #ddf7f7);
+    box-shadow:
+        0 18px 34px rgba(15, 63, 143, 0.14),
+        inset 0 0 0 1px rgba(15, 118, 110, 0.26);
+    isolation: isolate;
+}
+
+.calculate-cost-ibm-spend-ring[data-chart-ready="true"] {
+    background:
+        radial-gradient(circle at 50% 50%, #f6fbff 0 56%, rgba(221, 247, 247, 0.74) 57% 71%, #f6fbff 72% 100%),
+        linear-gradient(145deg, #ffffff, #ddf7f7);
+}
+
+.calculate-cost-ibm-spend-chart {
+    position: absolute;
+    inset: 3px;
+    z-index: 0;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.calculate-cost-ibm-spend-ring::before {
+    content: "";
+    width: 108px;
+    height: 108px;
+    grid-area: 1 / 1;
+    border-radius: 999px;
+    background:
+        radial-gradient(circle at 50% 22%, #ffffff 0%, #f6fbff 48%, #e7f7f7 100%);
+    box-shadow:
+        inset 0 0 0 1px rgba(15, 118, 110, 0.38),
+        0 8px 18px rgba(15, 63, 143, 0.08);
+    z-index: 1;
+}
+
+.calculate-cost-ibm-spend-ring::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.66);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.calculate-cost-ibm-spend-value {
+    position: relative;
+    z-index: 3;
+    grid-area: 1 / 1;
+    text-align: center;
+}
+
+.calculate-cost-ibm-spend-value strong {
+    display: block;
+    color: var(--calculate-cost-ibm-text);
+    font-size: 26px;
+    line-height: 1.1;
+    letter-spacing: 0;
+}
+
+.calculate-cost-ibm-spend-value span {
+    display: block;
+    margin-top: 4px;
+    color: var(--calculate-cost-ibm-text-subtle);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.calculate-cost-ibm-spend-label {
+    justify-self: stretch;
+    color: var(--calculate-cost-ibm-text);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: left;
+}
+
+.calculate-cost-ibm-spend-copy {
+    justify-self: stretch;
+    color: var(--calculate-cost-ibm-text-muted);
+    font-size: 13px;
+    line-height: 1.65;
+    text-align: left;
+}
+
+.calculate-cost-ibm-score-panel {
+    width: 100%;
+    min-height: 228px;
+    border: 1px solid rgba(15, 118, 110, 0.66);
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 16% 36%, rgba(221, 247, 247, 0.72), transparent 34%),
+        linear-gradient(100deg, #e7f7f7 0%, #f6fbff 46%, #faf7ff 100%);
+    box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.58);
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+}
+
+.calculate-cost-ibm-score-card {
+    display: grid;
+    grid-template-columns: 152px minmax(0, 1fr);
+    align-items: center;
+    gap: 24px;
+    width: min(100%, 760px);
+    min-width: 0;
+    text-align: center;
+}
+
+.calculate-cost-ibm-score-ring-card {
+    --calculate-cost-ibm-score-label-bg: rgba(231, 247, 247, 0.96);
+    --calculate-cost-ibm-score-label-border: rgba(15, 118, 110, 0.32);
+    --calculate-cost-ibm-score-label-color: var(--calculate-cost-ibm-accent-strong);
+    position: relative;
+    width: 152px;
+    min-height: 166px;
+    border: 0;
+    border-radius: 18px;
+    background: transparent;
+    display: grid;
+    grid-template-rows: auto auto;
+    justify-items: center;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px 10px;
+    outline: none;
+    overflow: visible;
+    transition: transform 0.2s ease;
+}
+
+.calculate-cost-ibm-score-ring-card::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    width: 138px;
+    height: 138px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.98) 0 48%, rgba(221, 247, 247, 0.84) 66%, rgba(221, 247, 247, 0.36) 100%);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+        0 18px 34px rgba(15, 63, 143, 0.13),
+        0 0 0 8px rgba(255, 255, 255, 0.42);
+    transform: translateX(-50%);
+    z-index: 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.calculate-cost-ibm-score-ring-card-production {
+    --calculate-cost-ibm-score-label-bg: rgba(236, 253, 245, 0.96);
+    --calculate-cost-ibm-score-label-border: rgba(16, 185, 129, 0.24);
+    --calculate-cost-ibm-score-label-color: #047857;
+}
+
+.calculate-cost-ibm-score-ring-card-balanced {
+    --calculate-cost-ibm-score-label-bg: rgba(245, 243, 255, 0.96);
+    --calculate-cost-ibm-score-label-border: rgba(124, 58, 237, 0.22);
+    --calculate-cost-ibm-score-label-color: #5b21b6;
+}
+
+.calculate-cost-ibm-score-ring-card-review {
+    --calculate-cost-ibm-score-label-bg: rgba(254, 242, 242, 0.96);
+    --calculate-cost-ibm-score-label-border: rgba(239, 68, 68, 0.22);
+    --calculate-cost-ibm-score-label-color: #b91c1c;
+}
+
+.calculate-cost-ibm-score-ring-card:hover,
+.calculate-cost-ibm-score-ring-card:focus,
+.calculate-cost-ibm-score-ring-card:focus-within {
+    transform: translateY(-1px);
+}
+
+.calculate-cost-ibm-score-ring-card:hover::before,
+.calculate-cost-ibm-score-ring-card:focus::before,
+.calculate-cost-ibm-score-ring-card:focus-within::before {
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.92),
+        0 20px 36px rgba(15, 63, 143, 0.16),
+        0 0 0 8px rgba(255, 255, 255, 0.5),
+        0 0 0 12px rgba(15, 118, 110, 0.12);
+}
+
+.calculate-cost-ibm-score-value {
+    position: relative;
+    z-index: 1;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    color: var(--calculate-cost-ibm-text-strong);
+    display: grid;
+    place-items: center;
+    text-align: center;
+    isolation: isolate;
+}
+
+.calculate-cost-ibm-score-value::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.96) 0 34%, rgba(231, 247, 247, 0.72) 58%, rgba(15, 118, 110, 0.16) 100%);
+    filter: drop-shadow(0 10px 14px rgba(15, 118, 110, 0.18));
+    z-index: 0;
+    transition: opacity 0.2s ease;
+}
+
+.calculate-cost-ibm-score-value::after {
+    content: "";
+    position: absolute;
+    inset: 25px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow:
+        inset 0 0 0 1px rgba(15, 118, 110, 0.22),
+        inset 0 10px 20px rgba(231, 247, 247, 0.68),
+        0 8px 18px rgba(15, 63, 143, 0.07);
+    z-index: 1;
+}
+
+.calculate-cost-ibm-score-value[data-chart-ready="true"]::before,
+.calculate-cost-ibm-score-value[data-chart-ready="true"] .calculate-cost-ibm-score-ring {
+    opacity: 0;
+}
+
+.calculate-cost-ibm-score-echart {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    z-index: 0;
+}
+
+.calculate-cost-ibm-score-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    z-index: 0;
+    transition: opacity 0.2s ease;
+}
+
+.calculate-cost-ibm-score-ring-track,
+.calculate-cost-ibm-score-ring-glow,
+.calculate-cost-ibm-score-ring-fill {
+    fill: none;
+}
+
+.calculate-cost-ibm-score-ring-track {
+    stroke: rgba(221, 247, 247, 0.96);
+    stroke-linecap: round;
+    stroke-width: 11;
+}
+
+.calculate-cost-ibm-score-ring-glow {
+    stroke: var(--calculate-cost-ibm-accent-soft);
+    stroke-linecap: round;
+    stroke-width: 18;
+    opacity: 0.16;
+}
+
+.calculate-cost-ibm-score-ring-fill {
+    stroke-linecap: round;
+    stroke-width: 11;
+    filter:
+        drop-shadow(0 4px 6px rgba(15, 118, 110, 0.22))
+        drop-shadow(0 0 10px rgba(15, 118, 110, 0.28));
+}
+
+.calculate-cost-ibm-score-center {
+    position: relative;
+    z-index: 2;
+    width: 72px;
+    min-width: 0;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 2px;
+    text-align: center;
+}
+
+.calculate-cost-ibm-score-value-number {
+    color: var(--calculate-cost-ibm-text-strong);
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 0.9;
+    font-variant-numeric: tabular-nums;
+}
+
+.calculate-cost-ibm-score-caption {
+    color: var(--calculate-cost-ibm-text-muted);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.calculate-cost-ibm-score-label {
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    min-height: 28px;
+    border-radius: 999px;
+    border: 1px solid var(--calculate-cost-ibm-score-label-border);
+    background: var(--calculate-cost-ibm-score-label-bg);
+    color: var(--calculate-cost-ibm-score-label-color);
+    padding: 5px 11px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.calculate-cost-ibm-score-copy {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 10px;
+    min-width: 0;
+    text-align: center;
+}
+
+.calculate-cost-ibm-score-kicker {
+    color: var(--calculate-cost-ibm-text-muted);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.calculate-cost-ibm-score-summary {
+    color: #5b21b6;
+    font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+    font-weight: 900;
+    line-height: 1.18;
+}
+
+.calculate-cost-ibm-score-detail {
+    max-width: 540px;
+    margin: 0 auto;
+    color: var(--calculate-cost-ibm-text-muted);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.55;
+}
+
+.calculate-cost-ibm-score-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+}
+
+.calculate-cost-ibm-score-tag {
+    min-height: 34px;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 118, 110, 0.24);
+    background: rgba(231, 247, 247, 0.92);
+    color: var(--calculate-cost-ibm-accent-strong);
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    white-space: nowrap;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.calculate-cost-ibm-score-tag i {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.calculate-cost-ibm-score-tag-status-production,
+.calculate-cost-ibm-score-tag-services {
+    border-color: rgba(16, 185, 129, 0.22);
+    background: rgba(236, 253, 245, 0.9);
+    color: #047857;
+}
+
+.calculate-cost-ibm-score-tag-status-balanced,
+.calculate-cost-ibm-score-tag-preset {
+    border-color: rgba(124, 58, 237, 0.22);
+    background: rgba(245, 243, 255, 0.92);
+    color: #5b21b6;
+}
+
+.calculate-cost-ibm-score-tag-status-review {
+    border-color: rgba(239, 68, 68, 0.2);
+    background: rgba(254, 242, 242, 0.94);
+    color: #b91c1c;
+}
+
+.calculate-cost-ibm-score-tag-driver,
+.calculate-cost-ibm-score-tag-run-rate,
+.calculate-cost-ibm-score-tag-annual {
+    border-color: rgba(15, 118, 110, 0.3);
+    background: rgba(231, 247, 247, 0.96);
+    color: var(--calculate-cost-ibm-accent-strong);
+}
+
+.calculate-cost-ibm-score-tag-egress {
+    border-color: rgba(37, 99, 235, 0.22);
+    background: rgba(246, 251, 255, 0.92);
+    color: var(--calculate-cost-ibm-accent-strong);
+}
+
+.calculate-cost-ibm-score-tag-overrides,
+.calculate-cost-ibm-score-tag-updated {
+    border-color: rgba(100, 116, 139, 0.2);
+    background: rgba(248, 250, 252, 0.94);
+    color: #475569;
+}
+
+.calculate-cost-ibm-summary-panel {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    min-width: 0;
+    padding: 16px;
+    border-color: rgba(15, 118, 110, 0.58);
+    border-radius: 16px;
+    background:
+        radial-gradient(circle at 94% 12%, rgba(245, 243, 255, 0.58), transparent 26%),
+        linear-gradient(180deg, #ffffff 0%, #f6fbff 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.84),
+        0 10px 24px rgba(15, 63, 143, 0.05);
+}
+
+.calculate-cost-ibm-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.calculate-cost-ibm-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border-radius: 999px;
+    background: rgba(231, 247, 247, 0.94);
+    border: 1px solid rgba(15, 118, 110, 0.32);
+    color: var(--calculate-cost-ibm-accent-strong);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.calculate-cost-ibm-badge-muted {
+    background: rgba(248, 250, 252, 0.94);
+    border-color: rgba(148, 163, 184, 0.34);
+    color: #64748b;
+}
+
+.calculate-cost-ibm-summary-route {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+    padding: 16px 18px;
+    border: 1px solid rgba(15, 118, 110, 0.56);
+    border-radius: 16px;
+    background:
+        radial-gradient(circle at 96% 18%, rgba(221, 247, 247, 0.6), transparent 30%),
+        linear-gradient(180deg, #f6fbff 0%, #e7f7f7 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.calculate-cost-ibm-summary-route-value {
+    color: var(--calculate-cost-ibm-text-body);
+    font-size: 16px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.calculate-cost-ibm-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.calculate-cost-ibm-stat-card {
+    min-height: 124px;
+    padding: 15px;
+    border: 1px solid rgba(15, 118, 110, 0.56);
+    border-radius: 16px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(231, 247, 247, 0.96) 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.78),
+        0 8px 18px rgba(15, 63, 143, 0.04);
+}
+
+.calculate-cost-ibm-stat-value {
+    color: var(--calculate-cost-ibm-text);
+    font-size: clamp(1.12rem, 1.65vw, 1.35rem);
+    font-weight: 800;
+    line-height: 1.2;
+    overflow-wrap: normal;
+    white-space: nowrap;
+}
+
+.calculate-cost-ibm-toolbar-shell,
+.calculate-cost-ibm-tabs-shell {
+    border: 1px solid rgba(15, 118, 110, 0.56);
+    border-radius: 16px;
+    background: #ffffff;
+    min-width: 0;
+}
+
+.calculate-cost-ibm-toolbar-shell {
+    padding: 16px 18px;
+    min-height: 120px;
+    display: grid;
+    align-items: center;
+}
+
+.calculate-cost-ibm-toolbar.tool-result-toolbar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 416px);
+    align-items: flex-start;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+.calculate-cost-ibm-toolbar-left {
+    display: grid;
+    grid-template-columns: auto minmax(160px, 220px);
+    align-items: center;
+    gap: 12px;
+    justify-content: start;
+    min-width: 0;
+}
+
+.calculate-cost-ibm-sort-label {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.calculate-cost-ibm-sort-select {
+    width: 100%;
+    min-width: 0;
+    max-width: 220px;
+    border: 0;
+    background: transparent;
+}
+
+.calculate-cost-ibm-sort-wrap {
+    width: 220px;
+    min-width: 0;
+    max-width: 220px;
+}
+
+.calculate-cost-ibm-sort-select .calculate-cost-ibm-select-summary {
+    height: 46px;
+    min-height: 46px;
+    padding: 12px 40px 8px 14px;
+    border: 1px solid rgba(15, 118, 110, 0.72);
+    border-radius: 10px;
+    background: #ffffff;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.calculate-cost-ibm-toolbar-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-content: end;
+    justify-self: end;
+    gap: 10px;
+    margin-left: auto;
+    max-width: 416px;
+    min-width: 0;
+    width: 100%;
+}
+
+.calculate-cost-ibm-toolbar-actions .calculate-cost-ibm-action-btn {
+    width: 100%;
+    min-height: 38px;
+    border-radius: 8px;
+    padding: 0 10px;
+    font-size: 13px;
+}
+
+.calculate-cost-ibm-toolbar-actions .calculate-cost-ibm-action-btn:nth-child(4) {
+    grid-column: 2;
+}
+
+.calculate-cost-ibm-toolbar-actions .calculate-cost-ibm-action-btn:nth-child(5) {
+    grid-column: 3;
+    background: #f6fbff;
+}
+
+.calculate-cost-ibm-tabs-shell {
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+    min-width: 0;
+}
+
+.calculate-cost-ibm-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.calculate-cost-ibm-tab-btn {
+    min-height: 42px;
+    border: 1px solid var(--calculate-cost-ibm-border);
+    border-radius: 999px;
+    background: var(--calculate-cost-ibm-bg-panel);
+    color: var(--calculate-cost-ibm-text);
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calculate-cost-ibm-tab-btn i {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.calculate-cost-ibm-tab-btn:hover,
+.calculate-cost-ibm-tab-btn:focus,
+.calculate-cost-ibm-tab-btn:focus-visible {
+    border-color: var(--calculate-cost-ibm-border-strong);
+    background: #e7f7f7;
+    color: var(--calculate-cost-ibm-accent);
+    outline: none;
+}
+
+.calculate-cost-ibm-tab-btn.active {
+    border-color: var(--calculate-cost-ibm-accent-soft);
+    background: linear-gradient(180deg, #ddf7f7 0%, #ddf7f7 100%);
+    color: var(--calculate-cost-ibm-accent-strong);
+    box-shadow: 0 10px 24px rgba(15, 118, 110, 0.16);
+    transform: translateY(-1px);
+}
+
+.calculate-cost-ibm-tab-panel {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+}
+
+.calculate-cost-ibm-section-card.tool-result-section-card {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    width: 100%;
+    border: 1px solid rgba(15, 118, 110, 0.56);
+    border-radius: 14px;
+    background: #ffffff;
+    padding: 12px;
+}
+
+.calculate-cost-ibm-section-title.tool-result-section-title {
+    margin: 0;
+    color: var(--calculate-cost-ibm-text);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.calculate-cost-ibm-table-wrap.tool-result-table-wrap {
+    border: 1px solid rgba(15, 118, 110, 0.48);
+    border-radius: 10px;
+    background: var(--calculate-cost-ibm-bg-panel);
+    overflow-x: auto;
+    --tool-result-shadow-surface: #ffffff;
+    width: 100%;
+}
+
+.calculate-cost-ibm-table-wrap .table {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    color: var(--calculate-cost-ibm-text-body);
+    table-layout: fixed;
+}
+
+.calculate-cost-ibm-breakdown-table {
+    min-width: 0;
+}
+
+.calculate-cost-ibm-table-wrap-compact .table {
+    min-width: 0;
+}
+
+.calculate-cost-ibm-table-wrap thead th {
+    padding: 12px;
+    border-bottom: 1px solid rgba(15, 118, 110, 0.64);
+    background: #e7f7f7;
+    color: var(--calculate-cost-ibm-text-muted);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.calculate-cost-ibm-table-wrap tbody td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(15, 118, 110, 0.32);
+    border-color: rgba(15, 118, 110, 0.32);
+    color: var(--calculate-cost-ibm-text-body);
+    font-size: 13px;
+    line-height: 1.6;
+    vertical-align: top;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+.calculate-cost-ibm-table-wrap tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.calculate-cost-ibm-table-wrap .tool-generated-rownum-head,
+.calculate-cost-ibm-table-wrap .tool-generated-rownum-cell {
+    width: 42px;
+    text-align: center;
+}
+
+.calculate-cost-ibm-table-wrap .tool-generated-rownum-cell {
+    color: var(--calculate-cost-ibm-text-subtle);
+}
+
+.calculate-cost-ibm-breakdown-table thead th:nth-child(2),
+.calculate-cost-ibm-breakdown-table tbody td:nth-child(2) {
+    width: 11%;
+}
+
+.calculate-cost-ibm-breakdown-table thead th:nth-child(3),
+.calculate-cost-ibm-breakdown-table tbody td:nth-child(3) {
+    width: 13%;
+}
+
+.calculate-cost-ibm-breakdown-table thead th:nth-child(4),
+.calculate-cost-ibm-breakdown-table tbody td:nth-child(4) {
+    width: 21%;
+}
+
+.calculate-cost-ibm-breakdown-table thead th:nth-child(5),
+.calculate-cost-ibm-breakdown-table tbody td:nth-child(5) {
+    width: 18%;
+}
+
+.calculate-cost-ibm-breakdown-table thead th:nth-child(6),
+.calculate-cost-ibm-breakdown-table tbody td:nth-child(6),
+.calculate-cost-ibm-breakdown-table thead th:nth-child(7),
+.calculate-cost-ibm-breakdown-table tbody td:nth-child(7) {
+    width: 11%;
+    text-align: right;
+}
+
+.calculate-cost-ibm-service-table thead th:last-child,
+.calculate-cost-ibm-service-table tbody td:last-child,
+.calculate-cost-ibm-assumption-table thead th:last-child,
+.calculate-cost-ibm-assumption-table tbody td:last-child,
+.calculate-cost-ibm-breakdown-table thead th:last-child,
+.calculate-cost-ibm-breakdown-table tbody td:last-child {
+    width: 48px;
+    text-align: center;
+}
+
+.calculate-cost-ibm-breakdown-table td:nth-child(4),
+.calculate-cost-ibm-breakdown-table td:nth-child(5),
+.calculate-cost-ibm-assumption-table td:nth-child(4) {
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.calculate-cost-ibm-copy-cell {
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.calculate-cost-ibm-breakdown-table td:last-child .calculate-cost-ibm-copy-btn,
+.calculate-cost-ibm-service-table td:last-child .calculate-cost-ibm-copy-btn,
+.calculate-cost-ibm-assumption-table td:last-child .calculate-cost-ibm-copy-btn {
+    margin: 0 auto;
+}
+
+.calculate-cost-ibm-currency {
+    color: var(--calculate-cost-ibm-text-strong);
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.calculate-cost-ibm-signal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.calculate-cost-ibm-signal-heavy {
+    background: #ddf7f7;
+    color: var(--calculate-cost-ibm-accent);
+}
+
+.calculate-cost-ibm-signal-medium {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.calculate-cost-ibm-signal-light {
+    background: #ecfccb;
+    color: #4d7c0f;
+}
+
+.calculate-cost-ibm-recommendation-grid,
+.calculate-cost-ibm-method-grid {
+    margin-top: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.calculate-cost-ibm-recommendation-card strong,
+.calculate-cost-ibm-method-card strong {
+    color: var(--calculate-cost-ibm-text-strong);
+}
+
+.calculate-cost-ibm-json-wrap.tool-json-panel {
+    border: 1px solid var(--calculate-cost-ibm-border);
+    border-radius: 18px;
+    background: var(--calculate-cost-ibm-bg-panel);
+    overflow: hidden;
+}
+
+.calculate-cost-ibm-json-wrap.tool-json-panel .tool-json-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--calculate-cost-ibm-border-soft);
+    background: var(--calculate-cost-ibm-bg-muted);
+}
+
+.calculate-cost-ibm-json-head {
+    min-width: 0;
+}
+
+.calculate-cost-ibm-json-wrap.tool-json-panel .tool-json-title {
+    color: var(--calculate-cost-ibm-text);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.calculate-cost-ibm-json-title {
+    color: inherit;
+}
+
+.calculate-cost-ibm-json-wrap.tool-json-panel .calculate-cost-ibm-json-output.tool-json-output {
+    margin: 0;
+    padding: 18px;
+    background: var(--calculate-cost-ibm-bg-code);
+    color: var(--calculate-cost-ibm-text-body);
+    font-size: 13px;
+    line-height: 1.7;
+    overflow: auto;
+}
+
+.calculate-cost-ibm-json-wrap.tool-json-panel .tool-json-output code {
+    white-space: pre;
+}
+
+.calculate-cost-ibm-json-wrap.tool-json-panel .tool-json-key {
+    color: #0f766e;
+}
+
+.calculate-cost-ibm-json-wrap.tool-json-panel .tool-json-string {
+    color: #1D4ED8;
+}
+
+.calculate-cost-ibm-json-wrap.tool-json-panel .tool-json-number {
+    color: #1d4ed8;
+}
+
+.calculate-cost-ibm-json-wrap.tool-json-panel .tool-json-boolean {
+    color: #7c3aed;
+}
+
+.calculate-cost-ibm-json-wrap.tool-json-panel .tool-json-null {
+    color: #64748b;
+}
+
+.markdown-content {
+    --calculate-cost-ibm-bg-shell: #f6fbff;
+    --calculate-cost-ibm-bg-soft: #e7f7f7;
+    --calculate-cost-ibm-bg-muted: #f6fbff;
+    --calculate-cost-ibm-bg-strong: #ddf7f7;
+    --calculate-cost-ibm-bg-panel: #ffffff;
+    --calculate-cost-ibm-bg-code: #f4f7fb;
+    --calculate-cost-ibm-border: #c9e4ee;
+    --calculate-cost-ibm-border-soft: #d9edf1;
+    --calculate-cost-ibm-border-strong: #0F766E;
+    --calculate-cost-ibm-text: #0f3f8f;
+    --calculate-cost-ibm-text-strong: #111827;
+    --calculate-cost-ibm-text-body: #1f2937;
+    --calculate-cost-ibm-text-muted: #526070;
+    --calculate-cost-ibm-text-subtle: #64748b;
+    --calculate-cost-ibm-accent: #2563EB;
+    --calculate-cost-ibm-accent-strong: #1D4ED8;
+    --calculate-cost-ibm-accent-soft: #0F766E;
+}
+
+.markdown-content .calculate-cost-ibm-term-accent {
+    color: var(--calculate-cost-ibm-accent);
+    font-weight: 700;
+}
+
+.markdown-content > [class*="-markdown-card"] li,
+.markdown-content > [class*="-markdown-card"] li p {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card {
+    margin: 0 0 28px;
+    padding: 22px 24px;
+    border: 1px solid rgba(15, 118, 110, 0.58);
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(231, 247, 247, 0.98) 100%);
+    box-shadow: 0 14px 28px rgba(15, 63, 143, 0.06);
+    color: var(--calculate-cost-ibm-text-body);
+    font-family: var(--default-font);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card > h2:first-child {
+    margin: 0 0 18px;
+    color: var(--calculate-cost-ibm-text-strong);
+    font-family: var(--default-font);
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card h3 {
+    margin: 24px 0 10px;
+    color: var(--calculate-cost-ibm-text-strong);
+    font-family: var(--default-font);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card p {
+    margin: 0 0 14px;
+    color: var(--calculate-cost-ibm-text-body);
+    font-family: var(--default-font);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.68;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card p:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card ul,
+.markdown-content > .calculate-cost-ibm-markdown-card ol {
+    margin: 0 0 16px;
+    padding-left: 18px;
+    color: var(--calculate-cost-ibm-text-body);
+    font-family: var(--default-font);
+    font-size: 15px;
+    line-height: 1.68;
+    letter-spacing: 0;
+    list-style-position: outside;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card ul:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card ol:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card li {
+    margin: 0;
+    padding-left: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card li + li {
+    margin-top: 6px;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card ul li::marker {
+    color: var(--calculate-cost-ibm-accent);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card ol li::marker {
+    color: var(--calculate-cost-ibm-accent);
+    font-weight: 800;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card code:not(pre code) {
+    display: inline;
+    border: 1px solid rgba(15, 118, 110, 0.58);
+    border-radius: 8px;
+    background: #e7f7f7;
+    color: var(--calculate-cost-ibm-accent-strong);
+    padding: 0.08em 0.42em;
+    font-size: 0.875em;
+    font-weight: 600;
+    line-height: inherit;
+    vertical-align: 0.02em;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card table {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    min-width: 0;
+    margin: 18px 0 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid rgba(15, 118, 110, 0.56);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card thead {
+    display: table-header-group;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card tbody {
+    display: table-row-group;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card tr {
+    display: table-row;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card th,
+.markdown-content > .calculate-cost-ibm-markdown-card td {
+    display: table-cell;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card th:first-child,
+.markdown-content > .calculate-cost-ibm-markdown-card td:first-child {
+    width: 26%;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card th:nth-child(2),
+.markdown-content > .calculate-cost-ibm-markdown-card td:nth-child(2) {
+    width: 37%;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card th:nth-child(3),
+.markdown-content > .calculate-cost-ibm-markdown-card td:nth-child(3) {
+    width: 37%;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card .calculate-cost-ibm-markdown-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card thead th {
+    background: linear-gradient(180deg, #e7f7f7 0%, #ddf7f7 100%);
+    border-bottom: 1px solid rgba(15, 118, 110, 0.56);
+    color: var(--calculate-cost-ibm-text-strong);
+    font-family: var(--default-font);
+    padding: 14px 16px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    vertical-align: top;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card tbody td {
+    border-bottom: 1px solid rgba(15, 118, 110, 0.28);
+    color: var(--calculate-cost-ibm-text-body);
+    font-family: var(--default-font);
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.65;
+    vertical-align: top;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card tbody td:first-child {
+    color: var(--calculate-cost-ibm-text-strong);
+    font-weight: 800;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-examples > p:first-of-type {
+    margin: 0 0 14px;
+    color: var(--calculate-cost-ibm-text-body);
+    font-family: var(--default-font);
+    font-size: 14px;
+    line-height: 1.72;
+}
+
+.markdown-content pre.calculate-cost-ibm-prompt-pre {
+    position: relative;
+    margin: 0 0 18px;
+    border: 1px solid rgba(15, 63, 143, 0.32);
+    border-radius: 18px;
+    background: #18202f;
+    color: #f8fafc;
+    box-shadow: 0 12px 24px rgba(17, 24, 39, 0.12);
+    overflow-x: auto;
+    padding: 56px 20px 20px;
+}
+
+.markdown-content pre.calculate-cost-ibm-prompt-pre code {
+    display: block;
+    color: inherit;
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 0 90px 0 0;
+    white-space: pre-wrap;
+}
+
+.markdown-content pre.calculate-cost-ibm-prompt-pre code::before {
+    content: "prompt> ";
+    color: #0F766E;
+}
+
+.markdown-content pre.calculate-cost-ibm-prompt-pre > code::after {
+    content: "IBM Cost Prompt";
+    position: absolute;
+    top: -43px;
+    right: 0;
+    left: 0;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    opacity: 0.95;
+    pointer-events: none;
+    text-align: center;
+    transform: none;
+    white-space: nowrap;
+}
+
+.markdown-content .markdown-copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    min-height: 30px;
+    border: 1px solid rgba(15, 118, 110, 0.5);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--calculate-cost-ibm-accent);
+    padding: 0 12px;
+    font-family: var(--default-font);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.markdown-content .markdown-copy-btn:hover,
+.markdown-content .markdown-copy-btn:focus,
+.markdown-content .markdown-copy-btn:focus-visible {
+    background: #e7f7f7;
+    border-color: var(--calculate-cost-ibm-border-strong);
+    color: var(--calculate-cost-ibm-accent-strong);
+    outline: none;
+}
+
+.markdown-content .calculate-cost-ibm-input-note {
+    margin: 0 0 24px;
+    display: block;
+}
+
+.markdown-content .calculate-cost-ibm-input-note-last {
+    margin-bottom: 0;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note {
+    margin: 0 0 28px;
+    display: block;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note-last {
+    margin-bottom: 0;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    color: inherit;
+    font-family: var(--default-font);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note-label {
+    min-height: 34px;
+    border: 1px solid rgba(15, 118, 110, 0.56);
+    border-radius: 999px;
+    background: #e7f7f7;
+    color: var(--calculate-cost-ibm-accent-strong);
+    padding: 0 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note-label::before {
+    content: "+";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: #ddf7f7;
+    color: var(--calculate-cost-ibm-accent-strong);
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note-label-open {
+    display: none;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note[open] summary {
+    margin-bottom: 12px;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note[open] .calculate-cost-ibm-prompt-note-label-closed {
+    display: none;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note[open] .calculate-cost-ibm-prompt-note-label-open {
+    display: inline-flex;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note[open] .calculate-cost-ibm-prompt-note-label-open::before {
+    content: "-";
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note summary:hover .calculate-cost-ibm-prompt-note-label,
+.markdown-content .calculate-cost-ibm-prompt-note summary:focus .calculate-cost-ibm-prompt-note-label,
+.markdown-content .calculate-cost-ibm-prompt-note summary:focus-visible .calculate-cost-ibm-prompt-note-label {
+    background: #ddf7f7;
+    border-color: var(--calculate-cost-ibm-border-strong);
+    color: var(--calculate-cost-ibm-accent);
+    outline: none;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-copy-btn {
+    min-height: 34px;
+    border: 1px solid rgba(15, 118, 110, 0.56);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--calculate-cost-ibm-accent-strong);
+    padding: 0 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--default-font);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-copy-btn i {
+    color: var(--calculate-cost-ibm-accent-strong);
+    font-size: 14px;
+    line-height: 1;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-copy-btn:hover,
+.markdown-content .calculate-cost-ibm-prompt-copy-btn:focus,
+.markdown-content .calculate-cost-ibm-prompt-copy-btn:focus-visible {
+    background: #e7f7f7;
+    border-color: var(--calculate-cost-ibm-border-strong);
+    color: var(--calculate-cost-ibm-accent);
+    outline: none;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-copy-btn.copied {
+    background: #ecfdf5;
+    border-color: #86efac;
+    color: #15803d;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-copy-btn.copied i {
+    color: #15803d;
+}
+
+.markdown-content .calculate-cost-ibm-prompt-note .alert,
+.markdown-content .calculate-cost-ibm-prompt-note .alert div {
+    font-family: var(--default-font);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.markdown-content .calculate-cost-ibm-input-note summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    width: fit-content;
+    padding: 8px 14px;
+    border: 1px solid var(--calculate-cost-ibm-border);
+    border-radius: 999px;
+    background: var(--calculate-cost-ibm-bg-soft);
+    color: var(--calculate-cost-ibm-text);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-content .calculate-cost-ibm-input-note summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content .calculate-cost-ibm-input-note summary::before {
+    content: "+";
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #ddf7f7;
+    color: var(--calculate-cost-ibm-accent);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.markdown-content .calculate-cost-ibm-input-note summary:hover {
+    border-color: #0F766E;
+    background: #e7f7f7;
+    color: var(--calculate-cost-ibm-accent);
+}
+
+.markdown-content .calculate-cost-ibm-input-note[open] summary {
+    margin-bottom: 12px;
+}
+
+.markdown-content .calculate-cost-ibm-input-note[open] summary::before {
+    content: "-";
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-item,
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item,
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item {
+    margin: 0;
+    border: 1px solid rgba(15, 118, 110, 0.5);
+    border-radius: 14px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 10px 22px rgba(15, 63, 143, 0.055);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-item + .tool-guidance-item,
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item + .tool-guidance-item,
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item + .tool-export-item {
+    margin-top: 12px;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-item summary,
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item summary,
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item summary {
+    position: relative;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 58px;
+    cursor: pointer;
+    padding: 15px 56px 15px 16px;
+    background: linear-gradient(135deg, #ffffff 0%, #e7f7f7 100%);
+    color: var(--calculate-cost-ibm-text-strong);
+    font-family: var(--default-font);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-item summary::-webkit-details-marker,
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item summary::-webkit-details-marker,
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-item summary::after,
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item summary::after,
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--calculate-cost-ibm-accent-strong);
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1;
+    box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.45);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-item[open] summary::after,
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item[open] summary::after,
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item[open] summary::after {
+    content: "-";
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-item summary > span,
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item summary > span,
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item summary > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-icon,
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-icon,
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-icon {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: #ddf7f7;
+    color: var(--calculate-cost-ibm-accent-strong);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-answer,
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-answer,
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-answer {
+    border-top: 1px solid rgba(15, 118, 110, 0.36);
+    background: linear-gradient(180deg, #ffffff 0%, #f6fbff 100%);
+    color: var(--calculate-cost-ibm-text-body);
+    font-family: var(--default-font);
+    padding: 15px 18px 17px;
+    font-size: 15px;
+    line-height: 1.68;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-answer p:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-answer p:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-answer p:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-answer ul:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-answer ul:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card .faq-item {
+    margin: 0;
+    border: 1px solid rgba(15, 118, 110, 0.56);
+    border-radius: 14px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card .faq-item + .faq-item {
+    margin-top: 12px;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card .faq-item summary {
+    position: relative;
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 56px 16px 18px;
+    color: var(--calculate-cost-ibm-text-strong);
+    font-family: var(--default-font);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.5;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card .faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card .faq-item summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: #ddf7f7;
+    color: var(--calculate-cost-ibm-accent-strong);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card .faq-item[open] summary::after {
+    content: "-";
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card .faq-answer {
+    border-top: 1px solid rgba(15, 118, 110, 0.4);
+    background: linear-gradient(180deg, #ffffff 0%, #f6fbff 100%);
+    color: var(--calculate-cost-ibm-text-body);
+    font-family: var(--default-font);
+    padding: 15px 18px 17px;
+    font-size: 15px;
+    line-height: 1.68;
+}
+
+.markdown-content .calculate-cost-ibm-command-note {
+    margin: -8px 0 24px;
+}
+
+.markdown-content .calculate-cost-ibm-command-note-last {
+    margin-bottom: 0;
+}
+
+.markdown-content .calculate-cost-ibm-command-note summary {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 14px;
+    border: 1px solid var(--calculate-cost-ibm-border);
+    border-radius: 999px;
+    background: var(--calculate-cost-ibm-bg-soft);
+    color: var(--calculate-cost-ibm-text);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-content .calculate-cost-ibm-command-note summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content .calculate-cost-ibm-command-note summary::before {
+    content: "+";
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #ddf7f7;
+    color: var(--calculate-cost-ibm-accent);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.markdown-content .calculate-cost-ibm-command-note summary:hover {
+    border-color: #0F766E;
+    background: #e7f7f7;
+    color: var(--calculate-cost-ibm-accent);
+}
+
+.markdown-content .calculate-cost-ibm-command-note[open] summary {
+    margin-bottom: 12px;
+}
+
+.markdown-content .calculate-cost-ibm-command-note[open] summary::before {
+    content: "-";
+}
+
+.markdown-content .calculate-cost-ibm-command-note-label-open {
+    display: none;
+}
+
+.markdown-content .calculate-cost-ibm-command-note[open] .calculate-cost-ibm-command-note-label-closed {
+    display: none;
+}
+
+.markdown-content .calculate-cost-ibm-command-note[open] .calculate-cost-ibm-command-note-label-open {
+    display: inline;
+}
+
+.markdown-content .calculate-cost-ibm-markdown-table-wrap,
+.calculate-cost-ibm-glossary-table-wrap {
+    overflow-x: auto;
+}
+
+.markdown-content .calculate-cost-ibm-markdown-table-wrap table,
+.calculate-cost-ibm-glossary-table-wrap table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+.markdown-content .calculate-cost-ibm-markdown-table-wrap table {
+    min-width: 0;
+}
+
+.calculate-cost-ibm-glossary-table-wrap table {
+    min-width: 760px;
+}
+
+.markdown-content .calculate-cost-ibm-markdown-table-wrap th,
+.markdown-content .calculate-cost-ibm-markdown-table-wrap td,
+.calculate-cost-ibm-glossary-table-wrap th,
+.calculate-cost-ibm-glossary-table-wrap td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--calculate-cost-ibm-border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.markdown-content .calculate-cost-ibm-markdown-table-wrap th,
+.calculate-cost-ibm-glossary-table-wrap th {
+    background: var(--calculate-cost-ibm-bg-muted);
+    color: var(--calculate-cost-ibm-text);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.markdown-content .calculate-cost-ibm-markdown-table-wrap tr:last-child td,
+.calculate-cost-ibm-glossary-table-wrap tr:last-child td {
+    border-bottom: 0;
+}
+
+@media (max-width: 1199.98px) {
+    .calculate-cost-ibm-overview {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .calculate-cost-ibm-main-row,
+    .calculate-cost-ibm-setting-row {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-ibm-score-card {
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+        gap: 14px;
+    }
+
+    .calculate-cost-ibm-score-panel {
+        padding: 16px;
+    }
+
+    .calculate-cost-ibm-main-label,
+    .calculate-cost-ibm-setting-label {
+        white-space: normal;
+    }
+
+    .calculate-cost-ibm-main-input-grid,
+    .calculate-cost-ibm-inline-grid-preset,
+    .calculate-cost-ibm-inline-grid-regional,
+    .calculate-cost-ibm-basis-grid,
+    .calculate-cost-ibm-toggle-grid,
+    .calculate-cost-ibm-service-grid,
+    .calculate-cost-ibm-recommendation-grid,
+    .calculate-cost-ibm-method-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-ibm-override-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-ibm-field-stack-compact {
+        max-width: none;
+    }
+
+    .calculate-cost-ibm-toolbar.tool-result-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: stretch;
+    }
+
+    .calculate-cost-ibm-toolbar-left {
+        justify-content: flex-start;
+    }
+
+    .calculate-cost-ibm-toolbar-actions {
+        justify-content: stretch;
+        justify-self: stretch;
+        margin-left: 0;
+        max-width: none;
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .calculate-cost-ibm-toolbar-actions .calculate-cost-ibm-action-btn:nth-child(4),
+    .calculate-cost-ibm-toolbar-actions .calculate-cost-ibm-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+
+    .calculate-cost-ibm-action-btn {
+        width: 100%;
+    }
+
+    .calculate-cost-ibm-toolbar-left {
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .calculate-cost-ibm-sort-wrap,
+    .calculate-cost-ibm-sort-select {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .calculate-cost-ibm-select-grid-two {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-ibm-select-body {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+}
+
+@media (max-width: 767.98px) {
+    .markdown-content pre.calculate-cost-ibm-prompt-pre > code::after {
+        top: -39px;
+    }
+
+    .calculate-cost-ibm-tool .tool-box {
+        padding: 14px;
+        border-radius: 16px;
+    }
+
+    .markdown-content > .calculate-cost-ibm-markdown-card {
+        margin-bottom: 22px;
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .markdown-content > .calculate-cost-ibm-markdown-card > h2:first-child {
+        font-size: 18px;
+    }
+
+    .markdown-content > .calculate-cost-ibm-markdown-card h3,
+    .markdown-content > .calculate-cost-ibm-markdown-card p,
+    .markdown-content > .calculate-cost-ibm-markdown-card ul,
+    .markdown-content > .calculate-cost-ibm-markdown-card ol,
+    .markdown-content > .calculate-cost-ibm-markdown-card .faq-answer,
+    .markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-answer,
+    .markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-answer,
+    .markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-answer {
+        font-size: 14px;
+    }
+
+    .markdown-content > .calculate-cost-ibm-markdown-card-examples pre code {
+        padding: 42px 14px 14px;
+        font-size: 12px;
+    }
+
+    .markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-item summary,
+    .markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item summary,
+    .markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item summary {
+        min-height: 54px;
+        padding: 13px 50px 13px 14px;
+    }
+
+    .calculate-cost-ibm-toolbar-shell,
+    .calculate-cost-ibm-tabs-shell {
+        padding: 12px;
+        border-radius: 14px;
+    }
+
+    .calculate-cost-ibm-tabs {
+        justify-content: flex-start;
+    }
+
+    .calculate-cost-ibm-toolbar-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-ibm-inner-panel,
+    .calculate-cost-ibm-service-card,
+    .calculate-cost-ibm-override-card,
+    .calculate-cost-ibm-summary-panel,
+    .calculate-cost-ibm-spend-card,
+    .calculate-cost-ibm-section-card.tool-result-section-card,
+    .calculate-cost-ibm-basis-card,
+    .calculate-cost-ibm-recommendation-card,
+    .calculate-cost-ibm-method-card,
+    .calculate-cost-ibm-stat-card {
+        padding: 14px;
+    }
+
+    .calculate-cost-ibm-inline-grid-two,
+    .calculate-cost-ibm-card-grid-two,
+    .calculate-cost-ibm-card-grid-three,
+    .calculate-cost-ibm-custom-instance-grid,
+    .calculate-cost-ibm-override-grid,
+    .calculate-cost-ibm-override-card-body,
+    .calculate-cost-ibm-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-cost-ibm-main-actions {
+        flex-wrap: wrap;
+    }
+
+    .calculate-cost-ibm-main-actions > .calculate-cost-ibm-submit-btn,
+    .calculate-cost-ibm-main-actions > .calculate-cost-ibm-reset-btn {
+        width: 100%;
+    }
+
+    .calculate-cost-ibm-toolbar-shell {
+        padding: 12px;
+    }
+
+    .calculate-cost-ibm-toolbar-actions {
+        width: 100%;
+    }
+
+    .calculate-cost-ibm-action-btn {
+        flex: 1 1 160px;
+    }
+
+    .calculate-cost-ibm-tabs {
+        display: grid;
+    }
+
+    .calculate-cost-ibm-tab-btn {
+        width: 100%;
+    }
+}
+
+.markdown-content .calculate-cost-ibm-citation-inline {
+    color: var(--tool-danger, #b91c1c);
+    font-weight: 800;
+}
+
+.markdown-content .calculate-cost-ibm-citation-link,
+.markdown-content .calculate-cost-ibm-citation-backlink {
+    color: inherit;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.markdown-content .calculate-cost-ibm-citation-link:hover,
+.markdown-content .calculate-cost-ibm-citation-link:focus-visible,
+.markdown-content .calculate-cost-ibm-citation-backlink:hover,
+.markdown-content .calculate-cost-ibm-citation-backlink:focus-visible {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-citations .calculate-cost-ibm-citation-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-citations .calculate-cost-ibm-citation-table thead th:first-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-citations .calculate-cost-ibm-citation-table tbody td:first-child {
+    width: 18%;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-citations .calculate-cost-ibm-citation-table thead th:nth-child(2),
+.markdown-content > .calculate-cost-ibm-markdown-card-citations .calculate-cost-ibm-citation-table tbody td:nth-child(2) {
+    width: 24%;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-citations .calculate-cost-ibm-citation-table a:not(.calculate-cost-ibm-citation-backlink) {
+    color: var(--tool-accent-deep, #5b21b6);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-citations .calculate-cost-ibm-citation-table .calculate-cost-ibm-citation-backlink {
+    color: inherit;
+    font-weight: 800;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-citations .calculate-cost-ibm-citation-table tr:target td {
+    background: rgba(var(--tool-danger-rgb, 185, 28, 28), 0.08);
+}
+
+/* ns:start main.content.06_export-notes */
+.markdown-content > .calculate-cost-ibm-markdown-card-export {
+    margin: 0 0 28px;
+    padding: 22px 24px;
+    border: 1px solid var(--calculate-cost-ibm-border-strong, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.52));
+    border-radius: 20px;
+    background: linear-gradient(180deg, var(--calculate-cost-ibm-bg-panel, #ffffff) 0%, var(--calculate-cost-ibm-bg-muted, var(--tool-accent-panel, #faf7ff)) 100%);
+    box-shadow: 0 14px 28px rgba(var(--tool-shadow-rgb, 76, 29, 149), 0.06);
+    color: var(--calculate-cost-ibm-text-body, var(--calculate-cost-ibm-text, var(--tool-text, #2f2542)));
+    font-family: var(--default-font);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .calculate-cost-ibm-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    color: var(--calculate-cost-ibm-text-strong, var(--tool-heading, #1f1433));
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-3xl, 20px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .calculate-cost-ibm-section-heading > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .calculate-cost-ibm-section-heading-icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--calculate-cost-ibm-bg-soft, var(--tool-accent-tint, #ede9fe));
+    color: var(--calculate-cost-ibm-accent-strong, var(--tool-accent-strong, #6d28d9));
+    font-size: var(--tool-font-size-base, 14px);
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export > p {
+    margin: 0 0 18px;
+    color: var(--calculate-cost-ibm-text-body, var(--calculate-cost-ibm-text, var(--tool-text, #2f2542)));
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-md, 15px);
+    font-weight: 400;
+    line-height: 1.68;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item {
+    margin: 0;
+    border: 1px solid var(--calculate-cost-ibm-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
+    border-radius: 14px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 10px 22px rgba(var(--tool-shadow-rgb, 76, 29, 149), 0.055);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item + .tool-export-item {
+    margin-top: 12px;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 58px;
+    padding: 15px 56px 15px 16px;
+    list-style: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ffffff 0%, var(--calculate-cost-ibm-bg-soft, var(--tool-accent-pale, #f5f3ff)) 100%);
+    color: var(--calculate-cost-ibm-text-strong, var(--tool-heading, #1f1433));
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-base, 14px);
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--calculate-cost-ibm-accent-strong, var(--tool-accent-strong, #6d28d9));
+    box-shadow: inset 0 0 0 1px var(--calculate-cost-ibm-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
+    font-size: var(--tool-font-size-md, 15px);
+    font-weight: 900;
+    line-height: 1;
+    transform: translateY(-50%);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item[open] summary::after {
+    content: "-";
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item summary > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--calculate-cost-ibm-bg-soft, var(--tool-accent-tint, #ede9fe));
+    color: var(--calculate-cost-ibm-accent-strong, var(--tool-accent-strong, #6d28d9));
+    font-size: var(--tool-font-size-base, 14px);
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-answer {
+    border-top: 1px solid var(--calculate-cost-ibm-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
+    background: linear-gradient(180deg, var(--calculate-cost-ibm-bg-panel, #ffffff) 0%, var(--calculate-cost-ibm-bg-muted, var(--tool-accent-panel, #faf7ff)) 100%);
+    color: var(--calculate-cost-ibm-text-body, var(--calculate-cost-ibm-text, var(--tool-text, #2f2542)));
+    font-family: var(--default-font);
+    padding: 15px 18px 17px;
+    font-size: var(--tool-font-size-md, 15px);
+    line-height: 1.68;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-answer p {
+    margin: 0 0 14px;
+    color: var(--calculate-cost-ibm-text-body, var(--calculate-cost-ibm-text, var(--tool-text, #2f2542)));
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-answer ul {
+    margin: 0 0 14px;
+    padding-left: 20px;
+    color: var(--calculate-cost-ibm-text-body, var(--calculate-cost-ibm-text, var(--tool-text, #2f2542)));
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    word-spacing: normal;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-answer li {
+    padding-left: 0;
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    word-spacing: normal;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-answer p:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-answer ul:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-export code:not(pre code) {
+    display: inline;
+    border: 1px solid var(--calculate-cost-ibm-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
+    border-radius: 8px;
+    background: var(--calculate-cost-ibm-bg-soft, var(--tool-accent-pale, #f5f3ff));
+    color: var(--calculate-cost-ibm-accent-strong, var(--tool-accent-strong, #6d28d9));
+    padding: 0.08em 0.42em;
+    font-size: var(--tool-font-size-inline-code, 0.875em);
+    font-weight: 600;
+    line-height: inherit;
+    vertical-align: 0.02em;
+}
+
+@media (max-width: 640px) {
+    .markdown-content > .calculate-cost-ibm-markdown-card-export {
+        padding: 18px;
+        border-radius: 16px;
+    }
+
+    .markdown-content > .calculate-cost-ibm-markdown-card-export .tool-export-item summary {
+        min-height: 54px;
+        padding-right: 50px;
+    }
+}
+/* ns:end main.content.06_export-notes */
+
+/* ns:start main.content.05_how-to-use */
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to {
+    margin: 0 0 28px;
+    padding: 22px 24px;
+    border: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.52);
+    border-radius: 20px;
+    background: var(--tool-panel-gradient-soft, var(--tool-surface, #ffffff));
+    box-shadow: 0 14px 28px rgba(var(--tool-shadow-rgb, 76, 29, 149), 0.06);
+    color: var(--tool-text, #2f2542);
+    font-family: var(--default-font, inherit);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to > h2:first-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    color: var(--tool-heading, #1f1433);
+    font-family: var(--default-font, inherit);
+    font-size: var(--tool-font-size-3xl, 20px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .calculate-cost-ibm-section-heading > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .calculate-cost-ibm-section-heading-icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--tool-accent-tint, rgba(124, 58, 237, 0.12));
+    color: var(--tool-accent-strong, var(--tool-accent, #7c3aed));
+    font-size: var(--tool-font-size-base, 14px);
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item {
+    overflow: hidden;
+    border: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.58);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item + .tool-guidance-item {
+    margin-top: 12px;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item summary {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    min-height: 58px;
+    padding: 14px 52px 14px 16px;
+    color: var(--tool-heading, #1f1433);
+    font-family: var(--default-font, inherit);
+    font-size: var(--tool-font-size-md, 15px);
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: 0;
+    cursor: pointer;
+    list-style: none;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.72);
+    border-radius: 999px;
+    background: var(--tool-surface, #ffffff);
+    color: var(--tool-accent-strong, var(--tool-accent, #7c3aed));
+    font-size: var(--tool-font-size-md, 15px);
+    font-weight: 900;
+    line-height: 1;
+    transform: translateY(-50%);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item[open] summary::after {
+    content: "-";
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item summary > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--tool-accent-tint, rgba(124, 58, 237, 0.12));
+    color: var(--tool-accent-strong, var(--tool-accent, #7c3aed));
+    font-size: var(--tool-font-size-base, 14px);
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-answer {
+    border-top: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.36);
+    padding: 14px 18px 18px;
+    color: var(--tool-text, #2f2542);
+    font-family: var(--default-font, inherit);
+    font-size: var(--tool-font-size-md, 15px);
+    line-height: 1.68;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-answer p {
+    margin: 0;
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-answer code {
+    font-size: var(--tool-font-size-inline-code, 0.875em);
+    line-height: inherit;
+    padding: 0 6px;
+    border-radius: 6px;
+}
+
+@media (max-width: 640px) {
+    .markdown-content > .calculate-cost-ibm-markdown-card-how-to {
+        padding: 18px 16px;
+    }
+
+    .markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-item summary {
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 10px;
+        padding: 13px 48px 13px 14px;
+        font-size: var(--tool-font-size-base, 14px);
+    }
+
+    .markdown-content > .calculate-cost-ibm-markdown-card-how-to .tool-guidance-answer {
+        padding: 13px 14px 16px;
+        font-size: var(--tool-font-size-base, 14px);
+    }
+}
+/* ns:end main.content.05_how-to-use */
+
+/* ns:start main.content.04_tips-prompts */
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-answer p:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .tool-guidance-answer ul:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-input-tips .tool-guidance-answer p:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-input-tips .tool-guidance-answer ul:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips .calculate-cost-ibm-markdown-table-wrap:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-prompt-tips table:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-input-tips .calculate-cost-ibm-markdown-table-wrap:last-child,
+.markdown-content > .calculate-cost-ibm-markdown-card-input-tips table:last-child {
+    margin-bottom: 0;
+}
+/* ns:end main.content.04_tips-prompts */
+
+/* ns:start main.content.02_technical-details.refresh */
+.markdown-content > .content-card.calculate-cost-ibm-markdown-card {
+    max-width: 100%;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-acronyms,
+.markdown-content > .calculate-cost-ibm-markdown-card-acronym {
+    max-width: 100%;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-technical {
+    --tool-technical-bg-soft: #e7f7f7;
+    --tool-technical-bg-muted: #f6fbff;
+    --tool-technical-border: #c9e4ee;
+    --tool-technical-border-strong: #0f766e;
+    --tool-technical-text-body: #1f2937;
+    --tool-technical-heading: #111827;
+    --tool-technical-accent: #2563eb;
+    --tool-technical-accent-strong: #1d4ed8;
+}
+
+.markdown-content > .content-card.calculate-cost-ibm-markdown-card-technical {
+    border-color: var(--tool-technical-border);
+    background: linear-gradient(180deg, #ffffff 0%, var(--tool-technical-bg-muted) 100%);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card .calculate-cost-ibm-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    padding: 0 0 12px;
+    border-bottom: 1px solid var(--tool-technical-border-strong);
+    color: var(--tool-technical-heading);
+    font-family: var(--default-font, inherit);
+    font-size: var(--tool-font-size-3xl, 20px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card .calculate-cost-ibm-section-heading i {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--tool-technical-bg-soft);
+    color: var(--tool-technical-accent-strong);
+    font-size: var(--tool-font-size-base, 14px);
+    line-height: 1;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card .calculate-cost-ibm-section-heading > span {
+    min-width: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-technical h3.calculate-cost-ibm-technical-step-heading {
+    margin: 24px 0 10px;
+    color: var(--tool-technical-accent-strong);
+    font-family: var(--default-font, inherit);
+    font-size: var(--tool-font-size-md, 15px);
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: 0;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-technical h3.calculate-cost-ibm-technical-step-heading:not(:first-of-type) {
+    margin-top: 26px;
+    padding-top: 18px;
+    border-top: 1px solid var(--tool-technical-border);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-scan-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 18px 0 24px;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-scan-card {
+    min-width: 0;
+    padding: 14px 15px;
+    border: 1px solid var(--tool-technical-border);
+    border-radius: var(--tool-radius-sm, 12px);
+    background: linear-gradient(180deg, #ffffff 0%, var(--tool-technical-bg-muted) 100%);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-scan-card strong {
+    display: block;
+    margin: 4px 0 8px;
+    color: var(--tool-technical-heading);
+    font-size: var(--tool-font-size-sm-plus, 13.5px);
+    line-height: 1.35;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-scan-kicker {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    border-radius: 999px;
+    padding: 3px 8px;
+    border: 1px solid var(--tool-technical-border);
+    background: var(--tool-technical-bg-soft);
+    color: var(--tool-technical-accent-strong);
+    font-size: var(--tool-font-size-xs, 12px);
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-scan-card ul,
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-checklist,
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-warning-list {
+    margin: 10px 0 0;
+    padding-left: 20px;
+    text-align: left;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-scan-card li,
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-checklist li,
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-warning-list li {
+    margin: 0 0 8px;
+    color: var(--tool-technical-text-body);
+    font-size: var(--tool-font-size-sm-plus, 13.5px);
+    line-height: 1.62;
+    text-align: left;
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-technical li::marker {
+    color: var(--tool-technical-accent-strong);
+}
+
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-checklist,
+.markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-warning-list {
+    margin: 14px 0 18px;
+    padding: 0 0 0 20px;
+    background: transparent;
+}
+
+@media (max-width: 767.98px) {
+    .markdown-content > .calculate-cost-ibm-markdown-card-technical .tool-technical-scan-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* ns:end main.content.02_technical-details.refresh */

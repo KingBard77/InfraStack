@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: Build netcat commands for clients, listeners, scans, timeouts, proxies, and TLS-aware workflows with warnings and JSON output.
+card_gradient_start: "#0F766E"
+card_gradient_end: "#14B8A6"
+card_text_color: "#FFFFFF"
+card_kicker: "Shell"
+card_image_title: "Netcat Command Generator"
+card_icon_class: "bi bi-hdd-network"
+card_icon_animation: "random"
+card_image: null

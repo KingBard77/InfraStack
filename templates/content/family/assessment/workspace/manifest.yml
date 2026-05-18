@@ -1,0 +1,144 @@
+source: assessment-family-workspace
+family: assessment
+version: 1.0.0
+status: active
+description: Family-specific workspace grammar for InfraStack assessment tools using the current CIS Ubuntu Benchmark 2204 filter, summary, toolbar, table, artifact, and JSON baseline.
+agent_map: templates/content/family/assessment/AGENTS.md
+
+family_path: templates/content/family/assessment/
+workspace_path: templates/content/family/assessment/workspace/
+scaffold_path: templates/content/main/scaffold/
+main_sections_path: templates/content/main/sections/
+
+reference_workspace:
+    title: CIS Ubuntu Benchmark 2204
+    path: templates/content/tools/cis/assess-ubuntu-2204-cis/
+    aliases:
+        - CIS Ubuntu Benchmark 2204
+        - CIS Ubuntu 22.04 Benchmark
+        - cis-ubuntu-benchmark-2204
+        - assess-ubuntu-2204-cis
+    role: Current working baseline reference for assessment workspace grammar.
+
+runtime_baseline:
+    source_tool: templates/content/tools/cis/assess-ubuntu-2204-cis/
+    source_snapshot: templates/content/family/assessment/baseline/source/
+    workspace_sections: templates/content/family/assessment/workspace/
+    copy_mode: section_owned
+    css_js_mode: section_owned
+    model_core: null
+    model_core_sha256: null
+    data_payload_source: templates/content/family/assessment/baseline/source/assets/custom.json.twig
+    data_payload_sha256: b8593d6097526c15bda181237cc599b229a4caff1d8faa46d8471ef1bbe3bc8c
+    source_hashes:
+        tool_html_twig: d9cef445d2909e737523b173ae94b12b55ece67ff953bf1837ed72d7b10a0a8b
+        custom_css: 7826c5ae39bbe50145875a34912e44d0f5f4df7163fac56f9b2704542c9d600a
+        custom_js: 78b269bbc8fd8d6d8cfe175cae312580d5f093392da3eac808706c8244eac12d
+        custom_json_twig: b8593d6097526c15bda181237cc599b229a4caff1d8faa46d8471ef1bbe3bc8c
+
+selection_triggers:
+    - assessment
+    - assess
+    - readiness
+    - posture
+    - compliance explorer
+    - benchmark
+    - control coverage
+    - maturity
+    - risk review
+
+workspace_flow:
+    - assessment_filter_or_query
+    - scope_selectors
+    - explicit_explore_or_assess_action
+    - result_summary
+    - output_toolbar_sort_copy_export_import
+    - findings_or_controls_table
+    - group_rollups
+    - selected_artifact_review
+    - json_snapshot_output_restore_when_implemented
+
+workspace_sections:
+    01_input-brief: primary query, brief, assessment filter, and assess/explore action
+    02_basic-settings: scope, section, severity, status, profile, row-limit, and required selectors
+    03_advanced-settings: optional advanced filters or assessment options; no-op unless separated from basic scope
+    04_selected-item: selected script, rule, finding, requirement, evidence, or source body review
+    05_result-summary: matched counts, selected item, coverage, gaps, status, and metadata summary cards
+    06_result-view: findings/control table plus section, family, category, severity, status, or ownership rollups
+    07_table-export: ID-first sort, compact actions, copy, CSV, report, JSON, and optional import controls
+    08_json-restore: assessment JSON snapshot output and optional restore handling
+
+section_file_contract:
+    required_per_section:
+        - README.md
+        - demo.html
+        - page.html.twig
+        - section.css
+        - section.js
+    role: Keep assessment workspace sections structurally equivalent to architecture workspace sections while preserving assessment-specific behavior.
+
+scaffold_content_adaptation:
+    01_overview: assessment purpose, input boundary, output boundary, and trust boundary
+    02_technical-details: catalogue source, normalized filters, result model, selected artifact loading, and export behavior
+    03_example-prompts: assessment prompts or non-command example inputs with paired copy controls
+    09_example-commands: literal assessment commands with paired Copy command controls
+    example_terminal_title: centered title case
+    04_tips-prompts: filter tips, review tips, and safe execution guidance when commands are shown
+    05_how-to-use: assess, filter, inspect, copy, export, and review workflow
+    06_export-notes: copy, CSV, PDF or print, JSON, and import restore boundaries
+    07_faq: assessment trust boundaries and validation limitations
+    08_acronyms: optional abbreviation expansion table; domain, benchmark, security, or operations acronyms
+    11_glossary: optional broader terminology table; broader domain, command, workflow, platform, or estimate terminology
+    10_references: complete factual content delivery, valid source-backed citations, and References rows when final assessment content cites sources
+
+state_contract:
+    - query_or_brief
+    - scope_selectors
+    - selected_item
+    - row_limit
+    - sort
+    - summary_metrics
+    - findings_or_controls_rows
+    - group_rollups
+    - selected_artifact
+    - exports
+    - json_output
+    - json_restore_when_implemented
+
+generation_rules:
+    - Select this workspace source for assessment-family tool requests.
+    - Use this workspace source for assessment-specific workspace sections.
+    - Keep each workspace section folder complete with README.md, demo.html, page.html.twig, section.css, and section.js.
+    - When an assessment tool is accepted as a baseline, keep its full copied runtime source under baseline/source/ as a reference-only snapshot.
+    - Keep reusable assessment runtime behavior in section-owned page.html.twig, section.css, section.js, and demo.html files.
+    - Use shared main content sections for reusable content rhythm.
+    - Apply shared main content sections as a full contract: content.md markup, section.css visual behavior, and section.js helper behavior when present.
+    - Final tool custom.css and custom.js must preserve the applied section card frame, heading divider, typography, table, list, details, FAQ, copy, citation, prompt, or command behavior unless a documented shared include exists.
+    - Use 10_references for complete factual content delivery and when final content includes valid source-backed citations, with in-text citation links targeting matching References row IDs.
+    - Do not create a family-local sections/ directory.
+    - Do not copy CIS, Ubuntu, benchmark, shell, or compliance language into unrelated assessment tools.
+    - Use the CIS Ubuntu Benchmark 2204 tool as the current working baseline reference for assessment UI composition.
+    - Keep result summaries connected to current filter state and selected item.
+    - Keep output toolbar controls boxed, compact, and grouped by sort versus actions.
+    - Default stable rows to ID sorting.
+    - Keep row copy actions in a dedicated copy/action column.
+    - Keep support content tables aligned with fixed layout and wrapping.
+    - Show Import JSON only when restore rebuilds the normalized model and visible outputs.
+    - Preserve assessment-family filter-to-result grammar while adapting labels, category/provider tokens, examples, data sources, endpoints, and export behavior.
+    - Generate final runtime files under templates/content/tools/<category>/<tool-slug>/.
+
+validation_rules:
+    - workspace/README.md exists.
+    - workspace/manifest.yml exists.
+    - reference workspace path exists when used.
+    - assessment workspace section folders exist.
+    - baseline/source/tool.html.twig, baseline/source/custom.css, baseline/source/custom.js, and baseline/source/assets/custom.json.twig exist.
+    - root workspace/custom.css and workspace/custom.js do not exist.
+    - every assessment workspace section folder contains README.md, demo.html, page.html.twig, section.css, and section.js.
+    - shared main content section source exists.
+    - Applied shared content sections are validated in the final tool package for namespace markers, unresolved placeholders, required custom.css selectors, and helper hooks when used.
+    - citation links and References rows are paired when 10_references is used.
+    - no family-local sections/ directory exists.
+    - final tool filters, summary, tables, exports, selected artifact, and JSON use one normalized model.
+    - output toolbar, tabs shell, table shell, selected artifact view, and JSON panel match implemented behavior.
+    - import restore is validated when shown.

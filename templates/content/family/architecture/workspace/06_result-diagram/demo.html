@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture Result Diagram Demo</title>
+  <style>
+:root { --default-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f8fafc; font-family: var(--default-font); color: #111827; }
+.demo-shell { width: min(1180px, calc(100% - 32px)); margin: 40px auto; }
+.demo-title { margin: 0 0 16px; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: 0; }
+.demo-stack { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.__TOOL_CLASS__ { color: #111827; }
+.__TOOL_CLASS__ .d-none, .__TOOL_CLASS__ [hidden] { display: none !important; }
+  </style>
+  <link rel="stylesheet" href="section.css">
+</head>
+<body>
+  <main class="demo-shell">
+    <h1 class="demo-title">Architecture Result Diagram Demo</h1>
+    <div class="__TOOL_CLASS__ demo-stack">
+      <section class="tool-shell tool-stage-shell" id="__DOM_PREFIX__StageShellBefore" data-section="result-diagram-before" data-root-selector=".__TOOL_CLASS__">
+        <div class="tool-stage-body">
+          <div class="tool-stage-empty" id="__DOM_PREFIX__StageEmpty">Choose a preset to generate diagram.</div>
+        </div>
+      </section>
+
+      <section class="tool-shell tool-stage-shell" id="__DOM_PREFIX__StageShell" data-section="result-diagram-after" data-root-selector=".__TOOL_CLASS__">
+        <div class="tool-stage-toolbar">
+          <div class="__PREFIX__-stage-toolbar-actions">
+            <div class="__PREFIX__-zoom-control" id="__DOM_PREFIX__ZoomControl">
+              <button type="button" class="__PREFIX__-zoom-step" id="__DOM_PREFIX__ZoomOut" aria-label="Zoom out" title="Zoom out"><i class="bi bi-dash" aria-hidden="true"></i></button>
+              <input type="number" id="__DOM_PREFIX__ZoomInput" class="__PREFIX__-zoom-input" value="50" min="15" max="240" step="1" aria-label="Zoom percentage">
+              <span class="__PREFIX__-zoom-label" id="__DOM_PREFIX__ZoomLabel">%</span>
+              <button type="button" class="__PREFIX__-zoom-step" id="__DOM_PREFIX__ZoomIn" aria-label="Zoom in" title="Zoom in"><i class="bi bi-plus" aria-hidden="true"></i></button>
+            </div>
+
+            <button type="button" class="__PREFIX__-icon-btn" id="__DOM_PREFIX__ZoomFit" aria-label="Zoom to fit" title="Zoom to fit"><i class="bi bi-arrows-angle-contract" aria-hidden="true"></i></button>
+            <button type="button" class="__PREFIX__-icon-btn" id="__DOM_PREFIX__ZoomActual" aria-label="Zoom to 100%" title="Zoom to 100%"><span>100</span></button>
+            <button type="button" class="__PREFIX__-icon-btn" id="__DOM_PREFIX__UndoStageEdit" aria-label="Undo stage edit" title="Undo stage edit" disabled><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i></button>
+            <button type="button" class="__PREFIX__-icon-btn" id="__DOM_PREFIX__HighlightAll" aria-label="Highlight entire diagram" title="Highlight entire diagram" aria-pressed="false"><i class="bi bi-bounding-box" aria-hidden="true"></i></button>
+            <button type="button" class="__PREFIX__-icon-btn" id="__DOM_PREFIX__ZoomHideUi" aria-label="Hide UI" title="Hide UI"><i class="bi bi-eye-slash" aria-hidden="true"></i></button>
+            <button type="button" class="__PREFIX__-icon-btn" id="__DOM_PREFIX__Fullscreen" aria-label="Open fullscreen" title="Open fullscreen"><i class="bi bi-arrows-fullscreen" aria-hidden="true"></i></button>
+            <button type="button" class="tool-action-btn tool-action-btn-ghost __PREFIX__-stage-toolbar-btn" id="__DOM_PREFIX__ResetLayout">Reset layout</button>
+          </div>
+        </div>
+
+        <div class="tool-stage-body">
+          <div class="tool-stage-canvas __PREFIX__-stage-canvas" id="__DOM_PREFIX__StageCanvas">
+            <svg viewBox="0 0 720 360" role="img" aria-label="Dummy architecture diagram">
+              <defs>
+                <marker id="architectureDemoArrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+                  <path d="M0,0 L9,4.5 L0,9 Z" fill="#2563eb"></path>
+                </marker>
+              </defs>
+              <rect x="28" y="32" width="664" height="296" rx="20" fill="#f8fbff" stroke="#bfdbfe"></rect>
+              <rect x="80" y="86" width="130" height="70" rx="16" fill="#ffffff" stroke="#93c5fd"></rect>
+              <rect x="295" y="86" width="130" height="70" rx="16" fill="#ffffff" stroke="#93c5fd"></rect>
+              <rect x="510" y="86" width="130" height="70" rx="16" fill="#ffffff" stroke="#93c5fd"></rect>
+              <path class="diagram-connector" data-connector-id="demo-ingress" d="M210 121H295M425 121H510" marker-end="url(#architectureDemoArrow)"></path>
+              <path class="diagram-connector-hit-target" data-connector-id="demo-ingress" d="M210 121H295M425 121H510"></path>
+              <text x="145" y="126" text-anchor="middle" font-size="14" font-weight="800" fill="#1e3a8a">Ingress</text>
+              <text x="360" y="126" text-anchor="middle" font-size="14" font-weight="800" fill="#1e3a8a">App Tier</text>
+              <text x="575" y="126" text-anchor="middle" font-size="14" font-weight="800" fill="#1e3a8a">Data Tier</text>
+              <rect x="80" y="216" width="560" height="62" rx="16" fill="#eff6ff" stroke="#bfdbfe"></rect>
+              <text x="360" y="252" text-anchor="middle" font-size="14" font-weight="800" fill="#1e3a8a">Generated model boxes and connectors render from normalized state</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,835 @@
+{# tool.html.twig #}
+{# ns:start family.calculate.workspace.01_input-brief #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.01_input-brief #}
+{# ns:start family.calculate.workspace.02_basic-settings #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.02_basic-settings #}
+{# ns:start family.calculate.workspace.03_advanced-settings #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.03_advanced-settings #}
+{# ns:start family.calculate.workspace.04_selected-item #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.04_selected-item #}
+{# ns:start family.calculate.workspace.05_result-summary #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.05_result-summary #}
+{# ns:start family.calculate.workspace.06_result-view #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.06_result-view #}
+{# ns:start family.calculate.workspace.07_table-export #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.07_table-export #}
+{# ns:start family.calculate.workspace.08_json-restore #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.08_json-restore #}
+
+<div class="calculate-cost-gcp-tool" data-tool-slug="calculate-cost-gcp" data-tool-category="Google Cloud">
+<div class="tool-box">
+  <form class="calculate-cost-gcp-form" id="calculateCostGcpForm">
+    <div class="calculate-cost-gcp-main-row">
+      <label for="calculateCostGcpLabel" class="calculate-cost-gcp-main-label">
+        Estimate label:
+        <span class="info-dot" title="Name the workload or environment you want to estimate">i</span>
+      </label>
+
+      <div class="calculate-cost-gcp-main-input-grid">
+        <input
+          type="text"
+          id="calculateCostGcpLabel"
+          class="form-control"
+          placeholder="Production API stack"
+          value="Lean web platform"
+        >
+
+        <div class="calculate-cost-gcp-main-actions">
+          <button type="submit" class="btn btn-primary calculate-cost-gcp-submit-btn" id="calculateCostGcpSubmit">Estimate</button>
+          <button type="button" class="calculate-cost-gcp-secondary-btn calculate-cost-gcp-reset-btn" id="calculateCostGcpReset">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="calculate-cost-gcp-basic-panel">
+      <div class="calculate-cost-gcp-inner-panel">
+        <div class="calculate-cost-gcp-setting-row">
+          <label for="calculateCostGcpPreset" class="calculate-cost-gcp-setting-label">
+            Preset:
+            <span class="info-dot" title="Load a starting cost shape for a common Google Cloud workload">i</span>
+          </label>
+
+          <div class="calculate-cost-gcp-setting-field">
+            <div class="calculate-cost-gcp-inline-grid calculate-cost-gcp-inline-grid-preset">
+              <details class="calculate-cost-gcp-select" id="calculateCostGcpPresetSelect">
+                <summary class="calculate-cost-gcp-select-summary">
+                  <span id="calculateCostGcpPresetSummary">Lean web platform</span>
+                </summary>
+
+                <div class="calculate-cost-gcp-select-body">
+                  <div class="calculate-cost-gcp-select-grid calculate-cost-gcp-select-grid-list">
+                    <label class="calculate-cost-gcp-select-card">
+                      <input type="radio" name="calculateCostGcpPresetOption" value="lean-web" checked>
+                      <span class="calculate-cost-gcp-select-title">Lean web platform</span>
+                    </label>
+
+                    <label class="calculate-cost-gcp-select-card">
+                      <input type="radio" name="calculateCostGcpPresetOption" value="serverless-api">
+                      <span class="calculate-cost-gcp-select-title">Serverless API</span>
+                    </label>
+
+                    <label class="calculate-cost-gcp-select-card">
+                      <input type="radio" name="calculateCostGcpPresetOption" value="steady-platform">
+                      <span class="calculate-cost-gcp-select-title">Steady application platform</span>
+                    </label>
+
+                    <label class="calculate-cost-gcp-select-card">
+                      <input type="radio" name="calculateCostGcpPresetOption" value="blank">
+                      <span class="calculate-cost-gcp-select-title">Blank estimate</span>
+                    </label>
+                  </div>
+                </div>
+              </details>
+              <input type="hidden" id="calculateCostGcpPreset" value="lean-web">
+
+              <button type="button" class="calculate-cost-gcp-secondary-btn" id="calculateCostGcpApplyPreset">Apply preset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="calculate-cost-gcp-setting-row">
+          <label class="calculate-cost-gcp-setting-label">
+            Pricing basis:
+            <span class="info-dot" title="Starter prices are visible and editable in Advanced so the estimate stays auditable">i</span>
+          </label>
+
+          <div class="calculate-cost-gcp-setting-field">
+            <div class="calculate-cost-gcp-basis-grid">
+              <div class="calculate-cost-gcp-basis-card">
+                <span class="calculate-cost-gcp-basis-label">Catalog</span>
+                <span class="calculate-cost-gcp-basis-value">Starter Google Cloud mix</span>
+                <span class="calculate-cost-gcp-basis-note">Compute Engine uses a compact purchase-model catalog. Storage, Cloud Functions, API, and egress use visible starter rates that you can override.</span>
+              </div>
+
+              <div class="calculate-cost-gcp-basis-card">
+                <span class="calculate-cost-gcp-basis-label">Output</span>
+                <span class="calculate-cost-gcp-basis-value">USD monthly run rate</span>
+                <span class="calculate-cost-gcp-basis-note">Use the result as a planning estimate, then verify material decisions in Google Cloud pricing, billing, or agreement data.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calculate-cost-gcp-service-grid">
+          <section class="calculate-cost-gcp-service-card" data-service-card="compute">
+            <div class="calculate-cost-gcp-service-head">
+              <div>
+                <h3 class="calculate-cost-gcp-service-title">Compute Engine</h3>
+                <p class="calculate-cost-gcp-service-copy">Instance count, runtime, and purchase model.</p>
+              </div>
+
+              <label class="switch calculate-cost-gcp-switch-wrap">
+                <input type="checkbox" id="calculateCostGcpIncludeCompute" checked>
+                <span class="slider"></span>
+                <span class="calculate-cost-gcp-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="calculate-cost-gcp-service-body" id="calculateCostGcpComputeBody">
+              <div class="calculate-cost-gcp-card-grid calculate-cost-gcp-card-grid-two">
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpComputeInstance" class="calculate-cost-gcp-field-label">Machine profile</label>
+                  <details class="calculate-cost-gcp-select" id="calculateCostGcpComputeInstanceSelect">
+                    <summary class="calculate-cost-gcp-select-summary">
+                      <span id="calculateCostGcpComputeInstanceSummary">e2-standard-2 - 2 vCPU - 8 GiB</span>
+                    </summary>
+
+                    <div class="calculate-cost-gcp-select-body">
+                      <div class="calculate-cost-gcp-select-grid calculate-cost-gcp-select-grid-list">
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="b2s">
+                          <span class="calculate-cost-gcp-select-title">e2-medium - 2 vCPU - 4 GiB</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="b2ms">
+                          <span class="calculate-cost-gcp-select-title">e2-standard-2 - 2 vCPU - 8 GiB</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="d2s-v5" checked>
+                          <span class="calculate-cost-gcp-select-title">e2-standard-2 - 2 vCPU - 8 GiB</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="d4s-v5">
+                          <span class="calculate-cost-gcp-select-title">e2-standard-4 - 4 vCPU - 16 GiB</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="d8s-v5">
+                          <span class="calculate-cost-gcp-select-title">n2-standard-8 - 8 vCPU - 32 GiB</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="f4s-v2">
+                          <span class="calculate-cost-gcp-select-title">c3-standard-4 - 4 vCPU - 16 GiB</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="e4s-v5">
+                          <span class="calculate-cost-gcp-select-title">n2-highmem-4 - 4 vCPU - 32 GiB</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="custom">
+                          <span class="calculate-cost-gcp-select-title" id="calculateCostGcpComputeCustomOptionLabel">Custom size - user defined</span>
+                        </label>
+                      </div>
+                    </div>
+                  </details>
+                  <input type="hidden" id="calculateCostGcpComputeInstance" value="d2s-v5">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpComputePurchase" class="calculate-cost-gcp-field-label">Purchase model</label>
+                  <details class="calculate-cost-gcp-select" id="calculateCostGcpComputePurchaseSelect">
+                    <summary class="calculate-cost-gcp-select-summary">
+                      <span id="calculateCostGcpComputePurchaseSummary">On-demand</span>
+                    </summary>
+
+                    <div class="calculate-cost-gcp-select-body">
+                      <div class="calculate-cost-gcp-select-grid calculate-cost-gcp-select-grid-two">
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="onDemand" checked>
+                          <span class="calculate-cost-gcp-select-title">On-demand</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="spot">
+                          <span class="calculate-cost-gcp-select-title">Spot</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="savings1">
+                          <span class="calculate-cost-gcp-select-title">Committed use 1yr</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="savings3">
+                          <span class="calculate-cost-gcp-select-title">Committed use 3yr</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="reserved1">
+                          <span class="calculate-cost-gcp-select-title">Committed use 1yr</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="reserved3">
+                          <span class="calculate-cost-gcp-select-title">Committed use 3yr</span>
+                        </label>
+                      </div>
+                    </div>
+                  </details>
+                  <input type="hidden" id="calculateCostGcpComputePurchase" value="onDemand">
+                </div>
+
+                <div class="calculate-cost-gcp-custom-instance-grid calculate-cost-gcp-card-span-two d-none" id="calculateCostGcpComputeCustomFields">
+                  <div class="calculate-cost-gcp-field-stack">
+                    <label for="calculateCostGcpComputeCustomLabel" class="calculate-cost-gcp-field-label">Custom profile label</label>
+                    <input
+                      type="text"
+                      id="calculateCostGcpComputeCustomLabel"
+                      class="form-control"
+                      placeholder="Custom instance profile"
+                      value=""
+                    >
+                  </div>
+
+                  <div class="calculate-cost-gcp-field-stack">
+                    <label for="calculateCostGcpComputeCustomVcpu" class="calculate-cost-gcp-field-label">Custom vCPU</label>
+                    <input
+                      type="number"
+                      id="calculateCostGcpComputeCustomVcpu"
+                      class="form-control"
+                      min="1"
+                      step="1"
+                      value="4"
+                    >
+                  </div>
+
+                  <div class="calculate-cost-gcp-field-stack">
+                    <label for="calculateCostGcpComputeCustomMemoryGiB" class="calculate-cost-gcp-field-label">Custom memory GiB</label>
+                    <input
+                      type="number"
+                      id="calculateCostGcpComputeCustomMemoryGiB"
+                      class="form-control"
+                      min="1"
+                      step="0.5"
+                      value="16"
+                    >
+                  </div>
+                </div>
+
+                <p class="calculate-cost-gcp-field-hint calculate-cost-gcp-card-span-two d-none" id="calculateCostGcpComputeCustomHint">Custom size uses the Machine hourly override in Advanced. Set the custom vCPU and memory here, then price it with the override field.</p>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpComputeCount" class="calculate-cost-gcp-field-label">Instance count</label>
+                  <input type="number" id="calculateCostGcpComputeCount" class="form-control" min="0" step="1" value="2">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpComputeHours" class="calculate-cost-gcp-field-label">Monthly hours</label>
+                  <input type="number" id="calculateCostGcpComputeHours" class="form-control" min="0" max="744" step="1" value="730">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="calculate-cost-gcp-service-card" data-service-card="disk">
+            <div class="calculate-cost-gcp-service-head">
+              <div>
+                <h3 class="calculate-cost-gcp-service-title">Persistent Disk Storage</h3>
+                <p class="calculate-cost-gcp-service-copy">Premium SSD-style capacity plus optional IOPS and throughput.</p>
+              </div>
+
+              <label class="switch calculate-cost-gcp-switch-wrap">
+                <input type="checkbox" id="calculateCostGcpIncludeDisk" checked>
+                <span class="slider"></span>
+                <span class="calculate-cost-gcp-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="calculate-cost-gcp-service-body" id="calculateCostGcpDiskBody">
+              <div class="calculate-cost-gcp-card-grid calculate-cost-gcp-card-grid-two">
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpDiskStorageGb" class="calculate-cost-gcp-field-label">Storage GB</label>
+                  <input type="number" id="calculateCostGcpDiskStorageGb" class="form-control" min="0" step="1" value="160">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpDiskIops" class="calculate-cost-gcp-field-label">Provisioned IOPS</label>
+                  <input type="number" id="calculateCostGcpDiskIops" class="form-control" min="0" step="100" value="3000">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack calculate-cost-gcp-card-span-two">
+                  <label for="calculateCostGcpDiskThroughput" class="calculate-cost-gcp-field-label">Throughput MB/s</label>
+                  <input type="number" id="calculateCostGcpDiskThroughput" class="form-control" min="0" step="1" value="125">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="calculate-cost-gcp-service-card" data-service-card="blob">
+            <div class="calculate-cost-gcp-service-head">
+              <div>
+                <h3 class="calculate-cost-gcp-service-title">Cloud Storage</h3>
+                <p class="calculate-cost-gcp-service-copy">Object storage, request volume, and outbound transfer.</p>
+              </div>
+
+              <label class="switch calculate-cost-gcp-switch-wrap">
+                <input type="checkbox" id="calculateCostGcpIncludeBlob" checked>
+                <span class="slider"></span>
+                <span class="calculate-cost-gcp-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="calculate-cost-gcp-service-body" id="calculateCostGcpBlobBody">
+              <div class="calculate-cost-gcp-card-grid calculate-cost-gcp-card-grid-two">
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpBlobStorageGb" class="calculate-cost-gcp-field-label">Storage GB</label>
+                  <input type="number" id="calculateCostGcpBlobStorageGb" class="form-control" min="0" step="1" value="250">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpBlobEgressGb" class="calculate-cost-gcp-field-label">Transfer out GB</label>
+                  <input type="number" id="calculateCostGcpBlobEgressGb" class="form-control" min="0" step="1" value="180">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpBlobGetRequestsK" class="calculate-cost-gcp-field-label">GET requests (1k)</label>
+                  <input type="number" id="calculateCostGcpBlobGetRequestsK" class="form-control" min="0" step="1" value="2200">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpBlobPutRequestsK" class="calculate-cost-gcp-field-label">PUT/LIST requests (1k)</label>
+                  <input type="number" id="calculateCostGcpBlobPutRequestsK" class="form-control" min="0" step="1" value="120">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="calculate-cost-gcp-service-card" data-service-card="functions">
+            <div class="calculate-cost-gcp-service-head">
+              <div>
+                <h3 class="calculate-cost-gcp-service-title">Cloud Functions</h3>
+                <p class="calculate-cost-gcp-service-copy">Requests, duration, and memory drive the bill.</p>
+              </div>
+
+              <label class="switch calculate-cost-gcp-switch-wrap">
+                <input type="checkbox" id="calculateCostGcpIncludeFunctions" checked>
+                <span class="slider"></span>
+                <span class="calculate-cost-gcp-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="calculate-cost-gcp-service-body" id="calculateCostGcpFunctionsBody">
+              <div class="calculate-cost-gcp-card-grid calculate-cost-gcp-card-grid-two">
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpFunctionsRequestsMillion" class="calculate-cost-gcp-field-label">Requests (million)</label>
+                  <input type="number" id="calculateCostGcpFunctionsRequestsMillion" class="form-control" min="0" step="0.1" value="1.2">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpFunctionsDurationMs" class="calculate-cost-gcp-field-label">Avg duration ms</label>
+                  <input type="number" id="calculateCostGcpFunctionsDurationMs" class="form-control" min="0" step="1" value="140">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack calculate-cost-gcp-card-span-two">
+                  <label for="calculateCostGcpFunctionsMemoryMb" class="calculate-cost-gcp-field-label">Memory MB</label>
+                  <input type="number" id="calculateCostGcpFunctionsMemoryMb" class="form-control" min="128" step="128" value="512">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="calculate-cost-gcp-service-card" data-service-card="api">
+            <div class="calculate-cost-gcp-service-head">
+              <div>
+                <h3 class="calculate-cost-gcp-service-title">API Gateway</h3>
+                <p class="calculate-cost-gcp-service-copy">HTTP and REST requests with response egress.</p>
+              </div>
+
+              <label class="switch calculate-cost-gcp-switch-wrap">
+                <input type="checkbox" id="calculateCostGcpIncludeApi" checked>
+                <span class="slider"></span>
+                <span class="calculate-cost-gcp-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="calculate-cost-gcp-service-body" id="calculateCostGcpApiBody">
+              <div class="calculate-cost-gcp-card-grid calculate-cost-gcp-card-grid-two">
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpApiType" class="calculate-cost-gcp-field-label">API type</label>
+                  <details class="calculate-cost-gcp-select" id="calculateCostGcpApiTypeSelect">
+                    <summary class="calculate-cost-gcp-select-summary">
+                      <span id="calculateCostGcpApiTypeSummary">Standard gateway</span>
+                    </summary>
+
+                    <div class="calculate-cost-gcp-select-body">
+                      <div class="calculate-cost-gcp-select-grid calculate-cost-gcp-select-grid-two">
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpApiTypeOption" value="http" checked>
+                          <span class="calculate-cost-gcp-select-title">Standard gateway</span>
+                        </label>
+
+                        <label class="calculate-cost-gcp-select-card">
+                          <input type="radio" name="calculateCostGcpApiTypeOption" value="rest">
+                          <span class="calculate-cost-gcp-select-title">High-volume gateway</span>
+                        </label>
+                      </div>
+                    </div>
+                  </details>
+                  <input type="hidden" id="calculateCostGcpApiType" value="http">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpApiRequestsMillion" class="calculate-cost-gcp-field-label">Requests (million)</label>
+                  <input type="number" id="calculateCostGcpApiRequestsMillion" class="form-control" min="0" step="0.1" value="8">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack calculate-cost-gcp-card-span-two">
+                  <label for="calculateCostGcpApiResponseKb" class="calculate-cost-gcp-field-label">Avg response KB</label>
+                  <input type="number" id="calculateCostGcpApiResponseKb" class="form-control" min="0" step="1" value="32">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="calculate-cost-gcp-service-card" data-service-card="overhead">
+            <div class="calculate-cost-gcp-service-head">
+              <div>
+                <h3 class="calculate-cost-gcp-service-title">Shared Egress And Overhead</h3>
+                <p class="calculate-cost-gcp-service-copy">Network, support uplift, and blended buffer.</p>
+              </div>
+            </div>
+
+            <div class="calculate-cost-gcp-service-body">
+              <div class="calculate-cost-gcp-card-grid calculate-cost-gcp-card-grid-two">
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpSharedEgressGb" class="calculate-cost-gcp-field-label">Shared egress GB</label>
+                  <input type="number" id="calculateCostGcpSharedEgressGb" class="form-control" min="0" step="1" value="120">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpSupportPct" class="calculate-cost-gcp-field-label">Support uplift %</label>
+                  <input type="number" id="calculateCostGcpSupportPct" class="form-control" min="0" step="0.1" value="8">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpContingencyPct" class="calculate-cost-gcp-field-label">Contingency %</label>
+                  <input type="number" id="calculateCostGcpContingencyPct" class="form-control" min="0" step="0.1" value="10">
+                </div>
+
+                <div class="calculate-cost-gcp-field-stack">
+                  <label for="calculateCostGcpManualAdjustment" class="calculate-cost-gcp-field-label">Manual adjustment $</label>
+                  <input type="number" id="calculateCostGcpManualAdjustment" class="form-control" step="0.01" value="0">
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <details class="calculate-cost-gcp-advanced" id="calculateCostGcpAdvanced">
+      <summary class="calculate-cost-gcp-advanced-summary">Advanced</summary>
+
+      <div class="calculate-cost-gcp-advanced-body">
+        <div class="calculate-cost-gcp-inner-panel">
+          <div class="calculate-cost-gcp-setting-row">
+            <label class="calculate-cost-gcp-setting-label">
+              Free tier toggles:
+              <span class="info-dot" title="Apply the starter free-tier allowances that most affect this model">i</span>
+            </label>
+
+            <div class="calculate-cost-gcp-setting-field">
+              <div class="calculate-cost-gcp-toggle-grid">
+                <label class="switch calculate-cost-gcp-switch-wrap calculate-cost-gcp-switch-card">
+                  <input type="checkbox" id="calculateCostGcpFreeTierFunctions" checked>
+                  <span class="slider"></span>
+                  <span class="calculate-cost-gcp-switch-label">Cloud Functions requests + GB-s</span>
+                </label>
+
+                <label class="switch calculate-cost-gcp-switch-wrap calculate-cost-gcp-switch-card">
+                  <input type="checkbox" id="calculateCostGcpFreeTierApi" checked>
+                  <span class="slider"></span>
+                  <span class="calculate-cost-gcp-switch-label">API Gateway calls</span>
+                </label>
+
+                <label class="switch calculate-cost-gcp-switch-wrap calculate-cost-gcp-switch-card">
+                  <input type="checkbox" id="calculateCostGcpFreeTierEgress" checked>
+                  <span class="slider"></span>
+                  <span class="calculate-cost-gcp-switch-label">Shared 100 GB egress</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="calculate-cost-gcp-setting-row">
+            <label for="calculateCostGcpRegionalUpliftPct" class="calculate-cost-gcp-setting-label">
+              Regional uplift:
+              <span class="info-dot" title="Apply a percentage uplift to starter rates when you want to approximate a pricier region">i</span>
+            </label>
+
+            <div class="calculate-cost-gcp-setting-field">
+              <div class="calculate-cost-gcp-inline-grid calculate-cost-gcp-inline-grid-regional">
+                <div class="calculate-cost-gcp-field-stack calculate-cost-gcp-field-stack-compact">
+                  <input type="number" id="calculateCostGcpRegionalUpliftPct" class="form-control" min="0" step="0.1" value="0">
+                </div>
+                <div class="calculate-cost-gcp-inline-note">Use direct overrides below when you know the real regional rate.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="calculate-cost-gcp-setting-row calculate-cost-gcp-setting-row-stacked">
+            <label class="calculate-cost-gcp-setting-label">
+              Rate overrides:
+              <span class="info-dot" title="Set a value here to override the bundled starter rate for that specific cost component">i</span>
+            </label>
+
+            <div class="calculate-cost-gcp-setting-field">
+              <div class="calculate-cost-gcp-override-grid">
+                <section class="calculate-cost-gcp-override-card calculate-cost-gcp-override-card--single">
+                  <div class="calculate-cost-gcp-override-card-head">
+                    <h4 class="calculate-cost-gcp-override-card-title">Compute Engine</h4>
+                  </div>
+
+                  <div class="calculate-cost-gcp-override-card-body">
+                    <div class="calculate-cost-gcp-field-stack">
+                      <label for="calculateCostGcpComputeHourlyOverride" class="calculate-cost-gcp-field-label">Hourly rate</label>
+                      <input type="number" id="calculateCostGcpComputeHourlyOverride" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="calculate-cost-gcp-override-card">
+                  <div class="calculate-cost-gcp-override-card-head">
+                    <h4 class="calculate-cost-gcp-override-card-title">Persistent Disk</h4>
+                  </div>
+
+                  <div class="calculate-cost-gcp-override-card-body">
+                    <div class="calculate-cost-gcp-field-stack">
+                      <label for="calculateCostGcpDiskStorageRate" class="calculate-cost-gcp-field-label">Storage rate</label>
+                      <input type="number" id="calculateCostGcpDiskStorageRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="calculate-cost-gcp-field-stack">
+                      <label for="calculateCostGcpDiskIopsRate" class="calculate-cost-gcp-field-label">IOPS rate</label>
+                      <input type="number" id="calculateCostGcpDiskIopsRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="calculate-cost-gcp-field-stack calculate-cost-gcp-card-span-two">
+                      <label for="calculateCostGcpDiskThroughputRate" class="calculate-cost-gcp-field-label">Throughput rate</label>
+                      <input type="number" id="calculateCostGcpDiskThroughputRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="calculate-cost-gcp-override-card">
+                  <div class="calculate-cost-gcp-override-card-head">
+                    <h4 class="calculate-cost-gcp-override-card-title">Cloud Storage</h4>
+                  </div>
+
+                  <div class="calculate-cost-gcp-override-card-body">
+                    <div class="calculate-cost-gcp-field-stack">
+                      <label for="calculateCostGcpBlobStorageRate" class="calculate-cost-gcp-field-label">Storage rate</label>
+                      <input type="number" id="calculateCostGcpBlobStorageRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="calculate-cost-gcp-field-stack">
+                      <label for="calculateCostGcpBlobGetRate" class="calculate-cost-gcp-field-label">GET rate</label>
+                      <input type="number" id="calculateCostGcpBlobGetRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="calculate-cost-gcp-field-stack calculate-cost-gcp-card-span-two">
+                      <label for="calculateCostGcpBlobPutRate" class="calculate-cost-gcp-field-label">PUT/LIST rate</label>
+                      <input type="number" id="calculateCostGcpBlobPutRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="calculate-cost-gcp-override-card">
+                  <div class="calculate-cost-gcp-override-card-head">
+                    <h4 class="calculate-cost-gcp-override-card-title">Cloud Functions</h4>
+                  </div>
+
+                  <div class="calculate-cost-gcp-override-card-body">
+                    <div class="calculate-cost-gcp-field-stack">
+                      <label for="calculateCostGcpFunctionsRequestRate" class="calculate-cost-gcp-field-label">Request rate</label>
+                      <input type="number" id="calculateCostGcpFunctionsRequestRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="calculate-cost-gcp-field-stack">
+                      <label for="calculateCostGcpFunctionsGbSecondRate" class="calculate-cost-gcp-field-label">Compute rate</label>
+                      <input type="number" id="calculateCostGcpFunctionsGbSecondRate" class="form-control" min="0" step="0.0000000001" value="">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="calculate-cost-gcp-override-card">
+                  <div class="calculate-cost-gcp-override-card-head">
+                    <h4 class="calculate-cost-gcp-override-card-title">API Gateway</h4>
+                  </div>
+
+                  <div class="calculate-cost-gcp-override-card-body">
+                    <div class="calculate-cost-gcp-field-stack">
+                      <label for="calculateCostGcpApiHttpFirstRate" class="calculate-cost-gcp-field-label">HTTP first tier</label>
+                      <input type="number" id="calculateCostGcpApiHttpFirstRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="calculate-cost-gcp-field-stack">
+                      <label for="calculateCostGcpApiHttpNextRate" class="calculate-cost-gcp-field-label">HTTP next tier</label>
+                      <input type="number" id="calculateCostGcpApiHttpNextRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+
+                    <div class="calculate-cost-gcp-field-stack calculate-cost-gcp-card-span-two">
+                      <label for="calculateCostGcpApiRestRate" class="calculate-cost-gcp-field-label">REST rate</label>
+                      <input type="number" id="calculateCostGcpApiRestRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="calculate-cost-gcp-override-card calculate-cost-gcp-override-card--single">
+                  <div class="calculate-cost-gcp-override-card-head">
+                    <h4 class="calculate-cost-gcp-override-card-title">Network</h4>
+                  </div>
+
+                  <div class="calculate-cost-gcp-override-card-body">
+                    <div class="calculate-cost-gcp-field-stack">
+                      <label for="calculateCostGcpEgressRate" class="calculate-cost-gcp-field-label">Egress rate</label>
+                      <input type="number" id="calculateCostGcpEgressRate" class="form-control" min="0" step="0.0001" value="">
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </form>
+
+  <div class="calculate-cost-gcp-result-panel" id="calculateCostGcpPanel">
+    <div class="calculate-cost-gcp-result-empty" id="calculateCostGcpResultEmpty">Build an estimate to review line-item cost drivers, service mix, and exportable JSON.</div>
+
+    <div class="calculate-cost-gcp-result-content d-none" id="calculateCostGcpResultContent">
+      <div class="calculate-cost-gcp-result-summary" id="calculateCostGcpResultSummary"></div>
+
+      <div class="calculate-cost-gcp-toolbar-shell">
+        <div class="calculate-cost-gcp-toolbar tool-output-toolbar tool-result-toolbar">
+          <div class="calculate-cost-gcp-toolbar-left tool-result-toolbar-main">
+            <label for="calculateCostGcpSort" class="calculate-cost-gcp-sort-label">Sort</label>
+            <div class="calculate-cost-gcp-sort-wrap">
+              <details class="calculate-cost-gcp-select calculate-cost-gcp-sort-select" id="calculateCostGcpSortSelect">
+                <summary class="calculate-cost-gcp-select-summary">
+                  <span id="calculateCostGcpSortSummary">ID</span>
+                </summary>
+
+                <div class="calculate-cost-gcp-select-body">
+                  <div class="calculate-cost-gcp-select-grid">
+                    <label class="calculate-cost-gcp-select-card">
+                      <input type="radio" name="calculateCostGcpSortOption" value="id" checked>
+                      <span class="calculate-cost-gcp-select-title">ID</span>
+                    </label>
+
+                    <label class="calculate-cost-gcp-select-card">
+                      <input type="radio" name="calculateCostGcpSortOption" value="cost-desc">
+                      <span class="calculate-cost-gcp-select-title">Highest monthly cost</span>
+                    </label>
+
+                    <label class="calculate-cost-gcp-select-card">
+                      <input type="radio" name="calculateCostGcpSortOption" value="service">
+                      <span class="calculate-cost-gcp-select-title">Service</span>
+                    </label>
+
+                    <label class="calculate-cost-gcp-select-card">
+                      <input type="radio" name="calculateCostGcpSortOption" value="component">
+                      <span class="calculate-cost-gcp-select-title">Component</span>
+                    </label>
+                  </div>
+                </div>
+              </details>
+              <input type="hidden" id="calculateCostGcpSort" value="id">
+            </div>
+          </div>
+
+          <div class="calculate-cost-gcp-toolbar-actions tool-output-actions tool-result-toolbar-actions">
+            <button type="button" class="calculate-cost-gcp-action-btn tool-action-btn tool-action-btn-secondary tool-result-action-btn" id="calculateCostGcpExportPdf">
+              <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+              <span data-button-label>Export PDF</span>
+            </button>
+            <button type="button" class="calculate-cost-gcp-action-btn tool-action-btn tool-action-btn-secondary tool-result-action-btn" id="calculateCostGcpDownloadCsv">
+              <i class="bi bi-table" aria-hidden="true"></i>
+              <span data-button-label>Download CSV</span>
+            </button>
+            <button type="button" class="calculate-cost-gcp-action-btn tool-action-btn tool-action-btn-secondary tool-result-action-btn" id="calculateCostGcpCopyJson">
+              <i class="bi bi-clipboard" aria-hidden="true"></i>
+              <span data-button-label>Copy JSON</span>
+            </button>
+            <button type="button" class="calculate-cost-gcp-action-btn tool-action-btn tool-action-btn-secondary tool-result-action-btn" id="calculateCostGcpDownloadJson">
+              <i class="bi bi-download" aria-hidden="true"></i>
+              <span data-button-label>Download JSON</span>
+            </button>
+            <button type="button" class="calculate-cost-gcp-action-btn tool-action-btn tool-action-btn-secondary tool-result-action-btn" id="calculateCostGcpImportJsonButton">
+              <i class="bi bi-upload" aria-hidden="true"></i>
+              <span data-button-label>Import JSON</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="calculate-cost-gcp-tabs-shell">
+        <div class="calculate-cost-gcp-tabs" role="tablist" aria-label="Google Cloud cost estimate output views">
+          <button type="button" class="calculate-cost-gcp-tab-btn active" data-tab-target="breakdown" role="tab" aria-selected="true">
+            <i class="bi bi-list-check" aria-hidden="true"></i>
+            <span>Breakdown</span>
+          </button>
+          <button type="button" class="calculate-cost-gcp-tab-btn" data-tab-target="services" role="tab" aria-selected="false">
+            <i class="bi bi-pie-chart" aria-hidden="true"></i>
+            <span>Service Mix</span>
+          </button>
+          <button type="button" class="calculate-cost-gcp-tab-btn" data-tab-target="assumptions" role="tab" aria-selected="false">
+            <i class="bi bi-card-list" aria-hidden="true"></i>
+            <span>Assumptions</span>
+          </button>
+          <button type="button" class="calculate-cost-gcp-tab-btn" data-tab-target="json" role="tab" aria-selected="false">
+            <i class="bi bi-braces" aria-hidden="true"></i>
+            <span>JSON</span>
+          </button>
+        </div>
+
+        <div class="calculate-cost-gcp-tab-panel" data-tab-panel="breakdown" role="tabpanel">
+          <div class="calculate-cost-gcp-section-card tool-result-section-card">
+            <h3 class="calculate-cost-gcp-section-title tool-result-section-title">Line-Item Breakdown</h3>
+            <div class="table-responsive calculate-cost-gcp-table-wrap tool-result-table-wrap">
+              <table class="table calculate-cost-gcp-breakdown-table mb-0 tool-result-table">
+                <thead>
+                  <tr>
+                    <th class="tool-generated-rownum-head">#</th>
+                    <th>Service</th>
+                    <th>Driver</th>
+                    <th>Usage</th>
+                    <th>Unit basis</th>
+                    <th>Monthly</th>
+                    <th>Annual</th>
+                    <th>Copy</th>
+                  </tr>
+                </thead>
+                <tbody id="calculateCostGcpBreakdownTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="calculate-cost-gcp-tab-panel d-none" data-tab-panel="services" role="tabpanel">
+          <div class="calculate-cost-gcp-section-card tool-result-section-card">
+            <h3 class="calculate-cost-gcp-section-title tool-result-section-title">Service Mix</h3>
+            <div class="table-responsive calculate-cost-gcp-table-wrap calculate-cost-gcp-table-wrap-compact tool-result-table-wrap">
+              <table class="table calculate-cost-gcp-service-table mb-0 tool-result-table tool-result-table--compact">
+                <thead>
+                  <tr>
+                    <th class="tool-generated-rownum-head">#</th>
+                    <th>Service</th>
+                    <th>Monthly</th>
+                    <th>Annual</th>
+                    <th>Share</th>
+                    <th>Signal</th>
+                    <th>Copy</th>
+                  </tr>
+                </thead>
+                <tbody id="calculateCostGcpServiceTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="calculate-cost-gcp-recommendation-grid" id="calculateCostGcpRecommendations"></div>
+        </div>
+
+        <div class="calculate-cost-gcp-tab-panel d-none" data-tab-panel="assumptions" role="tabpanel">
+          <div class="calculate-cost-gcp-section-card tool-result-section-card">
+            <h3 class="calculate-cost-gcp-section-title tool-result-section-title">Assumptions</h3>
+            <div class="table-responsive calculate-cost-gcp-table-wrap calculate-cost-gcp-table-wrap-compact tool-result-table-wrap">
+              <table class="table calculate-cost-gcp-assumption-table mb-0 tool-result-table tool-result-table--compact">
+                <thead>
+                  <tr>
+                    <th class="tool-generated-rownum-head">#</th>
+                    <th>Assumption</th>
+                    <th>Value</th>
+                    <th>Note</th>
+                    <th>Copy</th>
+                  </tr>
+                </thead>
+                <tbody id="calculateCostGcpAssumptionTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="calculate-cost-gcp-method-grid" id="calculateCostGcpMethodology"></div>
+        </div>
+
+        <div class="calculate-cost-gcp-tab-panel d-none" data-tab-panel="json" role="tabpanel">
+          <div class="calculate-cost-gcp-json-wrap tool-json-panel">
+            <div class="calculate-cost-gcp-json-head tool-json-head">
+              <span class="calculate-cost-gcp-json-title tool-json-title">JSON Output</span>
+            </div>
+            <pre class="calculate-cost-gcp-json-output tool-json-output"><code id="calculateCostGcpJsonOutput"></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calculate-cost-gcp-result-error d-none" id="calculateCostGcpResultError"></div>
+    <input type="file" id="calculateCostGcpImportJson" class="d-none" accept="application/json">
+  </div>
+</div>
+</div>

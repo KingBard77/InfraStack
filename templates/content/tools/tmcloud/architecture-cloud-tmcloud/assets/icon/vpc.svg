@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="TM Cloud Alpha VPC">
+  <rect x="4" y="8" width="24" height="16" rx="4" fill="#06B6D4"/>
+  <rect x="7" y="12" width="18" height="3" rx="1.5" fill="#ECFEFF"/>
+  <rect x="7" y="17" width="4" height="3" rx="1" fill="#FFFFFF"/>
+  <rect x="14" y="17" width="4" height="3" rx="1" fill="#FFFFFF"/>
+  <rect x="21" y="17" width="4" height="3" rx="1" fill="#FFFFFF"/>
+  <path d="M10 6h12M10 26h12" stroke="#0891B2" stroke-width="2" stroke-linecap="round"/>
+</svg>

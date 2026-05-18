@@ -1,0 +1,581 @@
+{# tool.html.twig #}
+
+<div class="architecture-vpc-gcp-tool">
+  <div class="tool-box">
+    {# ns:start family.architecture.workspace.01_input-brief #}
+    <div class="tool-shell tool-prompt-shell">
+      <div class="tool-main-row">
+        <label for="architectureVpcGcpPrompt" class="tool-main-label">Architecture prompt</label>
+        <div class="tool-main-input-grid architecture-vpc-gcp-main-input-grid">
+          <textarea
+            id="architectureVpcGcpPrompt"
+            class="form-control architecture-vpc-gcp-prompt"
+            placeholder="Describe the GCP VPC layout, region, zones, ingress path, workload tier, data tier, and supporting services."
+          >Create a GCP VPC topology in us-central1 with 2 zones. Use public subnets for an internet-facing External HTTP(S) Load Balancer, private app subnets for Managed Instance Groups, and private data subnets for Cloud SQL. Add a single Cloud NAT, Private Service Connect for Cloud Storage and Secret Manager, Cloud Monitoring, and VPC Flow Logs.</textarea>
+
+        </div>
+      </div>
+
+      <p class="tool-control-hint architecture-vpc-gcp-prompt-hint">
+        Use one brief prompt with region, zone count, ingress, private tiers, and supporting GCP services. Presets below can prefill and instantly generate a working layout.
+      </p>
+
+      <div class="architecture-vpc-gcp-main-actions">
+        <button type="button" class="tool-action-btn tool-action-btn-primary" id="architectureVpcGcpGenerate">
+          <i class="bi bi-stars" aria-hidden="true"></i>
+          <span>Generate Diagram</span>
+        </button>
+        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureVpcGcpReset">Load Default</button>
+      </div>
+    </div>
+    {# ns:end family.architecture.workspace.01_input-brief #}
+
+    <div class="tool-error-state d-none" id="architectureVpcGcpErrorState"></div>
+
+    <div class="architecture-vpc-gcp-advanced-grid">
+      <aside class="tool-shell tool-inspector-shell">
+        <div class="tool-shell-header">
+          <div>
+            <h2 class="tool-shell-title">Basic</h2>
+          </div>
+        </div>
+
+        <div class="tool-shell-body">
+          {# ns:start family.architecture.workspace.02_basic-settings #}
+          <div class="tool-inspector-section architecture-vpc-gcp-basic-preset-section">
+            <div class="architecture-vpc-gcp-basic-grid">
+              <div class="architecture-vpc-gcp-control-stack">
+                <label class="tool-control-label" for="architectureVpcGcpPreset">Preset</label>
+                <select id="architectureVpcGcpPreset" class="form-select">
+                  <option value="three-tier-web" selected>3-Tier Web</option>
+                  <option value="ecs-fargate">Cloud Run</option>
+                  <option value="eks-platform">Private GKE</option>
+                  <option value="hybrid-shared">Hybrid Shared Services</option>
+                </select>
+              </div>
+
+              <div class="architecture-vpc-gcp-control-stack">
+                <label class="tool-control-label" for="architectureVpcGcpRegion">Region</label>
+                <select id="architectureVpcGcpRegion" class="form-select">
+                  <option value="us-central1">us-central1</option>
+                  <option value="us-east1">us-east1</option>
+                  <option value="us-east4">us-east4</option>
+                  <option value="us-west1">us-west1</option>
+                  <option value="us-west2">us-west2</option>
+                  <option value="europe-west1">europe-west1</option>
+                  <option value="asia-southeast1">asia-southeast1</option>
+                  <option value="australia-southeast1">australia-southeast1</option>
+                </select>
+              </div>
+
+              <div class="architecture-vpc-gcp-control-stack">
+                <label class="tool-control-label" for="architectureVpcGcpAzCount">Zones</label>
+                <select id="architectureVpcGcpAzCount" class="form-select">
+                  <option value="1">1 zone</option>
+                  <option value="2" selected>2 zone</option>
+                  <option value="3">3 zone</option>
+                </select>
+              </div>
+              <p class="tool-control-hint" id="architectureVpcGcpPresetDescription">Public HTTP(S) LB, private managed instance groups, Cloud SQL, single Cloud NAT.</p>
+            </div>
+          </div>
+          {# ns:end family.architecture.workspace.02_basic-settings #}
+
+          {# ns:start family.architecture.workspace.03_advanced-settings #}
+          <details class="architecture-vpc-gcp-custom-panel">
+            <summary class="architecture-vpc-gcp-custom-panel-summary">
+              <span>Custom</span>
+              <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            </summary>
+
+            <div class="architecture-vpc-gcp-custom-panel-body">
+              <div class="architecture-vpc-gcp-config-tabs" role="tablist" aria-label="GCP VPC custom configuration">
+                <button type="button" class="architecture-vpc-gcp-config-tab active" id="architectureVpcGcpNetworkConfigTab" data-config-tab-target="architectureVpcGcpNetworkConfigPanel" role="tab" aria-controls="architectureVpcGcpNetworkConfigPanel" aria-selected="true" tabindex="0">Network layout</button>
+                <button type="button" class="architecture-vpc-gcp-config-tab" id="architectureVpcGcpWorkloadConfigTab" data-config-tab-target="architectureVpcGcpWorkloadConfigPanel" role="tab" aria-controls="architectureVpcGcpWorkloadConfigPanel" aria-selected="false" tabindex="-1">Workload</button>
+                <button type="button" class="architecture-vpc-gcp-config-tab" id="architectureVpcGcpServicesConfigTab" data-config-tab-target="architectureVpcGcpServicesConfigPanel" role="tab" aria-controls="architectureVpcGcpServicesConfigPanel" aria-selected="false" tabindex="-1">Services and controls</button>
+              </div>
+
+              <div class="tool-inspector-section architecture-vpc-gcp-config-panel active" id="architectureVpcGcpNetworkConfigPanel" data-config-panel role="tabpanel" aria-labelledby="architectureVpcGcpNetworkConfigTab">
+                <div class="architecture-vpc-gcp-config-grid">
+                  <div class="architecture-vpc-gcp-control-stack">
+                    <label class="tool-control-label" for="architectureVpcGcpCidr">VPC CIDR</label>
+                    <input type="text" id="architectureVpcGcpCidr" class="form-control" value="10.0.0.0/16">
+                  </div>
+
+                  <div class="architecture-vpc-gcp-control-stack">
+                    <label class="tool-control-label" for="architectureVpcGcpNatMode">Cloud NAT mode</label>
+                    <select id="architectureVpcGcpNatMode" class="form-select">
+                      <option value="none">No Cloud NAT</option>
+                      <option value="single" selected>Single Cloud NAT</option>
+                      <option value="per-az">One per zone</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tool-inspector-section architecture-vpc-gcp-config-panel" id="architectureVpcGcpWorkloadConfigPanel" data-config-panel role="tabpanel" aria-labelledby="architectureVpcGcpWorkloadConfigTab" hidden>
+                <div class="architecture-vpc-gcp-config-grid">
+                  <div class="architecture-vpc-gcp-control-stack">
+                    <label class="tool-control-label" for="architectureVpcGcpAppTier">App tier</label>
+                    <select id="architectureVpcGcpAppTier" class="form-select">
+                      <option value="ec2">Managed Instance Groups</option>
+                      <option value="ecs">Cloud Run</option>
+                      <option value="eks">GKE</option>
+                      <option value="lambda">Cloud Functions with Serverless VPC Access</option>
+                    </select>
+                  </div>
+
+                  <div class="architecture-vpc-gcp-control-stack">
+                    <label class="tool-control-label" for="architectureVpcGcpDatabase">Database tier</label>
+                    <select id="architectureVpcGcpDatabase" class="form-select">
+                      <option value="none">No database tier</option>
+                      <option value="rds" selected>Cloud SQL</option>
+                      <option value="aurora">Cloud SQL for PostgreSQL</option>
+                      <option value="dynamodb">Firestore</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tool-inspector-section architecture-vpc-gcp-config-panel" id="architectureVpcGcpServicesConfigPanel" data-config-panel role="tabpanel" aria-labelledby="architectureVpcGcpServicesConfigTab" hidden>
+                <div class="architecture-vpc-gcp-toggle-grid">
+                  <label class="architecture-vpc-gcp-toggle-item">
+                    <span class="architecture-vpc-gcp-toggle-copy">Cloud DNS</span>
+                    <input type="checkbox" id="architectureVpcGcpRoute53" checked>
+                  </label>
+
+                  <label class="architecture-vpc-gcp-toggle-item">
+                    <span class="architecture-vpc-gcp-toggle-copy">Cloud CDN</span>
+                    <input type="checkbox" id="architectureVpcGcpCloudFront">
+                  </label>
+
+                  <label class="architecture-vpc-gcp-toggle-item">
+                    <span class="architecture-vpc-gcp-toggle-copy">Cloud Armor</span>
+                    <input type="checkbox" id="architectureVpcGcpWaf">
+                  </label>
+
+                  <label class="architecture-vpc-gcp-toggle-item">
+                    <span class="architecture-vpc-gcp-toggle-copy">External HTTP(S) Load Balancer</span>
+                    <input type="checkbox" id="architectureVpcGcpAlb" checked>
+                  </label>
+
+                  <label class="architecture-vpc-gcp-toggle-item">
+                    <span class="architecture-vpc-gcp-toggle-copy">Identity-Aware Proxy</span>
+                    <input type="checkbox" id="architectureVpcGcpBastion">
+                  </label>
+
+                  <label class="architecture-vpc-gcp-toggle-item">
+                    <span class="architecture-vpc-gcp-toggle-copy">Private Service Connect</span>
+                    <input type="checkbox" id="architectureVpcGcpEndpoints" checked>
+                  </label>
+
+                  <label class="architecture-vpc-gcp-toggle-item">
+                    <span class="architecture-vpc-gcp-toggle-copy">VPC Flow Logs</span>
+                    <input type="checkbox" id="architectureVpcGcpFlowLogs" checked>
+                  </label>
+
+                  <label class="architecture-vpc-gcp-toggle-item">
+                    <span class="architecture-vpc-gcp-toggle-copy">Cloud Monitoring</span>
+                    <input type="checkbox" id="architectureVpcGcpCloudWatch" checked>
+                  </label>
+
+                  <label class="architecture-vpc-gcp-toggle-item">
+                    <span class="architecture-vpc-gcp-toggle-copy">Cloud VPN</span>
+                    <input type="checkbox" id="architectureVpcGcpSiteToSiteVpn">
+                  </label>
+
+                  <label class="architecture-vpc-gcp-toggle-item">
+                    <span class="architecture-vpc-gcp-toggle-copy">Network Connectivity Center</span>
+                    <input type="checkbox" id="architectureVpcGcpTransitGateway">
+                  </label>
+
+                  <label class="architecture-vpc-gcp-toggle-item">
+                    <span class="architecture-vpc-gcp-toggle-copy">Memorystore for Redis</span>
+                    <input type="checkbox" id="architectureVpcGcpCache">
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </details>
+          {# ns:end family.architecture.workspace.03_advanced-settings #}
+
+          {# ns:start family.architecture.workspace.04_selected-item #}
+          <div class="tool-inspector-section architecture-vpc-gcp-selected-section" id="architectureVpcGcpSelectedShell">
+            <h3 class="architecture-vpc-gcp-section-title">Selected item</h3>
+
+            <p class="architecture-vpc-gcp-selected-empty architecture-vpc-gcp-selected-empty-chips" id="architectureVpcGcpSelectedEmpty" aria-label="Select a draggable box in the stage to move, resize, or highlight it. Arrow keys move the selected box; Shift moves faster; Alt + arrow keys resize; Cmd/Ctrl + Z undoes the last stage edit.">
+              <span class="architecture-vpc-gcp-selected-empty-copy">
+                <span class="architecture-vpc-gcp-selected-hint-chip architecture-vpc-gcp-selected-hint-chip-select"><i class="bi bi-cursor" aria-hidden="true"></i>Select a draggable box</span>
+                <span class="architecture-vpc-gcp-selected-hint-chip architecture-vpc-gcp-selected-hint-chip-action"><i class="bi bi-arrows-move" aria-hidden="true"></i>Move, resize, or highlight</span>
+                <span class="architecture-vpc-gcp-selected-hint-chip architecture-vpc-gcp-selected-hint-chip-keyboard"><i class="bi bi-arrow-up-right-square" aria-hidden="true"></i>Arrow keys move selected box</span>
+                <span class="architecture-vpc-gcp-selected-hint-chip architecture-vpc-gcp-selected-hint-chip-keyboard"><i class="bi bi-shift" aria-hidden="true"></i>Shift moves faster</span>
+                <span class="architecture-vpc-gcp-selected-hint-chip architecture-vpc-gcp-selected-hint-chip-resize"><i class="bi bi-aspect-ratio" aria-hidden="true"></i>Alt + arrow keys resize</span>
+                <span class="architecture-vpc-gcp-selected-hint-chip architecture-vpc-gcp-selected-hint-chip-undo"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>Cmd/Ctrl + Z undoes last edit</span>
+              </span>
+            </p>
+
+            <div class="architecture-vpc-gcp-selected-editor d-none" id="architectureVpcGcpSelectedEditor">
+              <div class="architecture-vpc-gcp-selected-name" id="architectureVpcGcpSelectedName"></div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="architectureVpcGcpSelectedX">X position</label>
+                <div class="tool-control-field">
+                  <input type="number" id="architectureVpcGcpSelectedX" class="form-control" min="0" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="architectureVpcGcpSelectedY">Y position</label>
+                <div class="tool-control-field">
+                  <input type="number" id="architectureVpcGcpSelectedY" class="form-control" min="0" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="architectureVpcGcpSelectedWidth">Width</label>
+                <div class="tool-control-field">
+                  <input type="number" id="architectureVpcGcpSelectedWidth" class="form-control" min="96" step="4">
+                </div>
+              </div>
+
+              <div class="tool-control-row">
+                <label class="tool-control-label" for="architectureVpcGcpSelectedHeight">Height</label>
+                <div class="tool-control-field">
+                  <input type="number" id="architectureVpcGcpSelectedHeight" class="form-control" min="44" step="4">
+                </div>
+              </div>
+
+              <div class="architecture-vpc-gcp-selected-actions">
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureVpcGcpHighlightCard">Highlight box</button>
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureVpcGcpApplyCardSize">Apply item</button>
+                <button type="button" class="tool-action-btn tool-action-btn-ghost" id="architectureVpcGcpResetCardSize">Reset item</button>
+              </div>
+            </div>
+          </div>
+          {# ns:end family.architecture.workspace.04_selected-item #}
+        </div>
+      </aside>
+    </div>
+
+    <section class="tool-shell tool-stage-shell" id="architectureVpcGcpStageShell" data-section="diagram-buttons" data-root-selector=".architecture-vpc-gcp-tool">
+      {# ns:start family.architecture.workspace.05_result-text #}
+      <div class="tool-shell-header architecture-vpc-gcp-stage-header" data-section="title" data-root-selector=".architecture-vpc-gcp-tool">
+        <div class="architecture-vpc-gcp-stage-heading">
+          <h2 class="tool-shell-title" id="architectureVpcGcpStageTitle">GCP VPC Topology</h2>
+          <p class="tool-shell-subtitle" id="architectureVpcGcpStageSubtitle">
+            <span class="architecture-vpc-gcp-stage-preset-chip">3-Tier Web preset</span>
+          </p>
+        </div>
+        <div class="architecture-vpc-gcp-stage-meta" id="architectureVpcGcpStageMeta"></div>
+      </div>
+      {# ns:end family.architecture.workspace.05_result-text #}
+
+      {# ns:start family.architecture.workspace.06_result-diagram #}
+      <div class="tool-stage-toolbar">
+        <div class="architecture-vpc-gcp-stage-toolbar-actions">
+          <div class="architecture-vpc-gcp-zoom-control" id="architectureVpcGcpZoomControl">
+            <button type="button" class="architecture-vpc-gcp-zoom-step" id="architectureVpcGcpZoomOut" aria-label="Zoom out" title="Zoom out">
+              <i class="bi bi-dash" aria-hidden="true"></i>
+            </button>
+            <input type="number" id="architectureVpcGcpZoomInput" class="architecture-vpc-gcp-zoom-input" value="50" min="15" max="240" step="1" aria-label="Zoom percentage">
+            <span class="architecture-vpc-gcp-zoom-label" id="architectureVpcGcpZoomLabel">%</span>
+            <button type="button" class="architecture-vpc-gcp-zoom-step" id="architectureVpcGcpZoomIn" aria-label="Zoom in" title="Zoom in">
+              <i class="bi bi-plus" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <button type="button" class="architecture-vpc-gcp-icon-btn" id="architectureVpcGcpZoomFit" aria-label="Zoom to fit" title="Zoom to fit">
+            <i class="bi bi-arrows-angle-contract" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-vpc-gcp-icon-btn" id="architectureVpcGcpZoomActual" aria-label="Zoom to 100%" title="Zoom to 100%">
+            <span>100</span>
+          </button>
+          <button type="button" class="architecture-vpc-gcp-icon-btn" id="architectureVpcGcpUndoStageEdit" aria-label="Undo stage edit" title="Undo stage edit" disabled>
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-vpc-gcp-icon-btn" id="architectureVpcGcpHighlightAll" aria-label="Highlight entire diagram" title="Highlight entire diagram" aria-pressed="false">
+            <i class="bi bi-bounding-box" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-vpc-gcp-icon-btn" id="architectureVpcGcpZoomHideUi" aria-label="Hide UI" title="Hide UI">
+            <i class="bi bi-eye-slash" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-vpc-gcp-icon-btn" id="architectureVpcGcpFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
+            <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-vpc-gcp-stage-toolbar-btn" id="architectureVpcGcpResetLayout">Reset layout</button>
+        </div>
+      </div>
+
+      <div class="tool-stage-body">
+        <div class="tool-stage-empty" id="architectureVpcGcpStageEmpty">Choose a preset to generate diagram.</div>
+        <div class="tool-stage-canvas architecture-vpc-gcp-stage-canvas d-none" id="architectureVpcGcpStageCanvas"></div>
+      </div>
+
+      <div class="architecture-vpc-gcp-stage-footer">
+        <div class="architecture-vpc-gcp-stage-toolbar-chips">
+          <span class="tool-helper-chip tool-helper-chip-prompt" title="Prompt and preset aware" aria-label="Prompt and preset aware" tabindex="0">
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span class="architecture-vpc-gcp-visually-hidden">Prompt and preset aware</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-inspector" title="Editable inspector controls" aria-label="Editable inspector controls" tabindex="0">
+            <i class="bi bi-sliders2" aria-hidden="true"></i>
+            <span class="architecture-vpc-gcp-visually-hidden">Editable inspector controls</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-drag" title="Drag boxes to customize layout" aria-label="Drag boxes to customize layout" tabindex="0">
+            <i class="bi bi-arrows-move" aria-hidden="true"></i>
+            <span class="architecture-vpc-gcp-visually-hidden">Drag boxes to customize layout</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-svg" title="SVG workspace" aria-label="SVG workspace" tabindex="0">
+            <i class="bi bi-bezier2" aria-hidden="true"></i>
+            <span class="architecture-vpc-gcp-visually-hidden">SVG workspace</span>
+          </span>
+          <button type="button" class="tool-helper-chip tool-helper-chip-keyboard" id="architectureVpcGcpUsageHelpButton" title="Keyboard shortcuts and usage" aria-label="Open keyboard help" aria-controls="architectureVpcGcpUsageHelpPopup" aria-expanded="false">
+            <i class="bi bi-keyboard" aria-hidden="true"></i>
+            <span class="architecture-vpc-gcp-visually-hidden">Keyboard Help</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="architecture-vpc-gcp-usage-overlay d-none" id="architectureVpcGcpUsageHelpPopup" role="dialog" aria-modal="false" aria-labelledby="architectureVpcGcpUsageHelpTitle">
+        <div class="architecture-vpc-gcp-usage-card">
+          <button type="button" class="architecture-vpc-gcp-usage-close" id="architectureVpcGcpUsageHelpClose" aria-label="Close keyboard help">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+          </button>
+
+          <h3 class="architecture-vpc-gcp-usage-title" id="architectureVpcGcpUsageHelpTitle">Diagram Controls</h3>
+          <p class="architecture-vpc-gcp-usage-copy">Select a box in the diagram, then adjust it without leaving the stage.</p>
+
+          <div class="architecture-vpc-gcp-usage-panel">Hold the selected box in place visually while you tune layout, size, and zoom.</div>
+
+          <div class="architecture-vpc-gcp-usage-divider"></div>
+
+          <div class="architecture-vpc-gcp-usage-list" aria-label="Keyboard and pointer controls">
+            <div class="architecture-vpc-gcp-usage-row">
+              <span class="architecture-vpc-gcp-usage-keys">
+                <kbd>←</kbd>
+                <kbd>↑</kbd>
+                <kbd>↓</kbd>
+                <kbd>→</kbd>
+              </span>
+              <span>move selected box</span>
+            </div>
+            <div class="architecture-vpc-gcp-usage-row">
+              <span class="architecture-vpc-gcp-usage-keys">
+                <kbd>Shift</kbd>
+                <kbd>+</kbd>
+                <kbd>Arrows</kbd>
+              </span>
+              <span>move faster</span>
+            </div>
+            <div class="architecture-vpc-gcp-usage-row">
+              <span class="architecture-vpc-gcp-usage-keys">
+                <kbd>Alt</kbd>
+                <kbd>+</kbd>
+                <kbd>Arrows</kbd>
+              </span>
+              <span>resize selected box</span>
+            </div>
+            <div class="architecture-vpc-gcp-usage-row">
+              <span class="architecture-vpc-gcp-usage-keys">
+                <kbd>Mouse</kbd>
+                <kbd>Drag</kbd>
+              </span>
+              <span>reposition box</span>
+            </div>
+            <div class="architecture-vpc-gcp-usage-row">
+              <span class="architecture-vpc-gcp-usage-keys">
+                <kbd>Cmd / Ctrl</kbd>
+                <kbd>+</kbd>
+                <kbd>Z</kbd>
+              </span>
+              <span>undo stage edit</span>
+            </div>
+            <div class="architecture-vpc-gcp-usage-row">
+              <span class="architecture-vpc-gcp-usage-keys">
+                <kbd>Ctrl / Cmd</kbd>
+                <kbd>Wheel</kbd>
+              </span>
+              <span>zoom stage by 1%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {# ns:end family.architecture.workspace.06_result-diagram #}
+    </section>
+
+    <section class="tool-shell tool-output-shell">
+      <div class="tool-empty-state" id="architectureVpcGcpOutputEmpty">Generate an architecture diagram to review technical inventory, service mix, and exportable JSON.</div>
+
+      <div class="architecture-vpc-gcp-output-content d-none" id="architectureVpcGcpOutputContent">
+        <div class="architecture-vpc-gcp-output-shell">
+          {# ns:start family.architecture.workspace.07_score-card #}
+          <div class="architecture-vpc-gcp-output-summary">
+            <div class="architecture-vpc-gcp-output-status-card" aria-live="polite">
+              <div class="architecture-vpc-gcp-score-card" id="architectureVpcGcpOutputStatus">
+                <div class="architecture-vpc-gcp-score-kicker">Architecture Score</div>
+                <div class="architecture-vpc-gcp-score-value">Ready</div>
+                <div class="architecture-vpc-gcp-score-summary">Generate a diagram to score the current VPC baseline.</div>
+              </div>
+            </div>
+          </div>
+          {# ns:end family.architecture.workspace.07_score-card #}
+
+          {# ns:start family.architecture.workspace.08_sort-card #}
+          <div class="architecture-vpc-gcp-toolbar-shell">
+            <div class="architecture-vpc-gcp-toolbar tool-output-toolbar">
+              <div class="architecture-vpc-gcp-toolbar-main">
+                <label for="architectureVpcGcpInventorySort" class="architecture-vpc-gcp-sort-label">Sort</label>
+                <div class="architecture-vpc-gcp-sort-wrap">
+                  <details class="architecture-vpc-gcp-sort-select" id="architectureVpcGcpInventorySortSelect">
+                    <summary class="architecture-vpc-gcp-sort-summary">
+                      <span id="architectureVpcGcpInventorySortSummary">ID</span>
+                    </summary>
+
+                    <div class="architecture-vpc-gcp-sort-menu">
+                      <div class="architecture-vpc-gcp-sort-grid">
+                        <button type="button" class="architecture-vpc-gcp-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
+                        <button type="button" class="architecture-vpc-gcp-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
+                        <button type="button" class="architecture-vpc-gcp-sort-option" data-sort-value="component" aria-pressed="false">Component</button>
+                        <button type="button" class="architecture-vpc-gcp-sort-option" data-sort-value="placement" aria-pressed="false">Placement</button>
+                        <button type="button" class="architecture-vpc-gcp-sort-option" data-sort-value="purpose" aria-pressed="false">Purpose</button>
+                      </div>
+                    </div>
+                  </details>
+                  <input type="hidden" id="architectureVpcGcpInventorySort" value="id">
+                </div>
+              </div>
+
+              <div class="tool-output-actions">
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureVpcGcpExportPng">
+                  <i class="bi bi-image" aria-hidden="true"></i>
+                  <span data-button-label>Export PNG</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureVpcGcpDownloadSvg">
+                  <i class="bi bi-download" aria-hidden="true"></i>
+                  <span data-button-label>Download SVG</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureVpcGcpCopyJson">
+                  <i class="bi bi-clipboard" aria-hidden="true"></i>
+                  <span data-button-label>Copy JSON</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureVpcGcpDownloadJson">
+                  <i class="bi bi-download" aria-hidden="true"></i>
+                  <span data-button-label>Download JSON</span>
+                </button>
+                <button type="button" class="tool-action-btn tool-action-btn-ghost" id="architectureVpcGcpImportJsonButton">
+                  <i class="bi bi-upload" aria-hidden="true"></i>
+                  <span data-button-label>Import JSON</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          {# ns:end family.architecture.workspace.08_sort-card #}
+
+          {# ns:start family.architecture.workspace.09_result-table #}
+          <div class="architecture-vpc-gcp-tabs-shell">
+            <div class="tool-tabs" role="tablist" aria-label="GCP VPC output views">
+              <button type="button" class="tool-tab-btn architecture-vpc-gcp-tab-btn active" id="architectureVpcGcpInventoryTab" data-tab-target="architectureVpcGcpInventoryPanel" role="tab" aria-controls="architectureVpcGcpInventoryPanel" aria-selected="true" tabindex="0">
+                <i class="bi bi-list-check" aria-hidden="true"></i>
+                <span>Technical Inventory</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-vpc-gcp-tab-btn" id="architectureVpcGcpNotesTab" data-tab-target="architectureVpcGcpNotesPanel" role="tab" aria-controls="architectureVpcGcpNotesPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-card-text" aria-hidden="true"></i>
+                <span>Prompt Notes</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-vpc-gcp-tab-btn" id="architectureVpcGcpPillarTab" data-tab-target="architectureVpcGcpPillarPanel" role="tab" aria-controls="architectureVpcGcpPillarPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-bar-chart-line" aria-hidden="true"></i>
+                <span>Pillar Breakdown</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-vpc-gcp-tab-btn" id="architectureVpcGcpRiskTab" data-tab-target="architectureVpcGcpRiskPanel" role="tab" aria-controls="architectureVpcGcpRiskPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-shield-check" aria-hidden="true"></i>
+                <span>Risk Level</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-vpc-gcp-tab-btn" id="architectureVpcGcpJsonTab" data-tab-target="architectureVpcGcpJsonPanel" role="tab" aria-controls="architectureVpcGcpJsonPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-braces" aria-hidden="true"></i>
+                <span>JSON</span>
+              </button>
+            </div>
+
+            <div class="tool-tab-panel architecture-vpc-gcp-tab-panel active" id="architectureVpcGcpInventoryPanel" role="tabpanel" aria-labelledby="architectureVpcGcpInventoryTab">
+              <div class="architecture-vpc-gcp-inventory-panel">
+                <div class="architecture-vpc-gcp-table-card">
+                  <h3 class="architecture-vpc-gcp-result-section-title">Technical Inventory</h3>
+                  <div class="architecture-vpc-gcp-table-wrap">
+                    <table class="table architecture-vpc-gcp-table mb-0">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Component</th>
+                          <th>Placement</th>
+                          <th>Purpose</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="architectureVpcGcpInventoryTableBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-tab-panel architecture-vpc-gcp-tab-panel" id="architectureVpcGcpNotesPanel" role="tabpanel" aria-labelledby="architectureVpcGcpNotesTab" hidden>
+              <div class="architecture-vpc-gcp-prompt-notes-card">
+                <h3 class="architecture-vpc-gcp-result-section-title">Prompt Notes</h3>
+                <div class="architecture-vpc-gcp-note-grid">
+                  <section class="architecture-vpc-gcp-note-card">
+                    <h3 class="architecture-vpc-gcp-note-title">Prompt summary</h3>
+                    <p class="architecture-vpc-gcp-note-copy" id="architectureVpcGcpPromptSummary"></p>
+                  </section>
+
+                  <section class="architecture-vpc-gcp-note-card">
+                    <h3 class="architecture-vpc-gcp-note-title">Detected keywords</h3>
+                    <ul class="architecture-vpc-gcp-note-list" id="architectureVpcGcpKeywordList"></ul>
+                  </section>
+
+                  <section class="architecture-vpc-gcp-note-card">
+                    <h3 class="architecture-vpc-gcp-note-title">Applied assumptions</h3>
+                    <ul class="architecture-vpc-gcp-note-list" id="architectureVpcGcpAssumptionList"></ul>
+                  </section>
+
+                  <section class="architecture-vpc-gcp-note-card">
+                    <h3 class="architecture-vpc-gcp-note-title">Current model</h3>
+                    <ul class="architecture-vpc-gcp-note-list" id="architectureVpcGcpModelList"></ul>
+                  </section>
+
+                  <section class="architecture-vpc-gcp-note-card">
+                    <h3 class="architecture-vpc-gcp-note-title">Architecture pros</h3>
+                    <ul class="architecture-vpc-gcp-note-list" id="architectureVpcGcpProsList"></ul>
+                  </section>
+
+                  <section class="architecture-vpc-gcp-note-card">
+                    <h3 class="architecture-vpc-gcp-note-title">Architecture cons</h3>
+                    <ul class="architecture-vpc-gcp-note-list" id="architectureVpcGcpConsList"></ul>
+                  </section>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-tab-panel architecture-vpc-gcp-tab-panel" id="architectureVpcGcpPillarPanel" role="tabpanel" aria-labelledby="architectureVpcGcpPillarTab" hidden>
+              <section class="architecture-vpc-gcp-assessment-card architecture-vpc-gcp-pillar-card" id="architectureVpcGcpPillarBreakdown" aria-label="Pillar breakdown"></section>
+            </div>
+
+            <div class="tool-tab-panel architecture-vpc-gcp-tab-panel" id="architectureVpcGcpRiskPanel" role="tabpanel" aria-labelledby="architectureVpcGcpRiskTab" hidden>
+              <section class="architecture-vpc-gcp-assessment-card architecture-vpc-gcp-risk-card" id="architectureVpcGcpRiskLevel" aria-label="Risk level"></section>
+            </div>
+
+            <div class="tool-tab-panel architecture-vpc-gcp-tab-panel" id="architectureVpcGcpJsonPanel" role="tabpanel" aria-labelledby="architectureVpcGcpJsonTab" hidden>
+              <div class="tool-json-shell">
+                <div class="architecture-vpc-gcp-json-header">JSON Output</div>
+                <pre class="architecture-vpc-gcp-json-code" id="architectureVpcGcpJsonOutput"></pre>
+              </div>
+            </div>
+          </div>
+          {# ns:end family.architecture.workspace.09_result-table #}
+        </div>
+      </div>
+    </section>
+
+    <input type="file" id="architectureVpcGcpImportJson" class="d-none" accept="application/json">
+  </div>
+</div>

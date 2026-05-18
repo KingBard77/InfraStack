@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ Content Demo</title>
+  <style>
+:root { --default-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+body { margin: 0; background: #f8fafc; font-family: var(--default-font); }
+.demo-shell { width: min(1180px, calc(100% - 32px)); margin: 40px auto; }
+.demo-title { margin: 0 0 16px; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: 0; }
+.alert { border: 1px solid rgba(126, 193, 232, 0.52); border-radius: 12px; padding: 14px 16px; background: #ffffff; color: #123047; }
+.alert-primary { background: #f3fbff; }
+.alert-success { background: #ecfdf5; }
+.alert-warning { background: #fffbeb; }
+.alert-secondary { background: #f8fafc; }
+.d-flex { display: flex; }
+.align-items-start { align-items: flex-start; }
+.gap-3 { gap: 1rem; }
+.mb-0 { margin-bottom: 0; }
+.fs-5 { font-size: 1.25rem; }
+</style>
+  <link rel="stylesheet" href="../../workspace/tool-skin/section.css">
+  <link rel="stylesheet" href="section.css">
+</head>
+<body>
+  <main class="demo-shell">
+    <h1 class="demo-title">FAQ Content Demo</h1>
+    <article class="markdown-content"><div class="content-card __PREFIX__-markdown-card __PREFIX__-markdown-card-faq">
+  <h2 class="__PREFIX__-section-heading"><i class="bi bi-question-circle" aria-hidden="true"></i><span>FAQ</span></h2>
+  <p>Use these answers to clarify the workspace boundary before users depend on the output. The FAQ should explain parser limits, review expectations, editable state, and what each export path does or does not preserve.</p>
+
+  <details class="faq-item" open>
+    <summary><span>Does this tool call an external AI service?</span></summary>
+    <div class="faq-answer"><p>No. The section pattern expects deterministic browser-side extraction and state handling unless a final tool deliberately adds a server-side integration.</p></div>
+  </details>
+
+  <details class="faq-item">
+    <summary><span>What happens if my prompt is incomplete or ambiguous?</span></summary>
+    <div class="faq-answer"><p>The tool should apply controlled defaults from the selected preset and record assumptions in prompt notes. Review those notes before treating the first pass as final.</p></div>
+  </details>
+
+  <details class="faq-item">
+    <summary><span>Can I edit the generated result after generation?</span></summary>
+    <div class="faq-answer"><p>Yes. A finished workspace should let users adjust controls, refine supported stage objects, and preserve those changes in JSON.</p></div>
+  </details>
+
+  <details class="faq-item">
+    <summary><span>What is the best way to save work in progress?</span></summary>
+    <div class="faq-answer"><p>Save the JSON export. PNG and SVG are presentation outputs, not restore formats.</p></div>
+  </details>
+</div>
+</article>
+  </main>
+  <script src="section.js"></script><script>window.InfraStackScaffoldSectionPatterns.faq.bindFaqDetails(document, { singleOpen: false });</script>
+</body>
+</html>

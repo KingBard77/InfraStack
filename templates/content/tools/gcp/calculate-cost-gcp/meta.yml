@@ -1,0 +1,24 @@
+# meta.yml
+
+title: GCP Cost Calculator
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-black.png"
+date: "May. 11th, 2026"
+comments: Interactive tool
+category_label: GCP
+group: cloud
+family: calculate
+reading_time: 5 min read
+summary: Estimate blended Google Cloud monthly spend with visible service inputs, assumptions, buffers, and exportable results.
+intro: >-
+    Estimate Google Cloud monthly spend across Compute Engine, Persistent Disk, Cloud Storage, Cloud Functions, API Gateway, shared egress, and blended usage assumptions.
+    Tune purchase models, quantities, buffers, data transfer, and service-level cost drivers before sharing a planning number.
+    Review visible assumptions and export CSV or JSON snapshots for team review, archive notes, or later estimate comparison.
+tags:
+    - Google Cloud
+    - Pricing
+    - FinOps
+    - Compute Engine
+    - Cloud Functions
+    - Cost

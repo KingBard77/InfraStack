@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: Generate Huawei Cloud VPC diagrams from a prompt, then refine zones, subnet tiers, ingress, services, security, and exports.
+card_gradient_start: "#C7000B"
+card_gradient_end: "#111827"
+card_text_color: "#FFFFFF"
+card_kicker: "Huawei Cloud"
+card_image_title: "Huawei Cloud VPC Architecture"
+card_icon_class: "bi bi-cloud"
+card_icon_animation: "pulse"
+card_image: null

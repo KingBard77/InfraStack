@@ -1,0 +1,441 @@
+family: architecture
+version: 1.4.1
+status: active
+description: Baseline template for InfraStack prompt-driven architecture tools.
+baseline_snapshot: "2026-05-18"
+agent_map: templates/content/family/architecture/AGENTS.md
+
+baseline_path: templates/content/family/architecture/
+preferred_baseline_path: templates/content/family/architecture/
+workspace_path: templates/content/family/architecture/workspace/
+scaffold_path: templates/content/main/scaffold/
+main_sections_path: templates/content/main/sections/
+
+reference_tool:
+    path: templates/content/tools/aws/architecture-vpc-aws/
+    purpose: Reference implementation only. Do not treat as the reusable baseline.
+    aliases:
+        - AWS VPC Architecture
+        - AWS VPC architecture
+        - aws-vpc-architecture
+        - architecture-vpc-aws
+
+runtime_baseline:
+    source_tool: templates/content/tools/aws/architecture-vpc-aws/
+    source_snapshot: templates/content/family/architecture/baseline/source/
+    workspace_sections: templates/content/family/architecture/workspace/
+    model_core: templates/content/family/architecture/workspace/assets/bin/model-core.js
+    copy_mode: section_owned
+    css_js_mode: section_owned_extracted
+    root_runtime_snapshots: false
+    source_marker_mode: namespace_marker_anchored
+    source_markers:
+        syntax: "ns:start/ns:end family.architecture.workspace.<section>"
+        files:
+            - tool.html.twig
+            - custom.css
+            - custom.js
+    extracted_runtime_sources:
+        css:
+            shared_foundation: repeated minimal section demo foundation only
+            section_specific: workspace section.css owns only the CSS needed by its section
+            forbidden: full custom.css copies inside section folders
+        js:
+            source_ownership_maps: workspace section.js records section-specific custom.js line ranges, DOM IDs, classes, variables, functions, and behaviors
+            forbidden: full custom.js runtime strings inside section folders
+    model_core_sha256: cf9110167b5ab4e2bd108f2bfdcc6b7939bbc99d941ab891ebb59cd658242bb2
+    source_hashes:
+        tool_html_twig: 117931f15ad2a68656043077b4e807f0975d9ce30783a9e55e62993bb6677b86
+        custom_css: ce4b668b97a948fe9f3e3e23d63b6bb1c33f1356188f00a12a3a8d8d22eb6f0a
+        custom_js: 87e65e2126432eade9dab0e02d9bfb26e3f1a7961e7e25f05cbb99b30edcd966
+        model_core: cf9110167b5ab4e2bd108f2bfdcc6b7939bbc99d941ab891ebb59cd658242bb2
+    rule: Keep the full copied architecture source under baseline/source/ as a reference-only snapshot. Use namespace markers and section.js ownership maps to refresh section-owned page.html.twig, section.css, and section.js files. Do not place full custom.css or custom.js runtime copies in section folders.
+
+applies_to:
+    - architecture diagrams
+    - topology diagrams
+    - network diagrams
+    - cloud diagrams
+    - security path diagrams
+    - operations diagrams
+    - request flow diagrams
+    - dependency maps
+    - visual workspaces
+    - prompt-driven diagrams
+    - editable visual models
+
+archetypes:
+    cloud-vpc:
+        label: Cloud VPC
+        rank: 10
+        description: Shared architecture shape for provider VPC, VNet, and cloud-network diagram tools.
+        tools:
+            - templates/content/tools/aws/architecture-vpc-aws/
+            - templates/content/tools/azure/architecture-vnet-azure/
+            - templates/content/tools/gcp/architecture-vpc-gcp/
+            - templates/content/tools/huawei/architecture-vpc-huawei/
+            - templates/content/tools/ibm/architecture-cloud-ibm/
+            - templates/content/tools/tmcloud/architecture-cloud-tmcloud/
+        shared_shell:
+            - prompt
+            - basic_controls
+            - custom_panel_container
+            - selected_item
+            - result_text
+            - stage
+            - score_card
+            - sort_toolbar
+            - result_table
+            - json_export_restore
+        custom_areas:
+            - network_layout
+            - workload
+            - services_and_controls
+            - security
+            - operations
+            - hybrid_connectivity
+        tool_local:
+            - provider_labels
+            - provider_service_catalog
+            - custom_field_markup
+            - prompt_to_state_parser
+            - diagram_node_rules
+            - connector_rules
+            - score_or_review_notes
+    campus-network:
+        label: Campus Network
+        rank: 20
+        description: Shared architecture shape for LAN, wireless, VLAN, WAN edge, and network operations diagrams.
+        tools:
+            - templates/content/tools/cisco/architecture-campus-network-cisco/
+        shared_shell:
+            - prompt
+            - basic_controls
+            - custom_panel_container
+            - selected_item
+            - result_text
+            - stage
+            - score_card
+            - sort_toolbar
+            - result_table
+            - json_export_restore
+        custom_areas:
+            - campus_layers
+            - vlan_design
+            - routing
+            - wireless
+            - wan_edge
+            - security_boundary
+            - operations
+        tool_local:
+            - vendor_labels
+            - device_role_catalog
+            - custom_field_markup
+            - prompt_to_state_parser
+            - diagram_node_rules
+            - connector_rules
+            - assessment_or_review_notes
+    physical-infrastructure:
+        label: Physical Infrastructure
+        rank: 30
+        description: Shared architecture shape for rack, compute, storage, network, power, backup, and facility diagrams.
+        tools:
+            - templates/content/tools/infrastructure/architecture-physical-server/
+        shared_shell:
+            - prompt
+            - basic_controls
+            - custom_panel_container
+            - selected_item
+            - result_text
+            - stage
+            - score_card
+            - sort_toolbar
+            - result_table
+            - json_export_restore
+        custom_areas:
+            - rack_layout
+            - compute
+            - storage
+            - network
+            - power
+            - backup
+            - operations
+        tool_local:
+            - hardware_labels
+            - device_role_catalog
+            - custom_field_markup
+            - prompt_to_state_parser
+            - diagram_node_rules
+            - connector_rules
+            - assessment_or_review_notes
+
+required_sections:
+    content:
+        - 01_overview
+        - 02_technical-details
+        - 03_example-prompts
+        - 04_tips-prompts
+        - 05_how-to-use
+        - 06_export-notes
+        - 07_faq
+        - 10_references
+    workspace:
+        - 01_input-brief
+        - 02_basic-settings
+        - 03_advanced-settings
+        - 04_selected-item
+        - 05_result-text
+        - 06_result-diagram
+        - 07_score-card
+        - 08_sort-card
+        - 09_result-table
+
+required_output_files:
+    - card.yml
+    - content.md
+    - custom.css
+    - custom.js
+    - meta.yml
+    - tool.html.twig
+    - assets/bin/model-core.js
+    - assets/icon/
+    - assets/img/post.html.twig
+
+required_first_line_markers:
+    content.md: "[//]: # (content.md)"
+    card.yml: "# card.yml"
+    custom.css: "/* custom.css */"
+    custom.js: "// custom.js"
+    meta.yml: "# meta.yml"
+    tool.html.twig: "{# tool.html.twig #}"
+
+workspace_flow:
+    - prompt_or_preset_input
+    - basic_controls
+    - custom_controls
+    - selected_item_controls_when_editable
+    - result_text_and_metadata
+    - diagram_toolbar_and_stage
+    - score_or_status_card
+    - sort_and_export_toolbar
+    - inventory_assessment_notes_export_json_restore_state
+
+baseline_standard:
+    diagram_layout_quality:
+        source: templates/content/family/architecture/AGENTS.md
+        color_identity_source: codex/COLOR.md
+        style:
+            - minimal_modern_architecture_infographic
+            - consistent_spacing_and_padding
+            - rounded_primary_cards_and_containers_16px_to_20px
+            - thin_soft_blue_structural_borders
+            - soft_shadows
+            - bold_headers_and_muted_subtitles
+            - balanced_whitespace
+        layout:
+            - centered_main_traffic_path
+            - aligned_top_level_flow_boxes
+            - edge_or_ingress_lane_above_main_boundary
+            - symmetrical_repeated_zone_or_az_columns
+            - equal_container_subnet_and_section_gaps
+            - rendered_bounds_auto_fit_on_initial_generated_view
+        connectors:
+            - persistent_svg_paths
+            - straight_orthogonal_90_degree_routing
+            - consistent_thin_visual_stroke_width
+            - fixed_arrowhead_sizing
+            - invisible_wide_hit_targets
+            - connector_click_selection
+            - connector_anchor_and_bend_handles_when_editable
+            - connector_override_state_in_json_restore
+            - redraw_paths_when_connected_boxes_move
+            - centered_trunks_for_shared_ingress_or_fanout
+            - branch_paths_through_reserved_gaps_or_gutters
+            - outside_edge_side_anchors_for_mirrored_columns
+            - inner_side_anchors_for_horizontal_peer_or_replication_paths
+            - avoid_boxes_labels_badges_and_handles_where_practical
+        stage_interaction:
+            - click_any_diagram_box_to_select
+            - cursor_drag_moves_movable_boxes
+            - cursor_state_feedback_on_draggable_items
+            - selected_border_ring_or_handle_without_layout_shift
+            - selected_item_updates_inspector
+            - highlight_preserves_grid_content_and_connector_visibility
+            - dragged_positions_update_normalized_layout_state
+            - reset_layout_returns_boxes_and_connectors_to_generated_placement
+            - escape_or_outside_click_clears_selection_where_practical
+        presets:
+            - same_visual_grammar_for_every_preset
+            - content_adapts_without_lowering_design_quality
+    info_markers:
+        scope: body_helper_text_only
+        forbidden_targets:
+            - headings
+            - field_labels
+            - tab_labels
+            - button_text
+            - every_text_node
+    pre_generate_output_notice: Generate an architecture diagram to review technical inventory, service mix, and exportable JSON.
+    output_tabs:
+        - Technical Inventory
+        - Prompt Notes
+        - Pillar Breakdown
+        - Risk Level
+        - JSON
+    secondary_table_sections:
+        - Routing Summary
+        - Control Notes
+    assessment_tabs:
+        - Pillar Breakdown
+        - Risk Level
+    assessment_summary_rule: Advisory model summaries only; do not claim compliance, certification, security validation, reliability validation, or production readiness proof.
+    inventory_sort_default: id
+    inventory_sort_modes:
+        - id
+        - alphabetical
+        - component
+        - placement
+        - purpose
+    basic_dropdown_control_height: 46px
+    basic_dropdown_implementation: custom_select_enhancement
+    basic_dropdown_menu_width: trigger
+    basic_placeholder_chip: false
+    sort_control_min_height: 46px
+    sort_dropdown_menu_width: trigger
+    sort_summary_content: selected_sort_label_only
+    sort_placeholder_chip: false
+    result_table_demo: templates/content/family/architecture/workspace/09_result-table/demo.html
+    result_table_demo_requirement: Demo shows two-row one-column before/after states and includes generated dummy inventory rows, copy-row action buttons, secondary table rows, pillar rows, risk copy, JSON output, and restore boundary.
+    before_after_demo_sections:
+        - templates/content/family/architecture/workspace/04_selected-item/demo.html
+        - templates/content/family/architecture/workspace/06_result-diagram/demo.html
+        - templates/content/family/architecture/workspace/09_result-table/demo.html
+    visible_language_rule: Adapt provider and domain wording in final tools; AWS reference wording is allowed only for AWS tools or baseline demos.
+
+visualizer_interaction:
+    - initial_blurred_preset_preview_before_generation
+    - generated_output_state_locked_until_preset_or_generate
+    - selectable_stage_objects
+    - selected_object_updates_inspector
+    - grid_safe_selected_highlight
+    - cursor_state_feedback
+    - movable_cards_nodes_boundaries_and_groups
+    - marquee_selection_when_multiple_objects_are_editable
+    - group_drag_for_selected_objects
+    - keyboard_movement_for_selected_objects
+    - undo_shortcuts_for_persisted_stage_edits
+    - selectable_connectors_with_wide_hit_targets
+    - connector_anchor_and_bend_handles_when_editable
+    - connector_redraw_on_box_movement
+    - layout_and_connector_overrides_in_json_restore
+
+visual_layout:
+    - minimal_modern_architecture_infographic_style
+    - centered_main_traffic_path
+    - aligned_top_level_flow_boxes
+    - equal_container_subnet_and_section_gaps
+    - symmetrical_repeated_zone_or_az_columns
+    - rounded_primary_cards_and_containers_16px_to_20px
+    - thin_soft_blue_structural_borders_and_soft_shadows
+    - clean_typography_with_bold_headers_and_muted_subtitles
+    - clear_edge_ingress_tier_subnet_workload_data_lanes
+    - readable_gap_between_boxes_labels_badges_and_handles
+    - distinct_tier_zone_subnet_and_outer_boundaries
+    - centered_trunks_for_shared_ingress_or_fanout_paths
+    - persistent_orthogonal_connector_paths_with_consistent_line_thickness
+    - connector_branches_through_reserved_gaps_or_gutters
+    - arrows_land_on_target_centers_unless_side_anchor_is_clearer
+    - mirrored_column_vertical_flows_use_outside_edge_side_anchors
+    - horizontal_peer_replication_or_failover_paths_use_inner_side_anchors
+
+export_priority:
+    - PNG
+    - SVG
+    - JSON
+
+generation_rules:
+    - Use this family template as the baseline for architecture tools.
+    - Use architecture as the family verb for new architecture tool identities.
+    - Use architecture-prefixed names for architecture family outputs.
+    - Generate the final runtime package under templates/content/tools/<category>/<tool-slug>/.
+    - Do not use the family directory as the final runtime package.
+    - Do not omit tool-local files because the family source exists.
+    - Keep full copied architecture source under baseline/source/ as a reference-only snapshot when refreshing this baseline.
+    - Use ns:start/ns:end family.architecture.workspace.<section> markers in baseline source files before refreshing workspace section files.
+    - Use section-owned workspace CSS and JavaScript sources from each architecture workspace section.
+    - Do not create root workspace/custom.css, workspace/custom.js, or workspace/demo.html.twig snapshot files.
+    - Use workspace/assets/bin/model-core.js only as a reusable model-core reference when final tools need it.
+    - Use AWS VPC Architecture only as a reference implementation.
+    - Do not copy provider-specific language into unrelated tools.
+    - Keep architecture support examples on 03_example-prompts unless literal command examples are implemented.
+    - Keep prompt example terminal titles centered and title case.
+    - Apply category/provider token lineage, restrained visual weight, and tool-specific namespace.
+    - Keep CSS and JavaScript scoped to the final tool.
+    - Keep content domain-native and aligned with actual behavior.
+    - Use family workspace source from templates/content/family/architecture/workspace/.
+    - Use shared content section source from templates/content/main/sections/content/.
+    - Apply shared main content sections as a full contract: content.md markup, section.css visual behavior, and section.js helper behavior when present.
+    - Final tool custom.css and custom.js must preserve the applied section card frame, heading divider, typography, table, list, details, FAQ, copy, citation, prompt, or command behavior unless a documented shared include exists.
+    - Use 10_references for complete factual content delivery and when final content includes valid source-backed citations, with in-text citation links targeting matching References row IDs.
+    - Do not create a family-local sections/ directory.
+    - Keep info markers on helper or body text only.
+    - Keep the pre-generate output notice exact.
+    - Keep the generated output tabs as Technical Inventory, Prompt Notes, Pillar Breakdown, Risk Level, and JSON unless a domain-specific label change is documented.
+    - Treat Pillar Breakdown and Risk Level as advisory model summaries, not compliance, certification, security, reliability, or production proof.
+    - Keep Basic tab dropdowns on the baseline select wrapper, custom styled menu, trigger-width dropdown menu, focus ring, 46px control height, and no placeholder-chip overlay.
+    - Keep the inventory Sort default as ID.
+    - Keep the Sort dropdown aligned to the Basic select control height: 46px trigger, trigger-width menu, selected sort label only, and no placeholder chip.
+    - Use secondary output table cards for routing, control, or domain summary rows when the generated model includes those rows.
+    - Keep 04_selected-item neutral hint chips and 07_score-card generated score layout aligned with the AWS reference when refreshing architecture workspace sections.
+    - Keep 04_selected-item, 06_result-diagram, and 09_result-table demos capable of showing before/after dummy states where practical.
+    - Keep before/after section demos stacked as two rows in one column.
+    - Keep 09_result-table/demo.html in generated dummy table, secondary table, assessment, JSON output, and restore boundary state for baseline validation.
+    - Use copy-row buttons in the result table Action column instead of long text.
+    - On first refresh, render a blurred preset preview with the overlay text "Choose a preset to generate diagram" instead of creating the real generated output state.
+    - Do not unlock inventory, score, export, selected object, layout override, or connector override state until the user chooses a preset or clicks generate.
+    - Treat visualizer spacing, connector routing, selection, movement, and undo as reusable family behavior when the stage is editable.
+    - Treat connector hit targets, connector selection, anchor handles, bend handles, fixed arrowheads, and connector override persistence as reusable architecture-family behavior when connectors are editable.
+    - Preserve the diagram layout quality baseline from templates/content/family/architecture/AGENTS.md across every preset.
+    - Use outside-edge side anchors for mirrored left/right column fan-out and tier-to-tier paths when that keeps labels clear.
+    - Preserve inner-side anchors for horizontal peer, standby, failover, or replication relationships across columns.
+    - Keep category/provider token tuning separate from the structural diagram baseline until a lineage is explicitly approved.
+    - Do not make visible row, tier, zone, subnet, or grouping boxes fixed while smaller cards are movable unless documented.
+
+validation_rules:
+    - README.md exists.
+    - manifest.yml exists.
+    - workspace/README.md exists.
+    - workspace/manifest.yml exists.
+    - baseline/source/tool.html.twig, baseline/source/custom.css, baseline/source/custom.js, and baseline/source/assets/bin/model-core.js exist.
+    - baseline/source/tool.html.twig, baseline/source/custom.css, and baseline/source/custom.js contain ns:start/ns:end family.architecture.workspace markers.
+    - baseline/source files do not use legacy source:start or source:end markers for architecture workspace extraction.
+    - No root workspace/custom.css, workspace/custom.js, or workspace/demo.html.twig snapshot files exist.
+    - Shared main content section folders exist under templates/content/main/sections/content/.
+    - Citation links and References rows are paired when 10_references is used.
+    - Architecture workspace section folders exist under templates/content/family/architecture/workspace/.
+    - All required output files are created in the final tool package.
+    - Required first-line markers are present.
+    - No root-level post.html.twig is created.
+    - assets/img/post.html.twig exists.
+    - assets/bin/model-core.js exists.
+    - Tool namespace is unique.
+    - CSS is scoped under the tool root.
+    - JavaScript DOM references match Twig IDs.
+    - Export controls match implemented exports.
+    - JSON restore validates tool ID and version.
+    - Content does not leak stale provider terms.
+    - First refresh shows the blurred preset preview and keeps output/export state empty.
+    - Preset selection or the primary generate action replaces the preview with the real generated stage.
+    - Sort dropdown renders the selected sort label only and keeps the Basic 46px trigger height with a trigger-width menu.
+    - Secondary output table sections render from normalized model data or are omitted.
+    - Pillar Breakdown and Risk Level tabs render from the normalized model after generation.
+    - Assessment tabs do not overclaim compliance, certification, security validation, reliability validation, or production readiness.
+    - Marquee selection, keyboard movement, and undo shortcuts work when documented.
+    - Diagram box selection updates the inspector and keeps grid, box content, and connector paths visible.
+    - Connector paths have a fixed visual stroke, fixed arrowhead sizing, and invisible wide hit targets when editable.
+    - Connector selection exposes anchor or bend handles when connector editing exists.
+    - Moving a box redraws affected connector paths when connectors are editable.
+    - Connector routes avoid boxes, labels, and unintended boundary crossings.
+    - Default diagram spacing leaves clear lanes and readable labels.
+    - Default generated diagrams keep equal gaps, aligned top-level flow boxes, centered traffic paths, and symmetrical repeated zones where applicable.
+    - Presets adapt content without changing the diagram layout quality baseline.

@@ -1,0 +1,586 @@
+{# tool.html.twig #}
+
+<div class="architecture-cloud-ibm-tool" data-tool-slug="architecture-cloud-ibm" data-tool-category="ibm" data-tool-family="architecture" data-tool-canonical="architecture_cloud_ibm">
+  <div class="tool-box">
+    {# ns:start family.architecture.workspace.01_input-brief #}
+    <section class="tool-shell tool-prompt-shell architecture-cloud-ibm-prompt-shell" id="architectureCloudIbmPromptShell" data-section="architecture-prompt" data-root-selector=".architecture-cloud-ibm-tool" aria-label="IBM Cloud architecture prompt">
+      <div class="tool-main-row">
+        <label for="architectureCloudIbmPrompt" class="tool-main-label">Architecture prompt</label>
+        <div class="tool-main-input-grid architecture-cloud-ibm-main-input-grid">
+          <textarea
+            id="architectureCloudIbmPrompt"
+            class="form-control architecture-cloud-ibm-prompt"
+            rows="5"
+            placeholder="Describe the IBM Cloud VPC, region, availability zones, subnet tiers, ingress path, workload runtime, data services, security, and hybrid connectivity."
+          >Create a medium IBM Cloud architecture across 3 availability zones. Use VPC CIDR 10.80.0.0/16 with public ingress subnet 10.80.0.0/24, private app subnet 10.80.10.0/24, and private data subnet 10.80.20.0/24. Add Cloud Internet Services, IBM Cloud Load Balancer, security groups, network ACLs, Public Gateway egress, Secrets Manager, Key Protect, Monitoring and Logs, VPC flow logs, resource group prod-app-rg, and edge protected ingress.</textarea>
+        </div>
+      </div>
+
+      <p class="tool-control-hint architecture-cloud-ibm-prompt-hint">
+        Use one brief prompt with workload scale, availability zones, VPC CIDR, subnet tiers, ingress, workload runtime, managed services, security controls, operations, and hybrid connectivity. Preset selection or Generate Architecture creates the editable workspace.
+      </p>
+
+      <div class="architecture-cloud-ibm-main-actions">
+        <button type="button" class="tool-action-btn tool-action-btn-primary" id="architectureCloudIbmGenerate">
+          <i class="bi bi-stars" aria-hidden="true"></i>
+          <span data-button-label>Generate Architecture</span>
+        </button>
+        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCloudIbmReset">
+          <span data-button-label>Load Default</span>
+        </button>
+      </div>
+    </section>
+    {# ns:end family.architecture.workspace.01_input-brief #}
+
+    <div class="tool-error-state d-none" id="architectureCloudIbmErrorState" hidden></div>
+
+    <section class="tool-shell tool-inspector-shell" id="architectureCloudIbmConfigShell" aria-labelledby="architectureCloudIbmConfigTitle">
+      <div class="tool-shell-header">
+        <div>
+          <h2 class="tool-shell-title" id="architectureCloudIbmConfigTitle">Basic</h2>
+        </div>
+      </div>
+
+      <div class="tool-shell-body">
+        {# ns:start family.architecture.workspace.02_basic-settings #}
+        <div class="tool-inspector-section architecture-cloud-ibm-basic-section" id="architectureCloudIbmBasicConfig" data-section="basic-tab" data-root-selector=".architecture-cloud-ibm-tool">
+          <div class="architecture-cloud-ibm-basic-grid">
+            <div class="architecture-cloud-ibm-control-stack">
+              <label class="tool-control-label" for="architectureCloudIbmPreset">Preset</label>
+              <select id="architectureCloudIbmPreset" class="form-select">
+                <option value="secure-vpc-app" selected>Secure VPC App</option>
+                <option value="openshift-platform">OpenShift Platform</option>
+                <option value="data-services">Data Services</option>
+                <option value="hybrid-connectivity">Hybrid Connectivity</option>
+              </select>
+            </div>
+
+            <div class="architecture-cloud-ibm-control-stack">
+              <label class="tool-control-label" for="architectureCloudIbmSize">Workload scale</label>
+              <select id="architectureCloudIbmSize" class="form-select">
+                <option value="small">Small</option>
+                <option value="medium" selected>Medium</option>
+                <option value="large">Large</option>
+              </select>
+            </div>
+
+            <div class="architecture-cloud-ibm-control-stack">
+              <label class="tool-control-label" for="architectureCloudIbmAccessBlocks">Availability zones</label>
+              <select id="architectureCloudIbmAccessBlocks" class="form-select">
+                <option value="1">1 zone</option>
+                <option value="2">2 zones</option>
+                <option value="3" selected>3 zones</option>
+              </select>
+            </div>
+            <p class="tool-control-hint" id="architectureCloudIbmPresetDescription">Cloud Internet Services, public ingress, private app/data subnets, security groups, flow logs, and monitored operations.</p>
+          </div>
+        </div>
+        {# ns:end family.architecture.workspace.02_basic-settings #}
+
+        {# ns:start family.architecture.workspace.03_advanced-settings #}
+        <details class="architecture-cloud-ibm-custom-panel" id="architectureCloudIbmCustomControls" data-section="custom-tab" data-root-selector=".architecture-cloud-ibm-tool">
+          <summary class="architecture-cloud-ibm-custom-panel-summary">
+            <span>Custom</span>
+            <i class="bi bi-chevron-down" aria-hidden="true"></i>
+          </summary>
+
+          <div class="architecture-cloud-ibm-custom-panel-body">
+            <div class="architecture-cloud-ibm-config-tabs" role="tablist" aria-label="IBM Cloud custom configuration">
+              <button type="button" class="architecture-cloud-ibm-config-tab active" id="architectureCloudIbmNetworkTab" data-config-tab-target="architectureCloudIbmNetworkPanel" role="tab" aria-controls="architectureCloudIbmNetworkPanel" aria-selected="true" tabindex="0">Network</button>
+              <button type="button" class="architecture-cloud-ibm-config-tab" id="architectureCloudIbmServicesTab" data-config-tab-target="architectureCloudIbmServicesPanel" role="tab" aria-controls="architectureCloudIbmServicesPanel" aria-selected="false" tabindex="-1">Services</button>
+              <button type="button" class="architecture-cloud-ibm-config-tab" id="architectureCloudIbmSecurityTab" data-config-tab-target="architectureCloudIbmSecurityPanel" role="tab" aria-controls="architectureCloudIbmSecurityPanel" aria-selected="false" tabindex="-1">Security</button>
+            </div>
+
+            <div class="tool-inspector-section architecture-cloud-ibm-config-panel active" id="architectureCloudIbmNetworkPanel" data-config-panel role="tabpanel" aria-labelledby="architectureCloudIbmNetworkTab">
+              <div class="architecture-cloud-ibm-config-grid">
+                <div class="architecture-cloud-ibm-control-stack">
+                  <label class="tool-control-label" for="architectureCloudIbmRouting">Connectivity pattern</label>
+                  <select id="architectureCloudIbmRouting" class="form-select">
+                    <option value="public-private">Public/private tiers</option>
+                    <option value="private-only">Private endpoint only</option>
+                    <option value="hybrid">Hybrid connectivity</option>
+                    <option value="edge-protected" selected>Edge protected ingress</option>
+                  </select>
+                </div>
+
+                <div class="architecture-cloud-ibm-control-stack architecture-cloud-ibm-vlan-stack">
+                  <label class="tool-control-label" for="architectureCloudIbmVlans">Subnet tiers</label>
+                  <textarea id="architectureCloudIbmVlans" class="form-control architecture-cloud-ibm-vlan-input">Public ingress subnet 10.80.0.0/24
+Private app subnet 10.80.10.0/24
+Private data subnet 10.80.20.0/24</textarea>
+                </div>
+
+                <div class="architecture-cloud-ibm-control-stack">
+                  <label class="tool-control-label" for="architectureCloudIbmTrunkVlans">VPC CIDR</label>
+                  <input type="text" id="architectureCloudIbmTrunkVlans" class="form-control" value="10.80.0.0/16">
+                </div>
+
+                <div class="architecture-cloud-ibm-control-stack">
+                  <label class="tool-control-label" for="architectureCloudIbmNativeVlan">Public subnet CIDR</label>
+                  <input type="text" id="architectureCloudIbmNativeVlan" class="form-control" value="10.80.0.0/24">
+                </div>
+
+                <div class="architecture-cloud-ibm-control-stack">
+                  <label class="tool-control-label" for="architectureCloudIbmAccessVlan">Private app subnet CIDR</label>
+                  <input type="text" id="architectureCloudIbmAccessVlan" class="form-control" value="10.80.10.0/24">
+                </div>
+
+                <div class="architecture-cloud-ibm-control-stack">
+                  <label class="tool-control-label" for="architectureCloudIbmSviGateway">Data subnet CIDR</label>
+                  <input type="text" id="architectureCloudIbmSviGateway" class="form-control" value="10.80.20.0/24">
+                </div>
+
+                <div class="architecture-cloud-ibm-control-stack">
+                  <label class="tool-control-label" for="architectureCloudIbmOspfArea">Resource group</label>
+                  <input type="text" id="architectureCloudIbmOspfArea" class="form-control" value="prod-app-rg">
+                </div>
+
+                <div class="architecture-cloud-ibm-control-stack">
+                  <label class="tool-control-label" for="architectureCloudIbmBgpAsn">Edge ASN</label>
+                  <input type="text" id="architectureCloudIbmBgpAsn" class="form-control" value="64520">
+                </div>
+
+                <div class="architecture-cloud-ibm-control-stack">
+                  <label class="tool-control-label" for="architectureCloudIbmRedundancyVip">DNS zone</label>
+                  <input type="text" id="architectureCloudIbmRedundancyVip" class="form-control" value="app.example.com">
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-inspector-section architecture-cloud-ibm-config-panel" id="architectureCloudIbmServicesPanel" data-config-panel role="tabpanel" aria-labelledby="architectureCloudIbmServicesTab" hidden>
+              <div class="architecture-cloud-ibm-toggle-grid">
+                <label class="architecture-cloud-ibm-toggle-item">
+                  <span class="architecture-cloud-ibm-toggle-copy">OpenShift / IKS</span>
+                  <input type="checkbox" id="architectureCloudIbmWireless">
+                </label>
+
+                <label class="architecture-cloud-ibm-toggle-item">
+                  <span class="architecture-cloud-ibm-toggle-copy">Security groups / ACLs</span>
+                  <input type="checkbox" id="architectureCloudIbmFirewall" checked>
+                </label>
+
+                <label class="architecture-cloud-ibm-toggle-item">
+                  <span class="architecture-cloud-ibm-toggle-copy">Transit Gateway</span>
+                  <input type="checkbox" id="architectureCloudIbmWan">
+                </label>
+
+                <label class="architecture-cloud-ibm-toggle-item">
+                  <span class="architecture-cloud-ibm-toggle-copy">Monitoring / Logs</span>
+                  <input type="checkbox" id="architectureCloudIbmMonitoring" checked>
+                </label>
+
+                <label class="architecture-cloud-ibm-toggle-item">
+                  <span class="architecture-cloud-ibm-toggle-copy">Secrets Manager / Key Protect</span>
+                  <input type="checkbox" id="architectureCloudIbmDhcpDns" checked>
+                </label>
+
+                <label class="architecture-cloud-ibm-toggle-item">
+                  <span class="architecture-cloud-ibm-toggle-copy">Cloud Internet Services</span>
+                  <input type="checkbox" id="architectureCloudIbmHsrp" checked>
+                </label>
+
+                <label class="architecture-cloud-ibm-toggle-item">
+                  <span class="architecture-cloud-ibm-toggle-copy">Load Balancer</span>
+                  <input type="checkbox" id="architectureCloudIbmEtherChannel" checked>
+                </label>
+              </div>
+            </div>
+
+            <div class="tool-inspector-section architecture-cloud-ibm-config-panel" id="architectureCloudIbmSecurityPanel" data-config-panel role="tabpanel" aria-labelledby="architectureCloudIbmSecurityTab" hidden>
+              <div class="architecture-cloud-ibm-toggle-grid">
+                <label class="architecture-cloud-ibm-toggle-item">
+                  <span class="architecture-cloud-ibm-toggle-copy">VPC flow logs</span>
+                  <input type="checkbox" id="architectureCloudIbmAcl" checked>
+                </label>
+
+                <label class="architecture-cloud-ibm-toggle-item">
+                  <span class="architecture-cloud-ibm-toggle-copy">Public Gateway egress</span>
+                  <input type="checkbox" id="architectureCloudIbmNat" checked>
+                </label>
+
+                <label class="architecture-cloud-ibm-toggle-item">
+                  <span class="architecture-cloud-ibm-toggle-copy">Direct Link / VPN</span>
+                  <input type="checkbox" id="architectureCloudIbmVpn">
+                </label>
+              </div>
+            </div>
+          </div>
+        </details>
+        {# ns:end family.architecture.workspace.03_advanced-settings #}
+
+        {# ns:start family.architecture.workspace.04_selected-item #}
+        <div class="tool-inspector-section architecture-cloud-ibm-selected-section" id="architectureCloudIbmSelectedShell" data-section="selected-item" data-root-selector=".architecture-cloud-ibm-tool">
+          <h3 class="architecture-cloud-ibm-section-title">Selected item</h3>
+          <p class="architecture-cloud-ibm-selected-empty architecture-cloud-ibm-selected-empty-chips" id="architectureCloudIbmSelectedEmpty" aria-label="Select a node or boundary box to move, resize, or highlight it. Arrow keys move the selected item; Shift moves faster; Alt + arrow keys resize; Cmd/Ctrl + Z undoes the last stage edit.">
+            <span class="architecture-cloud-ibm-selected-empty-copy">
+              <span class="architecture-cloud-ibm-selected-hint-chip architecture-cloud-ibm-selected-hint-chip-select"><i class="bi bi-cursor" aria-hidden="true"></i>Select a node or boundary box</span>
+              <span class="architecture-cloud-ibm-selected-hint-chip architecture-cloud-ibm-selected-hint-chip-action"><i class="bi bi-arrows-move" aria-hidden="true"></i>Move, resize, or highlight</span>
+              <span class="architecture-cloud-ibm-selected-hint-chip architecture-cloud-ibm-selected-hint-chip-keyboard"><i class="bi bi-arrow-up-right-square" aria-hidden="true"></i>Arrow keys move selected item</span>
+              <span class="architecture-cloud-ibm-selected-hint-chip architecture-cloud-ibm-selected-hint-chip-keyboard"><i class="bi bi-shift" aria-hidden="true"></i>Shift moves faster</span>
+              <span class="architecture-cloud-ibm-selected-hint-chip architecture-cloud-ibm-selected-hint-chip-resize"><i class="bi bi-aspect-ratio" aria-hidden="true"></i>Alt + arrow keys resize</span>
+              <span class="architecture-cloud-ibm-selected-hint-chip architecture-cloud-ibm-selected-hint-chip-undo"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>Cmd/Ctrl + Z undoes last edit</span>
+            </span>
+          </p>
+
+          <div class="architecture-cloud-ibm-selected-editor d-none" id="architectureCloudIbmSelectedEditor">
+            <div class="architecture-cloud-ibm-selected-name" id="architectureCloudIbmSelectedName"></div>
+
+            <div class="architecture-cloud-ibm-selected-grid">
+              <div class="architecture-cloud-ibm-control-stack">
+                <label class="tool-control-label" for="architectureCloudIbmSelectedX">X position</label>
+                <input type="number" id="architectureCloudIbmSelectedX" class="form-control" min="0" step="4">
+              </div>
+
+              <div class="architecture-cloud-ibm-control-stack">
+                <label class="tool-control-label" for="architectureCloudIbmSelectedY">Y position</label>
+                <input type="number" id="architectureCloudIbmSelectedY" class="form-control" min="0" step="4">
+              </div>
+
+              <div class="architecture-cloud-ibm-control-stack">
+                <label class="tool-control-label" for="architectureCloudIbmSelectedWidth">Width</label>
+                <input type="number" id="architectureCloudIbmSelectedWidth" class="form-control" min="120" step="4">
+              </div>
+
+              <div class="architecture-cloud-ibm-control-stack">
+                <label class="tool-control-label" for="architectureCloudIbmSelectedHeight">Height</label>
+                <input type="number" id="architectureCloudIbmSelectedHeight" class="form-control" min="58" step="4">
+              </div>
+            </div>
+
+            <div class="architecture-cloud-ibm-selected-actions">
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCloudIbmHighlightNode">
+                <i class="bi bi-highlighter" aria-hidden="true"></i>
+                <span data-button-label>Highlight</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCloudIbmApplyNode">
+                <i class="bi bi-check2" aria-hidden="true"></i>
+                <span data-button-label>Apply</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-ghost" id="architectureCloudIbmResetNode">
+                <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+                <span data-button-label>Reset</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        {# ns:end family.architecture.workspace.04_selected-item #}
+      </div>
+    </section>
+
+    <section class="tool-shell tool-stage-shell architecture-cloud-ibm-stage-shell" id="architectureCloudIbmStageShell" data-section="diagram-buttons" data-root-selector=".architecture-cloud-ibm-tool" aria-labelledby="architectureCloudIbmStageTitle">
+      {# ns:start family.architecture.workspace.05_result-text #}
+      <div class="tool-shell-header architecture-cloud-ibm-stage-header" id="architectureCloudIbmStageHeader" data-section="title" data-root-selector=".architecture-cloud-ibm-tool">
+        <div class="architecture-cloud-ibm-stage-heading">
+          <h2 class="tool-shell-title" id="architectureCloudIbmStageTitle">IBM Cloud Architecture</h2>
+          <p class="tool-shell-subtitle" id="architectureCloudIbmStageSubtitle">
+            <span class="architecture-cloud-ibm-stage-preset-chip">Secure VPC App preset</span>
+          </p>
+        </div>
+        <div class="architecture-cloud-ibm-stage-meta" id="architectureCloudIbmStageMeta"></div>
+      </div>
+      {# ns:end family.architecture.workspace.05_result-text #}
+
+      {# ns:start family.architecture.workspace.06_result-diagram #}
+      <div class="tool-stage-toolbar">
+        <div class="architecture-cloud-ibm-stage-toolbar-actions">
+          <div class="architecture-cloud-ibm-zoom-control" id="architectureCloudIbmZoomControl">
+            <button type="button" class="architecture-cloud-ibm-zoom-step" id="architectureCloudIbmZoomOut" aria-label="Zoom out" title="Zoom out">
+              <i class="bi bi-dash" aria-hidden="true"></i>
+            </button>
+            <input type="number" id="architectureCloudIbmZoomInput" class="architecture-cloud-ibm-zoom-input" value="50" min="15" max="240" step="1" aria-label="Zoom percentage">
+            <span class="architecture-cloud-ibm-zoom-label" id="architectureCloudIbmZoomLabel">%</span>
+            <button type="button" class="architecture-cloud-ibm-zoom-step" id="architectureCloudIbmZoomIn" aria-label="Zoom in" title="Zoom in">
+              <i class="bi bi-plus" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <button type="button" class="architecture-cloud-ibm-icon-btn" id="architectureCloudIbmZoomFit" aria-label="Zoom to fit" title="Zoom to fit">
+            <i class="bi bi-arrows-angle-contract" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-cloud-ibm-icon-btn" id="architectureCloudIbmZoomActual" aria-label="Zoom to 100%" title="Zoom to 100%">
+            <span>100</span>
+          </button>
+          <button type="button" class="architecture-cloud-ibm-icon-btn" id="architectureCloudIbmUndoStageEdit" aria-label="Undo stage edit" title="Undo stage edit" disabled>
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-cloud-ibm-icon-btn" id="architectureCloudIbmHighlightAll" aria-label="Highlight entire diagram" title="Highlight entire diagram" aria-pressed="false">
+            <i class="bi bi-bounding-box" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-cloud-ibm-icon-btn" id="architectureCloudIbmZoomHideUi" aria-label="Hide UI" title="Hide UI">
+            <i class="bi bi-eye-slash" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="architecture-cloud-ibm-icon-btn" id="architectureCloudIbmFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
+            <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-cloud-ibm-stage-toolbar-btn" id="architectureCloudIbmResetLayout">Reset layout</button>
+        </div>
+      </div>
+
+      <div class="tool-stage-body">
+        <div class="tool-stage-empty" id="architectureCloudIbmStageEmpty">Choose a preset to generate diagram.</div>
+        <div class="tool-stage-canvas architecture-cloud-ibm-stage-canvas d-none" id="architectureCloudIbmStageCanvas"></div>
+      </div>
+
+      <div class="architecture-cloud-ibm-stage-footer">
+        <div class="architecture-cloud-ibm-stage-toolbar-chips">
+          <span class="tool-helper-chip tool-helper-chip-prompt" title="Prompt and preset aware" aria-label="Prompt and preset aware" tabindex="0">
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span class="architecture-cloud-ibm-visually-hidden">Prompt and preset aware</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-inspector" title="Editable inspector controls" aria-label="Editable inspector controls" tabindex="0">
+            <i class="bi bi-sliders2" aria-hidden="true"></i>
+            <span class="architecture-cloud-ibm-visually-hidden">Editable inspector controls</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-drag" title="Drag nodes or boundary boxes to customize layout" aria-label="Drag nodes or boundary boxes to customize layout" tabindex="0">
+            <i class="bi bi-arrows-move" aria-hidden="true"></i>
+            <span class="architecture-cloud-ibm-visually-hidden">Drag nodes or boundary boxes to customize layout</span>
+          </span>
+          <span class="tool-helper-chip tool-helper-chip-svg" title="SVG workspace" aria-label="SVG workspace" tabindex="0">
+            <i class="bi bi-bezier2" aria-hidden="true"></i>
+            <span class="architecture-cloud-ibm-visually-hidden">SVG workspace</span>
+          </span>
+          <button type="button" class="tool-helper-chip tool-helper-chip-keyboard" id="architectureCloudIbmUsageHelpButton" title="Keyboard shortcuts and usage" aria-label="Open keyboard help" aria-controls="architectureCloudIbmUsageHelpPopup" aria-expanded="false">
+            <i class="bi bi-keyboard" aria-hidden="true"></i>
+            <span class="architecture-cloud-ibm-visually-hidden">Keyboard Help</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="architecture-cloud-ibm-usage-overlay d-none" id="architectureCloudIbmUsageHelpPopup" role="dialog" aria-modal="false" aria-labelledby="architectureCloudIbmUsageHelpTitle">
+        <div class="architecture-cloud-ibm-usage-card">
+          <button type="button" class="architecture-cloud-ibm-usage-close" id="architectureCloudIbmUsageHelpClose" aria-label="Close keyboard help">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+          </button>
+
+          <h3 class="architecture-cloud-ibm-usage-title" id="architectureCloudIbmUsageHelpTitle">Diagram Controls</h3>
+          <p class="architecture-cloud-ibm-usage-copy">Select a box in the diagram, then adjust it without leaving the stage.</p>
+
+          <div class="architecture-cloud-ibm-usage-panel">Hold the selected box in place visually while you tune layout, size, and zoom.</div>
+
+          <div class="architecture-cloud-ibm-usage-divider"></div>
+
+          <div class="architecture-cloud-ibm-usage-list" aria-label="Keyboard and pointer controls">
+            <div class="architecture-cloud-ibm-usage-row">
+              <span class="architecture-cloud-ibm-usage-keys">
+                <kbd>←</kbd>
+                <kbd>↑</kbd>
+                <kbd>↓</kbd>
+                <kbd>→</kbd>
+              </span>
+              <span>move selected box</span>
+            </div>
+            <div class="architecture-cloud-ibm-usage-row">
+              <span class="architecture-cloud-ibm-usage-keys">
+                <kbd>Shift</kbd>
+                <kbd>+</kbd>
+                <kbd>Arrows</kbd>
+              </span>
+              <span>move faster</span>
+            </div>
+            <div class="architecture-cloud-ibm-usage-row">
+              <span class="architecture-cloud-ibm-usage-keys">
+                <kbd>Alt</kbd>
+                <kbd>+</kbd>
+                <kbd>Arrows</kbd>
+              </span>
+              <span>resize selected box</span>
+            </div>
+            <div class="architecture-cloud-ibm-usage-row">
+              <span class="architecture-cloud-ibm-usage-keys">
+                <kbd>Mouse</kbd>
+                <kbd>Drag</kbd>
+              </span>
+              <span>reposition box</span>
+            </div>
+            <div class="architecture-cloud-ibm-usage-row">
+              <span class="architecture-cloud-ibm-usage-keys">
+                <kbd>Cmd / Ctrl</kbd>
+                <kbd>+</kbd>
+                <kbd>Z</kbd>
+              </span>
+              <span>undo stage edit</span>
+            </div>
+            <div class="architecture-cloud-ibm-usage-row">
+              <span class="architecture-cloud-ibm-usage-keys">
+                <kbd>Ctrl / Cmd</kbd>
+                <kbd>Wheel</kbd>
+              </span>
+              <span>zoom stage by 1%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {# ns:end family.architecture.workspace.06_result-diagram #}
+    </section>
+
+    <section class="tool-shell tool-output-shell" id="architectureCloudIbmOutputShell" data-section="table-export" data-root-selector=".architecture-cloud-ibm-tool">
+      <div class="tool-empty-state" id="architectureCloudIbmOutputEmpty">Generate an architecture diagram to review technical inventory, service mix, and exportable JSON.</div>
+
+      <div class="architecture-cloud-ibm-output-content d-none" id="architectureCloudIbmOutputContent">
+        <div class="architecture-cloud-ibm-output-shell">
+          {# ns:start family.architecture.workspace.07_score-card #}
+          <div class="architecture-cloud-ibm-output-summary">
+            <div class="architecture-cloud-ibm-output-status-card" data-section="score-card" data-root-selector=".architecture-cloud-ibm-tool" aria-live="polite">
+              <div class="architecture-cloud-ibm-score-card" id="architectureCloudIbmOutputStatus">
+                <div class="architecture-cloud-ibm-score-kicker">Architecture Score</div>
+                <div class="architecture-cloud-ibm-score-summary">Ready</div>
+                <div class="architecture-cloud-ibm-score-detail">Generate an architecture to score the IBM Cloud draft.</div>
+              </div>
+            </div>
+          </div>
+          {# ns:end family.architecture.workspace.07_score-card #}
+
+          {# ns:start family.architecture.workspace.08_sort-card #}
+          <div class="architecture-cloud-ibm-toolbar tool-output-toolbar">
+            <div class="architecture-cloud-ibm-toolbar-main">
+              <label for="architectureCloudIbmInventorySort" class="architecture-cloud-ibm-sort-label">Sort</label>
+              <div class="architecture-cloud-ibm-sort-wrap">
+                <details class="architecture-cloud-ibm-sort-select" id="architectureCloudIbmInventorySortSelect">
+                  <summary class="architecture-cloud-ibm-sort-summary">
+                    <span id="architectureCloudIbmInventorySortSummary">ID</span>
+                  </summary>
+
+                  <div class="architecture-cloud-ibm-sort-menu">
+                    <div class="architecture-cloud-ibm-sort-grid">
+                      <button type="button" class="architecture-cloud-ibm-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
+                      <button type="button" class="architecture-cloud-ibm-sort-option" data-sort-value="component" aria-pressed="false">Component</button>
+                      <button type="button" class="architecture-cloud-ibm-sort-option" data-sort-value="placement" aria-pressed="false">Placement</button>
+                    </div>
+                  </div>
+                </details>
+                <input type="hidden" id="architectureCloudIbmInventorySort" value="id">
+              </div>
+            </div>
+
+            <div class="tool-output-actions">
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCloudIbmExportPng">
+                <i class="bi bi-image" aria-hidden="true"></i>
+                <span data-button-label>Export PNG</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCloudIbmDownloadSvg">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download SVG</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCloudIbmCopyJson">
+                <i class="bi bi-clipboard" aria-hidden="true"></i>
+                <span data-button-label>Copy JSON</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCloudIbmDownloadJson">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download JSON</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-ghost" id="architectureCloudIbmImportJsonButton">
+                <i class="bi bi-upload" aria-hidden="true"></i>
+                <span data-button-label>Import JSON</span>
+              </button>
+            </div>
+          </div>
+          {# ns:end family.architecture.workspace.08_sort-card #}
+
+          {# ns:start family.architecture.workspace.09_result-table #}
+          <div class="architecture-cloud-ibm-tabs-shell">
+            <div class="tool-tabs" role="tablist" aria-label="IBM Cloud output views">
+              <button type="button" class="tool-tab-btn architecture-cloud-ibm-tab-btn active" id="architectureCloudIbmInventoryTab" data-output-tab-target="architectureCloudIbmInventoryPanel" data-tab-target="architectureCloudIbmInventoryPanel" role="tab" aria-controls="architectureCloudIbmInventoryPanel" aria-selected="true" tabindex="0">
+                <i class="bi bi-list-check" aria-hidden="true"></i>
+                <span>Technical Inventory</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-cloud-ibm-tab-btn" id="architectureCloudIbmNotesTab" data-output-tab-target="architectureCloudIbmNotesPanel" data-tab-target="architectureCloudIbmNotesPanel" role="tab" aria-controls="architectureCloudIbmNotesPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-card-text" aria-hidden="true"></i>
+                <span>Prompt Notes</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-cloud-ibm-tab-btn" id="architectureCloudIbmPillarTab" data-output-tab-target="architectureCloudIbmPillarPanel" data-tab-target="architectureCloudIbmPillarPanel" role="tab" aria-controls="architectureCloudIbmPillarPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-bar-chart-line" aria-hidden="true"></i>
+                <span>Pillar Breakdown</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-cloud-ibm-tab-btn" id="architectureCloudIbmRiskTab" data-output-tab-target="architectureCloudIbmRiskPanel" data-tab-target="architectureCloudIbmRiskPanel" role="tab" aria-controls="architectureCloudIbmRiskPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-shield-check" aria-hidden="true"></i>
+                <span>Risk Level</span>
+              </button>
+              <button type="button" class="tool-tab-btn architecture-cloud-ibm-tab-btn" id="architectureCloudIbmJsonTab" data-output-tab-target="architectureCloudIbmJsonPanel" data-tab-target="architectureCloudIbmJsonPanel" role="tab" aria-controls="architectureCloudIbmJsonPanel" aria-selected="false" tabindex="-1">
+                <i class="bi bi-braces" aria-hidden="true"></i>
+                <span>JSON</span>
+              </button>
+            </div>
+
+            <div class="tool-tab-panel architecture-cloud-ibm-tab-panel active" id="architectureCloudIbmInventoryPanel" data-output-panel role="tabpanel" aria-labelledby="architectureCloudIbmInventoryTab">
+              <div class="architecture-cloud-ibm-table-card" id="architectureCloudIbmInventorySection">
+                <div class="architecture-cloud-ibm-table-header">
+                  <h3 class="architecture-cloud-ibm-result-section-title" id="architectureCloudIbmInventoryTitle">Technical Inventory</h3>
+                </div>
+                <div class="architecture-cloud-ibm-table-wrap">
+                  <table class="table architecture-cloud-ibm-table mb-0">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Component</th>
+                        <th scope="col">Placement</th>
+                        <th scope="col">Purpose</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="architectureCloudIbmInventoryTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-tab-panel architecture-cloud-ibm-tab-panel" id="architectureCloudIbmNotesPanel" data-output-panel role="tabpanel" aria-labelledby="architectureCloudIbmNotesTab" hidden>
+              <div class="architecture-cloud-ibm-prompt-notes-card" id="architectureCloudIbmPromptNotes">
+                <h3 class="architecture-cloud-ibm-result-section-title">Prompt Notes</h3>
+                <div class="architecture-cloud-ibm-note-grid">
+                  <section class="architecture-cloud-ibm-note-card">
+                    <h4 class="architecture-cloud-ibm-note-title">Prompt summary</h4>
+                    <p class="architecture-cloud-ibm-note-copy" id="architectureCloudIbmPromptSummary"></p>
+                  </section>
+                  <section class="architecture-cloud-ibm-note-card">
+                    <h4 class="architecture-cloud-ibm-note-title">Detected keywords</h4>
+                    <ul class="architecture-cloud-ibm-note-list" id="architectureCloudIbmKeywordList"></ul>
+                  </section>
+                  <section class="architecture-cloud-ibm-note-card">
+                    <h4 class="architecture-cloud-ibm-note-title">Applied assumptions</h4>
+                    <ul class="architecture-cloud-ibm-note-list" id="architectureCloudIbmAssumptionList"></ul>
+                  </section>
+                  <section class="architecture-cloud-ibm-note-card">
+                    <h4 class="architecture-cloud-ibm-note-title">Current model</h4>
+                    <ul class="architecture-cloud-ibm-note-list" id="architectureCloudIbmModelList"></ul>
+                  </section>
+                  <section class="architecture-cloud-ibm-note-card">
+                    <h4 class="architecture-cloud-ibm-note-title">Pros</h4>
+                    <ul class="architecture-cloud-ibm-note-list" id="architectureCloudIbmProsList"></ul>
+                  </section>
+                  <section class="architecture-cloud-ibm-note-card">
+                    <h4 class="architecture-cloud-ibm-note-title">Review points</h4>
+                    <ul class="architecture-cloud-ibm-note-list" id="architectureCloudIbmConsList"></ul>
+                  </section>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-tab-panel architecture-cloud-ibm-tab-panel" id="architectureCloudIbmPillarPanel" data-output-panel role="tabpanel" aria-labelledby="architectureCloudIbmPillarTab" hidden>
+              <section class="architecture-cloud-ibm-assessment-card architecture-cloud-ibm-pillar-card" id="architectureCloudIbmPillarBreakdown" aria-label="Pillar breakdown"></section>
+            </div>
+
+            <div class="tool-tab-panel architecture-cloud-ibm-tab-panel" id="architectureCloudIbmRiskPanel" data-output-panel role="tabpanel" aria-labelledby="architectureCloudIbmRiskTab" hidden>
+              <section class="architecture-cloud-ibm-assessment-card architecture-cloud-ibm-risk-card" id="architectureCloudIbmRiskLevel" aria-label="Risk level"></section>
+            </div>
+
+            <div class="tool-tab-panel architecture-cloud-ibm-tab-panel" id="architectureCloudIbmJsonPanel" data-output-panel role="tabpanel" aria-labelledby="architectureCloudIbmJsonTab" hidden>
+              <div class="tool-json-shell architecture-cloud-ibm-json-shell" id="architectureCloudIbmJsonShell">
+                <div class="architecture-cloud-ibm-json-header">
+                  <div>
+                    <h3 class="architecture-cloud-ibm-json-title">Restorable state</h3>
+                    <p>JSON preserves editable IBM Cloud architecture state.</p>
+                  </div>
+                </div>
+                <pre class="architecture-cloud-ibm-json-code" id="architectureCloudIbmJsonOutput"></pre>
+              </div>
+            </div>
+          </div>
+          {# ns:end family.architecture.workspace.09_result-table #}
+        </div>
+      </div>
+
+      <input type="file" id="architectureCloudIbmImportJson" class="d-none" accept="application/json">
+    </section>
+  </div>
+</div>
