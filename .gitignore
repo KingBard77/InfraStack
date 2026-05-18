@@ -57,3 +57,7 @@
 setup.sh
 deployer.sh
 ###< script ###
+
+/AGENTS.md
+/SKILL.md
+/tests/
