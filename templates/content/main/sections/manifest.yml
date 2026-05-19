@@ -2,7 +2,7 @@ source: main-sections
 version: 1.2.0
 status: active
 description: Canonical reusable content section delivery source for InfraStack tool scaffolding.
-agent_map: templates/content/main/AGENTS.md
+agent_map: templates/content/main/MAIN.md
 
 scaffold_path: templates/content/main/scaffold/
 sections_path: templates/content/main/sections/
@@ -77,5 +77,5 @@ validation_rules:
     - Section-template parity is validated against the final runtime package, not only the source template.
     - Family directories do not contain duplicated sections/ folders.
     - Active family directories contain workspace/ sources when they define reusable workspace grammar.
-    - References in AGENTS.md, codex/*.md, family README.md, and family manifest.yml point to this main sections path.
+    - References in role markdown, codex/*.md, family README.md, and family manifest.yml point to this main sections path.
     - Prompt and command terminal strip titles render as centered title-case labels.

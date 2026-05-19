@@ -4,7 +4,7 @@ version: 1.4.1
 status: active
 description: Family-specific workspace grammar for InfraStack architecture tools.
 baseline_snapshot: "2026-05-18"
-agent_map: templates/content/family/architecture/AGENTS.md
+agent_map: templates/content/family/architecture/FAMILY.md
 
 family_path: templates/content/family/architecture/
 workspace_path: templates/content/family/architecture/workspace/
@@ -84,9 +84,9 @@ workspace_sections:
     09_result-table: inventory, secondary tables, prompt notes, pillar breakdown, risk level, JSON output, import, restore, and normalized state boundary
 
 baseline_rules:
-    diagram_layout_quality_source: templates/content/family/architecture/AGENTS.md
+    diagram_layout_quality_source: templates/content/family/architecture/FAMILY.md
     diagram_layout_quality:
-        color_identity_source: codex/COLOR.md
+        color_identity_source: templates/content/MAIN.md
         required:
             - centered_main_traffic_path
             - aligned_top_level_flow_boxes

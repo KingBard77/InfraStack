@@ -3,7 +3,7 @@ family: assessment
 version: 1.0.0
 status: active
 description: Family-specific workspace grammar for InfraStack assessment tools using the current CIS Ubuntu Benchmark 2204 filter, summary, toolbar, table, artifact, and JSON baseline.
-agent_map: templates/content/family/assessment/AGENTS.md
+agent_map: templates/content/family/assessment/FAMILY.md
 
 family_path: templates/content/family/assessment/
 workspace_path: templates/content/family/assessment/workspace/

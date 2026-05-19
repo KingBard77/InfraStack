@@ -53,7 +53,7 @@ Baseline rules:
 - Connector-capable stages also use line-selection language and keep connector selection synchronized with normalized connector overrides.
 - Usage help and helper chips must describe only implemented stage behavior.
 - Connector lines keep fixed visual stroke and arrowhead sizing, expose invisible hit targets, support connector selection, expose anchor or bend handles when editable, and redraw when connected boxes move.
-- Generated diagram layout quality follows `templates/content/family/architecture/AGENTS.md`; use the workspace manifest for structured checks.
+- Generated diagram layout quality follows `templates/content/family/architecture/FAMILY.md`; use the workspace manifest for structured checks.
 
 Use AWS wording only for AWS tools or baseline demos. For final tools in other providers or domains, keep the same workflow grammar and translate visible terms.
 

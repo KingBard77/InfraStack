@@ -3,7 +3,7 @@ version: 1.4.1
 status: active
 description: Baseline template for InfraStack prompt-driven architecture tools.
 baseline_snapshot: "2026-05-18"
-agent_map: templates/content/family/architecture/AGENTS.md
+agent_map: templates/content/family/architecture/FAMILY.md
 
 baseline_path: templates/content/family/architecture/
 preferred_baseline_path: templates/content/family/architecture/
@@ -222,8 +222,8 @@ workspace_flow:
 
 baseline_standard:
     diagram_layout_quality:
-        source: templates/content/family/architecture/AGENTS.md
-        color_identity_source: codex/COLOR.md
+        source: templates/content/family/architecture/FAMILY.md
+        color_identity_source: templates/content/MAIN.md
         style:
             - minimal_modern_architecture_infographic
             - consistent_spacing_and_padding
@@ -395,7 +395,7 @@ generation_rules:
     - Do not unlock inventory, score, export, selected object, layout override, or connector override state until the user chooses a preset or clicks generate.
     - Treat visualizer spacing, connector routing, selection, movement, and undo as reusable family behavior when the stage is editable.
     - Treat connector hit targets, connector selection, anchor handles, bend handles, fixed arrowheads, and connector override persistence as reusable architecture-family behavior when connectors are editable.
-    - Preserve the diagram layout quality baseline from templates/content/family/architecture/AGENTS.md across every preset.
+    - Preserve the diagram layout quality baseline from templates/content/family/architecture/FAMILY.md across every preset.
     - Use outside-edge side anchors for mirrored left/right column fan-out and tier-to-tier paths when that keeps labels clear.
     - Preserve inner-side anchors for horizontal peer, standby, failover, or replication relationships across columns.
     - Keep category/provider token tuning separate from the structural diagram baseline until a lineage is explicitly approved.

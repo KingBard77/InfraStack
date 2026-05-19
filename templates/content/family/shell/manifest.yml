@@ -3,7 +3,7 @@ version: 1.0.0
 status: active
 description: Baseline template for InfraStack browser-first shell and command-generation tools.
 baseline_snapshot: "2026-05-18"
-agent_map: templates/content/family/shell/AGENTS.md
+agent_map: templates/content/family/shell/FAMILY.md
 
 baseline_path: templates/content/family/shell/
 preferred_baseline_path: templates/content/family/shell/

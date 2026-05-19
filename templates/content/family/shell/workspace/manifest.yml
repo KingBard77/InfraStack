@@ -4,7 +4,7 @@ version: 1.0.0
 status: active
 description: Family-specific workspace grammar for InfraStack shell and command-generation tools using the promoted shell family baseline.
 baseline_snapshot: "2026-05-18"
-agent_map: templates/content/family/shell/AGENTS.md
+agent_map: templates/content/family/shell/FAMILY.md
 
 family_path: templates/content/family/shell/
 workspace_path: templates/content/family/shell/workspace/

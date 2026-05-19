@@ -2,7 +2,7 @@ family: assessment
 version: 1.0.0
 status: active
 description: Baseline template for InfraStack browser-first assessment tools with searchable scope controls, ID-first tables, selected artifact review, copy/export actions, and JSON snapshot boundaries.
-agent_map: templates/content/family/assessment/AGENTS.md
+agent_map: templates/content/family/assessment/FAMILY.md
 
 baseline_path: templates/content/family/assessment/
 preferred_baseline_path: templates/content/family/assessment/

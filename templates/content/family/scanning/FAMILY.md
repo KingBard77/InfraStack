@@ -1,4 +1,4 @@
-# Scanning Family Agent Map
+# Scanning Family Contract
 
 This file is the source of truth for scanning-family baseline guidance.
 

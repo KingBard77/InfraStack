@@ -39,6 +39,8 @@
 
 .tool-family-section {
     min-width: 0;
+    padding: 0;
+    overflow: visible;
 }
 
 .tool-family-heading {
@@ -528,6 +530,12 @@
 @media (max-width: 767px) {
     .tool-family-list {
         gap: 22px;
+    }
+
+    .tool-card-summary {
+        text-align: left;
+        text-justify: auto;
+        word-spacing: normal;
     }
 
     .tool-family-heading {

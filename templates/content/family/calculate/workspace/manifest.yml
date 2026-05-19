@@ -3,7 +3,7 @@ family: calculate
 version: 1.4.0
 status: active
 description: Family-specific workspace grammar for InfraStack calculator tools using the current AWS, Azure, and IBM Cloud cost calculators for structure, provider adaptation, category/provider token handling, result summary, output toolbar, table shell, prompt examples, and JSON restore baseline.
-agent_map: templates/content/family/calculate/AGENTS.md
+agent_map: templates/content/family/calculate/FAMILY.md
 
 family_path: templates/content/family/calculate/
 workspace_path: templates/content/family/calculate/workspace/

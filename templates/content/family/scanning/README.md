@@ -98,10 +98,10 @@ Before creating a new scanning tool, read:
 1. `AGENTS.md`
 2. `codex/PROMPT.md`
 3. `codex/DESIGN.md`
-4. `codex/COLOR.md`
-5. `codex/CONTENT.md`
-6. `codex/TOOL.md`
-7. `codex/FAMILY.md`
+4. `templates/content/MAIN.md`
+5. `templates/content/main/MAIN.md`
+6. `templates/content/tools/TOOLS.md`
+7. `templates/content/family/FAMILY.md`
 8. `templates/content/family/scanning/README.md`
 9. `templates/content/family/scanning/manifest.yml`
 10. `templates/content/family/scanning/workspace/README.md`

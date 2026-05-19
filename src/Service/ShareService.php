@@ -14,9 +14,9 @@ class ShareService
 
     private const SNAPSHOT_METADATA_ROOT = '/var/snapshot';
 
-    private const SNAPSHOT_IMAGE_ROOT = '/public/snapshot';
+    private const SNAPSHOT_IMAGE_ROOT = '/var/snapshot/image';
 
-    private const SNAPSHOT_IMAGE_PUBLIC_ROOT = '/snapshot';
+    private const LEGACY_SNAPSHOT_IMAGE_ROOT = '/public/snapshot';
 
     public function __construct(
         private readonly ParameterBagInterface $parameterBag,
@@ -98,6 +98,10 @@ class ShareService
         $imagePath = $this->getSnapshotImagePath($tool['category_slug'], $tool['slug'], $snapshotId);
 
         if (!is_file($imagePath)) {
+            $imagePath = $this->getLegacySnapshotImagePath($tool['category_slug'], $tool['slug'], $snapshotId);
+        }
+
+        if (!is_file($imagePath)) {
             throw new ShareSnapshotException('Snapshot not found.', JsonResponse::HTTP_NOT_FOUND);
         }
 
@@ -119,14 +123,13 @@ class ShareService
         $this->validateSnapshotId($snapshotId);
 
         return rtrim($origin, '/')
-            . self::SNAPSHOT_IMAGE_PUBLIC_ROOT
+            . '/share/'
+            . rawurlencode((string) $tool['category_slug'])
             . '/'
-            . $tool['category_slug']
-            . '/'
-            . $tool['slug']
+            . rawurlencode((string) $tool['slug'])
             . '/'
             . $snapshotId
-            . '.png';
+            . '/image';
     }
 
     private function resolveTool(string $category, string $slug): array
@@ -223,7 +226,7 @@ class ShareService
 
     private function ensureDirectory(string $path): bool
     {
-        return is_dir($path) || (mkdir($path, 0755, true) && is_dir($path));
+        return is_dir($path) || (@mkdir($path, 0755, true) && is_dir($path));
     }
 
     private function getSnapshotMetadataDir(string $category, string $slug): string
@@ -246,9 +249,24 @@ class ShareService
             . $slug;
     }
 
+    private function getLegacySnapshotImageDir(string $category, string $slug): string
+    {
+        return (string) $this->parameterBag->get('kernel.project_dir')
+            . self::LEGACY_SNAPSHOT_IMAGE_ROOT
+            . '/'
+            . $category
+            . '/'
+            . $slug;
+    }
+
     private function getSnapshotImagePath(string $category, string $slug, string $snapshotId): string
     {
         return $this->getSnapshotImageDir($category, $slug) . '/' . $snapshotId . '.png';
+    }
+
+    private function getLegacySnapshotImagePath(string $category, string $slug, string $snapshotId): string
+    {
+        return $this->getLegacySnapshotImageDir($category, $slug) . '/' . $snapshotId . '.png';
     }
 
     private function getSnapshotMetadataPath(string $category, string $slug, string $snapshotId): string

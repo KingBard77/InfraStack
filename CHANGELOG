@@ -1,0 +1,10 @@
+# CHANGELOG
+
+## Unreleased
+
+### Fixed
+- Fixed tool detail intro alignment so the visible intro paragraph remains justified across desktop and mobile.
+- Fixed mobile support-copy readability by keeping markdown body paragraphs, FAQ answers, and tool card summaries left-aligned on narrow screens.
+- Tightened tool detail breadcrumb-to-title spacing by reducing page-title padding and removing stacked content-page AOS transforms.
+- Moved new share snapshot image storage from `public/snapshot` to `var/snapshot/image` so production snapshot creation no longer depends on a writable web-root directory.
+- Preserved existing legacy snapshot images under `public/snapshot` through fallback reads while serving public snapshot image URLs through `/share/{category}/{slug}/{snapshotId}/image`.

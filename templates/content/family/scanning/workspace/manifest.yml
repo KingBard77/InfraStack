@@ -3,7 +3,7 @@ family: scanning
 version: 1.0.6
 status: active
 description: Family-specific workspace grammar for InfraStack scanner tools using the current Web Security Scanner target, options, hidden-first result, output toolbar, evidence tabs, JSON restore, and example input baseline.
-agent_map: templates/content/family/scanning/AGENTS.md
+agent_map: templates/content/family/scanning/FAMILY.md
 
 family_path: templates/content/family/scanning/
 workspace_path: templates/content/family/scanning/workspace/

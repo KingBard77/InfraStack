@@ -1,4 +1,4 @@
-# Shell Family Agent Map
+# Shell Family Contract
 
 This file is the source of truth for shell-family baseline guidance.
 

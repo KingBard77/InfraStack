@@ -2,7 +2,7 @@ family: calculate
 version: 1.4.0
 status: active
 description: Baseline template for InfraStack browser-first calculator tools using the AWS, Azure, and IBM Cloud cost calculators as the current reference set for structure, provider adaptation, category/provider token handling, normalized models, table export shells, and JSON restore boundaries.
-agent_map: templates/content/family/calculate/AGENTS.md
+agent_map: templates/content/family/calculate/FAMILY.md
 
 baseline_path: templates/content/family/calculate/
 preferred_baseline_path: templates/content/family/calculate/

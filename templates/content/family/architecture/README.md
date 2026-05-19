@@ -158,10 +158,10 @@ Before creating a new architecture tool, read:
 1. `AGENTS.md`
 2. `codex/PROMPT.md`
 3. `codex/DESIGN.md`
-4. `codex/COLOR.md`
-5. `codex/CONTENT.md`
-6. `codex/TOOL.md`
-7. `codex/FAMILY.md`
+4. `templates/content/MAIN.md`
+5. `templates/content/main/MAIN.md`
+6. `templates/content/tools/TOOLS.md`
+7. `templates/content/family/FAMILY.md`
 8. `templates/content/family/architecture/README.md`
 9. `templates/content/family/architecture/manifest.yml`
 10. `templates/content/family/architecture/workspace/README.md`
@@ -330,7 +330,7 @@ Do not make large row bands, tier boxes, subnet boxes, or zone boxes static whil
 
 Default architecture diagrams should be readable before the user edits anything.
 
-The detailed diagram layout quality baseline lives in `templates/content/family/architecture/AGENTS.md` and is represented structurally in `manifest.yml`.
+The detailed diagram layout quality baseline lives in `templates/content/family/architecture/FAMILY.md` and is represented structurally in `manifest.yml`.
 
 Use that source for spacing, alignment, symmetry, rounded cards and containers, soft structural borders, shadows, typography, first-render fit, orthogonal connectors, centered trunks, outside-edge side anchors for mirrored columns, inner-side anchors for horizontal peer paths, and preset consistency.
 

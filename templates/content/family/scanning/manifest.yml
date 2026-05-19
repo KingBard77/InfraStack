@@ -2,7 +2,7 @@ family: scanning
 version: 1.0.6
 status: active
 description: Baseline template for InfraStack scanner tools with target input, bounded scan options, hidden-first result output, evidence tables, export controls, and JSON restore boundaries.
-agent_map: templates/content/family/scanning/AGENTS.md
+agent_map: templates/content/family/scanning/FAMILY.md
 
 baseline_path: templates/content/family/scanning/
 preferred_baseline_path: templates/content/family/scanning/

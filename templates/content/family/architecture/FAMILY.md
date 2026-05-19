@@ -1,4 +1,4 @@
-# Architecture Family Agent Map
+# Architecture Family Contract
 
 This file is the source of truth for the current architecture family baseline.
 
@@ -60,7 +60,7 @@ This is the architecture-family source of truth for generated diagram structure.
 
 Apply it to architecture, topology, flow, dependency, cloud, network, security path, and editable visual model tools.
 
-Primary color identity is intentionally outside this family baseline. Final tools must use the category/provider token lineage and visual weight rules from `codex/COLOR.md`, but color changes must not weaken the layout, spacing, connector, typography, or preset consistency rules below.
+Primary color identity is intentionally outside this family baseline. Final tools must use the category/provider token lineage and visual weight rules from `templates/content/MAIN.md`, but color changes must not weaken the layout, spacing, connector, typography, or preset consistency rules below.
 
 Default generated diagrams must:
 
