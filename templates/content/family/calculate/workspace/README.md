@@ -7,7 +7,9 @@ This folder defines the family-specific workspace grammar for calculate tools.
 Use it when a requested tool turns visible inputs, quantities, assumptions, rates, or configuration choices into computed output.
 
 The shared scaffold owns reusable content rhythm.
-This workspace source owns calculate workspace sections and calculator behavior.
+This workspace source owns calculate-specific workspace sections and calculator behavior. Common workspace shape is sourced from `templates/content/family/_base/workspace/`.
+
+Workspace source inherits the platform two-font system: `Nunito` through `--heading-font` for headings and titles, and `Roboto` through `--default-font` for body, labels, controls, tables, and tool UI. Do not add other proportional font families in calculate section CSS, demos, or final runtime copies.
 
 ## Reference Workspaces
 
@@ -39,12 +41,12 @@ Use AWS to understand working input-to-result grammar, table/export shell struct
 When a user asks to baseline a calculate tool, copy the full stabilized runtime source into:
 
 ```text
-templates/content/family/calculate/baseline/source/
+templates/content/family/calculate/source/
 ```
 
-The copied snapshot is reference-only. Do not import it directly from final runtime tools.
+The copied snapshot is reference-only. Do not audit this as active source. Do not import it directly from final runtime tools.
 
-Reusable calculator behavior belongs in the matching workspace section files:
+Reusable calculate-specific behavior belongs in the matching workspace section files:
 
 ```text
 templates/content/family/calculate/workspace/<section>/page.html.twig
@@ -53,7 +55,7 @@ templates/content/family/calculate/workspace/<section>/section.js
 templates/content/family/calculate/workspace/<section>/demo.html
 ```
 
-The current section source is derived from the three cloud cost calculators: AWS supplies the structural reference, while Azure and IBM Cloud prove the adaptation path for namespace, labels, category/provider tokens, examples, formulas, and JSON payload identity. Do not recreate root `workspace/custom.css`, `workspace/custom.js`, or `workspace/demo.html.twig` snapshots.
+The current section source is derived from the three cloud cost calculators: AWS supplies the structural reference, while Azure and IBM Cloud prove the adaptation path for namespace, labels, category/provider tokens, examples, formulas, and JSON payload identity. Do not recreate root `workspace/custom.css`, `workspace/custom.js`, or `workspace/demo.html.twig` snapshots, and do not recreate duplicate calculate copies of `_base` workspace sections.
 
 ## Composition Order
 
@@ -63,10 +65,12 @@ When creating a calculate-family tool:
 2. Read `templates/content/family/calculate/manifest.yml`.
 3. Read this workspace source.
 4. Read `templates/content/family/calculate/workspace/manifest.yml`.
-5. Inspect the relevant section `page.html.twig`, `section.css`, `section.js`, and `demo.html` files under `templates/content/family/calculate/workspace/`.
-6. Read `templates/content/main/scaffold/README.md`.
-7. Read the shared main content section folders under `templates/content/main/sections/content/`.
-8. Generate the final tool package under `templates/content/tools/<category>/<tool-slug>/`.
+5. Inspect `workspace_namespaces` in the calculate workspace manifest to see the ordered `_base` and calculate-owned sections.
+6. Inspect the relevant `_base` section files under `templates/content/family/_base/workspace/`.
+7. Inspect calculate-owned section `page.html.twig`, `section.css`, `section.js`, and `demo.html` files under `templates/content/family/calculate/workspace/`.
+8. Read `templates/content/main/scaffold/README.md`.
+9. Read the shared main content section folders under `templates/content/main/sections/content/`.
+10. Generate the final tool package under `templates/content/tools/<category>/<tool-slug>/`.
 
 ## Workspace Shape
 
@@ -76,10 +80,11 @@ Calculate workspaces use this baseline flow:
 2. Preset and basic settings load a known estimate shape.
 3. Service, component, or workload cards expose visible inputs.
 4. Advanced assumptions, rates, overrides, and buffers stay editable.
-5. Result summary shows the main computed answer.
-6. Output toolbar exposes sort, export, copy, and optional import.
-7. Result tabs expose breakdown, mix, assumptions, recommendations, and JSON.
-8. JSON payload output reflects the current estimate and can restore state only when import is implemented.
+5. Optional visual contract defines normalized metrics, driver cards, formula rows, rings, charts, and visual result tones.
+6. Result summary shows the main computed answer.
+7. Output toolbar exposes sort, export, copy, and optional import.
+8. Result tabs expose breakdown, mix, assumptions, recommendations, and JSON.
+9. JSON payload output reflects the current estimate and can restore state only when import is implemented.
 
 ## Baseline UI Pattern
 
@@ -104,7 +109,13 @@ When a shared main content section is adapted into a final runtime package, appl
 templates/content/main/sections/content/
 ```
 
-Use calculate workspace sections from:
+Use `_base` workspace sections from:
+
+```text
+templates/content/family/_base/workspace/
+```
+
+Use calculate-owned workspace sections from:
 
 ```text
 templates/content/family/calculate/workspace/
@@ -119,18 +130,20 @@ Calculate content adaptation:
 - `content/04_tips-prompts` becomes input tips and assumption guidance when the calculator is form-first.
 - Overview, service-driver, and review-boundary tables should use explicit HTML table structure with fixed layout and wrapping so columns align inside the content card.
 
-Calculate workspace sections:
+Workspace namespace composition:
 
-- `01_input-brief` starts the estimate model.
-- `02_basic-settings` controls preset and basic settings.
-- `03_advanced-settings` defines service, component, workload, line-item, assumption, rate, override, and buffer controls.
+- `family._base.workspace.00_shell` provides the shared workspace frame.
+- `family._base.workspace.01_input-brief` starts the estimate model.
+- `family._base.workspace.02_basic-settings` controls preset and basic settings.
+- `family._base.workspace.03_custom-settings` defines optional service, component, workload, line-item, assumption, rate, override, and buffer controls.
+- `04_visual-contract` defines the optional calculate visual and model contract for metric cards, driver cards, formula rows, rings, charts, and visual result primitives.
 - `04_selected-item` defines an optional selected line item or component inspector; it stays no-op unless selection exists.
-- `05_result-summary` defines total, run-rate, status, or summary cards.
-- `06_result-view` defines breakdown, mix, assumptions, recommendations, and JSON tabs.
-- `07_table-export` defines breakdown table, copy, CSV, and report export controls.
-- `08_json-restore` defines structured JSON payload output.
+- `family._base.workspace.05_result-summary` defines total, run-rate, status, or summary cards.
+- `family._base.workspace.06_output-toolbar` defines sort, copy, export, and import controls.
+- `family._base.workspace.07_table-output` defines breakdown, mix, assumptions, recommendations, and JSON tabs.
+- `family._base.workspace.08_json-restore` defines structured JSON payload output.
 
-Each section folder must contain the same bundle shape used by architecture workspace sections:
+Each calculate-owned section folder must contain the same bundle shape used by architecture workspace sections:
 
 ```text
 README.md
@@ -139,6 +152,8 @@ page.html.twig
 section.css
 section.js
 ```
+
+`04_visual-contract` also contains `manifest.yml` and `model-core.js`. Keep `model-core.js` free of DOM, Twig, and browser event binding so final tools can adapt it into `assets/bin/model-core.js` when they need testable model normalization.
 
 Use `page.html.twig`, `section.css`, and `section.js` as section-level source files. Use `demo.html` for isolated visual and behavior checks before adapting the section into a complete tool.
 

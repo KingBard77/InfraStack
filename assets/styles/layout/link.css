@@ -65,7 +65,22 @@
 .blog-details .article-content .related-link-title {
     flex: 1 1 auto;
     min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     color: inherit;
+    overflow-wrap: anywhere;
+}
+
+.blog-details .article-content .related-link-title > i {
+    flex: 0 0 auto;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.blog-details .article-content .related-link-title > span {
+    min-width: 0;
     overflow-wrap: anywhere;
 }
 

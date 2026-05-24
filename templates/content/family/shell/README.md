@@ -59,7 +59,7 @@ Netcat Command Generator is the historical working shell-family baseline referen
 The reusable baseline is this family template, the reference-only source snapshot under:
 
 ```text
-templates/content/family/shell/baseline/source/
+templates/content/family/shell/source/
 ```
 
 and the numbered workspace section sources under:
@@ -68,7 +68,7 @@ and the numbered workspace section sources under:
 templates/content/family/shell/workspace/
 ```
 
-After promotion, use this family source as the source of truth. Use the Netcat tool only to understand the original implementation quality or to refresh the reference snapshot. Translate visible labels, flags, examples, category/provider token lineage, command logic, warnings, and assumptions for final non-netcat shell tools.
+After promotion, use this composed family source as the source of truth. Shared frame, input, settings, summary, toolbar, table, and JSON restore sections come from `_base/workspace`; shell keeps generated command result text, optional command visual state, and command model helpers. Use the Netcat tool only to understand the original implementation quality or to refresh the reference snapshot. Translate visible labels, flags, examples, category/provider token lineage, command logic, warnings, and assumptions for final non-netcat shell tools.
 
 ## Required Final Tool Package
 
@@ -132,20 +132,20 @@ Runtime baseline files:
 templates/content/family/shell/workspace/assets/bin/model-core.js
 ```
 
-Full copied runtime source lives under `baseline/source/` for traceability only. Reusable shell markup, CSS, and JavaScript ownership metadata live in the seven numbered workspace section folders. Each `section.css` carries the minimal shell demo foundation plus section-specific selectors, and each `section.js` records source line ranges, DOM IDs, classes, variables, functions, and behavior ownership. Do not recreate root `workspace/custom.css` or `workspace/custom.js` snapshots, and do not embed full custom runtime strings inside section folders.
+Full copied runtime source lives under `source/` for traceability only. Do not audit this as active source. Common reusable workspace markup, CSS, and JavaScript live in `templates/content/family/_base/workspace/`. Shell-owned sources live in `04_result-text`, optional `04_visual-contract`, and `workspace/assets/bin/model-core.js`. Do not recreate root `workspace/custom.css` or `workspace/custom.js` snapshots, and do not embed full custom runtime strings inside section folders.
 
-The reference snapshot under `baseline/source/` carries extraction markers in `tool.html.twig`, `custom.css`, and `custom.js`:
+The reference snapshot under `source/` carries extraction markers in `tool.html.twig`, `custom.css`, and `custom.js`:
 
 ```text
 source:start family.shell.workspace.<section>
 source:end family.shell.workspace.<section>
 ```
 
-Refresh shell workspace sections from those marked ranges first, then replace exact Netcat identifiers with `__TOOL_CLASS__`, `__PREFIX__`, and `__DOM_PREFIX__`. Keep the replacement exact enough that longer slug-prefixed classes such as `generate-netcat-shell-toolbar` become `__PREFIX__-toolbar`, not a broken root-class placeholder.
+Refresh shell-owned workspace sections from those marked ranges first, then replace exact Netcat identifiers with `__TOOL_CLASS__`, `__PREFIX__`, and `__DOM_PREFIX__`. Keep the replacement exact enough that longer slug-prefixed classes such as `generate-netcat-shell-toolbar` become `__PREFIX__-toolbar`, not a broken root-class placeholder. For common sections, use the `_base` source instead of regenerating shell-local duplicates.
 
 ## Strict Reapply Rule
 
-When applying or reapplying the shell family to existing shell tools, the seven workspace sections in this family source are mandatory. A completed reapply must restore family-source structural, visual, and runtime parity for the command builder, Basic panel, Custom panel, generated command text, summary cards, Sort toolbar, output actions, tabs, operation table, warnings, JSON, and restore boundary where implemented.
+When applying or reapplying the shell family to existing shell tools, the composed `workspace_namespaces` contract is mandatory. `_base` provides the common command builder frame, Basic panel, Custom panel, summary cards, Sort toolbar, output actions, tabs, operation table, warnings, JSON, and restore frame. Shell-owned `04_result-text` remains mandatory because `_base` does not own generated command source-of-truth or copyable command preview behavior. `04_visual-contract` is optional until a task explicitly scopes command visual reapplication.
 
 This rule applies to every shell runtime package in scope, including `generate-netcat-shell` when it is named. No reference package is exempt; it satisfies reapply only by passing the same current family-source parity gate as every other target package. Byte-equivalence to an old snapshot is not acceptance when the family workspace source has moved on.
 
@@ -153,7 +153,7 @@ Do not count namespace markers, source markers, partial CSS, copied comments, ol
 
 The shell parity gate must inspect final runtime packages and verify:
 
-- visible panel label `Custom`; `03_advanced-setting` stays only as folder and namespace naming
+- visible panel label `Custom`; legacy `03_advanced-setting` may remain only as a compatibility marker name
 - no nested card frame directly inside the opened Custom panel body
 - Sort options exactly `ID`, `A-Z`, `Field`, `Value`, and `Length`, unless a command-native divergence is recorded
 - output actions exactly `Export PDF`, `Download CSV`, `Copy JSON`, `Download JSON`, and `Import JSON` for current shipped shell generators
@@ -163,17 +163,25 @@ The shell parity gate must inspect final runtime packages and verify:
 
 ## Shell Workspace Sections
 
-The shell family owns its workspace section source:
+Shell workspace composition:
 
 ```text
-templates/content/family/shell/workspace/01_input-target/
-templates/content/family/shell/workspace/02_basic-setting/
-templates/content/family/shell/workspace/03_advanced-setting/
+templates/content/family/_base/workspace/
+├── 00_shell/
+├── 01_input-brief/
+├── 02_basic-settings/
+├── 03_custom-settings/
+├── 05_result-summary/
+├── 06_output-toolbar/
+├── 07_table-output/
+└── 08_json-restore/
+
+templates/content/family/shell/workspace/04_visual-contract/
 templates/content/family/shell/workspace/04_result-text/
-templates/content/family/shell/workspace/05_score-card/
-templates/content/family/shell/workspace/06_sort-card/
-templates/content/family/shell/workspace/07_table/
+templates/content/family/shell/workspace/assets/bin/model-core.js
 ```
+
+Only `04_result-text`, optional `04_visual-contract`, and `assets/bin/model-core.js` remain shell-owned after `_base` composition. The older shell-local common section folders are superseded by `_base`. `04_visual-contract` includes `manifest.yml` and `model-core.js`; it owns the optional shell visual and model contract for command preview, token chips, option groups, warning tones, and operation rows. Generated command text remains owned by `04_result-text`; the visual contract mirrors normalized command state and must not become the command source of truth.
 
 ## Scaffold Content Sections
 
@@ -215,10 +223,11 @@ Shell workspaces use this baseline flow:
 1. Input target, command intent, preset, or primary command action starts the model.
 2. Basic setting controls define implementation, shell, role, target, ports, and required operands.
 3. Custom setting controls expose optional command flags and unsupported-option warning boundaries.
-4. Result text shows the generated command, empty state, and copy behavior.
-5. Score cards summarize status, mode, protocol, warnings, and generated route text.
-6. Sort card owns the compact sort and output action toolbar.
-7. Table owns operation rows, row copy, warnings, errors, JSON output, and restore import only when implemented.
+4. Optional visual contract summarizes command preview, tokens, options, warning posture, and operation rows.
+5. Shell-owned result text shows the generated command, empty state, and copy behavior.
+6. `_base` result summary cards summarize status, mode, protocol, warnings, and generated route text.
+7. `_base` output toolbar owns the compact sort and output action toolbar.
+8. `_base` table and JSON sections own operation rows, row copy, warnings, errors, JSON output, and restore import frame when implemented.
 
 Family demos should render the extracted section snippet with dummy state around it. Standalone `demo.html` files own demo chrome separately from Netcat runtime extraction: load any icon stylesheet they need, render plain `demo-title` and `demo-title-text` wrappers, and add decorative title icons only when explicitly requested. Result-related family demos must show before and after states as two stacked rows in one column, not side by side.
 

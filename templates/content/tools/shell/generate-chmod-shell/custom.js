@@ -1,5 +1,159 @@
 // custom.js
 
+// ns:start family._base.workspace.00_shell
+// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
+// ns:end family._base.workspace.00_shell
+
+function initializeInfraStackCustomDropdowns(root) {
+    const scope = root || document;
+    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
+
+    dropdowns.forEach(function (dropdown) {
+        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
+        const targetInput = targetId ? document.getElementById(targetId) : null;
+        const label = dropdown.querySelector('[data-custom-dropdown-label]');
+        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
+
+        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
+            return;
+        }
+
+        function sync(value) {
+            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
+            let selectedOption = options.find(function (option) {
+                return option.dataset.customDropdownValue === selectedValue;
+            }) || options[0];
+
+            if (!selectedOption) {
+                return;
+            }
+
+            const nextValue = selectedOption.dataset.customDropdownValue || '';
+
+            if (targetInput.value !== nextValue) {
+                targetInput.value = nextValue;
+            }
+            label.textContent = selectedOption.textContent.trim();
+            options.forEach(function (option) {
+                const isActive = option === selectedOption;
+
+                option.classList.toggle('active', isActive);
+                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+        }
+
+        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
+            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+
+            if (descriptor && descriptor.get && descriptor.set) {
+                Object.defineProperty(targetInput, 'value', {
+                    configurable: true,
+                    get: function () {
+                        return descriptor.get.call(this);
+                    },
+                    set: function (nextValue) {
+                        descriptor.set.call(this, nextValue);
+                        window.requestAnimationFrame(function () {
+                            sync(String(nextValue || ''));
+                        });
+                    }
+                });
+                targetInput.dataset.customDropdownValueProxy = 'true';
+            }
+        }
+
+        options.forEach(function (option) {
+            option.addEventListener('click', function () {
+                sync(option.dataset.customDropdownValue || '');
+                targetInput.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+                dropdown.removeAttribute('open');
+            });
+        });
+
+        targetInput.addEventListener('change', function () {
+            sync(targetInput.value);
+        });
+        sync(targetInput.value);
+        dropdown.dataset.customDropdownBound = 'true';
+    });
+}
+
+
+// ns:start family._base.workspace.05_result-summary
+function installInfraStackResultSummaryNormalizer(prefix) {
+    function normalizeSummary(summary) {
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
+
+        if (!hero) {
+            return;
+        }
+
+        const cards = Array.from(hero.querySelectorAll(':scope > .' + prefix + '-result-card'));
+        const primaryCard = cards.find(function (card) {
+            return card.classList.contains(prefix + '-result-card-primary') || card.classList.contains(prefix + '-result-card-visual') || card.classList.contains(prefix + '-result-card-command');
+        }) || cards[0];
+        const summaryCard = cards.find(function (card) {
+            return card !== primaryCard && (card.classList.contains(prefix + '-result-card-summary') || card.classList.contains(prefix + '-result-card-main'));
+        }) || cards.find(function (card) {
+            return card !== primaryCard;
+        });
+
+        if (primaryCard) {
+            primaryCard.classList.add(prefix + '-result-card-primary');
+            if (!primaryCard.dataset.resultVisual) {
+                primaryCard.dataset.resultVisual = primaryCard.querySelector('.' + prefix + '-result-command-output') ? 'command' : 'text';
+            }
+        }
+
+        if (summaryCard) {
+            summaryCard.classList.add(prefix + '-result-card-summary');
+            const chipRow = summaryCard.querySelector('.' + prefix + '-result-chip-row');
+
+            if (chipRow && !summaryCard.querySelector('.' + prefix + '-result-chip-grid')) {
+                chipRow.classList.add(prefix + '-result-chip-grid');
+            }
+        }
+
+        if (primaryCard && hero.firstElementChild !== primaryCard) {
+            hero.insertBefore(primaryCard, hero.firstElementChild);
+        }
+
+        if (primaryCard && summaryCard && primaryCard.nextElementSibling !== summaryCard) {
+            hero.insertBefore(summaryCard, primaryCard.nextElementSibling);
+        }
+    }
+
+    function normalize() {
+        document.querySelectorAll('.' + prefix + '-result-summary').forEach(normalizeSummary);
+    }
+
+    function scheduleNormalize() {
+        window.requestAnimationFrame(normalize);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            normalize();
+            new MutationObserver(scheduleNormalize).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }, { once: true });
+        return;
+    }
+
+    normalize();
+    new MutationObserver(scheduleNormalize).observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+installInfraStackResultSummaryNormalizer('generate-chmod-shell');
+// ns:end family._base.workspace.05_result-summary
+
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('generateChmodShellForm');
     const submitButton = document.getElementById('generateChmodShellSubmit');
@@ -1470,60 +1624,61 @@ document.addEventListener('DOMContentLoaded', function () {
         }).format(dateValue);
     }
 
-// ns:start family.shell.workspace.05_score-card
+// ns:start family._base.workspace.05_result-summary
     function renderSummary(result) {
-        const warningBadgeClass = result.warnings.length > 0 ? 'generate-chmod-shell-badge-warn' : 'generate-chmod-shell-badge-success';
+        const warningTone = result.warnings.length > 0 ? 'warning' : 'success';
+        const resultTone = result.warnings.length > 0 ? 'warning' : 'ready';
+        const updatedText = new Date().toLocaleString();
 
+        resultSummary.dataset.resultTone = resultTone;
+        resultSummary.dataset.resultLayout = 'command';
         resultSummary.innerHTML = `
-            <div class="generate-chmod-shell-summary-shell">
-                <div class="generate-chmod-shell-summary-gauge">
-                    <div class="generate-chmod-shell-summary-method">chmod mode</div>
-                    <div class="generate-chmod-shell-summary-host">${escapeHtml(result.numeric)}</div>
-                    <div class="generate-chmod-shell-summary-shell-name">${escapeHtml(result.symbolic)}</div>
-                </div>
-
-                <div class="generate-chmod-shell-summary-side">
-                    <div class="generate-chmod-shell-summary-route">
-                        <div class="generate-chmod-shell-summary-route-label">Generated command</div>
-                        <div class="generate-chmod-shell-summary-route-value">${escapeHtml(result.command)}</div>
-                    </div>
-
-                    <div class="generate-chmod-shell-summary-cards">
-                        <div class="generate-chmod-shell-stat-card">
-                            <div class="generate-chmod-shell-stat-label">Target</div>
-                            <div class="generate-chmod-shell-stat-value">${escapeHtml(result.target || 'No path')}</div>
-                        </div>
-
-                        <div class="generate-chmod-shell-stat-card">
-                            <div class="generate-chmod-shell-stat-label">Triplets</div>
-                            <div class="generate-chmod-shell-stat-value">${escapeHtml(buildTripletSummary(result.state))}</div>
-                        </div>
-
-                        <div class="generate-chmod-shell-stat-card">
-                            <div class="generate-chmod-shell-stat-label">Special</div>
-                            <div class="generate-chmod-shell-stat-value">${escapeHtml(buildSpecialSummary(result.state))}</div>
-                        </div>
-
-                        <div class="generate-chmod-shell-stat-card">
-                            <div class="generate-chmod-shell-stat-label">ls -l</div>
-                            <div class="generate-chmod-shell-stat-value">${escapeHtml(result.lsPreview)}</div>
-                        </div>
+            <header class="generate-chmod-shell-result-header" aria-label="Result summary header">
+                <div class="generate-chmod-shell-result-header-main">
+                    <span class="generate-chmod-shell-result-header-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span>
+                    <div class="generate-chmod-shell-result-header-copy">
+                        <h2 class="generate-chmod-shell-result-header-title">Result Summary</h2>
+                        <p>Overview of the generated chmod command result and key metrics</p>
                     </div>
                 </div>
+                <div class="generate-chmod-shell-result-header-meta" aria-label="Result summary status">
+                    <span class="generate-chmod-shell-result-header-chip generate-chmod-shell-result-chip-ready"><span class="generate-chmod-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span>
+                    <span class="generate-chmod-shell-result-header-chip generate-chmod-shell-result-chip-updated"><span class="generate-chmod-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>${escapeHtml(updatedText)}</span></span>
+                </div>
+            </header>
+            <div class="generate-chmod-shell-result-hero-grid" aria-live="polite">
+                <article class="generate-chmod-shell-result-card generate-chmod-shell-result-card-primary" data-result-visual="command" aria-label="Primary command result">
+                    <div class="generate-chmod-shell-result-primary-heading generate-chmod-shell-result-visual-copy generate-chmod-shell-result-visual-copy-top"><div class="generate-chmod-shell-result-kicker">Primary Result</div><h3 class="generate-chmod-shell-result-title generate-chmod-shell-result-title-center">Mode result</h3></div>
+                    <div class="generate-chmod-shell-result-primary-visual" id="generateChmodShellResultVisual" aria-label="Primary chmod result">
+                        <div class="generate-chmod-shell-result-command-output"><code class="generate-chmod-shell-result-command-value">${escapeHtml(`Mode ${result.numeric}`)}</code></div>
+                    </div>
+                    <div class="generate-chmod-shell-result-visual-copy"><p class="generate-chmod-shell-result-copy generate-chmod-shell-result-copy-center">Compact permission preview for the generated chmod command.</p></div>
+                    <span class="generate-chmod-shell-result-card-divider" aria-hidden="true"></span>
+                    <div class="generate-chmod-shell-result-chip-row generate-chmod-shell-result-chip-row-center" aria-label="Primary result outcome"><span class="generate-chmod-shell-result-chip generate-chmod-shell-result-chip-outcome generate-chmod-shell-result-chip-ready"><span class="generate-chmod-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span>Command Generated</span></span></div>
+                </article>
+                <article class="generate-chmod-shell-result-card generate-chmod-shell-result-card-summary" aria-label="Command summary">
+                    <div class="generate-chmod-shell-result-summary-intro"><span class="generate-chmod-shell-result-card-icon generate-chmod-shell-result-card-icon-summary" aria-hidden="true"><i class="bi bi-terminal"></i></span><div class="generate-chmod-shell-result-summary-copy"><div class="generate-chmod-shell-result-kicker">Descriptive Summary</div><h3 class="generate-chmod-shell-result-title">chmod mode preview</h3><p class="generate-chmod-shell-result-copy">Numeric, symbolic, and ls-style output stay aligned with the current target and permission controls.</p></div></div>
+                    <span class="generate-chmod-shell-result-card-divider" aria-hidden="true"></span>
+                    <div class="generate-chmod-shell-result-chip-grid" aria-label="Command state">
+                        <span class="generate-chmod-shell-result-chip generate-chmod-shell-result-chip-baseline"><span class="generate-chmod-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-folder2"></i></span><span>${escapeHtml(result.targetType === 'directory' ? 'Directory' : 'File')}</span></span>
+                        <span class="generate-chmod-shell-result-chip generate-chmod-shell-result-chip-ready"><span class="generate-chmod-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>${escapeHtml(result.flagsLabel)}</span></span>
+                        <span class="generate-chmod-shell-result-chip generate-chmod-shell-result-chip-${warningTone}"><span class="generate-chmod-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-exclamation-triangle"></i></span><span>${escapeHtml(`${result.warnings.length} warning${result.warnings.length === 1 ? '' : 's'}`)}</span></span>
+                        <span class="generate-chmod-shell-result-chip generate-chmod-shell-result-chip-baseline"><span class="generate-chmod-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span>${escapeHtml(`${result.commandMode} command mode`)}</span></span>
+                    </div>
+                </article>
             </div>
-
-            <div class="generate-chmod-shell-summary-badges">
-                <span class="generate-chmod-shell-badge generate-chmod-shell-badge-neutral">${escapeHtml(result.targetType === 'directory' ? 'Directory' : 'File')}</span>
-                <span class="generate-chmod-shell-badge generate-chmod-shell-badge-success">${escapeHtml(result.flagsLabel)}</span>
-                <span class="generate-chmod-shell-badge ${warningBadgeClass}">${escapeHtml(`${result.warnings.length} warning${result.warnings.length === 1 ? '' : 's'}`)}</span>
-                <span class="generate-chmod-shell-badge generate-chmod-shell-badge-neutral">${escapeHtml(`${result.commandMode} command mode`)}</span>
+            <div class="generate-chmod-shell-result-metric-grid" aria-label="Command metrics">
+                <article class="generate-chmod-shell-result-metric-card generate-chmod-shell-result-metric-success"><span class="generate-chmod-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-folder2"></i></span><span class="generate-chmod-shell-result-metric-label">Target</span><strong class="generate-chmod-shell-result-metric-value">${escapeHtml(result.target || 'No path')}</strong><span class="generate-chmod-shell-result-metric-copy">Path used in the command.</span><span class="generate-chmod-shell-result-metric-accent" aria-hidden="true"></span></article>
+                <article class="generate-chmod-shell-result-metric-card generate-chmod-shell-result-metric-info"><span class="generate-chmod-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-person-check"></i></span><span class="generate-chmod-shell-result-metric-label">Triplets</span><strong class="generate-chmod-shell-result-metric-value">${escapeHtml(buildTripletSummary(result.state))}</strong><span class="generate-chmod-shell-result-metric-copy">Owner, group, and others.</span><span class="generate-chmod-shell-result-metric-accent" aria-hidden="true"></span></article>
+                <article class="generate-chmod-shell-result-metric-card generate-chmod-shell-result-metric-accent-tone"><span class="generate-chmod-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-shield-lock"></i></span><span class="generate-chmod-shell-result-metric-label">Special</span><strong class="generate-chmod-shell-result-metric-value">${escapeHtml(buildSpecialSummary(result.state))}</strong><span class="generate-chmod-shell-result-metric-copy">Setuid, setgid, or sticky bits.</span><span class="generate-chmod-shell-result-metric-accent" aria-hidden="true"></span></article>
+                <article class="generate-chmod-shell-result-metric-card generate-chmod-shell-result-metric-warning"><span class="generate-chmod-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-file-code"></i></span><span class="generate-chmod-shell-result-metric-label">ls -l</span><strong class="generate-chmod-shell-result-metric-value">${escapeHtml(result.lsPreview)}</strong><span class="generate-chmod-shell-result-metric-copy">Permission string preview.</span><span class="generate-chmod-shell-result-metric-accent" aria-hidden="true"></span></article>
             </div>
         `;
-
     }
 
-// ns:end family.shell.workspace.05_score-card
-// ns:start family.shell.workspace.06_sort-card
+// ns:end family._base.workspace.05_result-summary
+
+// ns:start family._base.workspace.06_output-toolbar
     function updateSortState() {
         const selectedButton = sortOptionButtons.find((button) => button.dataset.sortValue === sortInput.value) || sortOptionButtons[0];
         const selectedLabel = selectedButton
@@ -1544,7 +1699,7 @@ document.addEventListener('DOMContentLoaded', function () {
         sortSelect.removeAttribute('open');
     }
 
-// ns:end family.shell.workspace.06_sort-card
+// ns:end family._base.workspace.06_output-toolbar
     function getSortedOperationRows(result) {
         if (!result) {
             return [];
@@ -1607,7 +1762,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return rows.sort((left, right) => left.index - right.index);
     }
 
-// ns:start family.shell.workspace.07_table
+// ns:start family._base.workspace.07_table-output
     function renderTables(result) {
         commandOutput.textContent = result.command;
         lsOutput.textContent = result.lsPreview;
@@ -1660,14 +1815,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td>${escapeHtml(row.effect)}</td>
                     <td>${escapeHtml(row.result)}</td>
                     <td class="generate-chmod-shell-table-copy-cell">
-                        <button type="button" class="generate-chmod-shell-table-btn" data-operation-copy="${escapeHtml(row.result)}">Copy</button>
+                        <button type="button" class="generate-chmod-shell-row-copy generate-chmod-shell-row-copy-btn" data-operation-copy="${escapeHtml(row.result)}" aria-label="Copy operation row ${index + 1}" title="Copy operation row">
+                            <i class="bi bi-clipboard" aria-hidden="true"></i>
+                        </button>
                     </td>
                 </tr>
             `)
             .join('');
     }
 
-// ns:end family.shell.workspace.07_table
+// ns:end family._base.workspace.07_table-output
+// ns:start family._base.workspace.05_result-summary
 // ns:start family.shell.workspace.04_result-text
     function renderResult(result) {
         latestResult = result;
@@ -1684,6 +1842,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 // ns:end family.shell.workspace.04_result-text
+// ns:end family._base.workspace.05_result-summary
     function showErrorState(message) {
         resultEmpty.classList.add('d-none');
         resultContent.classList.add('d-none');
@@ -1696,7 +1855,7 @@ document.addEventListener('DOMContentLoaded', function () {
         submitButton.textContent = isLoading ? 'Generating...' : 'Generate';
     }
 
-// ns:start family.shell.workspace.03_advanced-setting
+// ns:start family._base.workspace.03_custom-settings
     function buildResult() {
         if (!commitPendingEditors()) {
             throw new Error('Fix the direct editing fields before generating the chmod command.');
@@ -1736,7 +1895,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return result;
     }
 
-// ns:end family.shell.workspace.03_advanced-setting
+// ns:end family._base.workspace.03_custom-settings
     function syncUrlState(result) {
         const params = new URLSearchParams();
 
@@ -1768,7 +1927,7 @@ document.addEventListener('DOMContentLoaded', function () {
         window.history.replaceState({}, '', nextUrl);
     }
 
-// ns:start family.shell.workspace.01_input-target
+// ns:start family._base.workspace.01_input-brief
     function generateAndRender() {
         setGeneratingState(true);
 
@@ -1784,8 +1943,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-// ns:end family.shell.workspace.01_input-target
-// ns:start family.shell.workspace.02_basic-setting
+// ns:end family._base.workspace.01_input-brief
+// ns:start family._base.workspace.02_basic-settings
     function applyPreset(presetKey) {
         if (presetKey === 'manual') {
             syncAllEnhancedSelects();
@@ -1811,7 +1970,7 @@ document.addEventListener('DOMContentLoaded', function () {
         syncStateUi();
     }
 
-// ns:end family.shell.workspace.02_basic-setting
+// ns:end family._base.workspace.02_basic-settings
     function applyOperationValue(rawOperation) {
         if (!commitPendingEditors()) {
             throw new Error('Fix the direct editing fields before applying a symbolic operation.');
@@ -2148,13 +2307,19 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const copyValue = target.getAttribute('data-operation-copy');
+        const copyButton = target.closest('.generate-chmod-shell-row-copy, .generate-chmod-shell-row-copy-btn');
+
+        if (!copyButton || !operationsTableBody.contains(copyButton)) {
+            return;
+        }
+
+        const copyValue = copyButton.getAttribute('data-operation-copy');
 
         if (copyValue === null) {
             return;
         }
 
-        copyText(copyValue, target);
+        copyText(copyValue, copyButton);
     });
 
     updateSortState();
@@ -2217,6 +2382,7 @@ document.addEventListener('DOMContentLoaded', function () {
         flashButton(downloadJsonButton, 'Downloaded');
     });
 
+    // ns:start family._base.workspace.08_json-restore
     importJsonButton.addEventListener('click', function () {
         importJsonInput.click();
     });
@@ -2238,8 +2404,140 @@ document.addEventListener('DOMContentLoaded', function () {
             importJsonInput.value = '';
         }
     });
+    // ns:end family._base.workspace.08_json-restore
 
     updateUmaskPreview();
     syncStateUi();
     generateAndRender();
+    initializeInfraStackCustomDropdowns(document);
 });
+/* ns:start family._base.workspace.07_table-output */
+(function setupGenerateChmodShellTableOutputStandard() {
+    const rootSelector = '.generate-chmod-shell-tool';
+    const tableSelector = '.tool-result-table tbody tr, .generate-chmod-shell-table tbody tr';
+    const tbodySelector = '.tool-result-table tbody, .generate-chmod-shell-table tbody';
+    const clampClass = 'generate-chmod-shell-table-cell-text';
+    const cellClampClass = 'generate-chmod-shell-cell-clamp';
+    const statusColumnClass = 'generate-chmod-shell-table-status-cell';
+
+    function hasActionColumn(cells, table) {
+        const lastCell = cells[cells.length - 1];
+        const lastHead = table ? table.querySelector('thead th:last-child') : null;
+        const headText = lastHead ? String(lastHead.textContent || '') : '';
+
+        return Boolean(
+            lastCell && lastCell.querySelector('button, [data-copy-row], [data-inventory-copy-row], [data-control-copy-row], [data-options-copy], [data-operation-copy], [data-copy-value]')
+        ) || /copy|action|actions/i.test(headText);
+    }
+
+    function isStatusLikeHeader(text) {
+        return /^(status|signal|criticality|severity|state|health|outcome|result|level|label)$/i.test(String(text || '').trim());
+    }
+
+    function getBodyCells(row) {
+        return Array.from(row.children).filter(function filterCells(cell) {
+            return cell.tagName && cell.tagName.toLowerCase() === 'td';
+        });
+    }
+
+    function applyStatusAlignment(root) {
+        root.querySelectorAll('.tool-result-table, .generate-chmod-shell-table').forEach(function alignStatusTable(table) {
+            const headers = Array.from(table.querySelectorAll('thead th'));
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            table.querySelectorAll('.' + statusColumnClass).forEach(function clearStatusCell(cell) {
+                cell.classList.remove(statusColumnClass);
+            });
+
+            headers.forEach(function alignStatusColumn(header, index) {
+                const statusLike = isStatusLikeHeader(header.textContent);
+                header.classList.toggle(statusColumnClass, statusLike);
+
+                if (!statusLike) {
+                    return;
+                }
+
+                rows.forEach(function alignStatusCell(row) {
+                    const cells = getBodyCells(row);
+                    const cell = cells[index];
+
+                    if (cell && cell.colSpan <= 1) {
+                        cell.classList.add(statusColumnClass);
+                    }
+                });
+            });
+        });
+    }
+
+    function clampCell(cell) {
+        if (!cell || cell.colSpan > 1 || cell.querySelector('.' + clampClass + ', .' + cellClampClass)) {
+            return;
+        }
+
+        if (cell.children.length === 1 && !cell.firstElementChild.matches('button')) {
+            cell.firstElementChild.classList.add(clampClass);
+            return;
+        }
+
+        const wrapper = document.createElement('span');
+        wrapper.className = clampClass;
+
+        while (cell.firstChild) {
+            wrapper.appendChild(cell.firstChild);
+        }
+
+        cell.appendChild(wrapper);
+    }
+
+    function applyTableOutputClamp() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        applyStatusAlignment(root);
+
+        root.querySelectorAll(tableSelector).forEach(function clampRow(row) {
+            const cells = getBodyCells(row);
+            const table = row.closest('table');
+            const actionColumn = hasActionColumn(cells, table);
+
+            cells.forEach(function clampDataCell(cell, index) {
+                const isFirst = index === 0;
+                const isAction = actionColumn && index === cells.length - 1;
+
+                if (!isFirst && !isAction) {
+                    clampCell(cell);
+                }
+            });
+        });
+    }
+
+    function observeTables() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        root.querySelectorAll(tbodySelector).forEach(function observeBody(tbody) {
+            if (tbody.dataset.tableOutputClampObserver === 'true') {
+                return;
+            }
+
+            tbody.dataset.tableOutputClampObserver = 'true';
+            new MutationObserver(applyTableOutputClamp).observe(tbody, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        applyTableOutputClamp();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', observeTables);
+    } else {
+        observeTables();
+    }
+}());
+/* ns:end family._base.workspace.07_table-output */

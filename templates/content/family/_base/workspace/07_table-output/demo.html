@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Base Table Output Demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        body {
+            margin: 0;
+            background: #f8fafc;
+            color: #111827;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .demo-wrap {
+            display: grid;
+            gap: 20px;
+            width: min(1040px, calc(100% - 32px));
+            margin: 32px auto;
+        }
+
+        .demo-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            color: #111827;
+            font-size: 22px;
+            line-height: 1.2;
+        }
+
+        .demo-title-icon {
+            display: inline-flex;
+            width: 34px;
+            height: 34px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .base-demo-tool {
+            --base-table-accent: #7c3aed;
+            --base-table-accent-border: #ddd6fe;
+            --base-table-accent-ring: rgba(124, 58, 237, 0.12);
+            --base-table-accent-soft: #f8f5ff;
+            --base-table-border: #ddd6fe;
+            --base-table-border-strong: #c8b6ff;
+            --base-table-heading: #1f1433;
+            --base-table-muted: #6b5b7e;
+        }
+    </style>
+    <link rel="stylesheet" href="section.css">
+</head>
+<body>
+    <main class="demo-wrap">
+        <h1 class="demo-title">
+            <span class="demo-title-icon"><i class="bi bi-table" aria-hidden="true"></i></span>
+            <span class="demo-title-text">Base Table Output Demo</span>
+        </h1>
+
+        <section class="base-demo-tool __TOOL_CLASS__">
+            <div class="__PREFIX__-table-output-shell" id="__DOM_PREFIX__TableOutputShell">
+                <div class="__PREFIX__-table-empty" id="__DOM_PREFIX__TableEmpty">Generate output to review the primary table, supporting sections, and JSON payload.</div>
+
+                <div class="__PREFIX__-table-tabs" role="tablist" aria-label="Generated output views">
+                    <button type="button" class="__PREFIX__-table-tab-btn is-active" id="__DOM_PREFIX__TableTabOne" data-tab-target="__DOM_PREFIX__TablePanelOne" role="tab" aria-controls="__DOM_PREFIX__TablePanelOne" aria-selected="true" tabindex="0">
+                        <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi bi-list-check"></i></span>
+                        <span>Breakdown</span>
+                    </button>
+                    <button type="button" class="__PREFIX__-table-tab-btn" id="__DOM_PREFIX__TableTabTwo" data-tab-target="__DOM_PREFIX__TablePanelTwo" role="tab" aria-controls="__DOM_PREFIX__TablePanelTwo" aria-selected="false" tabindex="-1">
+                        <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi bi-grid-3x3-gap"></i></span>
+                        <span>Details</span>
+                    </button>
+                    <button type="button" class="__PREFIX__-table-tab-btn" id="__DOM_PREFIX__TableTabThree" data-tab-target="__DOM_PREFIX__TablePanelThree" role="tab" aria-controls="__DOM_PREFIX__TablePanelThree" aria-selected="false" tabindex="-1">
+                        <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi bi-card-list"></i></span>
+                        <span>Assumptions</span>
+                    </button>
+                    <button type="button" class="__PREFIX__-table-tab-btn" id="__DOM_PREFIX__TableTabFour" data-tab-target="__DOM_PREFIX__TablePanelFour" role="tab" aria-controls="__DOM_PREFIX__TablePanelFour" aria-selected="false" tabindex="-1">
+                        <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi bi-card-text"></i></span>
+                        <span>Notes</span>
+                    </button>
+                    <button type="button" class="__PREFIX__-table-tab-btn" id="__DOM_PREFIX__TableTabFive" data-tab-target="__DOM_PREFIX__TablePanelFive" role="tab" aria-controls="__DOM_PREFIX__TablePanelFive" aria-selected="false" tabindex="-1">
+                        <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi bi-plus-circle"></i></span>
+                        <span>More</span>
+                    </button>
+                    <button type="button" class="__PREFIX__-table-tab-btn" id="__DOM_PREFIX__TableTabJson" data-tab-target="__DOM_PREFIX__TablePanelJson" role="tab" aria-controls="__DOM_PREFIX__TablePanelJson" aria-selected="false" tabindex="-1">
+                        <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi bi-braces"></i></span>
+                        <span>JSON</span>
+                    </button>
+                </div>
+
+                <div class="__PREFIX__-table-panel is-active" id="__DOM_PREFIX__TablePanelOne" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabOne">
+                    <section class="__PREFIX__-section-card">
+                        <h3 class="__PREFIX__-section-title">Primary Breakdown</h3>
+                        <div class="__PREFIX__-table-wrap">
+                            <table class="__PREFIX__-output-table">
+                                <thead>
+                                    <tr>
+                                        <th class="__PREFIX__-rownum-head" scope="col">#</th>
+                                        <th scope="col">Item</th>
+                                        <th scope="col">Type</th>
+                                        <th class="__PREFIX__-status-head" scope="col">Status</th>
+                                        <th class="__PREFIX__-action-head" scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="__DOM_PREFIX__PrimaryTableBody">
+                                    <tr>
+                                        <td class="__PREFIX__-rownum-cell">1</td>
+                                        <td><span class="__PREFIX__-table-cell-text">Primary row</span></td>
+                                        <td><span class="__PREFIX__-table-cell-text">Baseline</span></td>
+                                        <td class="__PREFIX__-status-cell"><span class="__PREFIX__-table-cell-text">Ready</span></td>
+                                        <td class="__PREFIX__-action-cell">
+                                            <button type="button" class="__PREFIX__-row-copy-btn" data-copy-row="Primary row" aria-label="Copy row 1" title="Copy row">
+                                                <i class="bi bi-clipboard" aria-hidden="true"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="__PREFIX__-table-panel" id="__DOM_PREFIX__TablePanelTwo" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabTwo" hidden>
+                    <section class="__PREFIX__-section-card">
+                        <h3 class="__PREFIX__-section-title">Detail Matrix</h3>
+                        <div class="__PREFIX__-table-wrap">
+                            <table class="__PREFIX__-output-table __PREFIX__-output-table-compact">
+                                <thead>
+                                    <tr>
+                                        <th class="__PREFIX__-rownum-head" scope="col">#</th>
+                                        <th scope="col">Section</th>
+                                        <th scope="col">Value</th>
+                                        <th scope="col">Note</th>
+                                        <th class="__PREFIX__-action-head" scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="__DOM_PREFIX__SecondaryTableBody">
+                                    <tr class="__PREFIX__-empty-row">
+                                        <td colspan="5">
+                                            <div class="__PREFIX__-empty-block">Detail rows appear after generation.</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="__PREFIX__-table-panel" id="__DOM_PREFIX__TablePanelThree" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabThree" hidden>
+                    <section class="__PREFIX__-section-card">
+                        <h3 class="__PREFIX__-section-title">Assumptions</h3>
+                        <div class="__PREFIX__-table-wrap">
+                            <table class="__PREFIX__-output-table __PREFIX__-output-table-compact">
+                                <thead>
+                                    <tr>
+                                        <th class="__PREFIX__-rownum-head" scope="col">#</th>
+                                        <th scope="col">Assumption</th>
+                                        <th scope="col">Value</th>
+                                        <th scope="col">Source</th>
+                                        <th class="__PREFIX__-action-head" scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="__DOM_PREFIX__TertiaryTableBody">
+                                    <tr class="__PREFIX__-empty-row">
+                                        <td colspan="5">
+                                            <div class="__PREFIX__-empty-block">Assumptions stay explicit and copyable.</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="__PREFIX__-table-panel" id="__DOM_PREFIX__TablePanelFour" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabFour" hidden>
+                    <section class="__PREFIX__-section-card">
+                        <h3 class="__PREFIX__-section-title">Output Notes</h3>
+                        <div class="__PREFIX__-note-grid">
+                            <article class="__PREFIX__-note-card">
+                                <h4 class="__PREFIX__-note-title">Advantage</h4>
+                                <p class="__PREFIX__-note-copy">Cards can hold pros, cons, risks, prompt notes, command notes, or recommendation text.</p>
+                                <button type="button" class="__PREFIX__-row-copy-btn" data-copy-row="Advantage" aria-label="Copy advantage note" title="Copy row">
+                                    <i class="bi bi-clipboard" aria-hidden="true"></i>
+                                </button>
+                            </article>
+                            <article class="__PREFIX__-note-card">
+                                <h4 class="__PREFIX__-note-title">Risk</h4>
+                                <p class="__PREFIX__-note-copy">Longer text wraps inside the card and should not create more table columns.</p>
+                                <button type="button" class="__PREFIX__-row-copy-btn" data-copy-row="Risk" aria-label="Copy risk note" title="Copy row">
+                                    <i class="bi bi-clipboard" aria-hidden="true"></i>
+                                </button>
+                            </article>
+                            <article class="__PREFIX__-note-card">
+                                <h4 class="__PREFIX__-note-title">Next action</h4>
+                                <p class="__PREFIX__-note-copy">Every copied row or note needs a real copy handler in the final runtime package.</p>
+                                <button type="button" class="__PREFIX__-row-copy-btn" data-copy-row="Next action" aria-label="Copy next action note" title="Copy row">
+                                    <i class="bi bi-clipboard" aria-hidden="true"></i>
+                                </button>
+                            </article>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="__PREFIX__-table-panel" id="__DOM_PREFIX__TablePanelFive" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabFive" hidden>
+                    <section class="__PREFIX__-section-card">
+                        <h3 class="__PREFIX__-section-title">More Output</h3>
+                        <div class="__PREFIX__-table-wrap">
+                            <table class="__PREFIX__-output-table __PREFIX__-output-table-compact">
+                                <thead>
+                                    <tr>
+                                        <th class="__PREFIX__-rownum-head" scope="col">#</th>
+                                        <th scope="col">Section</th>
+                                        <th scope="col">Value</th>
+                                        <th scope="col">Note</th>
+                                        <th class="__PREFIX__-action-head" scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="__DOM_PREFIX__ExtraTableBody">
+                                    <tr class="__PREFIX__-empty-row">
+                                        <td colspan="5">
+                                            <div class="__PREFIX__-empty-block">Use this placeholder when a family needs one more output section before JSON.</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="__PREFIX__-table-panel" id="__DOM_PREFIX__TablePanelJson" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabJson" hidden>
+                    <section class="__PREFIX__-json-panel">
+                        <div class="__PREFIX__-json-head">
+                            <span class="__PREFIX__-json-title">JSON Output</span>
+                        </div>
+                        <pre class="__PREFIX__-json-output"><code id="__DOM_PREFIX__JsonOutput">{
+  "section": "07_table-output",
+  "tabs": ["Breakdown", "Details", "Assumptions", "Notes", "More", "JSON"]
+}</code></pre>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="section.js"></script>
+    <script>
+        document.querySelectorAll('[data-tab-target]').forEach(function bindDemoTab(button) {
+            button.addEventListener('click', function onDemoTabClick() {
+                window.InfraStackBaseWorkspaceSections.activateBaseTableOutputPanel(
+                    document.getElementById('__DOM_PREFIX__TableOutputShell'),
+                    button.getAttribute('data-tab-target')
+                );
+            });
+        });
+    </script>
+</body>
+</html>

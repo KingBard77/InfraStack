@@ -22,15 +22,16 @@ reference_tool:
 
 runtime_baseline:
     source_tool: templates/content/tools/aws/architecture-vpc-aws/
-    source_snapshot: templates/content/family/architecture/baseline/source/
+    source_snapshot: templates/content/family/architecture/source/
     workspace_sections: templates/content/family/architecture/workspace/
-    model_core: templates/content/family/architecture/workspace/assets/bin/model-core.js
-    copy_mode: section_owned
-    css_js_mode: section_owned_extracted
+    model_core: templates/content/family/architecture/workspace/04_visual-contract/model-core.js
+    engine_runtime: templates/content/family/architecture/workspace/04_visual-contract/engine-runtime.js
+    copy_mode: base_plus_family_contract
+    css_js_mode: base_plus_family_extracted
     root_runtime_snapshots: false
     source_marker_mode: namespace_marker_anchored
     source_markers:
-        syntax: "ns:start/ns:end family.architecture.workspace.<section>"
+        syntax: "ns:start/ns:end family._base.workspace.<section> and family.architecture.workspace.<section>"
         files:
             - tool.html.twig
             - custom.css
@@ -41,6 +42,7 @@ runtime_baseline:
             section_specific: workspace section.css owns only the CSS needed by its section
             forbidden: full custom.css copies inside section folders
         js:
+            engine_runtime: 04_visual-contract/engine-runtime.js owns reusable stage interaction behavior for per-tool adapters
             source_ownership_maps: workspace section.js records section-specific custom.js line ranges, DOM IDs, classes, variables, functions, and behaviors
             forbidden: full custom.js runtime strings inside section folders
     model_core_sha256: cf9110167b5ab4e2bd108f2bfdcc6b7939bbc99d941ab891ebb59cd658242bb2
@@ -49,7 +51,7 @@ runtime_baseline:
         custom_css: ce4b668b97a948fe9f3e3e23d63b6bb1c33f1356188f00a12a3a8d8d22eb6f0a
         custom_js: 87e65e2126432eade9dab0e02d9bfb26e3f1a7961e7e25f05cbb99b30edcd966
         model_core: cf9110167b5ab4e2bd108f2bfdcc6b7939bbc99d941ab891ebb59cd658242bb2
-    rule: Keep the full copied architecture source under baseline/source/ as a reference-only snapshot. Use namespace markers and section.js ownership maps to refresh section-owned page.html.twig, section.css, and section.js files. Do not place full custom.css or custom.js runtime copies in section folders.
+    rule: Keep the full copied architecture source under source/ as a reference-only snapshot. Do not audit this as active source. Use `_base/workspace` for common section shape and architecture workspace only for visual-contract and selected-item sources.
 
 applies_to:
     - architecture diagrams
@@ -180,15 +182,16 @@ required_sections:
         - 07_faq
         - 10_references
     workspace:
-        - 01_input-brief
-        - 02_basic-settings
-        - 03_advanced-settings
+        - _base.00_shell
+        - _base.01_input-brief
+        - _base.02_basic-settings
+        - _base.03_custom-settings
+        - 04_visual-contract
         - 04_selected-item
-        - 05_result-text
-        - 06_result-diagram
-        - 07_score-card
-        - 08_sort-card
-        - 09_result-table
+        - _base.05_result-summary
+        - _base.06_output-toolbar
+        - _base.07_table-output
+        - _base.08_json-restore
 
 required_output_files:
     - card.yml
@@ -210,15 +213,27 @@ required_first_line_markers:
     tool.html.twig: "{# tool.html.twig #}"
 
 workspace_flow:
+    - base_shell
     - prompt_or_preset_input
     - basic_controls
     - custom_controls
+    - visual_contract_stage_and_model
     - selected_item_controls_when_editable
-    - result_text_and_metadata
-    - diagram_toolbar_and_stage
     - score_or_status_card
     - sort_and_export_toolbar
     - inventory_assessment_notes_export_json_restore_state
+
+workspace_namespaces:
+    - family._base.workspace.00_shell
+    - family._base.workspace.01_input-brief
+    - family._base.workspace.02_basic-settings
+    - family._base.workspace.03_custom-settings
+    - family.architecture.workspace.04_visual-contract
+    - family.architecture.workspace.04_selected-item
+    - family._base.workspace.05_result-summary
+    - family._base.workspace.06_output-toolbar
+    - family._base.workspace.07_table-output
+    - family._base.workspace.08_json-restore
 
 baseline_standard:
     diagram_layout_quality:
@@ -262,7 +277,11 @@ baseline_standard:
             - selected_item_updates_inspector
             - highlight_preserves_grid_content_and_connector_visibility
             - dragged_positions_update_normalized_layout_state
+            - auto_layout_button_keeps_reset_layout_dom_id
             - reset_layout_returns_boxes_and_connectors_to_generated_placement
+            - cursor_marquee_renders_as_stage_canvas_overlay_not_svg_rect
+            - cursor_marquee_live_highlights_intersected_boxes
+            - highlighted_node_ids_persist_multi_box_highlight_state
             - escape_or_outside_click_clears_selection_where_practical
         presets:
             - same_visual_grammar_for_every_preset
@@ -304,12 +323,12 @@ baseline_standard:
     sort_dropdown_menu_width: trigger
     sort_summary_content: selected_sort_label_only
     sort_placeholder_chip: false
-    result_table_demo: templates/content/family/architecture/workspace/09_result-table/demo.html
+    result_table_demo: templates/content/family/_base/workspace/07_table-output/demo.html
     result_table_demo_requirement: Demo shows two-row one-column before/after states and includes generated dummy inventory rows, copy-row action buttons, secondary table rows, pillar rows, risk copy, JSON output, and restore boundary.
     before_after_demo_sections:
         - templates/content/family/architecture/workspace/04_selected-item/demo.html
-        - templates/content/family/architecture/workspace/06_result-diagram/demo.html
-        - templates/content/family/architecture/workspace/09_result-table/demo.html
+        - templates/content/family/architecture/workspace/04_visual-contract/demo.html
+        - templates/content/family/_base/workspace/07_table-output/demo.html
     visible_language_rule: Adapt provider and domain wording in final tools; AWS reference wording is allowed only for AWS tools or baseline demos.
 
 visualizer_interaction:
@@ -321,6 +340,9 @@ visualizer_interaction:
     - cursor_state_feedback
     - movable_cards_nodes_boundaries_and_groups
     - marquee_selection_when_multiple_objects_are_editable
+    - stage_canvas_marquee_overlay_not_svg_owned_rect
+    - live_marquee_target_highlighting
+    - multi_box_highlight_state_in_highlighted_node_ids
     - group_drag_for_selected_objects
     - keyboard_movement_for_selected_objects
     - undo_shortcuts_for_persisted_stage_edits
@@ -360,11 +382,13 @@ generation_rules:
     - Generate the final runtime package under templates/content/tools/<category>/<tool-slug>/.
     - Do not use the family directory as the final runtime package.
     - Do not omit tool-local files because the family source exists.
-    - Keep full copied architecture source under baseline/source/ as a reference-only snapshot when refreshing this baseline.
-    - Use ns:start/ns:end family.architecture.workspace.<section> markers in baseline source files before refreshing workspace section files.
-    - Use section-owned workspace CSS and JavaScript sources from each architecture workspace section.
+    - Keep full copied architecture source under source/ as a reference-only snapshot when refreshing this baseline. Do not audit this as active source.
+    - Compose architecture workspace output from `workspace_namespaces`, not from duplicated architecture copies of `_base` sections.
+    - Source common shell, input, settings, summary, toolbar, table, and JSON restore sections from `_base/workspace`.
+    - Use section-owned architecture CSS and JavaScript sources only for 04_visual-contract and 04_selected-item.
     - Do not create root workspace/custom.css, workspace/custom.js, or workspace/demo.html.twig snapshot files.
-    - Use workspace/assets/bin/model-core.js only as a reusable model-core reference when final tools need it.
+    - Use workspace/04_visual-contract/engine-runtime.js as the reusable stage interaction engine when final tools opt into the shared architecture engine.
+    - Use workspace/04_visual-contract/model-core.js only as a reusable model-core reference when final tools need it.
     - Use AWS VPC Architecture only as a reference implementation.
     - Do not copy provider-specific language into unrelated tools.
     - Keep architecture support examples on 03_example-prompts unless literal command examples are implemented.
@@ -386,10 +410,10 @@ generation_rules:
     - Keep the inventory Sort default as ID.
     - Keep the Sort dropdown aligned to the Basic select control height: 46px trigger, trigger-width menu, selected sort label only, and no placeholder chip.
     - Use secondary output table cards for routing, control, or domain summary rows when the generated model includes those rows.
-    - Keep 04_selected-item neutral hint chips and 07_score-card generated score layout aligned with the AWS reference when refreshing architecture workspace sections.
-    - Keep 04_selected-item, 06_result-diagram, and 09_result-table demos capable of showing before/after dummy states where practical.
+    - Keep 04_selected-item neutral hint chips and `_base` generated score layout aligned with the AWS reference when refreshing architecture workspace sections.
+    - Keep 04_visual-contract and 04_selected-item demos capable of showing before/after dummy states where practical.
     - Keep before/after section demos stacked as two rows in one column.
-    - Keep 09_result-table/demo.html in generated dummy table, secondary table, assessment, JSON output, and restore boundary state for baseline validation.
+    - Keep `_base` table and JSON demos in generated dummy table, secondary table, assessment, JSON output, and restore boundary state for baseline validation.
     - Use copy-row buttons in the result table Action column instead of long text.
     - On first refresh, render a blurred preset preview with the overlay text "Choose a preset to generate diagram" instead of creating the real generated output state.
     - Do not unlock inventory, score, export, selected object, layout override, or connector override state until the user chooses a preset or clicks generate.
@@ -406,13 +430,14 @@ validation_rules:
     - manifest.yml exists.
     - workspace/README.md exists.
     - workspace/manifest.yml exists.
-    - baseline/source/tool.html.twig, baseline/source/custom.css, baseline/source/custom.js, and baseline/source/assets/bin/model-core.js exist.
-    - baseline/source/tool.html.twig, baseline/source/custom.css, and baseline/source/custom.js contain ns:start/ns:end family.architecture.workspace markers.
-    - baseline/source files do not use legacy source:start or source:end markers for architecture workspace extraction.
+    - source/tool.html.twig, source/custom.css, source/custom.js, and source/assets/bin/model-core.js exist.
+    - source/tool.html.twig, source/custom.css, and source/custom.js contain namespace markers for composed `_base` and architecture-owned workspace sections.
+    - source files do not use legacy source:start or source:end markers for architecture workspace extraction.
     - No root workspace/custom.css, workspace/custom.js, or workspace/demo.html.twig snapshot files exist.
     - Shared main content section folders exist under templates/content/main/sections/content/.
     - Citation links and References rows are paired when 10_references is used.
-    - Architecture workspace section folders exist under templates/content/family/architecture/workspace/.
+    - Architecture-owned workspace section folders exist under templates/content/family/architecture/workspace/.
+    - Only architecture-owned workspace section folders remain beside optional assets.
     - All required output files are created in the final tool package.
     - Required first-line markers are present.
     - No root-level post.html.twig is created.

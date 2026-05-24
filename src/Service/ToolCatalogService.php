@@ -7,6 +7,13 @@ use Symfony\Component\Yaml\Yaml;
 
 class ToolCatalogService
 {
+    private const PUBLICATION_STATUS_DRAFT = 'draft';
+    private const PUBLICATION_STATUS_READY = 'ready';
+    private const PUBLICATION_STATUSES = [
+        self::PUBLICATION_STATUS_DRAFT,
+        self::PUBLICATION_STATUS_READY,
+    ];
+
     private ?array $manifest = null;
 
     public function __construct(
@@ -14,10 +21,11 @@ class ToolCatalogService
     ) {
     }
 
-    public function getTools(): array
+    public function getTools(?bool $includeDraftTools = null): array
     {
         $basePath = $this->getToolsPath();
         $tools = [];
+        $includeDraftTools ??= $this->shouldIncludeDraftTools();
 
         if (!is_dir($basePath)) {
             return $tools;
@@ -37,8 +45,13 @@ class ToolCatalogService
 
                 $meta = $this->parseYamlFile($metaFile);
                 $card = file_exists($cardFile) ? $this->parseYamlFile($cardFile) : [];
+                $tool = $this->buildToolRecord($categoryFolder, $toolFolder, $toolPath, $meta, $card);
 
-                $tools[] = $this->buildToolRecord($categoryFolder, $toolFolder, $toolPath, $meta, $card);
+                if (!$includeDraftTools && $tool['is_draft']) {
+                    continue;
+                }
+
+                $tools[] = $tool;
             }
         }
 
@@ -279,6 +292,81 @@ class ToolCatalogService
         return $this->manifest;
     }
 
+    public function normalizePublicationStatus(mixed $status): string
+    {
+        if (!is_string($status) && !is_numeric($status)) {
+            return self::PUBLICATION_STATUS_DRAFT;
+        }
+
+        $statusSlug = $this->normalizeSlug((string) $status);
+
+        if ($statusSlug === '') {
+            return self::PUBLICATION_STATUS_DRAFT;
+        }
+
+        if (in_array($statusSlug, self::PUBLICATION_STATUSES, true)) {
+            return $statusSlug;
+        }
+
+        return self::PUBLICATION_STATUS_DRAFT;
+    }
+
+    public function isPublicationStatusValid(mixed $status): bool
+    {
+        if (!is_string($status) && !is_numeric($status)) {
+            return false;
+        }
+
+        $statusSlug = $this->normalizeSlug((string) $status);
+
+        return in_array($statusSlug, self::PUBLICATION_STATUSES, true);
+    }
+
+    public function isDraftPublicationStatus(mixed $status): bool
+    {
+        return $this->normalizePublicationStatus($status) === self::PUBLICATION_STATUS_DRAFT;
+    }
+
+    public function shouldIncludeDraftTools(): bool
+    {
+        return !$this->isProductionEnvironment();
+    }
+
+    public function shouldShowDraftMarkers(): bool
+    {
+        return $this->shouldIncludeDraftTools();
+    }
+
+    public function decorateMetaForPublicationStatus(array $meta): array
+    {
+        $title = (string) ($meta['title'] ?? 'Tool Detail');
+        $rawPublicationStatus = $meta['publication_status'] ?? null;
+        $publicationStatus = $this->normalizePublicationStatus($rawPublicationStatus);
+
+        $meta['publication_status'] = $publicationStatus;
+        $meta['publication_status_valid'] = $this->isPublicationStatusValid($rawPublicationStatus);
+        $meta['is_draft'] = $publicationStatus === self::PUBLICATION_STATUS_DRAFT;
+        $meta['is_ready'] = $publicationStatus === self::PUBLICATION_STATUS_READY;
+        $meta['display_title'] = $this->formatPublicationTitle($title, $publicationStatus);
+
+        return $meta;
+    }
+
+    public function formatPublicationTitle(string $title, mixed $status): string
+    {
+        if (!$this->shouldShowDraftMarkers() || !$this->isDraftPublicationStatus($status)) {
+            return $title;
+        }
+
+        $trimmedTitle = trim($title);
+
+        if (str_starts_with($trimmedTitle, '*')) {
+            return $trimmedTitle;
+        }
+
+        return '* ' . $trimmedTitle;
+    }
+
     private function buildToolRecord(
         string $categoryFolder,
         string $toolFolder,
@@ -295,6 +383,10 @@ class ToolCatalogService
         $groupSlug = $this->resolveGroupSlug($meta, $categoryFolder);
         $dateDisplay = (string) ($meta['date'] ?? date('M j, Y'));
         $timestamp = strtotime($dateDisplay);
+        $rawPublicationStatus = $meta['publication_status'] ?? null;
+        $publicationStatus = $this->normalizePublicationStatus($rawPublicationStatus);
+        $isDraft = $publicationStatus === self::PUBLICATION_STATUS_DRAFT;
+        $cardImageTitle = (string) ($card['card_image_title'] ?? $title);
 
         if ($timestamp === false) {
             $timestamp = time();
@@ -304,10 +396,15 @@ class ToolCatalogService
 
         return [
             'title' => $title,
+            'display_title' => $this->formatPublicationTitle($title, $publicationStatus),
             'slug' => $toolFolder,
             'category_slug' => $categoryFolder,
             'category' => $categoryLabel,
             'category_label' => $categoryLabel,
+            'publication_status' => $publicationStatus,
+            'publication_status_valid' => $this->isPublicationStatusValid($rawPublicationStatus),
+            'is_draft' => $isDraft,
+            'is_ready' => !$isDraft,
             'group_slug' => $groupSlug,
             'group' => $this->getGroupLabel($groupSlug),
             'family_slug' => $familySlug,
@@ -330,7 +427,8 @@ class ToolCatalogService
             'card_gradient_end' => $card['card_gradient_end'] ?? '#94A3B8',
             'card_text_color' => $card['card_text_color'] ?? '#FFFFFF',
             'card_kicker' => $card['card_kicker'] ?? $categoryLabel,
-            'card_image_title' => $card['card_image_title'] ?? $title,
+            'card_image_title' => $cardImageTitle,
+            'display_card_image_title' => $this->formatPublicationTitle($cardImageTitle, $publicationStatus),
             'card_icon_class' => $card['card_icon_class'] ?? 'bi bi-tools',
             'card_icon_animation' => $this->resolveCardIconAnimation($card, $toolFolder),
             'card_visual_class' => $this->normalizeCssClass(
@@ -510,5 +608,10 @@ class ToolCatalogService
     private function getToolsPath(): string
     {
         return $this->parameterBag->get('kernel.project_dir') . '/templates/content/tools';
+    }
+
+    private function isProductionEnvironment(): bool
+    {
+        return (string) $this->parameterBag->get('kernel.environment') === 'prod';
     }
 }

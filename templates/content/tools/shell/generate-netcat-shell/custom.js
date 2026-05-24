@@ -1,14 +1,168 @@
 // custom.js
 
+// ns:start family._base.workspace.00_shell
+// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
+// ns:end family._base.workspace.00_shell
+
+function initializeInfraStackCustomDropdowns(root) {
+    const scope = root || document;
+    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
+
+    dropdowns.forEach(function (dropdown) {
+        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
+        const targetInput = targetId ? document.getElementById(targetId) : null;
+        const label = dropdown.querySelector('[data-custom-dropdown-label]');
+        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
+
+        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
+            return;
+        }
+
+        function sync(value) {
+            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
+            let selectedOption = options.find(function (option) {
+                return option.dataset.customDropdownValue === selectedValue;
+            }) || options[0];
+
+            if (!selectedOption) {
+                return;
+            }
+
+            const nextValue = selectedOption.dataset.customDropdownValue || '';
+
+            if (targetInput.value !== nextValue) {
+                targetInput.value = nextValue;
+            }
+            label.textContent = selectedOption.textContent.trim();
+            options.forEach(function (option) {
+                const isActive = option === selectedOption;
+
+                option.classList.toggle('active', isActive);
+                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+        }
+
+        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
+            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+
+            if (descriptor && descriptor.get && descriptor.set) {
+                Object.defineProperty(targetInput, 'value', {
+                    configurable: true,
+                    get: function () {
+                        return descriptor.get.call(this);
+                    },
+                    set: function (nextValue) {
+                        descriptor.set.call(this, nextValue);
+                        window.requestAnimationFrame(function () {
+                            sync(String(nextValue || ''));
+                        });
+                    }
+                });
+                targetInput.dataset.customDropdownValueProxy = 'true';
+            }
+        }
+
+        options.forEach(function (option) {
+            option.addEventListener('click', function () {
+                sync(option.dataset.customDropdownValue || '');
+                targetInput.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+                dropdown.removeAttribute('open');
+            });
+        });
+
+        targetInput.addEventListener('change', function () {
+            sync(targetInput.value);
+        });
+        sync(targetInput.value);
+        dropdown.dataset.customDropdownBound = 'true';
+    });
+}
+
+
+// ns:start family._base.workspace.05_result-summary
+function installInfraStackResultSummaryNormalizer(prefix) {
+    function normalizeSummary(summary) {
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
+
+        if (!hero) {
+            return;
+        }
+
+        const cards = Array.from(hero.querySelectorAll(':scope > .' + prefix + '-result-card'));
+        const primaryCard = cards.find(function (card) {
+            return card.classList.contains(prefix + '-result-card-primary') || card.classList.contains(prefix + '-result-card-visual') || card.classList.contains(prefix + '-result-card-command');
+        }) || cards[0];
+        const summaryCard = cards.find(function (card) {
+            return card !== primaryCard && (card.classList.contains(prefix + '-result-card-summary') || card.classList.contains(prefix + '-result-card-main'));
+        }) || cards.find(function (card) {
+            return card !== primaryCard;
+        });
+
+        if (primaryCard) {
+            primaryCard.classList.add(prefix + '-result-card-primary');
+            if (!primaryCard.dataset.resultVisual) {
+                primaryCard.dataset.resultVisual = primaryCard.querySelector('.' + prefix + '-result-command-output') ? 'command' : 'text';
+            }
+        }
+
+        if (summaryCard) {
+            summaryCard.classList.add(prefix + '-result-card-summary');
+            const chipRow = summaryCard.querySelector('.' + prefix + '-result-chip-row');
+
+            if (chipRow && !summaryCard.querySelector('.' + prefix + '-result-chip-grid')) {
+                chipRow.classList.add(prefix + '-result-chip-grid');
+            }
+        }
+
+        if (primaryCard && hero.firstElementChild !== primaryCard) {
+            hero.insertBefore(primaryCard, hero.firstElementChild);
+        }
+
+        if (primaryCard && summaryCard && primaryCard.nextElementSibling !== summaryCard) {
+            hero.insertBefore(summaryCard, primaryCard.nextElementSibling);
+        }
+    }
+
+    function normalize() {
+        document.querySelectorAll('.' + prefix + '-result-summary').forEach(normalizeSummary);
+    }
+
+    function scheduleNormalize() {
+        window.requestAnimationFrame(normalize);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            normalize();
+            new MutationObserver(scheduleNormalize).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }, { once: true });
+        return;
+    }
+
+    normalize();
+    new MutationObserver(scheduleNormalize).observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+installInfraStackResultSummaryNormalizer('generate-netcat-shell');
+// ns:end family._base.workspace.05_result-summary
+
 document.addEventListener('DOMContentLoaded', function () {
-// ns:start family.shell.workspace.01_input-target
+// ns:start family._base.workspace.01_input-brief
     const form = document.getElementById('generateNetcatShellForm');
     const submitButton = document.getElementById('generateNetcatShellSubmit');
     const resetButton = document.getElementById('generateNetcatShellReset');
     const primaryHostInput = document.getElementById('generateNetcatShellPrimaryHost');
     const primaryHostLabel = document.getElementById('generateNetcatShellPrimaryHostLabel');
-// ns:end family.shell.workspace.01_input-target
-// ns:start family.shell.workspace.02_basic-setting
+// ns:end family._base.workspace.01_input-brief
+// ns:start family._base.workspace.02_basic-settings
     const presetInput = document.getElementById('generateNetcatShellPreset');
     const applyPresetButton = document.getElementById('generateNetcatShellApplyPreset');
     const shellInput = document.getElementById('generateNetcatShellShell');
@@ -19,8 +173,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const combineShortFlagsInput = document.getElementById('generateNetcatShellCombineShortFlags');
     const multilineInput = document.getElementById('generateNetcatShellMultiline');
     const shellHint = document.getElementById('generateNetcatShellShellHint');
-// ns:end family.shell.workspace.02_basic-setting
-// ns:start family.shell.workspace.03_advanced-setting
+// ns:end family._base.workspace.02_basic-settings
+// ns:start family._base.workspace.03_custom-settings
     const connectionTypeInput = document.getElementById('generateNetcatShellConnectionType');
     const useUdpInput = document.getElementById('generateNetcatShellUseUdp');
     const forceIpv6Input = document.getElementById('generateNetcatShellForceIpv6');
@@ -65,23 +219,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const sendOnlyInput = document.getElementById('generateNetcatShellSendOnly');
     const shutdownAfterEofInput = document.getElementById('generateNetcatShellShutdownAfterEof');
     const extraFlagsInput = document.getElementById('generateNetcatShellExtraFlags');
-// ns:end family.shell.workspace.03_advanced-setting
+// ns:end family._base.workspace.03_custom-settings
+// ns:start family._base.workspace.05_result-summary
 // ns:start family.shell.workspace.04_result-text
     const resultEmpty = document.getElementById('generateNetcatShellResultEmpty');
     const resultContent = document.getElementById('generateNetcatShellResultContent');
     const resultError = document.getElementById('generateNetcatShellResultError');
 // ns:end family.shell.workspace.04_result-text
-// ns:start family.shell.workspace.05_score-card
+// ns:end family._base.workspace.05_result-summary
+// ns:start family._base.workspace.05_result-summary
     const resultSummary = document.getElementById('generateNetcatShellResultSummary');
     const commandOutput = document.getElementById('generateNetcatShellCommandOutput');
-// ns:end family.shell.workspace.05_score-card
-// ns:start family.shell.workspace.07_table
+// ns:end family._base.workspace.05_result-summary
+// ns:start family._base.workspace.07_table-output
     const optionsTableBody = document.getElementById('generateNetcatShellOptionsTableBody');
     const warningsList = document.getElementById('generateNetcatShellWarningsList');
     const errorsList = document.getElementById('generateNetcatShellErrorsList');
     const jsonOutput = document.getElementById('generateNetcatShellJsonOutput');
-// ns:end family.shell.workspace.07_table
-// ns:start family.shell.workspace.06_sort-card
+// ns:end family._base.workspace.07_table-output
+// ns:start family._base.workspace.06_output-toolbar
     const sortInput = document.getElementById('generateNetcatShellSort');
     const sortSummary = document.getElementById('generateNetcatShellSortSummary');
     const sortOptionButtons = Array.from(document.querySelectorAll('.generate-netcat-shell-sort-option[data-sort-value]'));
@@ -93,8 +249,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const downloadJsonButton = document.getElementById('generateNetcatShellDownloadJson');
     const importJsonButton = document.getElementById('generateNetcatShellImportJsonButton');
     const importJsonInput = document.getElementById('generateNetcatShellImportJson');
-// ns:end family.shell.workspace.06_sort-card
-// ns:start family.shell.workspace.07_table
+// ns:end family._base.workspace.06_output-toolbar
+// ns:start family._base.workspace.07_table-output
     const tabButtons = Array.from(document.querySelectorAll('.generate-netcat-shell-tab-btn'));
     const tabPanels = Array.from(document.querySelectorAll('.generate-netcat-shell-tab-panel'));
     if (
@@ -182,8 +338,8 @@ document.addEventListener('DOMContentLoaded', function () {
     ) {
         return;
     }
-// ns:end family.shell.workspace.07_table
-// ns:start family.shell.workspace.02_basic-setting
+// ns:end family._base.workspace.07_table-output
+// ns:start family._base.workspace.02_basic-settings
     const shellCatalog = {
         bash: {
             label: 'Bash / Zsh',
@@ -572,8 +728,8 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     const enhancedSelects = [];
     let latestResult = null;
-// ns:end family.shell.workspace.02_basic-setting
-// ns:start family.shell.workspace.07_table
+// ns:end family._base.workspace.02_basic-settings
+// ns:start family._base.workspace.07_table-output
     function initMarkdownCopyButtons() {
         const codeBlocks = document.querySelectorAll('.markdown-content pre');
 
@@ -709,8 +865,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderJsonOutput(payload) {
         jsonOutput.innerHTML = highlightJsonText(JSON.stringify(payload, null, 2));
     }
-// ns:end family.shell.workspace.07_table
-// ns:start family.shell.workspace.02_basic-setting
+// ns:end family._base.workspace.07_table-output
+// ns:start family._base.workspace.02_basic-settings
     function closeEnhancedSelects(exceptSelect) {
         enhancedSelects.forEach((entry) => {
             if (exceptSelect && entry.select === exceptSelect) {
@@ -819,8 +975,8 @@ document.addEventListener('DOMContentLoaded', function () {
         enhancedSelects.push(entry);
         syncEnhancedSelect(entry);
     }
-// ns:end family.shell.workspace.02_basic-setting
-// ns:start family.shell.workspace.03_advanced-setting
+// ns:end family._base.workspace.02_basic-settings
+// ns:start family._base.workspace.03_custom-settings
     function parseCommandString(command) {
         const normalizedCommand = String(command || '')
             .replace(/\\\r?\n/g, ' ')
@@ -1108,7 +1264,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function getSelectOptionValue(select, value, fallback) {
         const stringValue = typeof value === 'string' || typeof value === 'number' ? String(value) : '';
-        const hasOption = Array.from(select.options).some((option) => option.value === stringValue);
+        const optionValues = select && select.options
+            ? Array.from(select.options).map((option) => option.value)
+            : Array.from(document.querySelectorAll(`[data-custom-dropdown-for="${select.id}"] [data-custom-dropdown-value]`)).map((option) => option.dataset.customDropdownValue || '');
+        const hasOption = optionValues.includes(stringValue);
 
         return hasOption ? stringValue : fallback;
     }
@@ -1839,60 +1998,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return result;
     }
-// ns:end family.shell.workspace.03_advanced-setting
-// ns:start family.shell.workspace.05_score-card
+// ns:end family._base.workspace.03_custom-settings
+// ns:start family._base.workspace.05_result-summary
     function renderSummary(result) {
         const warningCount = result.warnings.length;
         const errorCount = result.errors.length;
+        const resultTone = errorCount > 0 ? 'error' : warningCount > 0 ? 'warning' : 'ready';
+        const updatedText = new Date().toLocaleString();
 
+        resultSummary.dataset.resultTone = resultTone;
+        resultSummary.dataset.resultLayout = 'command';
         resultSummary.innerHTML = `
-            <div class="generate-netcat-shell-summary-shell">
-                <div class="generate-netcat-shell-summary-gauge">
-                    <div class="generate-netcat-shell-summary-method">${escapeHtml(result.modeLabel)}</div>
-                    <div class="generate-netcat-shell-summary-host">${escapeHtml(result.hostBadge)}</div>
-                    <div class="generate-netcat-shell-summary-shell-name">${escapeHtml(result.implementationLabel)}</div>
-                </div>
-
-                <div class="generate-netcat-shell-summary-side">
-                    <div class="generate-netcat-shell-summary-route">
-                        <div class="generate-netcat-shell-summary-route-label">Generated command</div>
-                        <div class="generate-netcat-shell-summary-route-value">${escapeHtml(result.command || 'No command generated while blocking errors remain.')}</div>
-                    </div>
-
-                    <div class="generate-netcat-shell-summary-cards">
-                        <div class="generate-netcat-shell-stat-card">
-                            <div class="generate-netcat-shell-stat-label">Protocol</div>
-                            <div class="generate-netcat-shell-stat-value">${escapeHtml(result.protocolLabel)}</div>
-                        </div>
-
-                        <div class="generate-netcat-shell-stat-card">
-                            <div class="generate-netcat-shell-stat-label">Ports</div>
-                            <div class="generate-netcat-shell-stat-value">${escapeHtml(result.portBadge)}</div>
-                        </div>
-
-                        <div class="generate-netcat-shell-stat-card">
-                            <div class="generate-netcat-shell-stat-label">Flags</div>
-                            <div class="generate-netcat-shell-stat-value">${escapeHtml(String(result.flagCount))}</div>
-                        </div>
-
-                        <div class="generate-netcat-shell-stat-card">
-                            <div class="generate-netcat-shell-stat-label">Shell</div>
-                            <div class="generate-netcat-shell-stat-value">${escapeHtml(result.shellLabel)}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="generate-netcat-shell-summary-badges">
-                <span class="generate-netcat-shell-badge generate-netcat-shell-badge-neutral">${escapeHtml(result.implementationLabel)}</span>
-                <span class="generate-netcat-shell-badge generate-netcat-shell-badge-success">${escapeHtml(result.summaryLine)}</span>
-                <span class="generate-netcat-shell-badge ${warningCount > 0 ? 'generate-netcat-shell-badge-warn' : 'generate-netcat-shell-badge-success'}">${warningCount} warning${warningCount === 1 ? '' : 's'}</span>
-                <span class="generate-netcat-shell-badge ${errorCount > 0 ? 'generate-netcat-shell-badge-danger' : 'generate-netcat-shell-badge-success'}">${errorCount} error${errorCount === 1 ? '' : 's'}</span>
-            </div>
+            <header class="generate-netcat-shell-result-header" aria-label="Result summary header"><div class="generate-netcat-shell-result-header-main"><span class="generate-netcat-shell-result-header-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><div class="generate-netcat-shell-result-header-copy"><h2 class="generate-netcat-shell-result-header-title">Result Summary</h2><p>Overview of the generated Netcat command and key metrics</p></div></div><div class="generate-netcat-shell-result-header-meta" aria-label="Result summary status"><span class="generate-netcat-shell-result-header-chip generate-netcat-shell-result-chip-ready"><span class="generate-netcat-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span><span class="generate-netcat-shell-result-header-chip generate-netcat-shell-result-chip-updated"><span class="generate-netcat-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>${escapeHtml(updatedText)}</span></span></div></header>
+            <div class="generate-netcat-shell-result-hero-grid" aria-live="polite"><article class="generate-netcat-shell-result-card generate-netcat-shell-result-card-primary" data-result-visual="command" aria-label="Primary connection result"><div class="generate-netcat-shell-result-primary-heading generate-netcat-shell-result-visual-copy generate-netcat-shell-result-visual-copy-top"><div class="generate-netcat-shell-result-kicker">Primary Result</div><h3 class="generate-netcat-shell-result-title generate-netcat-shell-result-title-center">Connection mode</h3></div><div class="generate-netcat-shell-result-primary-visual" id="generateNetcatShellResultVisual" aria-label="Primary connection mode"><div class="generate-netcat-shell-result-command-output"><code class="generate-netcat-shell-result-command-value">${escapeHtml(result.summaryLine)}</code></div></div><div class="generate-netcat-shell-result-visual-copy"><p class="generate-netcat-shell-result-copy generate-netcat-shell-result-copy-center">Compact connection preview for the generated Netcat command.</p></div><span class="generate-netcat-shell-result-card-divider" aria-hidden="true"></span><div class="generate-netcat-shell-result-chip-row generate-netcat-shell-result-chip-row-center" aria-label="Primary result outcome"><span class="generate-netcat-shell-result-chip generate-netcat-shell-result-chip-outcome generate-netcat-shell-result-chip-ready"><span class="generate-netcat-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span>Command Generated</span></span></div></article><article class="generate-netcat-shell-result-card generate-netcat-shell-result-card-summary" aria-label="Connection summary"><div class="generate-netcat-shell-result-summary-intro"><span class="generate-netcat-shell-result-card-icon generate-netcat-shell-result-card-icon-summary" aria-hidden="true"><i class="bi bi-hdd-network"></i></span><div class="generate-netcat-shell-result-summary-copy"><div class="generate-netcat-shell-result-kicker">Descriptive Summary</div><h3 class="generate-netcat-shell-result-title">${escapeHtml(result.modeLabel)} command</h3><p class="generate-netcat-shell-result-copy">The generated command and comparison output stay aligned with the selected implementation, protocol, ports, and shell mode.</p></div></div><span class="generate-netcat-shell-result-card-divider" aria-hidden="true"></span><div class="generate-netcat-shell-result-chip-grid" aria-label="Command state"><span class="generate-netcat-shell-result-chip generate-netcat-shell-result-chip-baseline"><span class="generate-netcat-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span>${escapeHtml(result.implementationLabel)}</span></span><span class="generate-netcat-shell-result-chip generate-netcat-shell-result-chip-ready"><span class="generate-netcat-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>${escapeHtml(result.summaryLine)}</span></span><span class="generate-netcat-shell-result-chip generate-netcat-shell-result-chip-${warningCount > 0 ? 'warning' : 'success'}"><span class="generate-netcat-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-exclamation-triangle"></i></span><span>${warningCount} warning${warningCount === 1 ? '' : 's'}</span></span><span class="generate-netcat-shell-result-chip generate-netcat-shell-result-chip-${errorCount > 0 ? 'error' : 'success'}"><span class="generate-netcat-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-x-circle"></i></span><span>${errorCount} error${errorCount === 1 ? '' : 's'}</span></span></div></article></div>
+            <div class="generate-netcat-shell-result-metric-grid" aria-label="Command metrics"><article class="generate-netcat-shell-result-metric-card generate-netcat-shell-result-metric-success"><span class="generate-netcat-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-hdd-network"></i></span><span class="generate-netcat-shell-result-metric-label">Protocol</span><strong class="generate-netcat-shell-result-metric-value">${escapeHtml(result.protocolLabel)}</strong><span class="generate-netcat-shell-result-metric-copy">Selected transport mode.</span><span class="generate-netcat-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-netcat-shell-result-metric-card generate-netcat-shell-result-metric-info"><span class="generate-netcat-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-ethernet"></i></span><span class="generate-netcat-shell-result-metric-label">Ports</span><strong class="generate-netcat-shell-result-metric-value">${escapeHtml(result.portBadge)}</strong><span class="generate-netcat-shell-result-metric-copy">Port expression summary.</span><span class="generate-netcat-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-netcat-shell-result-metric-card generate-netcat-shell-result-metric-accent-tone"><span class="generate-netcat-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-list-check"></i></span><span class="generate-netcat-shell-result-metric-label">Flags</span><strong class="generate-netcat-shell-result-metric-value">${escapeHtml(String(result.flagCount))}</strong><span class="generate-netcat-shell-result-metric-copy">Generated option count.</span><span class="generate-netcat-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-netcat-shell-result-metric-card generate-netcat-shell-result-metric-warning"><span class="generate-netcat-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span class="generate-netcat-shell-result-metric-label">Shell</span><strong class="generate-netcat-shell-result-metric-value">${escapeHtml(result.shellLabel)}</strong><span class="generate-netcat-shell-result-metric-copy">Output quoting mode.</span><span class="generate-netcat-shell-result-metric-accent" aria-hidden="true"></span></article></div>
         `;
     }
-// ns:end family.shell.workspace.05_score-card
-// ns:start family.shell.workspace.06_sort-card
+
+// ns:end family._base.workspace.05_result-summary
+
+// ns:start family._base.workspace.06_output-toolbar
     function updateSortState() {
         const selectedButton = sortOptionButtons.find((button) => button.dataset.sortValue === sortInput.value) || sortOptionButtons[0];
         const selectedLabel = selectedButton
@@ -1975,8 +2100,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .sort((left, right) => left.index - right.index)
             .map((row) => [row.field, row.value, row.id]);
     }
-// ns:end family.shell.workspace.06_sort-card
-// ns:start family.shell.workspace.07_table
+// ns:end family._base.workspace.06_output-toolbar
+// ns:start family._base.workspace.07_table-output
     function renderOptionsTable(result) {
         optionsTableBody.innerHTML = getSortedSummaryRows(result)
             .map((row, index) => `
@@ -1985,7 +2110,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td>${escapeHtml(row[0])}</td>
                     <td>${escapeHtml(row[1])}</td>
                     <td class="generate-netcat-shell-table-copy-cell">
-                        <button type="button" class="generate-netcat-shell-row-copy" data-options-copy="${escapeHtml(row[1])}" aria-label="Copy operation row ${escapeHtml(row[2] || index + 1)}" title="Copy operation row">
+                        <button type="button" class="generate-netcat-shell-row-copy generate-netcat-shell-row-copy-btn" data-options-copy="${escapeHtml(row[1])}" aria-label="Copy operation row ${escapeHtml(row[2] || index + 1)}" title="Copy operation row">
                             <i class="bi bi-clipboard" aria-hidden="true"></i>
                         </button>
                     </td>
@@ -2253,8 +2378,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return true;
     }
-// ns:end family.shell.workspace.07_table
-// ns:start family.shell.workspace.01_input-target
+// ns:end family._base.workspace.07_table-output
+// ns:start family._base.workspace.01_input-brief
     function generateAndRender() {
         submitButton.disabled = true;
         submitButton.textContent = 'Generating...';
@@ -2281,8 +2406,8 @@ document.addEventListener('DOMContentLoaded', function () {
         resultError.textContent = '';
         generateAndRender();
     }
-// ns:end family.shell.workspace.01_input-target
-// ns:start family.shell.workspace.07_table
+// ns:end family._base.workspace.01_input-brief
+// ns:start family._base.workspace.07_table-output
     initMarkdownCopyButtons();
     Array.from(document.querySelectorAll('.generate-netcat-shell-form select')).forEach((select) => {
         enhanceNativeSelect(select);
@@ -2385,8 +2510,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-// ns:end family.shell.workspace.07_table
-// ns:start family.shell.workspace.01_input-target
+// ns:end family._base.workspace.07_table-output
+// ns:start family._base.workspace.01_input-brief
     form.addEventListener('submit', function (event) {
         event.preventDefault();
         generateAndRender();
@@ -2396,8 +2521,8 @@ document.addEventListener('DOMContentLoaded', function () {
         resetBuilder();
     });
 
-// ns:end family.shell.workspace.01_input-target
-// ns:start family.shell.workspace.02_basic-setting
+// ns:end family._base.workspace.01_input-brief
+// ns:start family._base.workspace.02_basic-settings
     applyPresetButton.addEventListener('click', function () {
         applyPreset(presetInput.value);
         generateAndRender();
@@ -2407,8 +2532,8 @@ document.addEventListener('DOMContentLoaded', function () {
         syncAllEnhancedSelects();
     });
 
-// ns:end family.shell.workspace.02_basic-setting
-// ns:start family.shell.workspace.06_sort-card
+// ns:end family._base.workspace.02_basic-settings
+// ns:start family._base.workspace.06_output-toolbar
     updateSortState();
 
     tabButtons.forEach((button) => {
@@ -2427,8 +2552,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-// ns:end family.shell.workspace.06_sort-card
-// ns:start family.shell.workspace.07_table
+// ns:end family._base.workspace.06_output-toolbar
+// ns:start family._base.workspace.07_table-output
     optionsTableBody.addEventListener('click', function (event) {
         const target = event.target;
 
@@ -2498,6 +2623,7 @@ document.addEventListener('DOMContentLoaded', function () {
         flashButton(downloadJsonButton, 'Downloaded');
     });
 
+    // ns:start family._base.workspace.08_json-restore
     importJsonButton.addEventListener('click', function () {
         importJsonInput.click();
     });
@@ -2521,9 +2647,141 @@ document.addEventListener('DOMContentLoaded', function () {
             importJsonInput.value = '';
         }
     });
+    // ns:end family._base.workspace.08_json-restore
 
+    initializeInfraStackCustomDropdowns(document);
     updateDynamicState();
     syncAllEnhancedSelects();
     generateAndRender();
 });
-// ns:end family.shell.workspace.07_table
+// ns:end family._base.workspace.07_table-output
+/* ns:start family._base.workspace.07_table-output */
+(function setupGenerateNetcatShellTableOutputStandard() {
+    const rootSelector = '.generate-netcat-shell-tool';
+    const tableSelector = '.tool-result-table tbody tr, .generate-netcat-shell-table tbody tr';
+    const tbodySelector = '.tool-result-table tbody, .generate-netcat-shell-table tbody';
+    const clampClass = 'generate-netcat-shell-table-cell-text';
+    const cellClampClass = 'generate-netcat-shell-cell-clamp';
+    const statusColumnClass = 'generate-netcat-shell-table-status-cell';
+
+    function hasActionColumn(cells, table) {
+        const lastCell = cells[cells.length - 1];
+        const lastHead = table ? table.querySelector('thead th:last-child') : null;
+        const headText = lastHead ? String(lastHead.textContent || '') : '';
+
+        return Boolean(
+            lastCell && lastCell.querySelector('button, [data-copy-row], [data-inventory-copy-row], [data-control-copy-row], [data-options-copy], [data-operation-copy], [data-copy-value]')
+        ) || /copy|action|actions/i.test(headText);
+    }
+
+    function isStatusLikeHeader(text) {
+        return /^(status|signal|criticality|severity|state|health|outcome|result|level|label)$/i.test(String(text || '').trim());
+    }
+
+    function getBodyCells(row) {
+        return Array.from(row.children).filter(function filterCells(cell) {
+            return cell.tagName && cell.tagName.toLowerCase() === 'td';
+        });
+    }
+
+    function applyStatusAlignment(root) {
+        root.querySelectorAll('.tool-result-table, .generate-netcat-shell-table').forEach(function alignStatusTable(table) {
+            const headers = Array.from(table.querySelectorAll('thead th'));
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            table.querySelectorAll('.' + statusColumnClass).forEach(function clearStatusCell(cell) {
+                cell.classList.remove(statusColumnClass);
+            });
+
+            headers.forEach(function alignStatusColumn(header, index) {
+                const statusLike = isStatusLikeHeader(header.textContent);
+                header.classList.toggle(statusColumnClass, statusLike);
+
+                if (!statusLike) {
+                    return;
+                }
+
+                rows.forEach(function alignStatusCell(row) {
+                    const cells = getBodyCells(row);
+                    const cell = cells[index];
+
+                    if (cell && cell.colSpan <= 1) {
+                        cell.classList.add(statusColumnClass);
+                    }
+                });
+            });
+        });
+    }
+
+    function clampCell(cell) {
+        if (!cell || cell.colSpan > 1 || cell.querySelector('.' + clampClass + ', .' + cellClampClass)) {
+            return;
+        }
+
+        if (cell.children.length === 1 && !cell.firstElementChild.matches('button')) {
+            cell.firstElementChild.classList.add(clampClass);
+            return;
+        }
+
+        const wrapper = document.createElement('span');
+        wrapper.className = clampClass;
+
+        while (cell.firstChild) {
+            wrapper.appendChild(cell.firstChild);
+        }
+
+        cell.appendChild(wrapper);
+    }
+
+    function applyTableOutputClamp() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        applyStatusAlignment(root);
+
+        root.querySelectorAll(tableSelector).forEach(function clampRow(row) {
+            const cells = getBodyCells(row);
+            const table = row.closest('table');
+            const actionColumn = hasActionColumn(cells, table);
+
+            cells.forEach(function clampDataCell(cell, index) {
+                const isFirst = index === 0;
+                const isAction = actionColumn && index === cells.length - 1;
+
+                if (!isFirst && !isAction) {
+                    clampCell(cell);
+                }
+            });
+        });
+    }
+
+    function observeTables() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        root.querySelectorAll(tbodySelector).forEach(function observeBody(tbody) {
+            if (tbody.dataset.tableOutputClampObserver === 'true') {
+                return;
+            }
+
+            tbody.dataset.tableOutputClampObserver = 'true';
+            new MutationObserver(applyTableOutputClamp).observe(tbody, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        applyTableOutputClamp();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', observeTables);
+    } else {
+        observeTables();
+    }
+}());
+/* ns:end family._base.workspace.07_table-output */

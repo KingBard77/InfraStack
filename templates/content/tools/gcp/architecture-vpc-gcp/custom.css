@@ -1,6 +1,7 @@
 /* custom.css */
+/* ns:start family._base.workspace.00_shell */
 
-/* ns:start family.architecture.workspace.01_input-brief */
+/* ns:start family._base.workspace.01_input-brief */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -495,8 +496,8 @@
         grid-template-columns: minmax(0, 1fr);
     }
 }
-/* ns:end family.architecture.workspace.01_input-brief */
-/* ns:start family.architecture.workspace.02_basic-settings */
+/* ns:end family._base.workspace.01_input-brief */
+/* ns:start family._base.workspace.02_basic-settings */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -1018,7 +1019,7 @@
 
 .architecture-vpc-gcp-tool .tool-inspector-section.architecture-vpc-gcp-basic-preset-section {
     border: 0;
-    border-bottom: 1px solid rgba(var(--tool-border-strong-rgb), 0.52);
+    border-bottom: 0;
     border-radius: 0;
     background: transparent;
     padding: 0 0 24px;
@@ -1080,8 +1081,8 @@
         white-space: normal;
     }
 }
-/* ns:end family.architecture.workspace.02_basic-settings */
-/* ns:start family.architecture.workspace.03_advanced-settings */
+/* ns:end family._base.workspace.02_basic-settings */
+/* ns:start family._base.workspace.03_custom-settings */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -1794,7 +1795,7 @@
         padding: 14px;
     }
 }
-/* ns:end family.architecture.workspace.03_advanced-settings */
+/* ns:end family._base.workspace.03_custom-settings */
 /* ns:start family.architecture.workspace.04_selected-item */
 /* section.css */
 
@@ -2342,7 +2343,7 @@
     }
 }
 /* ns:end family.architecture.workspace.04_selected-item */
-/* ns:start family.architecture.workspace.05_result-text */
+/* ns:start family.architecture.workspace.04_visual-contract */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -2864,8 +2865,8 @@
         white-space: normal;
     }
 }
-/* ns:end family.architecture.workspace.05_result-text */
-/* ns:start family.architecture.workspace.06_result-diagram */
+/* ns:end family.architecture.workspace.04_visual-contract */
+/* ns:start family.architecture.workspace.04_visual-contract */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -3841,6 +3842,11 @@ body.architecture-vpc-gcp-stage-expanded-lock {
     pointer-events: stroke;
     vector-effect: non-scaling-stroke;
 }
+.architecture-vpc-gcp-tool .diagram-connector-active {
+    stroke: var(--tool-connector-active, var(--tool-connector, #111827));
+    stroke-width: 1.65;
+    opacity: 0.96;
+}
 
 .architecture-vpc-gcp-tool .diagram-connector-hit-target {
     fill: none;
@@ -3872,8 +3878,8 @@ body.architecture-vpc-gcp-stage-expanded-lock {
 }
 
 .architecture-vpc-gcp-tool .architecture-vpc-gcp-stage-preview > svg {
-    filter: blur(4px);
-    opacity: 0.38;
+    filter: blur(2px);
+    opacity: 0.88;
     pointer-events: none;
 }
 
@@ -3988,8 +3994,8 @@ body.architecture-vpc-gcp-stage-expanded-lock {
         gap: 8px;
     }
 }
-/* ns:end family.architecture.workspace.06_result-diagram */
-/* ns:start family.architecture.workspace.07_score-card */
+/* ns:end family.architecture.workspace.04_visual-contract */
+/* ns:start family._base.workspace.05_result-summary */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -4539,7 +4545,7 @@ body.architecture-vpc-gcp-stage-expanded-lock {
     place-items: center;
     text-align: center;
     background:
-        conic-gradient(from -90deg, var(--architecture-vpc-gcp-score-color) 0deg var(--progress-angle), rgba(226, 232, 240, 0.86) var(--progress-angle) 360deg),
+        conic-gradient(from 0deg, var(--architecture-vpc-gcp-score-color) 0deg var(--progress-angle), rgba(226, 232, 240, 0.86) var(--progress-angle) 360deg),
         linear-gradient(145deg, #ffffff, #f8fafc);
     box-shadow:
         0 14px 26px rgba(var(--tool-secondary-rgb), 0.08),
@@ -4923,8 +4929,8 @@ body.architecture-vpc-gcp-stage-expanded-lock {
         text-align: center;
     }
 }
-/* ns:end family.architecture.workspace.07_score-card */
-/* ns:start family.architecture.workspace.08_sort-card */
+/* ns:end family._base.workspace.05_result-summary */
+/* ns:start family._base.workspace.06_output-toolbar */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -5424,10 +5430,10 @@ body.architecture-vpc-gcp-stage-expanded-lock {
     height: 46px;
     min-height: 46px;
     padding: 12px 14px 8px;
-    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.72);
+    border: 1px solid var(--tool-border, #cbd5e1);
     border-radius: var(--tool-radius-sm);
-    background: #ffffff;
-    color: var(--tool-text);
+    background: var(--tool-surface, #ffffff);
+    color: var(--tool-text, #243044);
     font-size: var(--tool-font-size-base);
     font-weight: 700;
     display: flex;
@@ -5538,8 +5544,8 @@ body.architecture-vpc-gcp-stage-expanded-lock {
         width: 100%;
     }
 }
-/* ns:end family.architecture.workspace.08_sort-card */
-/* ns:start family.architecture.workspace.09_result-table */
+/* ns:end family._base.workspace.06_output-toolbar */
+/* ns:start family._base.workspace.07_table-output */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -6568,7 +6574,7 @@ body.architecture-vpc-gcp-stage-expanded-lock {
         padding: 6px;
     }
 }
-/* ns:end family.architecture.workspace.09_result-table */
+/* ns:end family._base.workspace.07_table-output */
 
 .architecture-vpc-gcp-tool,
 .markdown-content {
@@ -7719,6 +7725,7 @@ body.architecture-vpc-gcp-stage-expanded-lock {
 }
 
 .architecture-vpc-gcp-tool .tool-stage-canvas {
+    position: relative;
     min-height: 700px;
     border: 1px solid rgba(var(--tool-border-strong-rgb), 0.52);
     border-radius: var(--tool-radius-md);
@@ -7735,6 +7742,26 @@ body.architecture-vpc-gcp-stage-expanded-lock {
     contain: layout paint;
     isolation: isolate;
     overscroll-behavior: contain;
+}
+
+.architecture-vpc-gcp-tool .tool-stage-canvas > .diagram-marquee-selection {
+    position: absolute;
+    z-index: 12;
+    box-sizing: border-box;
+    border: 2px dashed var(--tool-secondary);
+    border-radius: 8px;
+    background: rgba(var(--tool-secondary-rgb), 0.045);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.72),
+        0 10px 22px rgba(var(--tool-secondary-rgb), 0.14);
+    pointer-events: none;
+}
+
+.architecture-vpc-gcp-tool .diagram-card-group.is-marquee-target .diagram-card-highlight {
+    display: block;
+    stroke: var(--tool-secondary);
+    stroke-width: 3;
+    filter: drop-shadow(0 12px 22px rgba(var(--tool-secondary-rgb), 0.22));
 }
 
 .architecture-vpc-gcp-tool .tool-stage-empty {
@@ -7758,8 +7785,8 @@ body.architecture-vpc-gcp-stage-expanded-lock {
 }
 
 .architecture-vpc-gcp-tool .architecture-vpc-gcp-stage-preview > svg {
-    filter: blur(4px);
-    opacity: 0.38;
+    filter: blur(2px);
+    opacity: 0.88;
     pointer-events: none;
 }
 
@@ -7827,7 +7854,7 @@ body.architecture-vpc-gcp-stage-expanded-lock {
 
 .architecture-vpc-gcp-tool .tool-inspector-section.architecture-vpc-gcp-basic-preset-section {
     border: 0;
-    border-bottom: 1px solid rgba(var(--tool-border-strong-rgb), 0.52);
+    border-bottom: 0;
     border-radius: 0;
     background: transparent;
     padding: 0 0 24px;
@@ -10445,7 +10472,7 @@ body.architecture-vpc-gcp-stage-expanded-lock {
     gap: 0;
     text-align: center;
     background:
-        conic-gradient(from -90deg, var(--architecture-vpc-gcp-score-color) 0deg var(--progress-angle), rgba(226, 232, 240, 0.86) var(--progress-angle) 360deg),
+        conic-gradient(from 0deg, var(--architecture-vpc-gcp-score-color) 0deg var(--progress-angle), rgba(226, 232, 240, 0.86) var(--progress-angle) 360deg),
         linear-gradient(145deg, #ffffff, #f8fafc);
     box-shadow:
         0 14px 26px rgba(var(--tool-secondary-rgb), 0.08),
@@ -11213,6 +11240,7 @@ body.architecture-vpc-gcp-stage-expanded-lock {
     vertical-align: 0.02em;
 }
 
+
 @media (max-width: 640px) {
     .markdown-content > .architecture-vpc-gcp-markdown-card-export {
         padding: 18px;
@@ -11563,3 +11591,3429 @@ body.architecture-vpc-gcp-stage-expanded-lock {
     min-width: 0;
 }
 /* End shared main content section style */
+
+/* base-input-brief:start */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-card {
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #dbe4ef));
+    border-radius: var(--tool-radius-md, 16px);
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: var(--tool-shadow-sm, 0 12px 28px rgba(15, 23, 42, 0.08));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-row {
+    display: grid;
+    grid-template-columns: minmax(130px, 0.28fr) minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    min-width: 0;
+    order: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-label-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-label {
+    margin: 0;
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-helper-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, rgba(37, 99, 235, 0.28)));
+    border-radius: 999px;
+    background: var(--tool-accent-soft, rgba(37, 99, 235, 0.1));
+    color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-stack {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-control {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #dbe4ef));
+    border-radius: var(--tool-radius-sm, 12px);
+    background: var(--architecture-vpc-gcp-bg-panel, #ffffff);
+    color: var(--architecture-vpc-gcp-text-body, var(--tool-text, #1f2937));
+    box-shadow: none;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.architecture-vpc-gcp-tool textarea.architecture-vpc-gcp-input-control {
+    min-height: 118px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-control::placeholder {
+    color: var(--tool-placeholder, #94a3b8);
+    opacity: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-control:focus {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+    box-shadow: 0 0 0 3px var(--tool-focus-ring, rgba(37, 99, 235, 0.16));
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-error {
+    padding: 10px 12px;
+    border: 1px solid rgba(220, 38, 38, 0.28);
+    border-radius: 10px;
+    background: rgba(220, 38, 38, 0.08);
+    color: #991b1b;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-error.d-none {
+    display: none !important;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 0;
+    order: 3;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 44px;
+    max-width: 100%;
+    padding: 0 18px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-action-btn .bi {
+    flex: 0 0 auto;
+    font-size: 1.05em;
+    line-height: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-action-btn:hover {
+    transform: translateY(-1px);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-action-btn-primary {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+    background: var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+    color: #ffffff;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-action-btn-secondary {
+    border-color: var(--architecture-vpc-gcp-border, var(--tool-border, #dbe4ef));
+    background: var(--architecture-vpc-gcp-bg-panel, #ffffff);
+    color: var(--architecture-vpc-gcp-text-body, var(--tool-text, #1f2937));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-helper-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    padding: 14px 16px;
+    border: 1px dashed var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, rgba(37, 99, 235, 0.28)));
+    border-radius: var(--tool-radius-sm, 12px);
+    background: var(--tool-accent-soft, rgba(37, 99, 235, 0.1));
+    order: 2;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-hint {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    color: var(--architecture-vpc-gcp-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-helper-chip-inline {
+    width: 28px;
+    height: 28px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="inline"] {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="inline"] .architecture-vpc-gcp-input-row {
+    grid-template-columns: max-content minmax(220px, 1fr);
+    align-items: center;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="inline"] .architecture-vpc-gcp-input-stack {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="inline"] .architecture-vpc-gcp-input-control {
+    resize: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="inline"] .architecture-vpc-gcp-input-actions {
+    flex-wrap: nowrap;
+    align-items: stretch;
+    order: 2;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="inline"] .architecture-vpc-gcp-action-btn {
+    min-width: 128px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="inline"] .architecture-vpc-gcp-input-helper-card {
+    grid-column: 1 / -1;
+    order: 3;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="stacked"] {
+    grid-template-columns: minmax(130px, 0.28fr) minmax(0, 1fr);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="stacked"] .architecture-vpc-gcp-input-row {
+    grid-column: 1 / -1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="stacked"] .architecture-vpc-gcp-input-helper-card {
+    grid-column: 2 / -1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="stacked"] .architecture-vpc-gcp-input-actions {
+    grid-column: 2 / -1;
+}
+
+@media (max-width: 720px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-input-row,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="stacked"],
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="inline"],
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="inline"] .architecture-vpc-gcp-input-row {
+        grid-template-columns: 1fr;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="stacked"] .architecture-vpc-gcp-input-row,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="stacked"] .architecture-vpc-gcp-input-helper-card,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="stacked"] .architecture-vpc-gcp-input-actions {
+        grid-column: 1 / -1;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-input-actions {
+        justify-content: stretch;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-input-brief[data-input-layout="inline"] .architecture-vpc-gcp-input-actions {
+        flex-wrap: wrap;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-action-btn {
+        flex: 1 1 160px;
+    }
+}
+/* base-input-brief:end */
+
+/* ns:start family._base.workspace.02_basic-settings */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.architecture-vpc-gcp-tool details.architecture-vpc-gcp-basic-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.architecture-vpc-gcp-tool details.architecture-vpc-gcp-basic-card > .architecture-vpc-gcp-advanced-body {
+    display: grid;
+    gap: 16px;
+    padding: 16px;
+    background: transparent;
+}
+
+
+
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-example-card {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+    padding: 14px 16px;
+    border: 1px dashed var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+    border-radius: 12px;
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-accent-pale, rgba(37, 99, 235, 0.08)));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-example-label {
+    color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-example-value {
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-example-helper {
+    color: var(--architecture-vpc-gcp-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-setting-card {
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #dbe4ef));
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-control-stack.architecture-vpc-gcp-setting-card {
+    display: grid;
+    gap: 10px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-setting-row.architecture-vpc-gcp-setting-card {
+    align-items: start;
+    margin: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-setting-label,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .tool-control-label.architecture-vpc-gcp-setting-label {
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-setting-label .architecture-vpc-gcp-helper-chip,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .tool-control-label .architecture-vpc-gcp-helper-chip {
+    margin-left: 6px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-native-select,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-text-field,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .form-control,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .form-select,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card textarea {
+    width: 100%;
+    min-height: 46px;
+    border-color: var(--architecture-vpc-gcp-border, var(--tool-border, #dbe4ef));
+    border-radius: 12px;
+    background-color: #ffffff;
+    color: var(--architecture-vpc-gcp-text-body, var(--tool-text, #1f2937));
+    box-shadow: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-text-field::placeholder,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .form-control::placeholder,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card textarea::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-native-select:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-text-field:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .form-control:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .form-select:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card textarea:hover {
+    border-color: var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-native-select:focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-text-field:focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .form-control:focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .form-select:focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card textarea:focus {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-gcp-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-native-select:disabled,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-text-field:disabled,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .form-control:disabled,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .form-select:disabled,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card textarea:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select {
+    max-width: 100%;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select-summary {
+    min-height: 46px;
+    border-radius: 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select-summary:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select-summary:focus-visible {
+    border-color: var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-gcp-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select[open] .architecture-vpc-gcp-select-summary {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select-body {
+    max-height: min(340px, 65vh);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-radio-card,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select-option {
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #dbe4ef));
+    border-radius: 10px;
+    background: #ffffff;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-radio-card:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-radio-card:focus-within,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select-option:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select-option:focus-visible {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-accent-pale, rgba(37, 99, 235, 0.08)));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-gcp-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-radio-card:has(input:checked),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select-option.is-active {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-accent-pale, rgba(37, 99, 235, 0.08)));
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-radio-card:has(input:disabled),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select-option:disabled {
+    opacity: 0.62;
+    cursor: not-allowed;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-switch-card {
+    border-color: var(--architecture-vpc-gcp-border, var(--tool-border, #dbe4ef));
+    border-radius: 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-switch-card:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-switch-card:focus-within {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #2563eb));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-gcp-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-switch-card input:disabled + .slider,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-switch-card input:disabled + .architecture-vpc-gcp-switch-track {
+    opacity: 0.58;
+    cursor: not-allowed;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-setting-hint,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .tool-control-hint,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-flag-hint {
+    color: var(--architecture-vpc-gcp-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card button {
+    min-height: 44px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card button:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card button:focus-visible {
+    box-shadow: 0 0 0 3px var(--architecture-vpc-gcp-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card button:disabled {
+    opacity: 0.62;
+    cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-basic-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-setting-row,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-inline-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-inline-grid-two,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-inline-grid-three,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-inline-grid-four,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-basis-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-card-grid-two,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-card-grid-three,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-select-grid-two {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card {
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-setting-card,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-basic-card .architecture-vpc-gcp-example-card {
+        padding: 12px;
+    }
+}
+/* ns:end family._base.workspace.02_basic-settings */
+
+/* ns:start family._base.workspace.03_custom-settings */
+/* section.css */
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-settings,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #d8e2ee));
+    border-radius: 14px;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary {
+    position: relative;
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 54px 12px 14px;
+    border-radius: 13px;
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.2;
+    appearance: none;
+    list-style: none;
+    list-style-type: none;
+    user-select: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary::-webkit-details-marker,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary::-webkit-details-marker,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary::-webkit-details-marker,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary::-webkit-details-marker {
+    display: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary::marker,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary::marker,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary::marker,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary::marker {
+    content: "";
+    font-size: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-arrow-slot {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #d8e2ee));
+    border-radius: 9px;
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-surface-soft, #f8fafc));
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #d8e2ee));
+    border-radius: 9px;
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-surface-soft, #f8fafc));
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary > .architecture-vpc-gcp-custom-arrow-slot,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before {
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-arrow-slot::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    border-right: 2.25px solid var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    border-bottom: 2.25px solid var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    border-radius: 1px;
+    transform: translate(-58%, -50%) rotate(-45deg);
+    transition: transform 0.18s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary:has(> .architecture-vpc-gcp-custom-arrow-slot)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary:has(> .architecture-vpc-gcp-custom-arrow-slot)::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary:has(> .architecture-vpc-gcp-custom-arrow-slot)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary:has(> .architecture-vpc-gcp-custom-arrow-slot)::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary:has(> .architecture-vpc-gcp-custom-arrow-slot)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary:has(> .architecture-vpc-gcp-custom-arrow-slot)::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:has(> .architecture-vpc-gcp-custom-arrow-slot)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:has(> .architecture-vpc-gcp-custom-arrow-slot)::after {
+    content: none;
+    display: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary:hover > .architecture-vpc-gcp-custom-arrow-slot,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary:focus-visible > .architecture-vpc-gcp-custom-arrow-slot,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary:hover > .architecture-vpc-gcp-custom-arrow-slot,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary:focus-visible > .architecture-vpc-gcp-custom-arrow-slot,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary:hover > .architecture-vpc-gcp-custom-arrow-slot,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary:focus-visible > .architecture-vpc-gcp-custom-arrow-slot,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:hover > .architecture-vpc-gcp-custom-arrow-slot,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:focus-visible > .architecture-vpc-gcp-custom-arrow-slot,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary:hover:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary:focus-visible:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary:hover:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary:focus-visible:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary:hover:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary:focus-visible:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:hover:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:focus-visible:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::before {
+    border-color: var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary-icon,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-icon {
+    display: none !important;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-settings[open] > .architecture-vpc-gcp-custom-summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel[open] > .architecture-vpc-gcp-custom-panel-summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced[open] > .architecture-vpc-gcp-advanced-summary {
+    border-radius: 13px 13px 0 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-settings[open] > .architecture-vpc-gcp-custom-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel[open] > .architecture-vpc-gcp-custom-panel-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced[open] > .architecture-vpc-gcp-advanced-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::after {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-settings[open] > .architecture-vpc-gcp-custom-summary > .architecture-vpc-gcp-custom-arrow-slot::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel[open] > .architecture-vpc-gcp-custom-panel-summary > .architecture-vpc-gcp-custom-arrow-slot::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced[open] > .architecture-vpc-gcp-advanced-summary > .architecture-vpc-gcp-custom-arrow-slot::before {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary:focus-visible,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary:focus-visible,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary:focus-visible {
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-surface-soft, #f8fafc));
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary:focus-visible,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary:focus-visible,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary:focus-visible {
+    box-shadow: inset 0 0 0 3px var(--architecture-vpc-gcp-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-body,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-body,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-body {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+    padding: 12px;
+    border-radius: 0 0 13px 13px;
+    background: var(--architecture-vpc-gcp-bg-muted, var(--tool-surface-strong, #f8fafc));
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-body > .architecture-vpc-gcp-inner-panel,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-body > .architecture-vpc-gcp-inner-panel {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-tabs,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-config-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-tab,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-config-tab {
+    min-height: 36px;
+    min-width: 0;
+    padding: 8px 12px;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #d8e2ee));
+    border-radius: 999px;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-gcp-text, var(--tool-text, #334155));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-tab:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-tab:focus-visible,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-config-tab:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-config-tab:focus-visible {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-tab.active,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-tab[aria-selected="true"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-config-tab.active,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-config-tab[aria-selected="true"] {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel[data-custom-panel] {
+    display: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel[data-custom-panel].active {
+    display: block;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-grid,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-config-grid,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toggle-grid,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-override-grid,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-inline-grid,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-stacked-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    gap: 10px;
+    align-items: start;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-grid[data-custom-columns="1"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-stacked-grid {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-settings[data-custom-layout="tabbed_two_column"] .architecture-vpc-gcp-custom-grid,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-settings[data-custom-layout="compact_two_column_multi_row"] .architecture-vpc-gcp-custom-grid,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-grid[data-custom-columns="2"] {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-inline-grid-two,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-inline-grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-inline-grid-three,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-inline-grid-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-card,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-field,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-control-stack,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-setting-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-body > .architecture-vpc-gcp-inner-panel > .architecture-vpc-gcp-setting-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-setting-card {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    min-width: 0;
+    height: auto;
+    padding: 10px;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #d8e2ee));
+    border-radius: 12px;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: none;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-field {
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-setting-row {
+    grid-template-columns: minmax(150px, 0.34fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-setting-row-stacked {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-group,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+    align-self: start;
+    padding: 12px;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #d8e2ee));
+    border-radius: 12px;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-group[data-span="2"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-card[data-span="2"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-info[data-span="2"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-card-span-two {
+    grid-column: 1 / -1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-group-head,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-group-title,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group-title {
+    margin: 0;
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-group-body,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 10px;
+    min-width: 0;
+    align-content: start;
+    align-items: start;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group--single .architecture-vpc-gcp-override-group-body {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: 10px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 10px;
+    padding: 12px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group-head {
+    justify-content: flex-start;
+    padding-top: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group--single .architecture-vpc-gcp-override-group-body {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group-body .architecture-vpc-gcp-field-stack {
+    display: grid;
+    grid-template-columns: minmax(86px, 0.42fr) minmax(0, 1fr);
+    gap: 8px;
+    align-items: center;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group-body .architecture-vpc-gcp-field-label {
+    min-height: auto;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group-body .form-control,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group-body .architecture-vpc-gcp-input-group {
+    justify-self: end;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-label-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-label,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .tool-control-label,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-setting-label,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-field-label,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-setting-label,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-field-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.35;
+    white-space: normal;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-helper-chip,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-helper-chip,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-helper-chip {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 999px;
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-surface-soft, #f8fafc));
+    color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-helper-chip:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-helper-chip:focus-visible,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-helper-chip:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-helper-chip:focus-visible,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-helper-chip:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-helper-chip:focus-visible {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-card .form-control,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-field .form-control,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel textarea,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced textarea,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-text-field,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-number-field,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-textarea {
+    width: 100%;
+    min-height: 38px;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-gcp-text, var(--tool-text, #334155));
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+    box-shadow: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-textarea,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel textarea,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced textarea {
+    min-height: 84px;
+    resize: vertical;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-text-field::placeholder,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-textarea::placeholder,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel input::placeholder,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel textarea::placeholder,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced input::placeholder,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced textarea::placeholder {
+    color: var(--architecture-vpc-gcp-placeholder, var(--tool-placeholder, #94a3b8));
+    opacity: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-card .form-control:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-field .form-control:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel textarea:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced textarea:hover {
+    border-color: var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-card .form-control:focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-field .form-control:focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel textarea:focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced textarea:focus {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-gcp-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-input-group > .form-control.architecture-vpc-gcp-input-group-control,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-input-group > .form-control.architecture-vpc-gcp-input-group-control {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    flex: 1 1 auto;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-input-group > .form-control.architecture-vpc-gcp-input-group-control:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-input-group > .form-control.architecture-vpc-gcp-input-group-control:focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-input-group > .form-control.architecture-vpc-gcp-input-group-control:focus-visible,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-input-group > .form-control.architecture-vpc-gcp-input-group-control:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-input-group > .form-control.architecture-vpc-gcp-input-group-control:focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-input-group > .form-control.architecture-vpc-gcp-input-group-control:focus-visible {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-input-group > .form-control.architecture-vpc-gcp-input-group-control:disabled,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-input-group > .form-control.architecture-vpc-gcp-input-group-control:disabled {
+    background: transparent;
+}
+
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-number-field,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel input[type="number"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-number-field::-webkit-inner-spin-button,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-number-field::-webkit-outer-spin-button,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel input[type="number"]::-webkit-inner-spin-button,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel input[type="number"]::-webkit-outer-spin-button,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced input[type="number"]::-webkit-inner-spin-button,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-card .form-control:disabled,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-field .form-control:disabled,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel input:disabled,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel textarea:disabled,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced input:disabled,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced textarea:disabled {
+    background: var(--architecture-vpc-gcp-disabled-bg, #f1f5f9);
+    color: var(--architecture-vpc-gcp-disabled-text, #94a3b8);
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-group,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-radio-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    gap: 10px;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-card,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-option,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-radio-card,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-radio-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-gcp-text, var(--tool-text, #334155));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-card::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-option::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-radio-card::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-radio-card::before {
+    content: "";
+    grid-column: 1;
+    grid-row: 1;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    border: 1px solid var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 999px;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: inset 0 0 0 2px var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-card::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-option::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-radio-card::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-radio-card::after {
+    content: "";
+    grid-column: 1;
+    grid-row: 1;
+    width: 8px;
+    height: 8px;
+    margin: 6px 0 0 5px;
+    border-radius: 999px;
+    background: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-card:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-option:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-radio-card:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-radio-card:hover {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-card:has(input:checked),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-option:has(input:checked),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-radio-card:has(input:checked),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-radio-card:has(input:checked) {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-card:has(input:checked)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-option:has(input:checked)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-radio-card:has(input:checked)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-radio-card:has(input:checked)::before {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-card:has(input:checked)::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-option:has(input:checked)::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-radio-card:has(input:checked)::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-radio-card:has(input:checked)::after {
+    opacity: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-card:has(input:focus-visible)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-option:has(input:focus-visible)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-radio-card:has(input:focus-visible)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-radio-card:has(input:focus-visible)::before {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-gcp-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-card:has(input:disabled),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-option:has(input:disabled),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-radio-card:has(input:disabled),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-radio-card:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.68;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-card input,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-option input,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel input[type="radio"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-title,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-copy {
+    display: block;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-title {
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-copy {
+    margin-top: 3px;
+    color: var(--architecture-vpc-gcp-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown {
+    position: relative;
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown[open] {
+    z-index: 160;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary {
+    position: relative;
+    display: flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 42px 8px 10px;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-gcp-text, var(--tool-text, #334155));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    list-style: none;
+    list-style-type: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown[open] .architecture-vpc-gcp-custom-dropdown-summary:not(:has(> .architecture-vpc-gcp-custom-arrow-slot))::after {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown[open] .architecture-vpc-gcp-custom-dropdown-summary > .architecture-vpc-gcp-custom-arrow-slot::before {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:focus-visible {
+    border-color: var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-summary:focus-visible,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown[open] .architecture-vpc-gcp-custom-dropdown-summary {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-gcp-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    display: grid;
+    width: 100%;
+    min-width: 100%;
+    max-height: min(280px, 52vh);
+    border: 1px solid var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    border-radius: 10px;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 170;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown:not([open]) .architecture-vpc-gcp-custom-dropdown-menu {
+    display: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-option {
+    display: flex;
+    width: 100%;
+    min-height: 38px;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 10px;
+    border: 0;
+    border-top: 0;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-gcp-text, var(--tool-text, #334155));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: left;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-option:first-child {
+    border-top: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-option:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-option:focus-visible,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-option.active,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown-option[aria-selected="true"] {
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    outline: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option {
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    max-width: 100%;
+    min-height: 32px;
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 18px;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid var(--architecture-vpc-gcp-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.3;
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item::before {
+    content: "";
+    grid-row: 1;
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 5px;
+    background: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option::before {
+    grid-column: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item::before {
+    grid-column: 2;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item::after {
+    content: "";
+    grid-row: 1;
+    width: 5px;
+    height: 9px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transform: translateY(-1px) rotate(45deg);
+    transition: opacity 0.18s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option::after {
+    grid-column: 1;
+    justify-self: center;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item::after {
+    grid-column: 2;
+    justify-self: center;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option:hover::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item:hover::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item:hover::before {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option:has(input:checked)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item:has(input:checked)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item:has(input:checked)::before {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option:has(input:checked)::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item:has(input:checked)::after,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item:has(input:checked)::after {
+    opacity: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option:has(input:checked),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item:has(input:checked),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item:has(input:checked) {
+    color: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item:has(input:checked),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item:has(input:checked) {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option:has(input:focus-visible)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item:has(input:focus-visible)::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item:has(input:focus-visible)::before {
+    border-color: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-gcp-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option:has(input:disabled),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item:has(input:disabled),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.68;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option > span {
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-item > .architecture-vpc-gcp-toggle-copy,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-item > .architecture-vpc-gcp-toggle-copy {
+    min-width: 0;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option input,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel input[type="checkbox"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced input[type="checkbox"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 10px;
+    min-height: 32px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option::before {
+    width: 48px;
+    height: 28px;
+    border-color: var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 999px;
+    background: var(--architecture-vpc-gcp-toggle-off, var(--tool-toggle-off, #e7e5e4));
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option::after {
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    grid-column: 1;
+    justify-self: start;
+    align-self: center;
+    border: 0;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+    opacity: 1;
+    transform: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option:hover::before {
+    border-color: var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option:has(input:checked)::before {
+    border-color: transparent;
+    background: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    box-shadow: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option:has(input:checked)::after {
+    opacity: 1;
+    transform: translateX(20px);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option:has(input:focus-visible)::before {
+    box-shadow: 0 0 0 3px var(--architecture-vpc-gcp-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-hint,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-info,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-field-hint,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-flag-hint,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-inline-note,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-field-hint,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-flag-hint,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-inline-note {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 8px 12px;
+    min-width: 0;
+    margin: 0;
+    padding: 9px 10px;
+    border: 1px dashed var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 12px;
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-surface-soft, #f8fafc));
+    color: var(--architecture-vpc-gcp-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-hint {
+    display: block;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-hint[data-span="2"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-info[data-span="2"] {
+    grid-column: 1 / -1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-info span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-settings[data-custom-layout],
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-grid[data-custom-columns],
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-config-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-toggle-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel .architecture-vpc-gcp-custom-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-config-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-toggle-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-inline-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-stacked-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-custom-grid,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-setting-row {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group-body .architecture-vpc-gcp-field-stack,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced .architecture-vpc-gcp-override-group--single .architecture-vpc-gcp-override-group-body {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-tabs,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-config-tabs {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-summary,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-summary,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-summary {
+        min-height: 44px;
+        padding: 10px 40px 10px 12px;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-body,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel-body,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced-body {
+        padding: 10px;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-tab,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-config-tab,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-dropdown,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-radio-group,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-radio-group,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-checkbox-option,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-panel textarea,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-advanced textarea {
+        width: 100%;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-group[data-span="2"],
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-card[data-span="2"],
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-custom-info[data-span="2"],
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-card-span-two {
+        grid-column: auto;
+    }
+}
+/* ns:end family._base.workspace.03_custom-settings */
+
+/* ns:start family._base.workspace.05_result-summary */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-empty,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-error,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-card,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-score-card {
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-output-summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-output-status-card {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-empty,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-error {
+    padding: 16px 18px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-empty {
+    border: 1px dashed var(--architecture-vpc-gcp-border-strong, var(--tool-border-strong, #cbd5e1));
+    background: var(--architecture-vpc-gcp-bg-soft, var(--tool-surface-soft, #f8fafc));
+    color: var(--architecture-vpc-gcp-text-muted, var(--tool-text-muted, #64748b));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-error {
+    border: 1px solid var(--architecture-vpc-gcp-danger, var(--tool-danger, #dc2626));
+    background: var(--architecture-vpc-gcp-danger-soft, rgba(220, 38, 38, 0.1));
+    color: var(--architecture-vpc-gcp-danger-strong, var(--tool-danger-strong, #991b1b));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-score-card.architecture-vpc-gcp-result-summary {
+    --architecture-vpc-gcp-result-accent: var(--architecture-vpc-gcp-accent, var(--tool-accent, #475569));
+    --architecture-vpc-gcp-result-accent-soft: var(--architecture-vpc-gcp-accent-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    --architecture-vpc-gcp-result-border: var(--architecture-vpc-gcp-border, var(--tool-border, #d8e2ee));
+    --architecture-vpc-gcp-result-surface: var(--architecture-vpc-gcp-bg-panel, var(--tool-surface, #ffffff));
+    --architecture-vpc-gcp-result-surface-soft: var(--architecture-vpc-gcp-bg-soft, var(--tool-surface-soft, #f8fafc));
+    --architecture-vpc-gcp-result-heading: var(--architecture-vpc-gcp-text-strong, var(--tool-heading, #111827));
+    --architecture-vpc-gcp-result-text: var(--architecture-vpc-gcp-text-body, var(--tool-text, #334155));
+    --architecture-vpc-gcp-result-muted: var(--architecture-vpc-gcp-text-muted, var(--tool-text-muted, #64748b));
+    --architecture-vpc-gcp-result-track: var(--architecture-vpc-gcp-score-track, var(--tool-score-track, #e2e8f0));
+    --architecture-vpc-gcp-result-success: var(--architecture-vpc-gcp-success, var(--tool-success, #15803d));
+    --architecture-vpc-gcp-result-success-soft: var(--architecture-vpc-gcp-success-soft, var(--tool-success-soft, rgba(22, 163, 74, 0.1)));
+    --architecture-vpc-gcp-result-warning: var(--architecture-vpc-gcp-warning, var(--tool-warning, #a16207));
+    --architecture-vpc-gcp-result-warning-soft: var(--architecture-vpc-gcp-warning-soft, var(--tool-warning-soft, rgba(234, 179, 8, 0.14)));
+    --architecture-vpc-gcp-result-error-state: var(--architecture-vpc-gcp-danger, var(--tool-danger, #dc2626));
+    --architecture-vpc-gcp-result-error-soft: var(--architecture-vpc-gcp-danger-soft, var(--tool-danger-soft, rgba(220, 38, 38, 0.1)));
+    --architecture-vpc-gcp-result-neutral-soft: var(--architecture-vpc-gcp-neutral-soft, rgba(100, 116, 139, 0.1));
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    align-items: stretch;
+    justify-items: stretch;
+    padding: 12px;
+    border: 1px solid var(--architecture-vpc-gcp-result-border);
+    border-radius: 16px;
+    background: var(--architecture-vpc-gcp-result-surface-soft);
+    color: var(--architecture-vpc-gcp-result-text);
+    text-align: initial;
+    overflow: hidden;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-summary[data-result-tone="success"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-summary[data-result-tone="ready"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-score-card.architecture-vpc-gcp-result-summary[data-result-tone="success"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-score-card.architecture-vpc-gcp-result-summary[data-result-tone="ready"] {
+    --architecture-vpc-gcp-result-state: var(--architecture-vpc-gcp-result-success);
+    --architecture-vpc-gcp-result-state-soft: var(--architecture-vpc-gcp-result-success-soft);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-summary[data-result-tone="warning"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-summary[data-result-tone="need-work"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-score-card.architecture-vpc-gcp-result-summary[data-result-tone="warning"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-score-card.architecture-vpc-gcp-result-summary[data-result-tone="need-work"] {
+    --architecture-vpc-gcp-result-state: var(--architecture-vpc-gcp-result-warning);
+    --architecture-vpc-gcp-result-state-soft: var(--architecture-vpc-gcp-result-warning-soft);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-summary[data-result-tone="error"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-score-card.architecture-vpc-gcp-result-summary[data-result-tone="error"] {
+    --architecture-vpc-gcp-result-state: var(--architecture-vpc-gcp-result-error-state);
+    --architecture-vpc-gcp-result-state-soft: var(--architecture-vpc-gcp-result-error-soft);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.92fr) minmax(0, 1.08fr);
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    height: 100%;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid var(--architecture-vpc-gcp-result-border);
+    border-radius: 14px;
+    background: var(--architecture-vpc-gcp-result-surface);
+    color: var(--architecture-vpc-gcp-result-text);
+    overflow: hidden;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-main {
+    background: var(--architecture-vpc-gcp-result-surface);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-main .architecture-vpc-gcp-result-chip-row {
+    align-self: initial;
+    margin-top: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-command {
+    align-content: center;
+    justify-items: center;
+    text-align: center;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-kicker,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-label {
+    color: var(--architecture-vpc-gcp-result-accent);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    text-transform: uppercase;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-title {
+    margin: 0;
+    color: var(--architecture-vpc-gcp-result-heading);
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-title-center {
+    text-align: center;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-copy,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-copy {
+    margin: 0;
+    color: var(--architecture-vpc-gcp-result-muted);
+    font-size: 13px;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-copy-center {
+    max-width: 34rem;
+    text-align: center;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-row-center {
+    justify-content: center;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border: 1px solid var(--architecture-vpc-gcp-result-border);
+    border-radius: 999px;
+    background: var(--architecture-vpc-gcp-result-surface);
+    color: var(--architecture-vpc-gcp-result-text);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: currentColor;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-success,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-ready {
+    border-color: color-mix(in srgb, var(--architecture-vpc-gcp-result-success) 32%, var(--architecture-vpc-gcp-result-border));
+    background: color-mix(in srgb, var(--architecture-vpc-gcp-result-success-soft) 58%, var(--architecture-vpc-gcp-result-surface));
+    color: color-mix(in srgb, var(--architecture-vpc-gcp-result-success) 62%, var(--architecture-vpc-gcp-result-text));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-warning,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-need-work {
+    border-color: color-mix(in srgb, var(--architecture-vpc-gcp-result-warning) 30%, var(--architecture-vpc-gcp-result-border));
+    background: color-mix(in srgb, var(--architecture-vpc-gcp-result-warning-soft) 52%, var(--architecture-vpc-gcp-result-surface));
+    color: color-mix(in srgb, var(--architecture-vpc-gcp-result-warning) 58%, var(--architecture-vpc-gcp-result-text));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-error {
+    border-color: color-mix(in srgb, var(--architecture-vpc-gcp-result-error-state) 30%, var(--architecture-vpc-gcp-result-border));
+    background: color-mix(in srgb, var(--architecture-vpc-gcp-result-error-soft) 54%, var(--architecture-vpc-gcp-result-surface));
+    color: color-mix(in srgb, var(--architecture-vpc-gcp-result-error-state) 58%, var(--architecture-vpc-gcp-result-text));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-baseline,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-updated {
+    border-color: rgba(100, 116, 139, 0.35);
+    background: var(--architecture-vpc-gcp-result-neutral-soft);
+    color: var(--architecture-vpc-gcp-result-text);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-outcome {
+    border-color: color-mix(in srgb, var(--architecture-vpc-gcp-result-accent) 34%, var(--architecture-vpc-gcp-result-border));
+    background: color-mix(in srgb, var(--architecture-vpc-gcp-result-accent-soft) 46%, var(--architecture-vpc-gcp-result-surface));
+    color: color-mix(in srgb, var(--architecture-vpc-gcp-result-accent) 62%, var(--architecture-vpc-gcp-result-text));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring[data-chart-ready="true"] {
+    position: relative;
+    display: grid;
+    width: 152px;
+    height: 152px;
+    place-items: center;
+    border-radius: 999px;
+    background:
+        conic-gradient(from 0deg, color-mix(in srgb, var(--architecture-vpc-gcp-result-accent) 68%, var(--architecture-vpc-gcp-result-surface)) 0deg var(--architecture-vpc-gcp-result-progress, var(--progress-angle, 0deg)), color-mix(in srgb, var(--architecture-vpc-gcp-result-track) 82%, var(--architecture-vpc-gcp-result-surface)) var(--architecture-vpc-gcp-result-progress, var(--progress-angle, 0deg)) 360deg);
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-gcp-result-border);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring::before,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring::after {
+    content: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring > [class$="-score-echart"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring > [class*="-score-echart "],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring > [class$="-chart"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring > [class*="-chart "] {
+    display: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring-center {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 112px;
+    height: 112px;
+    place-items: center;
+    align-content: center;
+    border-radius: 999px;
+    background: var(--architecture-vpc-gcp-result-surface);
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-gcp-result-border);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring-value {
+    color: var(--architecture-vpc-gcp-result-accent);
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring-unit {
+    margin-top: 4px;
+    color: var(--architecture-vpc-gcp-result-muted);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-primary-text {
+    display: none;
+    min-width: 0;
+    max-width: 100%;
+    padding: 18px 20px;
+    border: 1px dashed var(--architecture-vpc-gcp-result-border);
+    border-radius: 14px;
+    background: var(--architecture-vpc-gcp-result-surface-soft);
+    color: var(--architecture-vpc-gcp-result-heading);
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-primary-text-value {
+    display: block;
+    color: var(--architecture-vpc-gcp-result-heading);
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.18;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-primary-text-unit {
+    display: block;
+    margin-top: 6px;
+    color: var(--architecture-vpc-gcp-result-muted);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-command-output {
+    display: grid;
+    min-width: 0;
+    max-width: 100%;
+    justify-items: center;
+    padding: 16px 18px;
+    border: 1px dashed var(--architecture-vpc-gcp-result-border);
+    border-radius: 14px;
+    background: var(--architecture-vpc-gcp-result-surface-soft);
+    color: var(--architecture-vpc-gcp-result-heading);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-command-value {
+    max-width: 100%;
+    color: var(--architecture-vpc-gcp-result-heading);
+    font-family: inherit;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary[data-result-visual="command"] .architecture-vpc-gcp-result-ring,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary[data-result-visual="text"] .architecture-vpc-gcp-result-ring,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary[data-result-visual="status"] .architecture-vpc-gcp-result-ring,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual[data-result-visual="command"] .architecture-vpc-gcp-result-ring,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual[data-result-visual="text"] .architecture-vpc-gcp-result-ring,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual[data-result-visual="status"] .architecture-vpc-gcp-result-ring {
+    display: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary[data-result-visual="command"] .architecture-vpc-gcp-result-primary-text,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary[data-result-visual="text"] .architecture-vpc-gcp-result-primary-text,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary[data-result-visual="status"] .architecture-vpc-gcp-result-primary-text,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual[data-result-visual="command"] .architecture-vpc-gcp-result-primary-text,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual[data-result-visual="text"] .architecture-vpc-gcp-result-primary-text,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual[data-result-visual="status"] .architecture-vpc-gcp-result-primary-text {
+    display: block;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-visual-copy {
+    display: grid;
+    gap: 8px;
+    justify-items: center;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-visual-copy-top {
+    margin-bottom: 2px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-card {
+    display: grid;
+    align-content: start;
+    gap: 7px;
+    min-height: 112px;
+    padding: 14px;
+    border: 1px solid var(--architecture-vpc-gcp-result-border);
+    border-radius: 14px;
+    background: var(--architecture-vpc-gcp-result-surface);
+    overflow: hidden;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-value {
+    color: var(--architecture-vpc-gcp-result-heading);
+    font-size: clamp(16px, 1.2vw, 18px);
+    font-weight: 800;
+    line-height: 1.22;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-summary,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-score-card.architecture-vpc-gcp-result-summary {
+        padding: 10px;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-card {
+        padding: 12px;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring {
+        width: 132px;
+        height: 132px;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring-center {
+        width: 96px;
+        height: 96px;
+    }
+}
+/* ns:end family._base.workspace.05_result-summary */
+
+/* output-toolbar-standard:start */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-shell,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-main,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-left,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-shell,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-wrap,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-select,
+.architecture-vpc-gcp-tool .tool-output-actions,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions {
+    min-width: 0;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-shell {
+    position: relative;
+    z-index: 20;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-shell:has(.architecture-vpc-gcp-sort-select[open]) {
+    z-index: 120;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(390px, 450px);
+    align-items: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-main {
+    display: grid;
+    grid-template-columns: auto minmax(0, 240px);
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-shell {
+    display: grid;
+    grid-template-columns: auto minmax(0, 240px);
+    align-items: center;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-wrap {
+    width: min(100%, 240px);
+    max-width: 240px;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-select {
+    position: relative;
+    z-index: 30;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-select[open] {
+    z-index: 140;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-select > summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-select .architecture-vpc-gcp-select-summary {
+    min-height: 46px;
+    box-sizing: border-box;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-menu,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-select .architecture-vpc-gcp-select-body {
+    z-index: 160;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.architecture-vpc-gcp-tool .tool-output-actions,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions {
+    display: grid;
+    width: 100%;
+    max-width: 450px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-content: end;
+    justify-self: end;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn,
+.architecture-vpc-gcp-tool .tool-output-actions .architecture-vpc-gcp-action-btn,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .architecture-vpc-gcp-action-btn {
+    display: inline-flex;
+    width: 100%;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    border: 1px solid var(--tool-border, #cbd5e1);
+    background: var(--tool-surface, #ffffff);
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--tool-text, #243044);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn:hover,
+.architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn:focus,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn:hover,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn:focus,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn:hover,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn:focus,
+.architecture-vpc-gcp-tool .tool-output-actions .architecture-vpc-gcp-action-btn:hover,
+.architecture-vpc-gcp-tool .tool-output-actions .architecture-vpc-gcp-action-btn:focus,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .architecture-vpc-gcp-action-btn:hover,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .architecture-vpc-gcp-action-btn:focus {
+    border-color: var(--tool-accent, #2563eb);
+    background: var(--tool-accent-soft, #eff6ff);
+    color: var(--tool-accent, #2563eb);
+    outline: none;
+}
+
+
+.architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
+    grid-column: 2;
+}
+
+.architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+    grid-column: 3;
+}
+
+.architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn i,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn i,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn i,
+.architecture-vpc-gcp-tool .tool-output-actions .architecture-vpc-gcp-action-btn i,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .architecture-vpc-gcp-action-btn i {
+    flex: 0 0 auto;
+    color: currentColor;
+    font-size: 16px;
+    line-height: 1;
+}
+
+@media (max-width: 991.98px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .architecture-vpc-gcp-tool .tool-output-actions,
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-self: start;
+        margin-left: 0;
+        max-width: none;
+    }
+
+    .architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn:nth-child(4),
+    .architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn:nth-child(5),
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-main,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-shell {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-left,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-wrap,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-select,
+    .architecture-vpc-gcp-tool .tool-output-actions,
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions {
+        width: 100%;
+        max-width: none;
+    }
+
+    .architecture-vpc-gcp-tool .tool-output-actions,
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+/* output-toolbar-standard:end */
+
+
+/* ns:start family._base.workspace.08_json-restore */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-restore-shell,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-card,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-head,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-title-wrap,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-empty,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-status {
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-restore-shell {
+    display: grid;
+    gap: 12px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-card.tool-json-panel {
+    display: grid;
+    grid-auto-rows: max-content;
+    align-content: start;
+    gap: 0;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--base-json-border, #ddd6fe);
+    border-radius: var(--base-json-radius, 14px);
+    background: var(--base-json-surface, #ffffff);
+    color: var(--base-json-text, #1f1733);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-head.tool-json-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--base-json-border-soft, #efe7ff);
+    background: var(--base-json-head-bg, #f8f5ff);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-title-wrap {
+    display: grid;
+    gap: 4px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-title.tool-json-title {
+    color: var(--base-json-heading, #1f1433);
+    font-size: var(--base-json-title-size, 15px);
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-helper {
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-sm, 13px);
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-status {
+    display: none;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-xs, 12px);
+    font-weight: 850;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-status:empty,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-status.is-hidden {
+    display: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-status.is-success {
+    display: inline-flex;
+    color: var(--state-success, #16a34a);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-status.is-error {
+    display: inline-flex;
+    color: var(--state-error, #dc2626);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-empty {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--base-json-border-soft, #efe7ff);
+    background: var(--base-json-empty-bg, #fffaf5);
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-sm, 13px);
+    font-weight: 750;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-empty:empty,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-empty.is-hidden {
+    display: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output.tool-json-output {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-height: 220px;
+    max-height: 520px;
+    margin: 0;
+    padding: 16px;
+    overflow: auto;
+    background: var(--base-json-code-bg, #f4f7fb);
+    color: var(--base-json-code-text, #0f172a);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: var(--base-json-code-size, 13px);
+    line-height: 1.7;
+    tab-size: 2;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output.tool-json-output code {
+    display: block;
+    min-width: max-content;
+    color: inherit;
+    white-space: pre;
+    word-break: normal;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output .tool-json-key,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output .json-key {
+    color: var(--base-json-key, #475569);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output .tool-json-string,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output .json-string {
+    color: var(--base-json-string, #047857);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output .tool-json-number,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output .json-number {
+    color: var(--base-json-number, #b45309);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output .tool-json-boolean,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output .json-boolean {
+    color: var(--base-json-boolean, #7c3aed);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output .tool-json-null,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output .json-null {
+    color: var(--base-json-null, #b91c1c);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-import-input.d-none,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-import-input[hidden],
+.architecture-vpc-gcp-tool input[type="file"][id$="ImportJson"].d-none,
+.architecture-vpc-gcp-tool input[type="file"][id$="ImportJson"][hidden] {
+    display: none !important;
+}
+
+@media (max-width: 767.98px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-json-head.tool-json-head {
+        display: grid;
+    }
+
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-json-output.tool-json-output {
+        min-height: 180px;
+        max-height: 420px;
+        padding: 14px;
+    }
+}
+/* ns:end family._base.workspace.08_json-restore */
+/* table-output-standard:start */
+.architecture-vpc-gcp-tool .tool-tabs,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tabs[role="tablist"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tab-list[role="tablist"] {
+    max-width: 100%;
+    flex-wrap: nowrap !important;
+    justify-content: flex-end;
+    justify-content: safe flex-end;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+}
+
+.architecture-vpc-gcp-tool .tool-tab-btn,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tab-btn {
+    flex: 0 0 auto;
+    border-radius: 999px;
+    white-space: nowrap;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.architecture-vpc-gcp-tool .tool-tabs .tool-tab-btn,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tabs[role="tablist"] .architecture-vpc-gcp-tab-btn,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tab-list[role="tablist"] .architecture-vpc-gcp-tab-btn,
+.architecture-vpc-gcp-tool .tool-tabs .tool-tab-btn:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tabs[role="tablist"] .architecture-vpc-gcp-tab-btn:hover,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tab-list[role="tablist"] .architecture-vpc-gcp-tab-btn:hover,
+.architecture-vpc-gcp-tool .tool-tabs .tool-tab-btn:focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tabs[role="tablist"] .architecture-vpc-gcp-tab-btn:focus,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tab-list[role="tablist"] .architecture-vpc-gcp-tab-btn:focus,
+.architecture-vpc-gcp-tool .tool-tabs .tool-tab-btn.active,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tabs[role="tablist"] .architecture-vpc-gcp-tab-btn.active,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tab-list[role="tablist"] .architecture-vpc-gcp-tab-btn.active,
+.architecture-vpc-gcp-tool .tool-tabs .tool-tab-btn[aria-selected="true"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tabs[role="tablist"] .architecture-vpc-gcp-tab-btn[aria-selected="true"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tab-list[role="tablist"] .architecture-vpc-gcp-tab-btn[aria-selected="true"] {
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.architecture-vpc-gcp-tool .tool-tab-btn i,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-tab-btn i {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.architecture-vpc-gcp-tool .tool-result-table-wrap,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-wrap {
+    position: relative;
+    overflow-x: auto;
+}
+
+.architecture-vpc-gcp-tool .tool-result-table,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table {
+    min-width: 680px;
+    table-layout: fixed;
+}
+
+.architecture-vpc-gcp-tool .tool-result-table th:first-child,
+.architecture-vpc-gcp-tool .tool-result-table td:first-child,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table th:first-child,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table td:first-child {
+    width: 58px;
+    text-align: center;
+}
+
+.architecture-vpc-gcp-tool .tool-result-table th:not(:first-child):not(:last-child),
+.architecture-vpc-gcp-tool .tool-result-table td:not(:first-child):not(:last-child),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table th:not(:first-child):not(:last-child),
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table td:not(:first-child):not(:last-child) {
+    text-align: start;
+}
+
+.architecture-vpc-gcp-tool .tool-result-table:has(tbody td:last-child button) th:last-child,
+.architecture-vpc-gcp-tool .tool-result-table:has(tbody td:last-child button) td:last-child,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table:has(tbody td:last-child button) th:last-child,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table:has(tbody td:last-child button) td:last-child,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-action-cell,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-copy-cell,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-copy-cell {
+    position: sticky;
+    right: 0;
+    inset-inline-end: 0;
+    z-index: 2;
+    width: 74px;
+    min-width: 74px;
+    text-align: center;
+    white-space: nowrap;
+    background: var(--tool-surface, #ffffff);
+    box-shadow: none;
+}
+
+.architecture-vpc-gcp-tool .tool-result-table:has(tbody td:last-child button) th:last-child,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table:has(tbody td:last-child button) th:last-child {
+    z-index: 3;
+    background: var(--tool-table-head-bg, var(--tool-surface-soft, #f8fafc));
+}
+
+.architecture-vpc-gcp-tool .tool-result-table tbody tr:hover td:last-child,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table tbody tr:hover td:last-child {
+    background: var(--tool-table-row-hover, var(--tool-surface, #ffffff));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-cell-text,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-cell-clamp {
+    display: -webkit-box;
+    max-height: calc(var(--tool-table-row-line-height, 1.45em) * var(--tool-table-row-line-clamp, 3));
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--tool-table-row-line-clamp, 3);
+    line-clamp: var(--tool-table-row-line-clamp, 3);
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-status-cell {
+    text-align: center !important;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-status-cell .architecture-vpc-gcp-table-cell-text,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-status-cell .architecture-vpc-gcp-cell-clamp {
+    margin-inline: auto;
+    text-align: center;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-output-note-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-output-note-card {
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+    border: 1px solid var(--tool-border, #dbe4ef);
+    border-radius: 12px;
+    background: var(--tool-surface, #ffffff);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-output-note-title,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-output-note-copy {
+    margin: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-output-note-title {
+    color: var(--tool-heading, #111827);
+    font-size: 0.92rem;
+    font-weight: 850;
+    line-height: 1.25;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-table-output-note-copy {
+    color: var(--tool-muted, #475569);
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+@media (max-width: 767.98px) {
+    .architecture-vpc-gcp-tool .tool-tabs,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-tabs[role="tablist"],
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-tab-list[role="tablist"] {
+        flex-wrap: nowrap !important;
+        justify-content: flex-start;
+        overflow-x: auto;
+    }
+
+    .architecture-vpc-gcp-tool .tool-tab-btn,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-tab-btn {
+        width: auto !important;
+        max-width: none;
+        flex: 0 0 auto;
+    }
+}
+/* table-output-standard:end */
+
+/* architecture-result-summary-base-alignment:start */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-summary {
+    gap: 12px;
+    padding: 14px;
+    background: var(--architecture-vpc-gcp-result-surface, #ffffff);
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-main {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-icon {
+    display: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-copy {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-title {
+    margin: 0;
+    color: var(--architecture-vpc-gcp-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-copy p {
+    display: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-meta {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-chip {
+    min-height: 32px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-hero-grid {
+    grid-template-columns: minmax(210px, 0.82fr) minmax(0, 1.28fr);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card {
+    gap: 10px;
+    min-height: 0;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-command {
+    min-height: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary {
+    border-color: var(--architecture-vpc-gcp-result-border-strong, var(--architecture-vpc-gcp-result-border, #bfdbfe));
+    background:
+        radial-gradient(circle at 16% 16%, color-mix(in srgb, var(--architecture-vpc-gcp-result-info-soft, rgba(37, 99, 235, 0.1)) 42%, transparent) 0 96px, transparent 180px),
+        var(--architecture-vpc-gcp-result-surface, #ffffff);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-summary-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    align-items: start;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-summary-copy {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-icon-summary {
+    display: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 2px 0;
+    background: var(--architecture-vpc-gcp-result-border, #dbe4f0);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-main .architecture-vpc-gcp-result-chip-row {
+    align-self: initial;
+    margin-top: 0;
+}
+
+@media (max-width: 640px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-meta {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-command,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary {
+    min-height: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-command {
+    align-content: stretch;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary {
+    align-content: stretch;
+    display: flex;
+    flex-direction: column;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-divider {
+    flex: 0 0 auto;
+    margin: 0;
+    margin-top: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-command > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary > .architecture-vpc-gcp-result-chip-grid {
+    min-height: 0;
+    align-content: flex-start;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-ring-value {
+    max-width: min(86px, 82%);
+    font-size: clamp(18px, calc(168px / var(--architecture-vpc-gcp-result-value-chars, 3)), 32px);
+    line-height: 0.95;
+    overflow-wrap: normal;
+    text-align: center;
+    white-space: nowrap;
+}
+
+
+/* architecture-result-summary-metric-contract:start */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-command > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary > .architecture-vpc-gcp-result-chip-grid,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-main > .architecture-vpc-gcp-result-chip-row {
+    min-height: 0;
+    align-content: flex-start;
+    align-items: flex-start;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-card {
+    --architecture-vpc-gcp-result-metric-color: var(--architecture-vpc-gcp-result-accent, var(--tool-accent, #2563eb));
+    --architecture-vpc-gcp-result-metric-soft: var(--architecture-vpc-gcp-result-accent-soft, rgba(37, 99, 235, 0.1));
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    align-content: stretch;
+    gap: 8px;
+    min-height: 138px;
+    padding: 14px;
+    border: 1px solid var(--architecture-vpc-gcp-result-border, var(--tool-border, #dbe4f0));
+    border-radius: 14px;
+    background: var(--architecture-vpc-gcp-result-surface, #ffffff);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    overflow: hidden;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-success {
+    --architecture-vpc-gcp-result-metric-color: var(--architecture-vpc-gcp-result-success, #059669);
+    --architecture-vpc-gcp-result-metric-soft: var(--architecture-vpc-gcp-result-success-soft, rgba(16, 185, 129, 0.12));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-info {
+    --architecture-vpc-gcp-result-metric-color: var(--architecture-vpc-gcp-result-info, #2563eb);
+    --architecture-vpc-gcp-result-metric-soft: var(--architecture-vpc-gcp-result-info-soft, rgba(37, 99, 235, 0.1));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-accent-tone {
+    --architecture-vpc-gcp-result-metric-color: var(--architecture-vpc-gcp-result-accent, var(--tool-accent, #2563eb));
+    --architecture-vpc-gcp-result-metric-soft: var(--architecture-vpc-gcp-result-accent-soft, rgba(37, 99, 235, 0.1));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-warning {
+    --architecture-vpc-gcp-result-metric-color: var(--architecture-vpc-gcp-result-warning, #d97706);
+    --architecture-vpc-gcp-result-metric-soft: var(--architecture-vpc-gcp-result-warning-soft, rgba(245, 158, 11, 0.14));
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-icon {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--architecture-vpc-gcp-result-metric-soft) 82%, var(--architecture-vpc-gcp-result-surface, #ffffff));
+    color: var(--architecture-vpc-gcp-result-metric-color);
+    font-size: 19px;
+    line-height: 1;
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--architecture-vpc-gcp-result-metric-color) 13%, transparent);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-label {
+    color: var(--architecture-vpc-gcp-result-metric-color);
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-value {
+    color: var(--architecture-vpc-gcp-result-heading, var(--tool-heading, #111827));
+    font-size: clamp(16px, 1.2vw, 18px);
+    font-weight: 800;
+    line-height: 1.22;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-copy {
+    align-self: start;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-accent {
+    display: block;
+    width: min(80px, 48%);
+    height: 3px;
+    align-self: initial;
+    margin-top: 0;
+    border-radius: 999px;
+    background: var(--architecture-vpc-gcp-result-metric-color);
+}
+
+@media (max-width: 960px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+/* architecture-result-summary-metric-contract:end */
+
+
+/* architecture-result-summary-divider-contract:start */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-command,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-main {
+    display: flex;
+    flex-direction: column;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-divider,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary > .architecture-vpc-gcp-result-card-divider,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual > .architecture-vpc-gcp-result-card-divider,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-command > .architecture-vpc-gcp-result-card-divider,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary > .architecture-vpc-gcp-result-card-divider,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-main > .architecture-vpc-gcp-result-card-divider {
+    flex: 0 0 auto;
+    margin: 0;
+    margin-top: auto;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-command > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary > .architecture-vpc-gcp-result-chip-grid,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-main > .architecture-vpc-gcp-result-chip-row {
+    min-height: var(--architecture-vpc-gcp-result-chip-zone-min, 112px);
+    align-content: flex-start;
+    align-items: flex-start;
+}
+/* architecture-result-summary-divider-contract:end */
+
+/* architecture-result-summary-header-gap-contract:start */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-output-content {
+    padding-top: 12px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-output-summary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-output-status-card {
+    gap: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-score-card.architecture-vpc-gcp-result-summary {
+    gap: 8px;
+    align-content: start;
+    padding: 10px 12px 12px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-main,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-copy,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-title {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header {
+    min-height: 32px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-hero-grid {
+    margin-top: 0;
+}
+/* architecture-result-summary-header-gap-contract:end */
+/* architecture-result-summary-content-type-reset-contract:start */
+.blog-details .article-content .content .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-title {
+    display: flex;
+    min-height: 32px;
+    align-items: center;
+    margin: 0;
+    color: var(--architecture-vpc-gcp-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+}
+
+.blog-details .article-content .content .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-title {
+    margin: 0;
+    color: var(--architecture-vpc-gcp-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.blog-details .article-content .content .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-copy,
+.blog-details .article-content .content .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-copy {
+    margin: 0;
+    color: var(--architecture-vpc-gcp-result-muted, var(--tool-text-muted, #64748b));
+    font-size: 13px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 520px) {
+    .blog-details .article-content .content .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-header-title,
+    .blog-details .article-content .content .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-title {
+        font-size: 19px;
+    }
+}
+/* architecture-result-summary-content-type-reset-contract:end */
+
+
+
+/* architecture-result-summary-base-alignment:end */
+/* ns:end family._base.workspace.00_shell */
+
+
+/* architecture-result-summary-primary-ring-contract:start */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary .architecture-vpc-gcp-result-card-icon-primary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual .architecture-vpc-gcp-result-card-icon-primary,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-primary-number,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-primary-text {
+    display: none !important;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary[data-result-visual="ring"],
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual[data-result-visual="ring"] {
+    justify-content: flex-start;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary[data-result-visual="ring"] .architecture-vpc-gcp-result-visual-copy-top,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual[data-result-visual="ring"] .architecture-vpc-gcp-result-visual-copy-top {
+    order: 0;
+    margin: 0 0 10px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary[data-result-visual="ring"] .architecture-vpc-gcp-result-visual-copy-top .architecture-vpc-gcp-result-title,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual[data-result-visual="ring"] .architecture-vpc-gcp-result-visual-copy-top .architecture-vpc-gcp-result-title {
+    color: var(--architecture-vpc-gcp-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.15;
+    text-align: center;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary[data-result-visual="ring"] .architecture-vpc-gcp-result-primary-visual,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual[data-result-visual="ring"] .architecture-vpc-gcp-result-primary-visual {
+    display: grid;
+    justify-items: center;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary[data-result-visual="ring"] .architecture-vpc-gcp-result-ring,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual[data-result-visual="ring"] .architecture-vpc-gcp-result-ring {
+    margin: 0 auto 10px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary > .architecture-vpc-gcp-result-card-divider,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual > .architecture-vpc-gcp-result-card-divider,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-main > .architecture-vpc-gcp-result-card-divider,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary > .architecture-vpc-gcp-result-card-divider {
+    margin-top: 12px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-primary > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-visual > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-main > .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-card-summary > .architecture-vpc-gcp-result-chip-grid {
+    min-height: 0;
+    margin-bottom: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-row,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-chip-grid {
+    margin-bottom: 0;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-value {
+    font-size: clamp(16px, 1.2vw, 18px);
+    font-weight: 800;
+    line-height: 1.22;
+}
+
+@media (max-width: 560px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-value {
+        font-size: 17px;
+    }
+}
+/* architecture-result-summary-primary-ring-contract:end */
+
+/* output-toolbar-persistence-contract:start */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-shell,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-main,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-left,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-shell,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-wrap,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-select,
+.architecture-vpc-gcp-tool .tool-output-actions,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions {
+    min-width: 0;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-shell {
+    position: relative;
+    z-index: 20;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-shell:has(.architecture-vpc-gcp-sort-select[open]) {
+    z-index: 120;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar {
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(390px, 450px);
+    align-items: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-main,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-left,
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-shell {
+    display: grid;
+    grid-template-columns: auto minmax(0, 240px);
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-wrap {
+    width: min(100%, 240px);
+    max-width: 240px;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-select {
+    position: relative;
+    z-index: 30;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-select[open] {
+    z-index: 140;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-summary {
+    min-height: 46px;
+    box-sizing: border-box;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-menu {
+    z-index: 160;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.architecture-vpc-gcp-tool .tool-output-actions,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions {
+    display: grid;
+    width: 100%;
+    max-width: 450px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-content: end;
+    justify-self: end;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn,
+.architecture-vpc-gcp-tool .tool-output-actions .architecture-vpc-gcp-action-btn,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .architecture-vpc-gcp-action-btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    gap: 6px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1;
+    overflow: visible;
+    white-space: nowrap;
+}
+
+.architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn [data-button-label],
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn [data-button-label],
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn [data-button-label],
+.architecture-vpc-gcp-tool .tool-output-actions .architecture-vpc-gcp-action-btn [data-button-label],
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .architecture-vpc-gcp-action-btn [data-button-label] {
+    display: inline-block;
+    min-width: 0;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+.architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
+    grid-column: 2;
+}
+
+.architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+    grid-column: 3;
+}
+
+.architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn i,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn i,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn i,
+.architecture-vpc-gcp-tool .tool-output-actions .architecture-vpc-gcp-action-btn i,
+.architecture-vpc-gcp-tool .tool-result-toolbar-actions .architecture-vpc-gcp-action-btn i {
+    flex: 0 0 auto;
+    font-size: 15px;
+    line-height: 1;
+}
+
+@media (max-width: 991.98px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .architecture-vpc-gcp-tool .tool-output-actions,
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-self: start;
+        margin-left: 0;
+        max-width: none;
+    }
+
+    .architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn:nth-child(4),
+    .architecture-vpc-gcp-tool .tool-output-actions .tool-action-btn:nth-child(5),
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-main,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-toolbar-left,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-shell {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-wrap,
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-sort-select,
+    .architecture-vpc-gcp-tool .tool-output-actions,
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions {
+        width: 100%;
+        max-width: none;
+    }
+
+    .architecture-vpc-gcp-tool .tool-output-actions,
+    .architecture-vpc-gcp-tool .tool-result-toolbar-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+/* output-toolbar-persistence-contract:end */
+
+/* result-summary-persistence-contract:start */
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-card {
+    gap: 7px;
+    min-height: 128px;
+    padding: 14px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0;
+    font-size: 16px;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-label {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-value {
+    font-size: clamp(14px, 1vw, 16px);
+    font-weight: 800;
+    line-height: 1.18;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-copy {
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+@media (max-width: 760px) {
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-card {
+        min-height: 118px;
+        padding: 13px;
+    }
+
+    .architecture-vpc-gcp-tool .architecture-vpc-gcp-result-metric-value {
+        font-size: 15px;
+    }
+}
+/* result-summary-persistence-contract:end */

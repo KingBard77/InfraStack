@@ -226,6 +226,7 @@
         {% for tool in featuredPosts %}
           {% set summary = tool.card_summary|default(tool.summary|default('')) %}
           {% set tags = tool.tags|default([])|slice(0, 2) %}
+          {% set toolDisplayTitle = tool.display_title|default(tool.title) %}
           <div class="swiper-slide">
             <article class="home-tool-card">
               <div class="home-tool-card-head">
@@ -237,7 +238,7 @@
                 </span>
                 <span class="home-tool-card-badge">{{ tool.family }}</span>
               </div>
-              <h3><a href="{{ tool.url }}">{{ tool.title }}</a></h3>
+              <h3><a href="{{ tool.url }}">{{ toolDisplayTitle }}</a></h3>
               <p>{{ summary|length > 128 ? summary|slice(0, 128) ~ '...' : summary }}</p>
               <div class="home-tool-card-tags">
                 {% for tag in tags %}
@@ -249,7 +250,7 @@
               <div class="home-tool-card-foot">
                 <span>{{ tool.category }}</span>
                 <span>{{ tool.reading_time }}</span>
-                <a href="{{ tool.url }}" aria-label="Open {{ tool.title }}">
+                <a href="{{ tool.url }}" aria-label="Open {{ toolDisplayTitle }}">
                   <i class="bi bi-arrow-right"></i>
                 </a>
               </div>

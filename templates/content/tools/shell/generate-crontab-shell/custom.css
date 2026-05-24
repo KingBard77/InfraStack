@@ -1,6 +1,6 @@
 /* custom.css */
 
-/* ns:start family.shell.workspace.01_input-target */
+/* ns:start family._base.workspace.00_shell */
 .generate-crontab-shell-tool,
 .markdown-content {
     --tool-bg: linear-gradient(180deg, #f5fbfa 0%, #eef8f6 100%);
@@ -150,6 +150,8 @@
     padding: 18px;
     margin-bottom: 32px;
 }
+
+/* ns:end family._base.workspace.00_shell */
 
 .generate-crontab-shell-form {
     display: grid;
@@ -336,8 +338,6 @@
     outline: none !important;
 }
 
-/* ns:end family.shell.workspace.01_input-target */
-/* ns:start family.shell.workspace.02_basic-setting */
 .generate-crontab-shell-basic-panel {
     display: grid;
     gap: 0;
@@ -551,12 +551,22 @@
 
 .generate-crontab-shell-field-card {
     display: grid;
+    grid-template-rows: auto minmax(92px, auto) minmax(22px, auto) auto;
     gap: 10px;
+    align-content: start;
+    min-height: 222px;
     padding: 12px;
     border: 1px solid #d7e2ee;
     border-radius: 12px;
     background: #f8fbff;
     transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.generate-crontab-shell-cron-field-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+    align-items: stretch;
 }
 
 .generate-crontab-shell-field-card.is-disabled {
@@ -565,18 +575,34 @@
 }
 
 .generate-crontab-shell-field-topbar {
-    display: flex;
+    display: grid;
+    grid-template-areas:
+        "label token"
+        "mode mode";
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: space-between;
     gap: 10px;
-    flex-wrap: wrap;
+    min-width: 0;
+}
+
+.generate-crontab-shell-field-card-label {
+    grid-area: label;
+    display: flex;
+    min-height: 32px;
+    align-items: center;
+    color: #10233f;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.25;
 }
 
 .generate-crontab-shell-mode-switch {
+    grid-area: mode;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
+    min-height: 38px;
 }
 
 .generate-crontab-shell-mode-btn {
@@ -604,9 +630,13 @@
 }
 
 .generate-crontab-shell-token-chip {
+    grid-area: token;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    justify-self: end;
     min-height: 32px;
+    min-width: 32px;
     padding: 6px 12px;
     border-radius: 999px;
     background: #0f766e;
@@ -619,6 +649,18 @@
 .generate-crontab-shell-field-panel {
     display: grid;
     gap: 8px;
+    min-height: 92px;
+    align-content: start;
+}
+
+.generate-crontab-shell-field-panel.d-none {
+    display: none !important;
+    min-height: 0;
+}
+
+.generate-crontab-shell-field-card .generate-crontab-shell-inline-grid-three {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
 }
 
 .generate-crontab-shell-field-hint,
@@ -626,6 +668,12 @@
     color: #64748b;
     font-size: 13px;
     line-height: 1.55;
+}
+
+.generate-crontab-shell-field-hint {
+    display: flex;
+    min-height: 22px;
+    align-items: flex-start;
 }
 
 .generate-crontab-shell-flag-hint {
@@ -661,8 +709,6 @@
     color: #166534;
 }
 
-/* ns:end family.shell.workspace.02_basic-setting */
-/* ns:start family.shell.workspace.03_advanced-setting */
 .generate-crontab-shell-advanced {
     border: 1px solid #d7e2ee;
     border-radius: 12px;
@@ -707,7 +753,6 @@
     gap: 12px;
 }
 
-/* ns:end family.shell.workspace.03_advanced-setting */
 /* ns:start family.shell.workspace.04_result-text */
 .generate-crontab-shell-result-panel {
     margin-top: 18px;
@@ -748,7 +793,6 @@
 }
 
 /* ns:end family.shell.workspace.04_result-text */
-/* ns:start family.shell.workspace.05_score-card */
 .generate-crontab-shell-result-summary {
     display: grid;
     gap: 14px;
@@ -892,8 +936,6 @@
     color: #b91c1c;
 }
 
-/* ns:end family.shell.workspace.05_score-card */
-/* ns:start family.shell.workspace.06_sort-card */
 .generate-crontab-shell-toolbar-shell,
 .generate-crontab-shell-tabs-shell {
     border: 1px solid #dbe7f1;
@@ -975,8 +1017,6 @@
     color: #0f766e;
 }
 
-/* ns:end family.shell.workspace.06_sort-card */
-/* ns:start family.shell.workspace.07_table */
 .generate-crontab-shell-tabs-shell {
     display: grid;
     gap: 14px;
@@ -1372,10 +1412,13 @@
 }
 
 @media (max-width: 767px) {
-    .generate-crontab-shell-tool.tool-box,
+    .generate-crontab-shell-tool.tool-box {
+        padding: 14px;
+    }
+
     .generate-crontab-shell-result-content,
     .generate-crontab-shell-result-shell {
-        padding: 14px;
+        padding: 0;
     }
 
     .generate-crontab-shell-inner-panel,
@@ -1834,10 +1877,10 @@
     height: 46px;
     min-height: 46px;
     padding: 12px 14px 8px;
-    border: 1px solid var(--generate-crontab-shell-border);
+    border: 1px solid var(--tool-border, #cbd5e1);
     border-radius: 12px;
-    background: #ffffff;
-    color: var(--generate-crontab-shell-text-body);
+    background: var(--tool-surface, #ffffff);
+    color: var(--tool-text, #243044);
     font-size: 14px;
     font-weight: 700;
     display: flex;
@@ -3042,7 +3085,6 @@
     line-height: 1.68;
 }
 
-/* ns:end family.shell.workspace.07_table */
 /* ns:start main.content.06_export-notes */
 .markdown-content > .generate-crontab-shell-markdown-card-export {
     margin: 0 0 28px;
@@ -3945,3 +3987,3608 @@
     }
 }
 /* ns:netcat-parity-end generate-crontab-shell */
+
+/* ns:start family._base.workspace.01_input-brief */
+.generate-crontab-shell-tool .generate-crontab-shell-input-card {
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #dbe4ef));
+    border-radius: var(--tool-radius-md, 16px);
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: var(--tool-shadow-sm, 0 12px 28px rgba(15, 23, 42, 0.08));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-row {
+    display: grid;
+    grid-template-columns: minmax(130px, 0.28fr) minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    min-width: 0;
+    order: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-label-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-label {
+    margin: 0;
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-helper-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--generate-crontab-shell-border-strong, var(--tool-border-strong, rgba(37, 99, 235, 0.28)));
+    border-radius: 999px;
+    background: var(--tool-accent-soft, rgba(37, 99, 235, 0.1));
+    color: var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-stack {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-control {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #dbe4ef));
+    border-radius: var(--tool-radius-sm, 12px);
+    background: var(--generate-crontab-shell-bg-panel, #ffffff);
+    color: var(--generate-crontab-shell-text-body, var(--tool-text, #1f2937));
+    box-shadow: none;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.generate-crontab-shell-tool textarea.generate-crontab-shell-input-control {
+    min-height: 118px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-control::placeholder {
+    color: var(--tool-placeholder, #94a3b8);
+    opacity: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-control:focus {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+    box-shadow: 0 0 0 3px var(--tool-focus-ring, rgba(37, 99, 235, 0.16));
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-error {
+    padding: 10px 12px;
+    border: 1px solid rgba(220, 38, 38, 0.28);
+    border-radius: 10px;
+    background: rgba(220, 38, 38, 0.08);
+    color: #991b1b;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-error.d-none {
+    display: none !important;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 0;
+    order: 3;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 44px;
+    max-width: 100%;
+    padding: 0 18px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-action-btn .bi {
+    flex: 0 0 auto;
+    font-size: 1.05em;
+    line-height: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-action-btn:hover {
+    transform: translateY(-1px);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-action-btn-primary {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+    background: var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+    color: #ffffff;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-action-btn-secondary {
+    border-color: var(--generate-crontab-shell-border, var(--tool-border, #dbe4ef));
+    background: var(--generate-crontab-shell-bg-panel, #ffffff);
+    color: var(--generate-crontab-shell-text-body, var(--tool-text, #1f2937));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-helper-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    padding: 14px 16px;
+    border: 1px dashed var(--generate-crontab-shell-border-strong, var(--tool-border-strong, rgba(37, 99, 235, 0.28)));
+    border-radius: var(--tool-radius-sm, 12px);
+    background: var(--tool-accent-soft, rgba(37, 99, 235, 0.1));
+    order: 2;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-hint {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    color: var(--generate-crontab-shell-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-helper-chip-inline {
+    width: 28px;
+    height: 28px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="inline"] {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="inline"] .generate-crontab-shell-input-row {
+    grid-template-columns: max-content minmax(220px, 1fr);
+    align-items: center;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="inline"] .generate-crontab-shell-input-stack {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="inline"] .generate-crontab-shell-input-control {
+    resize: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="inline"] .generate-crontab-shell-input-actions {
+    flex-wrap: nowrap;
+    align-items: stretch;
+    order: 2;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="inline"] .generate-crontab-shell-action-btn {
+    min-width: 128px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="inline"] .generate-crontab-shell-input-helper-card {
+    grid-column: 1 / -1;
+    order: 3;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="stacked"] {
+    grid-template-columns: minmax(130px, 0.28fr) minmax(0, 1fr);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="stacked"] .generate-crontab-shell-input-row {
+    grid-column: 1 / -1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="stacked"] .generate-crontab-shell-input-helper-card {
+    grid-column: 2 / -1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="stacked"] .generate-crontab-shell-input-actions {
+    grid-column: 2 / -1;
+}
+
+@media (max-width: 720px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-input-row,
+    .generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="stacked"],
+    .generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="inline"],
+    .generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="inline"] .generate-crontab-shell-input-row {
+        grid-template-columns: 1fr;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="stacked"] .generate-crontab-shell-input-row,
+    .generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="stacked"] .generate-crontab-shell-input-helper-card,
+    .generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="stacked"] .generate-crontab-shell-input-actions {
+        grid-column: 1 / -1;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-input-actions {
+        justify-content: stretch;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-input-brief[data-input-layout="inline"] .generate-crontab-shell-input-actions {
+        flex-wrap: wrap;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-action-btn {
+        flex: 1 1 160px;
+    }
+}
+/* ns:end family._base.workspace.01_input-brief */
+
+/* ns:start family._base.workspace.02_basic-settings */
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.generate-crontab-shell-tool details.generate-crontab-shell-basic-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.generate-crontab-shell-tool details.generate-crontab-shell-basic-card > .generate-crontab-shell-advanced-body {
+    display: grid;
+    gap: 16px;
+    padding: 16px;
+    background: transparent;
+}
+
+
+
+
+.generate-crontab-shell-tool .generate-crontab-shell-example-card {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+    padding: 14px 16px;
+    border: 1px dashed var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+    border-radius: 12px;
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-accent-pale, rgba(37, 99, 235, 0.08)));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-example-label {
+    color: var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-example-value {
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-example-helper {
+    color: var(--generate-crontab-shell-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-setting-card {
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #dbe4ef));
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-control-stack.generate-crontab-shell-setting-card {
+    display: grid;
+    gap: 10px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-setting-row.generate-crontab-shell-setting-card {
+    align-items: start;
+    margin: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-setting-label,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .tool-control-label.generate-crontab-shell-setting-label {
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-setting-label .generate-crontab-shell-helper-chip,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .tool-control-label .generate-crontab-shell-helper-chip {
+    margin-left: 6px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-native-select,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-text-field,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-control,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-select,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card textarea {
+    width: 100%;
+    min-height: 46px;
+    border-color: var(--generate-crontab-shell-border, var(--tool-border, #dbe4ef));
+    border-radius: 12px;
+    background-color: #ffffff;
+    color: var(--generate-crontab-shell-text-body, var(--tool-text, #1f2937));
+    box-shadow: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-native-select,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-select {
+    padding-right: 42px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6 4l4 4-4 4' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-position: right 14px center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-text-field::placeholder,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-control::placeholder,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card textarea::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-native-select:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-text-field:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-control:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-select:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card textarea:hover {
+    border-color: var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-native-select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-text-field:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-control:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card textarea:focus {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+    box-shadow: 0 0 0 3px var(--generate-crontab-shell-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-native-select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-native-select:active,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-select:active {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-native-select:disabled,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-text-field:disabled,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-control:disabled,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .form-select:disabled,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card textarea:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select {
+    max-width: 100%;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select-summary {
+    min-height: 46px;
+    border-radius: 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select-summary:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select-summary:focus-visible {
+    border-color: var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+    box-shadow: 0 0 0 3px var(--generate-crontab-shell-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select[open] .generate-crontab-shell-select-summary {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select-body {
+    max-height: min(340px, 65vh);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-radio-card,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select-option {
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #dbe4ef));
+    border-radius: 10px;
+    background: #ffffff;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-radio-card:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-radio-card:focus-within,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select-option:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select-option:focus-visible {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-accent-pale, rgba(37, 99, 235, 0.08)));
+    box-shadow: 0 0 0 3px var(--generate-crontab-shell-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-radio-card:has(input:checked),
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select-option.is-active {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-accent-pale, rgba(37, 99, 235, 0.08)));
+    box-shadow: inset 0 0 0 1px var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-radio-card:has(input:disabled),
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select-option:disabled {
+    opacity: 0.62;
+    cursor: not-allowed;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-switch-card {
+    border-color: var(--generate-crontab-shell-border, var(--tool-border, #dbe4ef));
+    border-radius: 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-switch-card:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-switch-card:focus-within {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #2563eb));
+    box-shadow: 0 0 0 3px var(--generate-crontab-shell-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-switch-card input:disabled + .slider,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-switch-card input:disabled + .generate-crontab-shell-switch-track {
+    opacity: 0.58;
+    cursor: not-allowed;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-setting-hint,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .tool-control-hint,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-flag-hint {
+    color: var(--generate-crontab-shell-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card button {
+    min-height: 44px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card button:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card button:focus-visible {
+    box-shadow: 0 0 0 3px var(--generate-crontab-shell-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-basic-card button:disabled {
+    opacity: 0.62;
+    cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-basic-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-setting-row,
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-inline-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-inline-grid-two,
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-inline-grid-three,
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-inline-grid-four,
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-basis-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-card-grid-two,
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-card-grid-three,
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-select-grid-two {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card {
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-setting-card,
+    .generate-crontab-shell-tool .generate-crontab-shell-basic-card .generate-crontab-shell-example-card {
+        padding: 12px;
+    }
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-native-select-wrap {
+    position: relative;
+    display: block;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-native-select-wrap > .generate-crontab-shell-native-select,
+.generate-crontab-shell-tool .generate-crontab-shell-native-select-wrap > .form-select {
+    padding-right: 52px !important;
+    background-image: none !important;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-native-select-wrap::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #d8e2ee));
+    border-radius: 9px;
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-surface-soft, #f8fafc));
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-native-select-wrap::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 21px;
+    z-index: 3;
+    width: 9px;
+    height: 9px;
+    border-right: 2.25px solid var(--generate-crontab-shell-accent, var(--tool-accent, #0f766e));
+    border-bottom: 2.25px solid var(--generate-crontab-shell-accent, var(--tool-accent, #0f766e));
+    border-radius: 1px;
+    pointer-events: none;
+    transform: translate(-8%, -50%) rotate(-45deg);
+    transition: transform 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-native-select-wrap:hover::before,
+.generate-crontab-shell-tool .generate-crontab-shell-native-select-wrap:focus-within::before {
+    border-color: var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+    background: var(--generate-crontab-shell-accent-soft, var(--tool-accent-soft, rgba(15, 118, 110, 0.1)));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-native-select-wrap:focus-within::after,
+.generate-crontab-shell-tool .generate-crontab-shell-native-select-wrap:active::after {
+    transform: translate(-18%, -62%) rotate(45deg);
+}
+
+/* ns:end family._base.workspace.02_basic-settings */
+
+/* ns:start family._base.workspace.03_custom-settings */
+/* section.css */
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-settings,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #d8e2ee));
+    border-radius: 14px;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary {
+    position: relative;
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 54px 12px 14px;
+    border-radius: 13px;
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.2;
+    appearance: none;
+    list-style: none;
+    list-style-type: none;
+    user-select: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary::-webkit-details-marker,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary::-webkit-details-marker,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary::-webkit-details-marker,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary::-webkit-details-marker {
+    display: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary::marker,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary::marker,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary::marker,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary::marker {
+    content: "";
+    font-size: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary::after,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary::after {
+    content: none !important;
+    display: none !important;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-arrow-slot {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #d8e2ee));
+    border-radius: 9px;
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-surface-soft, #f8fafc));
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #d8e2ee));
+    border-radius: 9px;
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-surface-soft, #f8fafc));
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary > .generate-crontab-shell-custom-arrow-slot,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before {
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-arrow-slot::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::after,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    border-right: 2.25px solid var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    border-bottom: 2.25px solid var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    border-radius: 1px;
+    transform: translate(-58%, -50%) rotate(-45deg);
+    transition: transform 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary:has(> .generate-crontab-shell-custom-arrow-slot)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary:has(> .generate-crontab-shell-custom-arrow-slot)::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary:has(> .generate-crontab-shell-custom-arrow-slot)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary:has(> .generate-crontab-shell-custom-arrow-slot)::after,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary:has(> .generate-crontab-shell-custom-arrow-slot)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary:has(> .generate-crontab-shell-custom-arrow-slot)::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:has(> .generate-crontab-shell-custom-arrow-slot)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:has(> .generate-crontab-shell-custom-arrow-slot)::after {
+    content: none;
+    display: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary:hover > .generate-crontab-shell-custom-arrow-slot,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary:focus-visible > .generate-crontab-shell-custom-arrow-slot,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary:hover > .generate-crontab-shell-custom-arrow-slot,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary:focus-visible > .generate-crontab-shell-custom-arrow-slot,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary:hover > .generate-crontab-shell-custom-arrow-slot,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary:focus-visible > .generate-crontab-shell-custom-arrow-slot,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:hover > .generate-crontab-shell-custom-arrow-slot,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:focus-visible > .generate-crontab-shell-custom-arrow-slot,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary:hover:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary:focus-visible:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary:hover:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary:focus-visible:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary:hover:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary:focus-visible:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:hover:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:focus-visible:not(:has(> .generate-crontab-shell-custom-arrow-slot))::before {
+    border-color: var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary-icon,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-icon {
+    display: none !important;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-settings[open] > .generate-crontab-shell-custom-summary,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel[open] > .generate-crontab-shell-custom-panel-summary,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced[open] > .generate-crontab-shell-advanced-summary {
+    border-radius: 13px 13px 0 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-settings[open] > .generate-crontab-shell-custom-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel[open] > .generate-crontab-shell-custom-panel-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::after,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced[open] > .generate-crontab-shell-advanced-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::after {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-settings[open] > .generate-crontab-shell-custom-summary > .generate-crontab-shell-custom-arrow-slot::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel[open] > .generate-crontab-shell-custom-panel-summary > .generate-crontab-shell-custom-arrow-slot::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced[open] > .generate-crontab-shell-advanced-summary > .generate-crontab-shell-custom-arrow-slot::before {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary:focus-visible,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary:focus-visible,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary:focus-visible {
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-surface-soft, #f8fafc));
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-summary:focus-visible,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary:focus-visible,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-summary:focus-visible {
+    box-shadow: inset 0 0 0 3px var(--generate-crontab-shell-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-body,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-body,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-body {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+    padding: 12px;
+    border-radius: 0 0 13px 13px;
+    background: var(--generate-crontab-shell-bg-muted, var(--tool-surface-strong, #f8fafc));
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel-body > .generate-crontab-shell-inner-panel,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-body > .generate-crontab-shell-inner-panel {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-tabs,
+.generate-crontab-shell-tool .generate-crontab-shell-config-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-tab,
+.generate-crontab-shell-tool .generate-crontab-shell-config-tab {
+    min-height: 36px;
+    min-width: 0;
+    padding: 8px 12px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #d8e2ee));
+    border-radius: 999px;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--generate-crontab-shell-text, var(--tool-text, #334155));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-tab:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-tab:focus-visible,
+.generate-crontab-shell-tool .generate-crontab-shell-config-tab:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-config-tab:focus-visible {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-tab.active,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-tab[aria-selected="true"],
+.generate-crontab-shell-tool .generate-crontab-shell-config-tab.active,
+.generate-crontab-shell-tool .generate-crontab-shell-config-tab[aria-selected="true"] {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel[data-custom-panel] {
+    display: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel[data-custom-panel].active {
+    display: block;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-grid,
+.generate-crontab-shell-tool .generate-crontab-shell-config-grid,
+.generate-crontab-shell-tool .generate-crontab-shell-toggle-grid,
+.generate-crontab-shell-tool .generate-crontab-shell-override-grid,
+.generate-crontab-shell-tool .generate-crontab-shell-inline-grid,
+.generate-crontab-shell-tool .generate-crontab-shell-stacked-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    gap: 10px;
+    align-items: start;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-grid[data-custom-columns="1"],
+.generate-crontab-shell-tool .generate-crontab-shell-stacked-grid {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-settings[data-custom-layout="tabbed_two_column"] .generate-crontab-shell-custom-grid,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-settings[data-custom-layout="compact_two_column_multi_row"] .generate-crontab-shell-custom-grid,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-grid[data-custom-columns="2"] {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-inline-grid-two,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-inline-grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-inline-grid-three,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-inline-grid-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-control-stack,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-setting-row,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced-body > .generate-crontab-shell-inner-panel > .generate-crontab-shell-setting-row,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-setting-card {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    min-width: 0;
+    height: auto;
+    padding: 10px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #d8e2ee));
+    border-radius: 12px;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: none;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field {
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-setting-row {
+    grid-template-columns: minmax(150px, 0.34fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-setting-row-stacked {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-group,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+    align-self: start;
+    padding: 12px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #d8e2ee));
+    border-radius: 12px;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-group[data-span="2"],
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card[data-span="2"],
+.generate-crontab-shell-tool .generate-crontab-shell-custom-info[data-span="2"],
+.generate-crontab-shell-tool .generate-crontab-shell-card-span-two {
+    grid-column: 1 / -1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-group-head,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-group-title,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group-title {
+    margin: 0;
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-group-body,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 10px;
+    min-width: 0;
+    align-content: start;
+    align-items: start;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group--single .generate-crontab-shell-override-group-body {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: 10px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 10px;
+    padding: 12px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group-head {
+    justify-content: flex-start;
+    padding-top: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group--single .generate-crontab-shell-override-group-body {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group-body .generate-crontab-shell-field-stack {
+    display: grid;
+    grid-template-columns: minmax(86px, 0.42fr) minmax(0, 1fr);
+    gap: 8px;
+    align-items: center;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group-body .generate-crontab-shell-field-label {
+    min-height: auto;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group-body .form-control,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group-body .generate-crontab-shell-input-group {
+    justify-self: end;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-label-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-label,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .tool-control-label,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-setting-label,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-field-label,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-setting-label,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-field-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.35;
+    white-space: normal;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-helper-chip,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-helper-chip,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-helper-chip {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 999px;
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-surface-soft, #f8fafc));
+    color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-helper-chip:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-helper-chip:focus-visible,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-helper-chip:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-helper-chip:focus-visible,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-helper-chip:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-helper-chip:focus-visible {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card .form-control,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card .form-select,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field .form-control,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field .form-select,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel select,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel textarea,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.generate-crontab-shell-tool .generate-crontab-shell-advanced select,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced textarea,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-text-field,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-number-field,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-textarea {
+    width: 100%;
+    min-height: 38px;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--generate-crontab-shell-text, var(--tool-text, #334155));
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+    box-shadow: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card .form-select,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field .form-select,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel select,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced select {
+    padding-right: 38px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6 4l4 4-4 4' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-textarea,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel textarea,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced textarea {
+    min-height: 84px;
+    resize: vertical;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-text-field::placeholder,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-textarea::placeholder,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel input::placeholder,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel textarea::placeholder,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced input::placeholder,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced textarea::placeholder {
+    color: var(--generate-crontab-shell-placeholder, var(--tool-placeholder, #94a3b8));
+    opacity: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card .form-control:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card .form-select:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field .form-control:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field .form-select:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel select:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel textarea:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):hover,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced select:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced textarea:hover {
+    border-color: var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card .form-control:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card .form-select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field .form-control:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field .form-select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel textarea:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced textarea:focus {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--generate-crontab-shell-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card .form-select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card .form-select:active,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field .form-select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field .form-select:active,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel select:active,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced select:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced select:active {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-input-group > .form-control.generate-crontab-shell-input-group-control,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-input-group > .form-control.generate-crontab-shell-input-group-control {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    flex: 1 1 auto;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-input-group > .form-control.generate-crontab-shell-input-group-control:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-input-group > .form-control.generate-crontab-shell-input-group-control:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-input-group > .form-control.generate-crontab-shell-input-group-control:focus-visible,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-input-group > .form-control.generate-crontab-shell-input-group-control:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-input-group > .form-control.generate-crontab-shell-input-group-control:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-input-group > .form-control.generate-crontab-shell-input-group-control:focus-visible {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-input-group > .form-control.generate-crontab-shell-input-group-control:disabled,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-input-group > .form-control.generate-crontab-shell-input-group-control:disabled {
+    background: transparent;
+}
+
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-number-field,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel input[type="number"],
+.generate-crontab-shell-tool .generate-crontab-shell-advanced input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-number-field::-webkit-inner-spin-button,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-number-field::-webkit-outer-spin-button,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel input[type="number"]::-webkit-inner-spin-button,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel input[type="number"]::-webkit-outer-spin-button,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced input[type="number"]::-webkit-inner-spin-button,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-card .form-control:disabled,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-field .form-control:disabled,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel input:disabled,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel textarea:disabled,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced input:disabled,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced textarea:disabled {
+    background: var(--generate-crontab-shell-disabled-bg, #f1f5f9);
+    color: var(--generate-crontab-shell-disabled-text, #94a3b8);
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-group,
+.generate-crontab-shell-tool .generate-crontab-shell-radio-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    gap: 10px;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-card,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-option,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-radio-card,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-radio-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--generate-crontab-shell-text, var(--tool-text, #334155));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-card::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-option::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-radio-card::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-radio-card::before {
+    content: "";
+    grid-column: 1;
+    grid-row: 1;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    border: 1px solid var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 999px;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: inset 0 0 0 2px var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-card::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-option::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-radio-card::after,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-radio-card::after {
+    content: "";
+    grid-column: 1;
+    grid-row: 1;
+    width: 8px;
+    height: 8px;
+    margin: 6px 0 0 5px;
+    border-radius: 999px;
+    background: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-card:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-option:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-radio-card:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-radio-card:hover {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-card:has(input:checked),
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-option:has(input:checked),
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-radio-card:has(input:checked),
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-radio-card:has(input:checked) {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    box-shadow: inset 0 0 0 1px var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-card:has(input:checked)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-option:has(input:checked)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-radio-card:has(input:checked)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-radio-card:has(input:checked)::before {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-card:has(input:checked)::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-option:has(input:checked)::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-radio-card:has(input:checked)::after,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-radio-card:has(input:checked)::after {
+    opacity: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-card:has(input:focus-visible)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-option:has(input:focus-visible)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-radio-card:has(input:focus-visible)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-radio-card:has(input:focus-visible)::before {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--generate-crontab-shell-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-card:has(input:disabled),
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-option:has(input:disabled),
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-radio-card:has(input:disabled),
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-radio-card:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.68;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-card input,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-option input,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel input[type="radio"],
+.generate-crontab-shell-tool .generate-crontab-shell-advanced input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-title,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-copy {
+    display: block;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-title {
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-radio-copy {
+    margin-top: 3px;
+    color: var(--generate-crontab-shell-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown {
+    position: relative;
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown[open] {
+    z-index: 160;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary {
+    position: relative;
+    display: flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 42px 8px 10px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--generate-crontab-shell-text, var(--tool-text, #334155));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    list-style: none;
+    list-style-type: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown[open] .generate-crontab-shell-custom-dropdown-summary:not(:has(> .generate-crontab-shell-custom-arrow-slot))::after {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown[open] .generate-crontab-shell-custom-dropdown-summary > .generate-crontab-shell-custom-arrow-slot::before {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:focus-visible {
+    border-color: var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-summary:focus-visible,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown[open] .generate-crontab-shell-custom-dropdown-summary {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--generate-crontab-shell-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    display: grid;
+    width: 100%;
+    min-width: 100%;
+    max-height: min(280px, 52vh);
+    border: 1px solid var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    border-radius: 10px;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 170;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown:not([open]) .generate-crontab-shell-custom-dropdown-menu {
+    display: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-option {
+    display: flex;
+    width: 100%;
+    min-height: 38px;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 10px;
+    border: 0;
+    border-top: 0;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--generate-crontab-shell-text, var(--tool-text, #334155));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: left;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-option:first-child {
+    border-top: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-option:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-option:focus-visible,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-option.active,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown-option[aria-selected="true"] {
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+    outline: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option {
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    max-width: 100%;
+    min-height: 32px;
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 18px;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid var(--generate-crontab-shell-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.3;
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item::before {
+    content: "";
+    grid-row: 1;
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 5px;
+    background: var(--generate-crontab-shell-bg-panel, var(--tool-surface, #ffffff));
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option::before {
+    grid-column: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item::before {
+    grid-column: 2;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item::after,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item::after {
+    content: "";
+    grid-row: 1;
+    width: 5px;
+    height: 9px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transform: translateY(-1px) rotate(45deg);
+    transition: opacity 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option::after {
+    grid-column: 1;
+    justify-self: center;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item::after,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item::after {
+    grid-column: 2;
+    justify-self: center;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option:hover::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item:hover::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item:hover::before {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option:has(input:checked)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item:has(input:checked)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item:has(input:checked)::before {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    background: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option:has(input:checked)::after,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item:has(input:checked)::after,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item:has(input:checked)::after {
+    opacity: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option:has(input:checked),
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item:has(input:checked),
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item:has(input:checked) {
+    color: var(--generate-crontab-shell-text-strong, var(--tool-heading, #111827));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item:has(input:checked),
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item:has(input:checked) {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    box-shadow: inset 0 0 0 1px var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option:has(input:focus-visible)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item:has(input:focus-visible)::before,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item:has(input:focus-visible)::before {
+    border-color: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--generate-crontab-shell-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option:has(input:disabled),
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item:has(input:disabled),
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.68;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option > span {
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-item > .generate-crontab-shell-toggle-copy,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-item > .generate-crontab-shell-toggle-copy {
+    min-width: 0;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option input,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel input[type="checkbox"],
+.generate-crontab-shell-tool .generate-crontab-shell-advanced input[type="checkbox"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 10px;
+    min-height: 32px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option::before {
+    width: 48px;
+    height: 28px;
+    border-color: var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 999px;
+    background: var(--generate-crontab-shell-toggle-off, var(--tool-toggle-off, #e7e5e4));
+    box-shadow: inset 0 0 0 1px var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option::after {
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    grid-column: 1;
+    justify-self: start;
+    align-self: center;
+    border: 0;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+    opacity: 1;
+    transform: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option:hover::before {
+    border-color: var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option:has(input:checked)::before {
+    border-color: transparent;
+    background: var(--generate-crontab-shell-accent, var(--tool-accent, #475569));
+    box-shadow: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option:has(input:checked)::after {
+    opacity: 1;
+    transform: translateX(20px);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option:has(input:focus-visible)::before {
+    box-shadow: 0 0 0 3px var(--generate-crontab-shell-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-hint,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-info,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-field-hint,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-flag-hint,
+.generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-inline-note,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-field-hint,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-flag-hint,
+.generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-inline-note {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 8px 12px;
+    min-width: 0;
+    margin: 0;
+    padding: 9px 10px;
+    border: 1px dashed var(--generate-crontab-shell-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 12px;
+    background: var(--generate-crontab-shell-bg-soft, var(--tool-surface-soft, #f8fafc));
+    color: var(--generate-crontab-shell-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-hint {
+    display: block;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-hint[data-span="2"],
+.generate-crontab-shell-tool .generate-crontab-shell-custom-info[data-span="2"] {
+    grid-column: 1 / -1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-custom-info span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-settings[data-custom-layout],
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-grid[data-custom-columns],
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-config-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-toggle-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-panel .generate-crontab-shell-custom-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-config-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-toggle-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-inline-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-stacked-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-custom-grid,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-setting-row {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group-body .generate-crontab-shell-field-stack,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced .generate-crontab-shell-override-group--single .generate-crontab-shell-override-group-body {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-tabs,
+    .generate-crontab-shell-tool .generate-crontab-shell-config-tabs {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-summary,
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-panel-summary,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced-summary {
+        min-height: 44px;
+        padding: 10px 40px 10px 12px;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-body,
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-panel-body,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced-body {
+        padding: 10px;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-tab,
+    .generate-crontab-shell-tool .generate-crontab-shell-config-tab,
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-dropdown,
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-radio-group,
+    .generate-crontab-shell-tool .generate-crontab-shell-radio-group,
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-checkbox-option,
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-panel textarea,
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+    .generate-crontab-shell-tool .generate-crontab-shell-advanced textarea {
+        width: 100%;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-group[data-span="2"],
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-card[data-span="2"],
+    .generate-crontab-shell-tool .generate-crontab-shell-custom-info[data-span="2"],
+    .generate-crontab-shell-tool .generate-crontab-shell-card-span-two {
+        grid-column: auto;
+    }
+}
+/* ns:end family._base.workspace.03_custom-settings */
+
+/* ns:start family._base.workspace.05_result-summary */
+.generate-crontab-shell-tool .generate-crontab-shell-result-empty,
+.generate-crontab-shell-tool .generate-crontab-shell-result-error,
+.generate-crontab-shell-tool .generate-crontab-shell-result-summary,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card,
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-card {
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-empty,
+.generate-crontab-shell-tool .generate-crontab-shell-result-error {
+    padding: 16px 18px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-empty {
+    border: 1px dashed var(--base-result-border, #cbd5e1);
+    background: var(--base-result-empty-bg, #f8fafc);
+    color: var(--base-result-muted, #64748b);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-error {
+    border: 1px solid var(--base-result-error-border, #fecaca);
+    background: var(--base-result-error-bg, #fff1f2);
+    color: var(--base-result-error-text, #9f1239);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-summary {
+    --generate-crontab-shell-result-accent: var(--base-result-accent, #2563eb);
+    --generate-crontab-shell-result-accent-soft: var(--base-result-accent-soft, rgba(37, 99, 235, 0.1));
+    --generate-crontab-shell-result-border: var(--base-result-border, #dbe4f0);
+    --generate-crontab-shell-result-border-strong: var(--base-result-border-strong, #bfdbfe);
+    --generate-crontab-shell-result-surface: var(--base-result-surface, #ffffff);
+    --generate-crontab-shell-result-surface-soft: var(--base-result-surface-soft, #f8fafc);
+    --generate-crontab-shell-result-heading: var(--base-result-heading, #111827);
+    --generate-crontab-shell-result-text: var(--base-result-text, #334155);
+    --generate-crontab-shell-result-muted: var(--base-result-muted, #64748b);
+    --generate-crontab-shell-result-track: var(--base-result-track, #e2e8f0);
+    --generate-crontab-shell-result-success: var(--base-result-success, #059669);
+    --generate-crontab-shell-result-success-soft: var(--base-result-success-soft, rgba(16, 185, 129, 0.12));
+    --generate-crontab-shell-result-info: var(--base-result-info, #2563eb);
+    --generate-crontab-shell-result-info-soft: var(--base-result-info-soft, rgba(37, 99, 235, 0.1));
+    --generate-crontab-shell-result-warning: var(--base-result-warning, #d97706);
+    --generate-crontab-shell-result-warning-soft: var(--base-result-warning-soft, rgba(245, 158, 11, 0.14));
+    --generate-crontab-shell-result-error-state: var(--base-result-error-state, #dc2626);
+    --generate-crontab-shell-result-error-soft: var(--base-result-error-soft, rgba(220, 38, 38, 0.1));
+    --generate-crontab-shell-result-neutral-soft: var(--base-result-neutral-soft, rgba(100, 116, 139, 0.1));
+    --generate-crontab-shell-result-shadow: var(--base-result-shadow, 0 12px 26px rgba(15, 23, 42, 0.06));
+    display: grid;
+    box-sizing: border-box;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    align-items: stretch;
+    justify-items: stretch;
+    padding: 12px;
+    border: 1px solid var(--generate-crontab-shell-result-border);
+    border-radius: 16px;
+    background: var(--base-result-bg, var(--generate-crontab-shell-result-surface));
+    box-shadow: var(--generate-crontab-shell-result-shadow);
+    color: var(--generate-crontab-shell-result-text);
+    text-align: initial;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-summary[data-result-tone="success"] {
+    --generate-crontab-shell-result-state: var(--generate-crontab-shell-result-success);
+    --generate-crontab-shell-result-state-soft: var(--generate-crontab-shell-result-success-soft);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-summary[data-result-tone="warning"] {
+    --generate-crontab-shell-result-state: var(--generate-crontab-shell-result-warning);
+    --generate-crontab-shell-result-state-soft: var(--generate-crontab-shell-result-warning-soft);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-summary[data-result-tone="error"] {
+    --generate-crontab-shell-result-state: var(--generate-crontab-shell-result-error-state);
+    --generate-crontab-shell-result-state-soft: var(--generate-crontab-shell-result-error-soft);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 0;
+    min-height: 32px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-header-main {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+    min-height: 32px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-header-icon,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-icon,
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    line-height: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-header-icon {
+    display: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-header-copy {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-header-title {
+    display: flex;
+    min-height: 32px;
+    align-items: center;
+    margin: 0;
+    color: var(--generate-crontab-shell-result-heading);
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-header-copy p {
+    display: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-header-meta {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-header-chip,
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--generate-crontab-shell-result-border);
+    border-radius: 12px;
+    background: var(--generate-crontab-shell-result-surface);
+    color: var(--generate-crontab-shell-result-text);
+    font-weight: 800;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-header-chip {
+    min-height: 32px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-hero-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    height: 100%;
+    padding: 16px;
+    border: 1px solid var(--generate-crontab-shell-result-border);
+    border-radius: 14px;
+    background: var(--generate-crontab-shell-result-surface);
+    color: var(--generate-crontab-shell-result-text);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    overflow: hidden;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-summary,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-main {
+    background:
+        radial-gradient(circle at 16% 16%, color-mix(in srgb, var(--generate-crontab-shell-result-info-soft) 42%, transparent) 0 96px, transparent 180px),
+        var(--generate-crontab-shell-result-surface);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-command {
+    align-content: stretch;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    justify-items: center;
+    min-height: 0;
+    text-align: center;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-summary {
+    align-content: stretch;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-color: var(--generate-crontab-shell-result-border-strong);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 22px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-icon-primary {
+    background: color-mix(in srgb, var(--generate-crontab-shell-result-success-soft) 82%, var(--generate-crontab-shell-result-surface));
+    color: var(--generate-crontab-shell-result-success);
+    box-shadow: 0 16px 34px rgba(22, 163, 74, 0.16);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-icon-summary {
+    display: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-summary-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    align-items: start;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-summary-copy {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-kicker,
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-label {
+    color: var(--generate-crontab-shell-result-accent);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.25;
+    text-transform: uppercase;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-heading {
+    display: grid;
+    justify-items: center;
+    min-width: 0;
+    width: 100%;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-title {
+    margin: 0;
+    color: var(--generate-crontab-shell-result-heading);
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-title-center {
+    text-align: center;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-copy,
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-copy {
+    margin: 0;
+    color: var(--generate-crontab-shell-result-muted);
+    font-size: 13px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-copy-center {
+    max-width: 34rem;
+    text-align: center;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    flex: 0 0 auto;
+    margin: 0;
+    margin-top: 12px;
+    background: var(--generate-crontab-shell-result-border);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary > .generate-crontab-shell-result-card-divider,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual > .generate-crontab-shell-result-card-divider,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-command > .generate-crontab-shell-result-card-divider,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-summary > .generate-crontab-shell-result-card-divider,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-main > .generate-crontab-shell-result-card-divider {
+    margin-top: 12px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-row,
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-grid {
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-row-center {
+    justify-content: center;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary > .generate-crontab-shell-result-chip-row,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual > .generate-crontab-shell-result-chip-row,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-command > .generate-crontab-shell-result-chip-row,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-summary > .generate-crontab-shell-result-chip-grid,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-main > .generate-crontab-shell-result-chip-row {
+    min-height: 0;
+    align-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip {
+    min-height: 30px;
+    justify-content: flex-start;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-icon {
+    display: inline-flex;
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: currentColor;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-success,
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-ready {
+    border-color: color-mix(in srgb, var(--generate-crontab-shell-result-success) 28%, var(--generate-crontab-shell-result-border));
+    background: color-mix(in srgb, var(--generate-crontab-shell-result-success-soft) 76%, var(--generate-crontab-shell-result-surface));
+    color: color-mix(in srgb, var(--generate-crontab-shell-result-success) 68%, var(--generate-crontab-shell-result-text));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-warning,
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-need-work {
+    border-color: color-mix(in srgb, var(--generate-crontab-shell-result-warning) 34%, var(--generate-crontab-shell-result-border));
+    background: color-mix(in srgb, var(--generate-crontab-shell-result-warning-soft) 72%, var(--generate-crontab-shell-result-surface));
+    color: color-mix(in srgb, var(--generate-crontab-shell-result-warning) 70%, var(--generate-crontab-shell-result-text));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-error {
+    border-color: color-mix(in srgb, var(--generate-crontab-shell-result-error-state) 30%, var(--generate-crontab-shell-result-border));
+    background: color-mix(in srgb, var(--generate-crontab-shell-result-error-soft) 70%, var(--generate-crontab-shell-result-surface));
+    color: color-mix(in srgb, var(--generate-crontab-shell-result-error-state) 66%, var(--generate-crontab-shell-result-text));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-baseline,
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-updated {
+    border-color: color-mix(in srgb, var(--generate-crontab-shell-result-info) 26%, var(--generate-crontab-shell-result-border));
+    background: color-mix(in srgb, var(--generate-crontab-shell-result-info-soft) 58%, var(--generate-crontab-shell-result-surface));
+    color: color-mix(in srgb, var(--generate-crontab-shell-result-info) 52%, var(--generate-crontab-shell-result-text));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-chip-outcome {
+    border-color: color-mix(in srgb, var(--generate-crontab-shell-result-success) 26%, var(--generate-crontab-shell-result-border));
+    background: color-mix(in srgb, var(--generate-crontab-shell-result-success-soft) 82%, var(--generate-crontab-shell-result-surface));
+    color: color-mix(in srgb, var(--generate-crontab-shell-result-success) 70%, var(--generate-crontab-shell-result-text));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-ring,
+.generate-crontab-shell-tool .generate-crontab-shell-result-ring[data-chart-ready="true"] {
+    position: relative;
+    display: none;
+    width: 142px;
+    height: 142px;
+    place-items: center;
+    border-radius: 999px;
+    background:
+        conic-gradient(from 0deg, color-mix(in srgb, var(--generate-crontab-shell-result-accent) 82%, var(--generate-crontab-shell-result-surface)) 0deg var(--generate-crontab-shell-result-progress, 0deg), color-mix(in srgb, var(--generate-crontab-shell-result-track) 82%, var(--generate-crontab-shell-result-surface)) var(--generate-crontab-shell-result-progress, 0deg) 360deg);
+    box-shadow:
+        0 12px 22px color-mix(in srgb, var(--generate-crontab-shell-result-accent) 18%, transparent),
+        inset 0 0 0 1px color-mix(in srgb, var(--generate-crontab-shell-result-accent) 18%, var(--generate-crontab-shell-result-border));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-ring::before,
+.generate-crontab-shell-tool .generate-crontab-shell-result-ring::after {
+    content: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-ring > [class$="-score-echart"],
+.generate-crontab-shell-tool .generate-crontab-shell-result-ring > [class*="-score-echart "],
+.generate-crontab-shell-tool .generate-crontab-shell-result-ring > [class$="-chart"],
+.generate-crontab-shell-tool .generate-crontab-shell-result-ring > [class*="-chart "] {
+    display: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-ring-center {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 102px;
+    height: 102px;
+    place-items: center;
+    align-content: center;
+    border-radius: 999px;
+    background: var(--generate-crontab-shell-result-surface);
+    box-shadow: inset 0 0 0 1px var(--generate-crontab-shell-result-border);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-ring-value {
+    color: var(--generate-crontab-shell-result-accent);
+    max-width: min(86px, 82%);
+    font-size: clamp(18px, calc(168px / var(--generate-crontab-shell-result-value-chars, 3)), 32px);
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 0.95;
+    text-align: center;
+    overflow-wrap: normal;
+    white-space: nowrap;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-ring-unit {
+    margin-top: 5px;
+    color: var(--generate-crontab-shell-result-muted);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-visual {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+    min-height: 112px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary .generate-crontab-shell-result-card-icon-primary {
+    display: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-text {
+    display: none;
+    min-width: 0;
+    max-width: 100%;
+    color: var(--generate-crontab-shell-result-heading);
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-number,
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-metric,
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-svg {
+    display: none;
+    min-width: 0;
+    max-width: 100%;
+    justify-items: center;
+    color: var(--generate-crontab-shell-result-heading);
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-number-value,
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-metric-value {
+    display: block;
+    color: var(--generate-crontab-shell-result-accent);
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-number-unit,
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-metric-label,
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-metric-copy {
+    display: block;
+    color: var(--generate-crontab-shell-result-muted);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1.25;
+    text-transform: uppercase;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-metric {
+    gap: 6px;
+    padding: 14px 18px;
+    border: 1px solid color-mix(in srgb, var(--generate-crontab-shell-result-accent) 24%, var(--generate-crontab-shell-result-border));
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--generate-crontab-shell-result-accent-soft) 58%, var(--generate-crontab-shell-result-surface));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-metric-copy {
+    max-width: 18rem;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-svg {
+    width: min(168px, 100%);
+    min-height: 96px;
+    align-items: center;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-svg svg {
+    display: block;
+    width: 100%;
+    max-width: 168px;
+    height: auto;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-pill {
+    display: none;
+    justify-content: center;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-text-value {
+    display: block;
+    color: var(--generate-crontab-shell-result-heading);
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.16;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-primary-text-unit {
+    display: block;
+    margin-top: 8px;
+    color: var(--generate-crontab-shell-result-text);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.45;
+    text-transform: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-command-output {
+    display: grid;
+    min-width: 0;
+    max-width: 100%;
+    justify-items: center;
+    padding: 10px 12px;
+    border: 1px dashed var(--generate-crontab-shell-result-border);
+    border-radius: 10px;
+    background: var(--generate-crontab-shell-result-surface-soft);
+    color: var(--generate-crontab-shell-result-heading);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-command-value {
+    max-width: 100%;
+    color: var(--generate-crontab-shell-result-heading);
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="ring"] .generate-crontab-shell-result-ring,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="ring"] .generate-crontab-shell-result-ring {
+    display: grid;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="icon"] .generate-crontab-shell-result-card-icon-primary,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="icon"] .generate-crontab-shell-result-card-icon-primary {
+    display: inline-flex;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="number"] .generate-crontab-shell-result-primary-number,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="decimal"] .generate-crontab-shell-result-primary-number,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="number"] .generate-crontab-shell-result-primary-number,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="decimal"] .generate-crontab-shell-result-primary-number {
+    display: grid;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="command"] .generate-crontab-shell-result-primary-text,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="text"] .generate-crontab-shell-result-primary-text,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="status"] .generate-crontab-shell-result-primary-text,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="command"] .generate-crontab-shell-result-primary-text,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="text"] .generate-crontab-shell-result-primary-text,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="status"] .generate-crontab-shell-result-primary-text {
+    display: block;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="metric"] .generate-crontab-shell-result-primary-metric,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="metric"] .generate-crontab-shell-result-primary-metric,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="svg"] .generate-crontab-shell-result-primary-svg,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="svg"] .generate-crontab-shell-result-primary-svg {
+    display: grid;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="pill"] .generate-crontab-shell-result-primary-pill,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="pill"] .generate-crontab-shell-result-primary-pill {
+    display: inline-flex;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-visual-copy {
+    display: grid;
+    gap: 6px;
+    justify-items: center;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-visual-copy-top {
+    margin: 0 0 10px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="ring"] .generate-crontab-shell-result-visual-copy-top .generate-crontab-shell-result-title,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="ring"] .generate-crontab-shell-result-visual-copy-top .generate-crontab-shell-result-title {
+    color: var(--generate-crontab-shell-result-heading);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-primary[data-result-visual="ring"] .generate-crontab-shell-result-ring,
+.generate-crontab-shell-tool .generate-crontab-shell-result-card-visual[data-result-visual="ring"] .generate-crontab-shell-result-ring {
+    margin: 0 auto 10px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-card {
+    --generate-crontab-shell-result-metric-color: var(--generate-crontab-shell-result-accent);
+    --generate-crontab-shell-result-metric-soft: var(--generate-crontab-shell-result-accent-soft);
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    align-content: stretch;
+    gap: 8px;
+    min-height: 138px;
+    padding: 14px;
+    border: 1px solid var(--generate-crontab-shell-result-border);
+    border-radius: 14px;
+    background: var(--generate-crontab-shell-result-surface);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    overflow: hidden;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-success {
+    --generate-crontab-shell-result-metric-color: var(--generate-crontab-shell-result-success);
+    --generate-crontab-shell-result-metric-soft: var(--generate-crontab-shell-result-success-soft);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-info {
+    --generate-crontab-shell-result-metric-color: var(--generate-crontab-shell-result-info);
+    --generate-crontab-shell-result-metric-soft: var(--generate-crontab-shell-result-info-soft);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-accent-tone {
+    --generate-crontab-shell-result-metric-color: var(--generate-crontab-shell-result-accent);
+    --generate-crontab-shell-result-metric-soft: var(--generate-crontab-shell-result-accent-soft);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-warning {
+    --generate-crontab-shell-result-metric-color: var(--generate-crontab-shell-result-warning);
+    --generate-crontab-shell-result-metric-soft: var(--generate-crontab-shell-result-warning-soft);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 2px;
+    background: color-mix(in srgb, var(--generate-crontab-shell-result-metric-soft) 82%, var(--generate-crontab-shell-result-surface));
+    color: var(--generate-crontab-shell-result-metric-color);
+    font-size: 19px;
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--generate-crontab-shell-result-metric-color) 13%, transparent);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-label {
+    color: var(--generate-crontab-shell-result-metric-color);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-value {
+    color: var(--generate-crontab-shell-result-heading);
+    font-size: clamp(16px, 1.2vw, 18px);
+    font-weight: 800;
+    line-height: 1.22;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-copy {
+    align-self: start;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-accent {
+    display: block;
+    width: min(80px, 48%);
+    height: 3px;
+    align-self: end;
+    margin-top: 0;
+    border-radius: 999px;
+    background: var(--generate-crontab-shell-result-metric-color);
+}
+
+@media (max-width: 1100px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-result-hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-result-summary {
+        padding: 12px;
+        border-radius: 14px;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-header,
+    .generate-crontab-shell-tool .generate-crontab-shell-result-header-main {
+        align-items: flex-start;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-header {
+        flex-direction: column;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-header-meta,
+    .generate-crontab-shell-tool .generate-crontab-shell-result-header-chip,
+    .generate-crontab-shell-tool .generate-crontab-shell-result-chip {
+        width: 100%;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-header-meta {
+        justify-content: stretch;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-card,
+    .generate-crontab-shell-tool .generate-crontab-shell-result-metric-card {
+        padding: 14px;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-metric-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-metric-value {
+        font-size: 17px;
+    }
+}
+
+@media (max-width: 520px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-result-header-main,
+    .generate-crontab-shell-tool .generate-crontab-shell-result-summary-intro {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-header-main {
+        display: grid;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-header-title {
+        font-size: 19px;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-title {
+        font-size: 19px;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-primary-text-value {
+        font-size: 24px;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-metric-value {
+        font-size: 17px;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-ring {
+        width: 128px;
+        height: 128px;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-ring-center {
+        width: 92px;
+        height: 92px;
+    }
+}
+
+.blog-details .article-content .content .generate-crontab-shell-tool .generate-crontab-shell-result-header-title {
+    display: flex;
+    min-height: 32px;
+    align-items: center;
+    margin: 0;
+    color: var(--generate-crontab-shell-result-heading);
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+}
+
+.blog-details .article-content .content .generate-crontab-shell-tool .generate-crontab-shell-result-title {
+    margin: 0;
+    color: var(--generate-crontab-shell-result-heading);
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.blog-details .article-content .content .generate-crontab-shell-tool .generate-crontab-shell-result-copy,
+.blog-details .article-content .content .generate-crontab-shell-tool .generate-crontab-shell-result-metric-copy {
+    margin: 0;
+    color: var(--generate-crontab-shell-result-muted);
+    font-size: 13px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 520px) {
+    .blog-details .article-content .content .generate-crontab-shell-tool .generate-crontab-shell-result-header-title,
+    .blog-details .article-content .content .generate-crontab-shell-tool .generate-crontab-shell-result-title {
+        font-size: 19px;
+    }
+}
+/* ns:end family._base.workspace.05_result-summary */
+
+/* ns:start family._base.workspace.06_output-toolbar */
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-shell,
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar,
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-main,
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-left,
+.generate-crontab-shell-tool .generate-crontab-shell-sort-shell,
+.generate-crontab-shell-tool .generate-crontab-shell-sort-wrap,
+.generate-crontab-shell-tool .generate-crontab-shell-sort-select,
+.generate-crontab-shell-tool .tool-output-actions,
+.generate-crontab-shell-tool .tool-result-toolbar-actions {
+    min-width: 0;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-shell {
+    position: relative;
+    z-index: 20;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-shell:has(.generate-crontab-shell-sort-select[open]) {
+    z-index: 120;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(390px, 450px);
+    align-items: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-main {
+    display: grid;
+    grid-template-columns: auto minmax(0, 240px);
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-sort-shell {
+    display: grid;
+    grid-template-columns: auto minmax(0, 240px);
+    align-items: center;
+    gap: 12px;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-sort-wrap {
+    width: min(100%, 240px);
+    max-width: 240px;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-sort-select {
+    position: relative;
+    z-index: 30;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-sort-select[open] {
+    z-index: 140;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-sort-summary,
+.generate-crontab-shell-tool .generate-crontab-shell-sort-select > summary,
+.generate-crontab-shell-tool .generate-crontab-shell-sort-select .generate-crontab-shell-select-summary {
+    min-height: 46px;
+    box-sizing: border-box;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-sort-menu,
+.generate-crontab-shell-tool .generate-crontab-shell-sort-select .generate-crontab-shell-select-body {
+    z-index: 160;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.generate-crontab-shell-tool .tool-output-actions,
+.generate-crontab-shell-tool .tool-result-toolbar-actions {
+    display: grid;
+    width: 100%;
+    max-width: 450px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-content: end;
+    justify-self: end;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.generate-crontab-shell-tool .tool-output-actions .tool-action-btn,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn,
+.generate-crontab-shell-tool .tool-output-actions .generate-crontab-shell-action-btn,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .generate-crontab-shell-action-btn {
+    display: inline-flex;
+    width: 100%;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    border: 1px solid var(--tool-border, #cbd5e1);
+    background: var(--tool-surface, #ffffff);
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--tool-text, #243044);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.generate-crontab-shell-tool .tool-output-actions .tool-action-btn:hover,
+.generate-crontab-shell-tool .tool-output-actions .tool-action-btn:focus,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn:hover,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn:focus,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:hover,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:focus,
+.generate-crontab-shell-tool .tool-output-actions .generate-crontab-shell-action-btn:hover,
+.generate-crontab-shell-tool .tool-output-actions .generate-crontab-shell-action-btn:focus,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .generate-crontab-shell-action-btn:hover,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .generate-crontab-shell-action-btn:focus {
+    border-color: var(--tool-accent, #2563eb);
+    background: var(--tool-accent-soft, #eff6ff);
+    color: var(--tool-accent, #2563eb);
+    outline: none;
+}
+
+
+.generate-crontab-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
+    grid-column: 2;
+}
+
+.generate-crontab-shell-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+    grid-column: 3;
+}
+
+.generate-crontab-shell-tool .tool-output-actions .tool-action-btn i,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn i,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn i,
+.generate-crontab-shell-tool .tool-output-actions .generate-crontab-shell-action-btn i,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .generate-crontab-shell-action-btn i {
+    flex: 0 0 auto;
+    color: currentColor;
+    font-size: 16px;
+    line-height: 1;
+}
+
+@media (max-width: 991.98px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-crontab-shell-tool .tool-output-actions,
+    .generate-crontab-shell-tool .tool-result-toolbar-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-self: start;
+        margin-left: 0;
+        max-width: none;
+    }
+
+    .generate-crontab-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
+    .generate-crontab-shell-tool .tool-output-actions .tool-action-btn:nth-child(5),
+    .generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+    .generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+    .generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+    .generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-toolbar-main,
+    .generate-crontab-shell-tool .generate-crontab-shell-sort-shell {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-toolbar-left,
+    .generate-crontab-shell-tool .generate-crontab-shell-sort-wrap,
+    .generate-crontab-shell-tool .generate-crontab-shell-sort-select,
+    .generate-crontab-shell-tool .tool-output-actions,
+    .generate-crontab-shell-tool .tool-result-toolbar-actions {
+        width: 100%;
+        max-width: none;
+    }
+
+    .generate-crontab-shell-tool .tool-output-actions,
+    .generate-crontab-shell-tool .tool-result-toolbar-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+/* ns:end family._base.workspace.06_output-toolbar */
+
+/* ns:start family._base.workspace.08_json-restore */
+
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-restore-shell,
+.generate-crontab-shell-tool .generate-crontab-shell-json-card,
+.generate-crontab-shell-tool .generate-crontab-shell-json-head,
+.generate-crontab-shell-tool .generate-crontab-shell-json-title-wrap,
+.generate-crontab-shell-tool .generate-crontab-shell-json-output,
+.generate-crontab-shell-tool .generate-crontab-shell-json-empty,
+.generate-crontab-shell-tool .generate-crontab-shell-json-status {
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-restore-shell {
+    display: grid;
+    gap: 12px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-card.tool-json-panel {
+    display: grid;
+    grid-auto-rows: max-content;
+    align-content: start;
+    gap: 0;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--base-json-border, #ddd6fe);
+    border-radius: var(--base-json-radius, 14px);
+    background: var(--base-json-surface, #ffffff);
+    color: var(--base-json-text, #1f1733);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-head.tool-json-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--base-json-border-soft, #efe7ff);
+    background: var(--base-json-head-bg, #f8f5ff);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-title-wrap {
+    display: grid;
+    gap: 4px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-title.tool-json-title {
+    color: var(--base-json-heading, #1f1433);
+    font-size: var(--base-json-title-size, 15px);
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-helper {
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-sm, 13px);
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-status {
+    display: none;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-xs, 12px);
+    font-weight: 850;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-status:empty,
+.generate-crontab-shell-tool .generate-crontab-shell-json-status.is-hidden {
+    display: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-status.is-success {
+    display: inline-flex;
+    color: var(--state-success, #16a34a);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-status.is-error {
+    display: inline-flex;
+    color: var(--state-error, #dc2626);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-empty {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--base-json-border-soft, #efe7ff);
+    background: var(--base-json-empty-bg, #fffaf5);
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-sm, 13px);
+    font-weight: 750;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-empty:empty,
+.generate-crontab-shell-tool .generate-crontab-shell-json-empty.is-hidden {
+    display: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-output.tool-json-output {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-height: 220px;
+    max-height: 520px;
+    margin: 0;
+    padding: 16px;
+    overflow: auto;
+    background: var(--base-json-code-bg, #f4f7fb);
+    color: var(--base-json-code-text, #0f172a);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: var(--base-json-code-size, 13px);
+    line-height: 1.7;
+    tab-size: 2;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-output.tool-json-output code {
+    display: block;
+    min-width: max-content;
+    color: inherit;
+    white-space: pre;
+    word-break: normal;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-output .tool-json-key,
+.generate-crontab-shell-tool .generate-crontab-shell-json-output .json-key {
+    color: var(--base-json-key, #475569);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-output .tool-json-string,
+.generate-crontab-shell-tool .generate-crontab-shell-json-output .json-string {
+    color: var(--base-json-string, #047857);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-output .tool-json-number,
+.generate-crontab-shell-tool .generate-crontab-shell-json-output .json-number {
+    color: var(--base-json-number, #b45309);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-output .tool-json-boolean,
+.generate-crontab-shell-tool .generate-crontab-shell-json-output .json-boolean {
+    color: var(--base-json-boolean, #7c3aed);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-json-output .tool-json-null,
+.generate-crontab-shell-tool .generate-crontab-shell-json-output .json-null {
+    color: var(--base-json-null, #b91c1c);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-import-input.d-none,
+.generate-crontab-shell-tool .generate-crontab-shell-import-input[hidden],
+.generate-crontab-shell-tool input[type="file"][id$="ImportJson"].d-none,
+.generate-crontab-shell-tool input[type="file"][id$="ImportJson"][hidden] {
+    display: none !important;
+}
+
+@media (max-width: 767.98px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-json-head.tool-json-head {
+        display: grid;
+    }
+
+
+    .generate-crontab-shell-tool .generate-crontab-shell-json-output.tool-json-output {
+        min-height: 180px;
+        max-height: 420px;
+        padding: 14px;
+    }
+}
+/* ns:end family._base.workspace.08_json-restore */
+/* ns:start family._base.workspace.07_table-output */
+.generate-crontab-shell-tool .tool-tabs,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs[role="tablist"],
+.generate-crontab-shell-tool .generate-crontab-shell-tab-list[role="tablist"] {
+    max-width: 100%;
+    flex-wrap: nowrap !important;
+    justify-content: flex-end;
+    justify-content: safe flex-end;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+}
+
+.generate-crontab-shell-tool .tool-tab-btn,
+.generate-crontab-shell-tool .generate-crontab-shell-tab-btn {
+    flex: 0 0 auto;
+    border-radius: 999px;
+    white-space: nowrap;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.generate-crontab-shell-tool .tool-tabs .tool-tab-btn,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs[role="tablist"] .generate-crontab-shell-tab-btn,
+.generate-crontab-shell-tool .generate-crontab-shell-tab-list[role="tablist"] .generate-crontab-shell-tab-btn,
+.generate-crontab-shell-tool .tool-tabs .tool-tab-btn:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs[role="tablist"] .generate-crontab-shell-tab-btn:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-tab-list[role="tablist"] .generate-crontab-shell-tab-btn:hover,
+.generate-crontab-shell-tool .tool-tabs .tool-tab-btn:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs[role="tablist"] .generate-crontab-shell-tab-btn:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-tab-list[role="tablist"] .generate-crontab-shell-tab-btn:focus,
+.generate-crontab-shell-tool .tool-tabs .tool-tab-btn.active,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs[role="tablist"] .generate-crontab-shell-tab-btn.active,
+.generate-crontab-shell-tool .generate-crontab-shell-tab-list[role="tablist"] .generate-crontab-shell-tab-btn.active,
+.generate-crontab-shell-tool .tool-tabs .tool-tab-btn[aria-selected="true"],
+.generate-crontab-shell-tool .generate-crontab-shell-tabs[role="tablist"] .generate-crontab-shell-tab-btn[aria-selected="true"],
+.generate-crontab-shell-tool .generate-crontab-shell-tab-list[role="tablist"] .generate-crontab-shell-tab-btn[aria-selected="true"] {
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.generate-crontab-shell-tool .tool-tab-btn i,
+.generate-crontab-shell-tool .generate-crontab-shell-tab-btn i {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.generate-crontab-shell-tool .tool-result-table-wrap,
+.generate-crontab-shell-tool .generate-crontab-shell-table-wrap {
+    position: relative;
+    overflow-x: auto;
+}
+
+.generate-crontab-shell-tool .tool-result-table,
+.generate-crontab-shell-tool .generate-crontab-shell-table {
+    min-width: 680px;
+    table-layout: fixed;
+}
+
+.generate-crontab-shell-tool .tool-result-table th:first-child,
+.generate-crontab-shell-tool .tool-result-table td:first-child,
+.generate-crontab-shell-tool .generate-crontab-shell-table th:first-child,
+.generate-crontab-shell-tool .generate-crontab-shell-table td:first-child {
+    width: 58px;
+    text-align: center;
+}
+
+.generate-crontab-shell-tool .tool-result-table th:not(:first-child):not(:last-child),
+.generate-crontab-shell-tool .tool-result-table td:not(:first-child):not(:last-child),
+.generate-crontab-shell-tool .generate-crontab-shell-table th:not(:first-child):not(:last-child),
+.generate-crontab-shell-tool .generate-crontab-shell-table td:not(:first-child):not(:last-child) {
+    text-align: start;
+}
+
+.generate-crontab-shell-tool .tool-result-table:has(tbody td:last-child button) th:last-child,
+.generate-crontab-shell-tool .tool-result-table:has(tbody td:last-child button) td:last-child,
+.generate-crontab-shell-tool .generate-crontab-shell-table:has(tbody td:last-child button) th:last-child,
+.generate-crontab-shell-tool .generate-crontab-shell-table:has(tbody td:last-child button) td:last-child,
+.generate-crontab-shell-tool .generate-crontab-shell-table-action-cell,
+.generate-crontab-shell-tool .generate-crontab-shell-copy-cell,
+.generate-crontab-shell-tool .generate-crontab-shell-table-copy-cell {
+    position: sticky;
+    right: 0;
+    inset-inline-end: 0;
+    z-index: 2;
+    width: 74px;
+    min-width: 74px;
+    text-align: center;
+    white-space: nowrap;
+    background: var(--tool-surface, #ffffff);
+    box-shadow: none;
+}
+
+.generate-crontab-shell-tool .tool-result-table:has(tbody td:last-child button) th:last-child,
+.generate-crontab-shell-tool .generate-crontab-shell-table:has(tbody td:last-child button) th:last-child {
+    z-index: 3;
+    background: var(--tool-table-head-bg, var(--tool-surface-soft, #f8fafc));
+}
+
+.generate-crontab-shell-tool .tool-result-table tbody tr:hover td:last-child,
+.generate-crontab-shell-tool .generate-crontab-shell-table tbody tr:hover td:last-child {
+    background: var(--tool-table-row-hover, var(--tool-surface, #ffffff));
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-table-cell-text,
+.generate-crontab-shell-tool .generate-crontab-shell-cell-clamp {
+    display: -webkit-box;
+    max-height: calc(var(--tool-table-row-line-height, 1.45em) * var(--tool-table-row-line-clamp, 3));
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--tool-table-row-line-clamp, 3);
+    line-clamp: var(--tool-table-row-line-clamp, 3);
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-table-status-cell {
+    text-align: center !important;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-table-status-cell .generate-crontab-shell-table-cell-text,
+.generate-crontab-shell-tool .generate-crontab-shell-table-status-cell .generate-crontab-shell-cell-clamp {
+    margin-inline: auto;
+    text-align: center;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-table-output-note-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-table-output-note-card {
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+    border: 1px solid var(--tool-border, #dbe4ef);
+    border-radius: 12px;
+    background: var(--tool-surface, #ffffff);
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-table-output-note-title,
+.generate-crontab-shell-tool .generate-crontab-shell-table-output-note-copy {
+    margin: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-table-output-note-title {
+    color: var(--tool-heading, #111827);
+    font-size: 0.92rem;
+    font-weight: 850;
+    line-height: 1.25;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-table-output-note-copy {
+    color: var(--tool-muted, #475569);
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+@media (max-width: 767.98px) {
+    .generate-crontab-shell-tool .tool-tabs,
+    .generate-crontab-shell-tool .generate-crontab-shell-tabs[role="tablist"],
+    .generate-crontab-shell-tool .generate-crontab-shell-tab-list[role="tablist"] {
+        flex-wrap: nowrap !important;
+        justify-content: flex-start;
+        overflow-x: auto;
+    }
+
+    .generate-crontab-shell-tool .tool-tab-btn,
+    .generate-crontab-shell-tool .generate-crontab-shell-tab-btn {
+        width: auto !important;
+        max-width: none;
+        flex: 0 0 auto;
+    }
+}
+/* ns:end family._base.workspace.07_table-output */
+
+/* output-toolbar-persistence-contract:start */
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-shell,
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar,
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-main,
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-left,
+.generate-crontab-shell-tool .generate-crontab-shell-sort-shell,
+.generate-crontab-shell-tool .generate-crontab-shell-sort-wrap,
+.generate-crontab-shell-tool .generate-crontab-shell-sort-select,
+.generate-crontab-shell-tool .tool-output-actions,
+.generate-crontab-shell-tool .tool-result-toolbar-actions {
+    min-width: 0;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-shell {
+    position: relative;
+    z-index: 20;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-shell:has(.generate-crontab-shell-sort-select[open]) {
+    z-index: 120;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar {
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(390px, 450px);
+    align-items: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-main,
+.generate-crontab-shell-tool .generate-crontab-shell-toolbar-left,
+.generate-crontab-shell-tool .generate-crontab-shell-sort-shell {
+    display: grid;
+    grid-template-columns: auto minmax(0, 240px);
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-sort-wrap {
+    width: min(100%, 240px);
+    max-width: 240px;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-sort-select {
+    position: relative;
+    z-index: 30;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-sort-select[open] {
+    z-index: 140;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-sort-summary {
+    min-height: 46px;
+    box-sizing: border-box;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-sort-menu {
+    z-index: 160;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.generate-crontab-shell-tool .tool-output-actions,
+.generate-crontab-shell-tool .tool-result-toolbar-actions {
+    display: grid;
+    width: 100%;
+    max-width: 450px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-content: end;
+    justify-self: end;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.generate-crontab-shell-tool .tool-output-actions .tool-action-btn,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn,
+.generate-crontab-shell-tool .tool-output-actions .generate-crontab-shell-action-btn,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .generate-crontab-shell-action-btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    gap: 6px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1;
+    overflow: visible;
+    white-space: nowrap;
+}
+
+.generate-crontab-shell-tool .tool-output-actions .tool-action-btn [data-button-label],
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn [data-button-label],
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn [data-button-label],
+.generate-crontab-shell-tool .tool-output-actions .generate-crontab-shell-action-btn [data-button-label],
+.generate-crontab-shell-tool .tool-result-toolbar-actions .generate-crontab-shell-action-btn [data-button-label] {
+    display: inline-block;
+    min-width: 0;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+.generate-crontab-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
+    grid-column: 2;
+}
+
+.generate-crontab-shell-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+    grid-column: 3;
+}
+
+.generate-crontab-shell-tool .tool-output-actions .tool-action-btn i,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn i,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn i,
+.generate-crontab-shell-tool .tool-output-actions .generate-crontab-shell-action-btn i,
+.generate-crontab-shell-tool .tool-result-toolbar-actions .generate-crontab-shell-action-btn i {
+    flex: 0 0 auto;
+    font-size: 15px;
+    line-height: 1;
+}
+
+@media (max-width: 991.98px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-crontab-shell-tool .tool-output-actions,
+    .generate-crontab-shell-tool .tool-result-toolbar-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-self: start;
+        margin-left: 0;
+        max-width: none;
+    }
+
+    .generate-crontab-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
+    .generate-crontab-shell-tool .tool-output-actions .tool-action-btn:nth-child(5),
+    .generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+    .generate-crontab-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+    .generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+    .generate-crontab-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-toolbar-main,
+    .generate-crontab-shell-tool .generate-crontab-shell-toolbar-left,
+    .generate-crontab-shell-tool .generate-crontab-shell-sort-shell {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-sort-wrap,
+    .generate-crontab-shell-tool .generate-crontab-shell-sort-select,
+    .generate-crontab-shell-tool .tool-output-actions,
+    .generate-crontab-shell-tool .tool-result-toolbar-actions {
+        width: 100%;
+        max-width: none;
+    }
+
+    .generate-crontab-shell-tool .tool-output-actions,
+    .generate-crontab-shell-tool .tool-result-toolbar-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+/* output-toolbar-persistence-contract:end */
+
+/* result-summary-persistence-contract:start */
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-card {
+    gap: 7px;
+    min-height: 128px;
+    padding: 14px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0;
+    font-size: 16px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-label {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-value {
+    font-size: clamp(14px, 1vw, 16px);
+    font-weight: 800;
+    line-height: 1.18;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-result-metric-copy {
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+@media (max-width: 760px) {
+    .generate-crontab-shell-tool .generate-crontab-shell-result-metric-card {
+        min-height: 118px;
+        padding: 13px;
+    }
+
+    .generate-crontab-shell-tool .generate-crontab-shell-result-metric-value {
+        font-size: 15px;
+    }
+}
+/* result-summary-persistence-contract:end */
+
+/* table-output-persistence-contract:start */
+.generate-crontab-shell-tool .tool-sr-only,
+.generate-crontab-shell-tool .generate-crontab-shell-table-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-table-output-shell,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell,
+.generate-crontab-shell-tool .generate-crontab-shell-table-panel,
+.generate-crontab-shell-tool .generate-crontab-shell-section-card,
+.generate-crontab-shell-tool .generate-crontab-shell-table-card,
+.generate-crontab-shell-tool .generate-crontab-shell-command-wrap:not(.tool-json-panel),
+.generate-crontab-shell-tool .generate-crontab-shell-message-card {
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-section-card,
+.generate-crontab-shell-tool .generate-crontab-shell-table-card,
+.generate-crontab-shell-tool .generate-crontab-shell-command-wrap:not(.tool-json-panel),
+.generate-crontab-shell-tool .generate-crontab-shell-message-card {
+    display: grid;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--base-table-border, #ddd6fe);
+    border-radius: var(--base-table-card-radius, 12px);
+    background: var(--base-table-surface, #ffffff);
+    overflow: hidden;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-section-head,
+.generate-crontab-shell-tool .generate-crontab-shell-command-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-section-title,
+.generate-crontab-shell-tool .generate-crontab-shell-result-section-title,
+.generate-crontab-shell-tool .generate-crontab-shell-command-title,
+.generate-crontab-shell-tool .generate-crontab-shell-message-title,
+.generate-crontab-shell-tool .generate-crontab-shell-json-title {
+    margin: 0;
+    color: var(--base-table-heading, #1f1433);
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-section-actions,
+.generate-crontab-shell-tool .generate-crontab-shell-command-actions {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-action-btn[id*="Copy"],
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-row-copy,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-row-copy-btn,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-options-copy],
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-operation-copy],
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-field-copy] {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+    border: 1px solid var(--base-table-border-strong, #c8b6ff);
+    border-radius: var(--base-table-action-radius, 9px);
+    background: var(--base-table-control-bg, #ffffff);
+    color: var(--base-table-accent, #7c3aed);
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+    white-space: nowrap;
+    box-shadow: none;
+    transform: none;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-action-btn[id*="Copy"] i,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-row-copy i,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-row-copy-btn i,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-options-copy] i,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-operation-copy] i,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-field-copy] i {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    line-height: 1;
+}
+
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-action-btn[id*="Copy"]:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-action-btn[id*="Copy"]:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-row-copy:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-row-copy:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-row-copy-btn:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-row-copy-btn:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-options-copy]:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-options-copy]:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-operation-copy]:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-operation-copy]:focus,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-field-copy]:hover,
+.generate-crontab-shell-tool .generate-crontab-shell-tabs-shell .generate-crontab-shell-table-btn[data-field-copy]:focus {
+    border-color: var(--base-table-accent-border, #fed7aa);
+    background: var(--base-table-accent-soft, #fff7ed);
+    color: var(--base-table-accent, #ea580c);
+    outline: none;
+    box-shadow: none;
+    transform: none;
+}
+/* table-output-persistence-contract:end */

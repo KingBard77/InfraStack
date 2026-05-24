@@ -1,0 +1,71 @@
+section: 04_visual-contract
+family: calculate
+status: active
+optional: true
+version: 1.0.0
+title: Calculate Visual Contract
+description: Provider-neutral calculate visual and model contract for estimate metrics, driver cards, formula rows, visual tones, and normalized result summaries.
+
+owns:
+    - normalized estimate visual state
+    - primary metric visual
+    - supporting metrics
+    - cost or capacity driver cards
+    - formula and assumption rows
+    - visual tone mapping
+    - pure model helper reference
+
+does_not_own:
+    - workspace shell
+    - input brief
+    - settings panels
+    - output toolbar
+    - table shell
+    - JSON restore shell
+    - provider pricing facts
+
+files:
+    required:
+        - README.md
+        - manifest.yml
+        - demo.html
+        - page.html.twig
+        - section.css
+        - section.js
+        - model-core.js
+
+namespace:
+    page: family.calculate.workspace.04_visual-contract
+    css: family.calculate.workspace.04_visual-contract
+    js: family.calculate.workspace.04_visual-contract
+
+model_contract:
+    inputs:
+        - metrics
+        - components
+        - formulas
+        - currency
+        - updated_label
+        - tone
+    outputs:
+        - primary_metric
+        - supporting_metrics
+        - total_component_value
+        - formula_count
+        - visual_summary
+        - status_tone
+
+application_rules:
+    - Use for calculate tools with reusable visual result surfaces, metric cards, rings, driver cards, formula maps, or selectable component visuals.
+    - Omit for pure form and table calculators, and record the omission as accepted divergence.
+    - Keep pricing facts, provider language, service names, and formula constants final-tool native.
+    - Keep DOM interaction and selected-item editing in an inspector section when that behavior exists.
+    - Keep pure model helpers free of DOM, Twig, and browser event dependencies.
+
+validation_rules:
+    - section files exist.
+    - page.html.twig uses provider-neutral placeholders.
+    - section.css is scoped with `__TOOL_CLASS__`.
+    - section.js registers calculate workspace metadata.
+    - model-core.js parses as JavaScript.
+    - demo.html includes demo title chrome and does not depend on final runtime files.

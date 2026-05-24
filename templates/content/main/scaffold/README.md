@@ -82,6 +82,8 @@ Use `10_references` for complete factual content delivery and when the tool page
 
 Support markdown typography follows `templates/content/main/MAIN.md`. Reusable section CSS and final tool CSS must keep bullets left-aligned with normal word spacing, make markdown-card list items inherit their parent list font size and line height, and render inline code chips at `0.875em`.
 
+Scaffolded packages must keep the approved two-font system: `Nunito` through `--heading-font` for headings and titles, and `Roboto` through `--default-font` for body, navigation, labels, controls, tables, tool UI text, and support copy. Do not introduce any other proportional font family in generated runtime files.
+
 Final tools do not automatically load shared section CSS from this scaffold. If a content section is applied, the final tool `custom.css` must preserve the template's card frame, heading divider line, typography, table, list, details, FAQ, copy-button, citation, prompt, and command selectors used by that section. Validate those selectors in the final package before calling the template applied.
 
 Do not ship generic scaffold copy as final tool copy.
@@ -96,3 +98,13 @@ When replacing `__GRADIENT_START__` and `__GRADIENT_END__`, use resolved values 
 ## Intro Copy Baseline
 
 When replacing `__INTRO_LINE_1__`, `__INTRO_LINE_2__`, and `__INTRO_LINE_3__`, keep `intro` as folded YAML so the detail page renders one paragraph. The three source lines are only for editing balance. For a three-line desktop rhythm, use the character-length guidance in `templates/content/main/MAIN.md` and verify the rendered page when the visual line count matters.
+
+## Metadata Tag Baseline
+
+Every complete tool `meta.yml` must use exactly three tags.
+
+Use this order:
+
+1. Provider, category, or ecosystem.
+2. Primary subject or command.
+3. Family, intent, or strongest search classifier.

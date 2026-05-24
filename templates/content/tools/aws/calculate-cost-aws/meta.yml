@@ -3,9 +3,10 @@
 title: AWS Cost Calculator
 author: Badrul Amin
 author_role: Infrastructure & DevOps Specialist
-author_image: "images/author/author-bg-black.png"
+author_image: "images/author/author-bg-white.png"
 date: "Apr. 6th, 2026"
 comments: Interactive tool
+publication_status: ready
 category_label: AWS
 group: cloud
 family: calculate
@@ -17,8 +18,18 @@ intro: >-
     Review visible assumptions and export CSV or JSON snapshots for team review, archive notes, or later estimate comparison.
 tags:
     - AWS
-    - Pricing
-    - FinOps
-    - EC2
-    - Lambda
     - Cost
+    - FinOps
+related_links:
+    - links-title: AWS VPC Architecture
+      links-label: InfraStack tool
+      links-description: Open the related InfraStack AWS VPC Architecture workspace.
+      links-url: https://infrastack.my/tools/aws/architecture-vpc-aws
+      links-embed: https://infrastack.my/embed/aws/architecture-vpc-aws
+      links-icon: bi-diagram-3
+    - links-title: Project Budget Burn Calculator
+      links-label: Simplified Tools
+      links-description: Open the embeddable Simplified Tools Project Budget Burn Calculator workspace.
+      links-url: https://www.simplified.tools/calculate_project_budget_burn
+      links-embed: https://www.simplified.tools/embed/calculate_project_budget_burn?share=embed
+      links-icon: bi-calculator

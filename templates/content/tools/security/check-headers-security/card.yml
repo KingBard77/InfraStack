@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: Draft security header workspace for target context, baseline controls, optional review settings, and a browser-only findings preview.
+card_gradient_start: "#7F1D1D"
+card_gradient_end: "#DC2626"
+card_text_color: "#FFFFFF"
+card_kicker: "Security"
+card_image_title: "Check Headers Security"
+card_icon_class: "bi bi-shield-check"
+card_icon_animation: "random"
+card_image: null

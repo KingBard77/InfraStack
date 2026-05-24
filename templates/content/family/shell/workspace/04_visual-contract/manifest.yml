@@ -1,0 +1,73 @@
+section: 04_visual-contract
+family: shell
+status: active
+optional: true
+version: 1.0.0
+title: Shell Visual Contract
+description: Command-neutral visual and model contract for command preview, token chips, option groups, warning tones, operation rows, and normalized command visual summaries.
+
+owns:
+    - normalized command visual state
+    - command preview visual grammar
+    - token and option chips
+    - warning and blocking-status tones
+    - operation summary rows
+    - pure model helper reference
+
+does_not_own:
+    - primary target input
+    - basic settings
+    - custom settings
+    - generated command source of truth
+    - command execution
+    - sort toolbar
+    - table shell
+    - JSON restore shell
+    - final command semantics
+
+files:
+    required:
+        - README.md
+        - manifest.yml
+        - demo.html
+        - page.html.twig
+        - section.css
+        - section.js
+        - model-core.js
+
+namespace:
+    page: family.shell.workspace.04_visual-contract
+    css: family.shell.workspace.04_visual-contract
+    js: family.shell.workspace.04_visual-contract
+
+model_contract:
+    inputs:
+        - command
+        - tone
+        - tokens
+        - options
+        - warnings
+        - operations
+        - shell
+    outputs:
+        - command_preview
+        - token_summary
+        - option_summary
+        - warning_summary
+        - status_tone
+        - operation_summary
+
+application_rules:
+    - Use for shell tools with reusable command preview visuals, token maps, option cards, warning posture, or command route visuals.
+    - Omit for pure form and generated-command tools, and record the omission as accepted divergence.
+    - Keep command syntax, token order, warning logic, and JSON schema final-tool native.
+    - Keep generated command source of truth in `04_result-text` or final tool model logic.
+    - Keep pure model helpers free of DOM, Twig, and browser event dependencies.
+
+validation_rules:
+    - section files exist.
+    - page.html.twig uses command-neutral placeholders.
+    - section.css is scoped with `__TOOL_CLASS__`.
+    - section.js registers shell workspace metadata.
+    - model-core.js parses as JavaScript.
+    - demo.html includes demo title chrome and does not depend on final runtime files.

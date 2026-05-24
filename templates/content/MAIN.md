@@ -46,6 +46,17 @@ For namespace, baseline, or batch content changes, final reporting must say:
 
 ---
 
+# InfraStack Typography Reference System
+
+InfraStack uses exactly two proportional runtime fonts:
+
+- `Nunito` for headings, page titles, card titles, and section headings through `--heading-font`
+- `Roboto` for body copy, navigation, labels, controls, tables, tool UI text, and support text through `--default-font`
+
+`--page-font` and `--nav-font` must resolve to `--default-font`. Do not add Rubik, Poppins, Inter, or other proportional font families to runtime CSS, generated tool packages, shared content sections, family sources, final tool CSS, or Google Fonts links. Monospace stacks are allowed only for code, terminal, command, JSON, and preformatted output.
+
+---
+
 # InfraStack Color Reference System
 
 ## Purpose

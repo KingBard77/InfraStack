@@ -63,7 +63,7 @@
             {% for tool in recent_tools|default([])|slice(0, 5) %}
               <li>
                 <a href="{{ path('tool_detail', { category: tool.category_slug, slug: tool.slug }) }}">
-                  {{ tool.title }}
+                  {{ tool.display_title|default(tool.title) }}
                 </a>
               </li>
             {% else %}

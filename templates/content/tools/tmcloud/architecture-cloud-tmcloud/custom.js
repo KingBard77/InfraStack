@@ -1,6 +1,530 @@
 // custom.js
+// ns:start family._base.workspace.00_shell
 
-// ns:start family.architecture.workspace.01_input-brief
+function initializeInfraStackCustomDropdowns(root) {
+    const scope = root || document;
+    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
+
+    dropdowns.forEach(function (dropdown) {
+        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
+        const targetInput = targetId ? document.getElementById(targetId) : null;
+        const label = dropdown.querySelector('[data-custom-dropdown-label]');
+        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
+
+        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
+            return;
+        }
+
+        function sync(value) {
+            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
+            let selectedOption = options.find(function (option) {
+                return option.dataset.customDropdownValue === selectedValue;
+            }) || options[0];
+
+            if (!selectedOption) {
+                return;
+            }
+
+            const nextValue = selectedOption.dataset.customDropdownValue || '';
+
+            if (targetInput.value !== nextValue) {
+                targetInput.value = nextValue;
+            }
+            label.textContent = selectedOption.textContent.trim();
+            options.forEach(function (option) {
+                const isActive = option === selectedOption;
+
+                option.classList.toggle('active', isActive);
+                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+        }
+
+        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
+            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+
+            if (descriptor && descriptor.get && descriptor.set) {
+                Object.defineProperty(targetInput, 'value', {
+                    configurable: true,
+                    get: function () {
+                        return descriptor.get.call(this);
+                    },
+                    set: function (nextValue) {
+                        descriptor.set.call(this, nextValue);
+                        window.requestAnimationFrame(function () {
+                            sync(String(nextValue || ''));
+                        });
+                    }
+                });
+                targetInput.dataset.customDropdownValueProxy = 'true';
+            }
+        }
+
+        options.forEach(function (option) {
+            option.addEventListener('click', function () {
+                sync(option.dataset.customDropdownValue || '');
+                targetInput.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+                dropdown.removeAttribute('open');
+            });
+        });
+
+        targetInput.addEventListener('change', function () {
+            sync(targetInput.value);
+        });
+        sync(targetInput.value);
+        dropdown.dataset.customDropdownBound = 'true';
+    });
+}
+
+
+// ns:start family._base.workspace.05_result-summary
+function installInfraStackResultSummaryNormalizer(prefix) {
+    function formatUpdatedLabel() {
+        return new Intl.DateTimeFormat('en', {
+            month: 'short',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        }).format(new Date());
+    }
+
+    function createChip(text, tone, iconClass) {
+        const chip = document.createElement('span');
+        const icon = iconClass || 'bi bi-info-circle';
+
+        chip.className = prefix + '-result-chip ' + prefix + '-result-chip-' + tone;
+        chip.innerHTML = '<span class="' + prefix + '-result-chip-icon"><i class="' + icon + '" aria-hidden="true"></i></span>';
+        chip.append(document.createTextNode(text));
+
+        return chip;
+    }
+
+
+    function metricIconForLabel(label, index) {
+        const normalized = String(label || '').toLowerCase();
+        const fallback = ['bi bi-globe2', 'bi bi-grid-3x3-gap', 'bi bi-diagram-3', 'bi bi-database'];
+
+        if (/region|location|geography|cloud/.test(normalized)) {
+            return 'bi bi-globe2';
+        }
+        if (/zone|az|availability/.test(normalized)) {
+            return 'bi bi-grid-3x3-gap';
+        }
+        if (/egress|nat|gateway|route|traffic|network/.test(normalized)) {
+            return 'bi bi-signpost-split';
+        }
+        if (/data|database|storage|backup/.test(normalized)) {
+            return 'bi bi-database';
+        }
+        if (/score|readiness|ready/.test(normalized)) {
+            return 'bi bi-speedometer2';
+        }
+        if (/inventory|component|service|node/.test(normalized)) {
+            return 'bi bi-boxes';
+        }
+        if (/security|control|firewall|policy/.test(normalized)) {
+            return 'bi bi-shield-check';
+        }
+        if (/compute|server|workload|host/.test(normalized)) {
+            return 'bi bi-cpu';
+        }
+
+        return fallback[index % fallback.length];
+    }
+
+    function normalizeMetricCards(summary) {
+        const tones = ['success', 'info', 'accent-tone', 'warning'];
+
+        Array.from(summary.querySelectorAll('.' + prefix + '-result-metric-card')).forEach(function (card, index) {
+            const tone = tones[index % tones.length];
+            const label = card.querySelector('.' + prefix + '-result-metric-label');
+            const value = card.querySelector('.' + prefix + '-result-metric-value');
+            const copy = card.querySelector('.' + prefix + '-result-metric-copy');
+
+            if (label && /^score$/i.test(label.textContent.trim())) {
+                label.textContent = 'Model';
+                if (value) {
+                    value.textContent = 'Generated';
+                }
+                if (copy) {
+                    copy.textContent = 'Current architecture model state.';
+                }
+            }
+
+            if (!card.classList.contains(prefix + '-result-metric-success') &&
+                    !card.classList.contains(prefix + '-result-metric-info') &&
+                    !card.classList.contains(prefix + '-result-metric-accent-tone') &&
+                    !card.classList.contains(prefix + '-result-metric-warning')) {
+                card.classList.add(prefix + '-result-metric-' + tone);
+            }
+
+            if (!card.querySelector('.' + prefix + '-result-metric-icon')) {
+                const icon = document.createElement('span');
+                icon.className = prefix + '-result-metric-icon';
+                icon.setAttribute('aria-hidden', 'true');
+                icon.innerHTML = '<i class="' + metricIconForLabel(label ? label.textContent : '', index) + '"></i>';
+                card.insertBefore(icon, card.firstChild);
+            }
+
+            if (!card.querySelector('.' + prefix + '-result-metric-accent')) {
+                const accent = document.createElement('span');
+                accent.className = prefix + '-result-metric-accent';
+                accent.setAttribute('aria-hidden', 'true');
+                card.appendChild(accent);
+            }
+        });
+    }
+
+    function textFrom(element, fallback) {
+        const value = element ? element.textContent.trim() : '';
+
+        return value || fallback;
+    }
+
+    function compactPrimaryText(primaryCard, summaryCard) {
+        const summaryTitle = textFrom(summaryCard.querySelector('.' + prefix + '-result-title'), 'Primary result');
+        const currentValue = textFrom(primaryCard.querySelector('.' + prefix + '-result-command-value'), '');
+        const compactTitle = summaryTitle
+            .replace(/\s+command$/i, '')
+            .replace(/\s+preview$/i, '')
+            .replace(/^generated\s+/i, '')
+            .trim();
+
+        if (!currentValue || currentValue.length > 48 || /\b(curl|chmod|nc|ncat|netcat|sudo|crontab)\b/i.test(currentValue)) {
+            return compactTitle || 'Primary result';
+        }
+
+        return currentValue;
+    }
+
+    function ensureResultHeader(summary) {
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
+        if (!hero || summary.querySelector('.' + prefix + '-result-header')) {
+            return;
+        }
+
+        const header = document.createElement('header');
+        header.className = prefix + '-result-header';
+        header.setAttribute('aria-label', 'Result summary header');
+        header.innerHTML = [
+            '<div class="' + prefix + '-result-header-main">',
+            '<span class="' + prefix + '-result-header-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span>',
+            '<div class="' + prefix + '-result-header-copy">',
+            '<h2 class="' + prefix + '-result-header-title">Result Summary</h2>',
+            '<p>Overview of the current architecture result and key metrics</p>',
+            '</div>',
+            '</div>',
+            '<div class="' + prefix + '-result-header-meta" aria-label="Result summary status">',
+            '<span class="' + prefix + '-result-header-chip ' + prefix + '-result-chip ' + prefix + '-result-chip-ready"><span class="' + prefix + '-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span>',
+            '<span class="' + prefix + '-result-header-chip ' + prefix + '-result-chip ' + prefix + '-result-chip-updated"><span class="' + prefix + '-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>' + formatUpdatedLabel() + '</span></span>',
+            '</div>'
+        ].join('');
+        summary.insertBefore(header, hero);
+    }
+
+    function normalizeSummaryCard(summaryCard) {
+        let intro = summaryCard.querySelector('.' + prefix + '-result-summary-intro');
+        const chipRow = summaryCard.querySelector('.' + prefix + '-result-chip-row, .' + prefix + '-result-chip-grid');
+
+        if (!intro) {
+            const kicker = summaryCard.querySelector('.' + prefix + '-result-kicker');
+            const title = summaryCard.querySelector('.' + prefix + '-result-title');
+            const copy = summaryCard.querySelector('.' + prefix + '-result-copy');
+            intro = document.createElement('div');
+            intro.className = prefix + '-result-summary-intro';
+
+            const icon = document.createElement('span');
+            icon.className = prefix + '-result-card-icon ' + prefix + '-result-card-icon-summary';
+            icon.setAttribute('aria-hidden', 'true');
+            icon.innerHTML = '<i class="bi bi-clipboard-data"></i>';
+
+            const copyWrap = document.createElement('div');
+            copyWrap.className = prefix + '-result-summary-copy';
+            [kicker, title, copy].forEach(function (node) {
+                if (node) {
+                    copyWrap.appendChild(node);
+                }
+            });
+
+            intro.appendChild(icon);
+            intro.appendChild(copyWrap);
+            summaryCard.insertBefore(intro, summaryCard.firstChild);
+        }
+
+        const kicker = intro.querySelector('.' + prefix + '-result-kicker');
+        if (kicker) {
+            kicker.textContent = 'Descriptive Summary';
+        }
+
+        if (!summaryCard.querySelector('.' + prefix + '-result-card-divider')) {
+            const divider = document.createElement('span');
+            divider.className = prefix + '-result-card-divider';
+            divider.setAttribute('aria-hidden', 'true');
+            if (chipRow) {
+                summaryCard.insertBefore(divider, chipRow);
+            } else {
+                summaryCard.appendChild(divider);
+            }
+        }
+    }
+
+    function ensureSummaryChips(summaryCard) {
+        let chipGrid = summaryCard.querySelector('.' + prefix + '-result-chip-grid') || summaryCard.querySelector('.' + prefix + '-result-chip-row');
+
+        if (!chipGrid) {
+            chipGrid = document.createElement('div');
+            chipGrid.className = prefix + '-result-chip-grid';
+            chipGrid.setAttribute('aria-label', 'Result summary state');
+            summaryCard.appendChild(chipGrid);
+        }
+
+        chipGrid.classList.remove(prefix + '-result-chip-row');
+        chipGrid.classList.add(prefix + '-result-chip-grid');
+        chipGrid.setAttribute('aria-label', 'Result summary state');
+
+        Array.from(chipGrid.querySelectorAll('.' + prefix + '-result-chip')).forEach(function (chip) {
+            if (/^updated\b/i.test(chip.textContent.trim())) {
+                chip.remove();
+            }
+        });
+
+        while (chipGrid.querySelectorAll('.' + prefix + '-result-chip').length < 4) {
+            chipGrid.appendChild(createChip('Model ready', 'baseline', 'bi bi-check2-circle'));
+        }
+    }
+
+    function normalizeRingValues(summary) {
+        summary.querySelectorAll('.' + prefix + '-result-ring-value').forEach(function (value) {
+            const length = Math.max(value.textContent.trim().length, 3);
+            value.style.setProperty('--' + prefix + '-result-value-chars', String(length));
+        });
+    }
+
+    function ensurePrimaryOutcome(primaryCard, summaryCard) {
+        let outcomeRow = primaryCard.querySelector('.' + prefix + '-result-chip-row-center');
+
+        if (!outcomeRow) {
+            outcomeRow = document.createElement('div');
+            outcomeRow.className = prefix + '-result-chip-row ' + prefix + '-result-chip-row-center';
+            outcomeRow.setAttribute('aria-label', 'Primary result outcome');
+            primaryCard.appendChild(outcomeRow);
+        }
+
+        let divider = Array.from(primaryCard.children).find(function (child) {
+            return child.classList && child.classList.contains(prefix + '-result-card-divider');
+        });
+
+        if (!divider) {
+            divider = document.createElement('span');
+            divider.className = prefix + '-result-card-divider';
+            divider.setAttribute('aria-hidden', 'true');
+            primaryCard.insertBefore(divider, outcomeRow);
+        } else if (divider.nextElementSibling !== outcomeRow) {
+            primaryCard.insertBefore(divider, outcomeRow);
+        }
+
+        if (outcomeRow.querySelector('.' + prefix + '-result-chip')) {
+            return;
+        }
+
+        const sourceChip = summaryCard.querySelector('.' + prefix + '-result-chip-ready, .' + prefix + '-result-chip-success, .' + prefix + '-result-chip-baseline, .' + prefix + '-result-chip-warning');
+        const outcomeChip = sourceChip ? sourceChip.cloneNode(true) : createChip('Primary result', 'outcome', 'bi bi-check2-circle');
+
+        outcomeChip.classList.add(prefix + '-result-chip-outcome');
+        outcomeRow.appendChild(outcomeChip);
+    }
+
+    function normalizeRingPrimary(primaryCard, summaryCard) {
+        const ring = primaryCard.querySelector('.' + prefix + '-result-ring');
+
+        if (!ring) {
+            return false;
+        }
+
+        primaryCard.dataset.resultVisual = 'ring';
+
+        primaryCard.querySelectorAll([
+            '.' + prefix + '-result-card-icon-primary',
+            '.' + prefix + '-result-primary-number',
+            '.' + prefix + '-result-primary-text'
+        ].join(', ')).forEach(function (node) {
+            node.remove();
+        });
+
+        const visualShell = ring.closest('.' + prefix + '-result-primary-visual') || ring;
+        let topCopy = primaryCard.querySelector('.' + prefix + '-result-visual-copy-top');
+
+        if (!topCopy) {
+            topCopy = document.createElement('div');
+            topCopy.className = prefix + '-result-visual-copy ' + prefix + '-result-visual-copy-top';
+        }
+
+        if (visualShell.parentElement === primaryCard && topCopy.parentElement !== primaryCard) {
+            primaryCard.insertBefore(topCopy, visualShell);
+        } else if (!topCopy.parentElement) {
+            primaryCard.insertBefore(topCopy, primaryCard.firstChild);
+        }
+
+        const heading = primaryCard.querySelector('.' + prefix + '-result-primary-heading');
+        let kicker = Array.from(primaryCard.querySelectorAll('.' + prefix + '-result-kicker')).find(function (item) {
+            return /primary/i.test(item.textContent);
+        }) || topCopy.querySelector('.' + prefix + '-result-kicker');
+
+        if (!kicker) {
+            kicker = document.createElement('span');
+            kicker.className = prefix + '-result-kicker';
+        }
+
+        kicker.textContent = 'Primary Result';
+        if (!topCopy.contains(kicker)) {
+            topCopy.appendChild(kicker);
+        }
+
+        const title = primaryCard.querySelector('.' + prefix + '-result-title-center, .' + prefix + '-result-title');
+        if (title) {
+            title.querySelectorAll('i, svg').forEach(function (icon) {
+                icon.remove();
+            });
+            if (!topCopy.contains(title)) {
+                topCopy.appendChild(title);
+            }
+        }
+
+        let bottomCopy = Array.from(primaryCard.querySelectorAll('.' + prefix + '-result-visual-copy')).find(function (item) {
+            return item !== topCopy;
+        });
+
+        if (!bottomCopy) {
+            bottomCopy = document.createElement('div');
+            bottomCopy.className = prefix + '-result-visual-copy';
+            if (visualShell.parentElement) {
+                visualShell.insertAdjacentElement('afterend', bottomCopy);
+            } else {
+                primaryCard.appendChild(bottomCopy);
+            }
+        }
+
+        Array.from(bottomCopy.querySelectorAll('.' + prefix + '-result-kicker')).forEach(function (item) {
+            item.remove();
+        });
+
+        if (!bottomCopy.querySelector('.' + prefix + '-result-copy')) {
+            const copy = document.createElement('p');
+            const summaryCopy = summaryCard.querySelector('.' + prefix + '-result-copy');
+            copy.className = prefix + '-result-copy ' + prefix + '-result-copy-center';
+            copy.textContent = textFrom(summaryCopy, 'Primary output generated from the current inputs.');
+            bottomCopy.appendChild(copy);
+        }
+
+        if (heading && !heading.textContent.trim()) {
+            heading.remove();
+        }
+
+        ensurePrimaryOutcome(primaryCard, summaryCard);
+
+        return true;
+    }
+
+    function normalizeTextPrimary(primaryCard, summaryCard) {
+        primaryCard.dataset.resultVisual = primaryCard.classList.contains(prefix + '-result-card-command') ? 'command' : 'text';
+
+        const kicker = primaryCard.querySelector('.' + prefix + '-result-kicker');
+        if (kicker) {
+            kicker.textContent = 'Primary Result';
+        }
+
+        const commandValue = primaryCard.querySelector('.' + prefix + '-result-command-value');
+        if (commandValue) {
+            commandValue.textContent = compactPrimaryText(primaryCard, summaryCard);
+        }
+
+        ensurePrimaryOutcome(primaryCard, summaryCard);
+    }
+
+    function normalize() {
+        const summary = document.querySelector('.' + prefix + '-result-summary');
+        if (!summary) {
+            return;
+        }
+
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
+        if (!hero) {
+            return;
+        }
+
+        ensureResultHeader(summary);
+
+        const cards = Array.from(hero.querySelectorAll(':scope > .' + prefix + '-result-card'));
+        const primaryCard = cards.find(function (card) {
+            return card.classList.contains(prefix + '-result-card-primary') || card.classList.contains(prefix + '-result-card-visual') || card.classList.contains(prefix + '-result-card-command');
+        }) || cards[0];
+        const summaryCard = cards.find(function (card) {
+            return card !== primaryCard && (card.classList.contains(prefix + '-result-card-summary') || card.classList.contains(prefix + '-result-card-main'));
+        }) || cards.find(function (card) {
+            return card !== primaryCard;
+        });
+
+        if (!primaryCard || !summaryCard) {
+            return;
+        }
+
+        primaryCard.classList.add(prefix + '-result-card-primary');
+        summaryCard.classList.add(prefix + '-result-card-summary');
+        normalizeSummaryCard(summaryCard);
+
+        if (hero.firstElementChild !== primaryCard) {
+            hero.insertBefore(primaryCard, hero.firstElementChild);
+        }
+        if (primaryCard.nextElementSibling !== summaryCard) {
+            hero.insertBefore(summaryCard, primaryCard.nextElementSibling);
+        }
+
+        const hasRing = normalizeRingPrimary(primaryCard, summaryCard);
+        if (!hasRing) {
+            normalizeTextPrimary(primaryCard, summaryCard);
+        }
+        ensureSummaryChips(summaryCard);
+        normalizeRingValues(summary);
+        normalizeMetricCards(summary);
+    }
+
+    function scheduleNormalize() {
+        window.requestAnimationFrame(normalize);
+    }
+
+    window.InfraStackResultSummaryNormalizers = window.InfraStackResultSummaryNormalizers || {};
+    window.InfraStackResultSummaryNormalizers[prefix] = normalize;
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            normalize();
+            new MutationObserver(scheduleNormalize).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }, { once: true });
+        return;
+    }
+
+    normalize();
+    new MutationObserver(scheduleNormalize).observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+function normalizeInfraStackResultSummary(prefix) {
+    const normalizers = window.InfraStackResultSummaryNormalizers || {};
+
+    if (typeof normalizers[prefix] === 'function') {
+        normalizers[prefix]();
+    }
+}
+
+installInfraStackResultSummaryNormalizer('architecture-cloud-tmcloud');
+// ns:end family._base.workspace.05_result-summary
+// ns:start family._base.workspace.01_input-brief
 // section.js
 (function attachSourceSection(global) {
     const registry = global.InfraStackArchitectureWorkspaceSections || {};
@@ -94,8 +618,8 @@
     registry.architecturePrompt = architecturePromptSourceSection;
     global.InfraStackArchitectureWorkspaceSections = registry;
 }(window));
-// ns:end family.architecture.workspace.01_input-brief
-// ns:start family.architecture.workspace.02_basic-settings
+// ns:end family._base.workspace.01_input-brief
+// ns:start family._base.workspace.02_basic-settings
 // section.js
 (function attachSourceSection(global) {
     const registry = global.InfraStackArchitectureWorkspaceSections || {};
@@ -185,8 +709,8 @@
     registry.basicTab = basicTabSourceSection;
     global.InfraStackArchitectureWorkspaceSections = registry;
 }(window));
-// ns:end family.architecture.workspace.02_basic-settings
-// ns:start family.architecture.workspace.03_advanced-settings
+// ns:end family._base.workspace.02_basic-settings
+// ns:start family._base.workspace.03_custom-settings
 // section.js
 (function attachSourceSection(global) {
     const registry = global.InfraStackArchitectureWorkspaceSections || {};
@@ -293,7 +817,7 @@
     registry.customTab = customTabSourceSection;
     global.InfraStackArchitectureWorkspaceSections = registry;
 }(window));
-// ns:end family.architecture.workspace.03_advanced-settings
+// ns:end family._base.workspace.03_custom-settings
 // ns:start family.architecture.workspace.04_selected-item
 // section.js
 (function attachSourceSection(global) {
@@ -407,7 +931,7 @@
     global.InfraStackArchitectureWorkspaceSections = registry;
 }(window));
 // ns:end family.architecture.workspace.04_selected-item
-// ns:start family.architecture.workspace.05_result-text
+// ns:start family.architecture.workspace.04_visual-contract
 // section.js
 (function attachSourceSection(global) {
     const registry = global.InfraStackArchitectureWorkspaceSections || {};
@@ -499,8 +1023,8 @@
     registry.resultText = resultTextSourceSection;
     global.InfraStackArchitectureWorkspaceSections = registry;
 }(window));
-// ns:end family.architecture.workspace.05_result-text
-// ns:start family.architecture.workspace.06_result-diagram
+// ns:end family.architecture.workspace.04_visual-contract
+// ns:start family.architecture.workspace.04_visual-contract
 // section.js
 (function attachSourceSection(global) {
     const registry = global.InfraStackArchitectureWorkspaceSections || {};
@@ -629,14 +1153,14 @@
     registry.resultDiagram = resultDiagramSourceSection;
     global.InfraStackArchitectureWorkspaceSections = registry;
 }(window));
-// ns:end family.architecture.workspace.06_result-diagram
-// ns:start family.architecture.workspace.07_score-card
+// ns:end family.architecture.workspace.04_visual-contract
+// ns:start family._base.workspace.05_result-summary
 // section.js
 (function attachSourceSection(global) {
     const registry = global.InfraStackArchitectureWorkspaceSections || {};
     const source = {
-        "section": "07_score-card",
-        "title": "score card",
+        "section": "05_result-summary",
+        "title": "result summary",
         "sourceTool": "templates/content/tools/aws/architecture-vpc-aws/",
         "sourceFile": "custom.js",
         "sourceJsLines": [
@@ -698,20 +1222,21 @@
     };
 
     /**
-     * Returns the extracted architecture score card JavaScript ownership map.
+     * Returns the extracted architecture result summary JavaScript ownership map.
      *
      * @returns {Record<string, string | string[] | number[][]>} Section source metadata.
      */
-    function scoreCardSourceSection() {
+    function resultSummarySourceSection() {
         return JSON.parse(JSON.stringify(source));
     }
 
-    registry.scoreCardSourceSection = scoreCardSourceSection;
-    registry.scoreCard = scoreCardSourceSection;
+    registry.resultSummarySourceSection = resultSummarySourceSection;
+    registry.resultSummary = resultSummarySourceSection;
+    registry.scoreCard = resultSummarySourceSection;
     global.InfraStackArchitectureWorkspaceSections = registry;
 }(window));
-// ns:end family.architecture.workspace.07_score-card
-// ns:start family.architecture.workspace.08_sort-card
+// ns:end family._base.workspace.05_result-summary
+// ns:start family._base.workspace.06_output-toolbar
 // section.js
 (function attachSourceSection(global) {
     const registry = global.InfraStackArchitectureWorkspaceSections || {};
@@ -812,8 +1337,8 @@
     registry.sortCard = sortCardSourceSection;
     global.InfraStackArchitectureWorkspaceSections = registry;
 }(window));
-// ns:end family.architecture.workspace.08_sort-card
-// ns:start family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.06_output-toolbar
+// ns:start family._base.workspace.07_table-output
 // section.js
 (function attachSourceSection(global) {
     const registry = global.InfraStackArchitectureWorkspaceSections || {};
@@ -945,14 +1470,18 @@
     registry.resultTable = resultTableSourceSection;
     global.InfraStackArchitectureWorkspaceSections = registry;
 }(window));
-// ns:end family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.07_table-output
 
+// ns:start family.architecture.workspace.04_visual-contract
+{{ include('content/tools/tmcloud/architecture-cloud-tmcloud/assets/bin/engine-runtime.js')|raw }}
+// ns:end family.architecture.workspace.04_visual-contract
 {{ include('content/tools/tmcloud/architecture-cloud-tmcloud/assets/bin/model-core.js')|raw }}
 
 (function initArchitectureCloudTmcloudWorkspace(globalScope) {
     'use strict';
 
     const core = ArchitectureCloudTmcloudModelCore;
+    const engineRuntime = globalScope.InfraStackArchitectureEngineRuntime || null;
     const iconSvgMap = {
         users: {{ include('content/tools/tmcloud/architecture-cloud-tmcloud/assets/icon/users.svg')|json_encode|raw }},
         vpc: {{ include('content/tools/tmcloud/architecture-cloud-tmcloud/assets/icon/vpc.svg')|json_encode|raw }},
@@ -978,6 +1507,7 @@
     let selectedConnectorId = '';
     let pendingStageFocusNodeId = '';
     let highlightedNodeId = '';
+    let highlightedNodeIds = [];
     let layoutOverrides = {};
     let connectorOverrides = {};
     let stageZoom = 50;
@@ -988,6 +1518,39 @@
     let chartJsPromise = null;
     let scoreChartInstance = null;
     const stageUndoLimit = 40;
+    const engineRuntimeConfig = {
+        zoom: {
+            defaultValue: 0.5,
+            min: 0.15,
+            max: 2.4,
+            step: 0.1,
+            wheelStep: 0.01
+        },
+        movement: {
+            step: 4,
+            fastStep: 12,
+            snap: 1,
+            historyLimit: stageUndoLimit,
+            minimumNodeWidth: 120,
+            minimumNodeHeight: 58
+        },
+        selectors: {
+            resizeHandle: '[data-engine-resize-handle], .diagram-resize-handle, .architecture-cloud-tmcloud-resize-handle',
+            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"], .architecture-cloud-tmcloud-custom-select'
+        },
+        classes: {
+            selected: 'is-selected',
+            multiSelected: 'is-multi-selected',
+            highlighted: 'is-highlighted',
+            diagramHighlighted: 'architecture-cloud-tmcloud-stage-highlighted',
+            dragging: 'architecture-cloud-tmcloud-stage-dragging',
+            resizing: 'architecture-cloud-tmcloud-stage-resizing',
+            uiHidden: 'is-stage-ui-hidden',
+            expanded: 'architecture-cloud-tmcloud-stage-expanded',
+            bodyLock: 'architecture-cloud-tmcloud-stage-expanded-lock',
+            hidden: 'd-none'
+        }
+    };
     const customSelectControls = [];
     const customSelectIds = [
         'architectureCloudTmcloudPreset',
@@ -1125,7 +1688,90 @@
     }
 
     function cloneConnectorOverrides(value) {
+        if (engineRuntime && typeof engineRuntime.cloneConnectorOverrides === 'function') {
+            return engineRuntime.cloneConnectorOverrides(value);
+        }
+
         return cloneStageValue(value);
+    }
+
+    function currentViewportState() {
+        const stageCanvas = byId('architectureCloudTmcloudStageCanvas');
+        const stageShell = byId('architectureCloudTmcloudStageShell');
+
+        return {
+            zoom: stageZoom / 100,
+            scrollLeft: stageCanvas ? stageCanvas.scrollLeft : 0,
+            scrollTop: stageCanvas ? stageCanvas.scrollTop : 0,
+            uiHidden: isStageUiHidden,
+            fullscreen: Boolean(stageShell && (
+                document.fullscreenElement === stageShell ||
+                stageShell.classList.contains('architecture-cloud-tmcloud-stage-expanded')
+            )),
+            diagramHighlighted: stageDiagramHighlighted
+        };
+    }
+
+    function currentSelectionState() {
+        const nodeIds = selectedNodeIds.length > 0
+            ? selectedNodeIds.slice()
+            : (selectedNodeId ? [selectedNodeId] : []);
+
+        return {
+            nodeIds: nodeIds,
+            connectorId: selectedConnectorId || '',
+            highlightedNodeId: highlightedNodeId || '',
+            highlightedNodeIds: highlightedNodeIds.slice()
+        };
+    }
+
+    function createEngineState(value) {
+        const source = value || {};
+        const stateValue = {
+            viewport: Object.assign(currentViewportState(), source.viewport || {}),
+            selection: Object.assign(currentSelectionState(), source.selection || {}),
+            layoutOverrides: source.layoutOverrides || source.layout_overrides || layoutOverrides,
+            connectorOverrides: source.connectorOverrides || source.connector_overrides || connectorOverrides
+        };
+
+        if (engineRuntime && typeof engineRuntime.createState === 'function') {
+            return engineRuntime.createState(stateValue, engineRuntimeConfig);
+        }
+
+        return stateValue;
+    }
+
+    function toPersistedEngineState(value) {
+        const state = createEngineState(value);
+
+        if (engineRuntime && typeof engineRuntime.toPersistedState === 'function') {
+            return engineRuntime.toPersistedState(state, engineRuntimeConfig);
+        }
+
+        const nodeIds = Array.isArray(state.selection.nodeIds)
+            ? state.selection.nodeIds.slice()
+            : [];
+
+        return {
+            viewport: {
+                zoom: state.viewport.zoom,
+                scroll_left: state.viewport.scrollLeft || 0,
+                scroll_top: state.viewport.scrollTop || 0,
+                ui_hidden: Boolean(state.viewport.uiHidden),
+                fullscreen: Boolean(state.viewport.fullscreen),
+                diagram_highlighted: Boolean(state.viewport.diagramHighlighted)
+            },
+            selection: {
+                node_ids: nodeIds,
+                connector_id: state.selection.connectorId || '',
+                highlighted_node_id: state.selection.highlightedNodeId || '',
+                highlighted_node_ids: Array.isArray(state.selection.highlightedNodeIds)
+                    ? state.selection.highlightedNodeIds.slice()
+                    : []
+            },
+            layout_overrides: cloneStageValue(state.layoutOverrides),
+            connector_overrides: cloneConnectorOverrides(state.connectorOverrides)
+        };
     }
 
     function syncConnectorPayloadState() {
@@ -1133,9 +1779,59 @@
             return;
         }
 
-        currentPayload.connector_overrides = cloneConnectorOverrides(connectorOverrides);
-        currentPayload.connectorOverrides = cloneConnectorOverrides(connectorOverrides);
-        currentPayload.selected_connector_id = selectedConnectorId || '';
+        const persistedState = toPersistedEngineState();
+
+        currentPayload.viewport = persistedState.viewport;
+        currentPayload.selection = persistedState.selection;
+        currentPayload.layout_overrides = cloneStageValue(persistedState.layout_overrides);
+        currentPayload.layoutOverrides = cloneStageValue(persistedState.layout_overrides);
+        currentPayload.connector_overrides = cloneConnectorOverrides(persistedState.connector_overrides);
+        currentPayload.connectorOverrides = cloneConnectorOverrides(persistedState.connector_overrides);
+        currentPayload.selected_node_id = persistedState.selection.node_ids[0] || '';
+        currentPayload.selected_node_ids = persistedState.selection.node_ids.slice();
+        currentPayload.selected_connector_id = persistedState.selection.connector_id || '';
+        currentPayload.highlighted_node_id = persistedState.selection.highlighted_node_id || '';
+        currentPayload.highlighted_node_ids = highlightedNodeIds.slice();
+    }
+
+    function restoreEngineStateFromPayload(payload, restoredLayoutOverrides) {
+        const source = payload || {};
+        const restoredSelectedNodeIds = Array.isArray(source.selected_node_ids)
+            ? source.selected_node_ids
+            : (Array.isArray(source.selectedNodeIds) ? source.selectedNodeIds : (source.selected_node_id || source.selectedNodeId ? [source.selected_node_id || source.selectedNodeId] : []));
+        const restoredHighlightedNodeIds = Array.isArray(source.highlighted_node_ids)
+            ? source.highlighted_node_ids
+            : (Array.isArray(source.highlightedNodeIds) ? source.highlightedNodeIds : (source.highlighted_node_id || source.highlightedNodeId ? [source.highlighted_node_id || source.highlightedNodeId] : []));
+        const restoredSelectedConnectorId = source.selected_connector_id || source.selectedConnectorId || '';
+        const runtimeState = createEngineState({
+            viewport: source.viewport || {},
+            selection: Object.assign({
+                nodeIds: restoredSelectedNodeIds,
+                connectorId: restoredSelectedConnectorId,
+                highlightedNodeId: restoredHighlightedNodeIds[0] || source.highlighted_node_id || source.highlightedNodeId || ''
+            }, source.selection || {}),
+            layoutOverrides: restoredLayoutOverrides || source.layout_overrides || source.layoutOverrides,
+            connectorOverrides: source.connector_overrides || source.connectorOverrides
+        });
+
+        layoutOverrides = cloneStageValue(runtimeState.layoutOverrides);
+        connectorOverrides = cloneConnectorOverrides(runtimeState.connectorOverrides);
+        selectedNodeIds = Array.isArray(runtimeState.selection.nodeIds) ? runtimeState.selection.nodeIds.slice() : [];
+        selectedNodeId = selectedNodeIds[0] || '';
+        selectedConnectorId = String(runtimeState.selection.connectorId || '');
+        setHighlightedNodeIds(restoredHighlightedNodeIds.length > 0
+            ? restoredHighlightedNodeIds
+            : runtimeState.selection.highlightedNodeIds);
+        stageDiagramHighlighted = Boolean(runtimeState.viewport.diagramHighlighted);
+        isStageUiHidden = Boolean(runtimeState.viewport.uiHidden);
+        stageZoom = Math.round(Number(runtimeState.viewport.zoom || 0.5) * 100);
+        setValue('architectureCloudTmcloudZoomInput', stageZoom);
+
+        const stageShell = byId('architectureCloudTmcloudStageShell');
+
+        if (stageShell) {
+            stageShell.classList.toggle('is-stage-ui-hidden', isStageUiHidden);
+        }
     }
 
     function updateUndoButton() {
@@ -1172,6 +1868,7 @@
             selectedNodeIds: selectedNodeIds.slice(),
             selectedConnectorId: selectedConnectorId,
             highlightedNodeId: highlightedNodeId,
+            highlightedNodeIds: highlightedNodeIds.slice(),
             stageDiagramHighlighted: stageDiagramHighlighted,
             stageZoom: stageZoom
         };
@@ -1212,6 +1909,8 @@
         selectedNodeIds = Array.isArray(snapshot.selectedNodeIds) ? snapshot.selectedNodeIds.slice() : (selectedNodeId ? [selectedNodeId] : []);
         selectedConnectorId = String(snapshot.selectedConnectorId || '');
         highlightedNodeId = String(snapshot.highlightedNodeId || '');
+        highlightedNodeIds = Array.isArray(snapshot.highlightedNodeIds) ? snapshot.highlightedNodeIds.slice() : (highlightedNodeId ? [highlightedNodeId] : []);
+        highlightedNodeId = highlightedNodeIds[0] || '';
         stageDiagramHighlighted = Boolean(snapshot.stageDiagramHighlighted);
         stageZoom = Number.isFinite(snapshot.stageZoom) ? snapshot.stageZoom : 50;
         setValue('architectureCloudTmcloudZoomInput', stageZoom);
@@ -1252,6 +1951,25 @@
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;');
+    }
+
+    function highlightJsonText(text) {
+        return escapeHtml(text).replace(
+            /(&quot;(?:\\u[\da-fA-F]{4}|\\[^u]|[^\\&])*&quot;(?:\s*:)?|\btrue\b|\bfalse\b|\bnull\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+            function highlightToken(match) {
+                let tokenClass = 'number';
+
+                if (match.startsWith('&quot;')) {
+                    tokenClass = match.endsWith(':') ? 'key' : 'string';
+                } else if (match === 'true' || match === 'false') {
+                    tokenClass = 'boolean';
+                } else if (match === 'null') {
+                    tokenClass = 'null';
+                }
+
+                return '<span class="tool-json-' + tokenClass + '">' + match + '</span>';
+            }
+        );
     }
 
     function textWithoutInfoMarker(element, markerClass) {
@@ -1469,6 +2187,10 @@
     }
 
     function initializeCustomSelect(selectElement) {
+        if (!selectElement || selectElement.tagName !== 'SELECT') {
+            return;
+        }
+
         const wrapper = document.createElement('div');
         const button = document.createElement('button');
         const valueElement = document.createElement('span');
@@ -1759,6 +2481,7 @@
         selectedNodeIds = [];
         selectedConnectorId = '';
         highlightedNodeId = '';
+        highlightedNodeIds = [];
         stageDiagramHighlighted = false;
         clearStageUndoHistory();
         updateHighlightAllButton();
@@ -1836,6 +2559,55 @@
         }).filter(function (nodeId) {
             return nodeId !== '' && getDiagramItemById(nodeId) !== null;
         })));
+    }
+
+    function normalizeImportedStringArray(value) {
+        if (!Array.isArray(value)) {
+            return [];
+        }
+
+        return value.map(function (item) {
+            return String(item || '').trim();
+        }).filter(Boolean);
+    }
+
+    function readImportedVisualIds(payload, arrayKeys, scalarKeys) {
+        const arrayKey = arrayKeys.find(function (key) {
+            return Array.isArray(payload[key]);
+        });
+
+        if (arrayKey) {
+            return normalizeImportedStringArray(payload[arrayKey]);
+        }
+
+        const scalarKey = scalarKeys.find(function (key) {
+            return typeof payload[key] === 'string' && payload[key].trim() !== '';
+        });
+
+        return scalarKey ? [payload[scalarKey].trim()] : [];
+    }
+
+    function getImportedSelectedNodeIds(payload) {
+        return readImportedVisualIds(payload, ['selected_node_ids', 'selectedNodeIds'], ['selected_node_id', 'selectedNodeId']);
+    }
+
+    function getImportedHighlightedNodeIds(payload) {
+        return readImportedVisualIds(payload, ['highlighted_node_ids', 'highlightedNodeIds'], ['highlighted_node_id', 'highlightedNodeId']);
+    }
+
+    function getImportedSelectedConnectorId(payload) {
+        const selectedConnectorIdKeys = ['selected_connector_id', 'selectedConnectorId'];
+        const selectedConnectorIdKey = selectedConnectorIdKeys.find(function (key) {
+            return typeof payload[key] === 'string' && payload[key].trim() !== '';
+        });
+
+        return selectedConnectorIdKey ? payload[selectedConnectorIdKey].trim() : '';
+    }
+
+    function setHighlightedNodeIds(nodeIds) {
+        highlightedNodeIds = normalizeSelectedNodeIds(nodeIds);
+        highlightedNodeId = highlightedNodeIds[0] || '';
+        syncConnectorPayloadState();
     }
 
     function getSelectedDiagramItems() {
@@ -1923,6 +2695,49 @@
         return Math.round(Number(value || 0) * 100) / 100;
     }
 
+    function snapCoordinate(value) {
+        return Math.round(Number(value || 0) / 4) * 4;
+    }
+
+    function clampConnectorRatio(value, fallback) {
+        const parsed = Number(value);
+
+        if (!Number.isFinite(parsed)) {
+            return fallback;
+        }
+
+        return Math.min(1, Math.max(0, parsed));
+    }
+
+    function normalizeConnectorRatio(value) {
+        if (!value || typeof value !== 'object') {
+            return null;
+        }
+
+        return {
+            x: clampConnectorRatio(value.x, 0.5),
+            y: clampConnectorRatio(value.y, 0.5)
+        };
+    }
+
+    function normalizeConnectorBend(value) {
+        if (!value || typeof value !== 'object') {
+            return null;
+        }
+
+        const x = Number(value.x);
+        const y = Number(value.y);
+
+        if (!Number.isFinite(x) || !Number.isFinite(y)) {
+            return null;
+        }
+
+        return {
+            x: x,
+            y: y
+        };
+    }
+
     function connectorAnchor(source, target) {
         const start = nodeCenter(source);
         const end = nodeCenter(target);
@@ -1930,66 +2745,224 @@
         const deltaY = end.y - start.y;
 
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            const sourceSide = deltaX >= 0 ? 'right' : 'left';
+            const targetSide = deltaX >= 0 ? 'left' : 'right';
+
             return {
-                source: {
-                    x: deltaX >= 0 ? source.x + source.width : source.x,
-                    y: start.y
-                },
-                target: {
-                    x: deltaX >= 0 ? target.x : target.x + target.width,
-                    y: end.y
-                },
+                source: getConnectorAnchorPoint(source, sourceSide, null),
+                target: getConnectorAnchorPoint(target, targetSide, null),
+                sourceSide: sourceSide,
+                targetSide: targetSide,
                 mode: 'horizontal'
             };
         }
 
+        const sourceSide = deltaY >= 0 ? 'bottom' : 'top';
+        const targetSide = deltaY >= 0 ? 'top' : 'bottom';
+
         return {
-            source: {
-                x: start.x,
-                y: deltaY >= 0 ? source.y + source.height : source.y
-            },
-            target: {
-                x: end.x,
-                y: deltaY >= 0 ? target.y : target.y + target.height
-            },
+            source: getConnectorAnchorPoint(source, sourceSide, null),
+            target: getConnectorAnchorPoint(target, targetSide, null),
+            sourceSide: sourceSide,
+            targetSide: targetSide,
             mode: 'vertical'
         };
     }
 
-    function connectorPath(source, target) {
-        const anchors = connectorAnchor(source, target);
-        const start = anchors.source;
-        const end = anchors.target;
-
-        if (anchors.mode === 'horizontal') {
-            const midX = start.x + ((end.x - start.x) * 0.5);
-
-            return [
-                'M', formatSvgNumber(start.x), formatSvgNumber(start.y),
-                'L', formatSvgNumber(midX), formatSvgNumber(start.y),
-                'L', formatSvgNumber(midX), formatSvgNumber(end.y),
-                'L', formatSvgNumber(end.x), formatSvgNumber(end.y)
-            ].join(' ');
+    function defaultConnectorRatio(side) {
+        if (side === 'left') {
+            return { x: 0, y: 0.5 };
         }
 
-        const midY = start.y + ((end.y - start.y) * 0.5);
+        if (side === 'right') {
+            return { x: 1, y: 0.5 };
+        }
 
-        return [
-            'M', formatSvgNumber(start.x), formatSvgNumber(start.y),
-            'L', formatSvgNumber(start.x), formatSvgNumber(midY),
-            'L', formatSvgNumber(end.x), formatSvgNumber(midY),
-            'L', formatSvgNumber(end.x), formatSvgNumber(end.y)
-        ].join(' ');
+        if (side === 'top') {
+            return { x: 0.5, y: 0 };
+        }
+
+        return { x: 0.5, y: 1 };
     }
 
-    function connectorLabelPoint(source, target) {
-        const anchors = connectorAnchor(source, target);
-        const start = anchors.source;
-        const end = anchors.target;
+    function getConnectorAnchorPoint(item, side, ratio) {
+        const safeRatio = normalizeConnectorRatio(ratio) || defaultConnectorRatio(side);
+
+        if (side === 'left') {
+            return {
+                x: item.x,
+                y: item.y + (item.height * safeRatio.y)
+            };
+        }
+
+        if (side === 'right') {
+            return {
+                x: item.x + item.width,
+                y: item.y + (item.height * safeRatio.y)
+            };
+        }
+
+        if (side === 'top') {
+            return {
+                x: item.x + (item.width * safeRatio.x),
+                y: item.y
+            };
+        }
 
         return {
-            x: start.x + ((end.x - start.x) * 0.5),
-            y: start.y + ((end.y - start.y) * 0.5) - 8
+            x: item.x + (item.width * safeRatio.x),
+            y: item.y + item.height
+        };
+    }
+
+    function buildConnectorAnchorRatio(item, side, point) {
+        if (!item || !point || item.width <= 0 || item.height <= 0) {
+            return defaultConnectorRatio(side);
+        }
+
+        if (side === 'left') {
+            return {
+                x: 0,
+                y: clampConnectorRatio((point.y - item.y) / item.height, 0.5)
+            };
+        }
+
+        if (side === 'right') {
+            return {
+                x: 1,
+                y: clampConnectorRatio((point.y - item.y) / item.height, 0.5)
+            };
+        }
+
+        if (side === 'top') {
+            return {
+                x: clampConnectorRatio((point.x - item.x) / item.width, 0.5),
+                y: 0
+            };
+        }
+
+        return {
+            x: clampConnectorRatio((point.x - item.x) / item.width, 0.5),
+            y: 1
+        };
+    }
+
+    function getConnectorLeadPoint(point, side, distance) {
+        if (side === 'left') {
+            return {
+                x: point.x - distance,
+                y: point.y
+            };
+        }
+
+        if (side === 'right') {
+            return {
+                x: point.x + distance,
+                y: point.y
+            };
+        }
+
+        if (side === 'top') {
+            return {
+                x: point.x,
+                y: point.y - distance
+            };
+        }
+
+        return {
+            x: point.x,
+            y: point.y + distance
+        };
+    }
+
+    function pathFromPoints(points) {
+        return points.map(function (point, index) {
+            return (index === 0 ? 'M ' : 'L ') + formatSvgNumber(point.x) + ' ' + formatSvgNumber(point.y);
+        }).join(' ');
+    }
+
+    function buildConnectorPathFromAnchors(start, end, sourceSide, targetSide) {
+        const leadDistance = 28;
+        const startLead = getConnectorLeadPoint(start, sourceSide, leadDistance);
+        const endLead = getConnectorLeadPoint(end, targetSide, leadDistance);
+        const sourceHorizontal = sourceSide === 'left' || sourceSide === 'right';
+        const targetHorizontal = targetSide === 'left' || targetSide === 'right';
+        const points = [start, startLead];
+
+        if (sourceHorizontal && targetHorizontal) {
+            const midX = startLead.x + ((endLead.x - startLead.x) * 0.5);
+
+            points.push({ x: midX, y: startLead.y });
+            points.push({ x: midX, y: endLead.y });
+        } else if (!sourceHorizontal && !targetHorizontal) {
+            const midY = startLead.y + ((endLead.y - startLead.y) * 0.5);
+
+            points.push({ x: startLead.x, y: midY });
+            points.push({ x: endLead.x, y: midY });
+        } else {
+            points.push({ x: endLead.x, y: startLead.y });
+        }
+
+        points.push(endLead);
+        points.push(end);
+
+        return pathFromPoints(points);
+    }
+
+    function buildConnectorPathFromAnchorsWithBend(start, end, sourceSide, targetSide, bend) {
+        const leadDistance = 28;
+        const startLead = getConnectorLeadPoint(start, sourceSide, leadDistance);
+        const endLead = getConnectorLeadPoint(end, targetSide, leadDistance);
+        const normalizedBend = normalizeConnectorBend(bend);
+
+        if (!normalizedBend) {
+            return buildConnectorPathFromAnchors(start, end, sourceSide, targetSide);
+        }
+
+        return pathFromPoints([
+            start,
+            startLead,
+            { x: normalizedBend.x, y: startLead.y },
+            normalizedBend,
+            { x: endLead.x, y: normalizedBend.y },
+            endLead,
+            end
+        ]);
+    }
+
+    function defaultConnectorBend(start, end, sourceSide, targetSide) {
+        const leadDistance = 28;
+        const startLead = getConnectorLeadPoint(start, sourceSide, leadDistance);
+        const endLead = getConnectorLeadPoint(end, targetSide, leadDistance);
+
+        return {
+            x: snapCoordinate(startLead.x + ((endLead.x - startLead.x) * 0.5)),
+            y: snapCoordinate(startLead.y + ((endLead.y - startLead.y) * 0.5))
+        };
+    }
+
+    function connectorGeometry(source, target, override) {
+        const anchors = connectorAnchor(source, target);
+        const safeOverride = override && typeof override === 'object' ? override : {};
+        const sourceRatio = normalizeConnectorRatio(safeOverride.sourceRatio || safeOverride.source_ratio);
+        const targetRatio = normalizeConnectorRatio(safeOverride.targetRatio || safeOverride.target_ratio);
+        const start = getConnectorAnchorPoint(source, anchors.sourceSide, sourceRatio);
+        const end = getConnectorAnchorPoint(target, anchors.targetSide, targetRatio);
+        const bend = normalizeConnectorBend(safeOverride.bend);
+        return {
+            start: start,
+            end: end,
+            sourceSide: anchors.sourceSide,
+            targetSide: anchors.targetSide,
+            sourceRatio: sourceRatio || defaultConnectorRatio(anchors.sourceSide),
+            targetRatio: targetRatio || defaultConnectorRatio(anchors.targetSide),
+            bend: bend,
+            bendHandle: bend || defaultConnectorBend(start, end, anchors.sourceSide, anchors.targetSide),
+            path: buildConnectorPathFromAnchorsWithBend(start, end, anchors.sourceSide, anchors.targetSide, bend),
+            label: bend || {
+                x: start.x + ((end.x - start.x) * 0.5),
+                y: start.y + ((end.y - start.y) * 0.5) - 8
+            }
         };
     }
 
@@ -2022,11 +2995,11 @@
             '.architecture-cloud-tmcloud-node-title-svg{fill:#0f1f35;font:800 13px Roboto,system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif;letter-spacing:0;}',
             '.architecture-cloud-tmcloud-node-subtitle-svg{fill:#556b82;font:600 11px Roboto,system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif;letter-spacing:0;}',
             '.architecture-cloud-tmcloud-connector-group{cursor:pointer;outline:none;}',
-            '.architecture-cloud-tmcloud-connector-hit{fill:none;stroke:transparent;stroke-width:14;stroke-linecap:round;stroke-linejoin:round;pointer-events:stroke;}',
-            '.architecture-cloud-tmcloud-connector{fill:none;stroke:#111827;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}',
+            '.architecture-cloud-tmcloud-connector-hit{fill:none;stroke:transparent;stroke-width:18;stroke-linecap:round;stroke-linejoin:round;pointer-events:stroke;vector-effect:non-scaling-stroke;}',
+            '.architecture-cloud-tmcloud-connector{fill:none;stroke:#111827;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;opacity:0.88;pointer-events:stroke;vector-effect:non-scaling-stroke;}',
             '.architecture-cloud-tmcloud-connector-label-bg{fill:#fff;stroke:#c7d7ea;stroke-width:1;}',
             '.architecture-cloud-tmcloud-connector-label{fill:#1f3349;font:700 11px Roboto,system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif;letter-spacing:0;}',
-            '.architecture-cloud-tmcloud-connector-group.is-selected .architecture-cloud-tmcloud-connector{stroke:#111827;stroke-width:3.2;}',
+            '.architecture-cloud-tmcloud-connector-group.is-selected .architecture-cloud-tmcloud-connector{stroke:#111827;stroke-width:2;opacity:1;}',
             '.architecture-cloud-tmcloud-connector-group.is-selected .architecture-cloud-tmcloud-connector-label-bg{fill:#fff;stroke:#06B6D4;stroke-width:2;}',
             '.architecture-cloud-tmcloud-connector-group.is-selected .architecture-cloud-tmcloud-connector-label{fill:#0f172a;}',
             '.architecture-cloud-tmcloud-diagram-group,.architecture-cloud-tmcloud-node-shell{cursor:grab;}',
@@ -2034,13 +3007,15 @@
             '.architecture-cloud-tmcloud-diagram-group:active,.architecture-cloud-tmcloud-node-shell:active{cursor:grabbing;}',
             '.architecture-cloud-tmcloud-diagram-group.is-selected .architecture-cloud-tmcloud-diagram-hitbox,.architecture-cloud-tmcloud-node-shell.is-selected .architecture-cloud-tmcloud-diagram-hitbox{stroke:#06B6D4;stroke-width:3;stroke-dasharray:10 7;}',
             '.architecture-cloud-tmcloud-diagram-group.is-highlighted .architecture-cloud-tmcloud-diagram-hitbox,.architecture-cloud-tmcloud-node-shell.is-highlighted .architecture-cloud-tmcloud-diagram-hitbox{stroke:#047857;stroke-width:3;stroke-dasharray:10 7;}',
+            '.architecture-cloud-tmcloud-diagram-group.is-marquee-target .architecture-cloud-tmcloud-diagram-hitbox,.architecture-cloud-tmcloud-node-shell.is-marquee-target .architecture-cloud-tmcloud-diagram-hitbox{stroke:#10B981;stroke-width:3;stroke-dasharray:10 7;}',
             '.architecture-cloud-tmcloud-diagram-group.is-selected .architecture-cloud-tmcloud-diagram-group-card{stroke:#06B6D4;stroke-width:2.8;stroke-dasharray:10 7;}',
             '.architecture-cloud-tmcloud-diagram-group.is-highlighted .architecture-cloud-tmcloud-diagram-group-card{stroke:#047857;stroke-width:2.8;stroke-dasharray:10 7;}',
+            '.architecture-cloud-tmcloud-diagram-group.is-marquee-target .architecture-cloud-tmcloud-diagram-group-card{stroke:#10B981;stroke-width:2.8;stroke-dasharray:10 7;}',
+            '.architecture-cloud-tmcloud-node-shell.is-marquee-target .architecture-cloud-tmcloud-node-outline{stroke:#10B981;stroke-width:2.8;stroke-dasharray:10 7;}',
             '.architecture-cloud-tmcloud-resize-handle{fill:#fff;stroke:#06B6D4;stroke-width:2;cursor:nwse-resize;filter:url(#architectureCloudTmcloudCardShadow);}',
-            '.architecture-cloud-tmcloud-marquee-selection{fill:rgba(37,99,235,0.1);stroke:#fff;stroke-width:3;stroke-dasharray:8 6;pointer-events:none;filter:drop-shadow(0 6px 14px rgba(15,23,42,0.24));}',
             '.architecture-cloud-tmcloud-stage-highlighted .architecture-cloud-tmcloud-diagram-group-card{stroke:#06B6D4;stroke-width:2.2;}',
             '.architecture-cloud-tmcloud-stage-highlighted .architecture-cloud-tmcloud-node-outline{stroke:#06B6D4;stroke-width:2.8;}',
-            '.architecture-cloud-tmcloud-stage-highlighted .architecture-cloud-tmcloud-connector{stroke:#111827;stroke-width:2.4;}',
+            '.architecture-cloud-tmcloud-stage-highlighted .architecture-cloud-tmcloud-connector{stroke:#111827;stroke-width:1.65;opacity:0.96;}',
             '</style>'
         ].join('');
     }
@@ -2061,7 +3036,7 @@
             'architecture-cloud-tmcloud-diagram-group',
             'architecture-cloud-tmcloud-diagram-group-' + (group.tone || 'default'),
             isDiagramItemSelected(group.id) ? 'is-selected' : '',
-            group.id === highlightedNodeId || stageDiagramHighlighted ? 'is-highlighted' : ''
+            highlightedNodeIds.includes(group.id) || stageDiagramHighlighted ? 'is-highlighted' : ''
         ].filter(Boolean).join(' ');
 
         return [
@@ -2077,6 +3052,16 @@
     function renderResizeHandle(item) {
         return [
             '<rect class="architecture-cloud-tmcloud-resize-handle" data-node-id="' + escapeHtml(item.id) + '" x="' + formatSvgNumber(item.x + item.width - 14) + '" y="' + formatSvgNumber(item.y + item.height - 14) + '" width="14" height="14" rx="4" aria-hidden="true" />'
+        ].join('');
+    }
+
+    function renderConnectorEditHandles(connectorId, geometry) {
+        const bend = geometry.bendHandle;
+
+        return [
+            '<circle class="diagram-connector-anchor-handle architecture-cloud-tmcloud-connector-anchor-handle" data-connector-id="' + escapeHtml(connectorId) + '" data-endpoint="source" cx="' + formatSvgNumber(geometry.start.x) + '" cy="' + formatSvgNumber(geometry.start.y) + '" r="9" />',
+            '<circle class="diagram-connector-anchor-handle architecture-cloud-tmcloud-connector-anchor-handle" data-connector-id="' + escapeHtml(connectorId) + '" data-endpoint="target" cx="' + formatSvgNumber(geometry.end.x) + '" cy="' + formatSvgNumber(geometry.end.y) + '" r="9" />',
+            '<rect class="diagram-connector-bend-handle architecture-cloud-tmcloud-connector-bend-handle" data-connector-id="' + escapeHtml(connectorId) + '" x="' + formatSvgNumber(bend.x - 9) + '" y="' + formatSvgNumber(bend.y - 9) + '" width="18" height="18" rx="5" />'
         ].join('');
     }
 
@@ -2168,6 +3153,7 @@
         const connectorMarkup = [];
         const nodeMarkup = [];
         const resizeHandleMarkup = [];
+        const connectorHandleMarkup = [];
 
         (architecture.groups || []).forEach(function (group) {
             groupMarkup.push(renderDiagramGroup(group));
@@ -2185,30 +3171,36 @@
                 return;
             }
 
-            const label = connectorLabelPoint(source, target);
-            const labelWidth = connectorLabelWidth(connector.label);
             const connectorId = String(connector.id || '').trim();
-            const connectorPathValue = connectorPath(source, target);
+            const override = connectorOverrides[connectorId] || {};
+            const geometry = connectorGeometry(source, target, override);
+            const label = geometry.label;
+            const labelWidth = connectorLabelWidth(connector.label);
+            const connectorPathValue = geometry.path;
             const connectorClasses = [
                 'architecture-cloud-tmcloud-connector-group',
                 selectedConnectorId === connectorId ? 'is-selected' : ''
             ].filter(Boolean).join(' ');
 
             connectorMarkup.push([
-                '<g class="' + connectorClasses + '" data-connector-id="' + escapeHtml(connectorId) + '" tabindex="0" focusable="true" role="button" aria-label="' + escapeHtml((connector.label || 'Connector') + ' connector') + '">',
-                '<path class="architecture-cloud-tmcloud-connector-hit" d="' + connectorPathValue + '" />',
-                '<path class="architecture-cloud-tmcloud-connector" d="' + connectorPathValue + '" marker-end="url(#architectureCloudTmcloudArrow)" />',
+                '<g class="' + connectorClasses + '" data-connector-id="' + escapeHtml(connectorId) + '" data-source-node-id="' + escapeHtml(connector.from) + '" data-target-node-id="' + escapeHtml(connector.to) + '" data-source-side="' + escapeHtml(geometry.sourceSide) + '" data-target-side="' + escapeHtml(geometry.targetSide) + '" tabindex="0" focusable="true" role="button" aria-label="' + escapeHtml((connector.label || 'Connector') + ' connector') + '">',
+                '<path class="diagram-connector-hit-target architecture-cloud-tmcloud-connector-hit" d="' + connectorPathValue + '" />',
+                '<path class="diagram-connector diagram-connector-active architecture-cloud-tmcloud-connector' + (selectedConnectorId === connectorId ? ' is-selected' : '') + '" d="' + connectorPathValue + '" marker-end="url(#architectureCloudTmcloudArrow)" />',
                 '<rect class="architecture-cloud-tmcloud-connector-label-bg" x="' + formatSvgNumber(label.x - (labelWidth / 2)) + '" y="' + formatSvgNumber(label.y - 15) + '" width="' + formatSvgNumber(labelWidth) + '" height="18" rx="9" />',
                 '<text class="architecture-cloud-tmcloud-connector-label" x="' + label.x + '" y="' + label.y + '" text-anchor="middle">' + escapeHtml(connector.label) + '</text>',
                 '</g>'
             ].join(''));
+
+            if (renderOptions.includeEditHandles === true && selectedConnectorId === connectorId) {
+                connectorHandleMarkup.push(renderConnectorEditHandles(connectorId, geometry));
+            }
         });
 
         architecture.nodes.forEach(function (node) {
             const classes = [
                 'architecture-cloud-tmcloud-node-shell',
                 isDiagramItemSelected(node.id) ? 'is-selected' : '',
-                node.id === highlightedNodeId || stageDiagramHighlighted ? 'is-highlighted' : ''
+                highlightedNodeIds.includes(node.id) || stageDiagramHighlighted ? 'is-highlighted' : ''
             ].filter(Boolean).join(' ');
 
             if (renderOptions.rasterSafe === true) {
@@ -2261,9 +3253,9 @@
             '<defs>',
             '<filter id="architectureCloudTmcloudSoftShadow" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.10"/></filter>',
             '<filter id="architectureCloudTmcloudCardShadow" x="-18%" y="-18%" width="136%" height="150%"><feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.12"/></filter>',
-            '<marker id="architectureCloudTmcloudArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">',
-            '<path d="M 0 0 L 10 5 L 0 10 z" fill="#111827" />',
-            '</marker>',
+            '<marker id="architectureCloudTmcloudArrow" markerWidth="11" markerHeight="11" refX="10" refY="5.5" orient="auto" markerUnits="userSpaceOnUse">',
+                '<path d="M 0 0 L 11 5.5 L 0 11 z" fill="#111827"></path>',
+                '</marker>',
             '</defs>',
             diagramStyleMarkup(),
             '<rect class="architecture-cloud-tmcloud-canvas-bg" x="0" y="0" width="' + svgBounds.width + '" height="' + svgBounds.height + '" />',
@@ -2271,6 +3263,7 @@
             connectorMarkup.join(''),
             nodeMarkup.join(''),
             resizeHandleMarkup.join(''),
+            connectorHandleMarkup.join(''),
             '</svg>'
         ].join('');
     }
@@ -2298,12 +3291,27 @@
         svg.style.height = Math.round(bounds.height * (stageZoom / 100)) + 'px';
     }
 
-    function setStageZoomToFit() {
+    function setStageZoomToFit(options) {
+        const fitOptions = options || {};
         const stageCanvas = byId('architectureCloudTmcloudStageCanvas');
         const architecture = currentArchitecture || previewArchitecture;
 
         if (!stageCanvas || !architecture) {
             setStageZoom(50);
+            return;
+        }
+
+        if (stageCanvas.clientWidth <= 0 || stageCanvas.clientHeight <= 0) {
+            applyStageZoom();
+
+            if (fitOptions.defer !== false && typeof window.requestAnimationFrame === 'function') {
+                window.requestAnimationFrame(function () {
+                    setStageZoomToFit(Object.assign({}, fitOptions, {
+                        defer: false
+                    }));
+                });
+            }
+
             return;
         }
 
@@ -2333,7 +3341,7 @@
         });
         applyStageZoom();
         bindStageNodes(stageCanvas);
-        bindStageMarqueeSelection(stageCanvas.querySelector('svg'));
+        bindStageMarqueeSelection(stageCanvas);
         focusPendingStageNode(stageCanvas);
     }
 
@@ -2370,12 +3378,16 @@
         const tableBody = byId('architectureCloudTmcloudInventoryTableBody');
         const sortMode = valueOf('architectureCloudTmcloudInventorySort') || 'id';
         const rows = currentInventory.slice().sort(function (a, b) {
-            if (sortMode === 'component') {
+            if (sortMode === 'alphabetical' || sortMode === 'component') {
                 return a.component.localeCompare(b.component);
             }
 
             if (sortMode === 'placement') {
                 return a.placement.localeCompare(b.placement);
+            }
+
+            if (sortMode === 'purpose') {
+                return a.purpose.localeCompare(b.purpose);
             }
 
             return a.index - b.index;
@@ -2417,7 +3429,7 @@
     }
 
     function setInventorySortMode(sortMode) {
-        const nextSortMode = ['id', 'component', 'placement'].includes(sortMode) ? sortMode : 'id';
+        const nextSortMode = ['id', 'alphabetical', 'component', 'placement', 'purpose'].includes(sortMode) ? sortMode : 'id';
         const hiddenInput = byId('architectureCloudTmcloudInventorySort');
         const summary = byId('architectureCloudTmcloudInventorySortSummary');
         const sortSelect = byId('architectureCloudTmcloudInventorySortSelect');
@@ -2597,57 +3609,81 @@
         const score = core.buildArchitectureScore(spec);
         const status = byId('architectureCloudTmcloudOutputStatus');
         const tone = scoreTone(score.score);
-        const ringRadius = 52;
-        const ringCircumference = 2 * Math.PI * ringRadius;
-        const ringTrackLength = Math.round(ringCircumference * 100) / 100;
-        const ringRatio = score.score >= 100 ? 1 : score.score / 100;
         const ringProgressAngle = Math.round(Math.max(0, Math.min(100, score.score)) * 3.6);
-        const ringProgressLength = score.score >= 100
-            ? ringTrackLength
-            : Math.round(ringRatio * ringCircumference * 100) / 100;
-        const ringGapLength = score.score >= 100
-            ? 0
-            : Math.round((ringTrackLength - ringProgressLength) * 100) / 100;
         const tags = buildScoreTags(currentSpec || spec, tone);
         const labelIcon = scoreStatusIcon(tone);
+        const resultTone = {
+            ready: 'success',
+            solid: 'ready',
+            review: 'need-work'
+        }[tone] || 'need-work';
+        const chipTone = function (tagTone) {
+            if (tagTone === 'status-ready') {
+                return 'success';
+            }
+
+            if (tagTone === 'status-solid') {
+                return 'ready';
+            }
+
+            if (tagTone === 'status-review') {
+                return 'need-work';
+            }
+
+            return 'baseline';
+        };
+        const tagChips = tags.map(function (tag) {
+            return [
+                '<span class="architecture-cloud-tmcloud-result-chip architecture-cloud-tmcloud-result-chip-' + chipTone(tag.tone) + '">',
+                '<span class="architecture-cloud-tmcloud-result-chip-icon"><i class="' + escapeHtml(tag.icon) + '" aria-hidden="true"></i></span>',
+                escapeHtml(tag.label),
+                '</span>'
+            ].join('');
+        }).join('');
+        const metricCards = tags.slice(1, 5).map(function (tag) {
+            return [
+                '<article class="architecture-cloud-tmcloud-result-metric-card">',
+                '<span class="architecture-cloud-tmcloud-result-metric-label">Signal</span>',
+                '<strong class="architecture-cloud-tmcloud-result-metric-value">' + escapeHtml(tag.label) + '</strong>',
+                '<span class="architecture-cloud-tmcloud-result-metric-copy">' + escapeHtml(tag.tone.replace(/-/g, ' ')) + '</span>',
+                '</article>'
+            ].join('');
+        }).join('');
 
         if (!status) {
             return;
         }
 
         destroyScoreChart();
+        status.className = 'architecture-cloud-tmcloud-score-card architecture-cloud-tmcloud-result-summary';
+        status.dataset.resultTone = resultTone;
+        status.dataset.resultLayout = 'architecture_score';
         status.innerHTML = [
-            '<div class="architecture-cloud-tmcloud-score-ring-card architecture-cloud-tmcloud-score-ring-card-' + escapeHtml(tone) + '" tabindex="0" role="group" aria-label="Architecture score ' + escapeHtml(String(score.score)) + ' out of 100. ' + escapeHtml(score.label) + '">',
-            '<div class="architecture-cloud-tmcloud-score-value" style="--progress-angle: ' + escapeHtml(String(ringProgressAngle)) + 'deg;" aria-label="Architecture score ' + escapeHtml(String(score.score)) + ' out of 100">',
-            '<svg class="architecture-cloud-tmcloud-score-ring" viewBox="0 0 140 140" aria-hidden="true" focusable="false">',
-            '<circle class="architecture-cloud-tmcloud-score-ring-track" cx="70" cy="70" r="' + escapeHtml(String(ringRadius)) + '"></circle>',
-            '<circle class="architecture-cloud-tmcloud-score-ring-glow" cx="70" cy="70" r="' + escapeHtml(String(ringRadius)) + '" transform="rotate(-90 70 70)" stroke-dasharray="' + escapeHtml(String(ringProgressLength)) + ' ' + escapeHtml(String(ringGapLength)) + '"></circle>',
-            '<circle class="architecture-cloud-tmcloud-score-ring-fill" cx="70" cy="70" r="' + escapeHtml(String(ringRadius)) + '" transform="rotate(-90 70 70)" stroke-dasharray="' + escapeHtml(String(ringProgressLength)) + ' ' + escapeHtml(String(ringGapLength)) + '"></circle>',
-            '</svg>',
-            '<div class="architecture-cloud-tmcloud-score-center">',
-            '<span class="architecture-cloud-tmcloud-score-value-number">' + escapeHtml(String(score.score)) + '</span>',
-            '<span class="architecture-cloud-tmcloud-score-caption">/100</span>',
+            '<div class="architecture-cloud-tmcloud-result-hero-grid" aria-live="polite">',
+            '<article class="architecture-cloud-tmcloud-result-card architecture-cloud-tmcloud-result-card-main">',
+            '<span class="architecture-cloud-tmcloud-result-kicker">Architecture score</span>',
+            '<h3 class="architecture-cloud-tmcloud-result-title">' + escapeHtml(scoreBand(tone)) + '</h3>',
+            '<p class="architecture-cloud-tmcloud-result-copy">' + escapeHtml(score.summary) + '</p>',
+            '<div class="architecture-cloud-tmcloud-result-chip-row" aria-label="Architecture score state">',
+            tagChips,
+            '</div>',
+            '</article>',
+            '<article class="architecture-cloud-tmcloud-result-card architecture-cloud-tmcloud-result-card-visual">',
+            '<div class="architecture-cloud-tmcloud-result-ring architecture-cloud-tmcloud-score-value" id="architectureCloudTmcloudScoreValue" style="--architecture-cloud-tmcloud-result-progress: ' + escapeHtml(String(ringProgressAngle)) + 'deg; --progress-angle: ' + escapeHtml(String(ringProgressAngle)) + 'deg;" aria-label="Architecture score ' + escapeHtml(String(score.score)) + ' out of 100">',
+            '<div class="architecture-cloud-tmcloud-score-echart" id="architectureCloudTmcloudScoreEchart" aria-hidden="true"></div>',
+            '<div class="architecture-cloud-tmcloud-result-ring-center architecture-cloud-tmcloud-score-center">',
+            '<span class="architecture-cloud-tmcloud-result-ring-value architecture-cloud-tmcloud-score-value-number">' + escapeHtml(String(score.score)) + '</span>',
+            '<span class="architecture-cloud-tmcloud-result-ring-unit architecture-cloud-tmcloud-score-caption">/100</span>',
             '</div>',
             '</div>',
-            '<span class="architecture-cloud-tmcloud-score-label">',
-            '<span class="architecture-cloud-tmcloud-score-label-orb" aria-hidden="true"><i class="' + escapeHtml(labelIcon) + '"></i></span>',
-            '<span class="architecture-cloud-tmcloud-score-label-text">' + escapeHtml(score.label) + '</span>',
-            '</span>',
+            '<div class="architecture-cloud-tmcloud-result-visual-copy">',
+            '<span class="architecture-cloud-tmcloud-result-kicker">Primary result</span>',
+            '<h3 class="architecture-cloud-tmcloud-result-title architecture-cloud-tmcloud-result-title-center">' + escapeHtml(score.label) + '</h3>',
             '</div>',
-            '<div class="architecture-cloud-tmcloud-score-copy">',
-            '<div class="architecture-cloud-tmcloud-score-kicker">Architecture Score</div>',
-            '<div class="architecture-cloud-tmcloud-score-summary">' + escapeHtml(scoreBand(tone)) + '</div>',
-            '<div class="architecture-cloud-tmcloud-score-detail">' + escapeHtml(score.summary) + '</div>',
-            '<div class="architecture-cloud-tmcloud-score-tags">',
-            tags.map(function (tag) {
-                return [
-                    '<span class="architecture-cloud-tmcloud-score-tag architecture-cloud-tmcloud-score-tag-' + escapeHtml(tag.tone) + '">',
-                    '<i class="' + escapeHtml(tag.icon) + '" aria-hidden="true"></i>',
-                    '<span>' + escapeHtml(tag.label) + '</span>',
-                    '</span>'
-                ].join('');
-            }).join(''),
+            '</article>',
             '</div>',
+            '<div class="architecture-cloud-tmcloud-result-metric-grid" aria-label="Architecture metrics">',
+            metricCards,
             '</div>'
         ].join('');
     }
@@ -2811,7 +3847,7 @@
         const jsonOutput = byId('architectureCloudTmcloudJsonOutput');
 
         if (jsonOutput) {
-            jsonOutput.textContent = JSON.stringify(currentPayload, null, 2);
+            jsonOutput.innerHTML = highlightJsonText(JSON.stringify(currentPayload, null, 2));
         }
     }
 
@@ -2856,6 +3892,7 @@
         renderInventory();
         renderNotes();
         renderScore(currentSpec);
+        normalizeInfraStackResultSummary('architecture-cloud-tmcloud');
         renderAssessmentSections(currentSpec);
         renderJson();
         updateSelectedNodeEditor();
@@ -2874,6 +3911,7 @@
         selectedNodeIds = [];
         selectedConnectorId = '';
         highlightedNodeId = '';
+        highlightedNodeIds = [];
         layoutOverrides = {};
         connectorOverrides = {};
         stageDiagramHighlighted = false;
@@ -3041,6 +4079,7 @@
         layoutOverrides = {};
         connectorOverrides = {};
         highlightedNodeId = '';
+        highlightedNodeIds = [];
         selectedNodeId = '';
         selectedNodeIds = [];
         selectedConnectorId = '';
@@ -3081,6 +4120,7 @@
         selectedNodeIds = [];
         selectedConnectorId = safeConnectorId;
         highlightedNodeId = '';
+        highlightedNodeIds = [];
         syncConnectorPayloadState();
         updateSelectedNodeEditor();
         renderStage(currentArchitecture);
@@ -3103,6 +4143,8 @@
         if (!selectedNode) {
             selectedNodeId = '';
             selectedNodeIds = [];
+            syncConnectorPayloadState();
+            renderJson();
             return;
         }
 
@@ -3118,6 +4160,8 @@
         setValue('architectureCloudTmcloudSelectedY', Math.round(selectedNode.y));
         setValue('architectureCloudTmcloudSelectedWidth', Math.round(selectedNode.width));
         setValue('architectureCloudTmcloudSelectedHeight', Math.round(selectedNode.height));
+        syncConnectorPayloadState();
+        renderJson();
     }
 
     function getDiagramItemMinimumSize(item) {
@@ -3192,13 +4236,226 @@
     }
 
     function highlightSelectedNode() {
-        if (!selectedNodeId) {
+        const targetNodeIds = normalizeSelectedNodeIds(selectedNodeIds.length > 0 ? selectedNodeIds : [selectedNodeId]);
+
+        if (targetNodeIds.length === 0) {
             return;
         }
 
         pushStageUndoSnapshot();
-        highlightedNodeId = highlightedNodeId === selectedNodeId ? '' : selectedNodeId;
+        setHighlightedNodeIds(targetNodeIds.length === highlightedNodeIds.length && targetNodeIds.every(function (nodeId) {
+            return highlightedNodeIds.includes(nodeId);
+        }) ? [] : targetNodeIds);
         renderResult(currentSpec);
+    }
+
+    function getCurrentConnectorOverrides() {
+        return cloneConnectorOverrides(connectorOverrides);
+    }
+
+    function getConnectorPair(connectorId) {
+        const safeConnectorId = String(connectorId || '').trim();
+        const connector = currentArchitecture && Array.isArray(currentArchitecture.connectors)
+            ? currentArchitecture.connectors.find(function (item) {
+                return String(item.id || '') === safeConnectorId;
+            })
+            : null;
+
+        if (!connector) {
+            return null;
+        }
+
+        const source = getDiagramItemById(connector.from);
+        const target = getDiagramItemById(connector.to);
+
+        if (!source || !target) {
+            return null;
+        }
+
+        return {
+            connector: connector,
+            source: source,
+            target: target
+        };
+    }
+
+    function findConnectorGroup(svgElement, connectorId) {
+        const safeConnectorId = String(connectorId || '').trim();
+
+        return Array.from(svgElement.querySelectorAll('.architecture-cloud-tmcloud-connector-group')).find(function (group) {
+            return String(group.dataset.connectorId || '') === safeConnectorId;
+        }) || null;
+    }
+
+    function updateConnectorDomGeometry(svgElement, connectorId, geometry) {
+        const group = findConnectorGroup(svgElement, connectorId);
+
+        if (!group) {
+            return;
+        }
+
+        Array.from(group.querySelectorAll('.architecture-cloud-tmcloud-connector-hit, .architecture-cloud-tmcloud-connector')).forEach(function (path) {
+            path.setAttribute('d', geometry.path);
+        });
+
+        const labelBg = group.querySelector('.architecture-cloud-tmcloud-connector-label-bg');
+        const label = group.querySelector('.architecture-cloud-tmcloud-connector-label');
+
+        if (label) {
+            label.setAttribute('x', formatSvgNumber(geometry.label.x));
+            label.setAttribute('y', formatSvgNumber(geometry.label.y));
+        }
+
+        if (labelBg) {
+            const width = Number(labelBg.getAttribute('width')) || 54;
+
+            labelBg.setAttribute('x', formatSvgNumber(geometry.label.x - (width / 2)));
+            labelBg.setAttribute('y', formatSvgNumber(geometry.label.y - 15));
+        }
+    }
+
+    function bindConnectorAnchorHandle(svgElement, handle) {
+        handle.addEventListener('pointerdown', function (event) {
+            const connectorId = String(handle.dataset.connectorId || '').trim();
+            const endpoint = String(handle.dataset.endpoint || '').trim();
+            const pair = getConnectorPair(connectorId);
+            const existingOverride = connectorOverrides[connectorId] || {};
+
+            if (!pair || (endpoint !== 'source' && endpoint !== 'target')) {
+                return;
+            }
+
+            selectedConnectorId = connectorId;
+            selectedNodeId = '';
+            selectedNodeIds = [];
+            setHighlightedNodeIds([]);
+            safelySetPointerCapture(handle, event.pointerId);
+
+            function applyHandleMove(moveEvent) {
+                const point = getSvgClientPoint(svgElement, moveEvent.clientX, moveEvent.clientY);
+                const baseGeometry = connectorGeometry(pair.source, pair.target, existingOverride);
+                const editedItem = endpoint === 'source' ? pair.source : pair.target;
+                const side = endpoint === 'source' ? baseGeometry.sourceSide : baseGeometry.targetSide;
+                const ratio = point ? buildConnectorAnchorRatio(editedItem, side, point) : null;
+                const nextOverride = Object.assign({}, existingOverride, endpoint === 'source'
+                    ? { sourceRatio: ratio }
+                    : { targetRatio: ratio });
+                const geometry = connectorGeometry(pair.source, pair.target, nextOverride);
+                const nextPoint = endpoint === 'source' ? geometry.start : geometry.end;
+
+                if (!ratio) {
+                    return null;
+                }
+
+                updateConnectorDomGeometry(svgElement, connectorId, geometry);
+                handle.setAttribute('cx', formatSvgNumber(nextPoint.x));
+                handle.setAttribute('cy', formatSvgNumber(nextPoint.y));
+
+                return ratio;
+            }
+
+            function handlePointerMove(moveEvent) {
+                applyHandleMove(moveEvent);
+            }
+
+            function handlePointerEnd(endEvent) {
+                const ratio = applyHandleMove(endEvent);
+
+                safelyReleasePointerCapture(handle, endEvent.pointerId);
+                handle.removeEventListener('pointermove', handlePointerMove);
+                handle.removeEventListener('pointerup', handlePointerEnd);
+                handle.removeEventListener('pointercancel', handlePointerEnd);
+
+                if (!ratio || endEvent.type === 'pointercancel') {
+                    renderStage(currentArchitecture);
+                    return;
+                }
+
+                pushStageUndoSnapshot();
+                connectorOverrides = getCurrentConnectorOverrides();
+                connectorOverrides[connectorId] = Object.assign({}, connectorOverrides[connectorId] || {}, endpoint === 'source'
+                    ? { sourceRatio: ratio }
+                    : { targetRatio: ratio });
+                renderResult(currentSpec);
+            }
+
+            handle.addEventListener('pointermove', handlePointerMove);
+            handle.addEventListener('pointerup', handlePointerEnd);
+            handle.addEventListener('pointercancel', handlePointerEnd);
+            event.preventDefault();
+            event.stopPropagation();
+        });
+    }
+
+    function bindConnectorBendHandle(svgElement, handle) {
+        handle.addEventListener('pointerdown', function (event) {
+            const connectorId = String(handle.dataset.connectorId || '').trim();
+            const pair = getConnectorPair(connectorId);
+            const existingOverride = connectorOverrides[connectorId] || {};
+
+            if (!pair) {
+                return;
+            }
+
+            selectedConnectorId = connectorId;
+            selectedNodeId = '';
+            selectedNodeIds = [];
+            setHighlightedNodeIds([]);
+            safelySetPointerCapture(handle, event.pointerId);
+
+            function applyBendMove(moveEvent) {
+                const point = getSvgClientPoint(svgElement, moveEvent.clientX, moveEvent.clientY);
+
+                if (!point) {
+                    return null;
+                }
+
+                const bend = {
+                    x: snapCoordinate(point.x),
+                    y: snapCoordinate(point.y)
+                };
+                const geometry = connectorGeometry(pair.source, pair.target, Object.assign({}, existingOverride, {
+                    bend: bend
+                }));
+
+                updateConnectorDomGeometry(svgElement, connectorId, geometry);
+                handle.setAttribute('x', formatSvgNumber(bend.x - 9));
+                handle.setAttribute('y', formatSvgNumber(bend.y - 9));
+
+                return bend;
+            }
+
+            function handlePointerMove(moveEvent) {
+                applyBendMove(moveEvent);
+            }
+
+            function handlePointerEnd(endEvent) {
+                const bend = applyBendMove(endEvent);
+
+                safelyReleasePointerCapture(handle, endEvent.pointerId);
+                handle.removeEventListener('pointermove', handlePointerMove);
+                handle.removeEventListener('pointerup', handlePointerEnd);
+                handle.removeEventListener('pointercancel', handlePointerEnd);
+
+                if (!bend || endEvent.type === 'pointercancel') {
+                    renderStage(currentArchitecture);
+                    return;
+                }
+
+                pushStageUndoSnapshot();
+                connectorOverrides = getCurrentConnectorOverrides();
+                connectorOverrides[connectorId] = Object.assign({}, connectorOverrides[connectorId] || {}, {
+                    bend: bend
+                });
+                renderResult(currentSpec);
+            }
+
+            handle.addEventListener('pointermove', handlePointerMove);
+            handle.addEventListener('pointerup', handlePointerEnd);
+            handle.addEventListener('pointercancel', handlePointerEnd);
+            event.preventDefault();
+            event.stopPropagation();
+        });
     }
 
     function getSvgClientPoint(svgElement, clientX, clientY) {
@@ -3280,11 +4537,20 @@
         };
     }
 
-    function updateMarqueeRect(rectElement, rect) {
-        rectElement.setAttribute('x', formatSvgNumber(rect.x));
-        rectElement.setAttribute('y', formatSvgNumber(rect.y));
-        rectElement.setAttribute('width', formatSvgNumber(rect.width));
-        rectElement.setAttribute('height', formatSvgNumber(rect.height));
+    function getStageCanvasPoint(stageCanvasElement, clientX, clientY) {
+        const rect = stageCanvasElement.getBoundingClientRect();
+
+        return {
+            x: clientX - rect.left + stageCanvasElement.scrollLeft,
+            y: clientY - rect.top + stageCanvasElement.scrollTop
+        };
+    }
+
+    function updateMarqueeOverlay(element, rect) {
+        element.style.left = Math.round(rect.x) + 'px';
+        element.style.top = Math.round(rect.y) + 'px';
+        element.style.width = Math.round(rect.width) + 'px';
+        element.style.height = Math.round(rect.height) + 'px';
     }
 
     function isElementSelectedByMarquee(selectionRect, itemRect) {
@@ -3316,6 +4582,16 @@
                 isElementSelectedByMarquee(selectionRect, itemRect);
         }).map(function (element) {
             return String(element.dataset.nodeId || '').trim();
+        });
+    }
+
+    function setMarqueeTargetNodes(svgElement, nodeIds) {
+        const targetIds = new Set(normalizeSelectedNodeIds(nodeIds));
+
+        Array.from(svgElement.querySelectorAll('.architecture-cloud-tmcloud-node-shell, .architecture-cloud-tmcloud-diagram-group')).forEach(function (element) {
+            const nodeId = String(element.dataset.nodeId || '').trim();
+
+            element.classList.toggle('is-marquee-target', targetIds.has(nodeId));
         });
     }
 
@@ -3388,7 +4664,7 @@
             return false;
         }
 
-        if (target.closest('.architecture-cloud-tmcloud-resize-handle, .architecture-cloud-tmcloud-node-shell')) {
+        if (target.closest('.architecture-cloud-tmcloud-resize-handle, .diagram-connector-anchor-handle, .diagram-connector-bend-handle, .architecture-cloud-tmcloud-node-shell')) {
             return true;
         }
 
@@ -3401,13 +4677,18 @@
         return group !== null;
     }
 
-    function bindStageMarqueeSelection(svgElement) {
-        if (!svgElement) {
+    function bindStageMarqueeSelection(stageCanvasElement) {
+        if (!stageCanvasElement || stageCanvasElement.dataset.marqueeSelectionBound === 'true') {
             return;
         }
 
-        svgElement.addEventListener('pointerdown', function (event) {
+        stageCanvasElement.dataset.marqueeSelectionBound = 'true';
+
+        stageCanvasElement.addEventListener('pointerdown', function (event) {
+            const svgElement = stageCanvasElement.querySelector('svg');
+
             if (
+                !svgElement ||
                 event.button !== 0 ||
                 isMarqueeBlockedTarget(event.target)
             ) {
@@ -3415,41 +4696,48 @@
             }
 
             const startPoint = getSvgClientPoint(svgElement, event.clientX, event.clientY);
+            const startCanvasPoint = getStageCanvasPoint(stageCanvasElement, event.clientX, event.clientY);
 
             if (!startPoint) {
                 return;
             }
 
-            const marquee = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            const marquee = document.createElement('div');
 
-            marquee.setAttribute('rx', '6');
-            marquee.setAttribute('class', 'architecture-cloud-tmcloud-marquee-selection');
-            updateMarqueeRect(marquee, {
-                x: startPoint.x,
-                y: startPoint.y,
+            marquee.className = 'architecture-cloud-tmcloud-marquee-selection';
+            updateMarqueeOverlay(marquee, {
+                x: startCanvasPoint.x,
+                y: startCanvasPoint.y,
                 width: 0,
                 height: 0
             });
-            svgElement.appendChild(marquee);
-            safelySetPointerCapture(svgElement, event.pointerId);
+            stageCanvasElement.appendChild(marquee);
+            safelySetPointerCapture(stageCanvasElement, event.pointerId);
 
             function handlePointerMove(moveEvent) {
                 const currentPoint = getSvgClientPoint(svgElement, moveEvent.clientX, moveEvent.clientY);
+                const currentCanvasPoint = getStageCanvasPoint(stageCanvasElement, moveEvent.clientX, moveEvent.clientY);
+                const overlayRect = buildRectFromPoints(startCanvasPoint, currentCanvasPoint);
+
+                updateMarqueeOverlay(marquee, overlayRect);
 
                 if (!currentPoint) {
                     return;
                 }
 
-                updateMarqueeRect(marquee, buildRectFromPoints(startPoint, currentPoint));
+                setMarqueeTargetNodes(svgElement, findItemsIntersectingRect(svgElement, buildRectFromPoints(startPoint, currentPoint)));
             }
 
             function handlePointerEnd(endEvent) {
                 const endPoint = getSvgClientPoint(svgElement, endEvent.clientX, endEvent.clientY);
+                const endCanvasPoint = getStageCanvasPoint(stageCanvasElement, endEvent.clientX, endEvent.clientY);
+                const overlayRect = buildRectFromPoints(startCanvasPoint, endCanvasPoint);
 
-                safelyReleasePointerCapture(svgElement, endEvent.pointerId);
-                svgElement.removeEventListener('pointermove', handlePointerMove);
-                svgElement.removeEventListener('pointerup', handlePointerEnd);
-                svgElement.removeEventListener('pointercancel', handlePointerEnd);
+                safelyReleasePointerCapture(stageCanvasElement, endEvent.pointerId);
+                stageCanvasElement.removeEventListener('pointermove', handlePointerMove);
+                stageCanvasElement.removeEventListener('pointerup', handlePointerEnd);
+                stageCanvasElement.removeEventListener('pointercancel', handlePointerEnd);
+                setMarqueeTargetNodes(svgElement, []);
                 marquee.remove();
 
                 if (!endPoint || endEvent.type === 'pointercancel') {
@@ -3458,7 +4746,7 @@
 
                 const selectionRect = buildRectFromPoints(startPoint, endPoint);
 
-                if (selectionRect.width < 6 && selectionRect.height < 6) {
+                if (overlayRect.width < 6 && overlayRect.height < 6) {
                     setSelectedNodes([]);
                     return;
                 }
@@ -3466,15 +4754,17 @@
                 setSelectedNodes(findItemsIntersectingRect(svgElement, selectionRect));
             }
 
-            svgElement.addEventListener('pointermove', handlePointerMove);
-            svgElement.addEventListener('pointerup', handlePointerEnd);
-            svgElement.addEventListener('pointercancel', handlePointerEnd);
+            stageCanvasElement.addEventListener('pointermove', handlePointerMove);
+            stageCanvasElement.addEventListener('pointerup', handlePointerEnd);
+            stageCanvasElement.addEventListener('pointercancel', handlePointerEnd);
             event.preventDefault();
             event.stopPropagation();
         }, true);
     }
 
     function bindStageNodes(stageCanvas) {
+        const svgElement = stageCanvas.querySelector('svg');
+
         all('.architecture-cloud-tmcloud-connector-group', stageCanvas).forEach(function (connectorElement) {
             connectorElement.addEventListener('keydown', function (event) {
                 if (event.key !== 'Enter' && event.key !== ' ') {
@@ -3597,6 +4887,15 @@
                 updateSelectedNodeEditor();
             });
         });
+
+        if (svgElement) {
+            all('.diagram-connector-anchor-handle', stageCanvas).forEach(function (handleElement) {
+                bindConnectorAnchorHandle(svgElement, handleElement);
+            });
+            all('.diagram-connector-bend-handle', stageCanvas).forEach(function (handleElement) {
+                bindConnectorBendHandle(svgElement, handleElement);
+            });
+        }
     }
 
     function handlePointerMove(event) {
@@ -3981,13 +5280,7 @@
                     return;
                 }
 
-                layoutOverrides = restored.layoutOverrides || {};
-                connectorOverrides = cloneConnectorOverrides(payload.connector_overrides || payload.connectorOverrides);
-                selectedNodeId = '';
-                selectedNodeIds = [];
-                selectedConnectorId = typeof payload.selected_connector_id === 'string' ? payload.selected_connector_id : '';
-                highlightedNodeId = '';
-                stageDiagramHighlighted = false;
+                restoreEngineStateFromPayload(payload, restored.layoutOverrides || {});
                 clearStageUndoHistory();
                 updateHighlightAllButton();
                 syncControlsFromSpec(restored.spec);
@@ -4202,6 +5495,7 @@
             selectedNodeIds = [];
             selectedConnectorId = '';
             highlightedNodeId = '';
+            highlightedNodeIds = [];
             stageDiagramHighlighted = false;
             stageZoom = 50;
             setValue('architectureCloudTmcloudZoomInput', stageZoom);
@@ -4242,7 +5536,9 @@
         bindClick('architectureCloudTmcloudImportJsonButton', function () {
             byId('architectureCloudTmcloudImportJson').click();
         });
+    // ns:start family._base.workspace.08_json-restore
         byId('architectureCloudTmcloudImportJson').addEventListener('change', handleImportChange);
+    // ns:end family._base.workspace.08_json-restore
         document.addEventListener('mousemove', handlePointerMove);
         document.addEventListener('mouseup', handlePointerUp);
         document.addEventListener('keydown', handleStageUndoKeydown);
@@ -4283,6 +5579,7 @@
         }
 
         initializeCustomSelects();
+        initializeInfraStackCustomDropdowns(document);
         bindEvents(root);
         initMarkdownCopyButtons();
         syncPresetDescription();
@@ -4304,3 +5601,134 @@
     globalScope.InfraStackArchitectureCloudTmcloud = publicApi;
     globalScope.InfraStackArchitectureCloudTmcloudArchitecture = publicApi;
 }(window));
+/* table-output-standard:start */
+(function setupArchitectureCloudTmcloudTableOutputStandard() {
+    const rootSelector = '.architecture-cloud-tmcloud-tool';
+    const tableSelector = '.tool-result-table tbody tr, .architecture-cloud-tmcloud-table tbody tr';
+    const tbodySelector = '.tool-result-table tbody, .architecture-cloud-tmcloud-table tbody';
+    const clampClass = 'architecture-cloud-tmcloud-table-cell-text';
+    const cellClampClass = 'architecture-cloud-tmcloud-cell-clamp';
+    const statusColumnClass = 'architecture-cloud-tmcloud-table-status-cell';
+
+    function hasActionColumn(cells, table) {
+        const lastCell = cells[cells.length - 1];
+        const lastHead = table ? table.querySelector('thead th:last-child') : null;
+        const headText = lastHead ? String(lastHead.textContent || '') : '';
+
+        return Boolean(
+            lastCell && lastCell.querySelector('button, [data-copy-row], [data-inventory-copy-row], [data-control-copy-row], [data-options-copy], [data-operation-copy], [data-copy-value]')
+        ) || /copy|action|actions/i.test(headText);
+    }
+
+    function isStatusLikeHeader(text) {
+        return /^(status|signal|criticality|severity|state|health|outcome|result|level|label)$/i.test(String(text || '').trim());
+    }
+
+    function getBodyCells(row) {
+        return Array.from(row.children).filter(function filterCells(cell) {
+            return cell.tagName && cell.tagName.toLowerCase() === 'td';
+        });
+    }
+
+    function applyStatusAlignment(root) {
+        root.querySelectorAll('.tool-result-table, .architecture-cloud-tmcloud-table').forEach(function alignStatusTable(table) {
+            const headers = Array.from(table.querySelectorAll('thead th'));
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            table.querySelectorAll('.' + statusColumnClass).forEach(function clearStatusCell(cell) {
+                cell.classList.remove(statusColumnClass);
+            });
+
+            headers.forEach(function alignStatusColumn(header, index) {
+                const statusLike = isStatusLikeHeader(header.textContent);
+                header.classList.toggle(statusColumnClass, statusLike);
+
+                if (!statusLike) {
+                    return;
+                }
+
+                rows.forEach(function alignStatusCell(row) {
+                    const cells = getBodyCells(row);
+                    const cell = cells[index];
+
+                    if (cell && cell.colSpan <= 1) {
+                        cell.classList.add(statusColumnClass);
+                    }
+                });
+            });
+        });
+    }
+
+    function clampCell(cell) {
+        if (!cell || cell.colSpan > 1 || cell.querySelector('.' + clampClass + ', .' + cellClampClass)) {
+            return;
+        }
+
+        if (cell.children.length === 1 && !cell.firstElementChild.matches('button')) {
+            cell.firstElementChild.classList.add(clampClass);
+            return;
+        }
+
+        const wrapper = document.createElement('span');
+        wrapper.className = clampClass;
+
+        while (cell.firstChild) {
+            wrapper.appendChild(cell.firstChild);
+        }
+
+        cell.appendChild(wrapper);
+    }
+
+    function applyTableOutputClamp() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        applyStatusAlignment(root);
+
+        root.querySelectorAll(tableSelector).forEach(function clampRow(row) {
+            const cells = getBodyCells(row);
+            const table = row.closest('table');
+            const actionColumn = hasActionColumn(cells, table);
+
+            cells.forEach(function clampDataCell(cell, index) {
+                const isFirst = index === 0;
+                const isAction = actionColumn && index === cells.length - 1;
+
+                if (!isFirst && !isAction) {
+                    clampCell(cell);
+                }
+            });
+        });
+    }
+
+    function observeTables() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        root.querySelectorAll(tbodySelector).forEach(function observeBody(tbody) {
+            if (tbody.dataset.tableOutputClampObserver === 'true') {
+                return;
+            }
+
+            tbody.dataset.tableOutputClampObserver = 'true';
+            new MutationObserver(applyTableOutputClamp).observe(tbody, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        applyTableOutputClamp();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', observeTables);
+    } else {
+        observeTables();
+    }
+}());
+/* table-output-standard:end */
+// ns:end family._base.workspace.00_shell

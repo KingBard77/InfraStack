@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scanning Visual Contract Demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root { --default-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f8fafc; color: #111827; font-family: var(--default-font); }
+    .demo-shell { width: min(1120px, calc(100% - 32px)); margin: 34px auto; }
+    .demo-title { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: 0; }
+    .demo-title-icon { display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; border: 1px solid #99f6e4; border-radius: 10px; background: #f0fdfa; color: #0f766e; }
+    .scanning-demo-tool { --tool-accent: #0f766e; --tool-accent-soft: rgba(15, 118, 110, 0.1); --tool-border: #ccfbf1; --tool-border-strong: #99f6e4; --tool-surface: #ffffff; --tool-surface-soft: #f0fdfa; --tool-heading: #111827; --tool-text: #334155; --tool-text-muted: #64748b; --tool-track: #ccfbf1; --tool-success: #059669; --tool-warning: #d97706; --tool-danger: #dc2626; }
+    .scanning-demo-tool .scanning-demo-visual-contract { display: grid; gap: 14px; padding: 16px; border: 1px solid var(--tool-border); border-radius: 16px; background: var(--tool-surface); box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06); }
+    .scanning-demo-visual-contract-header { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .scanning-demo-visual-contract-heading { display: flex; align-items: center; gap: 10px; }
+    .scanning-demo-visual-contract-icon, .scanning-demo-visual-contract-card-icon { display: inline-flex; width: 34px; height: 34px; align-items: center; justify-content: center; border: 1px solid var(--tool-border-strong); border-radius: 12px; background: var(--tool-accent-soft); color: var(--tool-accent); }
+    .scanning-demo-visual-contract-title, .scanning-demo-visual-contract-model h3, .scanning-demo-visual-contract-card h3 { margin: 0; color: var(--tool-heading); font-weight: 900; letter-spacing: 0; }
+    .scanning-demo-visual-contract-copy, .scanning-demo-visual-contract-card p, .scanning-demo-visual-contract-note { margin: 0; color: var(--tool-text-muted); font-size: 13px; line-height: 1.5; }
+    .scanning-demo-visual-contract-status { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .scanning-demo-visual-contract-chip { display: inline-flex; gap: 7px; align-items: center; min-height: 32px; padding: 6px 10px; border: 1px solid var(--tool-border); border-radius: 999px; background: var(--tool-surface-soft); font-size: 12px; font-weight: 800; }
+    .scanning-demo-visual-contract-grid { display: grid; grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr); gap: 14px; }
+    .scanning-demo-visual-contract-primary, .scanning-demo-visual-contract-model, .scanning-demo-visual-contract-card, .scanning-demo-visual-contract-finding { border: 1px solid var(--tool-border); border-radius: 14px; background: var(--tool-surface-soft); }
+    .scanning-demo-visual-contract-primary { display: grid; justify-items: center; gap: 10px; padding: 18px; text-align: center; }
+    .scanning-demo-visual-contract-ring { display: grid; width: 132px; aspect-ratio: 1; place-items: center; border-radius: 999px; background: conic-gradient(from -90deg, var(--tool-success) 306deg, var(--tool-track) 0deg); }
+    .scanning-demo-visual-contract-ring-center { display: grid; width: 86px; aspect-ratio: 1; place-items: center; border-radius: 999px; background: #fff; line-height: 1.05; }
+    .scanning-demo-visual-contract-ring-center strong { font-size: 24px; font-weight: 950; }
+    .scanning-demo-visual-contract-ring-center small, .scanning-demo-visual-contract-kicker, .scanning-demo-visual-contract-metric span, .scanning-demo-visual-contract-metric small, .scanning-demo-visual-contract-model-head span { color: var(--tool-text-muted); font-size: 12px; font-weight: 800; }
+    .scanning-demo-visual-contract-value { font-size: 18px; font-weight: 900; }
+    .scanning-demo-visual-contract-model { display: grid; gap: 12px; padding: 16px; }
+    .scanning-demo-visual-contract-model-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+    .scanning-demo-visual-contract-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .scanning-demo-visual-contract-metric { display: grid; gap: 4px; padding: 12px; border: 1px solid var(--tool-border); border-radius: 12px; background: #fff; }
+    .scanning-demo-visual-contract-metric strong { font-size: 18px; font-weight: 900; }
+    .scanning-demo-visual-contract-evidence { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .scanning-demo-visual-contract-card { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 12px; }
+    .scanning-demo-visual-contract-card strong { font-size: 14px; font-weight: 900; white-space: nowrap; }
+    .scanning-demo-visual-contract-findings { display: grid; gap: 8px; }
+    .scanning-demo-visual-contract-finding { display: grid; grid-template-columns: minmax(130px, 0.28fr) minmax(0, 1fr) minmax(72px, auto); gap: 10px; align-items: center; padding: 10px 12px; }
+    .scanning-demo-visual-contract-finding code { padding: 7px 9px; border-radius: 8px; background: #fff; font-size: 12px; overflow-wrap: anywhere; }
+    .scanning-demo-visual-contract-finding strong { text-align: end; }
+    @media (max-width: 900px) { .scanning-demo-visual-contract-grid, .scanning-demo-visual-contract-evidence { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .scanning-demo-visual-contract-header, .scanning-demo-visual-contract-model-head { align-items: flex-start; flex-direction: column; } .scanning-demo-visual-contract-status { justify-content: flex-start; } .scanning-demo-visual-contract-metrics, .scanning-demo-visual-contract-finding { grid-template-columns: 1fr; } .scanning-demo-visual-contract-finding strong { text-align: start; } }
+  </style>
+</head>
+<body>
+  <main class="demo-shell">
+    <h1 class="demo-title"><span class="demo-title-icon"><i class="bi bi-shield-check"></i></span><span class="demo-title-text">Scanning Visual Contract</span></h1>
+    <section class="scanning-demo-tool">
+      <div class="scanning-demo-visual-contract" data-contract-family="scanning" data-contract-tone="success" aria-label="Scan visual contract">
+        <header class="scanning-demo-visual-contract-header">
+          <div class="scanning-demo-visual-contract-heading">
+            <span class="scanning-demo-visual-contract-icon"><i class="bi bi-shield-check"></i></span>
+            <div><h2 class="scanning-demo-visual-contract-title">Scan visual contract</h2><p class="scanning-demo-visual-contract-copy">Normalized posture, evidence, and finding visuals for scanner tools.</p></div>
+          </div>
+          <div class="scanning-demo-visual-contract-status"><span class="scanning-demo-visual-contract-chip"><i class="bi bi-check2-circle"></i><span>Evidence ready</span></span><span class="scanning-demo-visual-contract-chip"><i class="bi bi-bullseye"></i><span>example.test</span></span></div>
+        </header>
+        <div class="scanning-demo-visual-contract-grid">
+          <article class="scanning-demo-visual-contract-primary"><span class="scanning-demo-visual-contract-kicker">Posture score</span><div class="scanning-demo-visual-contract-ring"><span class="scanning-demo-visual-contract-ring-center"><strong>85</strong><small>/100</small></span></div><strong class="scanning-demo-visual-contract-value">Ready for review</strong><p class="scanning-demo-visual-contract-note">Primary visual can become a score, phase, coverage, or confidence summary.</p></article>
+          <article class="scanning-demo-visual-contract-model"><div class="scanning-demo-visual-contract-model-head"><h3>Evidence model</h3><span>Normalized output</span></div><div class="scanning-demo-visual-contract-metrics"><div class="scanning-demo-visual-contract-metric"><span>Checks</span><strong>18</strong><small>bounded probes</small></div><div class="scanning-demo-visual-contract-metric"><span>Findings</span><strong>5</strong><small>ranked rows</small></div><div class="scanning-demo-visual-contract-metric"><span>Headers</span><strong>12</strong><small>observed values</small></div><div class="scanning-demo-visual-contract-metric"><span>Restore</span><strong>JSON</strong><small>payload state</small></div></div></article>
+        </div>
+        <div class="scanning-demo-visual-contract-evidence"><article class="scanning-demo-visual-contract-card"><span class="scanning-demo-visual-contract-card-icon"><i class="bi bi-lock"></i></span><div><h3>TLS</h3><p>Certificate and redirect posture</p></div><strong>Pass</strong></article><article class="scanning-demo-visual-contract-card"><span class="scanning-demo-visual-contract-card-icon"><i class="bi bi-window-sidebar"></i></span><div><h3>Headers</h3><p>Security headers observed</p></div><strong>8/12</strong></article><article class="scanning-demo-visual-contract-card"><span class="scanning-demo-visual-contract-card-icon"><i class="bi bi-cookie"></i></span><div><h3>Cookies</h3><p>Cookie attributes reviewed</p></div><strong>3</strong></article></div>
+        <div class="scanning-demo-visual-contract-findings"><div class="scanning-demo-visual-contract-finding"><span>High findings</span><code>missing critical controls</code><strong>1</strong></div><div class="scanning-demo-visual-contract-finding"><span>Review findings</span><code>headers or cookies need review</code><strong>4</strong></div></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

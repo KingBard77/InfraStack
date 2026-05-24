@@ -109,7 +109,7 @@ templates/content/tools/cis/assess-ubuntu-2204-cis/
 ```
 
 The shared scaffold owns reusable content rhythm.
-The family workspace owns assessment-specific workspace sections, state behavior, table behavior, selected artifact review, export behavior, and trust boundaries.
+The shared `_base` workspace owns common shell, input, settings, summary, toolbar, table, and JSON restore structure. The assessment workspace owns selected artifact review, assessment-specific state behavior, export boundaries, and trust boundaries.
 
 ## Scaffold Content Sections
 
@@ -141,22 +141,23 @@ Example input and command terminal strip titles should stay centered and title c
 
 The final content must stay tool-specific and honest about validation scope.
 
-## Assessment Workspace Sections
+## Assessment Workspace Composition
 
-The assessment family owns these workspace section sources:
+The assessment family composes common sections from `_base/workspace` and owns only assessment-specific sections locally:
 
 ```text
-templates/content/family/assessment/workspace/01_input-brief/
-templates/content/family/assessment/workspace/02_basic-settings/
-templates/content/family/assessment/workspace/03_advanced-settings/
+templates/content/family/_base/workspace/00_shell/
+templates/content/family/_base/workspace/01_input-brief/
+templates/content/family/_base/workspace/02_basic-settings/
+templates/content/family/_base/workspace/03_custom-settings/
 templates/content/family/assessment/workspace/04_selected-item/
-templates/content/family/assessment/workspace/05_result-summary/
-templates/content/family/assessment/workspace/06_result-view/
-templates/content/family/assessment/workspace/07_table-export/
-templates/content/family/assessment/workspace/08_json-restore/
+templates/content/family/_base/workspace/05_result-summary/
+templates/content/family/_base/workspace/06_output-toolbar/
+templates/content/family/_base/workspace/07_table-output/
+templates/content/family/_base/workspace/08_json-restore/
 ```
 
-Each workspace section folder follows the architecture family bundle shape:
+Each locally owned workspace section folder follows the architecture family bundle shape:
 
 ```text
 README.md
@@ -168,7 +169,7 @@ section.js
 
 Standalone `demo.html` files own demo chrome separately from extracted assessment section source. Keep the demo title icon placeholder local to the demo with any icon stylesheet it needs, `demo-title`, `demo-title-icon`, `demo-title-text`, and an assessment-family placeholder icon such as `bi bi-clipboard-check`.
 
-Use these sections to shape final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and optional backend or data files.
+Use `workspace/manifest.yml` `workspace_namespaces` as the active composition source. The copied `source/` folder is reference-only for traceability. Do not audit this as active source.
 
 ## Assessment Workspace Flow
 

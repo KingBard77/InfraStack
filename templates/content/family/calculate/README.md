@@ -120,7 +120,15 @@ The calculate family workspace source lives at:
 templates/content/family/calculate/workspace/
 ```
 
-Use that folder for calculator-specific workspace grammar, state behavior, result behavior, export behavior, and baseline reference selection.
+Use that folder for calculate-specific workspace grammar: visual/model contracts, optional selected-item inspector behavior, state behavior, result meaning, export meaning, and baseline reference selection.
+
+Common workspace shape comes from:
+
+```text
+templates/content/family/_base/workspace/
+```
+
+The ordered composition is declared in `templates/content/family/calculate/workspace/manifest.yml` through `workspace_namespaces`. That list may mix `_base` namespaces and calculate-owned namespaces.
 
 The calculate workspace reference set is:
 
@@ -130,10 +138,11 @@ templates/content/tools/azure/calculate-cost-azure/
 templates/content/tools/ibm/calculate-cost-ibm/
 ```
 
-The shared scaffold owns reusable section structure.
-The family workspace owns calculate adaptation rules.
+The shared scaffold owns package skeleton files.
+`_base/workspace` owns common section shape.
+The calculate workspace owns calculate-only section contracts and adaptation rules.
 
-The family workspace owns section-level runtime sources. When a tool is declared the calculate baseline, keep the full copied source under `baseline/source/` for traceability, then extract reusable markup, CSS, and JavaScript into the matching workspace section files instead of keeping root workspace `custom.css`, `custom.js`, or `demo.html.twig` files.
+When a tool is declared the calculate baseline, keep the full copied source under `source/` for traceability only. Do not audit this as active source. Extract reusable calculate-specific markup, CSS, JavaScript, and model contracts into the matching calculate-owned workspace section files. Do not recreate duplicate calculate copies of `_base` sections and do not keep root workspace `custom.css`, `custom.js`, or `demo.html.twig` files.
 
 ---
 
@@ -175,22 +184,29 @@ Do not ship generic family copy as final content.
 
 ---
 
-## Calculate Workspace Sections
+## Calculate Workspace Composition
 
-The calculate family owns its workspace section source:
+The calculate family composes common workspace sections from `_base`:
 
 ```text
-templates/content/family/calculate/workspace/01_input-brief/
-templates/content/family/calculate/workspace/02_basic-settings/
-templates/content/family/calculate/workspace/03_advanced-settings/
-templates/content/family/calculate/workspace/04_selected-item/
-templates/content/family/calculate/workspace/05_result-summary/
-templates/content/family/calculate/workspace/06_result-view/
-templates/content/family/calculate/workspace/07_table-export/
-templates/content/family/calculate/workspace/08_json-restore/
+family._base.workspace.00_shell
+family._base.workspace.01_input-brief
+family._base.workspace.02_basic-settings
+family._base.workspace.03_custom-settings
+family._base.workspace.05_result-summary
+family._base.workspace.06_output-toolbar
+family._base.workspace.07_table-output
+family._base.workspace.08_json-restore
 ```
 
-Each workspace section folder follows the architecture family bundle shape:
+The calculate family owns only calculate-specific workspace sections:
+
+```text
+templates/content/family/calculate/workspace/04_visual-contract/
+templates/content/family/calculate/workspace/04_selected-item/
+```
+
+Each calculate-owned workspace section folder follows the architecture family bundle shape:
 
 ```text
 README.md
@@ -202,7 +218,9 @@ section.js
 
 `README.md` explains intent and validation boundaries. `demo.html` previews the isolated section and owns demo-only chrome: any icon stylesheet it needs, `demo-title`, `demo-title-icon`, `demo-title-text`, and a calculate-family placeholder icon such as `bi bi-calculator`. `page.html.twig` is the reusable markup source. `section.css` and `section.js` keep section-specific styling and behavior inspectable before they are adapted into a final tool package.
 
-Use these sections to choose calculator behavior and shape final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and optional `assets/bin/model-core.js`, translating prompt, stage, score, and table language into estimate, inputs, result summary, and export language.
+`04_visual-contract` also includes `manifest.yml` and `model-core.js`. It owns the calculate-specific visual and model agreement for metrics, driver cards, formula rows, rings, charts, and visual result tones. It should be used when a calculator has reusable visual output beyond plain inputs and tables. Pure form-and-table calculators may omit it during final assembly and record that omission as accepted divergence.
+
+Use `workspace_namespaces` to choose calculator behavior and shape final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and optional `assets/bin/model-core.js`, translating prompt, stage, score, and table language into estimate, inputs, result summary, and export language.
 
 Do not create a family-local `sections/` directory for calculate. Shared content section folders belong to `templates/content/main/sections/content/`; calculate workspace section folders belong here.
 
@@ -216,10 +234,11 @@ Default flow:
 2. Preset or basic settings.
 3. Service, component, or workload cards.
 4. Advanced assumptions, rates, overrides, and buffers.
-5. Result summary.
-6. Output toolbar for sort, export, copy, and optional import.
-7. Result tabs for breakdown, mix, assumptions, recommendations, and JSON.
-8. JSON payload output and optional restore.
+5. Optional visual contract for metrics, drivers, formulas, rings, charts, or reusable visual result primitives.
+6. Result summary.
+7. Output toolbar for sort, export, copy, and optional import.
+8. Result tabs for breakdown, mix, assumptions, recommendations, and JSON.
+9. JSON payload output and optional restore.
 
 ---
 

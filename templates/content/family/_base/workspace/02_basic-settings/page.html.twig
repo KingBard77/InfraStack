@@ -1,0 +1,85 @@
+{# Source section: 02_basic-settings #}
+<section class="__PREFIX__-basic-card" aria-label="Basic settings">
+    <div class="__PREFIX__-example-card">
+        <span class="__PREFIX__-example-label">__BASIC_EXAMPLE_LABEL__</span>
+        <strong class="__PREFIX__-example-value">__BASIC_EXAMPLE_VALUE__</strong>
+        <span class="__PREFIX__-example-helper">__BASIC_EXAMPLE_HELPER__</span>
+    </div>
+
+    <div class="__PREFIX__-basic-grid">
+        <div class="__PREFIX__-setting-card">
+            <div class="__PREFIX__-setting-label-wrap">
+                <label class="__PREFIX__-setting-label" for="__DOM_PREFIX__BasicPrimary">__BASIC_PRIMARY_LABEL__</label>
+                <span class="__PREFIX__-helper-chip" title="__BASIC_PRIMARY_HELPER__" aria-label="__BASIC_PRIMARY_HELPER__">i</span>
+            </div>
+
+            <div class="__PREFIX__-native-select-wrap">
+                <select id="__DOM_PREFIX__BasicPrimary" class="form-select __PREFIX__-native-select">
+                    <option selected>Default preset</option>
+                    <option>Focused preset</option>
+                    <option>Blank settings</option>
+                </select>
+            </div>
+
+            <p class="__PREFIX__-setting-hint">__BASIC_PRIMARY_HELPER__</p>
+        </div>
+
+        <div class="__PREFIX__-setting-card">
+            <div class="__PREFIX__-setting-label-wrap">
+                <span class="__PREFIX__-setting-label">__BASIC_SELECT_LABEL__</span>
+                <span class="__PREFIX__-helper-chip" title="__BASIC_SELECT_HELPER__" aria-label="__BASIC_SELECT_HELPER__">i</span>
+            </div>
+
+            <details class="__PREFIX__-select" id="__DOM_PREFIX__BasicSelect">
+                <summary class="__PREFIX__-select-summary">
+                    <span id="__DOM_PREFIX__BasicSelectSummary">Standard option</span>
+                    <span class="__PREFIX__-select-arrow-slot" aria-hidden="true"></span>
+                </summary>
+
+                <div class="__PREFIX__-select-body" id="__DOM_PREFIX__BasicSelectMenu">
+                    <label class="__PREFIX__-select-option">
+                        <input type="radio" name="__DOM_PREFIX__BasicOption" value="standard" checked>
+                        <span class="__PREFIX__-select-option-title">Standard option</span>
+                    </label>
+                    <label class="__PREFIX__-select-option">
+                        <input type="radio" name="__DOM_PREFIX__BasicOption" value="focused">
+                        <span class="__PREFIX__-select-option-title">Focused option</span>
+                    </label>
+                </div>
+            </details>
+
+            <p class="__PREFIX__-setting-hint">__BASIC_SELECT_HELPER__</p>
+        </div>
+
+        <div class="__PREFIX__-setting-card">
+            <div class="__PREFIX__-setting-label-wrap">
+                <label class="__PREFIX__-setting-label" for="__DOM_PREFIX__BasicText">__BASIC_TEXT_LABEL__</label>
+                <span class="__PREFIX__-helper-chip" title="__BASIC_TEXT_HELPER__" aria-label="__BASIC_TEXT_HELPER__">i</span>
+            </div>
+
+            <input
+                type="text"
+                id="__DOM_PREFIX__BasicText"
+                class="form-control __PREFIX__-text-field"
+                placeholder="__BASIC_TEXT_PLACEHOLDER__"
+            >
+
+            <p class="__PREFIX__-setting-hint">__BASIC_TEXT_HELPER__</p>
+        </div>
+
+        <div class="__PREFIX__-setting-card">
+            <div class="__PREFIX__-setting-label-wrap">
+                <span class="__PREFIX__-setting-label">__BASIC_TOGGLE_LABEL__</span>
+                <span class="__PREFIX__-helper-chip" title="__BASIC_TOGGLE_HELPER__" aria-label="__BASIC_TOGGLE_HELPER__">i</span>
+            </div>
+
+            <label class="__PREFIX__-switch-card">
+                <input type="checkbox" id="__DOM_PREFIX__BasicToggle" checked>
+                <span class="__PREFIX__-switch-track" aria-hidden="true"></span>
+                <span class="__PREFIX__-switch-copy">Enabled</span>
+            </label>
+
+            <p class="__PREFIX__-setting-hint">__BASIC_TOGGLE_HELPER__</p>
+        </div>
+    </div>
+</section>

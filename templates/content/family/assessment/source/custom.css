@@ -1,0 +1,2223 @@
+/* custom.css */
+
+.tool-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 32px;
+}
+
+.assess-ubuntu-2204-cis-form {
+    display: grid;
+    gap: 18px;
+}
+
+.assess-ubuntu-2204-cis-main-row {
+    display: grid;
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 16px;
+    align-items: center;
+}
+
+.assess-ubuntu-2204-cis-main-label {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #334e68;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.assess-ubuntu-2204-cis-main-input-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 160px;
+    gap: 10px;
+    align-items: center;
+}
+
+.assess-ubuntu-2204-cis-form .form-control,
+.assess-ubuntu-2204-cis-form .form-select {
+    min-height: 46px;
+    border: 1px solid #d8e0e8;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #334155;
+    box-shadow: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.assess-ubuntu-2204-cis-form .form-control::placeholder,
+.assess-ubuntu-2204-cis-form textarea.form-control::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+}
+
+.assess-ubuntu-2204-cis-form .form-control:hover,
+.assess-ubuntu-2204-cis-form .form-select:hover {
+    border-color: #b8cadb;
+}
+
+.assess-ubuntu-2204-cis-form .form-control:focus,
+.assess-ubuntu-2204-cis-form .form-select:focus {
+    border-color: #475569;
+    box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.08);
+    outline: none;
+}
+
+.assess-ubuntu-2204-cis-form .form-control:disabled,
+.assess-ubuntu-2204-cis-form .form-select:disabled,
+.assess-ubuntu-2204-cis-form textarea:disabled {
+    background: #f1f5f9;
+    color: #64748b;
+    border-color: #e2e8f0;
+    opacity: 1;
+    cursor: not-allowed;
+}
+
+.assess-ubuntu-2204-cis-submit-btn,
+.assess-ubuntu-2204-cis-submit-btn.btn,
+.assess-ubuntu-2204-cis-submit-btn.btn-primary {
+    --bs-btn-bg: #475569;
+    --bs-btn-border-color: #475569;
+    --bs-btn-hover-bg: #334155;
+    --bs-btn-hover-border-color: #334155;
+    --bs-btn-active-bg: #334155;
+    --bs-btn-active-border-color: #334155;
+    --bs-btn-disabled-bg: #475569;
+    --bs-btn-disabled-border-color: #475569;
+    --bs-btn-color: #ffffff;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-disabled-color: #ffffff;
+    --bs-btn-focus-shadow-rgb: 71, 85, 105;
+    min-height: 46px;
+    border-radius: 8px;
+    font-weight: 700;
+    box-shadow: none;
+    background: #475569;
+    border-color: #475569;
+    color: #ffffff;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.assess-ubuntu-2204-cis-submit-btn:hover,
+.assess-ubuntu-2204-cis-submit-btn:focus,
+.assess-ubuntu-2204-cis-submit-btn:focus-visible,
+.assess-ubuntu-2204-cis-submit-btn:active {
+    background: #334155 !important;
+    border-color: #334155 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.assess-ubuntu-2204-cis-submit-btn[disabled] {
+    opacity: 0.75;
+    cursor: wait;
+}
+
+.assess-ubuntu-2204-cis-basic-panel {
+    display: grid;
+    gap: 0;
+}
+
+.assess-ubuntu-2204-cis-advanced {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f9fbfd;
+    overflow: hidden;
+}
+
+.assess-ubuntu-2204-cis-advanced-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #334e68;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    background: #f5f9fd;
+    border-bottom: 1px solid #e3ebf3;
+}
+
+.assess-ubuntu-2204-cis-advanced-summary::-webkit-details-marker {
+    display: none;
+}
+
+.assess-ubuntu-2204-cis-advanced-summary::after {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid #475569;
+    border-bottom: 2px solid #475569;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+    flex: 0 0 auto;
+}
+
+.assess-ubuntu-2204-cis-advanced:not([open]) .assess-ubuntu-2204-cis-advanced-summary::after {
+    transform: rotate(-45deg);
+}
+
+.assess-ubuntu-2204-cis-advanced-body {
+    padding: 14px;
+    background: #f8fafc;
+}
+
+.assess-ubuntu-2204-cis-inner-panel {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #ffffff;
+    padding: 14px 16px;
+}
+
+.assess-ubuntu-2204-cis-setting-row {
+    position: relative;
+    z-index: 0;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+    padding: 12px 0;
+}
+
+.assess-ubuntu-2204-cis-setting-row:has(.assess-ubuntu-2204-cis-select[open]),
+.assess-ubuntu-2204-cis-setting-row:has(.assess-ubuntu-2204-cis-custom-dropdown[open]) {
+    z-index: 40;
+}
+
+.assess-ubuntu-2204-cis-setting-row:not(:last-child) {
+    border-bottom: 1px solid #f0f4f8;
+}
+
+.assess-ubuntu-2204-cis-setting-label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #4a5568;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.assess-ubuntu-2204-cis-setting-field {
+    width: 100%;
+    min-width: 0;
+}
+
+.assess-ubuntu-2204-cis-select-tools {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+}
+
+.assess-ubuntu-2204-cis-select-mini-btn {
+    min-height: 32px;
+    padding: 0 10px;
+    border: 1px solid #c7d7e6;
+    border-radius: 999px;
+    background: #f8fafc;
+    color: #1f3a52;
+    font-size: 12px;
+    font-weight: 700;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.assess-ubuntu-2204-cis-select-mini-btn:hover,
+.assess-ubuntu-2204-cis-select-mini-btn:focus {
+    border-color: #98b7d4;
+    background: #eef6fd;
+    color: #475569;
+    outline: none;
+}
+
+.assess-ubuntu-2204-cis-select-mini-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.info-dot {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: #5b6777;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    line-height: 1;
+    cursor: help;
+    flex-shrink: 0;
+}
+
+.assess-ubuntu-2204-cis-select {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f9fbfd;
+    overflow: hidden;
+}
+
+.assess-ubuntu-2204-cis-select.assess-ubuntu-2204-cis-select-inactive {
+    opacity: 0.72;
+}
+
+.assess-ubuntu-2204-cis-select-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    user-select: none;
+    background: #ffffff;
+}
+
+.assess-ubuntu-2204-cis-select-summary > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.assess-ubuntu-2204-cis-select-summary::-webkit-details-marker {
+    display: none;
+}
+
+.assess-ubuntu-2204-cis-select-summary::after {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid #475569;
+    border-bottom: 2px solid #475569;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+    flex: 0 0 auto;
+}
+
+.assess-ubuntu-2204-cis-select:not([open]) .assess-ubuntu-2204-cis-select-summary::after {
+    transform: rotate(-45deg);
+}
+
+.assess-ubuntu-2204-cis-select-body {
+    padding: 14px;
+    background: #f8fafc;
+    border-top: 1px solid #e3ebf3;
+}
+
+.assess-ubuntu-2204-cis-select-body-scroll {
+    max-height: 360px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.assess-ubuntu-2204-cis-select-empty {
+    padding: 14px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.assess-ubuntu-2204-cis-select-grid {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+}
+
+.assess-ubuntu-2204-cis-select-grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.assess-ubuntu-2204-cis-select-card {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.assess-ubuntu-2204-cis-select-card:hover {
+    border-color: #b7d7d2;
+    background: #f1fcfa;
+}
+
+.assess-ubuntu-2204-cis-select-card input {
+    margin: 2px 0 0;
+}
+
+.assess-ubuntu-2204-cis-select-card > span {
+    min-width: 0;
+}
+
+.assess-ubuntu-2204-cis-select-card:has(input:checked) {
+    border-color: #5eead4;
+    background: #ecfdf5;
+    box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.08);
+}
+
+.assess-ubuntu-2204-cis-select-title {
+    color: #1e293b;
+    font-size: 13px;
+    font-weight: 700;
+    display: block;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.assess-ubuntu-2204-cis-select-meta {
+    display: block;
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.assess-ubuntu-2204-cis-criticality-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.assess-ubuntu-2204-cis-criticality-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.assess-ubuntu-2204-cis-criticality-pill strong {
+    font-size: 14px;
+}
+
+.assess-ubuntu-2204-cis-criticality-pill[data-tone="low"] {
+    border-color: #99f6e4;
+    background: #ecfdf5;
+    color: #475569;
+}
+
+.assess-ubuntu-2204-cis-criticality-pill[data-tone="unspecified"] {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+    color: #475569;
+}
+
+.assess-ubuntu-2204-cis-switch-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.assess-ubuntu-2204-cis-switch-wrap input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.assess-ubuntu-2204-cis-switch-wrap .slider {
+    position: relative;
+    display: inline-flex;
+    width: 50px;
+    height: 28px;
+    background: #cbd5e1;
+    border-radius: 999px;
+    transition: background 0.2s ease;
+}
+
+.assess-ubuntu-2204-cis-switch-wrap .slider::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.assess-ubuntu-2204-cis-switch-wrap input:checked + .slider {
+    background: #475569;
+}
+
+.assess-ubuntu-2204-cis-switch-wrap input:checked + .slider::before {
+    transform: translateX(22px);
+}
+
+.assess-ubuntu-2204-cis-switch-wrap input:focus + .slider {
+    box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.12);
+}
+
+.assess-ubuntu-2204-cis-switch-label {
+    color: #334155;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.tool-intro:has(+ .tool-box .assess-ubuntu-2204-cis-form) .tool-main-description {
+    width: 100%;
+    max-width: none;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.assess-ubuntu-2204-cis-result-panel {
+    margin-top: 18px;
+}
+
+.assess-ubuntu-2204-cis-result-empty,
+.assess-ubuntu-2204-cis-result-error {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #ffffff;
+    padding: 16px 18px;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.assess-ubuntu-2204-cis-result-empty {
+    border-style: dashed;
+}
+
+.assess-ubuntu-2204-cis-result-error {
+    border-color: #fecaca;
+    background: #fff1f2;
+    color: #9f1239;
+}
+
+.assess-ubuntu-2204-cis-result-content {
+    display: grid;
+    gap: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 18px;
+    background: #f8fafc;
+    padding: 16px;
+    box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.62);
+}
+
+.assess-ubuntu-2204-cis-output-shell {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+}
+
+.assess-ubuntu-2204-cis-result-summary {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    padding: 16px;
+}
+
+.assess-ubuntu-2204-cis-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.assess-ubuntu-2204-cis-summary-card {
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background: #ffffff;
+    padding: 14px 16px;
+    display: grid;
+    gap: 6px;
+}
+
+.assess-ubuntu-2204-cis-summary-kicker {
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0;
+}
+
+.assess-ubuntu-2204-cis-summary-value {
+    color: #334155;
+    font-size: 28px;
+    line-height: 1.1;
+    font-weight: 800;
+}
+
+.assess-ubuntu-2204-cis-summary-meta {
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.assess-ubuntu-2204-cis-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.assess-ubuntu-2204-cis-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #fffffffb;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.assess-ubuntu-2204-cis-toolbar-shell,
+.assess-ubuntu-2204-cis-tabs-shell {
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    background: #ffffff;
+    min-width: 0;
+}
+
+.assess-ubuntu-2204-cis-toolbar-shell {
+    container-type: inline-size;
+    padding: 16px 18px;
+}
+
+.assess-ubuntu-2204-cis-tabs-shell {
+    padding: 16px;
+}
+
+.assess-ubuntu-2204-cis-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+    align-items: flex-start;
+    gap: 14px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+}
+
+.assess-ubuntu-2204-cis-toolbar-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    flex: 1 1 420px;
+    min-width: 0;
+}
+
+.assess-ubuntu-2204-cis-toolbar-meta {
+    display: none;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-width: 0;
+}
+
+.assess-ubuntu-2204-cis-sort-shell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 1 300px;
+    min-width: 210px;
+}
+
+.assess-ubuntu-2204-cis-sort-label {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.assess-ubuntu-2204-cis-sort-wrap {
+    width: 210px;
+    flex: 0 0 210px;
+    min-width: 0;
+    max-width: 210px;
+}
+
+.assess-ubuntu-2204-cis-sort-select {
+    position: relative;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+}
+
+.assess-ubuntu-2204-cis-sort-summary {
+    width: 100%;
+    list-style: none;
+    cursor: pointer;
+    height: 46px;
+    min-height: 46px;
+    padding: 12px 14px 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.assess-ubuntu-2204-cis-sort-summary::-webkit-details-marker {
+    display: none;
+}
+
+.assess-ubuntu-2204-cis-sort-summary::after {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid #475569;
+    border-bottom: 2px solid #475569;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.assess-ubuntu-2204-cis-sort-select:not([open]) .assess-ubuntu-2204-cis-sort-summary::after {
+    transform: rotate(-45deg);
+}
+
+.assess-ubuntu-2204-cis-sort-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 80;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
+}
+
+.assess-ubuntu-2204-cis-sort-grid {
+    display: grid;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+}
+
+.assess-ubuntu-2204-cis-sort-option {
+    width: 100%;
+    display: block;
+    padding: 11px 12px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #334155;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.assess-ubuntu-2204-cis-sort-option:hover,
+.assess-ubuntu-2204-cis-sort-option:focus {
+    border-color: #94a3b8;
+    background: #f1f5f9;
+    color: #334155;
+    outline: none;
+}
+
+.assess-ubuntu-2204-cis-sort-option.is-active {
+    border-color: #64748b;
+    background: #e2e8f0;
+    color: #0f172a;
+    box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.12);
+}
+
+.assess-ubuntu-2204-cis-toolbar-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.assess-ubuntu-2204-cis-toolbar-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    justify-self: end;
+    width: 100%;
+    max-width: 420px;
+}
+
+.assess-ubuntu-2204-cis-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 38px;
+    padding: 0 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.assess-ubuntu-2204-cis-action-btn i {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.assess-ubuntu-2204-cis-action-btn:hover,
+.assess-ubuntu-2204-cis-action-btn:focus {
+    border-color: #94a3b8;
+    background: #f1f5f9;
+    color: #0f172a;
+    outline: none;
+}
+
+.assess-ubuntu-2204-cis-action-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    border-color: #e2e8f0;
+    background: #f8fafc;
+    color: #94a3b8;
+}
+
+.assess-ubuntu-2204-cis-tabs {
+    display: grid;
+    gap: 14px;
+}
+
+.assess-ubuntu-2204-cis-tab-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.assess-ubuntu-2204-cis-tab-btn {
+    min-height: 40px;
+    padding: 0 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #334155;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.assess-ubuntu-2204-cis-tab-btn i {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.assess-ubuntu-2204-cis-tab-btn:hover,
+.assess-ubuntu-2204-cis-tab-btn:focus {
+    border-color: #94a3b8;
+    background: #f1f5f9;
+    color: #0f172a;
+    outline: none;
+}
+
+.assess-ubuntu-2204-cis-tab-btn.active {
+    border-color: #334155;
+    background: #334155;
+    color: #ffffff;
+}
+
+.assess-ubuntu-2204-cis-tab-panel {
+    display: none;
+    min-width: 0;
+    width: 100%;
+}
+
+.assess-ubuntu-2204-cis-tab-panel.active {
+    display: block;
+}
+
+.assess-ubuntu-2204-cis-section-card {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    padding: 12px;
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    width: 100%;
+}
+
+.assess-ubuntu-2204-cis-section-title {
+    margin: 0;
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.assess-ubuntu-2204-cis-table-wrap {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    overflow-x: auto;
+}
+
+.assess-ubuntu-2204-cis-table-wrap-compact {
+    overflow-x: auto;
+}
+
+.assess-ubuntu-2204-cis-table {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    color: #1f2937;
+    table-layout: fixed;
+    vertical-align: top;
+}
+
+.assess-ubuntu-2204-cis-sections-table {
+    min-width: 0;
+}
+
+.assess-ubuntu-2204-cis-table thead th {
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    border-bottom: 1px solid #cbd5e1;
+    padding: 12px 10px;
+    white-space: nowrap;
+}
+
+.assess-ubuntu-2204-cis-table tbody td {
+    border-top: 1px solid #e2e8f0;
+    padding: 12px 10px;
+    color: #334155;
+    font-size: 13px;
+    line-height: 1.6;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.assess-ubuntu-2204-cis-table tbody tr:first-child td {
+    border-top: 0;
+}
+
+.assess-ubuntu-2204-cis-table tbody tr[data-control-path] {
+    cursor: pointer;
+}
+
+.assess-ubuntu-2204-cis-table tbody tr[data-control-path]:hover td {
+    background: #f8fafc;
+}
+
+.assess-ubuntu-2204-cis-table tbody tr.assess-ubuntu-2204-cis-control-row-selected td {
+    background: #e2e8f0;
+}
+
+.assess-ubuntu-2204-cis-col-depth,
+.assess-ubuntu-2204-cis-col-controls,
+.assess-ubuntu-2204-cis-col-children {
+    width: 68px;
+}
+
+.assess-ubuntu-2204-cis-col-index {
+    width: 42px;
+}
+
+.assess-ubuntu-2204-cis-col-id {
+    width: 82px;
+}
+
+.assess-ubuntu-2204-cis-col-criticality {
+    width: 104px;
+}
+
+.assess-ubuntu-2204-cis-col-script {
+    width: 124px;
+}
+
+.assess-ubuntu-2204-cis-col-copy {
+    width: 68px;
+    text-align: center;
+}
+
+.assess-ubuntu-2204-cis-col-range {
+    width: 132px;
+}
+
+.assess-ubuntu-2204-cis-table-action-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.assess-ubuntu-2204-cis-row-copy {
+    width: 26px;
+    height: 26px;
+    border: 1px solid rgba(100, 116, 139, 0.72);
+    border-radius: 8px;
+    background: #ffffff;
+    color: #64748b;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 26px;
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.assess-ubuntu-2204-cis-row-copy:hover,
+.assess-ubuntu-2204-cis-row-copy:focus,
+.assess-ubuntu-2204-cis-row-copy:focus-visible {
+    background: #f1f5f9;
+    border-color: #64748b;
+    color: #334155;
+    outline: none;
+}
+
+.assess-ubuntu-2204-cis-row-copy.copied {
+    background: #ecfdf5;
+    border-color: #86efac;
+    color: #15803d;
+}
+
+.assess-ubuntu-2204-cis-control-id,
+.assess-ubuntu-2204-cis-range-text {
+    font-weight: 700;
+    color: #0f172a;
+    white-space: nowrap;
+}
+
+.assess-ubuntu-2204-cis-title-text,
+.assess-ubuntu-2204-cis-path-text,
+.assess-ubuntu-2204-cis-script-text {
+    display: block;
+    word-break: break-word;
+}
+
+.assess-ubuntu-2204-cis-script-text {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 12px;
+    color: #475569;
+}
+
+.assess-ubuntu-2204-cis-section-cell {
+    display: grid;
+    gap: 4px;
+}
+
+.assess-ubuntu-2204-cis-section-family {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.assess-ubuntu-2204-cis-criticality-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 96px;
+    min-height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
+}
+
+.assess-ubuntu-2204-cis-criticality-badge[data-tone="low"] {
+    border-color: #99f6e4;
+    background: #ecfdf5;
+    color: #475569;
+}
+
+.assess-ubuntu-2204-cis-criticality-badge[data-tone="unspecified"] {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+    color: #475569;
+}
+
+.assess-ubuntu-2204-cis-empty-row td {
+    text-align: center;
+    color: #64748b;
+    padding: 18px 12px;
+}
+
+.assess-ubuntu-2204-cis-command-meta,
+.assess-ubuntu-2204-cis-script-meta {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.assess-ubuntu-2204-cis-command-chip,
+.assess-ubuntu-2204-cis-script-chip {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    padding: 12px;
+    display: grid;
+    gap: 5px;
+}
+
+.assess-ubuntu-2204-cis-command-chip-label,
+.assess-ubuntu-2204-cis-script-chip-label {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.assess-ubuntu-2204-cis-command-chip-value,
+.assess-ubuntu-2204-cis-script-chip-value {
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.assess-ubuntu-2204-cis-command-shell,
+.assess-ubuntu-2204-cis-script-shell,
+.assess-ubuntu-2204-cis-json-shell {
+    border: 1px solid #dbe7f3;
+    border-radius: 14px;
+    background: #ffffff;
+    overflow: hidden;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+}
+
+.assess-ubuntu-2204-cis-script-shell {
+    border-color: #e2e8f0;
+    background: #0f172a;
+}
+
+.assess-ubuntu-2204-cis-json-head {
+    padding: 14px 18px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e8eef5;
+}
+
+.assess-ubuntu-2204-cis-json-title {
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.assess-ubuntu-2204-cis-command-pre,
+.assess-ubuntu-2204-cis-script-pre,
+.assess-ubuntu-2204-cis-json-pre {
+    margin: 0;
+    padding: 16px 18px;
+    overflow-x: auto;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.assess-ubuntu-2204-cis-command-pre code,
+.assess-ubuntu-2204-cis-script-pre code,
+.assess-ubuntu-2204-cis-json-pre code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.assess-ubuntu-2204-cis-script-pre {
+    background: #0f172a;
+}
+
+.assess-ubuntu-2204-cis-script-pre code {
+    color: #e2e8f0;
+    white-space: pre;
+    word-break: normal;
+}
+
+.assess-ubuntu-2204-cis-json-pre {
+    background: #f4f7fb;
+}
+
+.assess-ubuntu-2204-cis-json-pre code {
+    display: block;
+    min-width: 100%;
+    width: max-content;
+    color: #0f172a;
+    white-space: pre;
+    word-break: normal;
+}
+
+.assess-ubuntu-2204-cis-json-pre .tool-json-key {
+    color: #475569;
+}
+
+.assess-ubuntu-2204-cis-json-pre .tool-json-string {
+    color: #047857;
+}
+
+.assess-ubuntu-2204-cis-json-pre .tool-json-number {
+    color: #b45309;
+}
+
+.assess-ubuntu-2204-cis-json-pre .tool-json-boolean {
+    color: #7c3aed;
+}
+
+.assess-ubuntu-2204-cis-json-pre .tool-json-null {
+    color: #b91c1c;
+}
+
+.markdown-content {
+    --tool-heading: #0f172a;
+    --tool-text: #334155;
+    --tool-text-muted: #64748b;
+    --tool-border: #dbe4ee;
+    --tool-border-strong: #94a3b8;
+    --tool-border-strong-rgb: 148, 163, 184;
+    --tool-shadow-rgb: 15, 23, 42;
+    --tool-accent-strong: #475569;
+    --tool-accent-text: #334155;
+    --tool-accent-deep: #1e293b;
+    --tool-accent-pale: #f8fafc;
+    --tool-accent-tint: #eef6ff;
+    --tool-accent-tint-strong: #dbeafe;
+    --tool-secondary: #64748b;
+    --tool-panel-gradient: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    --tool-panel-gradient-soft: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 250, 252, 0.96) 100%);
+    --tool-table-head-gradient: linear-gradient(180deg, #f8fafc 0%, #eef6ff 100%);
+    --tool-font-size-xs: 12px;
+    --tool-font-size-xs-plus: 12.5px;
+    --tool-font-size-sm: 13px;
+    --tool-font-size-sm-plus: 13.5px;
+    --tool-font-size-base: 14px;
+    --tool-font-size-md: 15px;
+    --tool-font-size-2xl: 19px;
+    --tool-font-size-3xl: 20px;
+    --tool-font-size-inline-code: 0.875em;
+}
+
+.markdown-content pre {
+    position: relative;
+}
+
+.markdown-content > [class*="-markdown-card"] li,
+.markdown-content > [class*="-markdown-card"] li p {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card {
+    overflow: hidden;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-term-accent {
+    color: var(--tool-accent-strong);
+    font-weight: 700;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) {
+    margin: 0 0 28px;
+    padding: 22px 24px;
+    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.52);
+    border-radius: 20px;
+    background: var(--tool-panel-gradient-soft);
+    box-shadow: 0 14px 28px rgba(var(--tool-shadow-rgb), 0.06);
+    font-family: var(--default-font);
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) > h2:first-child {
+    margin: 0 0 18px;
+    color: var(--tool-heading);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-3xl);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) h3 {
+    margin: 24px 0 10px;
+    color: var(--tool-heading);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-md);
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: 0;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) p {
+    margin: 0 0 14px;
+    color: var(--tool-text);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-md);
+    font-weight: 400;
+    line-height: 1.68;
+    letter-spacing: 0;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) p:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) ul,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) ol {
+    margin: 0 0 16px;
+    padding-left: 18px;
+    color: var(--tool-text);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-md);
+    line-height: 1.68;
+    letter-spacing: 0;
+    list-style-position: outside;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) ul:last-child,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) ol:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) li {
+    margin: 0;
+    padding-left: 0;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) li + li {
+    margin-top: 6px;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) ul li::marker {
+    color: var(--tool-accent-strong);
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) ol li::marker {
+    color: var(--tool-secondary);
+    font-weight: 800;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) code:not(pre code) {
+    display: inline;
+    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.58);
+    border-radius: 8px;
+    background: var(--tool-accent-pale);
+    color: var(--tool-accent-deep);
+    padding: 0.08em 0.42em;
+    font-size: var(--tool-font-size-inline-code);
+    font-weight: 600;
+    line-height: inherit;
+    vertical-align: 0.02em;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-markdown-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    margin: 20px 0 0;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-markdown-table-wrap table {
+    min-width: 720px;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-markdown-table-wrap th {
+    color: var(--tool-heading);
+    font-weight: 800;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-markdown-table-wrap td {
+    vertical-align: top;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) table {
+    width: 100%;
+    margin: 18px 0 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.56);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) thead th {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(var(--tool-border-strong-rgb), 0.56);
+    background: var(--tool-table-head-gradient);
+    color: var(--tool-heading);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-xs);
+    font-weight: 800;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    vertical-align: top;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(var(--tool-border-strong-rgb), 0.28);
+    color: var(--tool-text);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-base);
+    line-height: 1.65;
+    vertical-align: top;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) tbody td:first-child {
+    color: var(--tool-heading);
+    font-weight: 800;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-examples {
+    margin: 0 0 28px;
+    padding: 22px 24px;
+    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.52);
+    border-radius: 20px;
+    background: var(--tool-panel-gradient-soft);
+    box-shadow: 0 14px 28px rgba(var(--tool-shadow-rgb), 0.06);
+    font-family: var(--default-font);
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-examples > h2:first-child {
+    margin: 0 0 16px;
+    color: var(--tool-heading);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-3xl);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-examples > p:first-of-type {
+    margin: 0 0 14px;
+    color: var(--tool-text);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-base);
+    line-height: 1.72;
+}
+
+.markdown-content pre.assess-ubuntu-2204-cis-prompt-pre,
+.markdown-content pre.assess-ubuntu-2204-cis-command-example-pre {
+    position: relative;
+    box-sizing: border-box;
+    max-width: 100%;
+    margin: 18px 0 18px;
+    padding: 56px 20px 20px;
+    overflow-x: auto;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 18px;
+    background: #081226;
+    color: #e5e7eb;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 13.5px;
+    font-variant-ligatures: none;
+    line-height: 1.7;
+    scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+    scrollbar-width: thin;
+    text-rendering: optimizeLegibility;
+}
+
+.markdown-content pre.assess-ubuntu-2204-cis-prompt-pre::before,
+.markdown-content pre.assess-ubuntu-2204-cis-command-example-pre::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 38px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 18px 18px 0 0;
+    background: #050b16;
+}
+
+.markdown-content pre.assess-ubuntu-2204-cis-prompt-pre::after,
+.markdown-content pre.assess-ubuntu-2204-cis-command-example-pre::after {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 18px 0 0 #f59e0b, 36px 0 0 #16A34A;
+}
+
+.markdown-content pre.assess-ubuntu-2204-cis-prompt-pre code,
+.markdown-content pre.assess-ubuntu-2204-cis-command-example-pre code {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    padding: 0 90px 0 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.markdown-content pre.assess-ubuntu-2204-cis-prompt-pre code::before {
+    content: "input> ";
+    color: #86efac;
+}
+
+.markdown-content pre.assess-ubuntu-2204-cis-prompt-pre > code::after {
+    content: "CIS Input";
+    position: absolute;
+    top: -43px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    opacity: 0.95;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.markdown-content pre.assess-ubuntu-2204-cis-command-example-pre > code::after {
+    content: "CIS Command";
+    position: absolute;
+    top: -43px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    opacity: 0.95;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note {
+    display: block;
+    margin: 0 0 34px;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note-last {
+    margin-bottom: 0;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    color: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note-label-closed,
+.markdown-content .assess-ubuntu-2204-cis-prompt-note-label-open {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 14px;
+    gap: 12px;
+    border: 1px solid var(--tool-border);
+    border-radius: 999px;
+    background: var(--tool-accent-pale);
+    color: var(--tool-accent-text);
+    font-size: var(--tool-font-size-xs-plus);
+    font-weight: 700;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note-label-closed::before,
+.markdown-content .assess-ubuntu-2204-cis-prompt-note-label-open::before {
+    content: "+";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: var(--tool-accent-tint-strong);
+    color: var(--tool-accent-strong);
+    font-size: var(--tool-font-size-sm);
+    font-weight: 800;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note summary:hover .assess-ubuntu-2204-cis-prompt-note-label-closed,
+.markdown-content .assess-ubuntu-2204-cis-prompt-note summary:hover .assess-ubuntu-2204-cis-prompt-note-label-open,
+.markdown-content .assess-ubuntu-2204-cis-prompt-note summary:focus .assess-ubuntu-2204-cis-prompt-note-label-closed,
+.markdown-content .assess-ubuntu-2204-cis-prompt-note summary:focus .assess-ubuntu-2204-cis-prompt-note-label-open,
+.markdown-content .assess-ubuntu-2204-cis-prompt-note summary:focus-visible .assess-ubuntu-2204-cis-prompt-note-label-closed,
+.markdown-content .assess-ubuntu-2204-cis-prompt-note summary:focus-visible .assess-ubuntu-2204-cis-prompt-note-label-open {
+    border-color: var(--tool-border-strong);
+    background: var(--tool-accent-tint);
+    color: var(--tool-accent-strong);
+    outline: none;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note[open] summary {
+    margin-bottom: 12px;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note[open] .assess-ubuntu-2204-cis-prompt-note-label-open::before {
+    content: "-";
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note-label-open {
+    display: none;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note[open] .assess-ubuntu-2204-cis-prompt-note-label-closed {
+    display: none;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note[open] .assess-ubuntu-2204-cis-prompt-note-label-open {
+    display: inline-flex;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note .alert {
+    margin-top: 0;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-note .alert,
+.markdown-content .assess-ubuntu-2204-cis-prompt-note .alert div {
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-sm-plus);
+    line-height: 1.65;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-copy-btn,
+.markdown-content .assess-ubuntu-2204-cis-command-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0 14px;
+    gap: 8px;
+    border: 1px solid var(--tool-border);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--tool-accent-text);
+    font-size: var(--tool-font-size-xs-plus);
+    font-weight: 700;
+    line-height: 1;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-copy-btn i,
+.markdown-content .assess-ubuntu-2204-cis-command-copy-btn i {
+    color: var(--tool-accent-strong);
+    font-size: var(--tool-font-size-sm);
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-copy-btn:hover,
+.markdown-content .assess-ubuntu-2204-cis-prompt-copy-btn:focus,
+.markdown-content .assess-ubuntu-2204-cis-prompt-copy-btn:focus-visible,
+.markdown-content .assess-ubuntu-2204-cis-command-copy-btn:hover,
+.markdown-content .assess-ubuntu-2204-cis-command-copy-btn:focus,
+.markdown-content .assess-ubuntu-2204-cis-command-copy-btn:focus-visible {
+    border-color: var(--tool-border-strong);
+    background: var(--tool-accent-tint);
+    color: var(--tool-accent-strong);
+    outline: none;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-copy-btn.copied,
+.markdown-content .assess-ubuntu-2204-cis-command-copy-btn.copied {
+    border-color: #86efac;
+    background: #ecfdf5;
+    color: #15803d;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-prompt-copy-btn.copied i,
+.markdown-content .assess-ubuntu-2204-cis-command-copy-btn.copied i {
+    color: #15803d;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-prompt-tips .tool-guidance-item,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-how-to .tool-guidance-item,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-export .tool-export-item {
+    margin: 0;
+    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.5);
+    border-radius: 14px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 10px 22px rgba(var(--tool-shadow-rgb), 0.055);
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-prompt-tips .tool-guidance-item + .tool-guidance-item,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-how-to .tool-guidance-item + .tool-guidance-item,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-export .tool-export-item + .tool-export-item {
+    margin-top: 12px;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-prompt-tips .tool-guidance-item summary,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-how-to .tool-guidance-item summary,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-export .tool-export-item summary {
+    position: relative;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 58px;
+    cursor: pointer;
+    padding: 15px 56px 15px 16px;
+    background: linear-gradient(135deg, #ffffff 0%, var(--tool-accent-pale) 100%);
+    color: var(--tool-heading);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-base);
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: 0;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-prompt-tips .tool-guidance-item summary::-webkit-details-marker,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-how-to .tool-guidance-item summary::-webkit-details-marker,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-export .tool-export-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-prompt-tips .tool-guidance-item summary::after,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-how-to .tool-guidance-item summary::after,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-export .tool-export-item summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--tool-accent-strong);
+    font-size: var(--tool-font-size-md);
+    font-weight: 900;
+    line-height: 1;
+    box-shadow: inset 0 0 0 1px rgba(var(--tool-border-strong-rgb), 0.45);
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-prompt-tips .tool-guidance-item[open] summary::after,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-how-to .tool-guidance-item[open] summary::after,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-export .tool-export-item[open] summary::after {
+    content: "-";
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-prompt-tips .tool-guidance-item summary > span,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-how-to .tool-guidance-item summary > span,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-export .tool-export-item summary > span {
+    min-width: 0;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-prompt-tips .tool-guidance-icon,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-how-to .tool-guidance-icon,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-export .tool-export-icon {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: var(--tool-accent-tint);
+    color: var(--tool-accent-strong);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--tool-font-size-base);
+    line-height: 1;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-prompt-tips .tool-guidance-answer,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-how-to .tool-guidance-answer,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-export .tool-export-answer {
+    border-top: 1px solid rgba(var(--tool-border-strong-rgb), 0.36);
+    background: var(--tool-panel-gradient);
+    color: var(--tool-text);
+    font-family: var(--default-font);
+    padding: 15px 18px 17px;
+    font-size: var(--tool-font-size-md);
+    line-height: 1.68;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-export .tool-export-answer p:last-child,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-prompt-tips .tool-guidance-answer p:last-child,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-how-to .tool-guidance-answer p:last-child,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-prompt-tips .tool-guidance-answer ul:last-child,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-how-to .tool-guidance-answer ul:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content .cisbench-command-note {
+    display: block;
+    margin: 10px 0 18px;
+}
+
+.markdown-content .cisbench-command-note:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content .cisbench-command-note summary {
+    position: static;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0;
+    gap: 10px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    box-shadow: none;
+    cursor: pointer;
+    font-size: var(--tool-font-size-xs-plus);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.markdown-content .cisbench-command-note summary::after {
+    content: none;
+    display: none;
+}
+
+.markdown-content .cisbench-command-note summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content .cisbench-command-note-label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 14px;
+    gap: 10px;
+    border: 1px solid var(--tool-border);
+    border-radius: 999px;
+    background: var(--tool-accent-pale);
+    color: var(--tool-accent-text);
+    font-size: var(--tool-font-size-xs-plus);
+    font-weight: 700;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-content .cisbench-command-note-label::before {
+    content: "+";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: var(--tool-accent-tint-strong);
+    color: var(--tool-accent-strong);
+    font-size: var(--tool-font-size-sm);
+    font-weight: 800;
+}
+
+.markdown-content .cisbench-command-note summary:hover .cisbench-command-note-label,
+.markdown-content .cisbench-command-note summary:focus .cisbench-command-note-label,
+.markdown-content .cisbench-command-note summary:focus-visible .cisbench-command-note-label {
+    border-color: var(--tool-border-strong);
+    background: var(--tool-accent-tint);
+    color: var(--tool-accent-strong);
+    outline: none;
+}
+
+.markdown-content .cisbench-command-note[open] summary {
+    margin-bottom: 10px;
+}
+
+.markdown-content .cisbench-command-note[open] .cisbench-command-note-label-open::before {
+    content: "-";
+}
+
+.markdown-content .cisbench-command-note-label-open {
+    display: none;
+}
+
+.markdown-content .cisbench-command-note[open] .cisbench-command-note-label-closed {
+    display: none;
+}
+
+.markdown-content .cisbench-command-note[open] .cisbench-command-note-label-open {
+    display: inline-flex;
+}
+
+.markdown-content .cisbench-command-note .alert,
+.markdown-content .cisbench-command-note .alert div {
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-sm-plus);
+    line-height: 1.65;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card .faq-item {
+    margin: 0;
+    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.56);
+    border-radius: 14px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card .faq-item + .faq-item {
+    margin-top: 12px;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card .faq-item summary {
+    position: relative;
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 56px 16px 18px;
+    color: var(--tool-heading);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-base);
+    font-weight: 800;
+    line-height: 1.5;
+    letter-spacing: 0;
+    background: #ffffff;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card .faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card .faq-item summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--tool-accent-tint);
+    color: var(--tool-accent-strong);
+    font-size: var(--tool-font-size-md);
+    font-weight: 900;
+    line-height: 1;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card .faq-item[open] summary::after {
+    content: "-";
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card .faq-answer {
+    padding: 15px 18px 17px;
+    border-top: 1px solid rgba(var(--tool-border-strong-rgb), 0.4);
+    color: var(--tool-text);
+    background: var(--tool-panel-gradient);
+    font-family: var(--default-font);
+    font-size: var(--tool-font-size-md);
+    line-height: 1.68;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card .faq-answer:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 1199px) {
+    .assess-ubuntu-2204-cis-summary-grid,
+    .assess-ubuntu-2204-cis-command-meta,
+    .assess-ubuntu-2204-cis-script-meta {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 991px) {
+    .assess-ubuntu-2204-cis-main-row,
+    .assess-ubuntu-2204-cis-setting-row {
+        grid-template-columns: 1fr;
+    }
+
+    .assess-ubuntu-2204-cis-main-label,
+    .assess-ubuntu-2204-cis-setting-label {
+        white-space: normal;
+    }
+
+    .assess-ubuntu-2204-cis-table-wrap-compact {
+        overflow-x: auto;
+    }
+
+    .assess-ubuntu-2204-cis-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .assess-ubuntu-2204-cis-toolbar-actions {
+        justify-self: stretch;
+        max-width: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .tool-box {
+        padding: 16px;
+    }
+
+    .assess-ubuntu-2204-cis-main-input-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .assess-ubuntu-2204-cis-summary-grid,
+    .assess-ubuntu-2204-cis-command-meta,
+    .assess-ubuntu-2204-cis-script-meta,
+    .assess-ubuntu-2204-cis-select-grid-two {
+        grid-template-columns: 1fr;
+    }
+
+    .assess-ubuntu-2204-cis-result-content {
+        padding: 12px;
+    }
+
+    .markdown-content pre.assess-ubuntu-2204-cis-prompt-pre > code::after,
+    .markdown-content pre.assess-ubuntu-2204-cis-command-example-pre > code::after {
+        top: -39px;
+    }
+
+    .assess-ubuntu-2204-cis-toolbar-shell,
+    .assess-ubuntu-2204-cis-tabs-shell,
+    .assess-ubuntu-2204-cis-result-summary {
+        padding: 12px;
+    }
+
+    .assess-ubuntu-2204-cis-toolbar {
+        padding: 0;
+    }
+
+    .assess-ubuntu-2204-cis-toolbar-left,
+    .assess-ubuntu-2204-cis-sort-shell,
+    .assess-ubuntu-2204-cis-sort-wrap,
+    .assess-ubuntu-2204-cis-sort-select {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .assess-ubuntu-2204-cis-sort-shell {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .assess-ubuntu-2204-cis-toolbar-actions {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .assess-ubuntu-2204-cis-tab-list {
+        justify-content: center;
+    }
+
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples),
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card-examples {
+        padding: 18px 16px;
+        border-radius: 18px;
+    }
+
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) > h2:first-child,
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card-examples > h2:first-child {
+        font-size: var(--tool-font-size-2xl);
+        letter-spacing: 0;
+    }
+
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) h3 {
+        font-size: var(--tool-font-size-base);
+    }
+
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) p,
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) ul,
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) ol {
+        font-size: var(--tool-font-size-base);
+        line-height: 1.68;
+    }
+
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card-examples > p:first-of-type,
+    .markdown-content .assess-ubuntu-2204-cis-prompt-note .alert,
+    .markdown-content .assess-ubuntu-2204-cis-prompt-note .alert div {
+        font-size: var(--tool-font-size-sm);
+    }
+
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) thead th,
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) tbody td {
+        padding: 12px 13px;
+    }
+
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) .faq-item summary,
+    .markdown-content > .assess-ubuntu-2204-cis-markdown-card:not(.assess-ubuntu-2204-cis-markdown-card-examples) .faq-answer {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .markdown-content .assess-ubuntu-2204-cis-prompt-note summary {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
+    }
+
+    .markdown-content .assess-ubuntu-2204-cis-prompt-note-label-closed,
+    .markdown-content .assess-ubuntu-2204-cis-prompt-note-label-open,
+    .markdown-content .assess-ubuntu-2204-cis-prompt-copy-btn,
+    .markdown-content .assess-ubuntu-2204-cis-command-copy-btn {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .markdown-content .cisbench-command-note summary {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
+    }
+
+    .markdown-content .cisbench-command-note-label {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+@container (max-width: 720px) {
+    .assess-ubuntu-2204-cis-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .assess-ubuntu-2204-cis-toolbar-left {
+        width: 100%;
+    }
+
+    .assess-ubuntu-2204-cis-toolbar-actions {
+        justify-self: start;
+        margin-left: 0;
+        max-width: none;
+    }
+}
+
+.markdown-content .assess-ubuntu-2204-cis-citation-inline {
+    color: var(--tool-danger, #b91c1c);
+    font-weight: 800;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-citation-link,
+.markdown-content .assess-ubuntu-2204-cis-citation-backlink {
+    color: inherit;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.markdown-content .assess-ubuntu-2204-cis-citation-link:hover,
+.markdown-content .assess-ubuntu-2204-cis-citation-link:focus-visible,
+.markdown-content .assess-ubuntu-2204-cis-citation-backlink:hover,
+.markdown-content .assess-ubuntu-2204-cis-citation-backlink:focus-visible {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-citations .assess-ubuntu-2204-cis-citation-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-citations .assess-ubuntu-2204-cis-citation-table thead th:first-child,
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-citations .assess-ubuntu-2204-cis-citation-table tbody td:first-child {
+    width: 18%;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-citations .assess-ubuntu-2204-cis-citation-table thead th:nth-child(2),
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-citations .assess-ubuntu-2204-cis-citation-table tbody td:nth-child(2) {
+    width: 24%;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-citations .assess-ubuntu-2204-cis-citation-table a:not(.assess-ubuntu-2204-cis-citation-backlink) {
+    color: var(--tool-accent-deep, #5b21b6);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-citations .assess-ubuntu-2204-cis-citation-table .assess-ubuntu-2204-cis-citation-backlink {
+    color: inherit;
+    font-weight: 800;
+}
+
+.markdown-content > .assess-ubuntu-2204-cis-markdown-card-citations .assess-ubuntu-2204-cis-citation-table tr:target td {
+    background: rgba(var(--tool-danger-rgb, 185, 28, 28), 0.08);
+}

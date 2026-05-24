@@ -1,0 +1,469 @@
+/* section.css */
+
+.__TOOL_CLASS__ .__PREFIX__-toolbar-shell,
+.__TOOL_CLASS__ .__PREFIX__-toolbar,
+.__TOOL_CLASS__ .__PREFIX__-toolbar-main,
+.__TOOL_CLASS__ .__PREFIX__-sort-wrap,
+.__TOOL_CLASS__ .__PREFIX__-sort-select,
+.__TOOL_CLASS__ .tool-output-actions {
+    min-width: 0;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-toolbar-shell {
+    container-type: inline-size;
+    position: relative;
+    z-index: 20;
+    padding: 12px;
+    border: 1px solid var(--base-output-border, #ddd6fe);
+    border-radius: var(--base-output-radius, 12px);
+    background: var(--base-output-surface, #ffffff);
+    overflow: visible;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-toolbar-shell:has(.__PREFIX__-sort-select[open]) {
+    z-index: 120;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-toolbar {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(390px, 450px);
+    align-items: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-toolbar-main {
+    display: grid;
+    grid-template-columns: auto minmax(var(--base-output-sort-min-width, 160px), var(--base-output-sort-width, 240px));
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-label {
+    color: var(--base-output-muted, #6b5b7e);
+    font-size: var(--base-output-font-sm, 13px);
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-wrap {
+    width: min(100%, var(--base-output-sort-width, 240px));
+    min-width: 0;
+    max-width: var(--base-output-sort-width, 240px);
+    overflow: visible;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-select {
+    position: relative;
+    z-index: 30;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-select[open] {
+    z-index: 140;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-summary {
+    display: flex;
+    width: 100%;
+    min-height: 46px;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 10px 14px;
+    border: 1px solid var(--base-output-border-strong, #c8b6ff);
+    border-radius: var(--base-output-control-radius, 12px);
+    background: var(--base-output-control-bg, #ffffff);
+    color: var(--base-output-text, #1f1733);
+    cursor: pointer;
+    font-size: var(--base-output-font-base, 14px);
+    font-weight: 800;
+    line-height: 1.25;
+    list-style: none;
+    user-select: none;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-summary::-webkit-details-marker {
+    display: none;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-summary::after {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--base-output-muted, #6b5b7e);
+    border-bottom: 2px solid var(--base-output-muted, #6b5b7e);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-select:not([open]) .__PREFIX__-sort-summary::after {
+    transform: rotate(-45deg);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 160;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid var(--base-output-border-strong, #c8b6ff);
+    border-radius: var(--base-output-control-radius, 12px);
+    background: var(--base-output-control-bg, #ffffff);
+    box-shadow: 0 22px 46px rgba(15, 23, 42, 0.16);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-grid {
+    display: grid;
+    gap: 8px;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-option {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: var(--base-output-option-radius, 9px);
+    background: var(--base-output-control-bg, #ffffff);
+    color: var(--base-output-text, #1f1733);
+    cursor: pointer;
+    font-size: var(--base-output-font-sm, 13px);
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: left;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-option:hover,
+.__TOOL_CLASS__ .__PREFIX__-sort-option:focus {
+    border-color: var(--base-output-accent-border, #fed7aa);
+    background: var(--base-output-accent-soft, #fff7ed);
+    color: var(--base-output-accent, #ea580c);
+    outline: none;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-option.is-active {
+    border-color: var(--base-output-accent-border, #fed7aa);
+    background: var(--base-output-accent-soft, #fff7ed);
+    color: var(--base-output-accent, #ea580c);
+    box-shadow: 0 0 0 3px var(--base-output-accent-ring, rgba(249, 115, 22, 0.12));
+}
+
+.__TOOL_CLASS__ .tool-output-actions {
+    display: grid;
+    width: 100%;
+    max-width: 450px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-content: end;
+    justify-self: end;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn {
+    display: inline-flex;
+    width: 100%;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    border: 1px solid var(--base-output-border-strong, #c8b6ff);
+    border-radius: var(--base-output-button-radius, 10px);
+    background: var(--base-output-control-bg, #ffffff);
+    color: var(--base-output-text, #1f1733);
+    cursor: pointer;
+    font-size: var(--base-output-font-sm, 13px);
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn:nth-child(4) {
+    grid-column: 2;
+}
+
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn:nth-child(5) {
+    grid-column: 3;
+}
+
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn i {
+    flex: 0 0 auto;
+    color: var(--base-output-icon, #31264a);
+    font-size: var(--base-output-icon-size, 16px);
+    line-height: 1;
+}
+
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn:hover,
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn:focus {
+    border-color: var(--base-output-accent-border, #fed7aa);
+    background: var(--base-output-accent-soft, #fff7ed);
+    color: var(--base-output-accent, #ea580c);
+    outline: none;
+}
+
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn:hover i,
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn:focus i {
+    color: currentColor;
+}
+
+@media (max-width: 991.98px) {
+    .__TOOL_CLASS__ .__PREFIX__-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .__TOOL_CLASS__ .tool-output-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-self: start;
+        margin-left: 0;
+    }
+
+    .__TOOL_CLASS__ .tool-output-actions .tool-action-btn:nth-child(4),
+    .__TOOL_CLASS__ .tool-output-actions .tool-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .__TOOL_CLASS__ .__PREFIX__-toolbar-main {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .__TOOL_CLASS__ .__PREFIX__-sort-wrap,
+    .__TOOL_CLASS__ .__PREFIX__-sort-select,
+    .__TOOL_CLASS__ .tool-output-actions {
+        width: 100%;
+        max-width: none;
+    }
+
+    .__TOOL_CLASS__ .tool-output-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* output-toolbar-persistence-contract:start */
+.__TOOL_CLASS__ .__PREFIX__-toolbar-shell,
+.__TOOL_CLASS__ .__PREFIX__-toolbar,
+.__TOOL_CLASS__ .__PREFIX__-toolbar-main,
+.__TOOL_CLASS__ .__PREFIX__-toolbar-left,
+.__TOOL_CLASS__ .__PREFIX__-sort-shell,
+.__TOOL_CLASS__ .__PREFIX__-sort-wrap,
+.__TOOL_CLASS__ .__PREFIX__-sort-select,
+.__TOOL_CLASS__ .tool-output-actions,
+.__TOOL_CLASS__ .tool-result-toolbar-actions {
+    min-width: 0;
+    overflow: visible;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-toolbar-shell {
+    container-type: inline-size;
+    position: relative;
+    z-index: 20;
+    overflow: visible;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-toolbar-shell:has(.__PREFIX__-sort-select[open]) {
+    z-index: 120;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-toolbar {
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(390px, 450px);
+    align-items: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-toolbar-main,
+.__TOOL_CLASS__ .__PREFIX__-toolbar-left,
+.__TOOL_CLASS__ .__PREFIX__-sort-shell {
+    display: grid;
+    width: min(100%, calc(var(--base-output-sort-width, 240px) + 52px));
+    grid-template-columns: auto minmax(var(--base-output-sort-min-width, 160px), var(--base-output-sort-width, 240px));
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-wrap {
+    width: min(100%, var(--base-output-sort-width, 240px));
+    min-width: 0;
+    max-width: var(--base-output-sort-width, 240px);
+    overflow: visible;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-select {
+    position: relative;
+    z-index: 30;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-select[open] {
+    z-index: 140;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-summary {
+    width: 100%;
+    min-height: 46px;
+    box-sizing: border-box;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-sort-menu {
+    z-index: 160;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.__TOOL_CLASS__ .tool-output-actions,
+.__TOOL_CLASS__ .tool-result-toolbar-actions {
+    display: grid;
+    width: 100%;
+    max-width: 450px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-content: end;
+    justify-self: end;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn,
+.__TOOL_CLASS__ .tool-result-toolbar-actions .tool-action-btn,
+.__TOOL_CLASS__ .tool-result-toolbar-actions .tool-result-action-btn,
+.__TOOL_CLASS__ .tool-output-actions .__PREFIX__-action-btn,
+.__TOOL_CLASS__ .tool-result-toolbar-actions .__PREFIX__-action-btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    gap: 6px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-radius: var(--base-output-button-radius, 10px);
+    font-size: 12px;
+    line-height: 1;
+    overflow: visible;
+    white-space: nowrap;
+}
+
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn [data-button-label],
+.__TOOL_CLASS__ .tool-result-toolbar-actions .tool-action-btn [data-button-label],
+.__TOOL_CLASS__ .tool-result-toolbar-actions .tool-result-action-btn [data-button-label],
+.__TOOL_CLASS__ .tool-output-actions .__PREFIX__-action-btn [data-button-label],
+.__TOOL_CLASS__ .tool-result-toolbar-actions .__PREFIX__-action-btn [data-button-label] {
+    display: inline-block;
+    min-width: 0;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn:nth-child(4),
+.__TOOL_CLASS__ .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.__TOOL_CLASS__ .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
+    grid-column: 2;
+}
+
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn:nth-child(5),
+.__TOOL_CLASS__ .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.__TOOL_CLASS__ .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+    grid-column: 3;
+}
+
+.__TOOL_CLASS__ .tool-output-actions .tool-action-btn i,
+.__TOOL_CLASS__ .tool-result-toolbar-actions .tool-action-btn i,
+.__TOOL_CLASS__ .tool-result-toolbar-actions .tool-result-action-btn i,
+.__TOOL_CLASS__ .tool-output-actions .__PREFIX__-action-btn i,
+.__TOOL_CLASS__ .tool-result-toolbar-actions .__PREFIX__-action-btn i {
+    flex: 0 0 auto;
+    font-size: 15px;
+    line-height: 1;
+}
+
+@media (max-width: 991.98px) {
+    .__TOOL_CLASS__ .__PREFIX__-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .__TOOL_CLASS__ .tool-output-actions,
+    .__TOOL_CLASS__ .tool-result-toolbar-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-self: start;
+        margin-left: 0;
+        max-width: none;
+    }
+
+    .__TOOL_CLASS__ .tool-output-actions .tool-action-btn:nth-child(4),
+    .__TOOL_CLASS__ .tool-output-actions .tool-action-btn:nth-child(5),
+    .__TOOL_CLASS__ .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+    .__TOOL_CLASS__ .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+    .__TOOL_CLASS__ .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+    .__TOOL_CLASS__ .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .__TOOL_CLASS__ .__PREFIX__-toolbar-main,
+    .__TOOL_CLASS__ .__PREFIX__-toolbar-left,
+    .__TOOL_CLASS__ .__PREFIX__-sort-shell {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .__TOOL_CLASS__ .__PREFIX__-sort-wrap,
+    .__TOOL_CLASS__ .__PREFIX__-sort-select,
+    .__TOOL_CLASS__ .tool-output-actions,
+    .__TOOL_CLASS__ .tool-result-toolbar-actions {
+        width: 100%;
+        max-width: none;
+    }
+
+    .__TOOL_CLASS__ .tool-output-actions,
+    .__TOOL_CLASS__ .tool-result-toolbar-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@container (max-width: 720px) {
+    .__TOOL_CLASS__ .__PREFIX__-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .__TOOL_CLASS__ .__PREFIX__-toolbar-left {
+        width: 100%;
+    }
+
+    .__TOOL_CLASS__ .__PREFIX__-sort-shell {
+        width: min(100%, calc(var(--base-output-sort-width, 240px) + 52px));
+    }
+
+    .__TOOL_CLASS__ .tool-output-actions,
+    .__TOOL_CLASS__ .tool-result-toolbar-actions {
+        justify-self: start;
+        margin-left: 0;
+        max-width: none;
+    }
+}
+/* output-toolbar-persistence-contract:end */

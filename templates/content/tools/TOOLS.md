@@ -8,9 +8,26 @@ This file governs final runtime tool packages under `templates/content/tools/` a
 
 Tool `meta.yml` files must include `group` and `family` values that match this manifest. Do not move existing package paths to match group labels.
 
-Use `codex/bin/_tool.sh validate <tool-path>` after package or metadata changes.
+Use `codex/bin/tool-package.sh validate <tool-path>` after package or metadata changes.
 
-When a family baseline is applied or reapplied, validation must also include the matching family parity gate against the final runtime package. `_tool.sh validate`, namespace markers, and `audit-namespace` output are not enough unless they explicitly include that family gate.
+When a family baseline is applied or reapplied, validation must also include the matching family parity gate against the final runtime package. `tool-package.sh validate`, namespace markers, and `family-package.sh namespace audit` output are not enough unless they explicitly include that family gate.
+
+## Publication Status
+
+Tool `meta.yml` files should carry `publication_status` for production publishing decisions.
+
+Allowed values:
+
+- `draft`: show a rendered leading `*` on development or review listings and exclude the tool from production publishing
+- `ready`: publish normally and render without a star
+
+Every new tool package must start as `publication_status: draft`. Change it to `publication_status: ready` only as a deliberate release step after review and validation.
+
+Do not put `*` directly in `title`, `card_image_title`, slugs, URLs, SEO text, or export metadata. The star is a display marker derived from `publication_status: draft`.
+
+Production catalogue, sitemap, feed, deployment, and rsync generation must include only explicit `publication_status: ready` tools. Production validation must fail when `draft`, missing, or invalid status tools appear in the publish set.
+
+Do not treat missing `publication_status` as production-ready. Missing or invalid status must be excluded.
 
 ## Package Rule
 
@@ -40,6 +57,16 @@ New packages can start from `templates/content/main/scaffold/assets/`, but final
 
 Do not omit required files unless the user explicitly asked for a partial scaffold.
 
+## Content References
+
+Tool `content.md` references must follow `templates/content/main/MAIN.md`. Do not ship citation rows with hard `404`, retired, parked, or unrelated-redirect URLs. Every cited source must be official, primary, or source-of-truth for the exact cited claim, and the linked page must match the content around the citation.
+
+## Tool Typography
+
+Final tool packages must inherit the platform two-font system: `Nunito` for headings, page titles, card titles, and section headings through `--heading-font`; `Roboto` for body copy, navigation, labels, controls, tables, tool UI text, and support text through `--default-font`.
+
+Do not add Rubik, Poppins, Inter, or other proportional font families to `custom.css`, generated package CSS, shared section CSS, family workspace sources, image templates, or Google Fonts links. Monospace stacks are allowed only for code, terminal, command, JSON, and preformatted output.
+
 ---
 
 # InfraStack Tool Catalogue
@@ -54,9 +81,32 @@ Create or resume records with:
 codex/bin/_init.sh <task_name> --kind <kind>
 ```
 
-Use `create` for new tools, `baseline` for reusable family source extraction or reapplication, `functional` for user-exercisable behavior, `revise` for visible UX/content/workflow improvements, `refactor` for behavior-preserving cleanup, `audit` for review-only work, `fix` for bounded defects, `smoke` for quick sanity checks, `validation` for check-only work, and `platform` for shared standards or tooling.
+Use `create` for one new tool, `batch` for multiple coordinated tool creation jobs, `baseline` for reusable family source extraction or reapplication, `functional` for user-exercisable behavior, `revise` for visible UX/content/workflow improvements, `refactor` for behavior-preserving cleanup, `audit` for review-only work, `fix` for bounded defects, `smoke` for quick sanity checks, `validation` for check-only work, and `platform` for shared standards or tooling.
 
 Use `context/validation-plan.md` for planned checks and `evidence/` for proof of checks that actually ran.
+
+## Batch Tool Creation
+
+Use `codex/bin/batch-package.sh` when a request creates multiple tools in one coordinated pass.
+
+Batch creation must:
+
+- group jobs by `family`
+- keep a readable process label for every tool job
+- run only as many parallel jobs as the batch manifest or command allows
+- write status to a `batch` DevOps task record
+- report user status as text cards by family, not as raw process ids
+- keep every created tool as `publication_status: draft`
+
+Commands:
+
+```bash
+codex/bin/batch-package.sh plan <batch.yml>
+codex/bin/batch-package.sh start <batch.yml> --parallel 2
+codex/bin/batch-package.sh status <task-name-or-path>
+```
+
+Use `start` for background work and `run` for foreground work. While a batch is running, answer status requests from `codex/bin/batch-package.sh status <task-name-or-path>`.
 
 ## New Tool Creation Priority
 
@@ -113,7 +163,7 @@ The package path `templates/content/tools/<category>/<tool-slug>/` is a stable f
 
 `src/Service/ToolCatalogService.php` is the shared runtime catalogue reader. Controllers and listing surfaces should use that service instead of repeating filesystem scans.
 
-`codex/bin/_tool.sh` owns tool package validation and script commands. Tool script profiles define validation gates, not category-specific workspace fields.
+`codex/bin/tool-package.sh` owns final tool package creation and validation. `codex/bin/batch-package.sh` owns family-grouped batch creation orchestration, parallel job status, and readable progress records. `codex/bin/base-package.sh` owns shared `_base` workspace checks. `codex/bin/family-package.sh` owns family and namespace audits. `codex/bin/tester-package.sh` owns smoke, functional, and family acceptance checks. `codex/bin/performance-package.sh` owns static performance budgets, optional Lighthouse checks, and release performance gates. Tool script profiles define validation gates, not category-specific workspace fields.
 
 For script, namespace, baseline, or batch package changes, final reporting must include how many tools were updated as `X / total`, which tools were not updated and why, whether family sources changed, whether shared main sources changed, whether runtime packages changed, and the evidence path for checks that ran. This count is part of the tool script contract, not optional polish.
 
@@ -351,6 +401,8 @@ title: Subnet Calculator
 ```
 
 Use the family prefix in `meta.yml` only when it improves clarity or the platform requires it.
+
+Do not prefix product titles with `*` to mark draft content. Use `publication_status: draft` in `meta.yml` and let review surfaces render the star.
 
 ## Category Color System
 

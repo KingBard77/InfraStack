@@ -67,7 +67,7 @@ The reusable baseline is this family template.
 
 The architecture baseline was refreshed on 2026-05-18.
 
-This family source and its workspace folders are now the current baseline:
+This family source and its composed workspace folders are now the current baseline:
 
 ```text
 templates/content/family/architecture/
@@ -76,17 +76,18 @@ templates/content/family/architecture/workspace/
 
 Baseline requirements:
 
-- `01_input-brief` owns the architecture prompt shell, AWS-reference helper rhythm, and body-only info marker helper.
-- `02_basic-settings` owns preset, region, availability zone or scope controls, baseline select wrappers, custom dropdown enhancement, no placeholder-chip overlay, preset description behavior, and body-only info marker helper.
-- `03_advanced-settings` owns network layout, workload, and services/controls grouped custom controls.
+- `_base.00_shell` owns the common workspace shell, panel rhythm, and responsive frame.
+- `_base.01_input-brief` owns the architecture prompt shell, helper rhythm, and body-only info marker helper.
+- `_base.02_basic-settings` owns preset, region, availability zone or scope controls, baseline select wrappers, custom dropdown enhancement, no placeholder-chip overlay, preset description behavior, and body-only info marker helper.
+- `_base.03_custom-settings` owns optional network layout, workload, and services/controls grouped custom controls.
+- `04_visual-contract` owns stage title rhythm, diagram stage, helper chips, usage help, movement controls, connector hit targets, connector handles, zoom, fullscreen, hide UI, Auto layout reset, canvas-overlay marquee selection, live marquee target highlighting, visual output, reusable engine-runtime reference, and reusable model-core reference.
 - `04_selected-item` owns draggable-box and connector selected item empty states, movement hints, line-selection hints, and highlight/reset command rhythm.
-- `05_result-text` owns stage title, preset chip, model metadata, the exact pre-generate notice, and generated text summary.
-- `06_result-diagram` owns stage toolbar, helper chips, usage help, movement controls, connector hit targets, connector handles, zoom, fullscreen, hide UI, reset, and visual output.
-- `07_score-card` owns advisory score, quality, status, readiness, risk, or assumption summary cards.
-- `08_sort-card` owns the Basic-height Sort dropdown, selected-label-only summary, and implemented export/import actions.
-- `09_result-table` owns Technical Inventory, secondary table cards, Prompt Notes, Pillar Breakdown, Risk Level, JSON output, import, restore, and generated dummy assessment/table demo.
-- `section.css` and `section.js` are fully extracted per section. Keep the full AWS source only under `baseline/source/`; do not put full custom runtime copies back into workspace section folders.
-- AWS source extraction uses `ns:start/ns:end family.architecture.workspace.<section>` markers in `tool.html.twig`, `custom.css`, and `custom.js`, with `section.js` recording the reusable JavaScript ownership map.
+- `_base.05_result-summary` owns advisory score, quality, status, readiness, risk, or assumption summary cards.
+- `_base.06_output-toolbar` owns the Basic-height Sort dropdown, selected-label-only summary, and implemented export/import actions.
+- `_base.07_table-output` owns Technical Inventory, secondary table cards, Prompt Notes, Pillar Breakdown, and Risk Level output shell.
+- `_base.08_json-restore` owns JSON output, import, restore, and generated payload boundary.
+- Common reusable section shape is composed from `templates/content/family/_base/workspace/`; architecture-owned behavior remains in `04_visual-contract` and `04_selected-item`.
+- The full AWS source lives under `source/` for traceability only. Do not audit this as active source.
 
 Output notice before generation:
 
@@ -108,8 +109,8 @@ Table/export rule:
 - secondary table cards may be used for routing, control, or domain summary rows when backed by normalized model data
 - before/after section demos should stack as two rows in one column, not side-by-side columns
 - standalone `demo.html` files own demo chrome separately from extracted section source, including any icon stylesheet, `demo-title`, `demo-title-icon`, `demo-title-text`, and an architecture placeholder icon such as `bi bi-diagram-3`
-- `04_selected-item`, `06_result-diagram`, and `09_result-table` demos should show before/after dummy states where practical
-- `09_result-table/demo.html` must show generated dummy inventory rows, secondary table rows, pillar rows, risk copy, and JSON output so future tools can see the expected output shape
+- `04_visual-contract` and `04_selected-item` demos should show before/after dummy states where practical
+- `_base` table and JSON demos must show generated dummy inventory rows, secondary table rows, pillar rows, risk copy, and JSON output so future tools can see the expected output shape
 - result table dummy rows may use placeholder model data, but the `Action` column must render copy-row buttons, not long text
 - Pillar Breakdown and Risk Level are advisory model summaries; they must not claim compliance, certification, security validation, reliability validation, or production readiness beyond generated model facts
 
@@ -119,7 +120,10 @@ Stage interaction baseline:
 
 - diagram boxes are cursor-selectable, highlighted without hiding the grid, content, or connector paths, and movable when the model allows
 - selected boxes update the inspector and persist layout changes through normalized state
-- reset layout clears generated layout and connector overrides back to generated placement
+- reset layout keeps the stable `ResetLayout` DOM hook but displays `Auto layout`, and clears generated layout plus connector overrides back to generated placement
+- cursor marquee selection renders as a stage-canvas overlay instead of an SVG-owned rectangle, so it remains visible on the full CSS grid surface
+- boxes intersected by cursor marquee selection live-highlight with `is-marquee-target` while dragging
+- multi-box highlight state persists as `highlighted_node_ids` while `highlighted_node_id` remains a compatibility field
 - connector paths keep fixed visual stroke and arrowhead sizing, expose invisible wide hit targets, and redraw when connected boxes move
 - connector selection exposes anchor or bend handles when editable and persists overrides through JSON restore
 
@@ -231,23 +235,24 @@ Do not ship generic family copy as final content.
 
 ## Architecture Workspace Sections
 
-The architecture family owns its workspace section source:
+The architecture family composes shared `_base` workspace sections with architecture-owned section source:
 
 ```text
-templates/content/family/architecture/workspace/01_input-brief/
-templates/content/family/architecture/workspace/02_basic-settings/
-templates/content/family/architecture/workspace/03_advanced-settings/
+templates/content/family/_base/workspace/00_shell/
+templates/content/family/_base/workspace/01_input-brief/
+templates/content/family/_base/workspace/02_basic-settings/
+templates/content/family/_base/workspace/03_custom-settings/
+templates/content/family/architecture/workspace/04_visual-contract/
 templates/content/family/architecture/workspace/04_selected-item/
-templates/content/family/architecture/workspace/05_result-text/
-templates/content/family/architecture/workspace/06_result-diagram/
-templates/content/family/architecture/workspace/07_score-card/
-templates/content/family/architecture/workspace/08_sort-card/
-templates/content/family/architecture/workspace/09_result-table/
+templates/content/family/_base/workspace/05_result-summary/
+templates/content/family/_base/workspace/06_output-toolbar/
+templates/content/family/_base/workspace/07_table-output/
+templates/content/family/_base/workspace/08_json-restore/
 ```
 
 Use these sections to choose architecture behavior and shape `tool.html.twig`, `custom.css`, `custom.js`, and `assets/bin/model-core.js`.
 
-Full copied AWS VPC Architecture source lives under `baseline/source/` for traceability only. Architecture workspace CSS and JavaScript are section-owned. Do not keep or recreate root `workspace/custom.css`, `workspace/custom.js`, or `workspace/demo.html.twig` snapshot files.
+Full copied AWS VPC Architecture source lives under `source/` for traceability only. Do not audit this as active source. Architecture workspace CSS and JavaScript are section-owned. Do not keep or recreate root `workspace/custom.css`, `workspace/custom.js`, or `workspace/demo.html.twig` snapshot files.
 
 Standalone architecture demos keep their title/icon placeholder in `demo.html`. Do not move that demo chrome into `page.html.twig`, final tool packages, or namespace-marked runtime blocks.
 
@@ -263,10 +268,9 @@ Default flow:
 2. Basic controls.
 3. Custom controls.
 4. Selected item controls when objects are editable.
-5. Stage title and metadata.
-6. Diagram toolbar and stage.
-7. Score/status card.
-8. Inventory, assessment tabs, notes, export, and JSON state.
+5. Architecture visual contract for stage title, diagram toolbar, stage, connector grammar, and viewport behavior.
+6. Score/status summary.
+7. Inventory, assessment tabs, notes, export, and JSON state.
 
 ---
 

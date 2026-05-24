@@ -7,7 +7,9 @@ This folder defines the family-specific workspace grammar for assessment tools.
 Use it when a requested tool filters, reviews, evaluates, or exports assessment material such as controls, findings, requirements, checks, evidence, risk rows, maturity items, or benchmark scripts.
 
 The shared scaffold owns reusable content rhythm.
-This workspace source owns assessment sections and assessment behavior.
+Shared `_base/workspace` sections own the common shell, input, settings, summary, toolbar, table, and JSON restore shape. This workspace source owns assessment-specific selected artifact review and assessment behavior.
+
+Workspace source inherits the platform two-font system: `Nunito` through `--heading-font` for headings and titles, and `Roboto` through `--default-font` for body, labels, controls, tables, and tool UI. Do not add other proportional font families in assessment section CSS, demos, or final runtime copies.
 
 ## Reference Workspace
 
@@ -31,14 +33,14 @@ Use the reference to understand working filter-to-result grammar, table/export s
 When a user asks to baseline an assessment tool, copy the full stabilized runtime source into:
 
 ```text
-templates/content/family/assessment/baseline/source/
+templates/content/family/assessment/source/
 ```
 
-The copied snapshot is reference-only. Do not import it directly from final runtime tools.
+The copied snapshot is reference-only. Do not audit this as active source. Do not import it directly from final runtime tools.
 
 The source tool has no `assets/bin/model-core.js`. Its JavaScript embeds `assets/custom.json.twig` and calls a tool-local Symfony endpoint for selected script content. New assessment tools must adapt the data source and endpoint deliberately.
 
-Reusable assessment behavior belongs in the numbered workspace section folders. Do not recreate root `workspace/custom.css` or `workspace/custom.js` snapshots.
+Reusable assessment-specific behavior belongs in the assessment-owned workspace section folders. Common sections are composed from `templates/content/family/_base/workspace/`. Do not recreate root `workspace/custom.css` or `workspace/custom.js` snapshots.
 
 ## Composition Order
 
@@ -89,9 +91,10 @@ When a shared main content section is adapted into a final runtime package, appl
 templates/content/main/sections/content/
 ```
 
-Use assessment workspace sections from:
+Use composed workspace sections from:
 
 ```text
+templates/content/family/_base/workspace/
 templates/content/family/assessment/workspace/
 ```
 
@@ -105,18 +108,19 @@ Assessment content adaptation:
 - `content/04_tips-prompts` becomes filter tips, review tips, and safe usage guidance when the assessment is form-first.
 - Overview, technical, and export tables should use explicit HTML table structure with fixed layout and wrapping so columns align inside the content card.
 
-Assessment workspace sections:
+Assessment workspace composition:
 
-- `01_input-brief` starts the assessment state.
-- `02_basic-settings` narrows scope.
-- `03_advanced-settings` defines optional advanced filters or assessment options; it stays no-op unless separated from basic scope.
+- `_base.00_shell` defines the shared workspace frame.
+- `_base.01_input-brief` starts the assessment state.
+- `_base.02_basic-settings` narrows scope.
+- `_base.03_custom-settings` defines optional Custom filters or assessment options.
 - `04_selected-item` displays selected source, script, evidence, or requirement content.
-- `05_result-summary` summarizes current matches, selected item, coverage, and gaps.
-- `06_result-view` defines the current row table, row copy action, section/family/severity/category rollups, and evidence views.
-- `07_table-export` defines sort, copy, CSV, report, JSON, and optional import actions.
-- `08_json-restore` defines structured JSON snapshot output.
+- `_base.05_result-summary` summarizes current matches, selected item, coverage, and gaps.
+- `_base.06_output-toolbar` defines sort, copy, CSV, report, JSON, and optional import actions.
+- `_base.07_table-output` defines the current row table, row copy action, section/family/severity/category rollups, selected artifact panel, and evidence views.
+- `_base.08_json-restore` defines structured JSON snapshot output.
 
-Each section folder must contain:
+Each assessment-owned section folder must contain:
 
 ```text
 README.md

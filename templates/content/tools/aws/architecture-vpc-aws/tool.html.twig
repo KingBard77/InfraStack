@@ -1,52 +1,73 @@
 {# tool.html.twig #}
+{# ns:start family._base.workspace.00_shell #}
 
 <div class="architecture-vpc-aws-tool">
   <div class="tool-box">
-    {# ns:start family.architecture.workspace.01_input-brief #}
-    <div class="tool-shell tool-prompt-shell">
-      <div class="tool-main-row">
-        <label for="architectureVpcAwsPrompt" class="tool-main-label">Architecture prompt</label>
-        <div class="tool-main-input-grid architecture-vpc-aws-main-input-grid">
-          <textarea
-            id="architectureVpcAwsPrompt"
-            class="form-control architecture-vpc-aws-prompt"
-            placeholder="Describe the AWS VPC layout, region, availability zones, ingress path, compute tier, database tier, and shared services."
-          >Create an AWS VPC architecture in us-east-1 with 2 availability zones. Use public subnets for an internet-facing Application Load Balancer, private app subnets for EC2 application servers, and private data subnets for a Multi-AZ RDS PostgreSQL database. Add a single NAT gateway, VPC endpoints for S3 and Systems Manager, CloudWatch, and VPC flow logs.</textarea>
+    {# ns:start family._base.workspace.01_input-brief #}
+    <div class="tool-shell tool-prompt-shell architecture-vpc-aws-input-card">
+      <div class="architecture-vpc-aws-input-brief" data-input-layout="stacked">
+        <div class="architecture-vpc-aws-input-row">
+          <div class="architecture-vpc-aws-input-label-wrap">
+            <label for="architectureVpcAwsPrompt" class="tool-main-label architecture-vpc-aws-input-label">Architecture prompt</label>
+            <span class="architecture-vpc-aws-helper-chip" title="Describe the architecture prompt boundary." aria-label="Describe the architecture prompt boundary.">i</span>
+          </div>
+          <div class="tool-main-input-grid architecture-vpc-aws-main-input-grid architecture-vpc-aws-input-stack">
+            <textarea
+              id="architectureVpcAwsPrompt"
+              class="form-control architecture-vpc-aws-prompt architecture-vpc-aws-input-control"
+              rows="7"
+              placeholder="Describe the AWS VPC layout, region, availability zones, ingress path, compute tier, database tier, and shared services."
+            >Create an AWS VPC architecture in us-east-1 with 2 availability zones. Use public subnets for an internet-facing Application Load Balancer, private app subnets for EC2 application servers, and private data subnets for a Multi-AZ RDS PostgreSQL database. Add a single NAT gateway, VPC endpoints for S3 and Systems Manager, CloudWatch, and VPC flow logs.</textarea>
+            <div class="architecture-vpc-aws-input-error d-none" id="architectureVpcAwsInputError" role="alert"></div>
+          </div>
+        </div>
 
+        <div class="architecture-vpc-aws-main-actions architecture-vpc-aws-input-actions">
+          <button
+            type="button"
+            class="tool-action-btn tool-action-btn-primary architecture-vpc-aws-action-btn architecture-vpc-aws-action-btn-primary"
+            id="architectureVpcAwsGenerate"
+          >
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span>Generate Diagram</span>
+          </button>
+          <button
+            type="button"
+            class="tool-action-btn tool-action-btn-secondary architecture-vpc-aws-action-btn architecture-vpc-aws-action-btn-secondary"
+            id="architectureVpcAwsReset"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            <span>Load Default</span>
+          </button>
+        </div>
+
+        <div class="architecture-vpc-aws-input-helper-card">
+          <span class="architecture-vpc-aws-input-hint">Use one brief prompt with region, AZ count, ingress, private tiers, and supporting AWS services. Presets below can prefill and instantly generate a working layout.</span>
+          <span class="architecture-vpc-aws-helper-chip architecture-vpc-aws-helper-chip-inline" title="Describe the architecture prompt boundary." aria-label="Describe the architecture prompt boundary.">i</span>
         </div>
       </div>
-
-      <p class="tool-control-hint architecture-vpc-aws-prompt-hint">
-        Use one brief prompt with region, AZ count, ingress, private tiers, and supporting AWS services. Presets below can prefill and instantly generate a working layout.
-      </p>
-
-      <div class="architecture-vpc-aws-main-actions">
-        <button type="button" class="tool-action-btn tool-action-btn-primary" id="architectureVpcAwsGenerate">
-          <i class="bi bi-stars" aria-hidden="true"></i>
-          <span>Generate Diagram</span>
-        </button>
-        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureVpcAwsReset">Load Default</button>
-      </div>
     </div>
-    {# ns:end family.architecture.workspace.01_input-brief #}
+    {# ns:end family._base.workspace.01_input-brief #}
 
     <div class="tool-error-state d-none" id="architectureVpcAwsErrorState"></div>
 
     <div class="architecture-vpc-aws-advanced-grid">
       <aside class="tool-shell tool-inspector-shell">
-        <div class="tool-shell-header">
-          <div>
-            <h2 class="tool-shell-title">Basic</h2>
-          </div>
-        </div>
 
         <div class="tool-shell-body">
-          {# ns:start family.architecture.workspace.02_basic-settings #}
-          <div class="tool-inspector-section architecture-vpc-aws-basic-preset-section">
+          {# ns:start family._base.workspace.02_basic-settings #}
+          <div class="tool-inspector-section architecture-vpc-aws-basic-preset-section architecture-vpc-aws-basic-card">
+
+            <div class="architecture-vpc-aws-example-card">
+              <span class="architecture-vpc-aws-example-label">Example architecture settings</span>
+              <strong class="architecture-vpc-aws-example-value">3-tier web, us-east-1, 2 zones</strong>
+              <span class="architecture-vpc-aws-example-helper">Region, zone count, and preset should change the generated model and exported JSON.</span>
+            </div>
+
             <div class="architecture-vpc-aws-basic-grid">
-              <div class="architecture-vpc-aws-control-stack">
-                <label class="tool-control-label" for="architectureVpcAwsPreset">Preset</label>
-                <select id="architectureVpcAwsPreset" class="form-select">
+              <div class="architecture-vpc-aws-control-stack architecture-vpc-aws-setting-card">
+                <label class="tool-control-label architecture-vpc-aws-setting-label" for="architectureVpcAwsPreset">Preset <span class="architecture-vpc-aws-helper-chip" title="Choose a starting preset that updates the visible controls and generated output." aria-label="Choose a starting preset that updates the visible controls and generated output.">i</span></label>
+                <select id="architectureVpcAwsPreset" class="form-select architecture-vpc-aws-native-select">
                   <option value="three-tier-web" selected>3-Tier Web</option>
                   <option value="ecs-fargate">ECS Fargate</option>
                   <option value="eks-platform">Private EKS</option>
@@ -54,9 +75,9 @@
                 </select>
               </div>
 
-              <div class="architecture-vpc-aws-control-stack">
-                <label class="tool-control-label" for="architectureVpcAwsRegion">Region</label>
-                <select id="architectureVpcAwsRegion" class="form-select">
+              <div class="architecture-vpc-aws-control-stack architecture-vpc-aws-setting-card">
+                <label class="tool-control-label architecture-vpc-aws-setting-label" for="architectureVpcAwsRegion">Region <span class="architecture-vpc-aws-helper-chip" title="Choose the provider region used by the generated model and exported JSON." aria-label="Choose the provider region used by the generated model and exported JSON.">i</span></label>
+                <select id="architectureVpcAwsRegion" class="form-select architecture-vpc-aws-native-select">
                   <option value="us-east-1">us-east-1</option>
                   <option value="us-east-2">us-east-2</option>
                   <option value="us-west-2">us-west-2</option>
@@ -67,24 +88,24 @@
                 </select>
               </div>
 
-              <div class="architecture-vpc-aws-control-stack">
-                <label class="tool-control-label" for="architectureVpcAwsAzCount">Availability zones</label>
-                <select id="architectureVpcAwsAzCount" class="form-select">
+              <div class="architecture-vpc-aws-control-stack architecture-vpc-aws-setting-card">
+                <label class="tool-control-label architecture-vpc-aws-setting-label" for="architectureVpcAwsAzCount">Availability zones <span class="architecture-vpc-aws-helper-chip" title="Choose the zone count used by placement and resilience assumptions." aria-label="Choose the zone count used by placement and resilience assumptions.">i</span></label>
+                <select id="architectureVpcAwsAzCount" class="form-select architecture-vpc-aws-native-select">
                   <option value="1">1 AZ</option>
                   <option value="2" selected>2 AZ</option>
                   <option value="3">3 AZ</option>
                 </select>
               </div>
-              <p class="tool-control-hint" id="architectureVpcAwsPresetDescription">Public ALB, private EC2 app tier, Multi-AZ RDS, single NAT.</p>
+              <p class="tool-control-hint architecture-vpc-aws-setting-hint" id="architectureVpcAwsPresetDescription">Public ALB, private EC2 app tier, Multi-AZ RDS, single NAT.</p>
             </div>
           </div>
-          {# ns:end family.architecture.workspace.02_basic-settings #}
+          {# ns:end family._base.workspace.02_basic-settings #}
 
-          {# ns:start family.architecture.workspace.03_advanced-settings #}
-          <details class="architecture-vpc-aws-custom-panel">
+          {# ns:start family._base.workspace.03_custom-settings #}
+          <details class="architecture-vpc-aws-custom-panel" data-custom-layout="tabbed_two_column">
             <summary class="architecture-vpc-aws-custom-panel-summary">
               <span>Custom</span>
-              <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                <span class="architecture-vpc-aws-custom-arrow-slot" aria-hidden="true"></span>
             </summary>
 
             <div class="architecture-vpc-aws-custom-panel-body">
@@ -97,17 +118,46 @@
               <div class="tool-inspector-section architecture-vpc-aws-config-panel active" id="architectureVpcAwsNetworkConfigPanel" data-config-panel role="tabpanel" aria-labelledby="architectureVpcAwsNetworkConfigTab">
                 <div class="architecture-vpc-aws-config-grid">
                   <div class="architecture-vpc-aws-control-stack">
-                    <label class="tool-control-label" for="architectureVpcAwsCidr">VPC CIDR</label>
-                    <input type="text" id="architectureVpcAwsCidr" class="form-control" value="10.0.0.0/16">
+                    <label class="tool-control-label" for="architectureVpcAwsCidr">VPC CIDR <span class="architecture-vpc-aws-helper-chip architecture-vpc-aws-custom-helper-chip" title="Tune vpc cidr before regenerating the diagram." aria-label="Tune vpc cidr before regenerating the diagram.">i</span></label>
+                    <input type="text" id="architectureVpcAwsCidr" class="form-control" value="10.0.0.0/16" placeholder="10.0.0.0/16">
                   </div>
 
                   <div class="architecture-vpc-aws-control-stack">
-                    <label class="tool-control-label" for="architectureVpcAwsNatMode">NAT mode</label>
-                    <select id="architectureVpcAwsNatMode" class="form-select">
-                      <option value="none">No NAT</option>
-                      <option value="single" selected>Single NAT</option>
-                      <option value="per-az">One per AZ</option>
-                    </select>
+                    <label class="tool-control-label" for="architectureVpcAwsNatMode">NAT mode <span class="architecture-vpc-aws-helper-chip architecture-vpc-aws-custom-helper-chip" title="Tune nat mode before regenerating the diagram." aria-label="Tune nat mode before regenerating the diagram.">i</span></label>
+                    <input type="hidden" id="architectureVpcAwsNatMode" value="single">
+
+                    <details class="architecture-vpc-aws-custom-dropdown" data-custom-dropdown-for="architectureVpcAwsNatMode">
+                      <summary class="architecture-vpc-aws-custom-dropdown-summary">
+                        <span data-custom-dropdown-label>Single NAT</span>
+                          <span class="architecture-vpc-aws-custom-arrow-slot" aria-hidden="true"></span>
+                      </summary>
+
+                      <div class="architecture-vpc-aws-custom-dropdown-menu" role="listbox" aria-label="Custom option">
+                        <button
+                          type="button"
+                          class="architecture-vpc-aws-custom-dropdown-option"
+                          data-custom-dropdown-value="none"
+                          role="option"
+                          aria-selected="false"
+                        >No NAT</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vpc-aws-custom-dropdown-option active"
+                          data-custom-dropdown-value="single"
+                          role="option"
+                          aria-selected="true"
+                        >Single NAT</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vpc-aws-custom-dropdown-option"
+                          data-custom-dropdown-value="per-az"
+                          role="option"
+                          aria-selected="false"
+                        >One per AZ</button>
+                      </div>
+                    </details>
                   </div>
                 </div>
               </div>
@@ -115,23 +165,95 @@
               <div class="tool-inspector-section architecture-vpc-aws-config-panel" id="architectureVpcAwsWorkloadConfigPanel" data-config-panel role="tabpanel" aria-labelledby="architectureVpcAwsWorkloadConfigTab" hidden>
                 <div class="architecture-vpc-aws-config-grid">
                   <div class="architecture-vpc-aws-control-stack">
-                    <label class="tool-control-label" for="architectureVpcAwsAppTier">App tier</label>
-                    <select id="architectureVpcAwsAppTier" class="form-select">
-                      <option value="ec2">EC2 Auto Scaling</option>
-                      <option value="ecs">ECS / Fargate</option>
-                      <option value="eks">EKS</option>
-                      <option value="lambda">Lambda in VPC</option>
-                    </select>
+                    <label class="tool-control-label" for="architectureVpcAwsAppTier">App tier <span class="architecture-vpc-aws-helper-chip architecture-vpc-aws-custom-helper-chip" title="Tune app tier before regenerating the diagram." aria-label="Tune app tier before regenerating the diagram.">i</span></label>
+                    <input type="hidden" id="architectureVpcAwsAppTier" value="ec2">
+
+                    <details class="architecture-vpc-aws-custom-dropdown" data-custom-dropdown-for="architectureVpcAwsAppTier">
+                      <summary class="architecture-vpc-aws-custom-dropdown-summary">
+                        <span data-custom-dropdown-label>EC2 Auto Scaling</span>
+                          <span class="architecture-vpc-aws-custom-arrow-slot" aria-hidden="true"></span>
+                      </summary>
+
+                      <div class="architecture-vpc-aws-custom-dropdown-menu" role="listbox" aria-label="Custom option">
+                        <button
+                          type="button"
+                          class="architecture-vpc-aws-custom-dropdown-option active"
+                          data-custom-dropdown-value="ec2"
+                          role="option"
+                          aria-selected="true"
+                        >EC2 Auto Scaling</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vpc-aws-custom-dropdown-option"
+                          data-custom-dropdown-value="ecs"
+                          role="option"
+                          aria-selected="false"
+                        >ECS / Fargate</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vpc-aws-custom-dropdown-option"
+                          data-custom-dropdown-value="eks"
+                          role="option"
+                          aria-selected="false"
+                        >EKS</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vpc-aws-custom-dropdown-option"
+                          data-custom-dropdown-value="lambda"
+                          role="option"
+                          aria-selected="false"
+                        >Lambda in VPC</button>
+                      </div>
+                    </details>
                   </div>
 
                   <div class="architecture-vpc-aws-control-stack">
-                    <label class="tool-control-label" for="architectureVpcAwsDatabase">Database tier</label>
-                    <select id="architectureVpcAwsDatabase" class="form-select">
-                      <option value="none">No database tier</option>
-                      <option value="rds" selected>RDS</option>
-                      <option value="aurora">Aurora</option>
-                      <option value="dynamodb">DynamoDB</option>
-                    </select>
+                    <label class="tool-control-label" for="architectureVpcAwsDatabase">Database tier <span class="architecture-vpc-aws-helper-chip architecture-vpc-aws-custom-helper-chip" title="Tune database tier before regenerating the diagram." aria-label="Tune database tier before regenerating the diagram.">i</span></label>
+                    <input type="hidden" id="architectureVpcAwsDatabase" value="rds">
+
+                    <details class="architecture-vpc-aws-custom-dropdown" data-custom-dropdown-for="architectureVpcAwsDatabase">
+                      <summary class="architecture-vpc-aws-custom-dropdown-summary">
+                        <span data-custom-dropdown-label>RDS</span>
+                          <span class="architecture-vpc-aws-custom-arrow-slot" aria-hidden="true"></span>
+                      </summary>
+
+                      <div class="architecture-vpc-aws-custom-dropdown-menu" role="listbox" aria-label="Custom option">
+                        <button
+                          type="button"
+                          class="architecture-vpc-aws-custom-dropdown-option"
+                          data-custom-dropdown-value="none"
+                          role="option"
+                          aria-selected="false"
+                        >No database tier</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vpc-aws-custom-dropdown-option active"
+                          data-custom-dropdown-value="rds"
+                          role="option"
+                          aria-selected="true"
+                        >RDS</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vpc-aws-custom-dropdown-option"
+                          data-custom-dropdown-value="aurora"
+                          role="option"
+                          aria-selected="false"
+                        >Aurora</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vpc-aws-custom-dropdown-option"
+                          data-custom-dropdown-value="dynamodb"
+                          role="option"
+                          aria-selected="false"
+                        >DynamoDB</button>
+                      </div>
+                    </details>
                   </div>
                 </div>
               </div>
@@ -197,7 +319,7 @@
 
             </div>
           </details>
-          {# ns:end family.architecture.workspace.03_advanced-settings #}
+          {# ns:end family._base.workspace.03_custom-settings #}
 
           {# ns:start family.architecture.workspace.04_selected-item #}
           <div class="tool-inspector-section architecture-vpc-aws-selected-section" id="architectureVpcAwsSelectedShell">
@@ -259,7 +381,7 @@
     </div>
 
     <section class="tool-shell tool-stage-shell" id="architectureVpcAwsStageShell" data-section="diagram-buttons" data-root-selector=".architecture-vpc-aws-tool">
-      {# ns:start family.architecture.workspace.05_result-text #}
+      {# ns:start family.architecture.workspace.04_visual-contract #}
       <div class="tool-shell-header architecture-vpc-aws-stage-header" data-section="title" data-root-selector=".architecture-vpc-aws-tool">
         <div class="architecture-vpc-aws-stage-heading">
           <h2 class="tool-shell-title" id="architectureVpcAwsStageTitle">AWS VPC Architecture</h2>
@@ -269,9 +391,9 @@
         </div>
         <div class="architecture-vpc-aws-stage-meta" id="architectureVpcAwsStageMeta"></div>
       </div>
-      {# ns:end family.architecture.workspace.05_result-text #}
+      {# ns:end family.architecture.workspace.04_visual-contract #}
 
-      {# ns:start family.architecture.workspace.06_result-diagram #}
+      {# ns:start family.architecture.workspace.04_visual-contract #}
       <div class="tool-stage-toolbar">
         <div class="architecture-vpc-aws-stage-toolbar-actions">
           <div class="architecture-vpc-aws-zoom-control" id="architectureVpcAwsZoomControl">
@@ -303,7 +425,7 @@
           <button type="button" class="architecture-vpc-aws-icon-btn" id="architectureVpcAwsFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
             <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
           </button>
-          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-vpc-aws-stage-toolbar-btn" id="architectureVpcAwsResetLayout">Reset layout</button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-vpc-aws-stage-toolbar-btn" id="architectureVpcAwsResetLayout" aria-label="Auto arrange layout" title="Auto arrange layout">Auto layout</button>
         </div>
       </div>
 
@@ -401,29 +523,71 @@
           </div>
         </div>
       </div>
-      {# ns:end family.architecture.workspace.06_result-diagram #}
+      {# ns:end family.architecture.workspace.04_visual-contract #}
     </section>
 
     <section class="tool-shell tool-output-shell">
-      {# ns:start family.architecture.workspace.05_result-text #}
+      {# ns:start family.architecture.workspace.04_visual-contract #}
       <div class="tool-empty-state" id="architectureVpcAwsOutputEmpty">Generate an architecture diagram to review technical inventory, service mix, and exportable JSON.</div>
-      {# ns:end family.architecture.workspace.05_result-text #}
+      {# ns:end family.architecture.workspace.04_visual-contract #}
 
       <div class="architecture-vpc-aws-output-content d-none" id="architectureVpcAwsOutputContent">
         <div class="architecture-vpc-aws-output-shell">
-          {# ns:start family.architecture.workspace.07_score-card #}
+          {# ns:start family._base.workspace.05_result-summary #}
           <div class="architecture-vpc-aws-output-summary">
-            <div class="architecture-vpc-aws-output-status-card" aria-live="polite">
-              <div class="architecture-vpc-aws-score-card" id="architectureVpcAwsOutputStatus">
-                <div class="architecture-vpc-aws-score-kicker">Architecture Score</div>
-                <div class="architecture-vpc-aws-score-value">Ready</div>
-                <div class="architecture-vpc-aws-score-summary">Generate a diagram to score the current VPC baseline.</div>
+            <div class="architecture-vpc-aws-output-status-card" data-section="result-summary" data-root-selector=".architecture-vpc-aws-tool" aria-live="polite">
+              <div class="architecture-vpc-aws-score-card architecture-vpc-aws-result-summary" id="architectureVpcAwsOutputStatus" data-result-tone="ready" data-result-layout="architecture_score">
+                <header class="architecture-vpc-aws-result-header" aria-label="Result summary header">
+                  <div class="architecture-vpc-aws-result-header-main">
+                    <span class="architecture-vpc-aws-result-header-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span>
+                    <div class="architecture-vpc-aws-result-header-copy">
+                      <h2 class="architecture-vpc-aws-result-header-title">Result Summary</h2>
+                      <p>Overview of the current architecture result and key metrics.</p>
+                    </div>
+                  </div>
+                  <div class="architecture-vpc-aws-result-header-meta" aria-label="Result summary status">
+                    <span class="architecture-vpc-aws-result-header-chip architecture-vpc-aws-result-chip architecture-vpc-aws-result-chip-ready"><span class="architecture-vpc-aws-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span>
+                    <span class="architecture-vpc-aws-result-header-chip architecture-vpc-aws-result-chip architecture-vpc-aws-result-chip-updated"><span class="architecture-vpc-aws-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>Ready</span></span>
+                  </div>
+                </header>
+                <div class="architecture-vpc-aws-result-hero-grid" aria-live="polite">
+                  <article class="architecture-vpc-aws-result-card architecture-vpc-aws-result-card-primary" data-result-visual="ring" aria-label="Primary result">
+                    <div class="architecture-vpc-aws-result-primary-heading"><div class="architecture-vpc-aws-result-kicker">Primary Result</div></div>
+                    <div class="architecture-vpc-aws-result-primary-visual" id="architectureVpcAwsResultVisual" aria-label="Primary result visual">
+                      <div class="architecture-vpc-aws-result-ring" style="--architecture-vpc-aws-result-progress: 0deg; --progress-angle: 0deg; --architecture-vpc-aws-result-value-chars: 5;">
+                        <div class="architecture-vpc-aws-result-ring-center"><strong class="architecture-vpc-aws-result-ring-value">Ready</strong><span class="architecture-vpc-aws-result-ring-unit">/100</span></div>
+                      </div>
+                    </div>
+                    <div class="architecture-vpc-aws-result-visual-copy"><h3 class="architecture-vpc-aws-result-title architecture-vpc-aws-result-title-center">Visible result value</h3><p class="architecture-vpc-aws-result-copy architecture-vpc-aws-result-copy-center">Generate a diagram to review the current architecture outcome.</p></div>
+                    <span class="architecture-vpc-aws-result-card-divider" aria-hidden="true"></span>
+                    <div class="architecture-vpc-aws-result-chip-row architecture-vpc-aws-result-chip-row-center" aria-label="Primary result outcome"><span class="architecture-vpc-aws-result-chip architecture-vpc-aws-result-chip-outcome architecture-vpc-aws-result-chip-ready"><span class="architecture-vpc-aws-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>Model ready</span></span></div>
+                  </article>
+                  <article class="architecture-vpc-aws-result-card architecture-vpc-aws-result-card-summary" aria-label="Result summary">
+                    <div class="architecture-vpc-aws-result-summary-intro">
+                      <span class="architecture-vpc-aws-result-card-icon architecture-vpc-aws-result-card-icon-summary" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>
+                      <div class="architecture-vpc-aws-result-summary-copy"><div class="architecture-vpc-aws-result-kicker">Descriptive Summary</div><h3 class="architecture-vpc-aws-result-title">Filtered output set</h3><p class="architecture-vpc-aws-result-copy">The summary, table, JSON, and exports should all derive from the current normalized state.</p></div>
+                    </div>
+                    <span class="architecture-vpc-aws-result-card-divider" aria-hidden="true"></span>
+                    <div class="architecture-vpc-aws-result-chip-grid" aria-label="Result summary state">
+                      <span class="architecture-vpc-aws-result-chip architecture-vpc-aws-result-chip-ready"><span class="architecture-vpc-aws-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>Model source</span></span>
+                      <span class="architecture-vpc-aws-result-chip architecture-vpc-aws-result-chip-baseline"><span class="architecture-vpc-aws-result-chip-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span>Architecture family</span></span>
+                      <span class="architecture-vpc-aws-result-chip architecture-vpc-aws-result-chip-baseline"><span class="architecture-vpc-aws-result-chip-icon" aria-hidden="true"><i class="bi bi-folder2-open"></i></span><span>Result summary</span></span>
+                      <span class="architecture-vpc-aws-result-chip architecture-vpc-aws-result-chip-warning"><span class="architecture-vpc-aws-result-chip-icon" aria-hidden="true"><i class="bi bi-filter"></i></span><span>Generated state</span></span>
+                    </div>
+                  </article>
+                </div>
+                <div class="architecture-vpc-aws-result-metric-grid" aria-label="Result metrics">
+                  <section class="architecture-vpc-aws-result-metric-card architecture-vpc-aws-result-metric-success"><span class="architecture-vpc-aws-result-metric-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span class="architecture-vpc-aws-result-metric-label">Model</span><strong class="architecture-vpc-aws-result-metric-value">Generated</strong><span class="architecture-vpc-aws-result-metric-copy">Current architecture model state.</span><span class="architecture-vpc-aws-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-vpc-aws-result-metric-card architecture-vpc-aws-result-metric-info"><span class="architecture-vpc-aws-result-metric-icon" aria-hidden="true"><i class="bi bi-grid-3x3-gap"></i></span><span class="architecture-vpc-aws-result-metric-label">Inventory</span><strong class="architecture-vpc-aws-result-metric-value">3</strong><span class="architecture-vpc-aws-result-metric-copy">Modeled items in the generated inventory.</span><span class="architecture-vpc-aws-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-vpc-aws-result-metric-card architecture-vpc-aws-result-metric-accent-tone"><span class="architecture-vpc-aws-result-metric-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span class="architecture-vpc-aws-result-metric-label">Services</span><strong class="architecture-vpc-aws-result-metric-value">3</strong><span class="architecture-vpc-aws-result-metric-copy">Generated service and dependency groups.</span><span class="architecture-vpc-aws-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-vpc-aws-result-metric-card architecture-vpc-aws-result-metric-warning"><span class="architecture-vpc-aws-result-metric-icon" aria-hidden="true"><i class="bi bi-database"></i></span><span class="architecture-vpc-aws-result-metric-label">Risk</span><strong class="architecture-vpc-aws-result-metric-value">24</strong><span class="architecture-vpc-aws-result-metric-copy">Advisory risk signal for review.</span><span class="architecture-vpc-aws-result-metric-accent" aria-hidden="true"></span></section>
+                </div>
               </div>
             </div>
           </div>
-          {# ns:end family.architecture.workspace.07_score-card #}
+          {# ns:end family._base.workspace.05_result-summary #}
 
-          {# ns:start family.architecture.workspace.08_sort-card #}
+          {# ns:start family._base.workspace.06_output-toolbar #}
           <div class="architecture-vpc-aws-toolbar-shell">
             <div class="architecture-vpc-aws-toolbar tool-output-toolbar">
               <div class="architecture-vpc-aws-toolbar-main">
@@ -472,9 +636,11 @@
               </div>
             </div>
           </div>
-          {# ns:end family.architecture.workspace.08_sort-card #}
+          {# ns:end family._base.workspace.06_output-toolbar #}
 
-          {# ns:start family.architecture.workspace.09_result-table #}
+          {# ns:start family._base.workspace.07_table-output #}
+
+
           <div class="architecture-vpc-aws-tabs-shell">
             <div class="tool-tabs" role="tablist" aria-label="AWS VPC output views">
               <button type="button" class="tool-tab-btn architecture-vpc-aws-tab-btn active" id="architectureVpcAwsInventoryTab" data-tab-target="architectureVpcAwsInventoryPanel" role="tab" aria-controls="architectureVpcAwsInventoryPanel" aria-selected="true" tabindex="0">
@@ -567,19 +733,29 @@
             </div>
 
             <div class="tool-tab-panel architecture-vpc-aws-tab-panel" id="architectureVpcAwsJsonPanel" role="tabpanel" aria-labelledby="architectureVpcAwsJsonTab" hidden>
-              <div class="tool-json-shell">
-                <div class="architecture-vpc-aws-json-header">JSON Output</div>
-                <pre class="architecture-vpc-aws-json-code" id="architectureVpcAwsJsonOutput"></pre>
-              </div>
+                          {# ns:start family._base.workspace.08_json-restore #}
+                          <div class="architecture-vpc-aws-json-restore-shell" id="architectureVpcAwsJsonRestoreShell">
+              <section class="architecture-vpc-aws-json-card tool-json-panel" aria-label="Architecture JSON model and restore state">
+                <div class="architecture-vpc-aws-json-head tool-json-head">
+                  <div class="architecture-vpc-aws-json-title-wrap">
+                    <span class="architecture-vpc-aws-json-title tool-json-title">JSON Output</span>
+                    <span class="architecture-vpc-aws-json-helper">Exported model state should include diagram components, layout edits, selected items, and output data.</span>
+                  </div>
+                  <span class="architecture-vpc-aws-json-status is-hidden" id="architectureVpcAwsJsonRestoreStatus" role="status" aria-live="polite"></span>
+                </div>
+                <div class="architecture-vpc-aws-json-empty is-hidden" id="architectureVpcAwsJsonRestoreEmpty">Generate a diagram before exporting architecture JSON.</div>
+                <pre class="architecture-vpc-aws-json-output tool-json-output"><code id="architectureVpcAwsJsonOutput"></code></pre>
+              </section>
             </div>
+                          {# ns:end family._base.workspace.08_json-restore #}
           </div>
-          {# ns:end family.architecture.workspace.09_result-table #}
+          {# ns:end family._base.workspace.07_table-output #}
         </div>
       </div>
+      </div>
     </section>
+    <input type="file" id="architectureVpcAwsImportJson" class="architecture-vpc-aws-import-input d-none" accept="application/json">
 
-    {# ns:start family.architecture.workspace.09_result-table #}
-    <input type="file" id="architectureVpcAwsImportJson" class="d-none" accept="application/json">
-    {# ns:end family.architecture.workspace.09_result-table #}
   </div>
 </div>
+{# ns:end family._base.workspace.00_shell #}

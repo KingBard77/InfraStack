@@ -120,7 +120,15 @@ The scanning family workspace source lives at:
 templates/content/family/scanning/workspace/
 ```
 
-Use that folder for scanner-specific workspace grammar, request behavior, evidence behavior, result behavior, export behavior, and restore boundaries.
+Use that folder for scanner-specific workspace grammar: visual/model contracts, optional selected-item inspector behavior, reusable scanner model-core sources, request meaning, evidence meaning, result meaning, export meaning, and restore boundaries.
+
+Common workspace shape comes from:
+
+```text
+templates/content/family/_base/workspace/
+```
+
+The ordered composition is declared in `templates/content/family/scanning/workspace/manifest.yml` through `workspace_namespaces`. That list may mix `_base` namespaces and scanning-owned namespaces.
 
 The scanning workspace reference is:
 
@@ -128,10 +136,11 @@ The scanning workspace reference is:
 templates/content/tools/security/scan-web-security/
 ```
 
-The shared scaffold owns reusable section structure.
-The family workspace owns scanning adaptation rules.
+The shared scaffold owns package skeleton files.
+`_base/workspace` owns common section shape.
+The scanning workspace owns scanning-only section contracts and adaptation rules.
 
-The family workspace owns section-level runtime sources. When a tool is declared the scanning baseline, keep the full copied source under `baseline/source/` for traceability, then extract reusable behavior into numbered workspace sections.
+When a tool is declared the scanning baseline, keep the full copied source under `source/` for traceability only. Do not audit this as active source. Extract reusable scanner-specific behavior into scanning-owned workspace section files. Do not recreate duplicate scanning copies of `_base` sections and do not keep root workspace `custom.css`, `custom.js`, or `demo.html.twig` files.
 
 ---
 
@@ -171,22 +180,30 @@ Do not ship generic family copy as final content.
 
 ---
 
-## Scanning Workspace Sections
+## Scanning Workspace Composition
 
-The scanning family owns its workspace section source:
+The scanning family composes common workspace sections from `_base`:
 
 ```text
-templates/content/family/scanning/workspace/01_input-brief/
-templates/content/family/scanning/workspace/02_basic-settings/
-templates/content/family/scanning/workspace/03_advanced-settings/
-templates/content/family/scanning/workspace/04_selected-item/
-templates/content/family/scanning/workspace/05_result-summary/
-templates/content/family/scanning/workspace/06_result-view/
-templates/content/family/scanning/workspace/07_table-export/
-templates/content/family/scanning/workspace/08_json-restore/
+family._base.workspace.00_shell
+family._base.workspace.01_input-brief
+family._base.workspace.02_basic-settings
+family._base.workspace.03_custom-settings
+family._base.workspace.05_result-summary
+family._base.workspace.06_output-toolbar
+family._base.workspace.07_table-output
+family._base.workspace.08_json-restore
 ```
 
-Each workspace section folder follows the architecture family bundle shape:
+The scanning family owns only scanner-specific workspace sections and model-core sources:
+
+```text
+templates/content/family/scanning/workspace/04_visual-contract/
+templates/content/family/scanning/workspace/04_selected-item/
+templates/content/family/scanning/workspace/assets/bin/model-core.js
+```
+
+Each scanning-owned workspace section folder follows the architecture family bundle shape:
 
 ```text
 README.md
@@ -196,9 +213,11 @@ section.css
 section.js
 ```
 
+`04_visual-contract` also includes `manifest.yml` and `model-core.js`. It owns the optional scanning visual and model contract for posture rings, severity metrics, evidence cards, finding rows, coverage state, and scanner result tones. It should be used when a scanner has reusable visual output beyond plain target input and evidence tables.
+
 Standalone `demo.html` files own demo chrome separately from extracted scanner section source. Keep the demo title icon placeholder local to the demo with any icon stylesheet it needs, `demo-title`, `demo-title-icon`, `demo-title-text`, and a scanning-family placeholder icon such as `bi bi-shield-check`.
 
-Use these sections to choose scanner behavior and shape final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and optional `assets/bin/model-core.js`, translating target, check, finding, evidence, and export language into the final domain.
+Use `workspace_namespaces` to choose scanner behavior and shape final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and optional `assets/bin/model-core.js`, translating target, check, finding, evidence, and export language into the final domain.
 
 Do not create a family-local `sections/` directory for scanning. Shared content section folders belong to `templates/content/main/sections/content/`; scanning workspace section folders belong here.
 
@@ -210,11 +229,12 @@ Default flow:
 
 1. Target input and primary scan action.
 2. Request, client, timeout, validation, and companion-probe options.
-3. Hidden-first result shell with empty dashed callout.
-4. Result summary with score/status, evidence metrics, chips, and final target details.
-5. Output toolbar for sort, export, copy, and optional import.
-6. Result tabs for findings, evidence, surface details, and JSON.
-7. JSON payload output and optional restore.
+3. Optional visual contract for posture rings, severity metrics, evidence cards, finding rows, coverage state, and scanner result tones.
+4. Hidden-first result shell with empty dashed callout.
+5. Result summary with score/status, evidence metrics, chips, and final target details.
+6. Output toolbar for sort, export, copy, and optional import.
+7. Result tabs for findings, evidence, surface details, and JSON.
+8. JSON payload output and optional restore.
 
 ---
 

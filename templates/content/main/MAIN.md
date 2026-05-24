@@ -244,6 +244,10 @@ Citation rules:
 
 - Use valid, verifiable sources only. Do not invent sources, authors, dates, publishers, URLs, or claims.
 - Do not use a source merely because the source exists. The source must directly support the sentence or paragraph where the citation appears.
+- Use an official, primary, or source-of-truth source for the exact claim. Do not cite a broad vendor page, unrelated product page, secondary summary, or stale migrated page when the claim needs a specific source.
+- Reference URLs must be checked when created or revised. Do not ship hard `404`, retired, parked, login-only, paywalled, or unrelated-redirect targets as normal public references.
+- Automated `403`, bot-gated, regional, or TLS-sensitive responses are acceptable only when the page is reachable by the intended user and the validation notes record that distinction.
+- The reference title, author, publisher, date, retrieved date, and URL must describe the current linked page, not a previous page that the URL replaced.
 - Use narrative citations in the content when possible, such as `Amazon Web Services (n.d.-a) says...`, `Piper and Clinton (2022) frame...`, or `Najafzadeh (2024) reports...`.
 - Parenthetical citations are allowed when the sentence reads better that way, but the preferred style is narrative citation embedded in the sentence.
 - Make every in-text citation clickable. The citation link must jump to the matching row in the References table below the content.
@@ -262,6 +266,7 @@ Legit source standard:
 - `Technical Details` should use structured review aids such as bullets or tables when they clarify behavior, assumptions, output boundaries, or review points.
 - A full `content.md` that makes factual technical claims should include at least three real references.
 - Official or source-of-truth sources include provider documentation, product documentation, standards bodies, protocol specifications, benchmark owners, project maintainers, or primary vendor docs for the feature being described.
+- A source-of-truth citation must be source-of-truth for the cited statement itself, not merely for the product, provider, or category name.
 - Every cited source must be clickable through the in-text citation and must match a row in the References table.
 - Do not claim accuracy, security, production readiness, compliance, current pricing, certification, reliability validation, or similar trust outcomes unless the tool actually validates that outcome.
 - Tool behavior claims must match implemented code, visible controls, generated output, exports, restore behavior, and recorded validation.
@@ -273,6 +278,7 @@ Source mix rule:
 - “Random source type” means choose a varied source mix from valid sources. It never means use a random unsupported source.
 - Prefer official documentation, standards, primary papers, vendor documentation, published books, or reputable articles when those sources directly support the claim.
 - If a requested source type is unavailable or does not support the claim, do not use it. Use a stronger valid source and record the reason in validation notes.
+- Source variety never overrides source quality. A varied source mix is invalid if the source does not directly support the cited claim or is not authoritative enough for the claim.
 
 Clickable citation shape:
 
@@ -297,8 +303,12 @@ Citation validation must check:
 - every citation link has a matching reference row
 - every reference row corresponds to an in-text citation
 - cited sources directly support the cited claim
+- cited sources are authoritative or source-of-truth for the exact sentence or paragraph they support
 - no fabricated source metadata exists
+- reference metadata matches the current linked page
 - links are public or otherwise available to the intended user
+- links do not return hard `404`, retired, parked, or unrelated-redirect targets
+- automated access-gate responses such as `403` are either verified as browser/user reachable or recorded as a validation gap
 - `Technical Details` has at least two official or source-of-truth citations when it makes technical claims
 - factual `content.md` has at least three real references when enough supportable technical claims exist
 - behavior claims match actual code, visible UI, generated output, export behavior, restore behavior, and validation notes
@@ -377,6 +387,7 @@ author_role: Infrastructure & DevOps Specialist
 author_image: "images/author/author-bg-black.png"
 date: "Apr. 18th, 2026"
 comments: Interactive tool
+publication_status: draft
 category_label: AWS
 reading_time: 4 min read
 summary: Generate an AWS VPC architecture diagram from a prompt, preset, and live inspector controls.
@@ -387,9 +398,6 @@ intro: >-
 tags:
     - AWS
     - VPC
-    - Architecture
-    - Diagram
-    - Topology
     - Architecture
 ```
 
@@ -415,6 +423,48 @@ Do not put these in metadata:
 - cost-optimization claims
 - copied vendor text
 
+## Publication Status Rules
+
+Use `publication_status` to control draft visibility and production publishing.
+
+Allowed values:
+
+```yaml
+publication_status: draft
+publication_status: ready
+```
+
+`draft` means the content is still being prepared and must not publish to production. Render a leading `*` from this metadata value only on development, review, or internal listing surfaces where the draft state needs to be obvious.
+
+`ready` means the content can publish to production and should render without a star.
+
+Every new tool package, scaffold, and generated package must start as:
+
+```yaml
+publication_status: draft
+```
+
+Change the field to `ready` only as a deliberate production-release step after the affected surface has been reviewed and validated.
+
+Do not encode draft state by changing the stored title.
+
+Avoid:
+
+```yaml
+title: "* Physical Server Architecture"
+card_image_title: "* Physical Server Architecture"
+```
+
+Use:
+
+```yaml
+title: Physical Server Architecture
+publication_status: draft
+```
+
+Production publish, deployment, rsync, sitemap, feed, and public catalogue-generation paths must include only explicit `publication_status: ready` packages. A production release validation should fail if `draft`, missing, or invalid status packages are included in the publish set.
+
+Do not treat missing `publication_status` as ready for production. Missing or invalid status must be excluded by deployer and rsync logic.
 
 ## Title Naming Rule
 
@@ -614,8 +664,9 @@ Tags should be:
 
 - specific
 - searchable
-- not excessive
+- limited to exactly three entries for complete tool packages
 - aligned with tool family
+- ordered as provider/category, primary subject or command, then family or intent
 
 Good:
 
@@ -624,9 +675,6 @@ tags:
     - AWS
     - VPC
     - Architecture
-    - Diagram
-    - Topology
-    - Cloud
 ```
 
 Avoid:
@@ -731,6 +779,8 @@ card_image_title: "AWS VPC Architecture"
 card_image_title: "Azure VNet Architecture"
 card_image_title: "GCP VPC Topology"
 ```
+
+Do not prefix `card_image_title` with `*` for draft content. The draft star is a rendered marker driven by `meta.yml` `publication_status`, not stored card copy.
 
 ### `card_icon_class`
 
@@ -912,6 +962,8 @@ These sections must remain supportive. They explain the workspace, parser bounda
 
 Support markdown typography is part of the content standard because the reusable `content.md` sections and tool-local `custom.css` files must render the same copy with the same visual rhythm.
 
+InfraStack uses a two-font system: `Nunito` for headings, page titles, card titles, and section headings; `Roboto` for body copy, navigation, labels, controls, tables, and support text. Use `--heading-font` for heading text and `--default-font` for body/UI text. Do not introduce Rubik, Poppins, Inter, or other proportional font families into runtime CSS, generated tool packages, shared section CSS, or Google Fonts links. Monospace stacks remain allowed for code, terminal, and preformatted output.
+
 Template parity is part of the typography standard. When a main content section is adapted into a final package, validate the rendered contract in the final files: card frame, section title icon, heading divider line, Technical Details subsection separators, accordion row icons, section spacing, paragraph rhythm, list inheritance, inline code size, table layout, details/FAQ behavior, copy-button controls, citation links, terminal strip title treatment, and responsive selectors used by the section.
 
 Every shared support section heading should use the current section-title rhythm: a left icon followed by the title text and a divider line below. `Technical Details` keeps the main `h2` title unnumbered, but every `h3` subsection label inside it must visibly start with `1.`, `2.`, `3.`, and so on. Those numbered `h3` headings should carry the section-specific heading class and show separator lines between later numbered headings. `Prompt Tips`, `How To Use`, and `FAQ` accordion rows should include left icon chips that support scanning without changing the text hierarchy. `How To Use` and `FAQ` must start with a short explanatory paragraph before the first row.
@@ -939,9 +991,9 @@ Apply this baseline everywhere support markdown can be sourced or copied:
 - final `templates/content/tools/<category>/<tool-slug>/custom.css`
 - compiled Asset Mapper output when runtime public assets are part of the changed surface
 
-When this typography surface changes, validation must include a stale-token scan for old inline-code sizes, CSS brace balance, affected tool validation, and Browser Use verification on `https://infrastack.my` when rendered support content changes.
+When this typography surface changes, validation must include a stale-token scan for old inline-code sizes, CSS brace balance, affected tool validation, and Browser Use verification on the approved development URL `https://infrastack.my` when rendered support content changes.
 
-When applying or retrofitting a section template, validation must also include a final-package selector scan for the section's required `custom.css` behavior, unresolved placeholder scan, namespace marker check, section helper hook check when JavaScript is involved, and Browser Use rendering when available. If Browser Use is unavailable, record the gap; do not replace it with standalone browser automation unless explicitly approved for that task.
+When applying or retrofitting a section template, validation must also include a final-package selector scan for the section's required `custom.css` behavior, unresolved placeholder scan, namespace marker check, section helper hook check when JavaScript is involved, and Browser Use rendering against the approved development URL when available. If Browser Use is unavailable, record the gap; do not replace it with standalone browser automation unless explicitly approved for that task. Do not use production hosts, tunnels, local port forwards, ad hoc local PHP servers, local proxies, or VM IP browser URLs for rendered content validation.
 
 When a batch content cleanup changes support sections across tools, closeout must report:
 
@@ -1351,6 +1403,22 @@ Do not:
 - mismatch card title and actual tool title
 - mismatch category label and folder category
 
+### Batch Tool Creation
+
+When creating multiple tools from one request, use a `batch` DevOps task and `codex/bin/batch-package.sh`.
+
+Batch status must be readable as family cards:
+
+```text
+Architecture Family
+- [running] architecture-01 Huawei Cloud VPC Architecture
+- [complete] architecture-02 Cisco Campus Network Architecture
+```
+
+Do not make users interpret process ids as the main progress signal. Store process ids as metadata only.
+
+Every tool created by a batch must still start as `publication_status: draft`.
+
 ---
 
 ## Content Delivery Checklist
@@ -1360,12 +1428,15 @@ Before delivering content files, verify:
 ### `meta.yml`
 
 - title matches tool
+- publication status is explicit for new or revised packages
+- new tool packages start as `publication_status: draft`
+- draft status is stored as `publication_status: draft`, not as a leading `*` in title fields
 - author fields are present
 - category label is correct
 - date/updated value is present
 - summary is specific
 - intro is concise
-- tags are relevant
+- tags are relevant and limited to exactly three entries
 - no hidden implementation logic
 - no unsupported claims
 

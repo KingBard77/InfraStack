@@ -1,5 +1,159 @@
 // custom.js
 
+// ns:start family._base.workspace.00_shell
+// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
+// ns:end family._base.workspace.00_shell
+
+function initializeInfraStackCustomDropdowns(root) {
+    const scope = root || document;
+    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
+
+    dropdowns.forEach(function (dropdown) {
+        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
+        const targetInput = targetId ? document.getElementById(targetId) : null;
+        const label = dropdown.querySelector('[data-custom-dropdown-label]');
+        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
+
+        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
+            return;
+        }
+
+        function sync(value) {
+            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
+            let selectedOption = options.find(function (option) {
+                return option.dataset.customDropdownValue === selectedValue;
+            }) || options[0];
+
+            if (!selectedOption) {
+                return;
+            }
+
+            const nextValue = selectedOption.dataset.customDropdownValue || '';
+
+            if (targetInput.value !== nextValue) {
+                targetInput.value = nextValue;
+            }
+            label.textContent = selectedOption.textContent.trim();
+            options.forEach(function (option) {
+                const isActive = option === selectedOption;
+
+                option.classList.toggle('active', isActive);
+                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+        }
+
+        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
+            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+
+            if (descriptor && descriptor.get && descriptor.set) {
+                Object.defineProperty(targetInput, 'value', {
+                    configurable: true,
+                    get: function () {
+                        return descriptor.get.call(this);
+                    },
+                    set: function (nextValue) {
+                        descriptor.set.call(this, nextValue);
+                        window.requestAnimationFrame(function () {
+                            sync(String(nextValue || ''));
+                        });
+                    }
+                });
+                targetInput.dataset.customDropdownValueProxy = 'true';
+            }
+        }
+
+        options.forEach(function (option) {
+            option.addEventListener('click', function () {
+                sync(option.dataset.customDropdownValue || '');
+                targetInput.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+                dropdown.removeAttribute('open');
+            });
+        });
+
+        targetInput.addEventListener('change', function () {
+            sync(targetInput.value);
+        });
+        sync(targetInput.value);
+        dropdown.dataset.customDropdownBound = 'true';
+    });
+}
+
+
+// ns:start family._base.workspace.05_result-summary
+function installInfraStackResultSummaryNormalizer(prefix) {
+    function normalizeSummary(summary) {
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
+
+        if (!hero) {
+            return;
+        }
+
+        const cards = Array.from(hero.querySelectorAll(':scope > .' + prefix + '-result-card'));
+        const primaryCard = cards.find(function (card) {
+            return card.classList.contains(prefix + '-result-card-primary') || card.classList.contains(prefix + '-result-card-visual') || card.classList.contains(prefix + '-result-card-command');
+        }) || cards[0];
+        const summaryCard = cards.find(function (card) {
+            return card !== primaryCard && (card.classList.contains(prefix + '-result-card-summary') || card.classList.contains(prefix + '-result-card-main'));
+        }) || cards.find(function (card) {
+            return card !== primaryCard;
+        });
+
+        if (primaryCard) {
+            primaryCard.classList.add(prefix + '-result-card-primary');
+            if (!primaryCard.dataset.resultVisual) {
+                primaryCard.dataset.resultVisual = primaryCard.querySelector('.' + prefix + '-result-command-output') ? 'command' : 'text';
+            }
+        }
+
+        if (summaryCard) {
+            summaryCard.classList.add(prefix + '-result-card-summary');
+            const chipRow = summaryCard.querySelector('.' + prefix + '-result-chip-row');
+
+            if (chipRow && !summaryCard.querySelector('.' + prefix + '-result-chip-grid')) {
+                chipRow.classList.add(prefix + '-result-chip-grid');
+            }
+        }
+
+        if (primaryCard && hero.firstElementChild !== primaryCard) {
+            hero.insertBefore(primaryCard, hero.firstElementChild);
+        }
+
+        if (primaryCard && summaryCard && primaryCard.nextElementSibling !== summaryCard) {
+            hero.insertBefore(summaryCard, primaryCard.nextElementSibling);
+        }
+    }
+
+    function normalize() {
+        document.querySelectorAll('.' + prefix + '-result-summary').forEach(normalizeSummary);
+    }
+
+    function scheduleNormalize() {
+        window.requestAnimationFrame(normalize);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            normalize();
+            new MutationObserver(scheduleNormalize).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }, { once: true });
+        return;
+    }
+
+    normalize();
+    new MutationObserver(scheduleNormalize).observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+installInfraStackResultSummaryNormalizer('generate-curl-shell');
+// ns:end family._base.workspace.05_result-summary
+
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('generateCurlShellForm');
     const submitButton = document.getElementById('generateCurlShellSubmit');
@@ -1159,7 +1313,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return userAgentCatalog[userAgentPresetInput.value] || '';
     }
 
-// ns:start family.shell.workspace.03_advanced-setting
+// ns:start family._base.workspace.03_custom-settings
     function buildQuery() {
         return {
             preset: presetInput.value,
@@ -1206,7 +1360,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
-// ns:end family.shell.workspace.03_advanced-setting
+// ns:end family._base.workspace.03_custom-settings
     function getImportedPayload(payload) {
         if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
             throw new Error('The selected JSON file does not contain a cURL payload.');
@@ -1243,7 +1397,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function getImportedSelectValue(select, value, fallback) {
         const stringValue = typeof value === 'string' || typeof value === 'number' ? String(value) : '';
-        const hasOption = Array.from(select.options).some((option) => option.value === stringValue);
+        const optionValues = select && select.options
+            ? Array.from(select.options).map((option) => option.value)
+            : Array.from(document.querySelectorAll(`[data-custom-dropdown-for="${select.id}"] [data-custom-dropdown-value]`)).map((option) => option.dataset.customDropdownValue || '');
+        const hasOption = optionValues.includes(stringValue);
 
         return hasOption ? stringValue : fallback;
     }
@@ -1725,9 +1882,8 @@ document.addEventListener('DOMContentLoaded', function () {
         element.innerHTML = messages.map((message) => `<li>${escapeHtml(message)}</li>`).join('');
     }
 
-// ns:start family.shell.workspace.05_score-card
+// ns:start family._base.workspace.05_result-summary
     function renderSummary(result) {
-        const finalUrl = result.finalUrl ? new URL(result.finalUrl) : null;
         const warningCount = result.warnings.length;
         const errorCount = result.errors.length;
         const bodyMode = result.jsonPayload.query.bodyMode;
@@ -1735,58 +1891,21 @@ document.addEventListener('DOMContentLoaded', function () {
         const headerCount = result.headers.length;
         const flagCount = result.jsonPayload.derived.flag_count;
         const method = result.jsonPayload.query.method;
-        const shellLabel = shellCatalog[result.jsonPayload.query.shell].label;
+        const resultTone = errorCount > 0 ? 'error' : warningCount > 0 ? 'warning' : 'ready';
+        const updatedText = new Date().toLocaleString();
 
+        resultSummary.dataset.resultTone = resultTone;
+        resultSummary.dataset.resultLayout = 'command';
         resultSummary.innerHTML = `
-            <div class="generate-curl-shell-summary-shell">
-                <div class="generate-curl-shell-summary-gauge">
-                    <div class="generate-curl-shell-summary-method">${escapeHtml(method)}</div>
-                    <div class="generate-curl-shell-summary-host">${escapeHtml(finalUrl ? finalUrl.host : 'n/a')}</div>
-                    <div class="generate-curl-shell-summary-shell-name">${escapeHtml(shellLabel)}</div>
-                </div>
-
-                <div class="generate-curl-shell-summary-side">
-                    <div class="generate-curl-shell-summary-route">
-                        <div class="generate-curl-shell-summary-route-label">Final target</div>
-                        <div class="generate-curl-shell-summary-route-value">${escapeHtml(result.finalUrl || 'n/a')}</div>
-                    </div>
-
-                    <div class="generate-curl-shell-summary-cards">
-                        <div class="generate-curl-shell-stat-card">
-                            <div class="generate-curl-shell-stat-label">Headers</div>
-                            <div class="generate-curl-shell-stat-value">${headerCount}</div>
-                        </div>
-
-                        <div class="generate-curl-shell-stat-card">
-                            <div class="generate-curl-shell-stat-label">Body bytes</div>
-                            <div class="generate-curl-shell-stat-value">${bodyBytes}</div>
-                        </div>
-
-                        <div class="generate-curl-shell-stat-card">
-                            <div class="generate-curl-shell-stat-label">Flags</div>
-                            <div class="generate-curl-shell-stat-value">${flagCount}</div>
-                        </div>
-
-                        <div class="generate-curl-shell-stat-card">
-                            <div class="generate-curl-shell-stat-label">Body mode</div>
-                            <div class="generate-curl-shell-stat-value">${escapeHtml(bodyMode)}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="generate-curl-shell-summary-badges">
-                <span class="generate-curl-shell-badge generate-curl-shell-badge-neutral">${escapeHtml(result.jsonPayload.query.flagStyle)} flags</span>
-                <span class="generate-curl-shell-badge generate-curl-shell-badge-success">${escapeHtml(result.jsonPayload.query.httpVersion === 'default' ? 'Default HTTP' : result.jsonPayload.query.httpVersion.toUpperCase())}</span>
-                <span class="generate-curl-shell-badge ${warningCount > 0 ? 'generate-curl-shell-badge-warn' : 'generate-curl-shell-badge-success'}">${warningCount} warning${warningCount === 1 ? '' : 's'}</span>
-                <span class="generate-curl-shell-badge ${errorCount > 0 ? 'generate-curl-shell-badge-danger' : 'generate-curl-shell-badge-success'}">${errorCount} error${errorCount === 1 ? '' : 's'}</span>
-            </div>
+            <header class="generate-curl-shell-result-header" aria-label="Result summary header"><div class="generate-curl-shell-result-header-main"><span class="generate-curl-shell-result-header-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><div class="generate-curl-shell-result-header-copy"><h2 class="generate-curl-shell-result-header-title">Result Summary</h2><p>Overview of the generated cURL request and key metrics</p></div></div><div class="generate-curl-shell-result-header-meta" aria-label="Result summary status"><span class="generate-curl-shell-result-header-chip generate-curl-shell-result-chip-ready"><span class="generate-curl-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span><span class="generate-curl-shell-result-header-chip generate-curl-shell-result-chip-updated"><span class="generate-curl-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>${escapeHtml(updatedText)}</span></span></div></header>
+            <div class="generate-curl-shell-result-hero-grid" aria-live="polite"><article class="generate-curl-shell-result-card generate-curl-shell-result-card-primary" data-result-visual="command" aria-label="Primary request result"><div class="generate-curl-shell-result-primary-heading generate-curl-shell-result-visual-copy generate-curl-shell-result-visual-copy-top"><div class="generate-curl-shell-result-kicker">Primary Result</div><h3 class="generate-curl-shell-result-title generate-curl-shell-result-title-center">Request mode</h3></div><div class="generate-curl-shell-result-primary-visual" id="generateCurlShellResultVisual" aria-label="Primary request mode"><div class="generate-curl-shell-result-command-output"><code class="generate-curl-shell-result-command-value">${escapeHtml(`${method} ${bodyMode === 'none' ? 'request' : bodyMode}`)}</code></div></div><div class="generate-curl-shell-result-visual-copy"><p class="generate-curl-shell-result-copy generate-curl-shell-result-copy-center">Compact request preview for the generated cURL command.</p></div><span class="generate-curl-shell-result-card-divider" aria-hidden="true"></span><div class="generate-curl-shell-result-chip-row generate-curl-shell-result-chip-row-center" aria-label="Primary result outcome"><span class="generate-curl-shell-result-chip generate-curl-shell-result-chip-outcome generate-curl-shell-result-chip-ready"><span class="generate-curl-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span>Command Generated</span></span></div></article><article class="generate-curl-shell-result-card generate-curl-shell-result-card-summary" aria-label="Request summary"><div class="generate-curl-shell-result-summary-intro"><span class="generate-curl-shell-result-card-icon generate-curl-shell-result-card-icon-summary" aria-hidden="true"><i class="bi bi-globe2"></i></span><div class="generate-curl-shell-result-summary-copy"><div class="generate-curl-shell-result-kicker">Descriptive Summary</div><h3 class="generate-curl-shell-result-title">${escapeHtml(method)} request command</h3><p class="generate-curl-shell-result-copy">Final target and command evidence stay derived from the current URL, headers, body, and flag settings.</p></div></div><span class="generate-curl-shell-result-card-divider" aria-hidden="true"></span><div class="generate-curl-shell-result-chip-grid" aria-label="Command state"><span class="generate-curl-shell-result-chip generate-curl-shell-result-chip-baseline"><span class="generate-curl-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-sliders"></i></span><span>${escapeHtml(result.jsonPayload.query.flagStyle)} flags</span></span><span class="generate-curl-shell-result-chip generate-curl-shell-result-chip-ready"><span class="generate-curl-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-globe2"></i></span><span>${escapeHtml(result.jsonPayload.query.httpVersion === 'default' ? 'Default HTTP' : result.jsonPayload.query.httpVersion.toUpperCase())}</span></span><span class="generate-curl-shell-result-chip generate-curl-shell-result-chip-${warningCount > 0 ? 'warning' : 'success'}"><span class="generate-curl-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-exclamation-triangle"></i></span><span>${warningCount} warning${warningCount === 1 ? '' : 's'}</span></span><span class="generate-curl-shell-result-chip generate-curl-shell-result-chip-${errorCount > 0 ? 'error' : 'success'}"><span class="generate-curl-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-x-circle"></i></span><span>${errorCount} error${errorCount === 1 ? '' : 's'}</span></span></div></article></div>
+            <div class="generate-curl-shell-result-metric-grid" aria-label="Command metrics"><article class="generate-curl-shell-result-metric-card generate-curl-shell-result-metric-success"><span class="generate-curl-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-card-heading"></i></span><span class="generate-curl-shell-result-metric-label">Headers</span><strong class="generate-curl-shell-result-metric-value">${headerCount}</strong><span class="generate-curl-shell-result-metric-copy">Request headers included.</span><span class="generate-curl-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-curl-shell-result-metric-card generate-curl-shell-result-metric-info"><span class="generate-curl-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-file-earmark-binary"></i></span><span class="generate-curl-shell-result-metric-label">Body bytes</span><strong class="generate-curl-shell-result-metric-value">${bodyBytes}</strong><span class="generate-curl-shell-result-metric-copy">Estimated payload size.</span><span class="generate-curl-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-curl-shell-result-metric-card generate-curl-shell-result-metric-accent-tone"><span class="generate-curl-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-list-check"></i></span><span class="generate-curl-shell-result-metric-label">Flags</span><strong class="generate-curl-shell-result-metric-value">${flagCount}</strong><span class="generate-curl-shell-result-metric-copy">Generated command flags.</span><span class="generate-curl-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-curl-shell-result-metric-card generate-curl-shell-result-metric-warning"><span class="generate-curl-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-filetype-json"></i></span><span class="generate-curl-shell-result-metric-label">Body mode</span><strong class="generate-curl-shell-result-metric-value">${escapeHtml(bodyMode)}</strong><span class="generate-curl-shell-result-metric-copy">Request payload mode.</span><span class="generate-curl-shell-result-metric-accent" aria-hidden="true"></span></article></div>
         `;
-
     }
 
-// ns:end family.shell.workspace.05_score-card
-// ns:start family.shell.workspace.06_sort-card
+// ns:end family._base.workspace.05_result-summary
+
+// ns:start family._base.workspace.06_output-toolbar
     function updateSortState() {
         const selectedButton = sortOptionButtons.find((button) => button.dataset.sortValue === sortInput.value) || sortOptionButtons[0];
         const selectedLabel = selectedButton
@@ -1807,7 +1926,7 @@ document.addEventListener('DOMContentLoaded', function () {
         sortSelect.removeAttribute('open');
     }
 
-// ns:end family.shell.workspace.06_sort-card
+// ns:end family._base.workspace.06_output-toolbar
     function getSortedSummaryRows(result) {
         if (!result) {
             return [];
@@ -1881,7 +2000,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .map((row) => [row.field, row.value]);
     }
 
-// ns:start family.shell.workspace.07_table
+// ns:start family._base.workspace.07_table-output
     function renderOptionsTable(result) {
         optionsTableBody.innerHTML = getSortedSummaryRows(result).map(([field, value], index) => `
             <tr>
@@ -1889,13 +2008,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td><strong>${escapeHtml(field)}</strong></td>
                 <td>${escapeHtml(value)}</td>
                 <td class="generate-curl-shell-table-copy-cell">
-                    <button type="button" class="generate-curl-shell-table-btn" data-options-copy="${escapeHtml(value)}">Copy</button>
+                    <button type="button" class="generate-curl-shell-row-copy generate-curl-shell-row-copy-btn" data-options-copy="${escapeHtml(value)}" aria-label="Copy request summary row ${index + 1}" title="Copy request summary row">
+                        <i class="bi bi-clipboard" aria-hidden="true"></i>
+                    </button>
                 </td>
             </tr>
         `).join('');
     }
 
-// ns:end family.shell.workspace.07_table
+// ns:end family._base.workspace.07_table-output
+// ns:start family._base.workspace.05_result-summary
 // ns:start family.shell.workspace.04_result-text
     function renderResult(result) {
         latestResult = result;
@@ -1913,6 +2035,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 // ns:end family.shell.workspace.04_result-text
+// ns:end family._base.workspace.05_result-summary
     function showResultError(message) {
         resultError.classList.remove('d-none');
         resultError.textContent = message;
@@ -1977,7 +2100,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return 'sh';
     }
 
-// ns:start family.shell.workspace.02_basic-setting
+// ns:start family._base.workspace.02_basic-settings
     function applyPreset(presetKey, shouldSync) {
         const resolvedPresetKey = presetCatalog[presetKey] ? presetKey : 'blank';
         const preset = presetCatalog[resolvedPresetKey];
@@ -2032,7 +2155,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-// ns:end family.shell.workspace.02_basic-setting
+// ns:end family._base.workspace.02_basic-settings
     function parseCommandString(command) {
         const normalizedCommand = String(command || '')
             .replace(/\\\r?\n/g, ' ')
@@ -2354,7 +2477,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-// ns:start family.shell.workspace.01_input-target
+// ns:start family._base.workspace.01_input-brief
     function generateAndRender() {
         syncSafeStateToUrl();
         const query = buildQuery();
@@ -2370,7 +2493,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderResult(result);
     }
 
-// ns:end family.shell.workspace.01_input-target
+// ns:end family._base.workspace.01_input-brief
     function resetBuilder() {
         applyPreset('blank', false);
         importInput.value = '';
@@ -2515,13 +2638,19 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const copyValue = target.getAttribute('data-options-copy');
+        const copyButton = target.closest('.generate-curl-shell-row-copy, .generate-curl-shell-row-copy-btn');
+
+        if (!copyButton || !optionsTableBody.contains(copyButton)) {
+            return;
+        }
+
+        const copyValue = copyButton.getAttribute('data-options-copy');
 
         if (copyValue === null) {
             return;
         }
 
-        copyText(copyValue, target);
+        copyText(copyValue, copyButton);
     });
 
     importButton.addEventListener('click', function () {
@@ -2596,6 +2725,7 @@ document.addEventListener('DOMContentLoaded', function () {
         flashButton(downloadJsonButton, 'Downloaded');
     });
 
+    // ns:start family._base.workspace.08_json-restore
     importJsonButton.addEventListener('click', function () {
         importJsonInput.click();
     });
@@ -2617,6 +2747,7 @@ document.addEventListener('DOMContentLoaded', function () {
             importJsonInput.value = '';
         }
     });
+    // ns:end family._base.workspace.08_json-restore
 
     [
         urlInput,
@@ -2650,4 +2781,135 @@ document.addEventListener('DOMContentLoaded', function () {
         element.addEventListener('change', syncSafeStateToUrl);
         element.addEventListener('input', syncSafeStateToUrl);
     });
+    initializeInfraStackCustomDropdowns(document);
 });
+/* ns:start family._base.workspace.07_table-output */
+(function setupGenerateCurlShellTableOutputStandard() {
+    const rootSelector = '.generate-curl-shell-tool';
+    const tableSelector = '.tool-result-table tbody tr, .generate-curl-shell-table tbody tr';
+    const tbodySelector = '.tool-result-table tbody, .generate-curl-shell-table tbody';
+    const clampClass = 'generate-curl-shell-table-cell-text';
+    const cellClampClass = 'generate-curl-shell-cell-clamp';
+    const statusColumnClass = 'generate-curl-shell-table-status-cell';
+
+    function hasActionColumn(cells, table) {
+        const lastCell = cells[cells.length - 1];
+        const lastHead = table ? table.querySelector('thead th:last-child') : null;
+        const headText = lastHead ? String(lastHead.textContent || '') : '';
+
+        return Boolean(
+            lastCell && lastCell.querySelector('button, [data-copy-row], [data-inventory-copy-row], [data-control-copy-row], [data-options-copy], [data-operation-copy], [data-copy-value]')
+        ) || /copy|action|actions/i.test(headText);
+    }
+
+    function isStatusLikeHeader(text) {
+        return /^(status|signal|criticality|severity|state|health|outcome|result|level|label)$/i.test(String(text || '').trim());
+    }
+
+    function getBodyCells(row) {
+        return Array.from(row.children).filter(function filterCells(cell) {
+            return cell.tagName && cell.tagName.toLowerCase() === 'td';
+        });
+    }
+
+    function applyStatusAlignment(root) {
+        root.querySelectorAll('.tool-result-table, .generate-curl-shell-table').forEach(function alignStatusTable(table) {
+            const headers = Array.from(table.querySelectorAll('thead th'));
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            table.querySelectorAll('.' + statusColumnClass).forEach(function clearStatusCell(cell) {
+                cell.classList.remove(statusColumnClass);
+            });
+
+            headers.forEach(function alignStatusColumn(header, index) {
+                const statusLike = isStatusLikeHeader(header.textContent);
+                header.classList.toggle(statusColumnClass, statusLike);
+
+                if (!statusLike) {
+                    return;
+                }
+
+                rows.forEach(function alignStatusCell(row) {
+                    const cells = getBodyCells(row);
+                    const cell = cells[index];
+
+                    if (cell && cell.colSpan <= 1) {
+                        cell.classList.add(statusColumnClass);
+                    }
+                });
+            });
+        });
+    }
+
+    function clampCell(cell) {
+        if (!cell || cell.colSpan > 1 || cell.querySelector('.' + clampClass + ', .' + cellClampClass)) {
+            return;
+        }
+
+        if (cell.children.length === 1 && !cell.firstElementChild.matches('button')) {
+            cell.firstElementChild.classList.add(clampClass);
+            return;
+        }
+
+        const wrapper = document.createElement('span');
+        wrapper.className = clampClass;
+
+        while (cell.firstChild) {
+            wrapper.appendChild(cell.firstChild);
+        }
+
+        cell.appendChild(wrapper);
+    }
+
+    function applyTableOutputClamp() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        applyStatusAlignment(root);
+
+        root.querySelectorAll(tableSelector).forEach(function clampRow(row) {
+            const cells = getBodyCells(row);
+            const table = row.closest('table');
+            const actionColumn = hasActionColumn(cells, table);
+
+            cells.forEach(function clampDataCell(cell, index) {
+                const isFirst = index === 0;
+                const isAction = actionColumn && index === cells.length - 1;
+
+                if (!isFirst && !isAction) {
+                    clampCell(cell);
+                }
+            });
+        });
+    }
+
+    function observeTables() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        root.querySelectorAll(tbodySelector).forEach(function observeBody(tbody) {
+            if (tbody.dataset.tableOutputClampObserver === 'true') {
+                return;
+            }
+
+            tbody.dataset.tableOutputClampObserver = 'true';
+            new MutationObserver(applyTableOutputClamp).observe(tbody, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        applyTableOutputClamp();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', observeTables);
+    } else {
+        observeTables();
+    }
+}());
+/* ns:end family._base.workspace.07_table-output */

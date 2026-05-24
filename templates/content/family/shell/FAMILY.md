@@ -8,11 +8,14 @@ Baseline snapshot: `2026-05-18`.
 
 - `README.md`: family explanation and final package expectations.
 - `manifest.yml`: structured baseline metadata and validation rules.
-- `baseline/source/`: full copied Netcat Command Generator source snapshot for traceability only.
+- `source/`: full copied Netcat Command Generator source snapshot for traceability only. Do not audit this as active source.
 - `workspace/README.md`: workspace grammar.
 - `workspace/manifest.yml`: structured workspace metadata.
 - `workspace/assets/bin/model-core.js`: reusable model-core JavaScript copied from the declared baseline tool.
-- `workspace/01_input-target/` through `workspace/07_table/`: reusable section sources.
+- `_base/workspace/`: shared shell frame, input, settings, summary, toolbar, table, and JSON restore source.
+- `workspace/04_result-text/`: shell-owned generated command text source.
+- `workspace/04_visual-contract/`: optional shell visual and model contract for command preview, token chips, option groups, warning tones, and operation rows.
+- `workspace/04_visual-contract/`: optional shell visual and model contract for command preview, token chips, option groups, warning tones, and operation rows.
 - `templates/content/main/sections/content/10_references/`: shared source-backed citation and References section source when final content cites sources.
 
 ## Historical Reference
@@ -31,14 +34,14 @@ Reference snapshot:
 
 ```text
 source: templates/content/tools/shell/generate-netcat-shell/
-snapshot: templates/content/family/shell/baseline/source/
+snapshot: templates/content/family/shell/source/
 workspace: templates/content/family/shell/workspace/
 model-core: templates/content/family/shell/workspace/assets/bin/model-core.js
 ```
 
-The full copied source snapshot is reference-only. The shell family source of truth is the numbered workspace folders plus `workspace/assets/bin/model-core.js` when needed. Reusable shell workspace CSS and ownership metadata live in numbered section folders as `section.css` and `section.js`. Each `section.css` carries the minimal shell demo foundation plus section-specific selectors, matching the architecture family pattern. Do not keep full custom runtime strings inside section folders.
+The full copied source snapshot is reference-only. Do not audit this as active source. The shell family source of truth is the composed `workspace_namespaces` list: `_base/workspace` for common shape plus shell-owned `04_result-text`, optional `04_visual-contract`, and `workspace/assets/bin/model-core.js` when needed. Shell-owned `section.css` carries the minimal demo foundation plus shell-specific selectors, matching the architecture family pattern. Do not keep full custom runtime strings inside section folders.
 
-The snapshot files under `baseline/source/` carry `source:start/source:end family.shell.workspace.<section>` markers. Refresh section files from those marker ranges, then replace exact concrete identifiers with `__TOOL_CLASS__`, `__PREFIX__`, and `__DOM_PREFIX__`. Keep slug-prefixed classes such as `generate-netcat-shell-toolbar` mapped to `__PREFIX__-toolbar`.
+The snapshot files under `source/` carry `source:start/source:end family.shell.workspace.<section>` markers. Refresh section files from those marker ranges, then replace exact concrete identifiers with `__TOOL_CLASS__`, `__PREFIX__`, and `__DOM_PREFIX__`. Keep slug-prefixed classes such as `generate-netcat-shell-toolbar` mapped to `__PREFIX__-toolbar`.
 
 Baseline behavior:
 
@@ -46,6 +49,7 @@ Baseline behavior:
 - Presets seed known command workflows without locking user edits.
 - Basic controls define implementation, shell, mode, protocol, host, and ports.
 - Custom controls expose only supported command options and hide or warn on unsupported behavior.
+- Visual result contracts normalize command preview, token chips, option groups, warning tones, and operation rows when the command tool has reusable visual output.
 - Generated output shows a reviewed command, summary/status cards, warnings/errors, sortable operation rows, export actions, and JSON.
 - Family demos render extracted section snippets with dummy state, and result-related family demos show before and after states stacked vertically as two rows in one column.
 - Standalone `demo.html` files own demo chrome separately from Netcat runtime extraction. Include Bootstrap Icons when using `bi` classes, render plain `demo-title` and `demo-title-text` wrappers, and add decorative title icons only when explicitly requested.
@@ -57,13 +61,13 @@ Baseline behavior:
 
 ## Strict Reapply Rule
 
-When the shell family is reapplied to existing shell tools, apply all seven workspace sections from `templates/content/family/shell/workspace/` to every runtime package in scope. This includes `generate-netcat-shell` when it is named in the task.
+When the shell family is reapplied to existing shell tools, apply the composed workspace namespaces to every runtime package in scope. `04_result-text` remains shell-owned and mandatory because `_base` does not own generated command text, command copy, or empty command output behavior. `04_visual-contract` is optional until a task explicitly scopes command visual reapplication. This includes `generate-netcat-shell` when it is named in the task.
 
 Accepted reapplication means structural, visual, and runtime parity for the command-builder workspace: input target, Basic settings, Custom settings, generated command text, summary cards, Sort toolbar, output actions, tabs, operation table, warnings, JSON, and restore boundaries where implemented.
 
 The shell parity gate must inspect final runtime packages and verify:
 
-- visible panel label `Custom`; `03_advanced-setting` stays only as folder and namespace naming
+- visible panel label `Custom`; legacy `03_advanced-setting` may remain only as a compatibility marker name
 - no nested card frame directly inside the opened Custom panel body
 - Sort options exactly `ID`, `A-Z`, `Field`, `Value`, and `Length`, unless a command-native divergence is recorded
 - output actions exactly `Export PDF`, `Download CSV`, `Copy JSON`, `Download JSON`, and `Import JSON` for current shipped shell generators
@@ -82,8 +86,8 @@ Namespace markers, source markers, copied comments, copied support text, old sna
 - Keep generated command tokens ordered exactly as the target CLI expects.
 - Surface dropped, unsupported, or risky options as warnings or blocking errors.
 - Keep command output, tables, exports, and JSON driven from one normalized model.
-- Keep result text, score cards, sort card, table, warnings, and JSON in the shell family output rhythm.
-- Keep the shell support-content design sourced through the seven section-owned `section.css` files, not manually copied from one final tool to another.
+- Keep generated command result text in shell-owned rhythm and keep score cards, sort card, table, warnings, and JSON in the shared `_base` output rhythm.
+- Keep shell support-content design sourced through shared main sections and composed workspace sources, not manually copied from one final tool to another.
 - Use domain-native labels and examples for each final shell tool.
 - Example command terminal titles stay centered and title case, such as `Netcat Command`.
 - Support section titles use a left icon and divider line. Technical Details subsection headings use separator lines between later blocks. Command Tips, How To Use, and FAQ accordion rows use compact left icon chips, and How To Use plus FAQ keep a short explanatory paragraph before the first row.
@@ -95,6 +99,6 @@ The family baseline is not a runtime package.
 
 Copy or adapt the source snapshot and relevant shell workspace grammar into final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and optional `assets/bin/model-core.js`.
 
-Inject the seven shell workspace sections directly into final shell tools.
+Inject the composed `_base` and shell-owned workspace sections directly into final shell tools. Add `04_visual-contract` when the final shell tool needs reusable command visuals, and keep generated command source of truth in `04_result-text` or final tool model logic.
 
 Keep each final shell tool independently understandable, namespaced, exportable, restorable when state exists, and native to the target command or operating context.

@@ -12,9 +12,11 @@ class ShareService
 {
     private const MAX_IMAGE_BYTES = 8_388_608;
 
-    private const SNAPSHOT_METADATA_ROOT = '/var/snapshot';
+    private const SNAPSHOT_METADATA_ROOT = '/var/snapshot/metadata';
 
     private const SNAPSHOT_IMAGE_ROOT = '/var/snapshot/image';
+
+    private const LEGACY_SNAPSHOT_METADATA_ROOT = '/var/snapshot';
 
     private const LEGACY_SNAPSHOT_IMAGE_ROOT = '/public/snapshot';
 
@@ -196,6 +198,11 @@ class ShareService
     private function readSnapshotMetadata(array $tool, string $snapshotId): array
     {
         $metadataPath = $this->getSnapshotMetadataPath($tool['category_slug'], $tool['slug'], $snapshotId);
+
+        if (!is_file($metadataPath)) {
+            $metadataPath = $this->getLegacySnapshotMetadataPath($tool['category_slug'], $tool['slug'], $snapshotId);
+        }
+
         $metadata = is_file($metadataPath)
             ? json_decode((string) file_get_contents($metadataPath), true)
             : [];
@@ -249,6 +256,16 @@ class ShareService
             . $slug;
     }
 
+    private function getLegacySnapshotMetadataDir(string $category, string $slug): string
+    {
+        return (string) $this->parameterBag->get('kernel.project_dir')
+            . self::LEGACY_SNAPSHOT_METADATA_ROOT
+            . '/'
+            . $category
+            . '/'
+            . $slug;
+    }
+
     private function getLegacySnapshotImageDir(string $category, string $slug): string
     {
         return (string) $this->parameterBag->get('kernel.project_dir')
@@ -272,5 +289,10 @@ class ShareService
     private function getSnapshotMetadataPath(string $category, string $slug, string $snapshotId): string
     {
         return $this->getSnapshotMetadataDir($category, $slug) . '/' . $snapshotId . '.json';
+    }
+
+    private function getLegacySnapshotMetadataPath(string $category, string $slug, string $snapshotId): string
+    {
+        return $this->getLegacySnapshotMetadataDir($category, $slug) . '/' . $snapshotId . '.json';
     }
 }

@@ -3,6 +3,7 @@
 
 /* assets/styles/layout/*.css */
 @import './layout/sidebar.css';
+@import './layout/discussion.css';
 @import './layout/share.css';
 @import './layout/link.css';
 @import './layout/embed.css';

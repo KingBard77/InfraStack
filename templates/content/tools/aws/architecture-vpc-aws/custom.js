@@ -1,5 +1,532 @@
 // custom.js
+// ns:start family._base.workspace.00_shell
 
+function initializeInfraStackCustomDropdowns(root) {
+    const scope = root || document;
+    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
+
+    dropdowns.forEach(function (dropdown) {
+        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
+        const targetInput = targetId ? document.getElementById(targetId) : null;
+        const label = dropdown.querySelector('[data-custom-dropdown-label]');
+        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
+
+        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
+            return;
+        }
+
+        function sync(value) {
+            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
+            let selectedOption = options.find(function (option) {
+                return option.dataset.customDropdownValue === selectedValue;
+            }) || options[0];
+
+            if (!selectedOption) {
+                return;
+            }
+
+            const nextValue = selectedOption.dataset.customDropdownValue || '';
+
+            if (targetInput.value !== nextValue) {
+                targetInput.value = nextValue;
+            }
+            label.textContent = selectedOption.textContent.trim();
+            options.forEach(function (option) {
+                const isActive = option === selectedOption;
+
+                option.classList.toggle('active', isActive);
+                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+        }
+
+        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
+            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+
+            if (descriptor && descriptor.get && descriptor.set) {
+                Object.defineProperty(targetInput, 'value', {
+                    configurable: true,
+                    get: function () {
+                        return descriptor.get.call(this);
+                    },
+                    set: function (nextValue) {
+                        descriptor.set.call(this, nextValue);
+                        window.requestAnimationFrame(function () {
+                            sync(String(nextValue || ''));
+                        });
+                    }
+                });
+                targetInput.dataset.customDropdownValueProxy = 'true';
+            }
+        }
+
+        options.forEach(function (option) {
+            option.addEventListener('click', function () {
+                sync(option.dataset.customDropdownValue || '');
+                targetInput.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+                dropdown.removeAttribute('open');
+            });
+        });
+
+        targetInput.addEventListener('change', function () {
+            sync(targetInput.value);
+        });
+        sync(targetInput.value);
+        dropdown.dataset.customDropdownBound = 'true';
+    });
+}
+
+
+// ns:start family._base.workspace.05_result-summary
+function installInfraStackResultSummaryNormalizer(prefix) {
+    function formatUpdatedLabel() {
+        return new Intl.DateTimeFormat('en', {
+            month: 'short',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        }).format(new Date());
+    }
+
+    function createChip(text, tone, iconClass) {
+        const chip = document.createElement('span');
+        const icon = iconClass || 'bi bi-info-circle';
+
+        chip.className = prefix + '-result-chip ' + prefix + '-result-chip-' + tone;
+        chip.innerHTML = '<span class="' + prefix + '-result-chip-icon"><i class="' + icon + '" aria-hidden="true"></i></span>';
+        chip.append(document.createTextNode(text));
+
+        return chip;
+    }
+
+
+    function metricIconForLabel(label, index) {
+        const normalized = String(label || '').toLowerCase();
+        const fallback = ['bi bi-globe2', 'bi bi-grid-3x3-gap', 'bi bi-diagram-3', 'bi bi-database'];
+
+        if (/region|location|geography|cloud/.test(normalized)) {
+            return 'bi bi-globe2';
+        }
+        if (/zone|az|availability/.test(normalized)) {
+            return 'bi bi-grid-3x3-gap';
+        }
+        if (/egress|nat|gateway|route|traffic|network/.test(normalized)) {
+            return 'bi bi-signpost-split';
+        }
+        if (/data|database|storage|backup/.test(normalized)) {
+            return 'bi bi-database';
+        }
+        if (/score|readiness|ready/.test(normalized)) {
+            return 'bi bi-speedometer2';
+        }
+        if (/inventory|component|service|node/.test(normalized)) {
+            return 'bi bi-boxes';
+        }
+        if (/security|control|firewall|policy/.test(normalized)) {
+            return 'bi bi-shield-check';
+        }
+        if (/compute|server|workload|host/.test(normalized)) {
+            return 'bi bi-cpu';
+        }
+
+        return fallback[index % fallback.length];
+    }
+
+    function normalizeMetricCards(summary) {
+        const tones = ['success', 'info', 'accent-tone', 'warning'];
+
+        Array.from(summary.querySelectorAll('.' + prefix + '-result-metric-card')).forEach(function (card, index) {
+            const tone = tones[index % tones.length];
+            const label = card.querySelector('.' + prefix + '-result-metric-label');
+            const value = card.querySelector('.' + prefix + '-result-metric-value');
+            const copy = card.querySelector('.' + prefix + '-result-metric-copy');
+
+            if (label && /^score$/i.test(label.textContent.trim())) {
+                label.textContent = 'Model';
+                if (value) {
+                    value.textContent = 'Generated';
+                }
+                if (copy) {
+                    copy.textContent = 'Current architecture model state.';
+                }
+            }
+
+            if (!card.classList.contains(prefix + '-result-metric-success') &&
+                    !card.classList.contains(prefix + '-result-metric-info') &&
+                    !card.classList.contains(prefix + '-result-metric-accent-tone') &&
+                    !card.classList.contains(prefix + '-result-metric-warning')) {
+                card.classList.add(prefix + '-result-metric-' + tone);
+            }
+
+            if (!card.querySelector('.' + prefix + '-result-metric-icon')) {
+                const icon = document.createElement('span');
+                icon.className = prefix + '-result-metric-icon';
+                icon.setAttribute('aria-hidden', 'true');
+                icon.innerHTML = '<i class="' + metricIconForLabel(label ? label.textContent : '', index) + '"></i>';
+                card.insertBefore(icon, card.firstChild);
+            }
+
+            if (!card.querySelector('.' + prefix + '-result-metric-accent')) {
+                const accent = document.createElement('span');
+                accent.className = prefix + '-result-metric-accent';
+                accent.setAttribute('aria-hidden', 'true');
+                card.appendChild(accent);
+            }
+        });
+    }
+
+    function textFrom(element, fallback) {
+        const value = element ? element.textContent.trim() : '';
+
+        return value || fallback;
+    }
+
+    function compactPrimaryText(primaryCard, summaryCard) {
+        const summaryTitle = textFrom(summaryCard.querySelector('.' + prefix + '-result-title'), 'Primary result');
+        const currentValue = textFrom(primaryCard.querySelector('.' + prefix + '-result-command-value'), '');
+        const compactTitle = summaryTitle
+            .replace(/\s+command$/i, '')
+            .replace(/\s+preview$/i, '')
+            .replace(/^generated\s+/i, '')
+            .trim();
+
+        if (!currentValue || currentValue.length > 48 || /\b(curl|chmod|nc|ncat|netcat|sudo|crontab)\b/i.test(currentValue)) {
+            return compactTitle || 'Primary result';
+        }
+
+        return currentValue;
+    }
+
+    function ensureResultHeader(summary) {
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
+        if (!hero || summary.querySelector('.' + prefix + '-result-header')) {
+            return;
+        }
+
+        const header = document.createElement('header');
+        header.className = prefix + '-result-header';
+        header.setAttribute('aria-label', 'Result summary header');
+        header.innerHTML = [
+            '<div class="' + prefix + '-result-header-main">',
+            '<span class="' + prefix + '-result-header-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span>',
+            '<div class="' + prefix + '-result-header-copy">',
+            '<h2 class="' + prefix + '-result-header-title">Result Summary</h2>',
+            '<p>Overview of the current architecture result and key metrics</p>',
+            '</div>',
+            '</div>',
+            '<div class="' + prefix + '-result-header-meta" aria-label="Result summary status">',
+            '<span class="' + prefix + '-result-header-chip ' + prefix + '-result-chip ' + prefix + '-result-chip-ready"><span class="' + prefix + '-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span>',
+            '<span class="' + prefix + '-result-header-chip ' + prefix + '-result-chip ' + prefix + '-result-chip-updated"><span class="' + prefix + '-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>' + formatUpdatedLabel() + '</span></span>',
+            '</div>'
+        ].join('');
+        summary.insertBefore(header, hero);
+    }
+
+    function normalizeSummaryCard(summaryCard) {
+        let intro = summaryCard.querySelector('.' + prefix + '-result-summary-intro');
+        const chipRow = summaryCard.querySelector('.' + prefix + '-result-chip-row, .' + prefix + '-result-chip-grid');
+
+        if (!intro) {
+            const kicker = summaryCard.querySelector('.' + prefix + '-result-kicker');
+            const title = summaryCard.querySelector('.' + prefix + '-result-title');
+            const copy = summaryCard.querySelector('.' + prefix + '-result-copy');
+            intro = document.createElement('div');
+            intro.className = prefix + '-result-summary-intro';
+
+            const icon = document.createElement('span');
+            icon.className = prefix + '-result-card-icon ' + prefix + '-result-card-icon-summary';
+            icon.setAttribute('aria-hidden', 'true');
+            icon.innerHTML = '<i class="bi bi-clipboard-data"></i>';
+
+            const copyWrap = document.createElement('div');
+            copyWrap.className = prefix + '-result-summary-copy';
+            [kicker, title, copy].forEach(function (node) {
+                if (node) {
+                    copyWrap.appendChild(node);
+                }
+            });
+
+            intro.appendChild(icon);
+            intro.appendChild(copyWrap);
+            summaryCard.insertBefore(intro, summaryCard.firstChild);
+        }
+
+        const kicker = intro.querySelector('.' + prefix + '-result-kicker');
+        if (kicker) {
+            kicker.textContent = 'Descriptive Summary';
+        }
+
+        if (!summaryCard.querySelector('.' + prefix + '-result-card-divider')) {
+            const divider = document.createElement('span');
+            divider.className = prefix + '-result-card-divider';
+            divider.setAttribute('aria-hidden', 'true');
+            if (chipRow) {
+                summaryCard.insertBefore(divider, chipRow);
+            } else {
+                summaryCard.appendChild(divider);
+            }
+        }
+    }
+
+    function ensureSummaryChips(summaryCard) {
+        let chipGrid = summaryCard.querySelector('.' + prefix + '-result-chip-grid') || summaryCard.querySelector('.' + prefix + '-result-chip-row');
+
+        if (!chipGrid) {
+            chipGrid = document.createElement('div');
+            chipGrid.className = prefix + '-result-chip-grid';
+            chipGrid.setAttribute('aria-label', 'Result summary state');
+            summaryCard.appendChild(chipGrid);
+        }
+
+        chipGrid.classList.remove(prefix + '-result-chip-row');
+        chipGrid.classList.add(prefix + '-result-chip-grid');
+        chipGrid.setAttribute('aria-label', 'Result summary state');
+
+        Array.from(chipGrid.querySelectorAll('.' + prefix + '-result-chip')).forEach(function (chip) {
+            if (/^updated\b/i.test(chip.textContent.trim())) {
+                chip.remove();
+            }
+        });
+
+        while (chipGrid.querySelectorAll('.' + prefix + '-result-chip').length < 4) {
+            chipGrid.appendChild(createChip('Model ready', 'baseline', 'bi bi-check2-circle'));
+        }
+    }
+
+    function normalizeRingValues(summary) {
+        summary.querySelectorAll('.' + prefix + '-result-ring-value').forEach(function (value) {
+            const length = Math.max(value.textContent.trim().length, 3);
+            value.style.setProperty('--' + prefix + '-result-value-chars', String(length));
+        });
+    }
+
+    function ensurePrimaryOutcome(primaryCard, summaryCard) {
+        let outcomeRow = primaryCard.querySelector('.' + prefix + '-result-chip-row-center');
+
+        if (!outcomeRow) {
+            outcomeRow = document.createElement('div');
+            outcomeRow.className = prefix + '-result-chip-row ' + prefix + '-result-chip-row-center';
+            outcomeRow.setAttribute('aria-label', 'Primary result outcome');
+            primaryCard.appendChild(outcomeRow);
+        }
+
+        let divider = Array.from(primaryCard.children).find(function (child) {
+            return child.classList && child.classList.contains(prefix + '-result-card-divider');
+        });
+
+        if (!divider) {
+            divider = document.createElement('span');
+            divider.className = prefix + '-result-card-divider';
+            divider.setAttribute('aria-hidden', 'true');
+            primaryCard.insertBefore(divider, outcomeRow);
+        } else if (divider.nextElementSibling !== outcomeRow) {
+            primaryCard.insertBefore(divider, outcomeRow);
+        }
+
+        if (outcomeRow.querySelector('.' + prefix + '-result-chip')) {
+            return;
+        }
+
+        const sourceChip = summaryCard.querySelector('.' + prefix + '-result-chip-ready, .' + prefix + '-result-chip-success, .' + prefix + '-result-chip-baseline, .' + prefix + '-result-chip-warning');
+        const outcomeChip = sourceChip ? sourceChip.cloneNode(true) : createChip('Primary result', 'outcome', 'bi bi-check2-circle');
+
+        outcomeChip.classList.add(prefix + '-result-chip-outcome');
+        outcomeRow.appendChild(outcomeChip);
+    }
+
+    function normalizeRingPrimary(primaryCard, summaryCard) {
+        const ring = primaryCard.querySelector('.' + prefix + '-result-ring');
+
+        if (!ring) {
+            return false;
+        }
+
+        primaryCard.dataset.resultVisual = 'ring';
+
+        primaryCard.querySelectorAll([
+            '.' + prefix + '-result-card-icon-primary',
+            '.' + prefix + '-result-primary-number',
+            '.' + prefix + '-result-primary-text'
+        ].join(', ')).forEach(function (node) {
+            node.remove();
+        });
+
+        const visualShell = ring.closest('.' + prefix + '-result-primary-visual') || ring;
+        let topCopy = primaryCard.querySelector('.' + prefix + '-result-visual-copy-top');
+
+        if (!topCopy) {
+            topCopy = document.createElement('div');
+            topCopy.className = prefix + '-result-visual-copy ' + prefix + '-result-visual-copy-top';
+        }
+
+        if (visualShell.parentElement === primaryCard && topCopy.parentElement !== primaryCard) {
+            primaryCard.insertBefore(topCopy, visualShell);
+        } else if (!topCopy.parentElement) {
+            primaryCard.insertBefore(topCopy, primaryCard.firstChild);
+        }
+
+        const heading = primaryCard.querySelector('.' + prefix + '-result-primary-heading');
+        let kicker = Array.from(primaryCard.querySelectorAll('.' + prefix + '-result-kicker')).find(function (item) {
+            return /primary/i.test(item.textContent);
+        }) || topCopy.querySelector('.' + prefix + '-result-kicker');
+
+        if (!kicker) {
+            kicker = document.createElement('span');
+            kicker.className = prefix + '-result-kicker';
+        }
+
+        kicker.textContent = 'Primary Result';
+        if (!topCopy.contains(kicker)) {
+            topCopy.appendChild(kicker);
+        }
+
+        const title = primaryCard.querySelector('.' + prefix + '-result-title-center, .' + prefix + '-result-title');
+        if (title) {
+            title.querySelectorAll('i, svg').forEach(function (icon) {
+                icon.remove();
+            });
+            if (!topCopy.contains(title)) {
+                topCopy.appendChild(title);
+            }
+        }
+
+        let bottomCopy = Array.from(primaryCard.querySelectorAll('.' + prefix + '-result-visual-copy')).find(function (item) {
+            return item !== topCopy;
+        });
+
+        if (!bottomCopy) {
+            bottomCopy = document.createElement('div');
+            bottomCopy.className = prefix + '-result-visual-copy';
+            if (visualShell.parentElement) {
+                visualShell.insertAdjacentElement('afterend', bottomCopy);
+            } else {
+                primaryCard.appendChild(bottomCopy);
+            }
+        }
+
+        Array.from(bottomCopy.querySelectorAll('.' + prefix + '-result-kicker')).forEach(function (item) {
+            item.remove();
+        });
+
+        if (!bottomCopy.querySelector('.' + prefix + '-result-copy')) {
+            const copy = document.createElement('p');
+            const summaryCopy = summaryCard.querySelector('.' + prefix + '-result-copy');
+            copy.className = prefix + '-result-copy ' + prefix + '-result-copy-center';
+            copy.textContent = textFrom(summaryCopy, 'Primary output generated from the current inputs.');
+            bottomCopy.appendChild(copy);
+        }
+
+        if (heading && !heading.textContent.trim()) {
+            heading.remove();
+        }
+
+        ensurePrimaryOutcome(primaryCard, summaryCard);
+
+        return true;
+    }
+
+    function normalizeTextPrimary(primaryCard, summaryCard) {
+        primaryCard.dataset.resultVisual = primaryCard.classList.contains(prefix + '-result-card-command') ? 'command' : 'text';
+
+        const kicker = primaryCard.querySelector('.' + prefix + '-result-kicker');
+        if (kicker) {
+            kicker.textContent = 'Primary Result';
+        }
+
+        const commandValue = primaryCard.querySelector('.' + prefix + '-result-command-value');
+        if (commandValue) {
+            commandValue.textContent = compactPrimaryText(primaryCard, summaryCard);
+        }
+
+        ensurePrimaryOutcome(primaryCard, summaryCard);
+    }
+
+    function normalize() {
+        const summary = document.querySelector('.' + prefix + '-result-summary');
+        if (!summary) {
+            return;
+        }
+
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
+        if (!hero) {
+            return;
+        }
+
+        ensureResultHeader(summary);
+
+        const cards = Array.from(hero.querySelectorAll(':scope > .' + prefix + '-result-card'));
+        const primaryCard = cards.find(function (card) {
+            return card.classList.contains(prefix + '-result-card-primary') || card.classList.contains(prefix + '-result-card-visual') || card.classList.contains(prefix + '-result-card-command');
+        }) || cards[0];
+        const summaryCard = cards.find(function (card) {
+            return card !== primaryCard && (card.classList.contains(prefix + '-result-card-summary') || card.classList.contains(prefix + '-result-card-main'));
+        }) || cards.find(function (card) {
+            return card !== primaryCard;
+        });
+
+        if (!primaryCard || !summaryCard) {
+            return;
+        }
+
+        primaryCard.classList.add(prefix + '-result-card-primary');
+        summaryCard.classList.add(prefix + '-result-card-summary');
+        normalizeSummaryCard(summaryCard);
+
+        if (hero.firstElementChild !== primaryCard) {
+            hero.insertBefore(primaryCard, hero.firstElementChild);
+        }
+        if (primaryCard.nextElementSibling !== summaryCard) {
+            hero.insertBefore(summaryCard, primaryCard.nextElementSibling);
+        }
+
+        const hasRing = normalizeRingPrimary(primaryCard, summaryCard);
+        if (!hasRing) {
+            normalizeTextPrimary(primaryCard, summaryCard);
+        }
+        ensureSummaryChips(summaryCard);
+        normalizeRingValues(summary);
+        normalizeMetricCards(summary);
+    }
+
+    function scheduleNormalize() {
+        window.requestAnimationFrame(normalize);
+    }
+
+    window.InfraStackResultSummaryNormalizers = window.InfraStackResultSummaryNormalizers || {};
+    window.InfraStackResultSummaryNormalizers[prefix] = normalize;
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            normalize();
+            new MutationObserver(scheduleNormalize).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }, { once: true });
+        return;
+    }
+
+    normalize();
+    new MutationObserver(scheduleNormalize).observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+function normalizeInfraStackResultSummary(prefix) {
+    const normalizers = window.InfraStackResultSummaryNormalizers || {};
+
+    if (typeof normalizers[prefix] === 'function') {
+        normalizers[prefix]();
+    }
+}
+
+installInfraStackResultSummaryNormalizer('architecture-vpc-aws');
+// ns:end family._base.workspace.05_result-summary
+// ns:start family.architecture.workspace.04_visual-contract
+{{ include('content/tools/aws/architecture-vpc-aws/assets/bin/engine-runtime.js')|raw }}
+// ns:end family.architecture.workspace.04_visual-contract
 {{ include('content/tools/aws/architecture-vpc-aws/assets/bin/model-core.js')|raw }}
 
 const architectureVpcAwsPresetCatalog = [
@@ -112,6 +639,7 @@ const architectureVpcAwsSupportedRegions = ArchitectureVpcAwsModelCore.supported
 const architectureVpcAwsAllowedNatModes = ArchitectureVpcAwsModelCore.allowedNatModes;
 const architectureVpcAwsAllowedAppTiers = ArchitectureVpcAwsModelCore.allowedAppTiers;
 const architectureVpcAwsAllowedDatabases = ArchitectureVpcAwsModelCore.allowedDatabases;
+const architectureVpcAwsEngineRuntime = window.InfraStackArchitectureEngineRuntime || null;
 
 const architectureVpcAwsIconSvgMap = {
     amazonVpc: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-Virtual-Private-Cloud_48.svg')|json_encode|raw }},
@@ -150,22 +678,22 @@ function initArchitectureVpcAwsTool() {
 
     toolRoot.dataset.runtimeReady = 'true';
 
-// ns:start family.architecture.workspace.01_input-brief
+// ns:start family._base.workspace.01_input-brief
     const promptInput = document.getElementById('architectureVpcAwsPrompt');
     const generateButton = document.getElementById('architectureVpcAwsGenerate');
     const resetButton = document.getElementById('architectureVpcAwsReset');
     const errorState = document.getElementById('architectureVpcAwsErrorState');
-// ns:end family.architecture.workspace.01_input-brief
-// ns:start family.architecture.workspace.02_basic-settings
+// ns:end family._base.workspace.01_input-brief
+// ns:start family._base.workspace.02_basic-settings
     const presetInput = document.getElementById('architectureVpcAwsPreset');
     const presetDescription = document.getElementById('architectureVpcAwsPresetDescription');
-// ns:end family.architecture.workspace.02_basic-settings
-// ns:start family.architecture.workspace.05_result-text
+// ns:end family._base.workspace.02_basic-settings
+// ns:start family.architecture.workspace.04_visual-contract
     const stageTitle = document.getElementById('architectureVpcAwsStageTitle');
     const stageSubtitle = document.getElementById('architectureVpcAwsStageSubtitle');
     const stageMeta = document.getElementById('architectureVpcAwsStageMeta');
-// ns:end family.architecture.workspace.05_result-text
-// ns:start family.architecture.workspace.06_result-diagram
+// ns:end family.architecture.workspace.04_visual-contract
+// ns:start family.architecture.workspace.04_visual-contract
     const stageEmpty = document.getElementById('architectureVpcAwsStageEmpty');
     const stageCanvas = document.getElementById('architectureVpcAwsStageCanvas');
     const stageShell = document.getElementById('architectureVpcAwsStageShell');
@@ -184,36 +712,36 @@ function initArchitectureVpcAwsTool() {
     const usageHelpCloseButton = document.getElementById('architectureVpcAwsUsageHelpClose');
     const fullscreenButton = document.getElementById('architectureVpcAwsFullscreen');
     const resetLayoutButton = document.getElementById('architectureVpcAwsResetLayout');
-// ns:end family.architecture.workspace.06_result-diagram
-// ns:start family.architecture.workspace.05_result-text
+// ns:end family.architecture.workspace.04_visual-contract
+// ns:start family.architecture.workspace.04_visual-contract
     const outputEmpty = document.getElementById('architectureVpcAwsOutputEmpty');
     const outputContent = document.getElementById('architectureVpcAwsOutputContent');
-// ns:end family.architecture.workspace.05_result-text
-// ns:start family.architecture.workspace.07_score-card
+// ns:end family.architecture.workspace.04_visual-contract
+// ns:start family._base.workspace.05_result-summary
     const outputStatus = document.getElementById('architectureVpcAwsOutputStatus');
-// ns:end family.architecture.workspace.07_score-card
-// ns:start family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.05_result-summary
+// ns:start family._base.workspace.07_table-output
     const pillarBreakdownOutput = document.getElementById('architectureVpcAwsPillarBreakdown');
     const riskLevelOutput = document.getElementById('architectureVpcAwsRiskLevel');
     const inventoryTableBody = document.getElementById('architectureVpcAwsInventoryTableBody');
-// ns:end family.architecture.workspace.09_result-table
-// ns:start family.architecture.workspace.08_sort-card
+// ns:end family._base.workspace.07_table-output
+// ns:start family._base.workspace.06_output-toolbar
     const inventorySortInput = document.getElementById('architectureVpcAwsInventorySort');
     const inventorySortSelect = document.getElementById('architectureVpcAwsInventorySortSelect');
     const inventorySortSummary = document.getElementById('architectureVpcAwsInventorySortSummary');
     const inventorySortOptions = Array.from(document.querySelectorAll('.architecture-vpc-aws-sort-option'));
-// ns:end family.architecture.workspace.08_sort-card
-// ns:start family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.06_output-toolbar
+// ns:start family._base.workspace.07_table-output
     const jsonOutput = document.getElementById('architectureVpcAwsJsonOutput');
-// ns:end family.architecture.workspace.09_result-table
-// ns:start family.architecture.workspace.05_result-text
+// ns:end family._base.workspace.07_table-output
+// ns:start family.architecture.workspace.04_visual-contract
     const promptSummary = document.getElementById('architectureVpcAwsPromptSummary');
     const keywordList = document.getElementById('architectureVpcAwsKeywordList');
     const assumptionList = document.getElementById('architectureVpcAwsAssumptionList');
     const modelList = document.getElementById('architectureVpcAwsModelList');
     const prosList = document.getElementById('architectureVpcAwsProsList');
     const consList = document.getElementById('architectureVpcAwsConsList');
-// ns:end family.architecture.workspace.05_result-text
+// ns:end family.architecture.workspace.04_visual-contract
 // ns:start family.architecture.workspace.04_selected-item
     const selectedShell = document.getElementById('architectureVpcAwsSelectedShell');
     const selectedEmpty = document.getElementById('architectureVpcAwsSelectedEmpty');
@@ -227,24 +755,24 @@ function initArchitectureVpcAwsTool() {
     const applyCardSizeButton = document.getElementById('architectureVpcAwsApplyCardSize');
     const resetCardSizeButton = document.getElementById('architectureVpcAwsResetCardSize');
 // ns:end family.architecture.workspace.04_selected-item
-// ns:start family.architecture.workspace.08_sort-card
+// ns:start family._base.workspace.06_output-toolbar
     const exportPngButton = document.getElementById('architectureVpcAwsExportPng');
     const downloadSvgButton = document.getElementById('architectureVpcAwsDownloadSvg');
     const copyJsonButton = document.getElementById('architectureVpcAwsCopyJson');
     const downloadJsonButton = document.getElementById('architectureVpcAwsDownloadJson');
     const importJsonButton = document.getElementById('architectureVpcAwsImportJsonButton');
     const importJsonInput = document.getElementById('architectureVpcAwsImportJson');
-// ns:end family.architecture.workspace.08_sort-card
+// ns:end family._base.workspace.06_output-toolbar
     const tabButtons = Array.from(document.querySelectorAll('.architecture-vpc-aws-tab-btn'));
     const tabPanels = Array.from(document.querySelectorAll('.architecture-vpc-aws-tab-panel'));
     const configTabButtons = Array.from(document.querySelectorAll('.architecture-vpc-aws-config-tab'));
     const configTabPanels = Array.from(document.querySelectorAll('[data-config-panel]'));
-// ns:start family.architecture.workspace.02_basic-settings
+// ns:start family._base.workspace.02_basic-settings
     const regionInput = document.getElementById('architectureVpcAwsRegion');
     const cidrInput = document.getElementById('architectureVpcAwsCidr');
     const azCountInput = document.getElementById('architectureVpcAwsAzCount');
-// ns:end family.architecture.workspace.02_basic-settings
-// ns:start family.architecture.workspace.03_advanced-settings
+// ns:end family._base.workspace.02_basic-settings
+// ns:start family._base.workspace.03_custom-settings
     const natModeInput = document.getElementById('architectureVpcAwsNatMode');
     const appTierInput = document.getElementById('architectureVpcAwsAppTier');
     const databaseInput = document.getElementById('architectureVpcAwsDatabase');
@@ -259,7 +787,7 @@ function initArchitectureVpcAwsTool() {
     const siteToSiteVpnInput = document.getElementById('architectureVpcAwsSiteToSiteVpn');
     const transitGatewayInput = document.getElementById('architectureVpcAwsTransitGateway');
     const cacheInput = document.getElementById('architectureVpcAwsCache');
-// ns:end family.architecture.workspace.03_advanced-settings
+// ns:end family._base.workspace.03_custom-settings
     const customSelectElements = [
         presetInput,
         regionInput,
@@ -367,6 +895,7 @@ function initArchitectureVpcAwsTool() {
     let selectedConnectorId = '';
     let stageUndoStack = [];
     let highlightedCardId = '';
+    let highlightedCardIds = [];
     let highlightTimeoutId = 0;
     const defaultStageZoom = 0.5;
     let stageZoom = defaultStageZoom;
@@ -381,12 +910,46 @@ function initArchitectureVpcAwsTool() {
     const maxStageZoom = 2.4;
     const stageZoomStep = 0.01;
     const stageUndoLimit = 50;
+    const engineRuntimeConfig = {
+        zoom: {
+            defaultValue: defaultStageZoom,
+            min: minStageZoom,
+            max: maxStageZoom,
+            step: 0.1,
+            wheelStep: stageZoomStep
+        },
+        movement: {
+            step: 4,
+            fastStep: 12,
+            snap: 1,
+            historyLimit: stageUndoLimit,
+            minimumNodeWidth: 120,
+            minimumNodeHeight: 70
+        },
+        selectors: {
+            resizeHandle: '[data-engine-resize-handle], .diagram-resize-handle',
+            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"], .architecture-vpc-aws-custom-select'
+        },
+        classes: {
+            selected: 'is-selected',
+            multiSelected: 'is-multi-selected',
+            highlighted: 'is-highlighted',
+            diagramHighlighted: 'architecture-vpc-aws-stage-highlight-all',
+            dragging: 'architecture-vpc-aws-stage-dragging',
+            resizing: 'architecture-vpc-aws-stage-resizing',
+            uiHidden: 'architecture-vpc-aws-stage-ui-hidden',
+            expanded: 'architecture-vpc-aws-stage-expanded',
+            bodyLock: 'architecture-vpc-aws-stage-expanded-lock',
+            hidden: 'd-none'
+        }
+    };
     const diagramShellCardId = 'amazon-vpc-shell';
     const baseStageMinWidth = 1120;
     const stageHeadingTitle = 'AWS VPC Architecture';
-    const selectedCardHintText = 'Select a draggable box in the stage to move, resize, or highlight it. Arrow keys move the selected box; Shift moves faster; Alt + arrow keys resize; Cmd/Ctrl + Z undoes the last stage edit.';
+    const selectedCardHintText = 'Select a draggable box in the stage to move, resize, or highlight it. Select a connector line to adjust its arrow handles. Arrow keys move the selected box; Shift moves faster; Alt + arrow keys resize; Cmd/Ctrl + Z undoes the last stage edit.';
     const selectedCardHintChips = [
         { icon: 'bi-cursor', label: 'Select a draggable box', tone: 'select' },
+        { icon: 'bi-bezier2', label: 'Select a line to adjust arrows', tone: 'action' },
         { icon: 'bi-arrows-move', label: 'Move, resize, or highlight', tone: 'action' },
         { icon: 'bi-arrow-up-right-square', label: 'Arrow keys move selected box', tone: 'keyboard' },
         { icon: 'bi-shift', label: 'Shift moves faster', tone: 'keyboard' },
@@ -513,6 +1076,25 @@ function initArchitectureVpcAwsTool() {
             .replace(/'/g, '&#39;');
     }
 
+    function highlightJsonText(text) {
+        return escapeHtml(text).replace(
+            /(&quot;(?:\\u[\da-fA-F]{4}|\\[^u]|[^\\&])*&quot;(?:\s*:)?|\btrue\b|\bfalse\b|\bnull\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+            function highlightToken(match) {
+                let tokenClass = 'number';
+
+                if (match.startsWith('&quot;')) {
+                    tokenClass = match.endsWith(':') ? 'key' : 'string';
+                } else if (match === 'true' || match === 'false') {
+                    tokenClass = 'boolean';
+                } else if (match === 'null') {
+                    tokenClass = 'null';
+                }
+
+                return '<span class="tool-json-' + tokenClass + '">' + match + '</span>';
+            }
+        );
+    }
+
     function textWithoutInfoMarker(element, markerClass) {
         const clone = element.cloneNode(true);
 
@@ -593,7 +1175,7 @@ function initArchitectureVpcAwsTool() {
         });
     }
 
-// ns:start family.architecture.workspace.01_input-brief
+// ns:start family._base.workspace.01_input-brief
     function normalizePrompt(value) {
         return ArchitectureVpcAwsModelCore.normalizePrompt(value);
     }
@@ -621,7 +1203,7 @@ function initArchitectureVpcAwsTool() {
     }
 
     function getCidrValidationMessage() {
-// ns:end family.architecture.workspace.01_input-brief
+// ns:end family._base.workspace.01_input-brief
         return 'Enter a valid IPv4 VPC CIDR such as 10.0.0.0/16.';
     }
 
@@ -695,6 +1277,63 @@ function initArchitectureVpcAwsTool() {
         return ArchitectureVpcAwsModelCore.buildImportedPayloadState(payload, architectureVpcAwsPresetCatalog);
     }
 
+    function readImportedVisualIds(payload, arrayKeys, scalarKeys) {
+        const sources = [
+            payload || {},
+            payload && payload.selection && typeof payload.selection === 'object' ? payload.selection : {}
+        ];
+
+        for (let sourceIndex = 0; sourceIndex < sources.length; sourceIndex += 1) {
+            const source = sources[sourceIndex];
+            const arrayKey = arrayKeys.find(function (key) {
+                return Array.isArray(source[key]);
+            });
+
+            if (arrayKey) {
+                return normalizeImportedStringArray(source[arrayKey]);
+            }
+
+            const scalarKey = scalarKeys.find(function (key) {
+                return typeof source[key] === 'string' && source[key].trim() !== '';
+            });
+
+            if (scalarKey) {
+                return [source[scalarKey].trim()];
+            }
+        }
+
+        return [];
+    }
+
+    function getImportedSelectedCardIds(payload) {
+        return readImportedVisualIds(payload, ['selected_node_ids', 'selectedNodeIds', 'selected_card_ids', 'selectedCardIds', 'node_ids', 'nodeIds', 'card_ids', 'cardIds'], ['selected_node_id', 'selectedNodeId', 'selected_card_id', 'selectedCardId', 'node_id', 'nodeId', 'card_id', 'cardId']);
+    }
+
+    function getImportedHighlightedCardIds(payload) {
+        return readImportedVisualIds(payload, ['highlighted_node_ids', 'highlightedNodeIds', 'highlighted_card_ids', 'highlightedCardIds'], ['highlighted_node_id', 'highlightedNodeId', 'highlighted_card_id', 'highlightedCardId']);
+    }
+
+    function getImportedSelectedConnectorId(payload) {
+        const selectedConnectorIdKeys = ['selected_connector_id', 'selectedConnectorId', 'connector_id', 'connectorId'];
+        const sources = [
+            payload || {},
+            payload && payload.selection && typeof payload.selection === 'object' ? payload.selection : {}
+        ];
+
+        for (let sourceIndex = 0; sourceIndex < sources.length; sourceIndex += 1) {
+            const source = sources[sourceIndex];
+            const selectedConnectorIdKey = selectedConnectorIdKeys.find(function (key) {
+                return typeof source[key] === 'string' && source[key].trim() !== '';
+            });
+
+            if (selectedConnectorIdKey) {
+                return source[selectedConnectorIdKey].trim();
+            }
+        }
+
+        return '';
+    }
+
     function natModeLabel(value) {
         return ArchitectureVpcAwsModelCore.natModeLabel(value);
     }
@@ -707,7 +1346,7 @@ function initArchitectureVpcAwsTool() {
         return ArchitectureVpcAwsModelCore.databaseLabel(value);
     }
 
-// ns:start family.architecture.workspace.02_basic-settings
+// ns:start family._base.workspace.02_basic-settings
     function getSelectedNativeOption(selectElement) {
         return Array.from(selectElement.options).find(function (option) {
             return option.value === selectElement.value;
@@ -783,6 +1422,10 @@ function initArchitectureVpcAwsTool() {
     }
 
     function initializeCustomSelect(selectElement) {
+        if (!selectElement || selectElement.tagName !== 'SELECT') {
+            return;
+        }
+
         const wrapper = document.createElement('div');
         const button = document.createElement('button');
         const valueElement = document.createElement('span');
@@ -884,11 +1527,13 @@ function initArchitectureVpcAwsTool() {
     }
 
     function initializeCustomSelects() {
-// ns:end family.architecture.workspace.02_basic-settings
-        customSelectElements.forEach(initializeCustomSelect);
+// ns:end family._base.workspace.02_basic-settings
+        customSelectElements.filter(function (element) {
+            return element && element.tagName === 'SELECT';
+        }).forEach(initializeCustomSelect);
     }
 
-// ns:start family.architecture.workspace.02_basic-settings
+// ns:start family._base.workspace.02_basic-settings
     function findPresetById(presetId) {
         return architectureVpcAwsPresetCatalog.find(function (preset) {
             return preset.id === presetId;
@@ -916,7 +1561,7 @@ function initArchitectureVpcAwsTool() {
     }
 
     function activateTab(tabId) {
-// ns:end family.architecture.workspace.02_basic-settings
+// ns:end family._base.workspace.02_basic-settings
         tabButtons.forEach(function (button) {
             const isActive = button.dataset.tabTarget === tabId;
 
@@ -933,7 +1578,7 @@ function initArchitectureVpcAwsTool() {
         });
     }
 
-// ns:start family.architecture.workspace.03_advanced-settings
+// ns:start family._base.workspace.03_custom-settings
     function activateConfigTab(tabId) {
         configTabButtons.forEach(function (button) {
             const isActive = button.dataset.configTabTarget === tabId;
@@ -952,7 +1597,7 @@ function initArchitectureVpcAwsTool() {
     }
 
     function bindTabKeyboardNavigation(buttons, targetKey, activate) {
-// ns:end family.architecture.workspace.03_advanced-settings
+// ns:end family._base.workspace.03_custom-settings
         buttons.forEach(function (button, index) {
             button.addEventListener('keydown', function (event) {
                 let nextIndex = null;
@@ -984,7 +1629,7 @@ function initArchitectureVpcAwsTool() {
         });
     }
 
-// ns:start family.architecture.workspace.06_result-diagram
+// ns:start family.architecture.workspace.04_visual-contract
     function normalizeStageZoom(value) {
         const parsed = Number(value);
 
@@ -1192,10 +1837,26 @@ function initArchitectureVpcAwsTool() {
         scrollStageToBounds(bounds, fitOptions.behavior || 'auto');
     }
 
-    function setStageZoomToFit() {
-        fitStageToRenderedCards(latestResult && latestResult.renderedCards ? latestResult.renderedCards : null, {
+    function setStageZoomToFit(options) {
+        const fitOptions = Object.assign({
             behavior: 'smooth'
-        });
+        }, options || {});
+
+        if (stageCanvas.clientWidth <= 0 || stageCanvas.clientHeight <= 0) {
+            applyStageZoom();
+
+            if (fitOptions.defer !== false) {
+                window.requestAnimationFrame(function () {
+                    setStageZoomToFit(Object.assign({}, fitOptions, {
+                        defer: false
+                    }));
+                });
+            }
+
+            return;
+        }
+
+        fitStageToRenderedCards(latestResult && latestResult.renderedCards ? latestResult.renderedCards : null, fitOptions);
     }
 
     function setStageUiHidden(isHidden) {
@@ -1385,11 +2046,11 @@ function initArchitectureVpcAwsTool() {
             });
         } catch (error) {
             setStageExpanded(true);
-// ns:end family.architecture.workspace.06_result-diagram
+// ns:end family.architecture.workspace.04_visual-contract
         }
     }
 
-// ns:start family.architecture.workspace.01_input-brief
+// ns:start family._base.workspace.01_input-brief
     function showError(message) {
         errorState.textContent = message;
         errorState.classList.remove('d-none');
@@ -1401,7 +2062,7 @@ function initArchitectureVpcAwsTool() {
     }
 
     function createChip(label) {
-// ns:end family.architecture.workspace.01_input-brief
+// ns:end family._base.workspace.01_input-brief
         return '<span class="tool-helper-chip">' + escapeHtml(label) + '</span>';
     }
 
@@ -1414,7 +2075,7 @@ function initArchitectureVpcAwsTool() {
         ].join('');
     }
 
-// ns:start family.architecture.workspace.01_input-brief
+// ns:start family._base.workspace.01_input-brief
     function extractRegion(prompt, fallbackRegion, assumptions, matchedKeywords) {
         const normalizedPrompt = normalizePrompt(prompt);
         const matched = architectureVpcAwsSupportedRegions.find(function (region) {
@@ -1571,7 +2232,7 @@ function initArchitectureVpcAwsTool() {
     }
 
     function buildPromptTitle(prompt, fallbackLabel) {
-// ns:end family.architecture.workspace.01_input-brief
+// ns:end family._base.workspace.01_input-brief
         return ArchitectureVpcAwsModelCore.buildPromptTitle(prompt, fallbackLabel);
     }
 
@@ -1579,7 +2240,7 @@ function initArchitectureVpcAwsTool() {
         return ArchitectureVpcAwsModelCore.inferFromPrompt(prompt, preset);
     }
 
-// ns:start family.architecture.workspace.02_basic-settings
+// ns:start family._base.workspace.02_basic-settings
     function syncControls(spec) {
         regionInput.value = spec.region;
         cidrInput.value = spec.cidr;
@@ -1599,10 +2260,10 @@ function initArchitectureVpcAwsTool() {
         transitGatewayInput.checked = Boolean(spec.transitGateway);
         cacheInput.checked = Boolean(spec.cache);
         syncCustomSelects();
-// ns:end family.architecture.workspace.02_basic-settings
+// ns:end family._base.workspace.02_basic-settings
     }
 
-// ns:start family.architecture.workspace.03_advanced-settings
+// ns:start family._base.workspace.03_custom-settings
     function buildSpecFromControls(prompt, presetId, inheritedNotes) {
         const selectedPreset = findPresetById(presetId || selectedPresetId);
         const cidrValue = String(cidrInput.value || '').trim();
@@ -1650,7 +2311,7 @@ function initArchitectureVpcAwsTool() {
 
         return spec;
     }
-// ns:end family.architecture.workspace.03_advanced-settings
+// ns:end family._base.workspace.03_custom-settings
 
     function buildAzLabels(azCount) {
         const suffixes = ['a', 'b', 'c'];
@@ -1933,7 +2594,7 @@ function initArchitectureVpcAwsTool() {
         return summary;
     }
 
-// ns:start family.architecture.workspace.07_score-card
+// ns:start family._base.workspace.05_result-summary
     function clampScore(score) {
         return Math.max(0, Math.min(100, score));
     }
@@ -2124,7 +2785,7 @@ function initArchitectureVpcAwsTool() {
                 { icon: 'bi bi-arrow-left-right', label: natModeLabel(spec.natMode), tone: 'network' },
                 { icon: 'bi bi-hdd-network', label: appTierLabel(spec.appTier), tone: 'compute' },
                 { icon: 'bi bi-database', label: databaseLabel(spec.database), tone: 'data' }
-// ns:end family.architecture.workspace.07_score-card
+// ns:end family._base.workspace.05_result-summary
             ]
         };
     }
@@ -2228,7 +2889,7 @@ function initArchitectureVpcAwsTool() {
         };
     }
 
-// ns:start family.architecture.workspace.06_result-diagram
+// ns:start family.architecture.workspace.04_visual-contract
     function inferEdgeCards(spec) {
         const cards = [
             { id: 'users', label: 'Users', short: 'USR', tone: 'edge' }
@@ -2262,13 +2923,16 @@ function initArchitectureVpcAwsTool() {
         const hasRightRail = spec.cloudWatch || spec.flowLogs || spec.database === 'dynamodb' || spec.endpoints;
         const rightRailWidth = hasRightRail ? rightRailGap + rightCardWidth + outerMargin : outerMargin;
         const hybridRailWidth = hasHybridRail ? 320 + outerMargin : outerMargin;
-        const width = Math.max(1180, hybridRailWidth + vpcWidth + rightRailWidth);
-        const vpcX = hybridRailWidth;
         const vpcY = 322;
         const edgeCards = inferEdgeCards(spec);
         const edgeCardWidth = 210;
         const edgeCardGap = 46;
         const edgeRowWidth = (edgeCards.length * edgeCardWidth) + ((edgeCards.length - 1) * edgeCardGap);
+        const edgeRowOverflow = Math.max(0, (edgeRowWidth - vpcWidth) / 2);
+        const leftRailWidth = Math.max(hybridRailWidth, outerMargin + edgeRowOverflow);
+        const edgeRowRightEdge = leftRailWidth + (vpcWidth / 2) + (edgeRowWidth / 2);
+        const width = Math.max(1180, leftRailWidth + vpcWidth + rightRailWidth, edgeRowRightEdge + outerMargin);
+        const vpcX = leftRailWidth;
         const innerWidth = vpcWidth - (innerPadding * 2);
         const resolvedAzWidth = (innerWidth - (azGap * (spec.azCount - 1))) / spec.azCount;
         const topOffset = 112;
@@ -2325,7 +2989,7 @@ function initArchitectureVpcAwsTool() {
             rightCardGap: rightCardGap,
             rightStackY: rightStackY,
             rightEdgeWidth: rightRailWidth,
-            leftEdgeWidth: hybridRailWidth,
+            leftEdgeWidth: leftRailWidth,
             publicHeight: publicHeight,
             appHeight: appHeight,
             dataHeight: dataHeight,
@@ -2458,11 +3122,120 @@ function initArchitectureVpcAwsTool() {
     }
 
     function cloneLayoutOverrides(layoutOverrides) {
+        if (architectureVpcAwsEngineRuntime && typeof architectureVpcAwsEngineRuntime.cloneLayoutOverrides === 'function') {
+            return architectureVpcAwsEngineRuntime.cloneLayoutOverrides(layoutOverrides);
+        }
+
         return ArchitectureVpcAwsModelCore.cloneLayoutOverrides(layoutOverrides);
     }
 
     function cloneConnectorOverrides(connectorOverrides) {
+        if (architectureVpcAwsEngineRuntime && typeof architectureVpcAwsEngineRuntime.cloneConnectorOverrides === 'function') {
+            return architectureVpcAwsEngineRuntime.cloneConnectorOverrides(connectorOverrides);
+        }
+
         return ArchitectureVpcAwsModelCore.cloneConnectorOverrides(connectorOverrides);
+    }
+
+    function currentViewportState() {
+        return {
+            zoom: stageZoom,
+            scrollLeft: stageCanvas ? stageCanvas.scrollLeft : 0,
+            scrollTop: stageCanvas ? stageCanvas.scrollTop : 0,
+            uiHidden: stageUiHidden,
+            fullscreen: Boolean(stageShell && (document.fullscreenElement === stageShell || stageShell.classList.contains('architecture-vpc-aws-stage-expanded'))),
+            diagramHighlighted: stageDiagramHighlighted
+        };
+    }
+
+    function currentSelectionState() {
+        const cardIds = selectedCardIds.length > 0 ? selectedCardIds.slice() : (selectedCardId ? [selectedCardId] : []);
+
+        return {
+            nodeIds: cardIds,
+            cardIds: cardIds,
+            connectorId: selectedConnectorId || '',
+            highlightedNodeId: highlightedCardId || '',
+            highlightedNodeIds: highlightedCardIds.slice(),
+            highlightedCardIds: highlightedCardIds.slice()
+        };
+    }
+
+    function createEngineState(value) {
+        const source = value || {};
+        const stateValue = {
+            viewport: Object.assign(currentViewportState(), source.viewport || {}),
+            selection: Object.assign(currentSelectionState(), source.selection || {}),
+            layoutOverrides: source.layoutOverrides || source.layout_overrides || getCurrentLayoutOverrides(),
+            connectorOverrides: source.connectorOverrides || source.connector_overrides || getCurrentConnectorOverrides()
+        };
+
+        if (architectureVpcAwsEngineRuntime && typeof architectureVpcAwsEngineRuntime.createState === 'function') {
+            return architectureVpcAwsEngineRuntime.createState(stateValue, engineRuntimeConfig);
+        }
+
+        return stateValue;
+    }
+
+    function toPersistedEngineState(value) {
+        const state = createEngineState(value);
+
+        if (architectureVpcAwsEngineRuntime && typeof architectureVpcAwsEngineRuntime.toPersistedState === 'function') {
+            return architectureVpcAwsEngineRuntime.toPersistedState(state, engineRuntimeConfig);
+        }
+
+        return {
+            viewport: {
+                zoom: state.viewport.zoom,
+                scroll_left: state.viewport.scrollLeft,
+                scroll_top: state.viewport.scrollTop,
+                ui_hidden: state.viewport.uiHidden,
+                fullscreen: state.viewport.fullscreen,
+                diagram_highlighted: state.viewport.diagramHighlighted
+            },
+            selection: {
+                node_ids: Array.isArray(state.selection.nodeIds) ? state.selection.nodeIds.slice() : [],
+                card_ids: Array.isArray(state.selection.nodeIds) ? state.selection.nodeIds.slice() : [],
+                connector_id: state.selection.connectorId || '',
+                highlighted_node_id: state.selection.highlightedNodeId || '',
+                highlighted_node_ids: Array.isArray(state.selection.highlightedNodeIds) ? state.selection.highlightedNodeIds.slice() : [],
+                highlighted_card_ids: Array.isArray(state.selection.highlightedNodeIds) ? state.selection.highlightedNodeIds.slice() : []
+            },
+            layout_overrides: cloneLayoutOverrides(state.layoutOverrides),
+            connector_overrides: cloneConnectorOverrides(state.connectorOverrides)
+        };
+    }
+
+    function restoreEngineStateFromPayload(payload, fallbackLayoutOverrides, fallbackConnectorOverrides) {
+        const source = payload || {};
+        const selection = Object.assign({}, source.selection || {});
+        const restoredSelectedCardIds = getImportedSelectedCardIds(source);
+        const restoredHighlightedCardIds = getImportedHighlightedCardIds(source);
+
+        selection.nodeIds = restoredSelectedCardIds;
+        selection.cardIds = restoredSelectedCardIds;
+        selection.connectorId = getImportedSelectedConnectorId(source);
+        selection.highlightedNodeId = restoredHighlightedCardIds[0] || '';
+        selection.highlightedNodeIds = restoredHighlightedCardIds;
+        selection.highlightedCardIds = restoredHighlightedCardIds;
+
+        const runtimeState = createEngineState({
+            viewport: source.viewport || {},
+            selection: selection,
+            layoutOverrides: fallbackLayoutOverrides || source.layout_overrides || source.layoutOverrides,
+            connectorOverrides: fallbackConnectorOverrides || source.connector_overrides || source.connectorOverrides
+        });
+
+        selectedCardIds = Array.isArray(runtimeState.selection.nodeIds) ? runtimeState.selection.nodeIds.slice() : [];
+        selectedCardId = selectedCardIds[0] || '';
+        selectedConnectorId = String(runtimeState.selection.connectorId || '');
+        highlightedCardIds = Array.isArray(runtimeState.selection.highlightedNodeIds) ? runtimeState.selection.highlightedNodeIds.slice() : [];
+        highlightedCardId = highlightedCardIds[0] || '';
+        stageDiagramHighlighted = Boolean(runtimeState.viewport.diagramHighlighted);
+        stageUiHidden = Boolean(runtimeState.viewport.uiHidden);
+        stageZoom = normalizeStageZoom(runtimeState.viewport.zoom || defaultStageZoom);
+
+        return runtimeState;
     }
 
     function applyLayoutOverride(card, layoutOverrides) {
@@ -3598,7 +4371,7 @@ function initArchitectureVpcAwsTool() {
                 '.diagram-card-group.is-highlighted .diagram-card-highlight{display:block;stroke:#6D28D9;stroke-width:4;filter:drop-shadow(0 12px 22px rgba(124,58,237,0.22));}',
                 '.diagram-content-highlight{display:none;fill:rgba(124,58,237,0.045);stroke:#7C3AED;stroke-width:5;stroke-dasharray:18 10;pointer-events:none;filter:drop-shadow(0 16px 28px rgba(124,58,237,0.16));}',
                 '.diagram-root.is-highlight-all .diagram-content-highlight{display:block;}',
-                '.diagram-marquee-selection{fill:rgba(124,58,237,0.08);stroke:#ffffff;stroke-width:3;stroke-dasharray:8 6;pointer-events:none;filter:drop-shadow(0 6px 14px rgba(15,23,42,0.2));}',
+                '.diagram-card-group.is-marquee-target .diagram-card-highlight{display:block;stroke:#F97316;stroke-width:3;filter:drop-shadow(0 12px 22px rgba(249,115,22,0.24));}',
                 '.diagram-card-group.is-selected .diagram-card{stroke:var(--diagram-select);stroke-width:2.8;filter:drop-shadow(0 14px 22px rgba(124,58,237,0.16));}',
                 '.diagram-resize-handle{display:none;fill:#ffffff;stroke:var(--diagram-select);stroke-width:2;cursor:nwse-resize;pointer-events:all;filter:drop-shadow(0 4px 8px rgba(124,58,237,0.22));}',
                 '.diagram-card-group.is-selected .diagram-resize-handle{display:block;}',
@@ -3620,9 +4393,9 @@ function initArchitectureVpcAwsTool() {
                 '.diagram-connector-hit-target{fill:none;stroke:transparent;stroke-width:18;cursor:pointer;pointer-events:stroke;vector-effect:non-scaling-stroke;}',
                 '.diagram-connector-active{stroke:var(--diagram-network-active);stroke-width:1.65;opacity:0.96;}',
                 '.diagram-connector.is-selected{stroke:var(--diagram-select);stroke-width:2;opacity:1;}',
-                '.diagram-connector-anchor-handle{fill:#ffffff;stroke:var(--diagram-select);stroke-width:3;cursor:grab;pointer-events:all;filter:drop-shadow(0 4px 8px rgba(124,58,237,0.22));}',
+                '.diagram-connector-anchor-handle{fill:#ffffff;stroke:var(--diagram-select);stroke-width:2;cursor:grab;pointer-events:all;filter:drop-shadow(0 4px 8px rgba(124,58,237,0.22));}',
                 '.diagram-connector-anchor-handle:active{cursor:grabbing;}',
-                '.diagram-connector-bend-handle{fill:var(--diagram-select);stroke:#ffffff;stroke-width:3;cursor:move;pointer-events:all;filter:drop-shadow(0 4px 8px rgba(124,58,237,0.26));}',
+                '.diagram-connector-bend-handle{fill:var(--diagram-select);stroke:#ffffff;stroke-width:2;cursor:move;pointer-events:all;filter:drop-shadow(0 4px 8px rgba(124,58,237,0.26));}',
                 '.diagram-connector-bend-handle:active{cursor:grabbing;}',
                 '.diagram-card-group-draggable{cursor:grab;}',
                 '.diagram-card-group-draggable.is-dragging{cursor:grabbing;opacity:0.96;}',
@@ -3631,11 +4404,11 @@ function initArchitectureVpcAwsTool() {
                 '.diagram-card-group-draggable:focus-visible .diagram-card{stroke:var(--diagram-select);stroke-width:2.6;filter:drop-shadow(0 10px 18px rgba(124,58,237,0.18));}',
                 '.diagram-card-group-draggable:focus-visible .diagram-vpc{stroke:var(--diagram-select);stroke-width:2.8;filter:drop-shadow(0 10px 18px rgba(124,58,237,0.18));}',
                 ']]></style>',
-                '<marker id="architectureVpcAwsArrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">',
-                '<path d="M 0 0 L 9 4.5 L 0 9 z" fill="#111827"></path>',
+                '<marker id="architectureVpcAwsArrow" markerWidth="11" markerHeight="11" refX="10" refY="5.5" orient="auto" markerUnits="userSpaceOnUse">',
+                '<path d="M 0 0 L 11 5.5 L 0 15 z" fill="#111827"></path>',
                 '</marker>',
-                '<marker id="architectureVpcAwsArrowActive" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">',
-                '<path d="M 0 0 L 9 4.5 L 0 9 z" fill="#111827"></path>',
+                '<marker id="architectureVpcAwsArrowActive" markerWidth="11" markerHeight="11" refX="10" refY="5.5" orient="auto" markerUnits="userSpaceOnUse">',
+                '<path d="M 0 0 L 11 5.5 L 0 11 z" fill="#111827"></path>',
                 '</marker>',
                 '</defs>',
                 '<g class="diagram-root">',
@@ -3651,19 +4424,59 @@ function initArchitectureVpcAwsTool() {
             connectorOverrides: safeConnectorOverrides,
             cards: cards.concat([{
                 id: vpcShell.id,
-// ns:end family.architecture.workspace.06_result-diagram
+// ns:end family.architecture.workspace.04_visual-contract
                 label: 'AWS VPC',
                 x: vpcShell.x,
                 y: vpcShell.y,
                 width: vpcShell.width,
-// ns:start family.architecture.workspace.09_result-table
+// ns:start family._base.workspace.07_table-output
                 height: vpcShell.height
             }])
         };
     }
 
     function buildExportPayload(spec, inventory, layoutOverrides, connectorOverrides) {
-        return ArchitectureVpcAwsModelCore.buildExportPayload(spec, inventory, layoutOverrides, connectorOverrides, buildNotePayload(spec));
+        return applyVisualStateToExportPayload(ArchitectureVpcAwsModelCore.buildExportPayload(spec, inventory, layoutOverrides, connectorOverrides, buildNotePayload(spec)));
+    }
+
+    function applyVisualStateToExportPayload(payload) {
+        if (!payload) {
+            return payload;
+        }
+
+        const persistedState = toPersistedEngineState({
+            layoutOverrides: payload.layout_overrides || payload.layoutOverrides,
+            connectorOverrides: payload.connector_overrides || payload.connectorOverrides
+        });
+        const selectedIds = Array.isArray(persistedState.selection.node_ids) ? persistedState.selection.node_ids.slice() : [];
+        const highlightedIds = Array.isArray(persistedState.selection.highlighted_node_ids) ? persistedState.selection.highlighted_node_ids.slice() : [];
+
+        payload.viewport = persistedState.viewport;
+        payload.selection = persistedState.selection;
+        payload.layout_overrides = cloneLayoutOverrides(persistedState.layout_overrides);
+        payload.layoutOverrides = cloneLayoutOverrides(persistedState.layout_overrides);
+        payload.connector_overrides = cloneConnectorOverrides(persistedState.connector_overrides);
+        payload.connectorOverrides = cloneConnectorOverrides(persistedState.connector_overrides);
+        payload.selected_node_id = selectedIds[0] || '';
+        payload.selected_node_ids = selectedIds.slice();
+        payload.selected_card_id = selectedIds[0] || '';
+        payload.selected_card_ids = selectedIds.slice();
+        payload.selected_connector_id = persistedState.selection.connector_id || '';
+        payload.highlighted_node_id = highlightedIds[0] || '';
+        payload.highlighted_node_ids = highlightedIds.slice();
+        payload.highlighted_card_id = highlightedIds[0] || '';
+        payload.highlighted_card_ids = highlightedIds.slice();
+
+        return payload;
+    }
+
+    function syncVisualStateToExportPayload() {
+        if (!latestResult || !latestResult.exportPayload) {
+            return;
+        }
+
+        applyVisualStateToExportPayload(latestResult.exportPayload);
+        jsonOutput.innerHTML = highlightJson(latestResult.exportPayload);
     }
 
     function highlightJson(value) {
@@ -3680,22 +4493,22 @@ function initArchitectureVpcAwsTool() {
 
             if (/^"/.test(match)) {
                 output += /:$/.test(match)
-                    ? '<span class="json-key">' + escapeHtml(match) + '</span>'
-                    : '<span class="json-string">' + escapeHtml(match) + '</span>';
+                    ? '<span class="json-key tool-json-key">' + escapeHtml(match) + '</span>'
+                    : '<span class="json-string tool-json-string">' + escapeHtml(match) + '</span>';
             } else if (/true|false/.test(match)) {
-                output += '<span class="json-boolean">' + escapeHtml(match) + '</span>';
+                output += '<span class="json-boolean tool-json-boolean">' + escapeHtml(match) + '</span>';
             } else if (/null/.test(match)) {
-                output += '<span class="json-null">' + escapeHtml(match) + '</span>';
+                output += '<span class="json-null tool-json-null">' + escapeHtml(match) + '</span>';
             } else {
-                output += '<span class="json-number">' + escapeHtml(match) + '</span>';
+                output += '<span class="json-number tool-json-number">' + escapeHtml(match) + '</span>';
             }
 
             lastIndex = tokenPattern.lastIndex;
             matchResult = tokenPattern.exec(json);
-// ns:end family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.07_table-output
         }
 
-// ns:start family.architecture.workspace.08_sort-card
+// ns:start family._base.workspace.06_output-toolbar
         output += escapeHtml(json.slice(lastIndex));
 
         return output;
@@ -3761,9 +4574,9 @@ function initArchitectureVpcAwsTool() {
         if (latestResult && Array.isArray(latestResult.inventory)) {
             renderInventory(latestResult.inventory);
         }
-// ns:end family.architecture.workspace.08_sort-card
+// ns:end family._base.workspace.06_output-toolbar
     }
-// ns:start family.architecture.workspace.09_result-table
+// ns:start family._base.workspace.07_table-output
 
     function applyInventorySortMode() {
         setInventorySortMode(inventorySortInput.value || 'id');
@@ -3866,8 +4679,8 @@ function initArchitectureVpcAwsTool() {
         try {
             await navigator.clipboard.writeText(copyText);
             flashInventoryCopyButton(button);
-// ns:end family.architecture.workspace.09_result-table
-// ns:start family.architecture.workspace.05_result-text
+// ns:end family._base.workspace.07_table-output
+// ns:start family.architecture.workspace.04_visual-contract
         } catch (error) {
             showError('Failed to copy the inventory row to the clipboard.');
         }
@@ -3892,9 +4705,9 @@ function initArchitectureVpcAwsTool() {
         }).join('');
         prosList.innerHTML = notePayload.pros.map(function (item) {
             return '<li>' + escapeHtml(item) + '</li>';
-// ns:end family.architecture.workspace.05_result-text
+// ns:end family.architecture.workspace.04_visual-contract
         }).join('');
-// ns:start family.architecture.workspace.07_score-card
+// ns:start family._base.workspace.05_result-summary
         consList.innerHTML = notePayload.cons.map(function (item) {
             return '<li>' + escapeHtml(item) + '</li>';
         }).join('');
@@ -4047,8 +4860,8 @@ function initArchitectureVpcAwsTool() {
                     scoreRingChart.resize();
                 }
             };
-// ns:end family.architecture.workspace.07_score-card
-// ns:start family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.05_result-summary
+// ns:start family._base.workspace.07_table-output
             window.addEventListener('resize', scoreRingResizeHandler);
         });
     }
@@ -4098,9 +4911,9 @@ function initArchitectureVpcAwsTool() {
             '</div>',
             '<div>',
             '<span>Next review</span>',
-// ns:end family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.07_table-output
             '<strong><i class="bi bi-calendar3" aria-hidden="true"></i>' + escapeHtml(formatAssessmentDate(risk.nextReviewAt)) + '</strong>',
-// ns:start family.architecture.workspace.07_score-card
+// ns:start family._base.workspace.05_result-summary
             '</div>',
             '</div>'
         ].join('');
@@ -4110,60 +4923,75 @@ function initArchitectureVpcAwsTool() {
         const scorePayload = buildArchitectureScore(spec);
         scoreRingRenderToken += 1;
         destroyScoreRingChart();
-        const ringRadius = 52;
-        const ringCircumference = 2 * Math.PI * ringRadius;
-        const ringTrackLength = Math.round(ringCircumference * 100) / 100;
-        const ringRatio = scorePayload.score >= 100 ? 1 : scorePayload.score / 100;
         const ringProgressAngle = Math.round(Math.max(0, Math.min(100, scorePayload.score)) * 3.6);
-        const ringProgressLength = scorePayload.score >= 100
-            ? ringTrackLength
-            : Math.round(ringRatio * ringCircumference * 100) / 100;
-        const ringGapLength = scorePayload.score >= 100
-            ? 0
-            : Math.round((ringTrackLength - ringProgressLength) * 100) / 100;
+        const resultTone = {
+            production: 'success',
+            warning: 'warning',
+            balanced: 'ready',
+            review: 'need-work'
+        }[scorePayload.badgeTone] || 'need-work';
+        const chipTone = function (tone) {
+            if (tone === 'production') {
+                return 'success';
+            }
 
-        outputStatus.innerHTML = [
-            '<div class="architecture-vpc-aws-score-ring-card architecture-vpc-aws-score-ring-card-' + escapeHtml(scorePayload.badgeTone) + '" tabindex="0" role="group" aria-label="Architecture score ' + escapeHtml(String(scorePayload.score)) + ' out of 100. ' + escapeHtml(scorePayload.ringLabel) + '">',
-            '<div class="architecture-vpc-aws-score-value" id="architectureVpcAwsScoreValue" style="--progress-angle: ' + escapeHtml(String(ringProgressAngle)) + 'deg;" aria-label="Architecture score ' + escapeHtml(String(scorePayload.score)) + ' out of 100">',
-            '<div class="architecture-vpc-aws-score-echart" id="architectureVpcAwsScoreEchart" aria-hidden="true"></div>',
-            '<svg class="architecture-vpc-aws-score-ring" viewBox="0 0 140 140" aria-hidden="true" focusable="false">',
-            '<circle class="architecture-vpc-aws-score-ring-track" cx="70" cy="70" r="' + escapeHtml(String(ringRadius)) + '"></circle>',
-            '<circle class="architecture-vpc-aws-score-ring-glow" cx="70" cy="70" r="' + escapeHtml(String(ringRadius)) + '" transform="rotate(-90 70 70)" stroke-dasharray="' + escapeHtml(String(ringProgressLength)) + ' ' + escapeHtml(String(ringGapLength)) + '"></circle>',
-            '<circle class="architecture-vpc-aws-score-ring-fill" cx="70" cy="70" r="' + escapeHtml(String(ringRadius)) + '" transform="rotate(-90 70 70)" stroke-dasharray="' + escapeHtml(String(ringProgressLength)) + ' ' + escapeHtml(String(ringGapLength)) + '"></circle>',
-            '</svg>',
-            '<div class="architecture-vpc-aws-score-center">',
-            '<span class="architecture-vpc-aws-score-value-number">' + escapeHtml(String(scorePayload.score)) + '</span>',
-            '<span class="architecture-vpc-aws-score-caption">/100</span>',
-            '</div>',
-            '</div>',
-            '<span class="architecture-vpc-aws-score-label">',
-            '<span class="architecture-vpc-aws-score-label-orb" aria-hidden="true"><i class="' + escapeHtml(scorePayload.badgeIcon) + '"></i></span>',
-            '<span class="architecture-vpc-aws-score-label-text">' + escapeHtml(scorePayload.ringLabel) + '</span>',
-            '</span>',
-            '</div>',
-            '<div class="architecture-vpc-aws-score-copy">',
-            '<div class="architecture-vpc-aws-score-kicker">Architecture Score</div>',
-            '<div class="architecture-vpc-aws-score-summary">' + escapeHtml(scorePayload.band) + '</div>',
-            '<div class="architecture-vpc-aws-score-detail">' + escapeHtml(scorePayload.detail) + '</div>',
-            '<div class="architecture-vpc-aws-score-tags">',
-            [
-                '<span class="architecture-vpc-aws-score-tag architecture-vpc-aws-score-tag-status architecture-vpc-aws-score-tag-status-' + escapeHtml(scorePayload.badgeTone) + '">',
-                '<i class="' + escapeHtml(scorePayload.badgeIcon) + '" aria-hidden="true"></i>',
-                '<span>' + escapeHtml(scorePayload.badgeLabel) + '</span>',
+            if (tone === 'warning') {
+                return 'warning';
+            }
+
+            if (tone === 'balanced') {
+                return 'ready';
+            }
+
+            if (tone === 'review') {
+                return 'need-work';
+            }
+
+            return 'baseline';
+        };
+        const tagChips = scorePayload.tags.map(function (item) {
+            return [
+                '<span class="architecture-vpc-aws-result-chip architecture-vpc-aws-result-chip-' + chipTone(item.tone) + '">',
+                '<span class="architecture-vpc-aws-result-chip-icon"><i class="' + escapeHtml(item.icon) + '" aria-hidden="true"></i></span>',
+                escapeHtml(item.label),
                 '</span>'
-            ].join(''),
-            scorePayload.tags.map(function (item) {
-                return [
-                    '<span class="architecture-vpc-aws-score-tag architecture-vpc-aws-score-tag-' + escapeHtml(item.tone) + '">',
-                    '<i class="' + escapeHtml(item.icon) + '" aria-hidden="true"></i>',
-                    '<span>' + escapeHtml(item.label) + '</span>',
-                    '</span>'
-                ].join('');
-            }).join(''),
-// ns:end family.architecture.workspace.07_score-card
+            ].join('');
+        }).join('');
+
+        outputStatus.className = 'architecture-vpc-aws-score-card architecture-vpc-aws-result-summary';
+        outputStatus.dataset.resultTone = resultTone;
+        outputStatus.dataset.resultLayout = 'architecture_score';
+        outputStatus.innerHTML = [
+            '<div class="architecture-vpc-aws-result-hero-grid" aria-live="polite">',
+            '<article class="architecture-vpc-aws-result-card architecture-vpc-aws-result-card-main">',
+            '<span class="architecture-vpc-aws-result-kicker">Architecture score</span>',
+            '<h3 class="architecture-vpc-aws-result-title">' + escapeHtml(scorePayload.band) + '</h3>',
+            '<p class="architecture-vpc-aws-result-copy">' + escapeHtml(scorePayload.detail) + '</p>',
+            '<div class="architecture-vpc-aws-result-chip-row" aria-label="Architecture score state">',
+            '<span class="architecture-vpc-aws-result-chip architecture-vpc-aws-result-chip-' + chipTone(scorePayload.badgeTone) + '"><span class="architecture-vpc-aws-result-chip-icon"><i class="' + escapeHtml(scorePayload.badgeIcon) + '" aria-hidden="true"></i></span>' + escapeHtml(scorePayload.badgeLabel) + '</span>',
+            tagChips,
             '</div>',
+            '</article>',
+            '<article class="architecture-vpc-aws-result-card architecture-vpc-aws-result-card-visual">',
+            '<div class="architecture-vpc-aws-result-ring architecture-vpc-aws-score-value" id="architectureVpcAwsScoreValue" style="--architecture-vpc-aws-result-progress: ' + escapeHtml(String(ringProgressAngle)) + 'deg; --progress-angle: ' + escapeHtml(String(ringProgressAngle)) + 'deg;" aria-label="Architecture score ' + escapeHtml(String(scorePayload.score)) + ' out of 100">',
+            '<div class="architecture-vpc-aws-score-echart" id="architectureVpcAwsScoreEchart" aria-hidden="true"></div>',
+            '<div class="architecture-vpc-aws-result-ring-center architecture-vpc-aws-score-center">',
+            '<span class="architecture-vpc-aws-result-ring-value architecture-vpc-aws-score-value-number">' + escapeHtml(String(scorePayload.score)) + '</span>',
+            '<span class="architecture-vpc-aws-result-ring-unit architecture-vpc-aws-score-caption">/100</span>',
+            '</div>',
+            '</div>',
+            '<div class="architecture-vpc-aws-result-visual-copy">',
+            '<span class="architecture-vpc-aws-result-kicker">Primary result</span>',
+            '<h3 class="architecture-vpc-aws-result-title architecture-vpc-aws-result-title-center">' + escapeHtml(scorePayload.ringLabel) + '</h3>',
+            '</div>',
+            '</article>',
+            '</div>',
+            '<div class="architecture-vpc-aws-result-metric-grid" aria-label="Architecture metrics">',
+            '<article class="architecture-vpc-aws-result-metric-card"><span class="architecture-vpc-aws-result-metric-label">Region</span><strong class="architecture-vpc-aws-result-metric-value">' + escapeHtml(spec.region) + '</strong><span class="architecture-vpc-aws-result-metric-copy">Selected deployment geography.</span></article>',
+            '<article class="architecture-vpc-aws-result-metric-card"><span class="architecture-vpc-aws-result-metric-label">Zones</span><strong class="architecture-vpc-aws-result-metric-value">' + escapeHtml(String(spec.azCount) + ' AZ') + '</strong><span class="architecture-vpc-aws-result-metric-copy">Availability zone spread.</span></article>',
+            '<article class="architecture-vpc-aws-result-metric-card"><span class="architecture-vpc-aws-result-metric-label">Egress</span><strong class="architecture-vpc-aws-result-metric-value">' + escapeHtml(natModeLabel(spec.natMode)) + '</strong><span class="architecture-vpc-aws-result-metric-copy">Private tier outbound pattern.</span></article>',
+            '<article class="architecture-vpc-aws-result-metric-card"><span class="architecture-vpc-aws-result-metric-label">Data tier</span><strong class="architecture-vpc-aws-result-metric-value">' + escapeHtml(databaseLabel(spec.database)) + '</strong><span class="architecture-vpc-aws-result-metric-copy">Modeled persistence layer.</span></article>',
             '</div>'
-// ns:start family.architecture.workspace.05_result-text
         ].join('');
 
         renderScoreRingChart(scorePayload, scoreRingRenderToken);
@@ -4183,7 +5011,7 @@ function initArchitectureVpcAwsTool() {
         const presetLabel = spec && spec.presetLabel ? spec.presetLabel : '';
         const presetChipLabel = String(presetLabel || 'Custom architecture').trim() + ' preset';
 
-// ns:end family.architecture.workspace.05_result-text
+// ns:end family.architecture.workspace.04_visual-contract
 // ns:start family.architecture.workspace.04_selected-item
         stageTitle.textContent = stageHeadingTitle;
         stageSubtitle.hidden = false;
@@ -4208,11 +5036,19 @@ function initArchitectureVpcAwsTool() {
         })));
     }
 
+    function setHighlightedCardIds(cardIds) {
+        highlightedCardIds = normalizeSelectedCardIds(cardIds);
+        highlightedCardId = highlightedCardIds[0] || '';
+        syncSelectedCardVisual();
+        syncVisualStateToExportPayload();
+    }
+
     function setSelectedCards(cardIds, primaryCardId, shouldFocus) {
         selectedCardIds = normalizeSelectedCardIds(cardIds);
         selectedCardId = selectedCardIds.includes(primaryCardId) ? primaryCardId : (selectedCardIds[0] || '');
         selectedConnectorId = '';
         updateSelectedCardEditor();
+        syncVisualStateToExportPayload();
 
         if (shouldFocus !== false) {
             focusSelectedStageCard();
@@ -4230,7 +5066,7 @@ function initArchitectureVpcAwsTool() {
 
         Array.from(svgElement.querySelectorAll('.diagram-card-group')).forEach(function (group) {
             group.classList.toggle('is-selected', selectedCardIdSet.has(group.dataset.cardId || ''));
-            group.classList.toggle('is-highlighted', highlightedCardId !== '' && group.dataset.cardId === highlightedCardId);
+            group.classList.toggle('is-highlighted', highlightedCardIds.includes(group.dataset.cardId || ''));
         });
 
         Array.from(svgElement.querySelectorAll('.diagram-connector[data-connector-id]')).forEach(function (path) {
@@ -4641,10 +5477,12 @@ function initArchitectureVpcAwsTool() {
         selectedCardId = '';
         selectedCardIds = [];
         updateSelectedCardEditor();
+        syncVisualStateToExportPayload();
     }
 
     function highlightSelectedCard() {
-        const selectedCard = getRenderedCardById(selectedCardId);
+        const targetCardIds = selectedCardIds.length > 0 ? selectedCardIds.slice() : (selectedCardId ? [selectedCardId] : []);
+        const selectedCard = getRenderedCardById(targetCardIds[0] || '');
 
         if (!selectedCard) {
             return;
@@ -4654,17 +5492,11 @@ function initArchitectureVpcAwsTool() {
             window.clearTimeout(highlightTimeoutId);
         }
 
-        highlightedCardId = selectedCardId;
-        syncSelectedCardVisual();
-        scrollStageToCard(selectedCardId, 'smooth');
-        queueStageCardFocus(selectedCardId);
+        highlightTimeoutId = 0;
+        setHighlightedCardIds(targetCardIds);
+        scrollStageToCard(targetCardIds[0], 'smooth');
+        queueStageCardFocus(targetCardIds[0]);
         focusPendingStageCard(stageCanvas.querySelector('svg'));
-
-        highlightTimeoutId = window.setTimeout(function () {
-            highlightedCardId = '';
-            highlightTimeoutId = 0;
-            syncSelectedCardVisual();
-        }, 1800);
     }
 
     function normalizeCardDimension(value, fallback, minValue) {
@@ -4760,6 +5592,8 @@ function initArchitectureVpcAwsTool() {
             selectedCardId: selectedCardId,
             selectedCardIds: selectedCardIds.slice(),
             selectedConnectorId: selectedConnectorId,
+            highlightedCardId: highlightedCardId,
+            highlightedCardIds: highlightedCardIds.slice(),
             stageZoom: stageZoom,
             stageDiagramHighlighted: stageDiagramHighlighted
         };
@@ -4790,6 +5624,8 @@ function initArchitectureVpcAwsTool() {
         selectedCardId = String(snapshot.selectedCardId || '');
         selectedCardIds = Array.isArray(snapshot.selectedCardIds) ? snapshot.selectedCardIds.slice() : (selectedCardId ? [selectedCardId] : []);
         selectedConnectorId = String(snapshot.selectedConnectorId || '');
+        highlightedCardIds = normalizeSelectedCardIds(Array.isArray(snapshot.highlightedCardIds) ? snapshot.highlightedCardIds : (snapshot.highlightedCardId ? [snapshot.highlightedCardId] : []));
+        highlightedCardId = highlightedCardIds[0] || '';
         stageDiagramHighlighted = Boolean(snapshot.stageDiagramHighlighted);
 
         if (Number.isFinite(snapshot.stageZoom)) {
@@ -4805,6 +5641,7 @@ function initArchitectureVpcAwsTool() {
         }
 
         updateStageUndoButton();
+        syncVisualStateToExportPayload();
     }
 
     function undoStageEdit() {
@@ -5014,7 +5851,7 @@ function initArchitectureVpcAwsTool() {
                 setSelectedCard(cardId);
                 return;
             }
-// ns:start family.architecture.workspace.06_result-diagram
+// ns:start family.architecture.workspace.04_visual-contract
 
             applyKeyboardCardArrow(cardId, event);
         });
@@ -5099,11 +5936,20 @@ function initArchitectureVpcAwsTool() {
         };
     }
 
-    function updateMarqueeRect(rectElement, rect) {
-        rectElement.setAttribute('x', formatSvgNumber(rect.x));
-        rectElement.setAttribute('y', formatSvgNumber(rect.y));
-        rectElement.setAttribute('width', formatSvgNumber(rect.width));
-        rectElement.setAttribute('height', formatSvgNumber(rect.height));
+    function getStageCanvasPoint(clientX, clientY) {
+        const rect = stageCanvas.getBoundingClientRect();
+
+        return {
+            x: clientX - rect.left + stageCanvas.scrollLeft,
+            y: clientY - rect.top + stageCanvas.scrollTop
+        };
+    }
+
+    function updateMarqueeOverlay(element, rect) {
+        element.style.left = Math.round(rect.x) + 'px';
+        element.style.top = Math.round(rect.y) + 'px';
+        element.style.width = Math.round(rect.width) + 'px';
+        element.style.height = Math.round(rect.height) + 'px';
     }
 
     function isGroupRectSelectedByMarquee(selectionRect, groupRect) {
@@ -5139,6 +5985,16 @@ function initArchitectureVpcAwsTool() {
         });
     }
 
+    function setMarqueeTargetCards(svgElement, cardIds) {
+        const targetIds = new Set(normalizeSelectedCardIds(cardIds));
+
+        Array.from(svgElement.querySelectorAll('.diagram-card-group[data-draggable="true"]')).forEach(function (group) {
+            const cardId = String(group.dataset.cardId || '').trim();
+
+            group.classList.toggle('is-marquee-target', targetIds.has(cardId));
+        });
+    }
+
     function isMarqueeBlockedTarget(target) {
         if (!target || typeof target.closest !== 'function') {
             return false;
@@ -5163,11 +6019,18 @@ function initArchitectureVpcAwsTool() {
         return group !== null && String(group.dataset.cardId || '') === diagramShellCardId;
     }
 
-    function bindStageMarqueeSelection(svgElement) {
-        const root = svgElement.querySelector('.diagram-root') || svgElement;
+    function bindStageMarqueeSelection(stageCanvasElement) {
+        if (!stageCanvasElement || stageCanvasElement.dataset.marqueeSelectionBound === 'true') {
+            return;
+        }
 
-        svgElement.addEventListener('pointerdown', function (event) {
+        stageCanvasElement.dataset.marqueeSelectionBound = 'true';
+
+        stageCanvasElement.addEventListener('pointerdown', function (event) {
+            const svgElement = stageCanvasElement.querySelector('svg');
+
             if (
+                !svgElement ||
                 event.button !== 0 ||
                 isMarqueeBlockedTarget(event.target)
             ) {
@@ -5175,44 +6038,51 @@ function initArchitectureVpcAwsTool() {
             }
 
             const startPoint = getSvgClientPoint(svgElement, event.clientX, event.clientY);
+            const startCanvasPoint = getStageCanvasPoint(event.clientX, event.clientY);
             const startedOnDiagramShell = isDiagramShellTarget(event.target);
 
             if (!startPoint) {
                 return;
             }
 
-            const marquee = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            const marquee = document.createElement('div');
 
-            marquee.setAttribute('rx', '6');
-            marquee.setAttribute('class', 'diagram-marquee-selection');
-            updateMarqueeRect(marquee, {
-                x: startPoint.x,
-                y: startPoint.y,
+            marquee.className = 'diagram-marquee-selection';
+            updateMarqueeOverlay(marquee, {
+                x: startCanvasPoint.x,
+                y: startCanvasPoint.y,
                 width: 0,
                 height: 0
             });
-            root.appendChild(marquee);
+            stageCanvasElement.appendChild(marquee);
 
-            safelySetPointerCapture(svgElement, event.pointerId);
+            safelySetPointerCapture(stageCanvasElement, event.pointerId);
 
             function handlePointerMove(moveEvent) {
                 const currentPoint = getSvgClientPoint(svgElement, moveEvent.clientX, moveEvent.clientY);
+                const currentCanvasPoint = getStageCanvasPoint(moveEvent.clientX, moveEvent.clientY);
+                const overlayRect = buildRectFromPoints(startCanvasPoint, currentCanvasPoint);
+
+                updateMarqueeOverlay(marquee, overlayRect);
 
                 if (!currentPoint) {
                     return;
                 }
 
-                updateMarqueeRect(marquee, buildRectFromPoints(startPoint, currentPoint));
+                setMarqueeTargetCards(svgElement, findCardsIntersectingRect(svgElement, buildRectFromPoints(startPoint, currentPoint)));
             }
 
             function handlePointerEnd(endEvent) {
                 const endPoint = getSvgClientPoint(svgElement, endEvent.clientX, endEvent.clientY);
+                const endCanvasPoint = getStageCanvasPoint(endEvent.clientX, endEvent.clientY);
+                const overlayRect = buildRectFromPoints(startCanvasPoint, endCanvasPoint);
 
-                safelyReleasePointerCapture(svgElement, endEvent.pointerId);
+                safelyReleasePointerCapture(stageCanvasElement, endEvent.pointerId);
 
-                svgElement.removeEventListener('pointermove', handlePointerMove);
-                svgElement.removeEventListener('pointerup', handlePointerEnd);
-                svgElement.removeEventListener('pointercancel', handlePointerEnd);
+                stageCanvasElement.removeEventListener('pointermove', handlePointerMove);
+                stageCanvasElement.removeEventListener('pointerup', handlePointerEnd);
+                stageCanvasElement.removeEventListener('pointercancel', handlePointerEnd);
+                setMarqueeTargetCards(svgElement, []);
                 marquee.remove();
 
                 if (!endPoint || endEvent.type === 'pointercancel') {
@@ -5221,7 +6091,7 @@ function initArchitectureVpcAwsTool() {
 
                 const selectionRect = buildRectFromPoints(startPoint, endPoint);
 
-                if (selectionRect.width < 6 && selectionRect.height < 6) {
+                if (overlayRect.width < 6 && overlayRect.height < 6) {
                     if (startedOnDiagramShell) {
                         setSelectedCard(diagramShellCardId);
                         return;
@@ -5234,10 +6104,10 @@ function initArchitectureVpcAwsTool() {
                 setSelectedCards(findCardsIntersectingRect(svgElement, selectionRect));
             }
 
-            svgElement.addEventListener('pointermove', handlePointerMove);
-            svgElement.addEventListener('pointerup', handlePointerEnd);
-            svgElement.addEventListener('pointercancel', handlePointerEnd);
-// ns:end family.architecture.workspace.06_result-diagram
+            stageCanvasElement.addEventListener('pointermove', handlePointerMove);
+            stageCanvasElement.addEventListener('pointerup', handlePointerEnd);
+            stageCanvasElement.addEventListener('pointercancel', handlePointerEnd);
+// ns:end family.architecture.workspace.04_visual-contract
 // ns:start family.architecture.workspace.04_selected-item
             event.preventDefault();
             event.stopPropagation();
@@ -5558,7 +6428,7 @@ function initArchitectureVpcAwsTool() {
             return;
         }
 
-        bindStageMarqueeSelection(svgElement);
+        bindStageMarqueeSelection(stageCanvas);
 
         Array.from(svgElement.querySelectorAll('.diagram-connector[data-connector-id], .diagram-connector-hit-target[data-connector-id]')).forEach(function (path) {
             path.addEventListener('pointerdown', function (event) {
@@ -5679,7 +6549,7 @@ function initArchitectureVpcAwsTool() {
     function renderResult(spec, layoutOverrides, connectorOverrides, options) {
         const renderOptions = options || {};
 // ns:end family.architecture.workspace.04_selected-item
-// ns:start family.architecture.workspace.05_result-text
+// ns:start family.architecture.workspace.04_visual-contract
         const inventory = buildInventory(spec);
         const renderedStage = buildSvgMarkup(spec, layoutOverrides, connectorOverrides);
         const svgMarkup = renderedStage.svgMarkup;
@@ -5718,14 +6588,16 @@ function initArchitectureVpcAwsTool() {
         outputContent.classList.remove('d-none');
         outputEmpty.classList.add('d-none');
         renderOutputScore(spec);
+        normalizeInfraStackResultSummary('architecture-vpc-aws');
         renderAssessmentSections(spec);
         renderInventory(inventory);
         jsonOutput.innerHTML = highlightJson(exportPayload);
         renderNotes(spec);
         updateSelectedCardEditor();
+        syncVisualStateToExportPayload();
         updateStageUndoButton();
     }
-// ns:end family.architecture.workspace.05_result-text
+// ns:end family.architecture.workspace.04_visual-contract
 
     function resetGeneratedDiagramState() {
         latestResult = null;
@@ -5735,6 +6607,7 @@ function initArchitectureVpcAwsTool() {
         selectedCardIds = [];
         selectedConnectorId = '';
         highlightedCardId = '';
+        highlightedCardIds = [];
         pendingStageFocusCardId = '';
         stageDiagramHighlighted = false;
         pillarBreakdownOutput.innerHTML = '';
@@ -5746,7 +6619,7 @@ function initArchitectureVpcAwsTool() {
 
     function createPresetPreviewOverlay() {
         return [
-// ns:start family.architecture.workspace.05_result-text
+// ns:start family.architecture.workspace.04_visual-contract
             '<div class="architecture-vpc-aws-stage-preview-overlay" role="status">',
             '<div class="architecture-vpc-aws-stage-preview-panel">',
             '<span class="architecture-vpc-aws-stage-preview-icon"><i class="bi bi-stars" aria-hidden="true"></i></span>',
@@ -5808,9 +6681,9 @@ function initArchitectureVpcAwsTool() {
     }
 
     function renderFromControls(inheritedNotes) {
-// ns:end family.architecture.workspace.05_result-text
+// ns:end family.architecture.workspace.04_visual-contract
         const nextSpec = buildSpecFromControls(promptInput.value, selectedPresetId, inheritedNotes);
-// ns:start family.architecture.workspace.01_input-brief
+// ns:start family._base.workspace.01_input-brief
 
         if (!nextSpec) {
             showError(getCidrValidationMessage());
@@ -5820,6 +6693,8 @@ function initArchitectureVpcAwsTool() {
         clearError();
         clearStageUndoHistory();
         stageDiagramHighlighted = false;
+        highlightedCardId = '';
+        highlightedCardIds = [];
         renderResult(nextSpec, getCurrentLayoutOverrides(), getCurrentConnectorOverrides());
     }
 
@@ -5849,6 +6724,8 @@ function initArchitectureVpcAwsTool() {
         clearError();
         clearStageUndoHistory();
         stageDiagramHighlighted = false;
+        highlightedCardId = '';
+        highlightedCardIds = [];
         renderResult(nextSpec, {}, {}, {
             autoFitStage: true
         });
@@ -5856,8 +6733,8 @@ function initArchitectureVpcAwsTool() {
 
     function applyPreset(presetId, shouldGenerate) {
         const preset = findPresetById(presetId);
-// ns:end family.architecture.workspace.01_input-brief
-// ns:start family.architecture.workspace.02_basic-settings
+// ns:end family._base.workspace.01_input-brief
+// ns:start family._base.workspace.02_basic-settings
 
         selectedPresetId = preset.id;
         updatePresetSelection();
@@ -5866,6 +6743,8 @@ function initArchitectureVpcAwsTool() {
         clearError();
         clearStageUndoHistory();
         stageDiagramHighlighted = false;
+        highlightedCardId = '';
+        highlightedCardIds = [];
 
         if (shouldGenerate) {
             generateFromPrompt();
@@ -5878,19 +6757,21 @@ function initArchitectureVpcAwsTool() {
 
     function resetToDefault() {
         applyPreset(architectureVpcAwsPresetCatalog[0].id, true);
-// ns:end family.architecture.workspace.02_basic-settings
-// ns:start family.architecture.workspace.01_input-brief
+// ns:end family._base.workspace.02_basic-settings
+// ns:start family._base.workspace.01_input-brief
     }
 
     function resetStageLayout() {
         if (!latestResult) {
             return;
         }
-// ns:end family.architecture.workspace.01_input-brief
+// ns:end family._base.workspace.01_input-brief
 
         selectedCardId = '';
         selectedCardIds = [];
         selectedConnectorId = '';
+        highlightedCardId = '';
+        highlightedCardIds = [];
         stageDiagramHighlighted = false;
         stageZoom = defaultStageZoom;
         renderStageEdit({}, {});
@@ -5901,7 +6782,7 @@ function initArchitectureVpcAwsTool() {
 
     function downloadFile(filename, content, mimeType) {
         const blob = content instanceof Blob ? content : new Blob([content], { type: mimeType });
-// ns:start family.architecture.workspace.08_sort-card
+// ns:start family._base.workspace.06_output-toolbar
         const blobUrl = URL.createObjectURL(blob);
         const link = document.createElement('a');
 
@@ -6086,8 +6967,8 @@ function initArchitectureVpcAwsTool() {
 
     function restoreFromImportedPayload(payload) {
         const importedState = buildImportedPayloadState(payload);
-// ns:end family.architecture.workspace.08_sort-card
-// ns:start family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.06_output-toolbar
+// ns:start family._base.workspace.07_table-output
 
         if (importedState.error) {
             showError(importedState.error);
@@ -6100,11 +6981,28 @@ function initArchitectureVpcAwsTool() {
         syncControls(importedState.spec);
         clearError();
         clearStageUndoHistory();
-        stageDiagramHighlighted = false;
+        const runtimeState = restoreEngineStateFromPayload(payload, importedState.layoutOverrides, importedState.connectorOverrides);
+
+        setStageUiHidden(Boolean(runtimeState.viewport.uiHidden));
+        stageDiagramHighlighted = Boolean(runtimeState.viewport.diagramHighlighted);
         renderResult(buildSpecFromControls(importedState.prompt, selectedPresetId, {
             assumptions: importedState.assumptions,
             matchedKeywords: importedState.matchedKeywords
-        }), importedState.layoutOverrides, importedState.connectorOverrides);
+        }), runtimeState.layoutOverrides, runtimeState.connectorOverrides);
+        stageCanvas.scrollLeft = runtimeState.viewport.scrollLeft;
+        stageCanvas.scrollTop = runtimeState.viewport.scrollTop;
+
+        const restoredSelectedCardIds = Array.isArray(runtimeState.selection.nodeIds) ? runtimeState.selection.nodeIds.slice() : [];
+        const restoredSelectedConnectorId = String(runtimeState.selection.connectorId || '');
+
+        if (restoredSelectedCardIds.length > 0) {
+            setSelectedCards(restoredSelectedCardIds, restoredSelectedCardIds[0], false);
+        } else if (restoredSelectedConnectorId !== '') {
+            setSelectedConnector(restoredSelectedConnectorId);
+        }
+
+        setHighlightedCardIds(Array.isArray(runtimeState.selection.highlightedNodeIds) ? runtimeState.selection.highlightedNodeIds : []);
+        syncVisualStateToExportPayload();
     }
 
     function handleImportChange(event) {
@@ -6133,48 +7031,48 @@ function initArchitectureVpcAwsTool() {
             importJsonInput.value = '';
         };
 
-// ns:end family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.07_table-output
         reader.readAsText(file);
     }
 
     populateRegionOptions();
     initMarkdownCopyButtons();
     initializeCustomSelects();
-// ns:start family.architecture.workspace.01_input-brief
+// ns:start family._base.workspace.01_input-brief
     syncInventorySortSelect();
 
     presetInput.addEventListener('change', function () {
         applyPreset(String(presetInput.value || architectureVpcAwsPresetCatalog[0].id), true);
-// ns:end family.architecture.workspace.01_input-brief
-// ns:start family.architecture.workspace.02_basic-settings
+// ns:end family._base.workspace.01_input-brief
+// ns:start family._base.workspace.02_basic-settings
     });
 
     tabButtons.forEach(function (button) {
         button.addEventListener('click', function () {
-// ns:end family.architecture.workspace.02_basic-settings
-// ns:start family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.02_basic-settings
+// ns:start family._base.workspace.07_table-output
             activateTab(String(button.dataset.tabTarget || 'architectureVpcAwsInventoryPanel'));
         });
     });
     bindTabKeyboardNavigation(tabButtons, 'tabTarget', activateTab);
 
     configTabButtons.forEach(function (button) {
-// ns:end family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.07_table-output
         button.addEventListener('click', function () {
-// ns:start family.architecture.workspace.03_advanced-settings
+// ns:start family._base.workspace.03_custom-settings
             activateConfigTab(String(button.dataset.configTabTarget || 'architectureVpcAwsNetworkConfigPanel'));
         });
     });
     bindTabKeyboardNavigation(configTabButtons, 'configTabTarget', activateConfigTab);
 
     generateButton.addEventListener('click', generateFromPrompt);
-// ns:end family.architecture.workspace.03_advanced-settings
+// ns:end family._base.workspace.03_custom-settings
     resetButton.addEventListener('click', resetToDefault);
-// ns:start family.architecture.workspace.01_input-brief
+// ns:start family._base.workspace.01_input-brief
     resetLayoutButton.addEventListener('click', resetStageLayout);
     zoomOutButton.addEventListener('click', function () {
-// ns:end family.architecture.workspace.01_input-brief
-// ns:start family.architecture.workspace.06_result-diagram
+// ns:end family._base.workspace.01_input-brief
+// ns:start family.architecture.workspace.04_visual-contract
         setStageZoom(stageZoom - stageZoomStep, {
             preserveViewport: true
         });
@@ -6193,7 +7091,7 @@ function initArchitectureVpcAwsTool() {
     });
     document.addEventListener('keydown', handleStageUndoKeydown);
     document.addEventListener('keydown', handleSelectedCardDocumentKeydown);
-// ns:end family.architecture.workspace.06_result-diagram
+// ns:end family.architecture.workspace.04_visual-contract
 // ns:start family.architecture.workspace.04_selected-item
     highlightCardButton.addEventListener('click', highlightSelectedCard);
     applyCardSizeButton.addEventListener('click', applySelectedCardSize);
@@ -6201,7 +7099,7 @@ function initArchitectureVpcAwsTool() {
     exportPngButton.addEventListener('click', exportPng);
     downloadSvgButton.addEventListener('click', downloadSvg);
 // ns:end family.architecture.workspace.04_selected-item
-// ns:start family.architecture.workspace.08_sort-card
+// ns:start family._base.workspace.06_output-toolbar
     copyJsonButton.addEventListener('click', copyJson);
     downloadJsonButton.addEventListener('click', downloadJson);
     inventorySortInput.addEventListener('change', applyInventorySortMode);
@@ -6213,8 +7111,8 @@ function initArchitectureVpcAwsTool() {
     });
     inventoryTableBody.addEventListener('click', function (event) {
         const button = event.target.closest('.architecture-vpc-aws-row-copy');
-// ns:end family.architecture.workspace.08_sort-card
-// ns:start family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.06_output-toolbar
+// ns:start family._base.workspace.07_table-output
 
         if (!button || !inventoryTableBody.contains(button)) {
             return;
@@ -6229,18 +7127,20 @@ function initArchitectureVpcAwsTool() {
     inventorySortSelect.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
             inventorySortSelect.removeAttribute('open');
-// ns:end family.architecture.workspace.09_result-table
+// ns:end family._base.workspace.07_table-output
         }
     });
     importJsonButton.addEventListener('click', function () {
         importJsonInput.click();
-// ns:start family.architecture.workspace.08_sort-card
+// ns:start family._base.workspace.06_output-toolbar
     });
+    // ns:start family._base.workspace.08_json-restore
     importJsonInput.addEventListener('change', handleImportChange);
+    // ns:end family._base.workspace.08_json-restore
     zoomInput.addEventListener('change', function () {
         setStageZoomFromPercent(zoomInput.value, {
-// ns:end family.architecture.workspace.08_sort-card
-// ns:start family.architecture.workspace.06_result-diagram
+// ns:end family._base.workspace.06_output-toolbar
+// ns:start family.architecture.workspace.04_visual-contract
             preserveViewport: true
         });
     });
@@ -6301,7 +7201,7 @@ function initArchitectureVpcAwsTool() {
     });
     document.addEventListener('click', function (event) {
         if (inventorySortSelect.contains(event.target)) {
-// ns:end family.architecture.workspace.06_result-diagram
+// ns:end family.architecture.workspace.04_visual-contract
             return;
         }
 
@@ -6335,7 +7235,7 @@ function initArchitectureVpcAwsTool() {
         cacheInput
     ].forEach(function (input) {
         input.addEventListener('change', function () {
-// ns:start family.architecture.workspace.03_advanced-settings
+// ns:start family._base.workspace.03_custom-settings
             if (latestResult) {
                 renderFromControls({
                     assumptions: latestResult.spec ? latestResult.spec.assumptions : [],
@@ -6352,7 +7252,8 @@ function initArchitectureVpcAwsTool() {
     activateTab('architectureVpcAwsInventoryPanel');
     activateConfigTab('architectureVpcAwsNetworkConfigPanel');
     updateFullscreenButton();
-// ns:end family.architecture.workspace.03_advanced-settings
+// ns:end family._base.workspace.03_custom-settings
+    initializeInfraStackCustomDropdowns(document);
     applyStageZoom();
     updatePresetSelection();
     applyPreset(architectureVpcAwsPresetCatalog[0].id, false);
@@ -6364,3 +7265,134 @@ if (document.readyState === 'loading') {
 } else {
     initArchitectureVpcAwsTool();
 }
+/* table-output-standard:start */
+(function setupArchitectureVpcAwsTableOutputStandard() {
+    const rootSelector = '.architecture-vpc-aws-tool';
+    const tableSelector = '.tool-result-table tbody tr, .architecture-vpc-aws-table tbody tr';
+    const tbodySelector = '.tool-result-table tbody, .architecture-vpc-aws-table tbody';
+    const clampClass = 'architecture-vpc-aws-table-cell-text';
+    const cellClampClass = 'architecture-vpc-aws-cell-clamp';
+    const statusColumnClass = 'architecture-vpc-aws-table-status-cell';
+
+    function hasActionColumn(cells, table) {
+        const lastCell = cells[cells.length - 1];
+        const lastHead = table ? table.querySelector('thead th:last-child') : null;
+        const headText = lastHead ? String(lastHead.textContent || '') : '';
+
+        return Boolean(
+            lastCell && lastCell.querySelector('button, [data-copy-row], [data-inventory-copy-row], [data-control-copy-row], [data-options-copy], [data-operation-copy], [data-copy-value]')
+        ) || /copy|action|actions/i.test(headText);
+    }
+
+    function isStatusLikeHeader(text) {
+        return /^(status|signal|criticality|severity|state|health|outcome|result|level|label)$/i.test(String(text || '').trim());
+    }
+
+    function getBodyCells(row) {
+        return Array.from(row.children).filter(function filterCells(cell) {
+            return cell.tagName && cell.tagName.toLowerCase() === 'td';
+        });
+    }
+
+    function applyStatusAlignment(root) {
+        root.querySelectorAll('.tool-result-table, .architecture-vpc-aws-table').forEach(function alignStatusTable(table) {
+            const headers = Array.from(table.querySelectorAll('thead th'));
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            table.querySelectorAll('.' + statusColumnClass).forEach(function clearStatusCell(cell) {
+                cell.classList.remove(statusColumnClass);
+            });
+
+            headers.forEach(function alignStatusColumn(header, index) {
+                const statusLike = isStatusLikeHeader(header.textContent);
+                header.classList.toggle(statusColumnClass, statusLike);
+
+                if (!statusLike) {
+                    return;
+                }
+
+                rows.forEach(function alignStatusCell(row) {
+                    const cells = getBodyCells(row);
+                    const cell = cells[index];
+
+                    if (cell && cell.colSpan <= 1) {
+                        cell.classList.add(statusColumnClass);
+                    }
+                });
+            });
+        });
+    }
+
+    function clampCell(cell) {
+        if (!cell || cell.colSpan > 1 || cell.querySelector('.' + clampClass + ', .' + cellClampClass)) {
+            return;
+        }
+
+        if (cell.children.length === 1 && !cell.firstElementChild.matches('button')) {
+            cell.firstElementChild.classList.add(clampClass);
+            return;
+        }
+
+        const wrapper = document.createElement('span');
+        wrapper.className = clampClass;
+
+        while (cell.firstChild) {
+            wrapper.appendChild(cell.firstChild);
+        }
+
+        cell.appendChild(wrapper);
+    }
+
+    function applyTableOutputClamp() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        applyStatusAlignment(root);
+
+        root.querySelectorAll(tableSelector).forEach(function clampRow(row) {
+            const cells = getBodyCells(row);
+            const table = row.closest('table');
+            const actionColumn = hasActionColumn(cells, table);
+
+            cells.forEach(function clampDataCell(cell, index) {
+                const isFirst = index === 0;
+                const isAction = actionColumn && index === cells.length - 1;
+
+                if (!isFirst && !isAction) {
+                    clampCell(cell);
+                }
+            });
+        });
+    }
+
+    function observeTables() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        root.querySelectorAll(tbodySelector).forEach(function observeBody(tbody) {
+            if (tbody.dataset.tableOutputClampObserver === 'true') {
+                return;
+            }
+
+            tbody.dataset.tableOutputClampObserver = 'true';
+            new MutationObserver(applyTableOutputClamp).observe(tbody, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        applyTableOutputClamp();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', observeTables);
+    } else {
+        observeTables();
+    }
+}());
+/* table-output-standard:end */
+// ns:end family._base.workspace.00_shell

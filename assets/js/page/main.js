@@ -1011,6 +1011,122 @@
         return fileName.toLowerCase().endsWith('.png') ? fileName : fileName + '.png';
     }
 
+    function escapeShareCssString(value) {
+        if (window.CSS && typeof window.CSS.escape === 'function') {
+            return window.CSS.escape(value);
+        }
+
+        return String(value || '').replace(/["\\]/g, '\\$&');
+    }
+
+    function getToolShareRoot(overlay) {
+        const toolKey = normalizeShareText(overlay?.dataset.shareToolKey);
+        const slug = toolKey.split('/').pop();
+        const selectors = [];
+
+        if (slug !== '') {
+            const escapedSlug = escapeShareCssString(slug);
+
+            selectors.push('[data-tool-slug="' + escapedSlug + '"]');
+            selectors.push('.' + escapedSlug + '-tool');
+        }
+
+        selectors.push('[data-tool-slug]');
+        selectors.push('.tool-box');
+
+        for (const selector of selectors) {
+            const root = document.querySelector(selector);
+
+            if (root && root !== overlay && !overlay?.contains(root)) {
+                return root;
+            }
+        }
+
+        return document.querySelector('article.article') || document.body;
+    }
+
+    function isToolSharePreviewSvg(svg) {
+        const stageCanvas = svg?.closest('.tool-stage-canvas, [id$="StageCanvas"]');
+
+        if (!stageCanvas) {
+            return false;
+        }
+
+        const className = getElementClassName(stageCanvas);
+
+        return className.indexOf('stage-preview') !== -1;
+    }
+
+    function waitForToolShareFrame() {
+        return new Promise(function (resolve) {
+            if (typeof window.requestAnimationFrame !== 'function') {
+                window.setTimeout(resolve, 80);
+                return;
+            }
+
+            window.requestAnimationFrame(function () {
+                window.requestAnimationFrame(resolve);
+            });
+        });
+    }
+
+    function findGenericToolShareAction(overlay) {
+        const root = getToolShareRoot(overlay);
+        const selectors = [
+            '[data-tool-share-generate]',
+            'button[id$="Generate"]',
+            'button[id$="PrimaryAction"]',
+            'button[class*="action-btn-primary"]',
+            '.tool-action-btn-primary',
+        ];
+        const seen = new Set();
+
+        for (const selector of selectors) {
+            const candidates = Array.from(root.querySelectorAll(selector));
+
+            for (const candidate of candidates) {
+                if (seen.has(candidate)) {
+                    continue;
+                }
+
+                seen.add(candidate);
+
+                const label = normalizeShareText(
+                    candidate.getAttribute('aria-label') || candidate.textContent || ''
+                );
+                const canPrepare = /generate|prepare|build|render|draw|create/i.test(label)
+                    || candidate.hasAttribute('data-tool-share-generate');
+
+                if (
+                    canPrepare &&
+                    !candidate.disabled &&
+                    isToolShareTextSourceVisible(candidate)
+                ) {
+                    return candidate;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    async function ensureGenericToolShareReady(overlay) {
+        const currentSvg = getVisibleSvgSnapshotElement();
+
+        if (currentSvg && !isToolSharePreviewSvg(currentSvg)) {
+            return;
+        }
+
+        const prepareAction = findGenericToolShareAction(overlay);
+
+        if (!prepareAction) {
+            return;
+        }
+
+        prepareAction.click();
+        await waitForToolShareFrame();
+    }
+
     function getShareActionLabel(action) {
         const ariaLabel = normalizeShareText(action?.getAttribute('aria-label'));
 
@@ -1431,6 +1547,54 @@
         return document.createElementNS('http://www.w3.org/2000/svg', tagName);
     }
 
+    const shareSvgPresentationProperties = [
+        'fill',
+        'fill-opacity',
+        'stroke',
+        'stroke-opacity',
+        'stroke-width',
+        'stroke-linecap',
+        'stroke-linejoin',
+        'stroke-dasharray',
+        'stroke-dashoffset',
+        'opacity',
+        'display',
+        'visibility',
+        'color',
+        'font-family',
+        'font-size',
+        'font-style',
+        'font-weight',
+        'letter-spacing',
+        'text-anchor',
+        'dominant-baseline',
+        'paint-order',
+        'filter',
+    ];
+
+    function inlineComputedSvgStyles(sourceSvg, cloneSvg) {
+        const sourceElements = [sourceSvg].concat(Array.from(sourceSvg.querySelectorAll('*')));
+        const cloneElements = [cloneSvg].concat(Array.from(cloneSvg.querySelectorAll('*')));
+
+        sourceElements.forEach(function (sourceElement, index) {
+            const cloneElement = cloneElements[index];
+
+            if (!cloneElement || typeof window.getComputedStyle !== 'function') {
+                return;
+            }
+
+            const computedStyle = window.getComputedStyle(sourceElement);
+
+            shareSvgPresentationProperties.forEach(function (property) {
+                const value = computedStyle.getPropertyValue(property);
+
+                if (value) {
+                    cloneElement.style.setProperty(property, value);
+                }
+            });
+        });
+    }
+
     function parseSvgNumber(value, fallback) {
         const parsed = Number.parseFloat(value || '');
 
@@ -1681,6 +1845,1595 @@
         context.textAlign = 'left';
     }
 
+    function truncateShareLine(text, maxLength) {
+        const normalized = normalizeShareText(text);
+
+        if (normalized.length <= maxLength) {
+            return normalized;
+        }
+
+        return normalized.slice(0, Math.max(1, maxLength - 3)).trim() + '...';
+    }
+
+    function collectGenericTextShareLines(overlay, adapter) {
+        const root = getToolShareRoot(overlay);
+        const selectors = [
+            '[data-share-snapshot-source]',
+            '[id$="Summary"]',
+            '[class*="surface-state"]',
+            '[class*="preview-rows"] li',
+            '[class*="result-metric-card"]',
+            '[class*="output-note"]',
+        ];
+        const lines = [];
+
+        selectors.forEach(function (selector) {
+            Array.from(root.querySelectorAll(selector)).forEach(function (candidate) {
+                if (!isToolShareTextSourceVisible(candidate)) {
+                    return;
+                }
+
+                const text = truncateShareLine(candidate.textContent, 140);
+
+                if (text !== '' && !lines.includes(text)) {
+                    lines.push(text);
+                }
+            });
+        });
+
+        if (lines.length === 0) {
+            const summary = getToolShareSummary(overlay, adapter);
+
+            if (summary !== '') {
+                lines.push(truncateShareLine(summary, 140));
+            }
+        }
+
+        return lines.slice(0, 8);
+    }
+
+    function drawWrappedShareText(context, text, x, y, maxWidth, lineHeight, maxLines) {
+        const words = normalizeShareText(text).split(' ').filter(Boolean);
+        const lines = [];
+        let currentLine = '';
+
+        words.forEach(function (word) {
+            const nextLine = currentLine === '' ? word : currentLine + ' ' + word;
+
+            if (context.measureText(nextLine).width <= maxWidth || currentLine === '') {
+                currentLine = nextLine;
+                return;
+            }
+
+            lines.push(currentLine);
+            currentLine = word;
+        });
+
+        if (currentLine !== '') {
+            lines.push(currentLine);
+        }
+
+        lines.slice(0, maxLines).forEach(function (line, index) {
+            const visibleLine = index === maxLines - 1 && lines.length > maxLines
+                ? truncateShareLine(line, Math.max(12, Math.floor(maxWidth / 8)))
+                : line;
+
+            context.fillText(visibleLine, x, y + (index * lineHeight));
+        });
+    }
+
+    async function createGenericTextShareBlob(overlay, adapter) {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const sidePadding = 56;
+        const title = getToolShareTitle(overlay, adapter);
+        const subtitle = getToolShareSubtitle(overlay, adapter);
+        const lines = collectGenericTextShareLines(overlay, adapter);
+        const cardHeight = 58;
+        const lineGap = 12;
+        const topContent = subtitle === '' ? 118 : 146;
+        const contentHeight = Math.max(240, lines.length * (cardHeight + lineGap));
+
+        if (!context) {
+            throw new Error('Canvas rendering is not available.');
+        }
+
+        canvas.width = 1200;
+        canvas.height = Math.min(900, topContent + contentHeight + 104);
+        drawShareGridBackground(context, canvas.width, canvas.height);
+        drawFittedCanvasTitle(context, title, sidePadding, 74, canvas.width - (sidePadding * 2));
+        drawFittedCanvasSubtitle(context, subtitle, sidePadding, 106, canvas.width - (sidePadding * 2));
+
+        context.font = '700 19px Roboto, Arial, sans-serif';
+        context.fillStyle = '#17324d';
+
+        lines.forEach(function (line, index) {
+            const cardY = topContent + (index * (cardHeight + lineGap));
+
+            roundedCanvasRect(context, sidePadding, cardY, canvas.width - (sidePadding * 2), cardHeight, 16);
+            context.fillStyle = '#ffffff';
+            context.fill();
+            context.strokeStyle = 'rgba(203, 213, 225, 0.92)';
+            context.lineWidth = 1.5;
+            context.stroke();
+            context.fillStyle = '#17324d';
+            drawWrappedShareText(
+                context,
+                line,
+                sidePadding + 24,
+                cardY + 25,
+                canvas.width - (sidePadding * 2) - 48,
+                22,
+                2
+            );
+        });
+
+        drawShareCanvasFooter(context, canvas, sidePadding);
+
+        return createCanvasBlob(canvas);
+    }
+
+    function getShareSnapshotSourceByKind(root, kind) {
+        if (!root || kind === '') {
+            return null;
+        }
+
+        return root.querySelector('[data-share-snapshot-source][data-share-kind="' + kind + '"], [data-share-kind="' + kind + '"]');
+    }
+
+    function hasCalculateShareSources(overlay) {
+        const root = getToolShareRoot(overlay);
+
+        return Boolean(
+            getShareSnapshotSourceByKind(root, 'estimate-summary')
+            && getShareSnapshotSourceByKind(root, 'cost-table')
+        );
+    }
+
+    function isCalculateShareReady(root) {
+        const summary = getShareSnapshotSourceByKind(root, 'estimate-summary');
+        const costTable = getShareSnapshotSourceByKind(root, 'cost-table');
+        const hasSummary = normalizeShareText(summary?.textContent || '') !== '';
+        const hasCostRows = Boolean(costTable?.querySelector('tbody tr'));
+
+        return hasSummary && hasCostRows;
+    }
+
+    function waitForCalculateShareReady(root) {
+        return new Promise(function (resolve) {
+            let attempt = 0;
+
+            function tick() {
+                if (isCalculateShareReady(root) || attempt >= 24) {
+                    resolve();
+                    return;
+                }
+
+                attempt += 1;
+                window.setTimeout(tick, 50);
+            }
+
+            tick();
+        });
+    }
+
+    async function ensureCalculateShareReady(overlay) {
+        const root = getToolShareRoot(overlay);
+
+        if (isCalculateShareReady(root)) {
+            return;
+        }
+
+        const prepareAction = findGenericToolShareAction(overlay);
+
+        if (prepareAction) {
+            prepareAction.click();
+        }
+
+        await waitForToolShareFrame();
+        await waitForCalculateShareReady(root);
+    }
+
+    function getFirstCalculateShareText(parent, selectors) {
+        for (const selector of selectors) {
+            const element = parent?.querySelector(selector);
+            const text = normalizeShareText(element?.textContent || '');
+
+            if (text !== '') {
+                return text;
+            }
+        }
+
+        return '';
+    }
+
+    function getCalculateShareInputValue(root) {
+        const input = root?.querySelector('input[id^="calculateCost"][id$="Label"]:not([type="hidden"])');
+        const value = normalizeShareText(input?.value || '');
+
+        if (value !== '') {
+            return value;
+        }
+
+        return getFirstCalculateShareText(root, [
+            '[id$="PresetSummary"]',
+            '[class*="preset-summary"]',
+        ]);
+    }
+
+    function getCalculatePrimaryShareMetric(summary) {
+        const card = summary?.querySelector('[class*="result-card-primary"], [data-result-visual]');
+        const value = getFirstCalculateShareText(card, [
+            '[class*="result-ring-value"]',
+            '[class*="result-primary-number"]',
+            '[class*="result-primary-metric"]',
+            '[class*="result-primary-text"]',
+        ]);
+        const unit = getFirstCalculateShareText(card, [
+            '[class*="result-ring-unit"]',
+            '[class*="result-primary-unit"]',
+        ]);
+        const label = getFirstCalculateShareText(card, [
+            '[class*="result-title-center"]',
+            '[class*="result-title"]',
+            '[class*="result-kicker"]',
+        ]) || 'Estimated run rate';
+        const copy = getFirstCalculateShareText(card, [
+            '[class*="result-copy"]',
+        ]);
+
+        return {
+            label: label,
+            value: value,
+            unit: unit,
+            copy: copy,
+        };
+    }
+
+    function collectCalculateMetricCards(summary) {
+        return Array.from(summary?.querySelectorAll('[class*="result-metric-card"]') || []).map(function (card) {
+            return {
+                label: getFirstCalculateShareText(card, ['[class*="result-metric-label"]']),
+                value: getFirstCalculateShareText(card, ['[class*="result-metric-value"]']),
+                copy: getFirstCalculateShareText(card, ['[class*="result-metric-copy"]']),
+            };
+        }).filter(function (metric) {
+            return metric.label !== '' || metric.value !== '';
+        }).slice(0, 4);
+    }
+
+    function collectCalculateShareChips(summary, root) {
+        const chips = [];
+        const scenarioLabel = getCalculateShareInputValue(root);
+
+        if (scenarioLabel !== '') {
+            chips.push(scenarioLabel);
+        }
+
+        Array.from(summary?.querySelectorAll('[class*="result-chip-grid"] [class*="result-chip"], [class*="result-chip-row"] [class*="result-chip"]') || []).forEach(function (chip) {
+            const text = truncateShareLine(chip.textContent, 54);
+
+            if (text !== '' && !chips.includes(text)) {
+                chips.push(text);
+            }
+        });
+
+        return chips.slice(0, 6);
+    }
+
+    function getCalculateTableTitle(table) {
+        return getFirstCalculateShareText(table?.closest('[class*="section-card"]'), [
+            '[class*="section-title"]',
+            'h3',
+        ]) || 'Cost Table';
+    }
+
+    function getCalculateTableCellText(cell) {
+        const clone = cell.cloneNode(true);
+
+        clone.querySelectorAll('button, [aria-hidden="true"]').forEach(function (element) {
+            element.remove();
+        });
+
+        return normalizeShareText(clone.textContent || '');
+    }
+
+    function collectCalculateCostRows(table) {
+        const bodies = Array.from(table?.tBodies || []);
+        const rows = bodies.flatMap(function (body) {
+            return Array.from(body.querySelectorAll('tr'));
+        });
+
+        return rows.map(function (row) {
+            const cells = Array.from(row.cells || []).map(getCalculateTableCellText);
+
+            if (/^\d+$/.test(cells[0] || '')) {
+                cells.shift();
+            }
+
+            return {
+                service: cells[0] || '',
+                monthly: cells[1] || '',
+                annual: cells[2] || '',
+                share: cells[3] || '',
+                signal: cells[4] || '',
+            };
+        }).filter(function (row) {
+            return row.service !== '';
+        }).slice(0, 6);
+    }
+
+    function fitShareCanvasText(context, text, maxWidth) {
+        const normalized = normalizeShareText(text);
+
+        if (normalized === '' || context.measureText(normalized).width <= maxWidth) {
+            return normalized;
+        }
+
+        let candidate = normalized;
+
+        while (candidate.length > 4) {
+            candidate = candidate.slice(0, -1).trim();
+
+            if (context.measureText(candidate + '...').width <= maxWidth) {
+                return candidate + '...';
+            }
+        }
+
+        return '...';
+    }
+
+    function drawSingleLineShareText(context, text, x, y, maxWidth) {
+        context.fillText(fitShareCanvasText(context, text, maxWidth), x, y);
+    }
+
+    function drawCalculateShareMetricCard(context, metric, x, y, width, height, index) {
+        const accents = ['#14b8a6', '#2563eb', '#7c3aed', '#f97316'];
+
+        roundedCanvasRect(context, x, y, width, height, 16);
+        context.fillStyle = '#ffffff';
+        context.fill();
+        context.strokeStyle = 'rgba(203, 213, 225, 0.92)';
+        context.lineWidth = 1.5;
+        context.stroke();
+        context.fillStyle = accents[index % accents.length];
+        roundedCanvasRect(context, x + 16, y + 16, 7, height - 32, 4);
+        context.fill();
+        context.textAlign = 'left';
+        context.font = '700 14px Roboto, Arial, sans-serif';
+        context.fillStyle = '#64748b';
+        drawSingleLineShareText(context, metric.label || 'Metric', x + 36, y + 31, width - 58);
+        context.font = '800 27px Nunito, Roboto, Arial, sans-serif';
+        context.fillStyle = '#17324d';
+        drawSingleLineShareText(context, metric.value || '-', x + 36, y + 72, width - 58);
+    }
+
+    function drawCalculateShareChipRow(context, chips, x, y, maxWidth) {
+        let cursorX = x;
+        const maxY = y + 42;
+
+        context.font = '700 14px Roboto, Arial, sans-serif';
+        chips.forEach(function (chip) {
+            if (cursorX >= x + maxWidth) {
+                return;
+            }
+
+            const chipText = truncateShareLine(chip, 44);
+            const chipWidth = Math.min(maxWidth, Math.ceil(context.measureText(chipText).width) + 34);
+
+            if (cursorX + chipWidth > x + maxWidth) {
+                return;
+            }
+
+            roundedCanvasRect(context, cursorX, y, chipWidth, 34, 17);
+            context.fillStyle = '#eff6ff';
+            context.fill();
+            context.strokeStyle = '#bfdbfe';
+            context.lineWidth = 1.2;
+            context.stroke();
+            context.fillStyle = '#17324d';
+            drawSingleLineShareText(context, chipText, cursorX + 17, y + 22, chipWidth - 34);
+            cursorX += chipWidth + 10;
+        });
+
+        if (cursorX === x) {
+            context.fillStyle = '#64748b';
+            context.fillText('Estimate summary', x, maxY - 14);
+        }
+    }
+
+    function drawCalculateShareCostTable(context, tableTitle, rows, x, y, width, height) {
+        const columns = [
+            { key: 'service', label: 'Service', width: 310, align: 'left' },
+            { key: 'monthly', label: 'Monthly', width: 156, align: 'right' },
+            { key: 'annual', label: 'Annual', width: 156, align: 'right' },
+            { key: 'share', label: 'Share', width: 150, align: 'right' },
+            { key: 'signal', label: 'Signal', width: 212, align: 'left' },
+        ];
+        const rowHeight = 42;
+        const headerHeight = 46;
+        const tablePadding = 24;
+        const tableTop = y + headerHeight;
+        const leftTextInset = 22;
+        const rightTextInset = 22;
+
+        roundedCanvasRect(context, x, y, width, height, 18);
+        context.fillStyle = '#ffffff';
+        context.fill();
+        context.strokeStyle = 'rgba(203, 213, 225, 0.95)';
+        context.lineWidth = 1.5;
+        context.stroke();
+        context.font = '800 21px Nunito, Roboto, Arial, sans-serif';
+        context.fillStyle = '#17324d';
+        drawSingleLineShareText(context, tableTitle, x + tablePadding, y + 31, width - (tablePadding * 2));
+        context.fillStyle = '#f8fafc';
+        context.fillRect(x + 1, tableTop, width - 2, rowHeight);
+        context.strokeStyle = '#e2e8f0';
+        context.beginPath();
+        context.moveTo(x + 1, tableTop + rowHeight);
+        context.lineTo(x + width - 1, tableTop + rowHeight);
+        context.stroke();
+
+        let cursorX = x + tablePadding;
+
+        context.font = '800 13px Roboto, Arial, sans-serif';
+        context.fillStyle = '#475569';
+        columns.forEach(function (column) {
+            const textX = column.align === 'right'
+                ? cursorX + column.width - rightTextInset
+                : cursorX + (column.key === 'service' ? 0 : leftTextInset);
+
+            context.textAlign = column.align;
+            drawSingleLineShareText(
+                context,
+                column.label,
+                textX,
+                tableTop + 27,
+                column.width - (rightTextInset * 2)
+            );
+            cursorX += column.width;
+        });
+
+        const visibleRows = rows.length > 0 ? rows : [{
+            service: 'No cost rows captured',
+            monthly: '-',
+            annual: '-',
+            share: '-',
+            signal: 'Build estimate first',
+        }];
+
+        visibleRows.forEach(function (row, rowIndex) {
+            const rowY = tableTop + rowHeight + (rowIndex * rowHeight);
+
+            if (rowY + rowHeight > y + height - 10) {
+                return;
+            }
+
+            if (rowIndex % 2 === 1) {
+                context.fillStyle = '#fbfdff';
+                context.fillRect(x + 1, rowY, width - 2, rowHeight);
+            }
+
+            context.strokeStyle = '#edf2f7';
+            context.beginPath();
+            context.moveTo(x + 1, rowY + rowHeight);
+            context.lineTo(x + width - 1, rowY + rowHeight);
+            context.stroke();
+            cursorX = x + tablePadding;
+            context.font = '700 14px Roboto, Arial, sans-serif';
+            context.fillStyle = '#17324d';
+            columns.forEach(function (column) {
+                const value = row[column.key] || '-';
+                const textX = column.align === 'right'
+                    ? cursorX + column.width - rightTextInset
+                    : cursorX + (column.key === 'service' ? 0 : leftTextInset);
+
+                context.textAlign = column.align;
+                drawSingleLineShareText(
+                    context,
+                    value,
+                    textX,
+                    rowY + 27,
+                    column.width - rightTextInset - leftTextInset
+                );
+                cursorX += column.width;
+            });
+        });
+
+        context.textAlign = 'left';
+    }
+
+    async function createCalculateShareBlob(overlay, adapter) {
+        await ensureCalculateShareReady(overlay);
+
+        const root = getToolShareRoot(overlay);
+        const summary = getShareSnapshotSourceByKind(root, 'estimate-summary');
+        const costTable = getShareSnapshotSourceByKind(root, 'cost-table');
+        const primary = getCalculatePrimaryShareMetric(summary);
+        const metrics = collectCalculateMetricCards(summary);
+        const chips = collectCalculateShareChips(summary, root);
+        const rows = collectCalculateCostRows(costTable);
+        const title = getToolShareTitle(overlay, adapter);
+        const summarySubtitle = getFirstCalculateShareText(summary, [
+            '[class*="result-header-copy"] p',
+            '[class*="result-summary-copy"] p',
+        ]);
+        const subtitle = summarySubtitle || getToolShareSummary(overlay, adapter);
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const sidePadding = 56;
+
+        if (!context) {
+            throw new Error('Canvas rendering is not available.');
+        }
+
+        canvas.width = 1200;
+        canvas.height = 900;
+        drawShareGridBackground(context, canvas.width, canvas.height);
+        drawFittedCanvasTitle(context, title, sidePadding, 78, canvas.width - (sidePadding * 2));
+        drawFittedCanvasSubtitle(context, subtitle, sidePadding, 110, canvas.width - (sidePadding * 2));
+
+        roundedCanvasRect(context, sidePadding, 142, 474, 214, 18);
+        context.fillStyle = '#ffffff';
+        context.fill();
+        context.strokeStyle = 'rgba(203, 213, 225, 0.95)';
+        context.lineWidth = 1.5;
+        context.stroke();
+        context.font = '800 15px Roboto, Arial, sans-serif';
+        context.fillStyle = '#64748b';
+        drawSingleLineShareText(context, primary.label, sidePadding + 26, 176, 420);
+        context.font = '900 47px Nunito, Roboto, Arial, sans-serif';
+        context.fillStyle = '#17324d';
+        drawSingleLineShareText(context, primary.value || '-', sidePadding + 26, 236, 420);
+        context.font = '800 16px Roboto, Arial, sans-serif';
+        context.fillStyle = '#2563eb';
+        drawSingleLineShareText(context, primary.unit || 'Monthly', sidePadding + 28, 268, 140);
+        context.font = '500 14px Roboto, Arial, sans-serif';
+        context.fillStyle = '#64748b';
+        drawWrappedShareText(context, primary.copy, sidePadding + 26, 306, 410, 18, 2);
+
+        const metricX = 548;
+        const metricY = 142;
+        const metricWidth = 290;
+        const metricHeight = 99;
+        const metricGap = 16;
+        const filledMetrics = metrics.length > 0 ? metrics : [{
+            label: 'Estimate',
+            value: primary.value || '-',
+            copy: primary.copy || 'Current modeled result.',
+        }];
+
+        filledMetrics.slice(0, 4).forEach(function (metric, index) {
+            drawCalculateShareMetricCard(
+                context,
+                metric,
+                metricX + ((index % 2) * (metricWidth + metricGap)),
+                metricY + (Math.floor(index / 2) * (metricHeight + metricGap)),
+                metricWidth,
+                metricHeight,
+                index
+            );
+        });
+
+        drawCalculateShareChipRow(context, chips, sidePadding, 382, canvas.width - (sidePadding * 2));
+        drawCalculateShareCostTable(
+            context,
+            getCalculateTableTitle(costTable),
+            rows,
+            sidePadding,
+            432,
+            canvas.width - (sidePadding * 2),
+            330
+        );
+        drawShareCanvasFooter(context, canvas, sidePadding);
+
+        return createCanvasBlob(canvas);
+    }
+
+    function hasScanningShareSources(overlay) {
+        const root = getToolShareRoot(overlay);
+
+        return Boolean(
+            getShareSnapshotSourceByKind(root, 'scan-summary')
+            && getShareSnapshotSourceByKind(root, 'severity-table')
+        );
+    }
+
+    function isScanningShareReady(root) {
+        const summary = getShareSnapshotSourceByKind(root, 'scan-summary');
+        const findings = getShareSnapshotSourceByKind(root, 'severity-table');
+        const hasSummary = normalizeShareText(summary?.textContent || '') !== '';
+        const hasRows = Boolean(
+            findings?.querySelector('tbody tr, [class*="finding"], li')
+        );
+
+        return hasSummary && hasRows;
+    }
+
+    function waitForScanningShareReady(root) {
+        return new Promise(function (resolve) {
+            let attempt = 0;
+
+            function tick() {
+                if (isScanningShareReady(root) || attempt >= 50) {
+                    resolve();
+                    return;
+                }
+
+                attempt += 1;
+                window.setTimeout(tick, 80);
+            }
+
+            tick();
+        });
+    }
+
+    async function ensureScanningShareReady(overlay) {
+        const root = getToolShareRoot(overlay);
+
+        if (isScanningShareReady(root)) {
+            return;
+        }
+
+        const prepareAction = findGenericToolShareAction(overlay);
+
+        if (prepareAction) {
+            prepareAction.click();
+        }
+
+        await waitForToolShareFrame();
+        await waitForScanningShareReady(root);
+    }
+
+    function getScanningPrimaryShareMetric(summary) {
+        const visualCard = summary?.querySelector('[class*="result-card-visual"], [class*="visual-contract-primary"]');
+        const mainCard = summary?.querySelector('[class*="result-card-main"], [class*="visual-contract-model"]');
+        const value = getFirstCalculateShareText(visualCard, [
+            '[class*="score-value"]',
+            '[class*="ring-value"]',
+            '[id$="VisualScore"]',
+            'strong',
+        ]);
+        const unit = getFirstCalculateShareText(visualCard, [
+            '[class*="score-denominator"]',
+            '[class*="ring-unit"]',
+            'small',
+        ]);
+        const label = getFirstCalculateShareText(visualCard, [
+            '[class*="result-title-center"]',
+            '[class*="visual-contract-kicker"]',
+            '[class*="result-title"]',
+        ]) || getFirstCalculateShareText(mainCard, [
+            '[class*="result-title"]',
+            '[class*="visual-contract-title"]',
+            'h2',
+            'h3',
+        ]) || 'Scan summary';
+        const copy = getFirstCalculateShareText(visualCard, [
+            '[class*="result-copy"]',
+            '[class*="visual-contract-note"]',
+            'p',
+        ]) || getFirstCalculateShareText(mainCard, [
+            '[class*="result-copy"]',
+            '[class*="visual-contract-copy"]',
+            'p',
+        ]);
+
+        return {
+            label: label,
+            value: value || getFirstCalculateShareText(summary, ['[id$="PrimaryValue"]', 'strong']) || '-',
+            unit: unit,
+            copy: copy,
+        };
+    }
+
+    function collectScanningMetricCards(summary) {
+        return Array.from(summary?.querySelectorAll('[class*="result-metric-card"], [class*="visual-contract-metric"]') || []).map(function (card) {
+            return {
+                label: getFirstCalculateShareText(card, [
+                    '[class*="result-metric-label"]',
+                    'span',
+                ]),
+                value: getFirstCalculateShareText(card, [
+                    '[class*="result-metric-value"]',
+                    'strong',
+                ]),
+                copy: getFirstCalculateShareText(card, [
+                    '[class*="result-metric-copy"]',
+                    'small',
+                ]),
+            };
+        }).filter(function (metric) {
+            return metric.label !== '' || metric.value !== '';
+        }).slice(0, 4);
+    }
+
+    function collectScanningShareChips(summary) {
+        const chips = [];
+
+        Array.from(summary?.querySelectorAll('[class*="result-chip"], [class*="visual-contract-chip"], [class*="surface-state"] span') || []).forEach(function (chip) {
+            const text = truncateShareLine(chip.textContent, 58);
+
+            if (text !== '' && !chips.includes(text)) {
+                chips.push(text);
+            }
+        });
+
+        return chips.slice(0, 6);
+    }
+
+    function normalizeScanningSeverity(value) {
+        const normalized = normalizeShareText(value).toLowerCase();
+
+        if (/critical|danger|fail|high/.test(normalized)) {
+            return 'High';
+        }
+
+        if (/warn|medium|review/.test(normalized)) {
+            return 'Medium';
+        }
+
+        if (/low|draft/.test(normalized)) {
+            return 'Low';
+        }
+
+        if (/pass|info|ok|ready/.test(normalized)) {
+            return 'Info';
+        }
+
+        return normalizeShareText(value) || 'Info';
+    }
+
+    function collectScanningRowsFromTable(table) {
+        return Array.from(table?.querySelectorAll('tbody tr') || []).map(function (row) {
+            const cells = Array.from(row.cells || []);
+            const dataCells = /^\d+$/.test(getCalculateTableCellText(cells[0] || row) || '')
+                ? cells.slice(1)
+                : cells;
+            const controlCell = dataCells[1] || dataCells[0] || row;
+            const severityText = normalizeShareText(controlCell.querySelector?.('.text-muted')?.textContent || '');
+
+            return {
+                severity: normalizeScanningSeverity(severityText || getCalculateTableCellText(dataCells[2] || controlCell)),
+                category: getCalculateTableCellText(dataCells[0] || row),
+                control: getFirstCalculateShareText(controlCell, ['strong']) || getCalculateTableCellText(controlCell),
+                status: getCalculateTableCellText(dataCells[2] || row),
+                evidence: getCalculateTableCellText(dataCells[3] || row),
+            };
+        }).filter(function (row) {
+            return row.control !== '' || row.evidence !== '';
+        });
+    }
+
+    function collectScanningRowsFromVisual(findings) {
+        const visualRows = Array.from(findings?.querySelectorAll('[class*="finding"], li') || []);
+
+        return visualRows.map(function (row) {
+            const tone = row.getAttribute('data-finding-tone') || '';
+            const label = getFirstCalculateShareText(row, ['span']);
+            const control = getFirstCalculateShareText(row, ['code', 'strong']) || normalizeShareText(row.textContent);
+            const status = getFirstCalculateShareText(row, ['strong']) || normalizeScanningSeverity(tone);
+
+            return {
+                severity: normalizeScanningSeverity(tone || status),
+                category: status || 'Finding',
+                control: control,
+                status: status,
+                evidence: label,
+            };
+        }).filter(function (row) {
+            return row.control !== '' || row.evidence !== '';
+        });
+    }
+
+    function collectScanningShareRows(findings) {
+        const tableRows = collectScanningRowsFromTable(findings);
+        const rows = tableRows.length > 0 ? tableRows : collectScanningRowsFromVisual(findings);
+
+        return rows.slice(0, 6);
+    }
+
+    function getScanningSeverityCounts(rows) {
+        const counts = {
+            High: 0,
+            Medium: 0,
+            Low: 0,
+            Info: 0,
+        };
+
+        rows.forEach(function (row) {
+            const severity = normalizeScanningSeverity(row.severity);
+
+            if (severity === 'High') {
+                counts.High += 1;
+            } else if (severity === 'Medium') {
+                counts.Medium += 1;
+            } else if (severity === 'Low') {
+                counts.Low += 1;
+            } else {
+                counts.Info += 1;
+            }
+        });
+
+        return counts;
+    }
+
+    function drawScanningPrimaryCard(context, primary, x, y, width, height) {
+        roundedCanvasRect(context, x, y, width, height, 18);
+        context.fillStyle = '#ffffff';
+        context.fill();
+        context.strokeStyle = 'rgba(203, 213, 225, 0.95)';
+        context.lineWidth = 1.5;
+        context.stroke();
+        context.font = '800 15px Roboto, Arial, sans-serif';
+        context.fillStyle = '#64748b';
+        drawSingleLineShareText(context, primary.label, x + 26, y + 34, width - 52);
+        context.font = '900 48px Nunito, Roboto, Arial, sans-serif';
+        context.fillStyle = '#17324d';
+        drawSingleLineShareText(context, primary.value || '-', x + 26, y + 96, width - 52);
+
+        if (primary.unit !== '') {
+            context.font = '800 16px Roboto, Arial, sans-serif';
+            context.fillStyle = '#2563eb';
+            drawSingleLineShareText(context, primary.unit, x + 28, y + 128, 160);
+        }
+
+        context.font = '500 14px Roboto, Arial, sans-serif';
+        context.fillStyle = '#64748b';
+        drawWrappedShareText(context, primary.copy, x + 26, y + height - 46, width - 52, 18, 2);
+    }
+
+    function drawScanningSeverityCards(context, rows, x, y, width, height) {
+        const counts = getScanningSeverityCounts(rows);
+        const cards = [
+            { label: 'High', value: counts.High, color: '#dc2626' },
+            { label: 'Medium', value: counts.Medium, color: '#f97316' },
+            { label: 'Low', value: counts.Low, color: '#2563eb' },
+            { label: 'Info', value: counts.Info, color: '#64748b' },
+        ];
+        const gap = 14;
+        const cardWidth = (width - gap) / 2;
+        const cardHeight = (height - gap) / 2;
+
+        cards.forEach(function (card, index) {
+            const cardX = x + ((index % 2) * (cardWidth + gap));
+            const cardY = y + (Math.floor(index / 2) * (cardHeight + gap));
+
+            roundedCanvasRect(context, cardX, cardY, cardWidth, cardHeight, 16);
+            context.fillStyle = '#ffffff';
+            context.fill();
+            context.strokeStyle = 'rgba(203, 213, 225, 0.92)';
+            context.lineWidth = 1.5;
+            context.stroke();
+            context.fillStyle = card.color;
+            roundedCanvasRect(context, cardX + 16, cardY + 16, 7, cardHeight - 32, 4);
+            context.fill();
+            context.font = '800 14px Roboto, Arial, sans-serif';
+            context.fillStyle = '#64748b';
+            drawSingleLineShareText(context, card.label, cardX + 36, cardY + 32, cardWidth - 58);
+            context.font = '900 32px Nunito, Roboto, Arial, sans-serif';
+            context.fillStyle = '#17324d';
+            drawSingleLineShareText(context, String(card.value), cardX + 36, cardY + 73, cardWidth - 58);
+        });
+    }
+
+    function drawScanningSeverityTable(context, rows, x, y, width, height) {
+        const columns = [
+            { key: 'severity', label: 'Severity', width: 118, align: 'left' },
+            { key: 'control', label: 'Control', width: 286, align: 'left' },
+            { key: 'status', label: 'Status', width: 156, align: 'left' },
+            { key: 'evidence', label: 'Evidence', width: 424, align: 'left' },
+        ];
+        const rowHeight = 42;
+        const headerHeight = 46;
+        const tablePadding = 24;
+        const tableTop = y + headerHeight;
+        const textInset = 12;
+
+        roundedCanvasRect(context, x, y, width, height, 18);
+        context.fillStyle = '#ffffff';
+        context.fill();
+        context.strokeStyle = 'rgba(203, 213, 225, 0.95)';
+        context.lineWidth = 1.5;
+        context.stroke();
+        context.font = '800 21px Nunito, Roboto, Arial, sans-serif';
+        context.fillStyle = '#17324d';
+        drawSingleLineShareText(context, 'Findings Summary', x + tablePadding, y + 31, width - (tablePadding * 2));
+        context.fillStyle = '#f8fafc';
+        context.fillRect(x + 1, tableTop, width - 2, rowHeight);
+        context.strokeStyle = '#e2e8f0';
+        context.beginPath();
+        context.moveTo(x + 1, tableTop + rowHeight);
+        context.lineTo(x + width - 1, tableTop + rowHeight);
+        context.stroke();
+
+        let cursorX = x + tablePadding;
+
+        context.font = '800 13px Roboto, Arial, sans-serif';
+        context.fillStyle = '#475569';
+        columns.forEach(function (column) {
+            drawSingleLineShareText(context, column.label, cursorX + textInset, tableTop + 27, column.width - (textInset * 2));
+            cursorX += column.width;
+        });
+
+        const visibleRows = rows.length > 0 ? rows : [{
+            severity: 'Info',
+            control: 'No findings captured',
+            status: 'Pending',
+            evidence: 'Run the scan or prepare the review before sharing.',
+        }];
+
+        visibleRows.forEach(function (row, rowIndex) {
+            const rowY = tableTop + rowHeight + (rowIndex * rowHeight);
+
+            if (rowY + rowHeight > y + height - 10) {
+                return;
+            }
+
+            if (rowIndex % 2 === 1) {
+                context.fillStyle = '#fbfdff';
+                context.fillRect(x + 1, rowY, width - 2, rowHeight);
+            }
+
+            context.strokeStyle = '#edf2f7';
+            context.beginPath();
+            context.moveTo(x + 1, rowY + rowHeight);
+            context.lineTo(x + width - 1, rowY + rowHeight);
+            context.stroke();
+            cursorX = x + tablePadding;
+            context.font = '700 14px Roboto, Arial, sans-serif';
+            context.fillStyle = '#17324d';
+            columns.forEach(function (column) {
+                drawSingleLineShareText(
+                    context,
+                    row[column.key] || '-',
+                    cursorX + textInset,
+                    rowY + 27,
+                    column.width - (textInset * 2)
+                );
+                cursorX += column.width;
+            });
+        });
+    }
+
+    async function createScanningShareBlob(overlay, adapter) {
+        await ensureScanningShareReady(overlay);
+
+        const root = getToolShareRoot(overlay);
+        const summary = getShareSnapshotSourceByKind(root, 'scan-summary');
+        const findings = getShareSnapshotSourceByKind(root, 'severity-table');
+        const primary = getScanningPrimaryShareMetric(summary);
+        const rows = collectScanningShareRows(findings);
+        const chips = collectScanningShareChips(summary);
+        const title = getToolShareTitle(overlay, adapter);
+        const subtitle = getFirstCalculateShareText(summary, [
+            '[class*="result-copy"]',
+            '[class*="visual-contract-copy"]',
+            '[id$="Summary"]',
+            'p',
+        ]) || getToolShareSummary(overlay, adapter);
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const sidePadding = 56;
+
+        if (!context) {
+            throw new Error('Canvas rendering is not available.');
+        }
+
+        canvas.width = 1200;
+        canvas.height = 900;
+        drawShareGridBackground(context, canvas.width, canvas.height);
+        drawFittedCanvasTitle(context, title, sidePadding, 78, canvas.width - (sidePadding * 2));
+        drawFittedCanvasSubtitle(context, subtitle, sidePadding, 110, canvas.width - (sidePadding * 2));
+        drawScanningPrimaryCard(context, primary, sidePadding, 142, 474, 214);
+        drawScanningSeverityCards(context, rows, 548, 142, 596, 214);
+        drawCalculateShareChipRow(context, chips, sidePadding, 382, canvas.width - (sidePadding * 2));
+        drawScanningSeverityTable(context, rows, sidePadding, 432, canvas.width - (sidePadding * 2), 330);
+        drawShareCanvasFooter(context, canvas, sidePadding);
+
+        return createCanvasBlob(canvas);
+    }
+
+    function hasAssessmentShareSources(overlay) {
+        const root = getToolShareRoot(overlay);
+
+        return Boolean(
+            getShareSnapshotSourceByKind(root, 'assessment-summary')
+            && getShareSnapshotSourceByKind(root, 'assessment-table')
+        );
+    }
+
+    function isAssessmentShareReady(root) {
+        const summary = getShareSnapshotSourceByKind(root, 'assessment-summary');
+        const table = getShareSnapshotSourceByKind(root, 'assessment-table');
+        const hasSummary = normalizeShareText(summary?.textContent || '') !== '';
+        const hasRows = Boolean(table?.querySelector('tbody tr'));
+
+        return hasSummary && hasRows;
+    }
+
+    function waitForAssessmentShareReady(root) {
+        return new Promise(function (resolve) {
+            let attempt = 0;
+
+            function tick() {
+                if (isAssessmentShareReady(root) || attempt >= 50) {
+                    resolve();
+                    return;
+                }
+
+                attempt += 1;
+                window.setTimeout(tick, 80);
+            }
+
+            tick();
+        });
+    }
+
+    async function ensureAssessmentShareReady(overlay) {
+        const root = getToolShareRoot(overlay);
+
+        if (isAssessmentShareReady(root)) {
+            return;
+        }
+
+        const prepareAction = findGenericToolShareAction(overlay);
+
+        if (prepareAction) {
+            prepareAction.click();
+        }
+
+        await waitForToolShareFrame();
+        await waitForAssessmentShareReady(root);
+    }
+
+    function getAssessmentPrimaryShareMetric(summary) {
+        const card = summary?.querySelector('[class*="result-card-primary"], [data-result-visual]');
+        const value = getFirstCalculateShareText(card, [
+            '[class*="result-primary-number-value"]',
+            '[class*="result-primary-number"] strong',
+            '[class*="result-primary-metric"]',
+            'strong',
+        ]);
+        const unit = getFirstCalculateShareText(card, [
+            '[class*="result-primary-number-unit"]',
+            '[class*="result-primary-unit"]',
+        ]);
+        const label = getFirstCalculateShareText(card, [
+            '[class*="result-title-center"]',
+            '[class*="result-title"]',
+            '[class*="result-kicker"]',
+        ]) || 'Assessment rows';
+        const copy = getFirstCalculateShareText(card, [
+            '[class*="result-copy"]',
+            'p',
+        ]);
+
+        return {
+            label: label,
+            value: value || '-',
+            unit: unit || 'visible rows',
+            copy: copy,
+        };
+    }
+
+    function collectAssessmentShareChips(summary, selected) {
+        const chips = collectScanningShareChips(summary);
+
+        Array.from(selected?.querySelectorAll('[class*="script-chip"]') || []).forEach(function (chip) {
+            const label = getFirstCalculateShareText(chip, ['[class*="chip-label"]']);
+            const value = getFirstCalculateShareText(chip, ['[class*="chip-value"]']);
+            const text = truncateShareLine(label && value ? label + ': ' + value : chip.textContent, 58);
+
+            if (text !== '' && !chips.includes(text)) {
+                chips.push(text);
+            }
+        });
+
+        return chips.slice(0, 6);
+    }
+
+    function collectAssessmentRows(table) {
+        return Array.from(table?.querySelectorAll('tbody tr') || []).map(function (row) {
+            const cells = Array.from(row.cells || []);
+            const dataCells = /^\d+$/.test(getCalculateTableCellText(cells[0] || row) || '')
+                ? cells.slice(1)
+                : cells;
+
+            return {
+                control: getCalculateTableCellText(dataCells[0] || row),
+                title: getCalculateTableCellText(dataCells[1] || row),
+                section: getCalculateTableCellText(dataCells[2] || row),
+                criticality: getCalculateTableCellText(dataCells[3] || row),
+                script: getCalculateTableCellText(dataCells[4] || row),
+            };
+        }).filter(function (row) {
+            return row.control !== '' || row.title !== '';
+        }).slice(0, 6);
+    }
+
+    function drawAssessmentControlsTable(context, rows, x, y, width, height) {
+        const columns = [
+            { key: 'control', label: 'Control', width: 130 },
+            { key: 'title', label: 'Title', width: 382 },
+            { key: 'criticality', label: 'Criticality', width: 132 },
+            { key: 'section', label: 'Section', width: 230 },
+            { key: 'script', label: 'Script', width: 110 },
+        ];
+        const rowHeight = 42;
+        const headerHeight = 46;
+        const tablePadding = 24;
+        const tableTop = y + headerHeight;
+        const textInset = 12;
+
+        roundedCanvasRect(context, x, y, width, height, 18);
+        context.fillStyle = '#ffffff';
+        context.fill();
+        context.strokeStyle = 'rgba(203, 213, 225, 0.95)';
+        context.lineWidth = 1.5;
+        context.stroke();
+        context.font = '800 21px Nunito, Roboto, Arial, sans-serif';
+        context.fillStyle = '#17324d';
+        drawSingleLineShareText(context, 'Assessment Controls', x + tablePadding, y + 31, width - (tablePadding * 2));
+        context.fillStyle = '#f8fafc';
+        context.fillRect(x + 1, tableTop, width - 2, rowHeight);
+        context.strokeStyle = '#e2e8f0';
+        context.beginPath();
+        context.moveTo(x + 1, tableTop + rowHeight);
+        context.lineTo(x + width - 1, tableTop + rowHeight);
+        context.stroke();
+
+        let cursorX = x + tablePadding;
+
+        context.font = '800 13px Roboto, Arial, sans-serif';
+        context.fillStyle = '#475569';
+        columns.forEach(function (column) {
+            drawSingleLineShareText(context, column.label, cursorX + textInset, tableTop + 27, column.width - (textInset * 2));
+            cursorX += column.width;
+        });
+
+        const visibleRows = rows.length > 0 ? rows : [{
+            control: '-',
+            title: 'No assessment controls captured',
+            criticality: 'Pending',
+            section: 'Run Explore before sharing.',
+            script: '-',
+        }];
+
+        visibleRows.forEach(function (row, rowIndex) {
+            const rowY = tableTop + rowHeight + (rowIndex * rowHeight);
+
+            if (rowY + rowHeight > y + height - 10) {
+                return;
+            }
+
+            if (rowIndex % 2 === 1) {
+                context.fillStyle = '#fbfdff';
+                context.fillRect(x + 1, rowY, width - 2, rowHeight);
+            }
+
+            context.strokeStyle = '#edf2f7';
+            context.beginPath();
+            context.moveTo(x + 1, rowY + rowHeight);
+            context.lineTo(x + width - 1, rowY + rowHeight);
+            context.stroke();
+            cursorX = x + tablePadding;
+            context.font = '700 14px Roboto, Arial, sans-serif';
+            context.fillStyle = '#17324d';
+            columns.forEach(function (column) {
+                drawSingleLineShareText(
+                    context,
+                    row[column.key] || '-',
+                    cursorX + textInset,
+                    rowY + 27,
+                    column.width - (textInset * 2)
+                );
+                cursorX += column.width;
+            });
+        });
+    }
+
+    async function createAssessmentShareBlob(overlay, adapter) {
+        await ensureAssessmentShareReady(overlay);
+
+        const root = getToolShareRoot(overlay);
+        const summary = getShareSnapshotSourceByKind(root, 'assessment-summary');
+        const table = getShareSnapshotSourceByKind(root, 'assessment-table');
+        const selected = getShareSnapshotSourceByKind(root, 'assessment-selected');
+        const primary = getAssessmentPrimaryShareMetric(summary);
+        const metrics = collectScanningMetricCards(summary);
+        const chips = collectAssessmentShareChips(summary, selected);
+        const rows = collectAssessmentRows(table);
+        const title = getToolShareTitle(overlay, adapter);
+        const subtitle = getFirstCalculateShareText(summary, [
+            '[class*="result-header-copy"] p',
+            '[class*="result-summary-copy"] p',
+            '[class*="result-copy"]',
+        ]) || getToolShareSummary(overlay, adapter);
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const sidePadding = 56;
+
+        if (!context) {
+            throw new Error('Canvas rendering is not available.');
+        }
+
+        canvas.width = 1200;
+        canvas.height = 900;
+        drawShareGridBackground(context, canvas.width, canvas.height);
+        drawFittedCanvasTitle(context, title, sidePadding, 78, canvas.width - (sidePadding * 2));
+        drawFittedCanvasSubtitle(context, subtitle, sidePadding, 110, canvas.width - (sidePadding * 2));
+        drawScanningPrimaryCard(context, primary, sidePadding, 142, 474, 214);
+        drawShellMetricCards(context, metrics, 548, 142, 596, 214);
+        drawCalculateShareChipRow(context, chips.length > 0 ? chips : ['Assessment summary'], sidePadding, 382, canvas.width - (sidePadding * 2));
+        drawAssessmentControlsTable(context, rows, sidePadding, 432, canvas.width - (sidePadding * 2), 330);
+        drawShareCanvasFooter(context, canvas, sidePadding);
+
+        return createCanvasBlob(canvas);
+    }
+
+    function hasShellShareSources(overlay) {
+        const root = getToolShareRoot(overlay);
+
+        return Boolean(
+            getShareSnapshotSourceByKind(root, 'shell-summary')
+            && getShareSnapshotSourceByKind(root, 'shell-command')
+        );
+    }
+
+    function isShellShareReady(root) {
+        const summary = getShareSnapshotSourceByKind(root, 'shell-summary');
+        const command = getShareSnapshotSourceByKind(root, 'shell-command');
+        const hasSummary = normalizeShareText(summary?.textContent || '') !== '';
+        const hasCommand = normalizeShareText(command?.textContent || '') !== '';
+
+        return hasSummary && hasCommand;
+    }
+
+    function waitForShellShareReady(root) {
+        return new Promise(function (resolve) {
+            let attempt = 0;
+
+            function tick() {
+                if (isShellShareReady(root) || attempt >= 50) {
+                    resolve();
+                    return;
+                }
+
+                attempt += 1;
+                window.setTimeout(tick, 80);
+            }
+
+            tick();
+        });
+    }
+
+    async function ensureShellShareReady(overlay) {
+        const root = getToolShareRoot(overlay);
+
+        if (isShellShareReady(root)) {
+            return;
+        }
+
+        const prepareAction = findGenericToolShareAction(overlay);
+
+        if (prepareAction) {
+            prepareAction.click();
+        }
+
+        await waitForToolShareFrame();
+        await waitForShellShareReady(root);
+    }
+
+    function collectShellShareChips(summary) {
+        const chips = [];
+
+        Array.from(summary?.querySelectorAll('[class*="result-chip-grid"] [class*="result-chip"], [class*="result-chip-row"] [class*="result-chip"]') || []).forEach(function (chip) {
+            const text = truncateShareLine(chip.textContent, 54);
+
+            if (text !== '' && !chips.includes(text)) {
+                chips.push(text);
+            }
+        });
+
+        return chips.slice(0, 6);
+    }
+
+    function isShellPlaceholderMessage(text) {
+        return /^(no warnings|no blocking errors|no validation errors)/i.test(normalizeShareText(text));
+    }
+
+    function collectShellWarningRows(warnings) {
+        const rows = [];
+
+        Array.from(warnings?.querySelectorAll('[class*="message-card"]') || []).forEach(function (card) {
+            const label = getFirstCalculateShareText(card, ['[class*="message-title"]', 'h3'])
+                || 'Warnings';
+
+            Array.from(card.querySelectorAll('li')).forEach(function (item) {
+                const text = truncateShareLine(item.textContent, 160);
+
+                if (text !== '' && !isShellPlaceholderMessage(text)) {
+                    rows.push({
+                        level: /error/i.test(label) ? 'Error' : 'Warning',
+                        note: text,
+                    });
+                }
+            });
+        });
+
+        if (rows.length === 0) {
+            Array.from(warnings?.querySelectorAll('li') || []).forEach(function (item) {
+                const text = truncateShareLine(item.textContent, 160);
+
+                if (text !== '' && !isShellPlaceholderMessage(text)) {
+                    rows.push({
+                        level: /error/i.test(text) ? 'Error' : 'Warning',
+                        note: text,
+                    });
+                }
+            });
+        }
+
+        return rows.slice(0, 6);
+    }
+
+    function collectShellMetricCards(summary) {
+        return collectCalculateMetricCards(summary).map(function (metric) {
+            return {
+                label: metric.label,
+                value: metric.value,
+                copy: metric.copy,
+            };
+        }).slice(0, 4);
+    }
+
+    function splitShellShareToken(context, token, maxWidth) {
+        const pieces = [];
+        let currentPiece = '';
+
+        Array.from(String(token || '')).forEach(function (character) {
+            const nextPiece = currentPiece + character;
+
+            if (context.measureText(nextPiece).width <= maxWidth || currentPiece === '') {
+                currentPiece = nextPiece;
+                return;
+            }
+
+            pieces.push(currentPiece);
+            currentPiece = character;
+        });
+
+        if (currentPiece !== '') {
+            pieces.push(currentPiece);
+        }
+
+        return pieces;
+    }
+
+    function wrapShellCommandLines(context, command, maxWidth, maxLines) {
+        const source = String(command || '').replace(/\r/g, '\n').trim();
+        const sourceLines = source === '' ? ['No command generated yet.'] : source.split('\n');
+        const lines = [];
+
+        sourceLines.forEach(function (sourceLine) {
+            const tokens = sourceLine.trim().split(/\s+/).filter(Boolean);
+            let currentLine = '';
+
+            if (tokens.length === 0) {
+                lines.push('');
+                return;
+            }
+
+            tokens.forEach(function (token) {
+                if (context.measureText(token).width > maxWidth) {
+                    if (currentLine !== '') {
+                        lines.push(currentLine);
+                        currentLine = '';
+                    }
+
+                    const tokenPieces = splitShellShareToken(context, token, maxWidth);
+
+                    tokenPieces.forEach(function (piece, index) {
+                        if (index === tokenPieces.length - 1) {
+                            currentLine = piece;
+                            return;
+                        }
+
+                        lines.push(piece);
+                    });
+                    return;
+                }
+
+                const nextLine = currentLine === '' ? token : currentLine + ' ' + token;
+
+                if (context.measureText(nextLine).width <= maxWidth || currentLine === '') {
+                    currentLine = nextLine;
+                    return;
+                }
+
+                lines.push(currentLine);
+                currentLine = token;
+            });
+
+            if (currentLine !== '') {
+                lines.push(currentLine);
+            }
+        });
+
+        return lines.slice(0, maxLines).map(function (line, index) {
+            if (index !== maxLines - 1 || lines.length <= maxLines) {
+                return line;
+            }
+
+            let candidate = line;
+
+            while (candidate.length > 4 && context.measureText(candidate + '...').width > maxWidth) {
+                candidate = candidate.slice(0, -1).trim();
+            }
+
+            return candidate + '...';
+        });
+    }
+
+    function drawShellCommandPanel(context, command, x, y, width, height) {
+        roundedCanvasRect(context, x, y, width, height, 18);
+        context.fillStyle = '#10233a';
+        context.fill();
+        context.strokeStyle = 'rgba(148, 163, 184, 0.45)';
+        context.lineWidth = 1.5;
+        context.stroke();
+        context.fillStyle = 'rgba(255, 255, 255, 0.08)';
+        context.fillRect(x + 1, y + 1, width - 2, 46);
+        context.font = '800 15px Roboto, Arial, sans-serif';
+        context.fillStyle = '#e2e8f0';
+        drawSingleLineShareText(context, 'Generated Command', x + 24, y + 30, width - 48);
+
+        const dotColors = ['#22c55e', '#f97316', '#ef4444'];
+
+        dotColors.forEach(function (color, index) {
+            context.beginPath();
+            context.arc(x + width - 76 + (index * 18), y + 24, 5, 0, Math.PI * 2);
+            context.fillStyle = color;
+            context.fill();
+        });
+
+        context.font = '700 18px Menlo, Consolas, monospace';
+        context.fillStyle = '#dbeafe';
+
+        wrapShellCommandLines(context, command, width - 48, 6).forEach(function (line, index) {
+            context.fillText(line, x + 24, y + 78 + (index * 24));
+        });
+    }
+
+    function drawShellMetricCards(context, metrics, x, y, width, height) {
+        const fallbackMetrics = [{
+            label: 'Command',
+            value: 'Generated',
+            copy: 'Current shell output.',
+        }];
+        const visibleMetrics = metrics.length > 0 ? metrics : fallbackMetrics;
+        const gap = 14;
+        const cardWidth = (width - gap) / 2;
+        const cardHeight = (height - gap) / 2;
+
+        visibleMetrics.slice(0, 4).forEach(function (metric, index) {
+            drawCalculateShareMetricCard(
+                context,
+                metric,
+                x + ((index % 2) * (cardWidth + gap)),
+                y + (Math.floor(index / 2) * (cardHeight + gap)),
+                cardWidth,
+                cardHeight,
+                index
+            );
+        });
+    }
+
+    function drawShellWarningTable(context, rows, x, y, width, height) {
+        const rowHeight = 42;
+        const headerHeight = 46;
+        const tablePadding = 24;
+        const tableTop = y + headerHeight;
+        const visibleRows = rows.length > 0 ? rows : [{
+            level: 'Info',
+            note: 'No warnings captured for the current command.',
+        }];
+
+        roundedCanvasRect(context, x, y, width, height, 18);
+        context.fillStyle = '#ffffff';
+        context.fill();
+        context.strokeStyle = 'rgba(203, 213, 225, 0.95)';
+        context.lineWidth = 1.5;
+        context.stroke();
+        context.font = '800 21px Nunito, Roboto, Arial, sans-serif';
+        context.fillStyle = '#17324d';
+        drawSingleLineShareText(context, 'Warnings & Errors', x + tablePadding, y + 31, width - (tablePadding * 2));
+        context.fillStyle = '#f8fafc';
+        context.fillRect(x + 1, tableTop, width - 2, rowHeight);
+        context.strokeStyle = '#e2e8f0';
+        context.beginPath();
+        context.moveTo(x + 1, tableTop + rowHeight);
+        context.lineTo(x + width - 1, tableTop + rowHeight);
+        context.stroke();
+        context.font = '800 13px Roboto, Arial, sans-serif';
+        context.fillStyle = '#475569';
+        drawSingleLineShareText(context, 'Type', x + tablePadding, tableTop + 27, 128);
+        drawSingleLineShareText(context, 'Review Note', x + tablePadding + 150, tableTop + 27, width - tablePadding - 174);
+
+        visibleRows.forEach(function (row, index) {
+            const rowY = tableTop + rowHeight + (index * rowHeight);
+            const level = row.level || 'Info';
+            const isError = level === 'Error';
+            const isWarning = level === 'Warning';
+            const pillColor = isError ? '#fee2e2' : isWarning ? '#ffedd5' : '#eff6ff';
+            const textColor = isError ? '#b91c1c' : isWarning ? '#c2410c' : '#2563eb';
+
+            if (rowY + rowHeight > y + height - 10) {
+                return;
+            }
+
+            if (index % 2 === 1) {
+                context.fillStyle = '#fbfdff';
+                context.fillRect(x + 1, rowY, width - 2, rowHeight);
+            }
+
+            context.strokeStyle = '#edf2f7';
+            context.beginPath();
+            context.moveTo(x + 1, rowY + rowHeight);
+            context.lineTo(x + width - 1, rowY + rowHeight);
+            context.stroke();
+            roundedCanvasRect(context, x + tablePadding, rowY + 10, 90, 23, 12);
+            context.fillStyle = pillColor;
+            context.fill();
+            context.font = '800 12px Roboto, Arial, sans-serif';
+            context.fillStyle = textColor;
+            drawSingleLineShareText(context, level, x + tablePadding + 16, rowY + 26, 58);
+            context.font = '700 14px Roboto, Arial, sans-serif';
+            context.fillStyle = '#17324d';
+            drawSingleLineShareText(context, row.note || '-', x + tablePadding + 150, rowY + 27, width - tablePadding - 174);
+        });
+    }
+
+    async function createShellShareBlob(overlay, adapter) {
+        await ensureShellShareReady(overlay);
+
+        const root = getToolShareRoot(overlay);
+        const summary = getShareSnapshotSourceByKind(root, 'shell-summary');
+        const command = getShareSnapshotSourceByKind(root, 'shell-command');
+        const warnings = getShareSnapshotSourceByKind(root, 'shell-warnings');
+        const metrics = collectShellMetricCards(summary);
+        const chips = collectShellShareChips(summary);
+        const rows = collectShellWarningRows(warnings);
+        const title = getToolShareTitle(overlay, adapter);
+        const subtitle = getFirstCalculateShareText(summary, [
+            '[class*="result-header-copy"] p',
+            '[class*="result-summary-copy"] p',
+            '[class*="result-copy"]',
+        ]) || getToolShareSummary(overlay, adapter);
+        const commandText = normalizeShareText(command?.textContent || '');
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const sidePadding = 56;
+
+        if (!context) {
+            throw new Error('Canvas rendering is not available.');
+        }
+
+        canvas.width = 1200;
+        canvas.height = 900;
+        drawShareGridBackground(context, canvas.width, canvas.height);
+        drawFittedCanvasTitle(context, title, sidePadding, 78, canvas.width - (sidePadding * 2));
+        drawFittedCanvasSubtitle(context, subtitle, sidePadding, 110, canvas.width - (sidePadding * 2));
+        drawShellCommandPanel(context, commandText, sidePadding, 142, 648, 214);
+        drawShellMetricCards(context, metrics, 728, 142, 416, 214);
+        drawCalculateShareChipRow(context, chips.length > 0 ? chips : ['Command summary'], sidePadding, 382, canvas.width - (sidePadding * 2));
+        drawShellWarningTable(context, rows, sidePadding, 432, canvas.width - (sidePadding * 2), 330);
+        drawShareCanvasFooter(context, canvas, sidePadding);
+
+        return createCanvasBlob(canvas);
+    }
+
     async function createGenericCanvasShareBlob(image, size, title, subtitle) {
         const maxCanvasWidth = 2400;
         const maxCanvasHeight = 1800;
@@ -1738,6 +3491,7 @@
             clone.setAttribute('viewBox', '0 0 ' + size.sourceWidth + ' ' + size.sourceHeight);
         }
 
+        inlineComputedSvgStyles(svg, clone);
         await inlineSvgImageReferences(clone);
         replaceSvgForeignObjects(clone);
 
@@ -1745,10 +3499,15 @@
     }
 
     async function createGenericSvgShareBlob(overlay, adapter) {
-        const svg = getVisibleSvgSnapshotElement();
+        let svg = getVisibleSvgSnapshotElement();
 
-        if (!svg) {
-            throw new Error('Generate output before sharing. This tool does not expose a PNG snapshot yet.');
+        if (!svg || isToolSharePreviewSvg(svg)) {
+            await ensureGenericToolShareReady(overlay);
+            svg = getVisibleSvgSnapshotElement();
+        }
+
+        if (!svg || isToolSharePreviewSvg(svg)) {
+            return createGenericTextShareBlob(overlay, adapter);
         }
 
         const size = getSvgSnapshotSize(svg);
@@ -1783,6 +3542,22 @@
             if (blob) {
                 return blob;
             }
+        }
+
+        if (hasCalculateShareSources(overlay)) {
+            return createCalculateShareBlob(overlay, adapter);
+        }
+
+        if (hasScanningShareSources(overlay)) {
+            return createScanningShareBlob(overlay, adapter);
+        }
+
+        if (hasAssessmentShareSources(overlay)) {
+            return createAssessmentShareBlob(overlay, adapter);
+        }
+
+        if (hasShellShareSources(overlay)) {
+            return createShellShareBlob(overlay, adapter);
         }
 
         return createGenericSvgShareBlob(overlay, adapter);

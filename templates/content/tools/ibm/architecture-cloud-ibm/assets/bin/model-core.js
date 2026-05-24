@@ -877,7 +877,7 @@ const ArchitectureCloudIbmModelCore = (function () {
         }
 
         return {
-            width: 1200,
+            width: 1240,
             height: 900,
             groups: [
                 {

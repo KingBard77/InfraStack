@@ -7,7 +7,10 @@ This folder defines the family-specific workspace grammar for scanning tools.
 Use it when a requested tool accepts a target and options, runs bounded checks, and produces evidence-backed findings, summaries, tables, exports, and JSON.
 
 The shared scaffold owns reusable content rhythm.
-This workspace source owns scanner workspace sections and scanner behavior.
+`_base/workspace` owns common workspace section shape.
+This workspace source owns scanner-specific visual/model, selected-item, model-core, and scanner behavior contracts.
+
+Workspace source inherits the platform two-font system: `Nunito` through `--heading-font` for headings and titles, and `Roboto` through `--default-font` for body, labels, controls, tables, and tool UI. Do not add other proportional font families in scanning section CSS, demos, or final runtime copies.
 
 ## Reference Workspace
 
@@ -31,12 +34,12 @@ Use the reference to understand target-to-result grammar, advanced option layout
 When a user asks to baseline a scanning tool, copy the full stabilized runtime source into:
 
 ```text
-templates/content/family/scanning/baseline/source/
+templates/content/family/scanning/source/
 ```
 
-The copied snapshot is reference-only. Do not import it directly from final runtime tools.
+The copied snapshot is reference-only. Do not audit this as active source. Do not import it directly from final runtime tools.
 
-Reusable scanner behavior belongs in the matching workspace files:
+Reusable scanner-specific behavior belongs in the matching workspace files:
 
 ```text
 templates/content/family/scanning/workspace/<section>/page.html.twig
@@ -46,7 +49,7 @@ templates/content/family/scanning/workspace/<section>/demo.html
 templates/content/family/scanning/workspace/assets/bin/model-core.js
 ```
 
-The current section source is derived from the Web Security Scanner target shell, advanced options, score summary, output toolbar, evidence tabs, JSON boundaries, dropdown behavior, copy/export behavior, and support example controls. Before using it for a different scan domain, adapt the namespace, labels, category/provider tokens, examples, checks, evidence tables, and JSON payload identity. Do not recreate root `workspace/custom.css` or `workspace/custom.js` snapshots.
+The current section source is derived from the Web Security Scanner target shell, advanced options, score summary, output toolbar, evidence tabs, JSON boundaries, dropdown behavior, copy/export behavior, and support example controls. Before using it for a different scan domain, adapt the namespace, labels, category/provider tokens, examples, checks, evidence tables, and JSON payload identity. Do not recreate root `workspace/custom.css` or `workspace/custom.js` snapshots, and do not recreate duplicate scanning copies of `_base` workspace sections.
 
 ## Composition Order
 
@@ -56,10 +59,12 @@ When creating a scanning-family tool:
 2. Read `templates/content/family/scanning/manifest.yml`.
 3. Read this workspace source.
 4. Read `templates/content/family/scanning/workspace/manifest.yml`.
-5. Inspect the relevant section `page.html.twig`, `section.css`, `section.js`, and `demo.html` files under `templates/content/family/scanning/workspace/`.
-6. Read `templates/content/main/scaffold/README.md`.
-7. Read the shared main content section folders under `templates/content/main/sections/content/`.
-8. Generate the final tool package under `templates/content/tools/<category>/<tool-slug>/`.
+5. Inspect `workspace_namespaces` in the scanning workspace manifest to see the ordered `_base` and scanning-owned sections.
+6. Inspect the relevant `_base` section files under `templates/content/family/_base/workspace/`.
+7. Inspect scanning-owned section `page.html.twig`, `section.css`, `section.js`, and `demo.html` files under `templates/content/family/scanning/workspace/`.
+8. Read `templates/content/main/scaffold/README.md`.
+9. Read the shared main content section folders under `templates/content/main/sections/content/`.
+10. Generate the final tool package under `templates/content/tools/<category>/<tool-slug>/`.
 
 ## Workspace Shape
 
@@ -67,11 +72,12 @@ Scanning workspaces use this baseline flow:
 
 1. Target input starts the scan model.
 2. Scan options define request method, redirects, timeout, validation, client profile, and companion probes.
-3. Result shell starts empty and keeps output hidden until scan or validated restore.
-4. Result summary shows score/status, evidence metrics, chips, and final target details.
-5. Output toolbar exposes sort, export, copy, and optional import.
-6. Result tabs expose findings, evidence tables, surface details, and JSON.
-7. JSON payload output reflects the current scan and can restore state only when import is implemented.
+3. Optional visual contract defines posture rings, severity metrics, evidence cards, finding rows, coverage state, and result tones.
+4. Result shell starts empty and keeps output hidden until scan or validated restore.
+5. Result summary shows score/status, evidence metrics, chips, and final target details.
+6. Output toolbar exposes sort, export, copy, and optional import.
+7. Result tabs expose findings, evidence tables, surface details, and JSON.
+8. JSON payload output reflects the current scan and can restore state only when import is implemented.
 
 ## Baseline UI Pattern
 
@@ -98,7 +104,13 @@ When a shared main content section is adapted into a final runtime package, appl
 templates/content/main/sections/content/
 ```
 
-Use scanning workspace sections from:
+Use `_base` workspace sections from:
+
+```text
+templates/content/family/_base/workspace/
+```
+
+Use scanning-owned workspace sections from:
 
 ```text
 templates/content/family/scanning/workspace/
@@ -114,18 +126,20 @@ Scanning content adaptation:
 - `content/04_tips-prompts` becomes scan input tips, scope guidance, or evidence interpretation guidance.
 - Overview and evidence-boundary tables should use explicit HTML table structure with fixed layout and wrapping so columns align inside the content card.
 
-Scanning workspace sections:
+Workspace namespace composition:
 
-- `01_input-brief` starts the scan model.
-- `02_basic-settings` defines request, validation, client, and companion-probe options.
-- `03_advanced-settings` defines optional advanced probes, filters, request tuning, or scanner options; it stays no-op when not needed.
+- `family._base.workspace.00_shell` provides the shared workspace frame.
+- `family._base.workspace.01_input-brief` starts the scan model.
+- `family._base.workspace.02_basic-settings` defines request, validation, client, and companion-probe options.
+- `family._base.workspace.03_custom-settings` defines optional advanced probes, filters, request tuning, or scanner options; it stays no-op when not needed.
+- `04_visual-contract` defines the optional scanning visual and model contract for posture rings, severity metrics, evidence cards, finding rows, coverage state, and result tones.
 - `04_selected-item` defines optional selected finding, evidence, or target detail; it stays no-op when not needed.
-- `05_result-summary` defines hidden-first output, score/status, metrics, and chips.
-- `06_result-view` defines findings, evidence, surface detail, and JSON panels.
-- `07_table-export` defines sort, copy, CSV, report/PDF, JSON, and optional import controls.
-- `08_json-restore` defines structured JSON payload output.
+- `family._base.workspace.05_result-summary` defines hidden-first output, score/status, metrics, and chips.
+- `family._base.workspace.06_output-toolbar` defines sort, copy, CSV, report/PDF, JSON, and optional import controls.
+- `family._base.workspace.07_table-output` defines findings, evidence, surface detail, and JSON panels.
+- `family._base.workspace.08_json-restore` defines structured JSON payload output.
 
-Each section folder must contain the same bundle shape used by architecture workspace sections:
+Each scanning-owned section folder must contain the same bundle shape used by architecture workspace sections:
 
 ```text
 README.md
@@ -134,6 +148,8 @@ page.html.twig
 section.css
 section.js
 ```
+
+`04_visual-contract` also contains `manifest.yml` and `model-core.js`. Keep `model-core.js` free of DOM, Twig, and browser event binding so final scanners can adapt it into `assets/bin/model-core.js` when they need testable visual-state normalization.
 
 Use `page.html.twig`, `section.css`, and `section.js` as section-level source files. Use `demo.html` for isolated visual and behavior checks before adapting the section into a complete tool.
 

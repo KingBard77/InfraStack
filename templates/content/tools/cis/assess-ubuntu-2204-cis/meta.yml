@@ -3,9 +3,10 @@
 title: CIS Ubuntu Benchmark 2204
 author: Badrul Amin
 author_role: Infrastructure & DevOps Specialist
-author_image: "images/author/author-bg-black.png"
+author_image: "images/author/author-bg-white.png"
 date: "Mar. 20th, 2026"
 comments: Interactive tool
+publication_status: ready
 category_label: CIS
 group: security
 family: assessment
@@ -19,6 +20,10 @@ tags:
     - CIS
     - Ubuntu
     - Benchmark
-    - Compliance
-    - Hardening
-    - Shell
+related_links:
+    - links-title: Web Security Scanner
+      links-label: InfraStack tool
+      links-description: Open the related InfraStack Web Security Scanner workspace.
+      links-url: https://infrastack.my/tools/security/scan-web-security
+      links-embed: https://infrastack.my/embed/security/scan-web-security
+      links-icon: bi-shield-check

@@ -3,9 +3,10 @@
 title: Azure VNet Architecture
 author: Badrul Amin
 author_role: Infrastructure & DevOps Specialist
-author_image: "images/author/author-bg-black.png"
+author_image: "images/author/author-bg-white.png"
 date: "Apr. 18th, 2026"
 comments: Interactive tool
+publication_status: ready
 category_label: Azure
 group: cloud
 family: architecture
@@ -19,5 +20,16 @@ tags:
     - Azure
     - VNet
     - Architecture
-    - Diagram
-    - Topology
+related_links:
+    - links-title: Azure Cost Calculator
+      links-label: InfraStack tool
+      links-description: Open the related InfraStack Azure Cost Calculator workspace.
+      links-url: https://infrastack.my/tools/azure/calculate-cost-azure
+      links-embed: https://infrastack.my/embed/azure/calculate-cost-azure
+      links-icon: bi-calculator
+    - links-title: Subnet Planning Suite
+      links-label: Simplified Tools
+      links-description: Open the embeddable Simplified Tools Subnet Planning Suite workspace.
+      links-url: https://www.simplified.tools/calculate_subnet_planning_suite
+      links-embed: https://www.simplified.tools/embed/calculate_subnet_planning_suite?share=embed
+      links-icon: bi-diagram-3

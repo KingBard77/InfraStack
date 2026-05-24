@@ -1,0 +1,426 @@
+{# tool.html.twig #}
+
+{# ns:start family._base.workspace.00_shell #}
+<div class="check-headers-security-tool" data-tool-slug="check-headers-security" data-tool-category="Security" data-tool-family-shell="base">
+  <section class="tool-shell check-headers-security-input-shell" id="checkHeadersSecurityInputShell" aria-label="Security header draft target">
+    <form class="check-headers-security-form" id="checkHeadersSecurityForm">
+      {# ns:start family._base.workspace.01_input-brief #}
+      <div class="check-headers-security-input-card">
+        <div class="check-headers-security-input-brief" data-input-layout="inline">
+          <div class="check-headers-security-main-row check-headers-security-input-row">
+            <div class="check-headers-security-input-label-wrap">
+              <label for="checkHeadersSecurityInput" class="check-headers-security-main-label check-headers-security-input-label">URL or header sample:</label>
+              <span class="check-headers-security-helper-chip" title="Enter a URL, route, or pasted response-header sample for draft planning" aria-label="Enter a URL, route, or pasted response-header sample for draft planning">i</span>
+            </div>
+
+            <div class="check-headers-security-target-grid check-headers-security-main-input-grid check-headers-security-input-stack">
+              <input
+                type="text"
+                id="checkHeadersSecurityInput"
+                class="form-control check-headers-security-input-control check-headers-security-text-field"
+                placeholder="https://app.example.com/login or Content-Security-Policy: default-src 'self'"
+                autocomplete="off"
+              >
+              <button type="button" class="btn btn-primary check-headers-security-submit-btn check-headers-security-action-btn check-headers-security-action-btn-primary" id="checkHeadersSecurityPrimaryAction" data-tool-share-generate>
+                <i class="bi bi-shield-check" aria-hidden="true"></i>
+                <span>Prepare Review</span>
+              </button>
+              <div class="check-headers-security-input-error d-none" id="checkHeadersSecurityInputError" role="alert"></div>
+            </div>
+          </div>
+
+          <div class="check-headers-security-main-actions check-headers-security-input-actions">
+            <button type="button" class="check-headers-security-action-btn check-headers-security-action-btn-secondary" id="checkHeadersSecuritySecondaryAction">
+              <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+              <span>Reset</span>
+            </button>
+          </div>
+
+          <div class="check-headers-security-input-helper-card">
+            <span class="check-headers-security-input-hint">This draft mirrors the Web Security Scanner input rhythm, but it does not send requests or prove security posture.</span>
+            <span class="check-headers-security-helper-chip check-headers-security-helper-chip-inline" title="Review scope only; live evidence belongs in the full scanner workflow" aria-label="Review scope only; live evidence belongs in the full scanner workflow">i</span>
+          </div>
+        </div>
+      </div>
+      {# ns:end family._base.workspace.01_input-brief #}
+
+      {# ns:start family._base.workspace.02_basic-settings #}
+      <div class="check-headers-security-basic-panel">
+        <div class="check-headers-security-inner-panel check-headers-security-basic-card">
+          <div class="check-headers-security-example-card">
+            <span class="check-headers-security-example-label">Example review settings</span>
+            <strong class="check-headers-security-example-value">HEAD method, redirects on, balanced header baseline</strong>
+            <span class="check-headers-security-example-helper">Keep the first-pass scanner-style controls visible before opening Custom settings.</span>
+          </div>
+
+          <div class="check-headers-security-basic-grid">
+            <div class="check-headers-security-setting-row check-headers-security-setting-card">
+              <label for="checkHeadersSecurityBasicPrimary" class="check-headers-security-setting-label">
+                Review baseline
+                <span class="info-dot check-headers-security-helper-chip" title="Choose the first-pass security-header baseline for the draft finding preview">i</span>
+              </label>
+              <div class="check-headers-security-setting-field">
+                <select id="checkHeadersSecurityBasicPrimary" class="form-select check-headers-security-native-select">
+                  <option value="balanced" selected>Balanced browser security</option>
+                  <option value="strict">Strict public web baseline</option>
+                  <option value="api">API response baseline</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="check-headers-security-setting-row check-headers-security-setting-card">
+              <label for="checkHeadersSecurityMethod" class="check-headers-security-setting-label">
+                Request method
+                <span class="info-dot check-headers-security-helper-chip" title="Mirror the scanner method choice for a future live header request">i</span>
+              </label>
+              <div class="check-headers-security-setting-field">
+                <details class="check-headers-security-custom-dropdown" data-custom-dropdown-for="checkHeadersSecurityMethod">
+                  <summary class="check-headers-security-custom-dropdown-summary">
+                    <span id="checkHeadersSecurityMethodValue" data-custom-dropdown-label>HEAD</span>
+                    <span class="check-headers-security-custom-arrow-slot" aria-hidden="true"></span>
+                  </summary>
+                  <div class="check-headers-security-custom-dropdown-menu" role="listbox" aria-label="Request method">
+                    <button type="button" class="check-headers-security-custom-dropdown-option active" data-custom-dropdown-value="HEAD" role="option" aria-selected="true">HEAD</button>
+                    <button type="button" class="check-headers-security-custom-dropdown-option" data-custom-dropdown-value="GET" role="option" aria-selected="false">GET</button>
+                  </div>
+                </details>
+                <input type="hidden" id="checkHeadersSecurityMethod" value="HEAD">
+              </div>
+            </div>
+
+            <div class="check-headers-security-setting-row check-headers-security-setting-card">
+              <label for="checkHeadersSecurityBasicText" class="check-headers-security-setting-label">
+                Target context
+                <span class="info-dot check-headers-security-helper-chip" title="Name the app, route, or environment being reviewed">i</span>
+              </label>
+              <div class="check-headers-security-setting-field">
+                <input
+                  type="text"
+                  id="checkHeadersSecurityBasicText"
+                  class="form-control check-headers-security-text-field"
+                  placeholder="Web application"
+                  value="Web application"
+                >
+              </div>
+            </div>
+
+            <div class="check-headers-security-setting-row check-headers-security-setting-card">
+              <label for="checkHeadersSecurityBasicToggle" class="check-headers-security-setting-label">
+                Follow redirects
+                <span class="info-dot check-headers-security-helper-chip" title="Keep enabled when the future scanner should inspect the final destination">i</span>
+              </label>
+              <div class="check-headers-security-setting-field">
+                <label class="check-headers-security-custom-checkbox-option check-headers-security-switch-card">
+                  <input type="checkbox" id="checkHeadersSecurityBasicToggle" checked>
+                  <span class="check-headers-security-switch-track" aria-hidden="true"></span>
+                  <span class="check-headers-security-switch-copy">Enabled</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {# ns:end family._base.workspace.02_basic-settings #}
+
+      {# ns:start family._base.workspace.03_custom-settings #}
+      <details class="check-headers-security-custom-settings check-headers-security-advanced" id="checkHeadersSecurityCustomSettings" data-custom-layout="compact_one_column" open>
+        <summary class="check-headers-security-custom-summary check-headers-security-advanced-summary">
+          <span>Custom settings</span>
+          <span class="check-headers-security-custom-arrow-slot" aria-hidden="true"></span>
+        </summary>
+
+        <div class="check-headers-security-custom-body check-headers-security-advanced-body">
+          <div class="check-headers-security-inner-panel">
+            <div class="check-headers-security-setting-row check-headers-security-setting-card">
+              <label for="checkHeadersSecurityCspMode" class="check-headers-security-setting-label">
+                CSP mode
+                <span class="info-dot check-headers-security-helper-chip" title="Plan CSP as enforced, report-only, or both before live evidence exists">i</span>
+              </label>
+              <div class="check-headers-security-setting-field">
+                <select id="checkHeadersSecurityCspMode" class="form-select check-headers-security-custom-text-field">
+                  <option value="Content-Security-Policy" selected>Enforced policy</option>
+                  <option value="Content-Security-Policy-Report-Only">Report-only policy</option>
+                  <option value="Both CSP headers">Enforce plus report-only</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="check-headers-security-setting-row check-headers-security-setting-card">
+              <label for="checkHeadersSecurityHstsMaxAge" class="check-headers-security-setting-label">
+                HSTS max-age
+                <span class="info-dot check-headers-security-helper-chip" title="Plan the Strict-Transport-Security max-age value in seconds">i</span>
+              </label>
+              <div class="check-headers-security-setting-field">
+                <input
+                  type="number"
+                  id="checkHeadersSecurityHstsMaxAge"
+                  class="form-control check-headers-security-custom-number-field"
+                  min="0"
+                  step="1"
+                  placeholder="31536000"
+                  value="31536000"
+                >
+              </div>
+            </div>
+
+            <div class="check-headers-security-setting-row check-headers-security-setting-card">
+              <label for="checkHeadersSecurityCustomText" class="check-headers-security-setting-label">
+                Target route
+                <span class="info-dot check-headers-security-helper-chip" title="Optional route or path that narrows the draft review">i</span>
+              </label>
+              <div class="check-headers-security-setting-field">
+                <input
+                  type="text"
+                  id="checkHeadersSecurityCustomText"
+                  class="form-control check-headers-security-custom-text-field"
+                  placeholder="/login"
+                >
+              </div>
+            </div>
+
+            <div class="check-headers-security-setting-row check-headers-security-setting-card">
+              <label for="checkHeadersSecurityCustomNumber" class="check-headers-security-setting-label">
+                Finding cap
+                <span class="info-dot check-headers-security-helper-chip" title="Limit preview rows while this package remains draft">i</span>
+              </label>
+              <div class="check-headers-security-setting-field">
+                <input
+                  type="number"
+                  id="checkHeadersSecurityCustomNumber"
+                  class="form-control check-headers-security-custom-number-field"
+                  min="1"
+                  step="1"
+                  placeholder="8"
+                  value="8"
+                >
+              </div>
+            </div>
+
+            <div class="check-headers-security-setting-row check-headers-security-setting-card">
+              <label for="checkHeadersSecurityCustomSelect" class="check-headers-security-setting-label">
+                Cookie review
+                <span class="info-dot check-headers-security-helper-chip" title="Decide how cookie flags should appear in the draft notes">i</span>
+              </label>
+              <div class="check-headers-security-setting-field">
+                <details id="checkHeadersSecurityCustomSelect" class="check-headers-security-custom-dropdown">
+                  <summary class="check-headers-security-custom-dropdown-summary">
+                    <span id="checkHeadersSecurityCustomSelectValue">Include cookie flags</span>
+                    <span class="check-headers-security-custom-arrow-slot" aria-hidden="true"></span>
+                  </summary>
+                  <div class="check-headers-security-custom-dropdown-menu" role="listbox" aria-label="Cookie review">
+                    <button type="button" class="check-headers-security-custom-dropdown-option active" data-custom-dropdown-value="Include cookie flags" role="option" aria-selected="true">Include cookie flags</button>
+                    <button type="button" class="check-headers-security-custom-dropdown-option" data-custom-dropdown-value="Track separately" role="option" aria-selected="false">Track separately</button>
+                    <button type="button" class="check-headers-security-custom-dropdown-option" data-custom-dropdown-value="Skip for now" role="option" aria-selected="false">Skip for now</button>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <div class="check-headers-security-setting-row check-headers-security-setting-card">
+              <span class="check-headers-security-setting-label">
+                Review toggles
+                <span class="info-dot check-headers-security-helper-chip" title="Keep browser hardening notes explicit while this remains draft">i</span>
+              </span>
+              <div class="check-headers-security-setting-field check-headers-security-toggle-stack">
+                <label class="check-headers-security-custom-checkbox-option">
+                  <input type="checkbox" id="checkHeadersSecurityCustomToggle" checked>
+                  <span>Include cookie notes</span>
+                </label>
+                <label class="check-headers-security-custom-checkbox-option">
+                  <input type="checkbox" id="checkHeadersSecurityHstsSubdomains" checked>
+                  <span>HSTS includeSubDomains</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="check-headers-security-setting-row check-headers-security-setting-card">
+              <span class="check-headers-security-setting-label">
+                Header focus
+                <span class="info-dot check-headers-security-helper-chip" title="Choose whether to keep a normal review tone or flag stricter gaps">i</span>
+              </span>
+              <div class="check-headers-security-setting-field">
+                <div class="check-headers-security-custom-radio-group" role="radiogroup" aria-label="Header focus">
+                  <label class="check-headers-security-custom-radio-card">
+                    <input type="radio" id="checkHeadersSecurityCustomRadioStandard" name="checkHeadersSecurityCustomRadio" value="Standard" checked>
+                    <span>
+                      <span class="check-headers-security-custom-radio-title">Standard</span>
+                      <span class="check-headers-security-custom-radio-copy">Keep the review balanced and route-aware.</span>
+                    </span>
+                  </label>
+                  <label class="check-headers-security-custom-radio-card">
+                    <input type="radio" id="checkHeadersSecurityCustomRadioOverride" name="checkHeadersSecurityCustomRadio" value="Strict">
+                    <span>
+                      <span class="check-headers-security-custom-radio-title">Strict</span>
+                      <span class="check-headers-security-custom-radio-copy">Surface missing hardening headers first.</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="check-headers-security-setting-row check-headers-security-setting-card check-headers-security-setting-row-wide">
+              <label for="checkHeadersSecurityCustomTextarea" class="check-headers-security-setting-label">
+                Headers to emphasize
+                <span class="info-dot check-headers-security-helper-chip" title="Optional newline list of headers to watch first">i</span>
+              </label>
+              <div class="check-headers-security-setting-field">
+                <textarea
+                  id="checkHeadersSecurityCustomTextarea"
+                  class="form-control check-headers-security-custom-textarea"
+                  rows="3"
+                  placeholder="content-security-policy&#10;strict-transport-security&#10;x-frame-options"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="check-headers-security-setting-row check-headers-security-setting-card check-headers-security-setting-row-wide">
+              <label for="checkHeadersSecurityPolicyTextarea" class="check-headers-security-setting-label">
+                Policy directives
+                <span class="info-dot check-headers-security-helper-chip" title="Draft CSP, Referrer-Policy, Permissions-Policy, or COOP/COEP notes">i</span>
+              </label>
+              <div class="check-headers-security-setting-field">
+                <textarea
+                  id="checkHeadersSecurityPolicyTextarea"
+                  class="form-control check-headers-security-custom-textarea"
+                  rows="3"
+                  placeholder="default-src 'self'&#10;Referrer-Policy: strict-origin-when-cross-origin&#10;Permissions-Policy: geolocation=()"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="check-headers-security-custom-info" data-info-layout="auto">
+              <span>Draft only; no request is sent.</span>
+              <span>Ready status must be changed in meta.yml before production deploy.</span>
+            </div>
+          </div>
+        </div>
+      </details>
+      {# ns:end family._base.workspace.03_custom-settings #}
+    </form>
+  </section>
+
+  <section class="check-headers-security-result-panel" id="checkHeadersSecurityPanel" aria-label="Header review draft result">
+    <div class="check-headers-security-result-empty" id="checkHeadersSecurityResultEmpty">Prepare a draft header review to inspect planned checks, evidence groups, and visual-contract rows.</div>
+
+    <div class="check-headers-security-result-content" id="checkHeadersSecurityResultContent">
+      <div class="check-headers-security-surface-state" data-state="draft">
+        <strong>Draft preview</strong>
+        <span id="checkHeadersSecuritySummary">Add a URL, route, or header sample to prepare the review preview.</span>
+      </div>
+
+      {# ns:start family.scanning.workspace.04_visual-contract #}
+      <section class="check-headers-security-visual-contract" id="checkHeadersSecurityVisualContract" data-contract-family="scanning" data-contract-tone="warning" data-share-snapshot-source data-share-kind="scan-summary" aria-label="Security header draft visual contract">
+        <header class="check-headers-security-visual-contract-header">
+          <div class="check-headers-security-visual-contract-heading">
+            <span class="check-headers-security-visual-contract-icon" aria-hidden="true"><i class="bi bi-shield-lock"></i></span>
+            <div>
+              <h2 class="check-headers-security-visual-contract-title">Header Review Draft</h2>
+              <p class="check-headers-security-visual-contract-copy">Scanner-style preview for header families, rollout mode, and draft finding emphasis.</p>
+            </div>
+          </div>
+
+          <div class="check-headers-security-visual-contract-status" aria-label="Scan visual status">
+            <span class="check-headers-security-visual-contract-chip">
+              <span aria-hidden="true"><i class="bi bi-pencil-square"></i></span>
+              <span id="checkHeadersSecurityContractStatus">Draft only</span>
+            </span>
+            <span class="check-headers-security-visual-contract-chip">
+              <span aria-hidden="true"><i class="bi bi-bullseye"></i></span>
+              <span id="checkHeadersSecurityContractTarget">No target yet</span>
+            </span>
+          </div>
+        </header>
+
+        <div class="check-headers-security-visual-contract-grid">
+          <article class="check-headers-security-visual-contract-primary" id="checkHeadersSecurityScanPrimary">
+            <span class="check-headers-security-visual-contract-kicker">Draft coverage</span>
+            <div class="check-headers-security-visual-contract-ring" id="checkHeadersSecurityVisualRing" style="--check-headers-security-visual-contract-progress: 180deg;" aria-label="Draft coverage ring">
+              <span class="check-headers-security-visual-contract-ring-center">
+                <strong id="checkHeadersSecurityVisualScore">5</strong>
+                <small>groups</small>
+              </span>
+            </div>
+            <strong class="check-headers-security-visual-contract-value" id="checkHeadersSecurityPrimaryValue">Core headers planned</strong>
+            <p class="check-headers-security-visual-contract-note" id="checkHeadersSecurityPrimaryNote">CSP, HSTS, content sniffing, framing, and referrer policy stay as draft checks.</p>
+          </article>
+
+          <article class="check-headers-security-visual-contract-model" aria-label="Header visual model summary">
+            <div class="check-headers-security-visual-contract-model-head">
+              <h3>Header Model</h3>
+              <span id="checkHeadersSecurityModelLabel">Source-aligned draft</span>
+            </div>
+
+            <div class="check-headers-security-visual-contract-metrics" id="checkHeadersSecurityScanMetrics">
+              <div class="check-headers-security-visual-contract-metric">
+                <span>CSP</span>
+                <strong id="checkHeadersSecurityMetricCsp">Enforced</strong>
+                <small id="checkHeadersSecurityMetricCspCopy">Resource allow-list planning</small>
+              </div>
+              <div class="check-headers-security-visual-contract-metric">
+                <span>HSTS</span>
+                <strong id="checkHeadersSecurityMetricHsts">31536000</strong>
+                <small id="checkHeadersSecurityMetricHstsCopy">HTTPS-only rollout planning</small>
+              </div>
+              <div class="check-headers-security-visual-contract-metric">
+                <span>Cookie flags</span>
+                <strong id="checkHeadersSecurityMetricCookies">Included</strong>
+                <small>Secure, HttpOnly, SameSite review notes</small>
+              </div>
+              <div class="check-headers-security-visual-contract-metric">
+                <span>Frame policy</span>
+                <strong id="checkHeadersSecurityMetricFrame">CSP first</strong>
+                <small>frame-ancestors before legacy fallback</small>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="check-headers-security-visual-contract-evidence" id="checkHeadersSecurityScanEvidence" aria-label="Scan evidence cards">
+          <article class="check-headers-security-visual-contract-card">
+            <span class="check-headers-security-visual-contract-card-icon" aria-hidden="true"><i class="bi bi-file-lock2"></i></span>
+            <div>
+              <h3>CSP rollout</h3>
+              <p id="checkHeadersSecurityEvidenceCsp">Enforced policy selected.</p>
+            </div>
+            <strong>CSP</strong>
+          </article>
+
+          <article class="check-headers-security-visual-contract-card">
+            <span class="check-headers-security-visual-contract-card-icon" aria-hidden="true"><i class="bi bi-lock"></i></span>
+            <div>
+              <h3>Transport</h3>
+              <p id="checkHeadersSecurityEvidenceHsts">HSTS max-age is planned, not verified.</p>
+            </div>
+            <strong>HSTS</strong>
+          </article>
+
+          <article class="check-headers-security-visual-contract-card">
+            <span class="check-headers-security-visual-contract-card-icon" aria-hidden="true"><i class="bi bi-cookie"></i></span>
+            <div>
+              <h3>Session hints</h3>
+              <p id="checkHeadersSecurityEvidenceCookies">Cookie flag notes are included.</p>
+            </div>
+            <strong>Flags</strong>
+          </article>
+        </div>
+
+        <div class="check-headers-security-visual-contract-findings" id="checkHeadersSecurityScanFindings" data-share-snapshot-source data-share-kind="severity-table" aria-label="Finding visual rows">
+          <div class="check-headers-security-visual-contract-finding" data-finding-tone="danger">
+            <span>Must confirm from live response</span>
+            <code id="checkHeadersSecurityFindingOne">security headers</code>
+            <strong>Draft</strong>
+          </div>
+          <div class="check-headers-security-visual-contract-finding" data-finding-tone="warning">
+            <span>Policy notes are planned controls</span>
+            <code id="checkHeadersSecurityFindingTwo">CSP / HSTS / cookies</code>
+            <strong>Review</strong>
+          </div>
+        </div>
+      </section>
+      {# ns:end family.scanning.workspace.04_visual-contract #}
+
+      <ul id="checkHeadersSecurityRows" class="check-headers-security-preview-rows"></ul>
+    </div>
+  </section>
+</div>
+{# ns:end family._base.workspace.00_shell #}

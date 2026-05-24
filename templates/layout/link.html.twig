@@ -12,16 +12,23 @@
     <div class="related-link-panel">
       <div class="related-link-list">
         {% for link in linkItems|slice(0, linkLimit) %}
-          {% set linkUrl = link.url|default('')|trim %}
+          {% set linkUrl = link['links-url']|default(link.url|default(''))|trim %}
 
           {% if linkUrl starts with 'https://' or linkUrl starts with 'http://' %}
-            {% set linkTitle = link.title|default(linkUrl) %}
-            {% set linkDescription = link.description|default('') %}
-            {% set linkEmbedUrl = link.embed_url|default(linkUrl)|trim %}
+            {% set linkTitle = link['links-title']|default(link.title|default(linkUrl)) %}
+            {% set linkLabel = link['links-label']|default(link.label|default('')) %}
+            {% set linkDescription = link['links-description']|default(link.description|default('')) %}
+            {% set linkEmbedUrl = link['links-embed']|default(link.embed_url|default(linkUrl))|trim %}
+            {% set linkIcon = link['links-icon']|default(link.icon|default('bi-link-45deg'))|trim %}
             {% set linkIframeTitle = link.iframe_title|default(linkTitle) %}
 
             <div class="related-link-item">
-              <span class="related-link-title">{{ linkTitle }}</span>
+              <span class="related-link-title">
+                {% if linkIcon %}
+                  <i class="bi {{ linkIcon|e('html_attr') }}" aria-hidden="true"></i>
+                {% endif %}
+                <span>{{ linkTitle }}</span>
+              </span>
               <span class="related-link-actions">
                 <button
                   type="button"
@@ -31,7 +38,7 @@
                   data-related-link-iframe-url="{{ linkEmbedUrl|e('html_attr') }}"
                   data-related-link-browser-url="{{ linkUrl|e('html_attr') }}"
                   {% if linkDescription %}
-                    aria-label="{{ 'Open iframe for ' ~ linkTitle ~ ': ' ~ linkDescription }}"
+                    aria-label="{{ 'Open iframe for ' ~ linkTitle ~ (linkLabel ? ' (' ~ linkLabel ~ ')' : '') ~ ': ' ~ linkDescription }}"
                   {% endif %}
                 >
                   <i class="bi bi-window" aria-hidden="true"></i>

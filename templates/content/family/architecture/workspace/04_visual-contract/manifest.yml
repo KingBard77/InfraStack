@@ -1,0 +1,91 @@
+section: 04_visual-contract
+family: architecture
+status: active
+optional: false
+version: 1.0.0
+title: Architecture Visual Contract
+description: Architecture-specific visual and model contract for diagram stages, connector grammar, viewport controls, selectable objects, layout overrides, and JSON restore boundaries.
+
+owns:
+    - normalized architecture visual state
+    - diagram stage and viewport primitives
+    - selectable diagram cards and boundaries
+    - persistent connector paths and hit targets
+    - connector anchor and bend handles
+    - connector stroke sizing for base, active, selected, hit-target, anchor-handle, and bend-handle states
+    - rendered connector paths use shared connector classes before provider-specific classes
+    - connector arrowhead marker geometry matches the shared fixed 11x11 user-space marker contract
+    - zoom, fit, fullscreen, hide UI, Auto layout reset, and usage help
+    - soft before-generate preset preview blur with legible diagram opacity
+    - shared engine runtime for cursor, selection, canvas-overlay marquee selection, live marquee target highlighting, drag, resize, keyboard, undo, viewport, layout override, and connector override state
+    - multi-box highlight state persisted through highlighted_node_ids with highlighted_node_id compatibility
+    - pure model helper reference
+
+does_not_own:
+    - primary prompt input
+    - basic settings
+    - custom settings
+    - selected item inspector fields
+    - output toolbar actions
+    - table shell
+    - JSON restore shell
+    - provider service facts
+
+files:
+    required:
+        - README.md
+        - manifest.yml
+        - demo.html
+        - page.html.twig
+        - section.css
+        - engine-runtime.js
+        - section.js
+        - model-core.js
+
+namespace:
+    page: family.architecture.workspace.04_visual-contract
+    css: family.architecture.workspace.04_visual-contract
+    js: family.architecture.workspace.04_visual-contract
+
+model_contract:
+    inputs:
+        - prompt
+        - preset
+        - controls
+        - stage_objects
+        - connectors
+        - layout_overrides
+        - connector_overrides
+        - selected_object
+        - highlighted_node_ids
+    outputs:
+        - visual_model
+        - stage_summary
+        - rendered_diagram
+        - connector_summary
+        - export_payload
+        - restore_state
+
+application_rules:
+    - Use for every architecture-family visual workspace.
+    - Keep provider service names, generated node catalogues, icons, examples, and scoring copy final-tool native.
+    - Keep selected item editing controls in `04_selected-item`.
+    - Keep summary, toolbar, tables, and JSON restore shell in `_base` sections.
+    - Keep pure model helpers free of DOM, Twig, and browser event dependencies.
+    - Keep the stable `ResetLayout` DOM hook while displaying the reset action as `Auto layout`.
+    - Render cursor marquee selection as a stage-canvas overlay, not an SVG-owned rectangle.
+    - Persist multi-box highlight state with `highlighted_node_ids`.
+
+validation_rules:
+    - section files exist.
+    - page.html.twig uses architecture-neutral placeholders.
+    - section.css is scoped with `__TOOL_CLASS__`.
+    - "section.css keeps `__PREFIX__-stage-preview > svg` at `filter: blur(2px)` and `opacity: 0.88`."
+    - section.css keeps connector stroke widths consistent across base, active, selected, hit-target, and handle states.
+    - runtime custom.js renderers keep shared connector classes on generated connector paths.
+    - runtime custom.js marker definitions use fixed AWS-size arrowheads and do not use stroke-scaled marker units.
+    - engine-runtime.js parses as JavaScript.
+    - engine-runtime.js preserves highlighted_node_id compatibility and emits highlighted_node_ids for multi-box highlights.
+    - section.js registers architecture workspace metadata.
+    - model-core.js parses as JavaScript.
+    - demo.html includes demo title chrome and does not depend on final runtime files.

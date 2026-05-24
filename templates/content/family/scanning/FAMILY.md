@@ -6,11 +6,13 @@ This file is the source of truth for scanning-family baseline guidance.
 
 - `README.md`: family explanation and final package expectations.
 - `manifest.yml`: structured baseline metadata and validation rules.
-- `baseline/source/`: full copied Web Security Scanner source snapshot for traceability only.
+- `source/`: full copied Web Security Scanner source snapshot for traceability only. Do not audit this as active source.
 - `workspace/README.md`: workspace grammar.
 - `workspace/manifest.yml`: structured workspace section metadata.
 - `workspace/assets/bin/model-core.js`: reusable model-core source copied from the declared baseline tool.
-- `workspace/01_input-brief/` through `workspace/08_json-restore/`: reusable section sources.
+- `templates/content/family/_base/workspace/`: common shell, input, settings, summary, toolbar, table, and JSON restore section sources.
+- `workspace/04_visual-contract/`: optional scanning visual and model contract for posture rings, severity metrics, evidence cards, finding rows, coverage state, and scanner result tones.
+- `workspace/04_selected-item/`: optional selected finding or evidence inspector.
 - `templates/content/main/sections/content/10_references/`: shared source-backed citation and References section source when final content cites sources.
 
 ## Reference
@@ -29,6 +31,7 @@ Do not copy Web Security Scanner wording into unrelated scanners unless the targ
 
 - Target input starts the scan model.
 - Advanced scan options expose method, redirects, timeout, TLS validation, fallback behavior, client profile, and optional companion probes.
+- Visual result contracts normalize posture rings, severity metrics, evidence cards, finding rows, coverage state, and result tones when the scanner has reusable visual output.
 - Result output stays hidden on first refresh and appears only after the primary scan action or validated JSON restore.
 - Result summary uses a score/status card plus evidence metrics, chips, and final target details; the score card keeps the compact green circular `100 /100` ring rhythm.
 - Output toolbar contains Sort plus export/copy/import actions.
@@ -46,7 +49,7 @@ Do not copy Web Security Scanner wording into unrelated scanners unless the targ
 When a scanning tool is declared the baseline, copy its full stabilized runtime source into:
 
 ```text
-templates/content/family/scanning/baseline/source/
+templates/content/family/scanning/source/
 ```
 
 The current source tool is:
@@ -55,9 +58,11 @@ The current source tool is:
 templates/content/tools/security/scan-web-security/
 ```
 
-The full source snapshot is reference-only. Keep reusable scanning CSS, JavaScript, and markup behavior in the numbered workspace section folders, with model-core under `workspace/assets/bin/model-core.js` when needed.
+The full source snapshot is reference-only. Do not audit this as active source. Common workspace shape is composed from `_base/workspace` by `workspace/manifest.yml` `workspace_namespaces`. Do not recreate duplicate scanning copies of `_base` sections.
 
-Keep the workspace section bundle shape:
+Keep reusable scanning-specific CSS, JavaScript, markup behavior, and model-core sources in scanning-owned workspace files.
+
+Keep the scanning-owned workspace section bundle shape:
 
 ```text
 README.md
@@ -66,6 +71,8 @@ page.html.twig
 section.css
 section.js
 ```
+
+`workspace/04_visual-contract/` also carries `manifest.yml` and `model-core.js` because it defines a scanner-neutral visual model contract, not only a markup/CSS/JS fragment. Use it when a scanner needs a reusable visual result surface. Omit it for pure target-input and table scanners and record that omission as accepted divergence.
 
 Standalone `demo.html` files own demo chrome separately from extracted scanner section source. Include any icon stylesheet needed by the demo, render `demo-title` with `demo-title-icon` and `demo-title-text`, and use a scanning-family placeholder icon such as `bi bi-shield-check`.
 

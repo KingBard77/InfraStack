@@ -8,10 +8,11 @@ Baseline source: `templates/content/tools/cis/assess-ubuntu-2204-cis/`.
 
 - `README.md`: family explanation and final package expectations.
 - `manifest.yml`: structured baseline metadata and validation rules.
-- `baseline/source/`: full copied CIS assessment source snapshot for traceability only.
+- `source/`: full copied CIS assessment source snapshot for traceability only. Do not audit this as active source.
 - `workspace/README.md`: workspace grammar.
 - `workspace/manifest.yml`: structured workspace section metadata.
-- `workspace/01_input-brief/` through `workspace/08_json-restore/`: reusable section sources.
+- `templates/content/family/_base/workspace/`: common shell, input, settings, summary, toolbar, table, and JSON restore section sources.
+- `workspace/04_selected-item/`: reusable selected script, rule, finding, requirement, evidence, or source body review source.
 - `templates/content/main/sections/content/10_references/`: shared source-backed citation and References section source when final content cites sources.
 
 ## Reference
@@ -47,11 +48,11 @@ Reference snapshot:
 
 ```text
 source: templates/content/tools/cis/assess-ubuntu-2204-cis/
-snapshot: templates/content/family/assessment/baseline/source/
+snapshot: templates/content/family/assessment/source/
 workspace: templates/content/family/assessment/workspace/
 ```
 
-The full copied source snapshot is reference-only. Reusable assessment behavior lives in section-owned workspace folders.
+The full copied source snapshot is reference-only. Do not audit this as active source. Common workspace behavior is composed from `_base/workspace`; reusable assessment-specific behavior lives in assessment-owned workspace folders.
 
 The source tool does not ship `assets/bin/model-core.js`. Its runtime JavaScript embeds `assets/custom.json.twig` and calls a tool-local Symfony script-read endpoint. Record those dependencies in `manifest.yml` and adapt them deliberately for any final assessment tool.
 

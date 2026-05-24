@@ -42,7 +42,7 @@ Use it when you need to:
       <td>Disable services that are outside scope so unused cards do not contribute to the total.</td>
     </tr>
     <tr>
-      <td>Advanced assumptions</td>
+      <td>Custom assumptions</td>
       <td>Editable starter rates, free-tier toggles, regional uplift, and buffers.</td>
       <td>Override material rates when region, agreement, or known usage differs from the starter catalog.</td>
     </tr>
@@ -108,7 +108,7 @@ Each estimate starts with a label, preset, included services, usage quantities, 
 
 <h3 class="calculate-cost-cisco-technical-step-heading">2. Starter catalog and overrides</h3>
 
-The workspace includes a compact starter catalog for common Cisco commercial pricing inputs. These rates are intentionally visible in Advanced controls so they can be replaced when your region, enterprise agreement, discount model, or workload shape differs.
+The workspace includes a compact starter catalog for common Cisco commercial pricing inputs. These rates are intentionally visible in Custom controls so they can be replaced when your region, enterprise agreement, discount model, or workload shape differs.
 
 <h3 class="calculate-cost-cisco-technical-step-heading">3. Service drivers</h3>
 

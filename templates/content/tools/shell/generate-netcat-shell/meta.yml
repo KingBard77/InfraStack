@@ -3,9 +3,10 @@
 title: Netcat Command Generator
 author: Badrul Amin
 author_role: Infrastructure & DevOps Specialist
-author_image: "images/author/author-bg-black.png"
+author_image: "images/author/author-bg-white.png"
 date: "Apr. 3rd, 2026"
 comments: Interactive tool
+publication_status: ready
 category_label: Shell
 group: shell
 family: shell
@@ -18,8 +19,17 @@ intro: >-
 tags:
     - Shell
     - Netcat
-    - nc
-    - ncat
     - Networking
-    - TCP
-    - UDP
+related_links:
+    - links-title: Generate SSH Shell
+      links-label: InfraStack tool
+      links-description: Open the related InfraStack Generate SSH Shell workspace.
+      links-url: https://infrastack.my/tools/shell/generate-ssh-shell
+      links-embed: https://infrastack.my/embed/shell/generate-ssh-shell
+      links-icon: bi-terminal
+    - links-title: Netcat Command Generator
+      links-label: Simplified Tools
+      links-description: Open the embeddable Simplified Tools Netcat Command Generator workspace.
+      links-url: https://www.simplified.tools/generate_netcat_command
+      links-embed: https://www.simplified.tools/embed/generate_netcat_command?share=embed
+      links-icon: bi-hdd-network

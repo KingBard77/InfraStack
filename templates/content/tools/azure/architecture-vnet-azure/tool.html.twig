@@ -1,52 +1,73 @@
 {# tool.html.twig #}
+{# ns:start family._base.workspace.00_shell #}
 
 <div class="architecture-vnet-azure-tool">
   <div class="tool-box">
-    {# ns:start family.architecture.workspace.01_input-brief #}
-    <div class="tool-shell tool-prompt-shell">
-      <div class="tool-main-row">
-        <label for="architectureVnetAzurePrompt" class="tool-main-label">Architecture prompt</label>
-        <div class="tool-main-input-grid architecture-vnet-azure-main-input-grid">
-          <textarea
-            id="architectureVnetAzurePrompt"
-            class="form-control architecture-vnet-azure-prompt"
-            placeholder="Describe the Azure VNet layout, region, availability zones, ingress path, workload tier, data tier, and supporting services."
-          >Create an Azure VNet architecture in eastus with 2 availability zones. Use public subnets for an internet-facing Application Gateway, private app subnets for Virtual Machine Scale Sets, and private data subnets for Azure SQL. Add a single NAT gateway, Private Endpoints for Blob Storage and Key Vault, Azure Monitor, and NSG flow logs.</textarea>
+    {# ns:start family._base.workspace.01_input-brief #}
+    <div class="tool-shell tool-prompt-shell architecture-vnet-azure-input-card">
+      <div class="architecture-vnet-azure-input-brief" data-input-layout="stacked">
+        <div class="architecture-vnet-azure-input-row">
+          <div class="architecture-vnet-azure-input-label-wrap">
+            <label for="architectureVnetAzurePrompt" class="tool-main-label architecture-vnet-azure-input-label">Architecture prompt</label>
+            <span class="architecture-vnet-azure-helper-chip" title="Describe the architecture prompt boundary." aria-label="Describe the architecture prompt boundary.">i</span>
+          </div>
+          <div class="tool-main-input-grid architecture-vnet-azure-main-input-grid architecture-vnet-azure-input-stack">
+            <textarea
+              id="architectureVnetAzurePrompt"
+              class="form-control architecture-vnet-azure-prompt architecture-vnet-azure-input-control"
+              rows="7"
+              placeholder="Describe the Azure VNet layout, region, availability zones, ingress path, workload tier, data tier, and supporting services."
+            >Create an Azure VNet architecture in eastus with 2 availability zones. Use public subnets for an internet-facing Application Gateway, private app subnets for Virtual Machine Scale Sets, and private data subnets for Azure SQL. Add a single NAT gateway, Private Endpoints for Blob Storage and Key Vault, Azure Monitor, and NSG flow logs.</textarea>
+            <div class="architecture-vnet-azure-input-error d-none" id="architectureVnetAzureInputError" role="alert"></div>
+          </div>
+        </div>
 
+        <div class="architecture-vnet-azure-main-actions architecture-vnet-azure-input-actions">
+          <button
+            type="button"
+            class="tool-action-btn tool-action-btn-primary architecture-vnet-azure-action-btn architecture-vnet-azure-action-btn-primary"
+            id="architectureVnetAzureGenerate"
+          >
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span>Generate Diagram</span>
+          </button>
+          <button
+            type="button"
+            class="tool-action-btn tool-action-btn-secondary architecture-vnet-azure-action-btn architecture-vnet-azure-action-btn-secondary"
+            id="architectureVnetAzureReset"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            <span>Load Default</span>
+          </button>
+        </div>
+
+        <div class="architecture-vnet-azure-input-helper-card">
+          <span class="architecture-vnet-azure-input-hint">Use one brief prompt with region, AZ count, ingress, private tiers, and supporting Azure services. Presets below can prefill and instantly generate a working layout.</span>
+          <span class="architecture-vnet-azure-helper-chip architecture-vnet-azure-helper-chip-inline" title="Describe the architecture prompt boundary." aria-label="Describe the architecture prompt boundary.">i</span>
         </div>
       </div>
-
-      <p class="tool-control-hint architecture-vnet-azure-prompt-hint">
-        Use one brief prompt with region, AZ count, ingress, private tiers, and supporting Azure services. Presets below can prefill and instantly generate a working layout.
-      </p>
-
-      <div class="architecture-vnet-azure-main-actions">
-        <button type="button" class="tool-action-btn tool-action-btn-primary" id="architectureVnetAzureGenerate">
-          <i class="bi bi-stars" aria-hidden="true"></i>
-          <span>Generate Diagram</span>
-        </button>
-        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureVnetAzureReset">Load Default</button>
-      </div>
     </div>
-    {# ns:end family.architecture.workspace.01_input-brief #}
+    {# ns:end family._base.workspace.01_input-brief #}
 
     <div class="tool-error-state d-none" id="architectureVnetAzureErrorState"></div>
 
     <div class="architecture-vnet-azure-advanced-grid">
       <aside class="tool-shell tool-inspector-shell">
-        <div class="tool-shell-header">
-          <div>
-            <h2 class="tool-shell-title">Basic</h2>
-          </div>
-        </div>
 
         <div class="tool-shell-body">
-          {# ns:start family.architecture.workspace.02_basic-settings #}
-          <div class="tool-inspector-section architecture-vnet-azure-basic-preset-section">
+          {# ns:start family._base.workspace.02_basic-settings #}
+          <div class="tool-inspector-section architecture-vnet-azure-basic-preset-section architecture-vnet-azure-basic-card">
+
+            <div class="architecture-vnet-azure-example-card">
+              <span class="architecture-vnet-azure-example-label">Example architecture settings</span>
+              <strong class="architecture-vnet-azure-example-value">3-tier web, eastus, 2 zones</strong>
+              <span class="architecture-vnet-azure-example-helper">Region, zone count, and preset should change the generated model and exported JSON.</span>
+            </div>
+
             <div class="architecture-vnet-azure-basic-grid">
-              <div class="architecture-vnet-azure-control-stack">
-                <label class="tool-control-label" for="architectureVnetAzurePreset">Preset</label>
-                <select id="architectureVnetAzurePreset" class="form-select">
+              <div class="architecture-vnet-azure-control-stack architecture-vnet-azure-setting-card">
+                <label class="tool-control-label architecture-vnet-azure-setting-label" for="architectureVnetAzurePreset">Preset <span class="architecture-vnet-azure-helper-chip" title="Choose a starting preset that updates the visible controls and generated output." aria-label="Choose a starting preset that updates the visible controls and generated output.">i</span></label>
+                <select id="architectureVnetAzurePreset" class="form-select architecture-vnet-azure-native-select">
                   <option value="three-tier-web" selected>3-Tier Web</option>
                   <option value="ecs-fargate">Azure Container Apps</option>
                   <option value="eks-platform">Private AKS</option>
@@ -54,9 +75,9 @@
                 </select>
               </div>
 
-              <div class="architecture-vnet-azure-control-stack">
-                <label class="tool-control-label" for="architectureVnetAzureRegion">Region</label>
-                <select id="architectureVnetAzureRegion" class="form-select">
+              <div class="architecture-vnet-azure-control-stack architecture-vnet-azure-setting-card">
+                <label class="tool-control-label architecture-vnet-azure-setting-label" for="architectureVnetAzureRegion">Region <span class="architecture-vnet-azure-helper-chip" title="Choose the provider region used by the generated model and exported JSON." aria-label="Choose the provider region used by the generated model and exported JSON.">i</span></label>
+                <select id="architectureVnetAzureRegion" class="form-select architecture-vnet-azure-native-select">
                   <option value="eastus">eastus</option>
                   <option value="eastus2">eastus2</option>
                   <option value="centralus">centralus</option>
@@ -67,24 +88,24 @@
                 </select>
               </div>
 
-              <div class="architecture-vnet-azure-control-stack">
-                <label class="tool-control-label" for="architectureVnetAzureAzCount">Availability zones</label>
-                <select id="architectureVnetAzureAzCount" class="form-select">
+              <div class="architecture-vnet-azure-control-stack architecture-vnet-azure-setting-card">
+                <label class="tool-control-label architecture-vnet-azure-setting-label" for="architectureVnetAzureAzCount">Availability zones <span class="architecture-vnet-azure-helper-chip" title="Choose the zone count used by placement and resilience assumptions." aria-label="Choose the zone count used by placement and resilience assumptions.">i</span></label>
+                <select id="architectureVnetAzureAzCount" class="form-select architecture-vnet-azure-native-select">
                   <option value="1">1 AZ</option>
                   <option value="2" selected>2 AZ</option>
                   <option value="3">3 AZ</option>
                 </select>
               </div>
-              <p class="tool-control-hint" id="architectureVnetAzurePresetDescription">Public App Gateway, private VM scale sets, Azure SQL, single NAT.</p>
+              <p class="tool-control-hint architecture-vnet-azure-setting-hint" id="architectureVnetAzurePresetDescription">Public App Gateway, private VM scale sets, Azure SQL, single NAT.</p>
             </div>
           </div>
-          {# ns:end family.architecture.workspace.02_basic-settings #}
+          {# ns:end family._base.workspace.02_basic-settings #}
 
-          {# ns:start family.architecture.workspace.03_advanced-settings #}
-          <details class="architecture-vnet-azure-custom-panel">
+          {# ns:start family._base.workspace.03_custom-settings #}
+          <details class="architecture-vnet-azure-custom-panel" data-custom-layout="tabbed_two_column">
             <summary class="architecture-vnet-azure-custom-panel-summary">
               <span>Custom</span>
-              <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                <span class="architecture-vnet-azure-custom-arrow-slot" aria-hidden="true"></span>
             </summary>
 
             <div class="architecture-vnet-azure-custom-panel-body">
@@ -97,17 +118,46 @@
               <div class="tool-inspector-section architecture-vnet-azure-config-panel active" id="architectureVnetAzureNetworkConfigPanel" data-config-panel role="tabpanel" aria-labelledby="architectureVnetAzureNetworkConfigTab">
                 <div class="architecture-vnet-azure-config-grid">
                   <div class="architecture-vnet-azure-control-stack">
-                    <label class="tool-control-label" for="architectureVnetAzureCidr">VNet CIDR</label>
-                    <input type="text" id="architectureVnetAzureCidr" class="form-control" value="10.0.0.0/16">
+                    <label class="tool-control-label" for="architectureVnetAzureCidr">VNet CIDR <span class="architecture-vnet-azure-helper-chip architecture-vnet-azure-custom-helper-chip" title="Tune vnet cidr before regenerating the diagram." aria-label="Tune vnet cidr before regenerating the diagram.">i</span></label>
+                    <input type="text" id="architectureVnetAzureCidr" class="form-control" value="10.0.0.0/16" placeholder="10.0.0.0/16">
                   </div>
 
                   <div class="architecture-vnet-azure-control-stack">
-                    <label class="tool-control-label" for="architectureVnetAzureNatMode">NAT mode</label>
-                    <select id="architectureVnetAzureNatMode" class="form-select">
-                      <option value="none">No NAT</option>
-                      <option value="single" selected>Single NAT</option>
-                      <option value="per-az">One per AZ</option>
-                    </select>
+                    <label class="tool-control-label" for="architectureVnetAzureNatMode">NAT mode <span class="architecture-vnet-azure-helper-chip architecture-vnet-azure-custom-helper-chip" title="Tune nat mode before regenerating the diagram." aria-label="Tune nat mode before regenerating the diagram.">i</span></label>
+                    <input type="hidden" id="architectureVnetAzureNatMode" value="single">
+
+                    <details class="architecture-vnet-azure-custom-dropdown" data-custom-dropdown-for="architectureVnetAzureNatMode">
+                      <summary class="architecture-vnet-azure-custom-dropdown-summary">
+                        <span data-custom-dropdown-label>Single NAT</span>
+                          <span class="architecture-vnet-azure-custom-arrow-slot" aria-hidden="true"></span>
+                      </summary>
+
+                      <div class="architecture-vnet-azure-custom-dropdown-menu" role="listbox" aria-label="Custom option">
+                        <button
+                          type="button"
+                          class="architecture-vnet-azure-custom-dropdown-option"
+                          data-custom-dropdown-value="none"
+                          role="option"
+                          aria-selected="false"
+                        >No NAT</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vnet-azure-custom-dropdown-option active"
+                          data-custom-dropdown-value="single"
+                          role="option"
+                          aria-selected="true"
+                        >Single NAT</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vnet-azure-custom-dropdown-option"
+                          data-custom-dropdown-value="per-az"
+                          role="option"
+                          aria-selected="false"
+                        >One per AZ</button>
+                      </div>
+                    </details>
                   </div>
                 </div>
               </div>
@@ -115,23 +165,95 @@
               <div class="tool-inspector-section architecture-vnet-azure-config-panel" id="architectureVnetAzureWorkloadConfigPanel" data-config-panel role="tabpanel" aria-labelledby="architectureVnetAzureWorkloadConfigTab" hidden>
                 <div class="architecture-vnet-azure-config-grid">
                   <div class="architecture-vnet-azure-control-stack">
-                    <label class="tool-control-label" for="architectureVnetAzureAppTier">App tier</label>
-                    <select id="architectureVnetAzureAppTier" class="form-select">
-                      <option value="ec2">Virtual Machine Scale Sets</option>
-                      <option value="ecs">Azure Container Apps</option>
-                      <option value="eks">AKS</option>
-                      <option value="lambda">Azure Functions in VNet</option>
-                    </select>
+                    <label class="tool-control-label" for="architectureVnetAzureAppTier">App tier <span class="architecture-vnet-azure-helper-chip architecture-vnet-azure-custom-helper-chip" title="Tune app tier before regenerating the diagram." aria-label="Tune app tier before regenerating the diagram.">i</span></label>
+                    <input type="hidden" id="architectureVnetAzureAppTier" value="ec2">
+
+                    <details class="architecture-vnet-azure-custom-dropdown" data-custom-dropdown-for="architectureVnetAzureAppTier">
+                      <summary class="architecture-vnet-azure-custom-dropdown-summary">
+                        <span data-custom-dropdown-label>Virtual Machine Scale Sets</span>
+                          <span class="architecture-vnet-azure-custom-arrow-slot" aria-hidden="true"></span>
+                      </summary>
+
+                      <div class="architecture-vnet-azure-custom-dropdown-menu" role="listbox" aria-label="Custom option">
+                        <button
+                          type="button"
+                          class="architecture-vnet-azure-custom-dropdown-option active"
+                          data-custom-dropdown-value="ec2"
+                          role="option"
+                          aria-selected="true"
+                        >Virtual Machine Scale Sets</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vnet-azure-custom-dropdown-option"
+                          data-custom-dropdown-value="ecs"
+                          role="option"
+                          aria-selected="false"
+                        >Azure Container Apps</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vnet-azure-custom-dropdown-option"
+                          data-custom-dropdown-value="eks"
+                          role="option"
+                          aria-selected="false"
+                        >AKS</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vnet-azure-custom-dropdown-option"
+                          data-custom-dropdown-value="lambda"
+                          role="option"
+                          aria-selected="false"
+                        >Azure Functions in VNet</button>
+                      </div>
+                    </details>
                   </div>
 
                   <div class="architecture-vnet-azure-control-stack">
-                    <label class="tool-control-label" for="architectureVnetAzureDatabase">Database tier</label>
-                    <select id="architectureVnetAzureDatabase" class="form-select">
-                      <option value="none">No database tier</option>
-                      <option value="rds" selected>Azure SQL</option>
-                      <option value="aurora">Azure Database for PostgreSQL</option>
-                      <option value="dynamodb">Azure Cosmos DB</option>
-                    </select>
+                    <label class="tool-control-label" for="architectureVnetAzureDatabase">Database tier <span class="architecture-vnet-azure-helper-chip architecture-vnet-azure-custom-helper-chip" title="Tune database tier before regenerating the diagram." aria-label="Tune database tier before regenerating the diagram.">i</span></label>
+                    <input type="hidden" id="architectureVnetAzureDatabase" value="rds">
+
+                    <details class="architecture-vnet-azure-custom-dropdown" data-custom-dropdown-for="architectureVnetAzureDatabase">
+                      <summary class="architecture-vnet-azure-custom-dropdown-summary">
+                        <span data-custom-dropdown-label>Azure SQL</span>
+                          <span class="architecture-vnet-azure-custom-arrow-slot" aria-hidden="true"></span>
+                      </summary>
+
+                      <div class="architecture-vnet-azure-custom-dropdown-menu" role="listbox" aria-label="Custom option">
+                        <button
+                          type="button"
+                          class="architecture-vnet-azure-custom-dropdown-option"
+                          data-custom-dropdown-value="none"
+                          role="option"
+                          aria-selected="false"
+                        >No database tier</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vnet-azure-custom-dropdown-option active"
+                          data-custom-dropdown-value="rds"
+                          role="option"
+                          aria-selected="true"
+                        >Azure SQL</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vnet-azure-custom-dropdown-option"
+                          data-custom-dropdown-value="aurora"
+                          role="option"
+                          aria-selected="false"
+                        >Azure Database for PostgreSQL</button>
+
+                        <button
+                          type="button"
+                          class="architecture-vnet-azure-custom-dropdown-option"
+                          data-custom-dropdown-value="dynamodb"
+                          role="option"
+                          aria-selected="false"
+                        >Azure Cosmos DB</button>
+                      </div>
+                    </details>
                   </div>
                 </div>
               </div>
@@ -197,15 +319,16 @@
 
             </div>
           </details>
-          {# ns:end family.architecture.workspace.03_advanced-settings #}
+          {# ns:end family._base.workspace.03_custom-settings #}
 
           {# ns:start family.architecture.workspace.04_selected-item #}
           <div class="tool-inspector-section architecture-vnet-azure-selected-section" id="architectureVnetAzureSelectedShell">
             <h3 class="architecture-vnet-azure-section-title">Selected item</h3>
 
-            <p class="architecture-vnet-azure-selected-empty architecture-vnet-azure-selected-empty-chips" id="architectureVnetAzureSelectedEmpty" aria-label="Select a draggable box in the stage to move, resize, or highlight it. Arrow keys move the selected box; Shift moves faster; Alt + arrow keys resize; Cmd/Ctrl + Z undoes the last stage edit.">
+            <p class="architecture-vnet-azure-selected-empty architecture-vnet-azure-selected-empty-chips" id="architectureVnetAzureSelectedEmpty" aria-label="Select a draggable box in the stage to move, resize, or highlight it. Select a connector line to adjust its arrow handles. Arrow keys move the selected box; Shift moves faster; Alt + arrow keys resize; Cmd/Ctrl + Z undoes the last stage edit.">
               <span class="architecture-vnet-azure-selected-empty-copy">
                 <span class="architecture-vnet-azure-selected-hint-chip architecture-vnet-azure-selected-hint-chip-select"><i class="bi bi-cursor" aria-hidden="true"></i>Select a draggable box</span>
+                <span class="architecture-vnet-azure-selected-hint-chip architecture-vnet-azure-selected-hint-chip-action"><i class="bi bi-bezier2" aria-hidden="true"></i>Select a line to adjust arrows</span>
                 <span class="architecture-vnet-azure-selected-hint-chip architecture-vnet-azure-selected-hint-chip-action"><i class="bi bi-arrows-move" aria-hidden="true"></i>Move, resize, or highlight</span>
                 <span class="architecture-vnet-azure-selected-hint-chip architecture-vnet-azure-selected-hint-chip-keyboard"><i class="bi bi-arrow-up-right-square" aria-hidden="true"></i>Arrow keys move selected box</span>
                 <span class="architecture-vnet-azure-selected-hint-chip architecture-vnet-azure-selected-hint-chip-keyboard"><i class="bi bi-shift" aria-hidden="true"></i>Shift moves faster</span>
@@ -258,7 +381,7 @@
     </div>
 
     <section class="tool-shell tool-stage-shell" id="architectureVnetAzureStageShell" data-section="diagram-buttons" data-root-selector=".architecture-vnet-azure-tool">
-      {# ns:start family.architecture.workspace.05_result-text #}
+      {# ns:start family.architecture.workspace.04_visual-contract #}
       <div class="tool-shell-header architecture-vnet-azure-stage-header" data-section="title" data-root-selector=".architecture-vnet-azure-tool">
         <div class="architecture-vnet-azure-stage-heading">
           <h2 class="tool-shell-title" id="architectureVnetAzureStageTitle">Azure VNet Architecture</h2>
@@ -268,9 +391,9 @@
         </div>
         <div class="architecture-vnet-azure-stage-meta" id="architectureVnetAzureStageMeta"></div>
       </div>
-      {# ns:end family.architecture.workspace.05_result-text #}
+      {# ns:end family.architecture.workspace.04_visual-contract #}
 
-      {# ns:start family.architecture.workspace.06_result-diagram #}
+      {# ns:start family.architecture.workspace.04_visual-contract #}
       <div class="tool-stage-toolbar">
         <div class="architecture-vnet-azure-stage-toolbar-actions">
           <div class="architecture-vnet-azure-zoom-control" id="architectureVnetAzureZoomControl">
@@ -302,7 +425,7 @@
           <button type="button" class="architecture-vnet-azure-icon-btn" id="architectureVnetAzureFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
             <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
           </button>
-          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-vnet-azure-stage-toolbar-btn" id="architectureVnetAzureResetLayout">Reset layout</button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-vnet-azure-stage-toolbar-btn" id="architectureVnetAzureResetLayout" aria-label="Auto arrange layout" title="Auto arrange layout">Auto layout</button>
         </div>
       </div>
 
@@ -400,7 +523,7 @@
           </div>
         </div>
       </div>
-      {# ns:end family.architecture.workspace.06_result-diagram #}
+      {# ns:end family.architecture.workspace.04_visual-contract #}
     </section>
 
     <section class="tool-shell tool-output-shell">
@@ -408,19 +531,61 @@
 
       <div class="architecture-vnet-azure-output-content d-none" id="architectureVnetAzureOutputContent">
         <div class="architecture-vnet-azure-output-shell">
-          {# ns:start family.architecture.workspace.07_score-card #}
+          {# ns:start family._base.workspace.05_result-summary #}
           <div class="architecture-vnet-azure-output-summary">
-            <div class="architecture-vnet-azure-output-status-card" aria-live="polite">
-              <div class="architecture-vnet-azure-score-card" id="architectureVnetAzureOutputStatus">
-                <div class="architecture-vnet-azure-score-kicker">Architecture Score</div>
-                <div class="architecture-vnet-azure-score-value">Ready</div>
-                <div class="architecture-vnet-azure-score-summary">Generate a diagram to score the current VNet baseline.</div>
+            <div class="architecture-vnet-azure-output-status-card" data-section="result-summary" data-root-selector=".architecture-vnet-azure-tool" aria-live="polite">
+              <div class="architecture-vnet-azure-score-card architecture-vnet-azure-result-summary" id="architectureVnetAzureOutputStatus" data-result-tone="ready" data-result-layout="architecture_score">
+                <header class="architecture-vnet-azure-result-header" aria-label="Result summary header">
+                  <div class="architecture-vnet-azure-result-header-main">
+                    <span class="architecture-vnet-azure-result-header-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span>
+                    <div class="architecture-vnet-azure-result-header-copy">
+                      <h2 class="architecture-vnet-azure-result-header-title">Result Summary</h2>
+                      <p>Overview of the current architecture result and key metrics.</p>
+                    </div>
+                  </div>
+                  <div class="architecture-vnet-azure-result-header-meta" aria-label="Result summary status">
+                    <span class="architecture-vnet-azure-result-header-chip architecture-vnet-azure-result-chip architecture-vnet-azure-result-chip-ready"><span class="architecture-vnet-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span>
+                    <span class="architecture-vnet-azure-result-header-chip architecture-vnet-azure-result-chip architecture-vnet-azure-result-chip-updated"><span class="architecture-vnet-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>Ready</span></span>
+                  </div>
+                </header>
+                <div class="architecture-vnet-azure-result-hero-grid" aria-live="polite">
+                  <article class="architecture-vnet-azure-result-card architecture-vnet-azure-result-card-primary" data-result-visual="ring" aria-label="Primary result">
+                    <div class="architecture-vnet-azure-result-primary-heading"><div class="architecture-vnet-azure-result-kicker">Primary Result</div></div>
+                    <div class="architecture-vnet-azure-result-primary-visual" id="architectureVnetAzureResultVisual" aria-label="Primary result visual">
+                      <div class="architecture-vnet-azure-result-ring" style="--architecture-vnet-azure-result-progress: 0deg; --progress-angle: 0deg; --architecture-vnet-azure-result-value-chars: 5;">
+                        <div class="architecture-vnet-azure-result-ring-center"><strong class="architecture-vnet-azure-result-ring-value">Ready</strong><span class="architecture-vnet-azure-result-ring-unit">/100</span></div>
+                      </div>
+                    </div>
+                    <div class="architecture-vnet-azure-result-visual-copy"><h3 class="architecture-vnet-azure-result-title architecture-vnet-azure-result-title-center">Visible result value</h3><p class="architecture-vnet-azure-result-copy architecture-vnet-azure-result-copy-center">Generate a diagram to review the current architecture outcome.</p></div>
+                    <span class="architecture-vnet-azure-result-card-divider" aria-hidden="true"></span>
+                    <div class="architecture-vnet-azure-result-chip-row architecture-vnet-azure-result-chip-row-center" aria-label="Primary result outcome"><span class="architecture-vnet-azure-result-chip architecture-vnet-azure-result-chip-outcome architecture-vnet-azure-result-chip-ready"><span class="architecture-vnet-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>Model ready</span></span></div>
+                  </article>
+                  <article class="architecture-vnet-azure-result-card architecture-vnet-azure-result-card-summary" aria-label="Result summary">
+                    <div class="architecture-vnet-azure-result-summary-intro">
+                      <span class="architecture-vnet-azure-result-card-icon architecture-vnet-azure-result-card-icon-summary" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>
+                      <div class="architecture-vnet-azure-result-summary-copy"><div class="architecture-vnet-azure-result-kicker">Descriptive Summary</div><h3 class="architecture-vnet-azure-result-title">Filtered output set</h3><p class="architecture-vnet-azure-result-copy">The summary, table, JSON, and exports should all derive from the current normalized state.</p></div>
+                    </div>
+                    <span class="architecture-vnet-azure-result-card-divider" aria-hidden="true"></span>
+                    <div class="architecture-vnet-azure-result-chip-grid" aria-label="Result summary state">
+                      <span class="architecture-vnet-azure-result-chip architecture-vnet-azure-result-chip-ready"><span class="architecture-vnet-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>Model source</span></span>
+                      <span class="architecture-vnet-azure-result-chip architecture-vnet-azure-result-chip-baseline"><span class="architecture-vnet-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span>Architecture family</span></span>
+                      <span class="architecture-vnet-azure-result-chip architecture-vnet-azure-result-chip-baseline"><span class="architecture-vnet-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-folder2-open"></i></span><span>Result summary</span></span>
+                      <span class="architecture-vnet-azure-result-chip architecture-vnet-azure-result-chip-warning"><span class="architecture-vnet-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-filter"></i></span><span>Generated state</span></span>
+                    </div>
+                  </article>
+                </div>
+                <div class="architecture-vnet-azure-result-metric-grid" aria-label="Result metrics">
+                  <section class="architecture-vnet-azure-result-metric-card architecture-vnet-azure-result-metric-success"><span class="architecture-vnet-azure-result-metric-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span class="architecture-vnet-azure-result-metric-label">Model</span><strong class="architecture-vnet-azure-result-metric-value">Generated</strong><span class="architecture-vnet-azure-result-metric-copy">Current architecture model state.</span><span class="architecture-vnet-azure-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-vnet-azure-result-metric-card architecture-vnet-azure-result-metric-info"><span class="architecture-vnet-azure-result-metric-icon" aria-hidden="true"><i class="bi bi-grid-3x3-gap"></i></span><span class="architecture-vnet-azure-result-metric-label">Inventory</span><strong class="architecture-vnet-azure-result-metric-value">3</strong><span class="architecture-vnet-azure-result-metric-copy">Modeled items in the generated inventory.</span><span class="architecture-vnet-azure-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-vnet-azure-result-metric-card architecture-vnet-azure-result-metric-accent-tone"><span class="architecture-vnet-azure-result-metric-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span class="architecture-vnet-azure-result-metric-label">Services</span><strong class="architecture-vnet-azure-result-metric-value">3</strong><span class="architecture-vnet-azure-result-metric-copy">Generated service and dependency groups.</span><span class="architecture-vnet-azure-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-vnet-azure-result-metric-card architecture-vnet-azure-result-metric-warning"><span class="architecture-vnet-azure-result-metric-icon" aria-hidden="true"><i class="bi bi-database"></i></span><span class="architecture-vnet-azure-result-metric-label">Risk</span><strong class="architecture-vnet-azure-result-metric-value">24</strong><span class="architecture-vnet-azure-result-metric-copy">Advisory risk signal for review.</span><span class="architecture-vnet-azure-result-metric-accent" aria-hidden="true"></span></section>
+                </div>
               </div>
             </div>
           </div>
-          {# ns:end family.architecture.workspace.07_score-card #}
+          {# ns:end family._base.workspace.05_result-summary #}
 
-          {# ns:start family.architecture.workspace.08_sort-card #}
+          {# ns:start family._base.workspace.06_output-toolbar #}
           <div class="architecture-vnet-azure-toolbar-shell">
             <div class="architecture-vnet-azure-toolbar tool-output-toolbar">
               <div class="architecture-vnet-azure-toolbar-main">
@@ -469,9 +634,9 @@
               </div>
             </div>
           </div>
-          {# ns:end family.architecture.workspace.08_sort-card #}
+          {# ns:end family._base.workspace.06_output-toolbar #}
 
-          {# ns:start family.architecture.workspace.09_result-table #}
+          {# ns:start family._base.workspace.07_table-output #}
           <div class="architecture-vnet-azure-tabs-shell">
             <div class="tool-tabs" role="tablist" aria-label="Azure VNet output views">
               <button type="button" class="tool-tab-btn architecture-vnet-azure-tab-btn active" id="architectureVnetAzureInventoryTab" data-tab-target="architectureVnetAzureInventoryPanel" role="tab" aria-controls="architectureVnetAzureInventoryPanel" aria-selected="true" tabindex="0">
@@ -564,17 +729,29 @@
             </div>
 
             <div class="tool-tab-panel architecture-vnet-azure-tab-panel" id="architectureVnetAzureJsonPanel" role="tabpanel" aria-labelledby="architectureVnetAzureJsonTab" hidden>
-              <div class="tool-json-shell">
-                <div class="architecture-vnet-azure-json-header">JSON Output</div>
-                <pre class="architecture-vnet-azure-json-code" id="architectureVnetAzureJsonOutput"></pre>
-              </div>
+                          {# ns:start family._base.workspace.08_json-restore #}
+                          <div class="architecture-vnet-azure-json-restore-shell" id="architectureVnetAzureJsonRestoreShell">
+              <section class="architecture-vnet-azure-json-card tool-json-panel" aria-label="Architecture JSON model and restore state">
+                <div class="architecture-vnet-azure-json-head tool-json-head">
+                  <div class="architecture-vnet-azure-json-title-wrap">
+                    <span class="architecture-vnet-azure-json-title tool-json-title">JSON Output</span>
+                    <span class="architecture-vnet-azure-json-helper">Exported model state should include diagram components, layout edits, selected items, and output data.</span>
+                  </div>
+                  <span class="architecture-vnet-azure-json-status is-hidden" id="architectureVnetAzureJsonRestoreStatus" role="status" aria-live="polite"></span>
+                </div>
+                <div class="architecture-vnet-azure-json-empty is-hidden" id="architectureVnetAzureJsonRestoreEmpty">Generate a diagram before exporting architecture JSON.</div>
+                <pre class="architecture-vnet-azure-json-output tool-json-output"><code id="architectureVnetAzureJsonOutput"></code></pre>
+              </section>
             </div>
+                          {# ns:end family._base.workspace.08_json-restore #}
           </div>
-          {# ns:end family.architecture.workspace.09_result-table #}
+          {# ns:end family._base.workspace.07_table-output #}
         </div>
+      </div>
       </div>
     </section>
 
-    <input type="file" id="architectureVnetAzureImportJson" class="d-none" accept="application/json">
+    <input type="file" id="architectureVnetAzureImportJson" class="architecture-vnet-azure-import-input d-none" accept="application/json">
   </div>
 </div>
+{# ns:end family._base.workspace.00_shell #}

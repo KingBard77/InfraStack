@@ -1,7 +1,7 @@
 family: shell
-version: 1.0.0
+version: 1.1.0
 status: active
-description: Baseline template for InfraStack browser-first shell and command-generation tools.
+description: Baseline template for InfraStack browser-first shell and command-generation tools, composed from shared `_base` workspace sections plus shell-owned generated command result text.
 baseline_snapshot: "2026-05-18"
 agent_map: templates/content/family/shell/FAMILY.md
 
@@ -22,17 +22,17 @@ reference_tool:
 
 runtime_baseline:
     source_tool: templates/content/tools/shell/generate-netcat-shell/
-    source_snapshot: templates/content/family/shell/baseline/source/
+    source_snapshot: templates/content/family/shell/source/
     source_of_truth: templates/content/family/shell/workspace/
-    workspace_sections: templates/content/family/shell/workspace/
+    workspace_sections: composed from templates/content/family/_base/workspace/ and templates/content/family/shell/workspace/
     model_core: templates/content/family/shell/workspace/assets/bin/model-core.js
-    copy_mode: section_owned
-    css_js_mode: section_owned_extracted
+    copy_mode: base_plus_family_contract
+    css_js_mode: base_plus_family_extracted
     root_runtime_snapshots: false
     source_marker_mode: baseline_snapshot_marker_anchored
     source_markers:
         syntax: "source:start/source:end family.shell.workspace.<section>"
-        path: templates/content/family/shell/baseline/source/
+        path: templates/content/family/shell/source/
         files:
             - tool.html.twig
             - custom.css
@@ -51,7 +51,7 @@ runtime_baseline:
         custom_css: 1d75a1962974a92c60dbf5dc89ef4d5931ccec00c8d053d307188988982fe000
         custom_js: 0b2bc9ed0b725ae1eb8dd10dbb466a165ff6597ac08e2819ce736d2b787b7571
         model_core: 5c4e56b1f1585e9c6b26ebde6685f1dcedeb2be998a08d5fa06ab6520ced9427
-    rule: Keep the full copied shell source under baseline/source/ as a reference-only snapshot. Use workspace/ as the family source of truth for new tools and reapplication. Keep shell workspace CSS and JavaScript fully extracted into the seven section-owned section.css and section.js files. Do not create root workspace/custom.css or workspace/custom.js snapshots.
+    rule: Keep the full copied shell source under source/ as a reference-only snapshot. Do not audit this as active source. Use `_base/workspace` for common workspace shape and shell workspace only for generated command result text, optional command visual contract, and reusable command model helpers. Do not create root workspace/custom.css or workspace/custom.js snapshots.
 
 applies_to:
     - command generators
@@ -80,13 +80,16 @@ required_sections:
         - 09_example-commands
         - 10_references
     workspace:
-        - 01_input-target
-        - 02_basic-setting
-        - 03_advanced-setting
+        - _base.00_shell
+        - _base.01_input-brief
+        - _base.02_basic-settings
+        - _base.03_custom-settings
+        - 04_visual-contract
         - 04_result-text
-        - 05_score-card
-        - 06_sort-card
-        - 07_table
+        - _base.05_result-summary
+        - _base.06_output-toolbar
+        - _base.07_table-output
+        - _base.08_json-restore
 
 workspace_section_file_contract:
     required_per_section:
@@ -96,6 +99,9 @@ workspace_section_file_contract:
         - section.css
         - section.js
     role: Match the architecture family section bundle shape so each shell workspace section has documentation, isolated demo markup, reusable Twig, scoped CSS, and scoped JavaScript.
+    visual_contract_additional_files:
+        - manifest.yml
+        - model-core.js
 
 required_output_files:
     - card.yml
@@ -119,13 +125,16 @@ required_first_line_markers:
     tool.html.twig: "{# tool.html.twig #}"
 
 workspace_flow:
-    - input_target
-    - basic_setting
-    - advanced_setting
+    - base_shell
+    - input_brief
+    - basic_settings
+    - custom_settings
+    - visual_contract_when_needed
     - result_text
-    - score_card
-    - sort_card
-    - table_warnings_json_restore
+    - result_summary
+    - output_toolbar
+    - table_output
+    - json_restore
 
 baseline_standard:
     generated_command:
@@ -168,18 +177,21 @@ generation_rules:
     - Generate the final runtime package under templates/content/tools/<category>/<tool-slug>/.
     - Do not use the family directory as the final runtime package.
     - Do not omit tool-local files because the family source exists.
-    - Keep full copied shell source under baseline/source/ as a reference-only snapshot when refreshing this baseline.
-    - Use source:start/source:end family.shell.workspace.<section> markers in the baseline/source snapshot before regenerating shell section files.
-    - Extract only marked ranges from tool.html.twig, custom.css, and custom.js, then replace exact concrete identifiers with __TOOL_CLASS__, __PREFIX__, and __DOM_PREFIX__ placeholders without corrupting longer prefix classes such as toolbar.
-    - Keep reusable shell workspace behavior in section-owned page.html.twig, section.css, section.js, and demo.html files.
-    - Reapplying this family to existing shell runtime packages requires structural, visual, and runtime parity with the family workspace source, not marker coverage.
-    - Apply all seven shell workspace sections to every shell runtime package in scope, including generate-netcat-shell when named.
+    - Keep full copied shell source under source/ as a reference-only snapshot when refreshing this baseline. Do not audit this as active source.
+    - Compose final tools from the shell workspace `workspace_namespaces` list.
+    - Use `_base/workspace` for common shell, input, settings, summary, toolbar, table, and JSON restore shape.
+    - Keep shell-owned reusable behavior in 04_result-text, optional 04_visual-contract, workspace/assets/bin/model-core.js, and final tool model logic.
+    - Use workspace/04_visual-contract for shell tools that need reusable command visual state beyond plain inputs and generated command text.
+    - Omit 04_visual-contract for pure form-and-command-output tools only when the omission is recorded as accepted divergence.
+    - Keep generated command source of truth in 04_result-text or final tool model logic; do not make 04_visual-contract the command generator.
+    - Preserve generated command result-text behavior when `_base` result summary does not cover command preview, command copy, or empty command output behavior.
+    - Reapplying this family to existing shell runtime packages requires structural, visual, and runtime parity with the composed `_base` and shell-owned family workspace source, not marker coverage.
     - Preserve only command-native labels, operands, option logic, warning rules, stable DOM IDs needed by existing behavior, and exported JSON schema compatibility.
     - Record every intentional divergence from the family source in the task record and closeout.
-    - Keep shell workspace sections scoped as 01_input-target, 02_basic-setting, 03_advanced-setting, 04_result-text, 05_score-card, 06_sort-card, and 07_table.
+    - Keep shell-owned workspace sections scoped as 04_result-text and optional 04_visual-contract.
     - Keep result before and after states stacked as two rows in one column in affected family demos.
-    - Keep section.css extracted to the relevant custom.css selectors plus the repeated minimal shell demo foundation, matching the architecture family pattern.
-    - Keep section.js extracted to source ownership maps; do not embed the full custom.js runtime in section.js strings.
+    - Keep shell-owned section.css extracted to the relevant custom.css selectors plus the repeated minimal demo foundation, matching the architecture family pattern.
+    - Keep shell-owned section.js extracted to source ownership maps; do not embed the full custom.js runtime in section.js strings.
     - Keep workspace/assets/bin/model-core.js as the reusable model-core source when the source tool ships one.
     - Use the shell workspace source as the current working baseline for shell workspace grammar.
     - Do not copy netcat-specific flags or wording into unrelated shell tools.
@@ -204,14 +216,16 @@ validation_rules:
     - manifest.yml exists.
     - workspace/README.md exists.
     - workspace/manifest.yml exists.
-    - Shell workspace section folders exist under templates/content/family/shell/workspace/.
-    - Each shell workspace section folder contains README.md, demo.html, page.html.twig, section.css, and section.js.
-    - baseline/source/tool.html.twig, baseline/source/custom.css, baseline/source/custom.js, and baseline/source/assets/bin/model-core.js exist.
+    - Shell workspace manifest declares `workspace_namespaces`.
+    - Shell-owned workspace section folders exist under templates/content/family/shell/workspace/.
+    - Each shell-owned workspace section folder contains README.md, demo.html, page.html.twig, section.css, and section.js.
+    - workspace/04_visual-contract contains manifest.yml and model-core.js.
+    - source/tool.html.twig, source/custom.css, source/custom.js, and source/assets/bin/model-core.js exist.
     - root workspace/custom.css and workspace/custom.js do not exist.
     - workspace/assets/bin/model-core.js exists and matches the declared reusable model-core hash.
     - Shared main content section source exists under templates/content/main/sections/content/.
     - Applied shared content sections are validated in the final tool package for namespace markers, unresolved placeholders, required custom.css selectors, and helper hooks when used.
-    - Applied shell workspace sections are validated in the final tool package for structural, visual, and runtime parity with the family source; namespace markers alone are insufficient.
+    - Applied shell workspace sections are validated in the final tool package for structural, visual, and runtime parity with the composed family source; namespace markers alone are insufficient.
     - Citation links and References rows are paired when 10_references is used.
     - No duplicated shell sections/ directory exists under templates/content/family/shell/.
     - Required final output files are created in the final tool package.

@@ -3,9 +3,10 @@
 title: GCP Cost Calculator
 author: Badrul Amin
 author_role: Infrastructure & DevOps Specialist
-author_image: "images/author/author-bg-black.png"
+author_image: "images/author/author-bg-white.png"
 date: "May. 11th, 2026"
 comments: Interactive tool
+publication_status: ready
 category_label: GCP
 group: cloud
 family: calculate
@@ -16,9 +17,19 @@ intro: >-
     Tune purchase models, quantities, buffers, data transfer, and service-level cost drivers before sharing a planning number.
     Review visible assumptions and export CSV or JSON snapshots for team review, archive notes, or later estimate comparison.
 tags:
-    - Google Cloud
-    - Pricing
-    - FinOps
-    - Compute Engine
-    - Cloud Functions
+    - GCP
     - Cost
+    - FinOps
+related_links:
+    - links-title: GCP VPC Topology
+      links-label: InfraStack tool
+      links-description: Open the related InfraStack GCP VPC Topology workspace.
+      links-url: https://infrastack.my/tools/gcp/architecture-vpc-gcp
+      links-embed: https://infrastack.my/embed/gcp/architecture-vpc-gcp
+      links-icon: bi-diagram-3
+    - links-title: Project Budget Burn Calculator
+      links-label: Simplified Tools
+      links-description: Open the embeddable Simplified Tools Project Budget Burn Calculator workspace.
+      links-url: https://www.simplified.tools/calculate_project_budget_burn
+      links-embed: https://www.simplified.tools/embed/calculate_project_budget_burn?share=embed
+      links-icon: bi-calculator

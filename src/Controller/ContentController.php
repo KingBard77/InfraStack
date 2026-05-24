@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\SidebarService;
+use App\Service\ToolCatalogService;
 use League\CommonMark\CommonMarkConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,13 +19,15 @@ class ContentController extends AbstractController
         string $category,
         string $slug,
         Request $request,
-        SidebarService $sidebarService
+        SidebarService $sidebarService,
+        ToolCatalogService $toolCatalogService
     ): Response {
         return $this->renderTool(
             $category,
             $slug,
             $request,
             $sidebarService,
+            $toolCatalogService,
             (string) $request->query->get('share') === 'embed'
         );
     }
@@ -34,9 +37,17 @@ class ContentController extends AbstractController
         string $category,
         string $slug,
         Request $request,
-        SidebarService $sidebarService
+        SidebarService $sidebarService,
+        ToolCatalogService $toolCatalogService
     ): Response {
-        return $this->renderTool($category, $slug, $request, $sidebarService, true);
+        return $this->renderTool(
+            $category,
+            $slug,
+            $request,
+            $sidebarService,
+            $toolCatalogService,
+            true
+        );
     }
 
     private function renderTool(
@@ -44,6 +55,7 @@ class ContentController extends AbstractController
         string $slug,
         Request $request,
         SidebarService $sidebarService,
+        ToolCatalogService $toolCatalogService,
         bool $isEmbedFrame
     ): Response {
         $basePath = $this->getParameter('kernel.project_dir') . '/templates/content/tools';
@@ -64,6 +76,12 @@ class ContentController extends AbstractController
             $meta = [];
         }
 
+        $meta = $toolCatalogService->decorateMetaForPublicationStatus($meta);
+
+        if (!$toolCatalogService->shouldIncludeDraftTools() && ($meta['is_draft'] ?? false)) {
+            throw $this->createNotFoundException('Tool content not found.');
+        }
+
         $searchQuery = trim((string) $request->query->get('q', ''));
         $sort = (string) $request->query->get('sort', 'newest');
         $categoryFilter = trim((string) $request->query->get('category', ''));
@@ -74,6 +92,7 @@ class ContentController extends AbstractController
 
         $categoryLabel = $meta['category_label'] ?? ucwords(str_replace('-', ' ', $category));
         $title = $meta['title'] ?? 'Tool Detail';
+        $displayTitle = $meta['display_title'] ?? $title;
 
         $sidebarData = $isEmbedFrame
             ? []
@@ -121,7 +140,7 @@ class ContentController extends AbstractController
                     'label' => $categoryLabel,
                     'url' => $this->generateUrl('app_category', ['category' => $category]),
                 ],
-                ['label' => $title],
+                ['label' => $displayTitle],
             ],
         ], $sidebarData));
     }

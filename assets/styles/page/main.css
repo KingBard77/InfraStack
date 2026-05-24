@@ -4,10 +4,10 @@
 
 /* Fonts */
 :root {
-    --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --page-font: "Rubik", var(--default-font);
-    --heading-font: "Nunito",  sans-serif;
-    --nav-font: "Poppins",  sans-serif;
+    --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --page-font: var(--default-font);
+    --heading-font: "Nunito", var(--default-font);
+    --nav-font: var(--default-font);
 }
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
@@ -5528,11 +5528,7 @@ section,
 
 @media (max-width: 1199px) {
     body.mobile-nav-active::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        z-index: 9998;
-        background: rgba(15, 23, 42, 0.62);
+        content: none;
     }
 
     .mobile-nav-active .infrastack-header {
@@ -5545,6 +5541,7 @@ section,
     }
 
     .infrastack-nav {
+        position: relative;
         justify-self: end;
     }
 
@@ -5577,52 +5574,53 @@ section,
     }
 
     .mobile-nav-active .infrastack-header .mobile-nav-toggle {
-        position: fixed;
-        top: calc(env(safe-area-inset-top, 0px) + 16px);
-        right: 16px;
-        z-index: 10005;
+        position: static;
+        inset: auto;
+        z-index: auto;
         width: 52px;
         height: 52px;
-        border-color: #f75815;
-        background: #f75815;
-        color: #ffffff;
-        font-size: 32px;
+        border-color: #bfdbfe;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 30px;
     }
 
-    .mobile-nav-active .infrastack-header .infrastack-nav {
-        position: static;
+    body.mobile-nav-active .infrastack-header #navmenu.infrastack-nav {
+        position: relative;
         inset: auto;
         z-index: auto;
         display: block;
         padding: 0;
         background: transparent;
         overflow: visible;
+        transition: none;
     }
 
-    .mobile-nav-active .infrastack-nav > ul {
-        position: fixed;
-        top: calc(env(safe-area-inset-top, 0px) + 76px);
-        right: 16px;
+    body.mobile-nav-active .infrastack-header #navmenu.infrastack-nav > ul {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
         bottom: auto;
-        left: 16px;
+        left: auto;
         z-index: 10003;
         display: flex;
         flex-direction: column;
         gap: 8px;
-        width: min(420px, calc(100vw - 32px));
-        min-height: 274px;
-        max-height: calc(100dvh - 108px);
-        margin: 0 auto;
+        width: min(360px, calc(100vw - 32px));
+        min-height: 0;
+        max-height: calc(100dvh - 92px);
+        margin: 0;
         padding: 14px;
         border: 1px solid #e2e8f0;
-        border-radius: 18px;
+        border-radius: 16px;
         background: #ffffff;
         list-style: none;
         opacity: 1;
         visibility: visible;
-        box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
+        box-shadow: 0 22px 46px rgba(15, 23, 42, 0.14);
         overflow-y: auto;
         overscroll-behavior: contain;
+        transition: none;
     }
 
     .mobile-nav-active .infrastack-nav > ul > li {
@@ -5655,13 +5653,13 @@ section,
 
 @media (max-width: 420px) {
     .mobile-nav-active .infrastack-header .mobile-nav-toggle {
-        right: 12px;
+        right: auto;
     }
 
-    .mobile-nav-active .infrastack-nav > ul {
-        top: calc(env(safe-area-inset-top, 0px) + 82px);
-        right: 12px;
-        left: 12px;
+    body.mobile-nav-active .infrastack-header #navmenu.infrastack-nav > ul {
+        top: calc(100% + 10px);
+        right: 0;
+        left: auto;
         width: calc(100vw - 24px);
         max-height: calc(100dvh - 100px);
         border-radius: 14px;
@@ -5675,6 +5673,30 @@ section,
 
     .infrastack-logo span {
         font-size: 19px;
+    }
+
+    .infrastack-footer .footer-top .row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 20px;
+        row-gap: 30px;
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .infrastack-footer .footer-top .row > * {
+        width: auto;
+        max-width: none;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .infrastack-footer .footer-about {
+        grid-column: 1 / -1;
+    }
+
+    .infrastack-footer .footer-links ul a {
+        overflow-wrap: anywhere;
     }
 
     .infrastack-footer .copyright {

@@ -599,15 +599,15 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
 
     function buildAccessNodes(spec, layoutOverrides) {
         const nodes = [];
-        const baseX = spec.accessBlocks <= 3 ? 245 : 145;
-        const gap = spec.accessBlocks <= 3 ? 225 : 172;
-        const rowY = spec.accessBlocks <= 4 ? 830 : 820;
+        const baseX = 335;
+        const gap = 245;
+        const rowCapacity = 3;
+        const rowY = spec.accessBlocks <= 3 ? 830 : 820;
         const vlanText = spec.vlans.slice(0, 3).join(', ');
 
         for (let index = 0; index < spec.accessBlocks; index += 1) {
-            const isSecondRow = index >= 4;
-            const rowIndex = isSecondRow ? index - 4 : index;
-            const rowOffset = isSecondRow ? 120 : 0;
+            const rowIndex = index % rowCapacity;
+            const rowOffset = Math.floor(index / rowCapacity) * 120;
 
             nodes.push(createNode({
                 id: 'access-' + (index + 1),
@@ -641,7 +641,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 subtitle: campusSizeLabel(spec.campusSize),
                 layer: 'Client edge',
                 icon: 'users',
-                x: 70,
+                x: 100,
                 y: 195,
                 width: 142,
                 purpose: 'Represents wired and wireless campus users entering the network.'
@@ -652,7 +652,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 subtitle: routingDetail(spec),
                 layer: 'Core',
                 icon: 'coreSwitch',
-                x: 500,
+                x: 535,
                 y: 430,
                 width: 190,
                 height: 82,
@@ -664,7 +664,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 subtitle: spec.hsrp ? 'VIP ' + spec.redundancyVip : 'SVI ' + spec.sviGateway,
                 layer: 'Distribution',
                 icon: 'distributionSwitch',
-                x: 320,
+                x: 385,
                 y: 620,
                 purpose: 'Aggregates access switches and policy boundaries for the left side of the campus.'
             }, safeOverrides),
@@ -674,7 +674,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 subtitle: spec.hsrp ? 'HSRP/VRRP peer' : 'SVI gateway',
                 layer: 'Distribution',
                 icon: 'distributionSwitch',
-                x: 705,
+                x: 720,
                 y: 620,
                 purpose: 'Aggregates access switches and policy boundaries for the right side of the campus.'
             }, safeOverrides)
@@ -707,7 +707,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 subtitle: 'ISP/MPLS handoff',
                 layer: 'WAN edge',
                 icon: 'router',
-                x: 285,
+                x: 320,
                 y: 195,
                 purpose: 'Shows external routing handoff for internet, MPLS, or SD-WAN adjacency.'
             }, safeOverrides));
@@ -726,7 +726,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 subtitle: [spec.acl ? 'ACL' : '', spec.nat ? 'NAT' : 'Policy edge'].filter(Boolean).join(' / '),
                 layer: 'Security edge',
                 icon: 'firewall',
-                x: 505,
+                x: 540,
                 y: 195,
                 purpose: 'Represents perimeter filtering before traffic reaches the campus core.'
             }, safeOverrides));
@@ -759,7 +759,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 }) || 'Server VLAN',
                 layer: 'Server network',
                 icon: 'services',
-                x: 895,
+                x: 1080,
                 y: 620,
                 purpose: 'Represents campus server or shared services VLAN placement.'
             }, safeOverrides));
@@ -778,7 +778,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 subtitle: 'WLC and AP control',
                 layer: 'Wireless',
                 icon: 'wirelessController',
-                x: 80,
+                x: 105,
                 y: 620,
                 purpose: 'Centralizes wireless control and guest access segmentation.'
             }, safeOverrides));
@@ -788,7 +788,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 subtitle: 'Campus WLAN',
                 layer: 'Access',
                 icon: 'accessPoint',
-                x: 80,
+                x: 105,
                 y: 830,
                 width: 142,
                 purpose: 'Represents APs connected into the access layer.'
@@ -814,7 +814,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 subtitle: 'IP helper targets',
                 layer: 'Services',
                 icon: 'services',
-                x: 895,
+                x: 1080,
                 y: 760,
                 purpose: 'Provides endpoint addressing and name resolution for campus VLANs.'
             }, safeOverrides));
@@ -833,7 +833,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 subtitle: 'IPsec site-to-site',
                 layer: 'Remote access',
                 icon: 'router',
-                x: 80,
+                x: 105,
                 y: 400,
                 purpose: 'Shows remote or branch connectivity entering through the campus edge.'
             }, safeOverrides));
@@ -852,7 +852,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                 subtitle: 'SNMP, NetFlow, logs',
                 layer: 'Operations',
                 icon: 'monitoring',
-                x: 895,
+                x: 1080,
                 y: 850,
                 purpose: 'Captures operational telemetry for switches, routers, firewall, and wireless.'
             }, safeOverrides));
@@ -864,10 +864,15 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
             });
         }
 
-        const canvasHeight = spec.accessBlocks > 4 ? 1120 : 1020;
+        const accessRowCount = spec.accessBlocks <= 3 ? 1 : Math.ceil(spec.accessBlocks / 3);
+        const accessLayerX = 310;
+        const accessLayerWidth = 710;
+        const accessLayerHeight = accessRowCount > 1 ? 300 : 190;
+        const canvasWidth = 1320;
+        const canvasHeight = accessRowCount > 1 ? 1140 : 1020;
 
         return {
-            width: 1120,
+            width: canvasWidth,
             height: canvasHeight,
             groups: [
                 {
@@ -877,7 +882,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                     tone: 'site',
                     x: 34,
                     y: 92,
-                    width: 1052,
+                    width: canvasWidth - 68,
                     height: canvasHeight - 122
                 },
                 {
@@ -885,9 +890,9 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                     title: 'WAN and security edge',
                     subtitle: spec.firewall ? 'Firewall policy boundary' : 'External routing boundary',
                     tone: 'edge',
-                    x: 250,
+                    x: 290,
                     y: 124,
-                    width: 512,
+                    width: 560,
                     height: 155
                 },
                 {
@@ -897,7 +902,7 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                     tone: 'wireless',
                     x: 52,
                     y: 330,
-                    width: 205,
+                    width: 235,
                     height: canvasHeight - 360
                 },
                 {
@@ -905,9 +910,9 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                     title: 'Core layer',
                     subtitle: routingDetail(spec),
                     tone: 'core',
-                    x: 440,
+                    x: 485,
                     y: 350,
-                    width: 312,
+                    width: 330,
                     height: 210
                 },
                 {
@@ -915,9 +920,9 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                     title: 'Distribution layer',
                     subtitle: spec.hsrp ? 'Gateway redundancy enabled' : 'SVI gateway boundary',
                     tone: 'distribution',
-                    x: 284,
+                    x: 320,
                     y: 565,
-                    width: 615,
+                    width: 650,
                     height: 215
                 },
                 {
@@ -925,19 +930,19 @@ const ArchitectureCampusNetworkCiscoModelCore = (function () {
                     title: 'Access layer',
                     subtitle: spec.accessBlocks + ' access block' + (spec.accessBlocks === 1 ? '' : 's'),
                     tone: 'access',
-                    x: 128,
-                    y: 790,
-                    width: 762,
-                    height: canvasHeight - 820
+                    x: accessLayerX,
+                    y: 800,
+                    width: accessLayerWidth,
+                    height: accessLayerHeight
                 },
                 {
                     id: 'services-operations-boundary',
                     title: 'Services / ops',
                     subtitle: spec.dhcpDns || spec.monitoring ? 'DHCP, DNS, telemetry' : 'Optional services',
                     tone: 'services',
-                    x: 872,
+                    x: 1060,
                     y: 565,
-                    width: 195,
+                    width: 200,
                     height: canvasHeight - 595
                 }
             ],

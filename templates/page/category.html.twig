@@ -34,15 +34,17 @@
 
                 <div class="tool-card-grid">
                   {% for tool in family.tools|default([]) %}
+                    {% set toolDisplayTitle = tool.display_title|default(tool.title) %}
+                    {% set toolDisplayCardTitle = tool.display_card_image_title|default(tool.card_image_title|default(toolDisplayTitle)) %}
                     <article class="tool-card-item">
                       <a
                         href="{{ path('tool_detail', { category: tool.category_slug, slug: tool.slug }) }}"
                         class="tool-card-link"
-                        aria-label="{{ tool.title }}"
+                        aria-label="{{ toolDisplayTitle }}"
                       >
                         {% if tool.card_image is defined and tool.card_image %}
                           <div class="tool-card-media">
-                            <img src="{{ tool.card_image }}" alt="{{ tool.title }}" class="img-fluid tool-card-image">
+                            <img src="{{ tool.card_image }}" alt="{{ toolDisplayTitle }}" class="img-fluid tool-card-image">
                           </div>
                         {% else %}
                           <div
@@ -62,7 +64,7 @@
                             </div>
 
                             <div class="tool-card-cover-title">
-                              {{ tool.card_image_title|default(tool.title) }}
+                              {{ toolDisplayCardTitle }}
                             </div>
                           </div>
                         {% endif %}

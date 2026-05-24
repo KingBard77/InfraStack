@@ -3,9 +3,10 @@
 title: Cisco Campus Network Architecture
 author: Badrul Amin
 author_role: Infrastructure & DevOps Specialist
-author_image: "images/author/author-bg-black.png"
+author_image: "images/author/author-bg-white.png"
 date: "Apr. 29th, 2026"
 comments: Interactive tool
+publication_status: ready
 category_label: Cisco
 group: network
 family: architecture
@@ -18,7 +19,17 @@ intro: >-
 tags:
     - Cisco
     - Campus Network
-    - Topology
-    - VLAN
-    - Routing
     - Architecture
+related_links:
+    - links-title: Cisco Network Cost Calculator
+      links-label: InfraStack tool
+      links-description: Open the related InfraStack Cisco Network Cost Calculator workspace.
+      links-url: https://infrastack.my/tools/cisco/calculate-cost-cisco
+      links-embed: https://infrastack.my/embed/cisco/calculate-cost-cisco
+      links-icon: bi-calculator
+    - links-title: Cisco Interface Config Generator
+      links-label: Simplified Tools
+      links-description: Open the embeddable Simplified Tools Cisco Interface Config Generator workspace.
+      links-url: https://www.simplified.tools/generate_cisco_interface_config
+      links-embed: https://www.simplified.tools/embed/generate_cisco_interface_config?share=embed
+      links-icon: bi-hdd-network

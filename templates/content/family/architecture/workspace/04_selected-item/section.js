@@ -1,9 +1,11 @@
 // section.js
-(function attachSourceSection(global) {
+(function attachArchitectureSelectedItemSourceSection(global) {
     const registry = global.InfraStackArchitectureWorkspaceSections || {};
     const source = {
         "section": "04_selected-item",
         "title": "selected item",
+        "family": "architecture",
+        "role": "selected visual object, connector, and editable stage item contract",
         "sourceTool": "templates/content/tools/aws/architecture-vpc-aws/",
         "sourceFile": "custom.js",
         "sourceJsLines": [

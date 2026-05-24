@@ -8,11 +8,11 @@ Baseline snapshot: `2026-05-18`.
 
 - `README.md`: family explanation and final package expectations.
 - `manifest.yml`: structured baseline metadata and validation rules.
-- `baseline/source/`: full copied AWS VPC Architecture source snapshot for traceability only.
+- `source/`: full copied AWS VPC Architecture source snapshot for traceability only. Do not audit this as active source.
 - `workspace/README.md`: workspace grammar.
 - `workspace/manifest.yml`: structured workspace section metadata.
-- `workspace/01_input-brief/` through `workspace/09_result-table/`: reusable section sources.
-- `workspace/assets/bin/model-core.js`: reusable model-core reference when a final architecture tool needs one.
+- `workspace/04_visual-contract/`: architecture visual and model contract source.
+- `workspace/04_selected-item/`: selected object and connector inspector source.
 - `templates/content/main/scaffold/README.md`: package skeleton source.
 - `templates/content/main/sections/content/`: shared content delivery section source.
 - `templates/content/main/sections/content/10_references/`: shared source-backed citation and References section source when final content cites sources.
@@ -31,28 +31,31 @@ Do not copy AWS-visible wording, services, examples, icons, category/provider to
 
 ## Current Baseline
 
-Section-owned workspace baseline:
+Composed workspace baseline:
 
 ```text
 source: templates/content/tools/aws/architecture-vpc-aws/
-snapshot: templates/content/family/architecture/baseline/source/
-workspace sections: templates/content/family/architecture/workspace/01_input-brief/ through 09_result-table/
-model-core reference: templates/content/family/architecture/workspace/assets/bin/model-core.js
+snapshot: templates/content/family/architecture/source/
+shared workspace source: templates/content/family/_base/workspace/
+architecture-owned sections: templates/content/family/architecture/workspace/04_visual-contract/ and 04_selected-item/
+engine-runtime reference: templates/content/family/architecture/workspace/04_visual-contract/engine-runtime.js
+model-core reference: templates/content/family/architecture/workspace/04_visual-contract/model-core.js
 package scaffold: templates/content/main/scaffold/
 content sections: templates/content/main/sections/content/
 ```
 
-The full copied source snapshot is reference-only. Architecture workspace CSS and JavaScript are fully extracted into each section folder as `section.css` and `section.js`. Source ownership uses `ns:start/ns:end family.architecture.workspace.<section>` markers plus section-owned line maps. Do not keep root `workspace/custom.css`, root `workspace/custom.js`, or full custom runtime copies inside section folders.
+The full copied source snapshot is reference-only. Do not audit this as active source. Common workspace sections are sourced from `_base/workspace` through `workspace/manifest.yml` `workspace_namespaces`; architecture workspace owns only the visual contract and selected-item inspector.
 
-- `01_input-brief`: prompt shell, helper body text, and body-only info marker helper.
-- `02_basic-settings`: preset, region, availability zone or scope controls, baseline select wrapper, custom dropdown enhancement, no placeholder-chip overlay, preset helper text, and body-only info marker helper.
-- `03_advanced-settings`: network layout, workload, and services/controls grouped custom controls.
+- `_base.00_shell`: common workspace shell, panel rhythm, and responsive frame.
+- `_base.01_input-brief`: prompt shell, helper body text, and body-only info marker helper.
+- `_base.02_basic-settings`: preset, region, availability zone or scope controls, baseline select wrapper, custom dropdown enhancement, no placeholder-chip overlay, preset helper text, and body-only info marker helper.
+- `_base.03_custom-settings`: network layout, workload, and services/controls grouped custom controls.
+- `04_visual-contract`: diagram stage, toolbar, helper chips, usage help, movement controls, connector controls, zoom, fullscreen, hide UI, Auto layout reset, canvas-overlay marquee selection, live marquee target highlighting, visual output, reusable engine-runtime reference, and reusable model-core reference.
 - `04_selected-item`: selected draggable-box or connector inspector and empty-state hint chips.
-- `05_result-text`: stage title, preset chip, model metadata, exact pre-generate notice, and generated text summary.
-- `06_result-diagram`: diagram stage, toolbar, helper chips, usage help, movement controls, connector controls, zoom, fullscreen, hide UI, reset, and visual output.
-- `07_score-card`: advisory score, quality, status, readiness, risk, or assumption summary card.
-- `08_sort-card`: Basic-height Sort dropdown, selected-label-only sort summary, and implemented export/import actions.
-- `09_result-table`: Technical Inventory, secondary table cards, Prompt Notes, Pillar Breakdown, Risk Level, JSON output, JSON import, restore, and generated dummy assessment/table demo.
+- `_base.05_result-summary`: advisory score, quality, status, readiness, risk, or assumption summary card.
+- `_base.06_output-toolbar`: Basic-height Sort dropdown, selected-label-only sort summary, and implemented export/import actions.
+- `_base.07_table-output`: Technical Inventory, secondary table cards, Prompt Notes, Pillar Breakdown, and Risk Level output shell.
+- `_base.08_json-restore`: JSON output, JSON import, restore, and generated payload boundary.
 
 ## Diagram Layout Quality Baseline
 
@@ -77,6 +80,9 @@ Default generated diagrams must:
 - keep text clear of borders, badges, resize handles, connector paths, and neighboring content
 - keep small-box text wrapped inside the box without ellipsis, clipping, or overflow
 - on click or tap, every diagram item must enter a visible selected state; only selected items may show resize handles
+- cursor marquee selection must render from the stage canvas overlay, not as an SVG-owned rectangle, so the marquee remains visible across the full CSS grid surface and is not clipped below or outside the SVG drawing area
+- boxes intersected by cursor marquee selection must receive a live `is-marquee-target` highlight while dragging
+- multi-selected boxes must be highlightable as a set and persisted as `highlighted_node_ids`; keep `highlighted_node_id` as a compatibility field when present
 - auto-fit first generated views from rendered diagram bounds when the stage size is known
 
 Generated connectors must:
@@ -114,7 +120,7 @@ Generate an architecture diagram to review technical inventory, service mix, and
 ```
 
 - Before generation, show only the dashed generate notice box in the output area.
-- After generation, use result text, diagram, score card, Sort toolbar, export actions, output tabs, inventory table, prompt notes, advisory pillar breakdown, advisory risk level, and JSON output. Compose `07_score-card` separately when a score/status banner is needed.
+- After generation, use the architecture visual contract, selected-item inspector, `_base` result summary, Sort toolbar, export actions, output tabs, inventory table, prompt notes, advisory pillar breakdown, advisory risk level, and JSON output.
 - Sort defaults to `ID`.
 - Basic tab dropdowns keep their wrapper, custom styled menu, trigger-width dropdown menu, and 46px control height without placeholder chips; the Sort dropdown uses the same 46px control height and trigger-width menu but shows only the selected sort label and no placeholder chip.
 - Output tabs are `Technical Inventory`, `Prompt Notes`, `Pillar Breakdown`, `Risk Level`, and `JSON` unless a domain-specific label change is documented.
@@ -122,12 +128,13 @@ Generate an architecture diagram to review technical inventory, service mix, and
 - Secondary output tables may be used for routing, control, or domain summary rows when those rows are backed by normalized model data.
 - Before/after section demos should stack as two rows in one column, not side-by-side columns.
 - Standalone `demo.html` files must own demo chrome separately from architecture runtime extraction. Include any icon stylesheet needed by the demo, render `demo-title` with `demo-title-icon` and `demo-title-text`, and use an architecture placeholder icon such as `bi bi-diagram-3`.
-- `workspace/04_selected-item/demo.html`, `workspace/06_result-diagram/demo.html`, and `workspace/09_result-table/demo.html` should show before/after dummy states where practical.
-- `workspace/09_result-table/demo.html` must open or clearly demonstrate generated dummy inventory rows, secondary table rows, pillar rows, risk copy, and JSON output.
+- `workspace/04_visual-contract/demo.html` and `workspace/04_selected-item/demo.html` should show before/after dummy states where practical.
+- `_base` table and JSON demos must open or clearly demonstrate generated dummy inventory rows, secondary table rows, pillar rows, risk copy, and JSON output.
 - Result table dummy rows may use placeholder model data, but the `Action` column must render copy-row buttons, not long text.
 - Pillar Breakdown and Risk Level are advisory model summaries. They must not claim compliance, certification, security validation, reliability validation, or production readiness beyond the generated model facts.
 - Selected-item empty states use draggable-box wording when the stage contains movable boxes.
 - Connector-capable stages also expose line-selection wording and keep connector selection synchronized with the inspector.
+- Generated-placement reset actions keep the stable `ResetLayout` DOM ID but display `Auto layout` to describe the behavior clearly.
 - Usage help and helper chips must describe only implemented behavior.
 - Example prompt terminal titles stay centered and title case, such as `AWS VPC Prompt`.
 - Source-backed citations use `templates/content/main/sections/content/10_references/` and link each in-text citation to its matching References row. Substantial `Technical Details` sections must be 1500+ words, cite at least two official or source-of-truth websites or docs when they make technical claims, and use structured review aids such as bullets or tables when they clarify behavior. Factual `content.md` should carry at least three real references. Tool behavior and trust claims must match implemented code and validation.

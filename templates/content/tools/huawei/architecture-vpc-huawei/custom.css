@@ -1,6 +1,7 @@
 /* custom.css */
+/* ns:start family._base.workspace.00_shell */
 
-/* ns:start family.architecture.workspace.01_input-brief */
+/* ns:start family._base.workspace.01_input-brief */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -495,8 +496,8 @@
         grid-template-columns: minmax(0, 1fr);
     }
 }
-/* ns:end family.architecture.workspace.01_input-brief */
-/* ns:start family.architecture.workspace.02_basic-settings */
+/* ns:end family._base.workspace.01_input-brief */
+/* ns:start family._base.workspace.02_basic-settings */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -1018,7 +1019,7 @@
 
 .architecture-vpc-huawei-tool .tool-inspector-section.architecture-vpc-huawei-basic-preset-section {
     border: 0;
-    border-bottom: 1px solid rgba(var(--tool-border-strong-rgb), 0.52);
+    border-bottom: 0;
     border-radius: 0;
     background: transparent;
     padding: 0 0 24px;
@@ -1080,8 +1081,8 @@
         white-space: normal;
     }
 }
-/* ns:end family.architecture.workspace.02_basic-settings */
-/* ns:start family.architecture.workspace.03_advanced-settings */
+/* ns:end family._base.workspace.02_basic-settings */
+/* ns:start family._base.workspace.03_custom-settings */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -1794,7 +1795,7 @@
         padding: 14px;
     }
 }
-/* ns:end family.architecture.workspace.03_advanced-settings */
+/* ns:end family._base.workspace.03_custom-settings */
 /* ns:start family.architecture.workspace.04_selected-item */
 /* section.css */
 
@@ -2342,7 +2343,7 @@
     }
 }
 /* ns:end family.architecture.workspace.04_selected-item */
-/* ns:start family.architecture.workspace.05_result-text */
+/* ns:start family.architecture.workspace.04_visual-contract */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -2864,8 +2865,8 @@
         white-space: normal;
     }
 }
-/* ns:end family.architecture.workspace.05_result-text */
-/* ns:start family.architecture.workspace.06_result-diagram */
+/* ns:end family.architecture.workspace.04_visual-contract */
+/* ns:start family.architecture.workspace.04_visual-contract */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -3841,6 +3842,11 @@ body.architecture-vpc-huawei-stage-expanded-lock {
     pointer-events: stroke;
     vector-effect: non-scaling-stroke;
 }
+.architecture-vpc-huawei-tool .diagram-connector-active {
+    stroke: var(--tool-connector-active, var(--tool-connector, #111827));
+    stroke-width: 1.65;
+    opacity: 0.96;
+}
 
 .architecture-vpc-huawei-tool .diagram-connector-hit-target {
     fill: none;
@@ -3872,8 +3878,8 @@ body.architecture-vpc-huawei-stage-expanded-lock {
 }
 
 .architecture-vpc-huawei-tool .architecture-vpc-huawei-stage-preview > svg {
-    filter: blur(4px);
-    opacity: 0.38;
+    filter: blur(2px);
+    opacity: 0.88;
     pointer-events: none;
 }
 
@@ -3988,8 +3994,8 @@ body.architecture-vpc-huawei-stage-expanded-lock {
         gap: 8px;
     }
 }
-/* ns:end family.architecture.workspace.06_result-diagram */
-/* ns:start family.architecture.workspace.07_score-card */
+/* ns:end family.architecture.workspace.04_visual-contract */
+/* ns:start family._base.workspace.05_result-summary */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -4539,7 +4545,7 @@ body.architecture-vpc-huawei-stage-expanded-lock {
     place-items: center;
     text-align: center;
     background:
-        conic-gradient(from -90deg, var(--architecture-vpc-huawei-score-color) 0deg var(--progress-angle), rgba(226, 232, 240, 0.86) var(--progress-angle) 360deg),
+        conic-gradient(from 0deg, var(--architecture-vpc-huawei-score-color) 0deg var(--progress-angle), rgba(226, 232, 240, 0.86) var(--progress-angle) 360deg),
         linear-gradient(145deg, #ffffff, #f8fafc);
     box-shadow:
         0 14px 26px rgba(var(--tool-secondary-rgb), 0.08),
@@ -4923,8 +4929,8 @@ body.architecture-vpc-huawei-stage-expanded-lock {
         text-align: center;
     }
 }
-/* ns:end family.architecture.workspace.07_score-card */
-/* ns:start family.architecture.workspace.08_sort-card */
+/* ns:end family._base.workspace.05_result-summary */
+/* ns:start family._base.workspace.06_output-toolbar */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -5424,10 +5430,10 @@ body.architecture-vpc-huawei-stage-expanded-lock {
     height: 46px;
     min-height: 46px;
     padding: 12px 14px 8px;
-    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.72);
+    border: 1px solid var(--tool-border, #cbd5e1);
     border-radius: var(--tool-radius-sm);
-    background: #ffffff;
-    color: var(--tool-text);
+    background: var(--tool-surface, #ffffff);
+    color: var(--tool-text, #243044);
     font-size: var(--tool-font-size-base);
     font-weight: 700;
     display: flex;
@@ -5538,8 +5544,8 @@ body.architecture-vpc-huawei-stage-expanded-lock {
         width: 100%;
     }
 }
-/* ns:end family.architecture.workspace.08_sort-card */
-/* ns:start family.architecture.workspace.09_result-table */
+/* ns:end family._base.workspace.06_output-toolbar */
+/* ns:start family._base.workspace.07_table-output */
 /* section.css */
 
 /* Extracted architecture workspace foundation shared by section demos. */
@@ -6568,7 +6574,7 @@ body.architecture-vpc-huawei-stage-expanded-lock {
         padding: 6px;
     }
 }
-/* ns:end family.architecture.workspace.09_result-table */
+/* ns:end family._base.workspace.07_table-output */
 
 .architecture-vpc-huawei-tool,
 .markdown-content .architecture-vpc-huawei-markdown-card {
@@ -7748,7 +7754,7 @@ body.architecture-vpc-huawei-stage-expanded-lock {
 
 .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-section {
     border: 0;
-    border-bottom: 1px solid rgba(var(--tool-border-strong-rgb), 0.52);
+    border-bottom: 0;
     border-radius: 0;
     background: transparent;
     padding: 0 0 var(--tool-gap-xl);
@@ -8386,6 +8392,33 @@ body.architecture-vpc-huawei-stage-expanded-lock {
     overscroll-behavior: contain;
 }
 
+.architecture-vpc-huawei-tool .tool-stage-canvas > .architecture-vpc-huawei-marquee-selection {
+    position: absolute;
+    z-index: 12;
+    box-sizing: border-box;
+    border: 2px dashed var(--tool-secondary);
+    border-radius: 8px;
+    background: rgba(var(--tool-secondary-rgb), 0.045);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.72),
+        0 10px 22px rgba(var(--tool-secondary-rgb), 0.14);
+    pointer-events: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-diagram-group.is-marquee-target .architecture-vpc-huawei-diagram-hitbox,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-node-shell.is-marquee-target .architecture-vpc-huawei-diagram-hitbox {
+    stroke: var(--tool-secondary);
+    stroke-width: 3;
+    stroke-dasharray: 10 7;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-diagram-group.is-marquee-target .architecture-vpc-huawei-diagram-group-card,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-node-shell.is-marquee-target .architecture-vpc-huawei-node-outline {
+    stroke: var(--tool-secondary);
+    stroke-width: 2.8;
+    stroke-dasharray: 10 7;
+}
+
 .architecture-vpc-huawei-tool .architecture-vpc-huawei-stage-canvas svg {
     display: block;
     margin: 0 auto;
@@ -8398,8 +8431,8 @@ body.architecture-vpc-huawei-stage-expanded-lock {
 }
 
 .architecture-vpc-huawei-tool .architecture-vpc-huawei-stage-preview > svg {
-    filter: blur(4px);
-    opacity: 0.38;
+    filter: blur(2px);
+    opacity: 0.88;
     pointer-events: none;
 }
 
@@ -10325,7 +10358,7 @@ body.architecture-vpc-huawei-stage-expanded-lock {
     gap: 0;
     text-align: center;
     background:
-        conic-gradient(from -90deg, var(--architecture-vpc-huawei-score-color) 0deg var(--progress-angle), rgba(226, 232, 240, 0.86) var(--progress-angle) 360deg),
+        conic-gradient(from 0deg, var(--architecture-vpc-huawei-score-color) 0deg var(--progress-angle), rgba(226, 232, 240, 0.86) var(--progress-angle) 360deg),
         linear-gradient(145deg, #ffffff, #f8fafc);
     box-shadow:
         0 14px 26px rgba(var(--tool-secondary-rgb), 0.08),
@@ -11081,6 +11114,7 @@ body.architecture-vpc-huawei-stage-expanded-lock {
     vertical-align: 0.02em;
 }
 
+
 @media (max-width: 640px) {
     .markdown-content > .architecture-vpc-huawei-markdown-card-export {
         padding: 18px;
@@ -11431,3 +11465,3429 @@ body.architecture-vpc-huawei-stage-expanded-lock {
     min-width: 0;
 }
 /* End shared main content section style */
+
+/* base-input-brief:start */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-card {
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #dbe4ef));
+    border-radius: var(--tool-radius-md, 16px);
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: var(--tool-shadow-sm, 0 12px 28px rgba(15, 23, 42, 0.08));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-row {
+    display: grid;
+    grid-template-columns: minmax(130px, 0.28fr) minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    min-width: 0;
+    order: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-label-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-label {
+    margin: 0;
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-helper-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, rgba(37, 99, 235, 0.28)));
+    border-radius: 999px;
+    background: var(--tool-accent-soft, rgba(37, 99, 235, 0.1));
+    color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-stack {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-control {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #dbe4ef));
+    border-radius: var(--tool-radius-sm, 12px);
+    background: var(--architecture-vpc-huawei-bg-panel, #ffffff);
+    color: var(--architecture-vpc-huawei-text-body, var(--tool-text, #1f2937));
+    box-shadow: none;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.architecture-vpc-huawei-tool textarea.architecture-vpc-huawei-input-control {
+    min-height: 118px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-control::placeholder {
+    color: var(--tool-placeholder, #94a3b8);
+    opacity: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-control:focus {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+    box-shadow: 0 0 0 3px var(--tool-focus-ring, rgba(37, 99, 235, 0.16));
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-error {
+    padding: 10px 12px;
+    border: 1px solid rgba(220, 38, 38, 0.28);
+    border-radius: 10px;
+    background: rgba(220, 38, 38, 0.08);
+    color: #991b1b;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-error.d-none {
+    display: none !important;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 0;
+    order: 3;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 44px;
+    max-width: 100%;
+    padding: 0 18px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-action-btn .bi {
+    flex: 0 0 auto;
+    font-size: 1.05em;
+    line-height: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-action-btn:hover {
+    transform: translateY(-1px);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-action-btn-primary {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+    background: var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+    color: #ffffff;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-action-btn-secondary {
+    border-color: var(--architecture-vpc-huawei-border, var(--tool-border, #dbe4ef));
+    background: var(--architecture-vpc-huawei-bg-panel, #ffffff);
+    color: var(--architecture-vpc-huawei-text-body, var(--tool-text, #1f2937));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-helper-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    padding: 14px 16px;
+    border: 1px dashed var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, rgba(37, 99, 235, 0.28)));
+    border-radius: var(--tool-radius-sm, 12px);
+    background: var(--tool-accent-soft, rgba(37, 99, 235, 0.1));
+    order: 2;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-hint {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    color: var(--architecture-vpc-huawei-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-helper-chip-inline {
+    width: 28px;
+    height: 28px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="inline"] {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="inline"] .architecture-vpc-huawei-input-row {
+    grid-template-columns: max-content minmax(220px, 1fr);
+    align-items: center;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="inline"] .architecture-vpc-huawei-input-stack {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="inline"] .architecture-vpc-huawei-input-control {
+    resize: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="inline"] .architecture-vpc-huawei-input-actions {
+    flex-wrap: nowrap;
+    align-items: stretch;
+    order: 2;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="inline"] .architecture-vpc-huawei-action-btn {
+    min-width: 128px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="inline"] .architecture-vpc-huawei-input-helper-card {
+    grid-column: 1 / -1;
+    order: 3;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="stacked"] {
+    grid-template-columns: minmax(130px, 0.28fr) minmax(0, 1fr);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="stacked"] .architecture-vpc-huawei-input-row {
+    grid-column: 1 / -1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="stacked"] .architecture-vpc-huawei-input-helper-card {
+    grid-column: 2 / -1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="stacked"] .architecture-vpc-huawei-input-actions {
+    grid-column: 2 / -1;
+}
+
+@media (max-width: 720px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-input-row,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="stacked"],
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="inline"],
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="inline"] .architecture-vpc-huawei-input-row {
+        grid-template-columns: 1fr;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="stacked"] .architecture-vpc-huawei-input-row,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="stacked"] .architecture-vpc-huawei-input-helper-card,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="stacked"] .architecture-vpc-huawei-input-actions {
+        grid-column: 1 / -1;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-input-actions {
+        justify-content: stretch;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-input-brief[data-input-layout="inline"] .architecture-vpc-huawei-input-actions {
+        flex-wrap: wrap;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-action-btn {
+        flex: 1 1 160px;
+    }
+}
+/* base-input-brief:end */
+
+/* ns:start family._base.workspace.02_basic-settings */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.architecture-vpc-huawei-tool details.architecture-vpc-huawei-basic-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.architecture-vpc-huawei-tool details.architecture-vpc-huawei-basic-card > .architecture-vpc-huawei-advanced-body {
+    display: grid;
+    gap: 16px;
+    padding: 16px;
+    background: transparent;
+}
+
+
+
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-example-card {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+    padding: 14px 16px;
+    border: 1px dashed var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+    border-radius: 12px;
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-accent-pale, rgba(37, 99, 235, 0.08)));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-example-label {
+    color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-example-value {
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-example-helper {
+    color: var(--architecture-vpc-huawei-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-setting-card {
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #dbe4ef));
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-control-stack.architecture-vpc-huawei-setting-card {
+    display: grid;
+    gap: 10px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-setting-row.architecture-vpc-huawei-setting-card {
+    align-items: start;
+    margin: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-setting-label,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .tool-control-label.architecture-vpc-huawei-setting-label {
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-setting-label .architecture-vpc-huawei-helper-chip,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .tool-control-label .architecture-vpc-huawei-helper-chip {
+    margin-left: 6px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-native-select,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-text-field,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .form-control,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .form-select,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card textarea {
+    width: 100%;
+    min-height: 46px;
+    border-color: var(--architecture-vpc-huawei-border, var(--tool-border, #dbe4ef));
+    border-radius: 12px;
+    background-color: #ffffff;
+    color: var(--architecture-vpc-huawei-text-body, var(--tool-text, #1f2937));
+    box-shadow: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-text-field::placeholder,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .form-control::placeholder,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card textarea::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-native-select:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-text-field:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .form-control:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .form-select:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card textarea:hover {
+    border-color: var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-native-select:focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-text-field:focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .form-control:focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .form-select:focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card textarea:focus {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-huawei-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-native-select:disabled,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-text-field:disabled,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .form-control:disabled,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .form-select:disabled,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card textarea:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select {
+    max-width: 100%;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select-summary {
+    min-height: 46px;
+    border-radius: 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select-summary:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select-summary:focus-visible {
+    border-color: var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-huawei-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select[open] .architecture-vpc-huawei-select-summary {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select-body {
+    max-height: min(340px, 65vh);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-radio-card,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select-option {
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #dbe4ef));
+    border-radius: 10px;
+    background: #ffffff;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-radio-card:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-radio-card:focus-within,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select-option:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select-option:focus-visible {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-accent-pale, rgba(37, 99, 235, 0.08)));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-huawei-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-radio-card:has(input:checked),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select-option.is-active {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-accent-pale, rgba(37, 99, 235, 0.08)));
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-radio-card:has(input:disabled),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select-option:disabled {
+    opacity: 0.62;
+    cursor: not-allowed;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-switch-card {
+    border-color: var(--architecture-vpc-huawei-border, var(--tool-border, #dbe4ef));
+    border-radius: 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-switch-card:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-switch-card:focus-within {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #2563eb));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-huawei-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-switch-card input:disabled + .slider,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-switch-card input:disabled + .architecture-vpc-huawei-switch-track {
+    opacity: 0.58;
+    cursor: not-allowed;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-setting-hint,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .tool-control-hint,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-flag-hint {
+    color: var(--architecture-vpc-huawei-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card button {
+    min-height: 44px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card button:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card button:focus-visible {
+    box-shadow: 0 0 0 3px var(--architecture-vpc-huawei-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card button:disabled {
+    opacity: 0.62;
+    cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-basic-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-setting-row,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-inline-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-inline-grid-two,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-inline-grid-three,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-inline-grid-four,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-basis-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-card-grid-two,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-card-grid-three,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-select-grid-two {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card {
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-setting-card,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-basic-card .architecture-vpc-huawei-example-card {
+        padding: 12px;
+    }
+}
+/* ns:end family._base.workspace.02_basic-settings */
+
+/* ns:start family._base.workspace.03_custom-settings */
+/* section.css */
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-settings,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #d8e2ee));
+    border-radius: 14px;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary {
+    position: relative;
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 54px 12px 14px;
+    border-radius: 13px;
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.2;
+    appearance: none;
+    list-style: none;
+    list-style-type: none;
+    user-select: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary::-webkit-details-marker,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary::-webkit-details-marker,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary::-webkit-details-marker,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary::-webkit-details-marker {
+    display: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary::marker,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary::marker,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary::marker,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary::marker {
+    content: "";
+    font-size: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-arrow-slot {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #d8e2ee));
+    border-radius: 9px;
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-surface-soft, #f8fafc));
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #d8e2ee));
+    border-radius: 9px;
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-surface-soft, #f8fafc));
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary > .architecture-vpc-huawei-custom-arrow-slot,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before {
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-arrow-slot::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    border-right: 2.25px solid var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    border-bottom: 2.25px solid var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    border-radius: 1px;
+    transform: translate(-58%, -50%) rotate(-45deg);
+    transition: transform 0.18s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary:has(> .architecture-vpc-huawei-custom-arrow-slot)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary:has(> .architecture-vpc-huawei-custom-arrow-slot)::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary:has(> .architecture-vpc-huawei-custom-arrow-slot)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary:has(> .architecture-vpc-huawei-custom-arrow-slot)::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary:has(> .architecture-vpc-huawei-custom-arrow-slot)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary:has(> .architecture-vpc-huawei-custom-arrow-slot)::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:has(> .architecture-vpc-huawei-custom-arrow-slot)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:has(> .architecture-vpc-huawei-custom-arrow-slot)::after {
+    content: none;
+    display: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary:hover > .architecture-vpc-huawei-custom-arrow-slot,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary:focus-visible > .architecture-vpc-huawei-custom-arrow-slot,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary:hover > .architecture-vpc-huawei-custom-arrow-slot,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary:focus-visible > .architecture-vpc-huawei-custom-arrow-slot,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary:hover > .architecture-vpc-huawei-custom-arrow-slot,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary:focus-visible > .architecture-vpc-huawei-custom-arrow-slot,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:hover > .architecture-vpc-huawei-custom-arrow-slot,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:focus-visible > .architecture-vpc-huawei-custom-arrow-slot,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary:hover:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary:focus-visible:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary:hover:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary:focus-visible:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary:hover:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary:focus-visible:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:hover:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:focus-visible:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::before {
+    border-color: var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary-icon,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-icon {
+    display: none !important;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-settings[open] > .architecture-vpc-huawei-custom-summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel[open] > .architecture-vpc-huawei-custom-panel-summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced[open] > .architecture-vpc-huawei-advanced-summary {
+    border-radius: 13px 13px 0 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-settings[open] > .architecture-vpc-huawei-custom-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel[open] > .architecture-vpc-huawei-custom-panel-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced[open] > .architecture-vpc-huawei-advanced-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::after {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-settings[open] > .architecture-vpc-huawei-custom-summary > .architecture-vpc-huawei-custom-arrow-slot::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel[open] > .architecture-vpc-huawei-custom-panel-summary > .architecture-vpc-huawei-custom-arrow-slot::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced[open] > .architecture-vpc-huawei-advanced-summary > .architecture-vpc-huawei-custom-arrow-slot::before {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary:focus-visible,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary:focus-visible,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary:focus-visible {
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-surface-soft, #f8fafc));
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary:focus-visible,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary:focus-visible,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary:focus-visible {
+    box-shadow: inset 0 0 0 3px var(--architecture-vpc-huawei-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-body,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-body,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-body {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+    padding: 12px;
+    border-radius: 0 0 13px 13px;
+    background: var(--architecture-vpc-huawei-bg-muted, var(--tool-surface-strong, #f8fafc));
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-body > .architecture-vpc-huawei-inner-panel,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-body > .architecture-vpc-huawei-inner-panel {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-tabs,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-config-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-tab,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-config-tab {
+    min-height: 36px;
+    min-width: 0;
+    padding: 8px 12px;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #d8e2ee));
+    border-radius: 999px;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-huawei-text, var(--tool-text, #334155));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-tab:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-tab:focus-visible,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-config-tab:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-config-tab:focus-visible {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-tab.active,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-tab[aria-selected="true"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-config-tab.active,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-config-tab[aria-selected="true"] {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel[data-custom-panel] {
+    display: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel[data-custom-panel].active {
+    display: block;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-grid,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-config-grid,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toggle-grid,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-override-grid,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-inline-grid,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-stacked-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    gap: 10px;
+    align-items: start;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-grid[data-custom-columns="1"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-stacked-grid {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-settings[data-custom-layout="tabbed_two_column"] .architecture-vpc-huawei-custom-grid,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-settings[data-custom-layout="compact_two_column_multi_row"] .architecture-vpc-huawei-custom-grid,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-grid[data-custom-columns="2"] {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-inline-grid-two,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-inline-grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-inline-grid-three,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-inline-grid-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-card,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-field,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-control-stack,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-setting-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-body > .architecture-vpc-huawei-inner-panel > .architecture-vpc-huawei-setting-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-setting-card {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    min-width: 0;
+    height: auto;
+    padding: 10px;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #d8e2ee));
+    border-radius: 12px;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: none;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-field {
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-setting-row {
+    grid-template-columns: minmax(150px, 0.34fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-setting-row-stacked {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-group,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+    align-self: start;
+    padding: 12px;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #d8e2ee));
+    border-radius: 12px;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-group[data-span="2"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-card[data-span="2"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-info[data-span="2"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-card-span-two {
+    grid-column: 1 / -1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-group-head,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-group-title,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group-title {
+    margin: 0;
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-group-body,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 10px;
+    min-width: 0;
+    align-content: start;
+    align-items: start;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group--single .architecture-vpc-huawei-override-group-body {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: 10px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 10px;
+    padding: 12px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group-head {
+    justify-content: flex-start;
+    padding-top: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group--single .architecture-vpc-huawei-override-group-body {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group-body .architecture-vpc-huawei-field-stack {
+    display: grid;
+    grid-template-columns: minmax(86px, 0.42fr) minmax(0, 1fr);
+    gap: 8px;
+    align-items: center;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group-body .architecture-vpc-huawei-field-label {
+    min-height: auto;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group-body .form-control,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group-body .architecture-vpc-huawei-input-group {
+    justify-self: end;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-label-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-label,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .tool-control-label,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-setting-label,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-field-label,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-setting-label,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-field-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.35;
+    white-space: normal;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-helper-chip,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-helper-chip,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-helper-chip {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 999px;
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-surface-soft, #f8fafc));
+    color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-helper-chip:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-helper-chip:focus-visible,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-helper-chip:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-helper-chip:focus-visible,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-helper-chip:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-helper-chip:focus-visible {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-card .form-control,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-field .form-control,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel textarea,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced textarea,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-text-field,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-number-field,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-textarea {
+    width: 100%;
+    min-height: 38px;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-huawei-text, var(--tool-text, #334155));
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+    box-shadow: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-textarea,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel textarea,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced textarea {
+    min-height: 84px;
+    resize: vertical;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-text-field::placeholder,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-textarea::placeholder,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel input::placeholder,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel textarea::placeholder,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced input::placeholder,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced textarea::placeholder {
+    color: var(--architecture-vpc-huawei-placeholder, var(--tool-placeholder, #94a3b8));
+    opacity: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-card .form-control:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-field .form-control:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel textarea:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced textarea:hover {
+    border-color: var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-card .form-control:focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-field .form-control:focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel textarea:focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced textarea:focus {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-huawei-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-input-group > .form-control.architecture-vpc-huawei-input-group-control,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-input-group > .form-control.architecture-vpc-huawei-input-group-control {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    flex: 1 1 auto;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-input-group > .form-control.architecture-vpc-huawei-input-group-control:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-input-group > .form-control.architecture-vpc-huawei-input-group-control:focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-input-group > .form-control.architecture-vpc-huawei-input-group-control:focus-visible,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-input-group > .form-control.architecture-vpc-huawei-input-group-control:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-input-group > .form-control.architecture-vpc-huawei-input-group-control:focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-input-group > .form-control.architecture-vpc-huawei-input-group-control:focus-visible {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-input-group > .form-control.architecture-vpc-huawei-input-group-control:disabled,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-input-group > .form-control.architecture-vpc-huawei-input-group-control:disabled {
+    background: transparent;
+}
+
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-number-field,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel input[type="number"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-number-field::-webkit-inner-spin-button,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-number-field::-webkit-outer-spin-button,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel input[type="number"]::-webkit-inner-spin-button,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel input[type="number"]::-webkit-outer-spin-button,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced input[type="number"]::-webkit-inner-spin-button,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-card .form-control:disabled,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-field .form-control:disabled,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel input:disabled,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel textarea:disabled,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced input:disabled,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced textarea:disabled {
+    background: var(--architecture-vpc-huawei-disabled-bg, #f1f5f9);
+    color: var(--architecture-vpc-huawei-disabled-text, #94a3b8);
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-group,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-radio-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    gap: 10px;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-card,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-option,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-radio-card,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-radio-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-huawei-text, var(--tool-text, #334155));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-card::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-option::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-radio-card::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-radio-card::before {
+    content: "";
+    grid-column: 1;
+    grid-row: 1;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    border: 1px solid var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 999px;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: inset 0 0 0 2px var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-card::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-option::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-radio-card::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-radio-card::after {
+    content: "";
+    grid-column: 1;
+    grid-row: 1;
+    width: 8px;
+    height: 8px;
+    margin: 6px 0 0 5px;
+    border-radius: 999px;
+    background: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-card:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-option:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-radio-card:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-radio-card:hover {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-card:has(input:checked),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-option:has(input:checked),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-radio-card:has(input:checked),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-radio-card:has(input:checked) {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-card:has(input:checked)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-option:has(input:checked)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-radio-card:has(input:checked)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-radio-card:has(input:checked)::before {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-card:has(input:checked)::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-option:has(input:checked)::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-radio-card:has(input:checked)::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-radio-card:has(input:checked)::after {
+    opacity: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-card:has(input:focus-visible)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-option:has(input:focus-visible)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-radio-card:has(input:focus-visible)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-radio-card:has(input:focus-visible)::before {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-huawei-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-card:has(input:disabled),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-option:has(input:disabled),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-radio-card:has(input:disabled),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-radio-card:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.68;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-card input,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-option input,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel input[type="radio"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-title,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-copy {
+    display: block;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-title {
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-copy {
+    margin-top: 3px;
+    color: var(--architecture-vpc-huawei-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown {
+    position: relative;
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown[open] {
+    z-index: 160;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary {
+    position: relative;
+    display: flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 42px 8px 10px;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-huawei-text, var(--tool-text, #334155));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    list-style: none;
+    list-style-type: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown[open] .architecture-vpc-huawei-custom-dropdown-summary:not(:has(> .architecture-vpc-huawei-custom-arrow-slot))::after {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown[open] .architecture-vpc-huawei-custom-dropdown-summary > .architecture-vpc-huawei-custom-arrow-slot::before {
+    transform: translate(-50%, -62%) rotate(45deg);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:focus-visible {
+    border-color: var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-summary:focus-visible,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown[open] .architecture-vpc-huawei-custom-dropdown-summary {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-huawei-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    display: grid;
+    width: 100%;
+    min-width: 100%;
+    max-height: min(280px, 52vh);
+    border: 1px solid var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    border-radius: 10px;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 170;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown:not([open]) .architecture-vpc-huawei-custom-dropdown-menu {
+    display: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-option {
+    display: flex;
+    width: 100%;
+    min-height: 38px;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 10px;
+    border: 0;
+    border-top: 0;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-huawei-text, var(--tool-text, #334155));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: left;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-option:first-child {
+    border-top: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-option:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-option:focus-visible,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-option.active,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown-option[aria-selected="true"] {
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    outline: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option {
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    max-width: 100%;
+    min-height: 32px;
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 18px;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid var(--architecture-vpc-huawei-border, var(--tool-border, #d8e2ee));
+    border-radius: 10px;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.3;
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item::before {
+    content: "";
+    grid-row: 1;
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 5px;
+    background: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option::before {
+    grid-column: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item::before {
+    grid-column: 2;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item::after {
+    content: "";
+    grid-row: 1;
+    width: 5px;
+    height: 9px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transform: translateY(-1px) rotate(45deg);
+    transition: opacity 0.18s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option::after {
+    grid-column: 1;
+    justify-self: center;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item::after {
+    grid-column: 2;
+    justify-self: center;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option:hover::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item:hover::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item:hover::before {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option:has(input:checked)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item:has(input:checked)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item:has(input:checked)::before {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option:has(input:checked)::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item:has(input:checked)::after,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item:has(input:checked)::after {
+    opacity: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option:has(input:checked),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item:has(input:checked),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item:has(input:checked) {
+    color: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item:has(input:checked),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item:has(input:checked) {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option:has(input:focus-visible)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item:has(input:focus-visible)::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item:has(input:focus-visible)::before {
+    border-color: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    box-shadow: 0 0 0 3px var(--architecture-vpc-huawei-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option:has(input:disabled),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item:has(input:disabled),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.68;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option > span {
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-item > .architecture-vpc-huawei-toggle-copy,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-item > .architecture-vpc-huawei-toggle-copy {
+    min-width: 0;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option input,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel input[type="checkbox"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced input[type="checkbox"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 10px;
+    min-height: 32px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option::before {
+    width: 48px;
+    height: 28px;
+    border-color: var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 999px;
+    background: var(--architecture-vpc-huawei-toggle-off, var(--tool-toggle-off, #e7e5e4));
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option::after {
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    grid-column: 1;
+    justify-self: start;
+    align-self: center;
+    border: 0;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+    opacity: 1;
+    transform: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option:hover::before {
+    border-color: var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option:has(input:checked)::before {
+    border-color: transparent;
+    background: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    box-shadow: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option:has(input:checked)::after {
+    opacity: 1;
+    transform: translateX(20px);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option:has(input:focus-visible)::before {
+    box-shadow: 0 0 0 3px var(--architecture-vpc-huawei-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+}
+
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-hint,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-info,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-field-hint,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-flag-hint,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-inline-note,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-field-hint,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-flag-hint,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-inline-note {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 8px 12px;
+    min-width: 0;
+    margin: 0;
+    padding: 9px 10px;
+    border: 1px dashed var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+    border-radius: 12px;
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-surface-soft, #f8fafc));
+    color: var(--architecture-vpc-huawei-text-muted, var(--tool-text-muted, #64748b));
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-hint {
+    display: block;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-hint[data-span="2"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-info[data-span="2"] {
+    grid-column: 1 / -1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-info span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-settings[data-custom-layout],
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-grid[data-custom-columns],
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-config-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-toggle-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel .architecture-vpc-huawei-custom-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-config-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-toggle-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-inline-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-stacked-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-custom-grid,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-setting-row {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group-body .architecture-vpc-huawei-field-stack,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced .architecture-vpc-huawei-override-group--single .architecture-vpc-huawei-override-group-body {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-tabs,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-config-tabs {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-summary,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-summary,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-summary {
+        min-height: 44px;
+        padding: 10px 40px 10px 12px;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-body,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel-body,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced-body {
+        padding: 10px;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-tab,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-config-tab,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-dropdown,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-radio-group,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-radio-group,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-checkbox-option,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-panel textarea,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-advanced textarea {
+        width: 100%;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-group[data-span="2"],
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-card[data-span="2"],
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-custom-info[data-span="2"],
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-card-span-two {
+        grid-column: auto;
+    }
+}
+/* ns:end family._base.workspace.03_custom-settings */
+
+/* ns:start family._base.workspace.05_result-summary */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-empty,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-error,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-card,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-score-card {
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-output-summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-output-status-card {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-empty,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-error {
+    padding: 16px 18px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-empty {
+    border: 1px dashed var(--architecture-vpc-huawei-border-strong, var(--tool-border-strong, #cbd5e1));
+    background: var(--architecture-vpc-huawei-bg-soft, var(--tool-surface-soft, #f8fafc));
+    color: var(--architecture-vpc-huawei-text-muted, var(--tool-text-muted, #64748b));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-error {
+    border: 1px solid var(--architecture-vpc-huawei-danger, var(--tool-danger, #dc2626));
+    background: var(--architecture-vpc-huawei-danger-soft, rgba(220, 38, 38, 0.1));
+    color: var(--architecture-vpc-huawei-danger-strong, var(--tool-danger-strong, #991b1b));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-score-card.architecture-vpc-huawei-result-summary {
+    --architecture-vpc-huawei-result-accent: var(--architecture-vpc-huawei-accent, var(--tool-accent, #475569));
+    --architecture-vpc-huawei-result-accent-soft: var(--architecture-vpc-huawei-accent-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+    --architecture-vpc-huawei-result-border: var(--architecture-vpc-huawei-border, var(--tool-border, #d8e2ee));
+    --architecture-vpc-huawei-result-surface: var(--architecture-vpc-huawei-bg-panel, var(--tool-surface, #ffffff));
+    --architecture-vpc-huawei-result-surface-soft: var(--architecture-vpc-huawei-bg-soft, var(--tool-surface-soft, #f8fafc));
+    --architecture-vpc-huawei-result-heading: var(--architecture-vpc-huawei-text-strong, var(--tool-heading, #111827));
+    --architecture-vpc-huawei-result-text: var(--architecture-vpc-huawei-text-body, var(--tool-text, #334155));
+    --architecture-vpc-huawei-result-muted: var(--architecture-vpc-huawei-text-muted, var(--tool-text-muted, #64748b));
+    --architecture-vpc-huawei-result-track: var(--architecture-vpc-huawei-score-track, var(--tool-score-track, #e2e8f0));
+    --architecture-vpc-huawei-result-success: var(--architecture-vpc-huawei-success, var(--tool-success, #15803d));
+    --architecture-vpc-huawei-result-success-soft: var(--architecture-vpc-huawei-success-soft, var(--tool-success-soft, rgba(22, 163, 74, 0.1)));
+    --architecture-vpc-huawei-result-warning: var(--architecture-vpc-huawei-warning, var(--tool-warning, #a16207));
+    --architecture-vpc-huawei-result-warning-soft: var(--architecture-vpc-huawei-warning-soft, var(--tool-warning-soft, rgba(234, 179, 8, 0.14)));
+    --architecture-vpc-huawei-result-error-state: var(--architecture-vpc-huawei-danger, var(--tool-danger, #dc2626));
+    --architecture-vpc-huawei-result-error-soft: var(--architecture-vpc-huawei-danger-soft, var(--tool-danger-soft, rgba(220, 38, 38, 0.1)));
+    --architecture-vpc-huawei-result-neutral-soft: var(--architecture-vpc-huawei-neutral-soft, rgba(100, 116, 139, 0.1));
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    align-items: stretch;
+    justify-items: stretch;
+    padding: 12px;
+    border: 1px solid var(--architecture-vpc-huawei-result-border);
+    border-radius: 16px;
+    background: var(--architecture-vpc-huawei-result-surface-soft);
+    color: var(--architecture-vpc-huawei-result-text);
+    text-align: initial;
+    overflow: hidden;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-summary[data-result-tone="success"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-summary[data-result-tone="ready"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-score-card.architecture-vpc-huawei-result-summary[data-result-tone="success"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-score-card.architecture-vpc-huawei-result-summary[data-result-tone="ready"] {
+    --architecture-vpc-huawei-result-state: var(--architecture-vpc-huawei-result-success);
+    --architecture-vpc-huawei-result-state-soft: var(--architecture-vpc-huawei-result-success-soft);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-summary[data-result-tone="warning"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-summary[data-result-tone="need-work"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-score-card.architecture-vpc-huawei-result-summary[data-result-tone="warning"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-score-card.architecture-vpc-huawei-result-summary[data-result-tone="need-work"] {
+    --architecture-vpc-huawei-result-state: var(--architecture-vpc-huawei-result-warning);
+    --architecture-vpc-huawei-result-state-soft: var(--architecture-vpc-huawei-result-warning-soft);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-summary[data-result-tone="error"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-score-card.architecture-vpc-huawei-result-summary[data-result-tone="error"] {
+    --architecture-vpc-huawei-result-state: var(--architecture-vpc-huawei-result-error-state);
+    --architecture-vpc-huawei-result-state-soft: var(--architecture-vpc-huawei-result-error-soft);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.92fr) minmax(0, 1.08fr);
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    height: 100%;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid var(--architecture-vpc-huawei-result-border);
+    border-radius: 14px;
+    background: var(--architecture-vpc-huawei-result-surface);
+    color: var(--architecture-vpc-huawei-result-text);
+    overflow: hidden;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-main {
+    background: var(--architecture-vpc-huawei-result-surface);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-main .architecture-vpc-huawei-result-chip-row {
+    align-self: initial;
+    margin-top: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-command {
+    align-content: center;
+    justify-items: center;
+    text-align: center;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-kicker,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-label {
+    color: var(--architecture-vpc-huawei-result-accent);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    text-transform: uppercase;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-title {
+    margin: 0;
+    color: var(--architecture-vpc-huawei-result-heading);
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-title-center {
+    text-align: center;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-copy,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-copy {
+    margin: 0;
+    color: var(--architecture-vpc-huawei-result-muted);
+    font-size: 13px;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-copy-center {
+    max-width: 34rem;
+    text-align: center;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-row-center {
+    justify-content: center;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border: 1px solid var(--architecture-vpc-huawei-result-border);
+    border-radius: 999px;
+    background: var(--architecture-vpc-huawei-result-surface);
+    color: var(--architecture-vpc-huawei-result-text);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: currentColor;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-success,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-ready {
+    border-color: color-mix(in srgb, var(--architecture-vpc-huawei-result-success) 32%, var(--architecture-vpc-huawei-result-border));
+    background: color-mix(in srgb, var(--architecture-vpc-huawei-result-success-soft) 58%, var(--architecture-vpc-huawei-result-surface));
+    color: color-mix(in srgb, var(--architecture-vpc-huawei-result-success) 62%, var(--architecture-vpc-huawei-result-text));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-warning,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-need-work {
+    border-color: color-mix(in srgb, var(--architecture-vpc-huawei-result-warning) 30%, var(--architecture-vpc-huawei-result-border));
+    background: color-mix(in srgb, var(--architecture-vpc-huawei-result-warning-soft) 52%, var(--architecture-vpc-huawei-result-surface));
+    color: color-mix(in srgb, var(--architecture-vpc-huawei-result-warning) 58%, var(--architecture-vpc-huawei-result-text));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-error {
+    border-color: color-mix(in srgb, var(--architecture-vpc-huawei-result-error-state) 30%, var(--architecture-vpc-huawei-result-border));
+    background: color-mix(in srgb, var(--architecture-vpc-huawei-result-error-soft) 54%, var(--architecture-vpc-huawei-result-surface));
+    color: color-mix(in srgb, var(--architecture-vpc-huawei-result-error-state) 58%, var(--architecture-vpc-huawei-result-text));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-baseline,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-updated {
+    border-color: rgba(100, 116, 139, 0.35);
+    background: var(--architecture-vpc-huawei-result-neutral-soft);
+    color: var(--architecture-vpc-huawei-result-text);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-outcome {
+    border-color: color-mix(in srgb, var(--architecture-vpc-huawei-result-accent) 34%, var(--architecture-vpc-huawei-result-border));
+    background: color-mix(in srgb, var(--architecture-vpc-huawei-result-accent-soft) 46%, var(--architecture-vpc-huawei-result-surface));
+    color: color-mix(in srgb, var(--architecture-vpc-huawei-result-accent) 62%, var(--architecture-vpc-huawei-result-text));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring[data-chart-ready="true"] {
+    position: relative;
+    display: grid;
+    width: 152px;
+    height: 152px;
+    place-items: center;
+    border-radius: 999px;
+    background:
+        conic-gradient(from 0deg, color-mix(in srgb, var(--architecture-vpc-huawei-result-accent) 68%, var(--architecture-vpc-huawei-result-surface)) 0deg var(--architecture-vpc-huawei-result-progress, var(--progress-angle, 0deg)), color-mix(in srgb, var(--architecture-vpc-huawei-result-track) 82%, var(--architecture-vpc-huawei-result-surface)) var(--architecture-vpc-huawei-result-progress, var(--progress-angle, 0deg)) 360deg);
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-huawei-result-border);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring::before,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring::after {
+    content: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring > [class$="-score-echart"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring > [class*="-score-echart "],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring > [class$="-chart"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring > [class*="-chart "] {
+    display: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring-center {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 112px;
+    height: 112px;
+    place-items: center;
+    align-content: center;
+    border-radius: 999px;
+    background: var(--architecture-vpc-huawei-result-surface);
+    box-shadow: inset 0 0 0 1px var(--architecture-vpc-huawei-result-border);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring-value {
+    color: var(--architecture-vpc-huawei-result-accent);
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring-unit {
+    margin-top: 4px;
+    color: var(--architecture-vpc-huawei-result-muted);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-primary-text {
+    display: none;
+    min-width: 0;
+    max-width: 100%;
+    padding: 18px 20px;
+    border: 1px dashed var(--architecture-vpc-huawei-result-border);
+    border-radius: 14px;
+    background: var(--architecture-vpc-huawei-result-surface-soft);
+    color: var(--architecture-vpc-huawei-result-heading);
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-primary-text-value {
+    display: block;
+    color: var(--architecture-vpc-huawei-result-heading);
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.18;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-primary-text-unit {
+    display: block;
+    margin-top: 6px;
+    color: var(--architecture-vpc-huawei-result-muted);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-command-output {
+    display: grid;
+    min-width: 0;
+    max-width: 100%;
+    justify-items: center;
+    padding: 16px 18px;
+    border: 1px dashed var(--architecture-vpc-huawei-result-border);
+    border-radius: 14px;
+    background: var(--architecture-vpc-huawei-result-surface-soft);
+    color: var(--architecture-vpc-huawei-result-heading);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-command-value {
+    max-width: 100%;
+    color: var(--architecture-vpc-huawei-result-heading);
+    font-family: inherit;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary[data-result-visual="command"] .architecture-vpc-huawei-result-ring,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary[data-result-visual="text"] .architecture-vpc-huawei-result-ring,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary[data-result-visual="status"] .architecture-vpc-huawei-result-ring,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual[data-result-visual="command"] .architecture-vpc-huawei-result-ring,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual[data-result-visual="text"] .architecture-vpc-huawei-result-ring,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual[data-result-visual="status"] .architecture-vpc-huawei-result-ring {
+    display: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary[data-result-visual="command"] .architecture-vpc-huawei-result-primary-text,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary[data-result-visual="text"] .architecture-vpc-huawei-result-primary-text,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary[data-result-visual="status"] .architecture-vpc-huawei-result-primary-text,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual[data-result-visual="command"] .architecture-vpc-huawei-result-primary-text,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual[data-result-visual="text"] .architecture-vpc-huawei-result-primary-text,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual[data-result-visual="status"] .architecture-vpc-huawei-result-primary-text {
+    display: block;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-visual-copy {
+    display: grid;
+    gap: 8px;
+    justify-items: center;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-visual-copy-top {
+    margin-bottom: 2px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-card {
+    display: grid;
+    align-content: start;
+    gap: 7px;
+    min-height: 112px;
+    padding: 14px;
+    border: 1px solid var(--architecture-vpc-huawei-result-border);
+    border-radius: 14px;
+    background: var(--architecture-vpc-huawei-result-surface);
+    overflow: hidden;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-value {
+    color: var(--architecture-vpc-huawei-result-heading);
+    font-size: clamp(16px, 1.2vw, 18px);
+    font-weight: 800;
+    line-height: 1.22;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-summary,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-score-card.architecture-vpc-huawei-result-summary {
+        padding: 10px;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-card {
+        padding: 12px;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring {
+        width: 132px;
+        height: 132px;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring-center {
+        width: 96px;
+        height: 96px;
+    }
+}
+/* ns:end family._base.workspace.05_result-summary */
+
+/* output-toolbar-standard:start */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-shell,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-main,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-left,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-shell,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-wrap,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-select,
+.architecture-vpc-huawei-tool .tool-output-actions,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions {
+    min-width: 0;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-shell {
+    position: relative;
+    z-index: 20;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-shell:has(.architecture-vpc-huawei-sort-select[open]) {
+    z-index: 120;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(390px, 450px);
+    align-items: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-main {
+    display: grid;
+    grid-template-columns: auto minmax(0, 240px);
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-shell {
+    display: grid;
+    grid-template-columns: auto minmax(0, 240px);
+    align-items: center;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-wrap {
+    width: min(100%, 240px);
+    max-width: 240px;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-select {
+    position: relative;
+    z-index: 30;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-select[open] {
+    z-index: 140;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-select > summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-select .architecture-vpc-huawei-select-summary {
+    min-height: 46px;
+    box-sizing: border-box;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-menu,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-select .architecture-vpc-huawei-select-body {
+    z-index: 160;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.architecture-vpc-huawei-tool .tool-output-actions,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions {
+    display: grid;
+    width: 100%;
+    max-width: 450px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-content: end;
+    justify-self: end;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn,
+.architecture-vpc-huawei-tool .tool-output-actions .architecture-vpc-huawei-action-btn,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .architecture-vpc-huawei-action-btn {
+    display: inline-flex;
+    width: 100%;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    border: 1px solid var(--tool-border, #cbd5e1);
+    background: var(--tool-surface, #ffffff);
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--tool-text, #243044);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn:hover,
+.architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn:focus,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn:hover,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn:focus,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn:hover,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn:focus,
+.architecture-vpc-huawei-tool .tool-output-actions .architecture-vpc-huawei-action-btn:hover,
+.architecture-vpc-huawei-tool .tool-output-actions .architecture-vpc-huawei-action-btn:focus,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .architecture-vpc-huawei-action-btn:hover,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .architecture-vpc-huawei-action-btn:focus {
+    border-color: var(--tool-accent, #2563eb);
+    background: var(--tool-accent-soft, #eff6ff);
+    color: var(--tool-accent, #2563eb);
+    outline: none;
+}
+
+
+.architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
+    grid-column: 2;
+}
+
+.architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+    grid-column: 3;
+}
+
+.architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn i,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn i,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn i,
+.architecture-vpc-huawei-tool .tool-output-actions .architecture-vpc-huawei-action-btn i,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .architecture-vpc-huawei-action-btn i {
+    flex: 0 0 auto;
+    color: currentColor;
+    font-size: 16px;
+    line-height: 1;
+}
+
+@media (max-width: 991.98px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .architecture-vpc-huawei-tool .tool-output-actions,
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-self: start;
+        margin-left: 0;
+        max-width: none;
+    }
+
+    .architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn:nth-child(4),
+    .architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn:nth-child(5),
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-main,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-shell {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-left,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-wrap,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-select,
+    .architecture-vpc-huawei-tool .tool-output-actions,
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions {
+        width: 100%;
+        max-width: none;
+    }
+
+    .architecture-vpc-huawei-tool .tool-output-actions,
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+/* output-toolbar-standard:end */
+
+
+/* ns:start family._base.workspace.08_json-restore */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-restore-shell,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-card,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-head,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-title-wrap,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-empty,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-status {
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-restore-shell {
+    display: grid;
+    gap: 12px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-card.tool-json-panel {
+    display: grid;
+    grid-auto-rows: max-content;
+    align-content: start;
+    gap: 0;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--base-json-border, #ddd6fe);
+    border-radius: var(--base-json-radius, 14px);
+    background: var(--base-json-surface, #ffffff);
+    color: var(--base-json-text, #1f1733);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-head.tool-json-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--base-json-border-soft, #efe7ff);
+    background: var(--base-json-head-bg, #f8f5ff);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-title-wrap {
+    display: grid;
+    gap: 4px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-title.tool-json-title {
+    color: var(--base-json-heading, #1f1433);
+    font-size: var(--base-json-title-size, 15px);
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-helper {
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-sm, 13px);
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-status {
+    display: none;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-xs, 12px);
+    font-weight: 850;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-status:empty,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-status.is-hidden {
+    display: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-status.is-success {
+    display: inline-flex;
+    color: var(--state-success, #16a34a);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-status.is-error {
+    display: inline-flex;
+    color: var(--state-error, #dc2626);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-empty {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--base-json-border-soft, #efe7ff);
+    background: var(--base-json-empty-bg, #fffaf5);
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-sm, 13px);
+    font-weight: 750;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-empty:empty,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-empty.is-hidden {
+    display: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output.tool-json-output {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-height: 220px;
+    max-height: 520px;
+    margin: 0;
+    padding: 16px;
+    overflow: auto;
+    background: var(--base-json-code-bg, #f4f7fb);
+    color: var(--base-json-code-text, #0f172a);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: var(--base-json-code-size, 13px);
+    line-height: 1.7;
+    tab-size: 2;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output.tool-json-output code {
+    display: block;
+    min-width: max-content;
+    color: inherit;
+    white-space: pre;
+    word-break: normal;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output .tool-json-key,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output .json-key {
+    color: var(--base-json-key, #475569);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output .tool-json-string,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output .json-string {
+    color: var(--base-json-string, #047857);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output .tool-json-number,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output .json-number {
+    color: var(--base-json-number, #b45309);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output .tool-json-boolean,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output .json-boolean {
+    color: var(--base-json-boolean, #7c3aed);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output .tool-json-null,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output .json-null {
+    color: var(--base-json-null, #b91c1c);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-import-input.d-none,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-import-input[hidden],
+.architecture-vpc-huawei-tool input[type="file"][id$="ImportJson"].d-none,
+.architecture-vpc-huawei-tool input[type="file"][id$="ImportJson"][hidden] {
+    display: none !important;
+}
+
+@media (max-width: 767.98px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-json-head.tool-json-head {
+        display: grid;
+    }
+
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-json-output.tool-json-output {
+        min-height: 180px;
+        max-height: 420px;
+        padding: 14px;
+    }
+}
+/* ns:end family._base.workspace.08_json-restore */
+/* table-output-standard:start */
+.architecture-vpc-huawei-tool .tool-tabs,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tabs[role="tablist"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tab-list[role="tablist"] {
+    max-width: 100%;
+    flex-wrap: nowrap !important;
+    justify-content: flex-end;
+    justify-content: safe flex-end;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+}
+
+.architecture-vpc-huawei-tool .tool-tab-btn,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tab-btn {
+    flex: 0 0 auto;
+    border-radius: 999px;
+    white-space: nowrap;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.architecture-vpc-huawei-tool .tool-tabs .tool-tab-btn,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tabs[role="tablist"] .architecture-vpc-huawei-tab-btn,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tab-list[role="tablist"] .architecture-vpc-huawei-tab-btn,
+.architecture-vpc-huawei-tool .tool-tabs .tool-tab-btn:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tabs[role="tablist"] .architecture-vpc-huawei-tab-btn:hover,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tab-list[role="tablist"] .architecture-vpc-huawei-tab-btn:hover,
+.architecture-vpc-huawei-tool .tool-tabs .tool-tab-btn:focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tabs[role="tablist"] .architecture-vpc-huawei-tab-btn:focus,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tab-list[role="tablist"] .architecture-vpc-huawei-tab-btn:focus,
+.architecture-vpc-huawei-tool .tool-tabs .tool-tab-btn.active,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tabs[role="tablist"] .architecture-vpc-huawei-tab-btn.active,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tab-list[role="tablist"] .architecture-vpc-huawei-tab-btn.active,
+.architecture-vpc-huawei-tool .tool-tabs .tool-tab-btn[aria-selected="true"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tabs[role="tablist"] .architecture-vpc-huawei-tab-btn[aria-selected="true"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tab-list[role="tablist"] .architecture-vpc-huawei-tab-btn[aria-selected="true"] {
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.architecture-vpc-huawei-tool .tool-tab-btn i,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-tab-btn i {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.architecture-vpc-huawei-tool .tool-result-table-wrap,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-wrap {
+    position: relative;
+    overflow-x: auto;
+}
+
+.architecture-vpc-huawei-tool .tool-result-table,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table {
+    min-width: 680px;
+    table-layout: fixed;
+}
+
+.architecture-vpc-huawei-tool .tool-result-table th:first-child,
+.architecture-vpc-huawei-tool .tool-result-table td:first-child,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table th:first-child,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table td:first-child {
+    width: 58px;
+    text-align: center;
+}
+
+.architecture-vpc-huawei-tool .tool-result-table th:not(:first-child):not(:last-child),
+.architecture-vpc-huawei-tool .tool-result-table td:not(:first-child):not(:last-child),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table th:not(:first-child):not(:last-child),
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table td:not(:first-child):not(:last-child) {
+    text-align: start;
+}
+
+.architecture-vpc-huawei-tool .tool-result-table:has(tbody td:last-child button) th:last-child,
+.architecture-vpc-huawei-tool .tool-result-table:has(tbody td:last-child button) td:last-child,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table:has(tbody td:last-child button) th:last-child,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table:has(tbody td:last-child button) td:last-child,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-action-cell,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-copy-cell,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-copy-cell {
+    position: sticky;
+    right: 0;
+    inset-inline-end: 0;
+    z-index: 2;
+    width: 74px;
+    min-width: 74px;
+    text-align: center;
+    white-space: nowrap;
+    background: var(--tool-surface, #ffffff);
+    box-shadow: none;
+}
+
+.architecture-vpc-huawei-tool .tool-result-table:has(tbody td:last-child button) th:last-child,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table:has(tbody td:last-child button) th:last-child {
+    z-index: 3;
+    background: var(--tool-table-head-bg, var(--tool-surface-soft, #f8fafc));
+}
+
+.architecture-vpc-huawei-tool .tool-result-table tbody tr:hover td:last-child,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table tbody tr:hover td:last-child {
+    background: var(--tool-table-row-hover, var(--tool-surface, #ffffff));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-cell-text,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-cell-clamp {
+    display: -webkit-box;
+    max-height: calc(var(--tool-table-row-line-height, 1.45em) * var(--tool-table-row-line-clamp, 3));
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--tool-table-row-line-clamp, 3);
+    line-clamp: var(--tool-table-row-line-clamp, 3);
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-status-cell {
+    text-align: center !important;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-status-cell .architecture-vpc-huawei-table-cell-text,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-status-cell .architecture-vpc-huawei-cell-clamp {
+    margin-inline: auto;
+    text-align: center;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-output-note-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-output-note-card {
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+    border: 1px solid var(--tool-border, #dbe4ef);
+    border-radius: 12px;
+    background: var(--tool-surface, #ffffff);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-output-note-title,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-output-note-copy {
+    margin: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-output-note-title {
+    color: var(--tool-heading, #111827);
+    font-size: 0.92rem;
+    font-weight: 850;
+    line-height: 1.25;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-table-output-note-copy {
+    color: var(--tool-muted, #475569);
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+@media (max-width: 767.98px) {
+    .architecture-vpc-huawei-tool .tool-tabs,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-tabs[role="tablist"],
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-tab-list[role="tablist"] {
+        flex-wrap: nowrap !important;
+        justify-content: flex-start;
+        overflow-x: auto;
+    }
+
+    .architecture-vpc-huawei-tool .tool-tab-btn,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-tab-btn {
+        width: auto !important;
+        max-width: none;
+        flex: 0 0 auto;
+    }
+}
+/* table-output-standard:end */
+
+/* architecture-result-summary-base-alignment:start */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-summary {
+    gap: 12px;
+    padding: 14px;
+    background: var(--architecture-vpc-huawei-result-surface, #ffffff);
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-main {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-icon {
+    display: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-copy {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-title {
+    margin: 0;
+    color: var(--architecture-vpc-huawei-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-copy p {
+    display: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-meta {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-chip {
+    min-height: 32px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-hero-grid {
+    grid-template-columns: minmax(210px, 0.82fr) minmax(0, 1.28fr);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card {
+    gap: 10px;
+    min-height: 0;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-command {
+    min-height: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary {
+    border-color: var(--architecture-vpc-huawei-result-border-strong, var(--architecture-vpc-huawei-result-border, #bfdbfe));
+    background:
+        radial-gradient(circle at 16% 16%, color-mix(in srgb, var(--architecture-vpc-huawei-result-info-soft, rgba(37, 99, 235, 0.1)) 42%, transparent) 0 96px, transparent 180px),
+        var(--architecture-vpc-huawei-result-surface, #ffffff);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-summary-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    align-items: start;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-summary-copy {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-icon-summary {
+    display: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 2px 0;
+    background: var(--architecture-vpc-huawei-result-border, #dbe4f0);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-main .architecture-vpc-huawei-result-chip-row {
+    align-self: initial;
+    margin-top: 0;
+}
+
+@media (max-width: 640px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-meta {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-command,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary {
+    min-height: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-command {
+    align-content: stretch;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary {
+    align-content: stretch;
+    display: flex;
+    flex-direction: column;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-divider {
+    flex: 0 0 auto;
+    margin: 0;
+    margin-top: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-command > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary > .architecture-vpc-huawei-result-chip-grid {
+    min-height: 0;
+    align-content: flex-start;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-ring-value {
+    max-width: min(86px, 82%);
+    font-size: clamp(18px, calc(168px / var(--architecture-vpc-huawei-result-value-chars, 3)), 32px);
+    line-height: 0.95;
+    overflow-wrap: normal;
+    text-align: center;
+    white-space: nowrap;
+}
+
+
+/* architecture-result-summary-metric-contract:start */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-command > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary > .architecture-vpc-huawei-result-chip-grid,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-main > .architecture-vpc-huawei-result-chip-row {
+    min-height: 0;
+    align-content: flex-start;
+    align-items: flex-start;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-card {
+    --architecture-vpc-huawei-result-metric-color: var(--architecture-vpc-huawei-result-accent, var(--tool-accent, #2563eb));
+    --architecture-vpc-huawei-result-metric-soft: var(--architecture-vpc-huawei-result-accent-soft, rgba(37, 99, 235, 0.1));
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    align-content: stretch;
+    gap: 8px;
+    min-height: 138px;
+    padding: 14px;
+    border: 1px solid var(--architecture-vpc-huawei-result-border, var(--tool-border, #dbe4f0));
+    border-radius: 14px;
+    background: var(--architecture-vpc-huawei-result-surface, #ffffff);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    overflow: hidden;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-success {
+    --architecture-vpc-huawei-result-metric-color: var(--architecture-vpc-huawei-result-success, #059669);
+    --architecture-vpc-huawei-result-metric-soft: var(--architecture-vpc-huawei-result-success-soft, rgba(16, 185, 129, 0.12));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-info {
+    --architecture-vpc-huawei-result-metric-color: var(--architecture-vpc-huawei-result-info, #2563eb);
+    --architecture-vpc-huawei-result-metric-soft: var(--architecture-vpc-huawei-result-info-soft, rgba(37, 99, 235, 0.1));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-accent-tone {
+    --architecture-vpc-huawei-result-metric-color: var(--architecture-vpc-huawei-result-accent, var(--tool-accent, #2563eb));
+    --architecture-vpc-huawei-result-metric-soft: var(--architecture-vpc-huawei-result-accent-soft, rgba(37, 99, 235, 0.1));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-warning {
+    --architecture-vpc-huawei-result-metric-color: var(--architecture-vpc-huawei-result-warning, #d97706);
+    --architecture-vpc-huawei-result-metric-soft: var(--architecture-vpc-huawei-result-warning-soft, rgba(245, 158, 11, 0.14));
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-icon {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--architecture-vpc-huawei-result-metric-soft) 82%, var(--architecture-vpc-huawei-result-surface, #ffffff));
+    color: var(--architecture-vpc-huawei-result-metric-color);
+    font-size: 19px;
+    line-height: 1;
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--architecture-vpc-huawei-result-metric-color) 13%, transparent);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-label {
+    color: var(--architecture-vpc-huawei-result-metric-color);
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-value {
+    color: var(--architecture-vpc-huawei-result-heading, var(--tool-heading, #111827));
+    font-size: clamp(16px, 1.2vw, 18px);
+    font-weight: 800;
+    line-height: 1.22;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-copy {
+    align-self: start;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-accent {
+    display: block;
+    width: min(80px, 48%);
+    height: 3px;
+    align-self: initial;
+    margin-top: 0;
+    border-radius: 999px;
+    background: var(--architecture-vpc-huawei-result-metric-color);
+}
+
+@media (max-width: 960px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+/* architecture-result-summary-metric-contract:end */
+
+
+/* architecture-result-summary-divider-contract:start */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-command,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-main {
+    display: flex;
+    flex-direction: column;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-divider,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary > .architecture-vpc-huawei-result-card-divider,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual > .architecture-vpc-huawei-result-card-divider,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-command > .architecture-vpc-huawei-result-card-divider,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary > .architecture-vpc-huawei-result-card-divider,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-main > .architecture-vpc-huawei-result-card-divider {
+    flex: 0 0 auto;
+    margin: 0;
+    margin-top: auto;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-command > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary > .architecture-vpc-huawei-result-chip-grid,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-main > .architecture-vpc-huawei-result-chip-row {
+    min-height: var(--architecture-vpc-huawei-result-chip-zone-min, 112px);
+    align-content: flex-start;
+    align-items: flex-start;
+}
+/* architecture-result-summary-divider-contract:end */
+
+/* architecture-result-summary-header-gap-contract:start */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-output-content {
+    padding-top: 12px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-output-summary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-output-status-card {
+    gap: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-score-card.architecture-vpc-huawei-result-summary {
+    gap: 8px;
+    align-content: start;
+    padding: 10px 12px 12px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-main,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-copy,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-title {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header {
+    min-height: 32px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-hero-grid {
+    margin-top: 0;
+}
+/* architecture-result-summary-header-gap-contract:end */
+/* architecture-result-summary-content-type-reset-contract:start */
+.blog-details .article-content .content .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-title {
+    display: flex;
+    min-height: 32px;
+    align-items: center;
+    margin: 0;
+    color: var(--architecture-vpc-huawei-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+}
+
+.blog-details .article-content .content .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-title {
+    margin: 0;
+    color: var(--architecture-vpc-huawei-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.blog-details .article-content .content .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-copy,
+.blog-details .article-content .content .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-copy {
+    margin: 0;
+    color: var(--architecture-vpc-huawei-result-muted, var(--tool-text-muted, #64748b));
+    font-size: 13px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 520px) {
+    .blog-details .article-content .content .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-header-title,
+    .blog-details .article-content .content .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-title {
+        font-size: 19px;
+    }
+}
+/* architecture-result-summary-content-type-reset-contract:end */
+
+
+
+/* architecture-result-summary-base-alignment:end */
+/* ns:end family._base.workspace.00_shell */
+
+
+/* architecture-result-summary-primary-ring-contract:start */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary .architecture-vpc-huawei-result-card-icon-primary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual .architecture-vpc-huawei-result-card-icon-primary,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-primary-number,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-primary-text {
+    display: none !important;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary[data-result-visual="ring"],
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual[data-result-visual="ring"] {
+    justify-content: flex-start;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary[data-result-visual="ring"] .architecture-vpc-huawei-result-visual-copy-top,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual[data-result-visual="ring"] .architecture-vpc-huawei-result-visual-copy-top {
+    order: 0;
+    margin: 0 0 10px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary[data-result-visual="ring"] .architecture-vpc-huawei-result-visual-copy-top .architecture-vpc-huawei-result-title,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual[data-result-visual="ring"] .architecture-vpc-huawei-result-visual-copy-top .architecture-vpc-huawei-result-title {
+    color: var(--architecture-vpc-huawei-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.15;
+    text-align: center;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary[data-result-visual="ring"] .architecture-vpc-huawei-result-primary-visual,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual[data-result-visual="ring"] .architecture-vpc-huawei-result-primary-visual {
+    display: grid;
+    justify-items: center;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary[data-result-visual="ring"] .architecture-vpc-huawei-result-ring,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual[data-result-visual="ring"] .architecture-vpc-huawei-result-ring {
+    margin: 0 auto 10px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary > .architecture-vpc-huawei-result-card-divider,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual > .architecture-vpc-huawei-result-card-divider,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-main > .architecture-vpc-huawei-result-card-divider,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary > .architecture-vpc-huawei-result-card-divider {
+    margin-top: 12px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-primary > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-visual > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-main > .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-card-summary > .architecture-vpc-huawei-result-chip-grid {
+    min-height: 0;
+    margin-bottom: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-row,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-chip-grid {
+    margin-bottom: 0;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-value {
+    font-size: clamp(16px, 1.2vw, 18px);
+    font-weight: 800;
+    line-height: 1.22;
+}
+
+@media (max-width: 560px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-value {
+        font-size: 17px;
+    }
+}
+/* architecture-result-summary-primary-ring-contract:end */
+
+/* output-toolbar-persistence-contract:start */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-shell,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-main,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-left,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-shell,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-wrap,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-select,
+.architecture-vpc-huawei-tool .tool-output-actions,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions {
+    min-width: 0;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-shell {
+    position: relative;
+    z-index: 20;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-shell:has(.architecture-vpc-huawei-sort-select[open]) {
+    z-index: 120;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar {
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(390px, 450px);
+    align-items: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-main,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-left,
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-shell {
+    display: grid;
+    grid-template-columns: auto minmax(0, 240px);
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-wrap {
+    width: min(100%, 240px);
+    max-width: 240px;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-select {
+    position: relative;
+    z-index: 30;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-select[open] {
+    z-index: 140;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-summary {
+    min-height: 46px;
+    box-sizing: border-box;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-menu {
+    z-index: 160;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.architecture-vpc-huawei-tool .tool-output-actions,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions {
+    display: grid;
+    width: 100%;
+    max-width: 450px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-content: end;
+    justify-self: end;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn,
+.architecture-vpc-huawei-tool .tool-output-actions .architecture-vpc-huawei-action-btn,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .architecture-vpc-huawei-action-btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    gap: 6px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1;
+    overflow: visible;
+    white-space: nowrap;
+}
+
+.architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn [data-button-label],
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn [data-button-label],
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn [data-button-label],
+.architecture-vpc-huawei-tool .tool-output-actions .architecture-vpc-huawei-action-btn [data-button-label],
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .architecture-vpc-huawei-action-btn [data-button-label] {
+    display: inline-block;
+    min-width: 0;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+.architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
+    grid-column: 2;
+}
+
+.architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+    grid-column: 3;
+}
+
+.architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn i,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn i,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn i,
+.architecture-vpc-huawei-tool .tool-output-actions .architecture-vpc-huawei-action-btn i,
+.architecture-vpc-huawei-tool .tool-result-toolbar-actions .architecture-vpc-huawei-action-btn i {
+    flex: 0 0 auto;
+    font-size: 15px;
+    line-height: 1;
+}
+
+@media (max-width: 991.98px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .architecture-vpc-huawei-tool .tool-output-actions,
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-self: start;
+        margin-left: 0;
+        max-width: none;
+    }
+
+    .architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn:nth-child(4),
+    .architecture-vpc-huawei-tool .tool-output-actions .tool-action-btn:nth-child(5),
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-main,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-toolbar-left,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-shell {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-wrap,
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-sort-select,
+    .architecture-vpc-huawei-tool .tool-output-actions,
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions {
+        width: 100%;
+        max-width: none;
+    }
+
+    .architecture-vpc-huawei-tool .tool-output-actions,
+    .architecture-vpc-huawei-tool .tool-result-toolbar-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+/* output-toolbar-persistence-contract:end */
+
+/* result-summary-persistence-contract:start */
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-card {
+    gap: 7px;
+    min-height: 128px;
+    padding: 14px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0;
+    font-size: 16px;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-label {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-value {
+    font-size: clamp(14px, 1vw, 16px);
+    font-weight: 800;
+    line-height: 1.18;
+    overflow-wrap: anywhere;
+}
+
+.architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-copy {
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+@media (max-width: 760px) {
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-card {
+        min-height: 118px;
+        padding: 13px;
+    }
+
+    .architecture-vpc-huawei-tool .architecture-vpc-huawei-result-metric-value {
+        font-size: 15px;
+    }
+}
+/* result-summary-persistence-contract:end */

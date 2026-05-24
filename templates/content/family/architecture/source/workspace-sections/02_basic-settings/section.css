@@ -1,0 +1,586 @@
+/* section.css */
+
+/* Extracted architecture workspace foundation shared by section demos. */
+
+.__TOOL_CLASS__,
+.markdown-content {
+    --tool-bg: linear-gradient(180deg, #f8f5ff 0%, #fff7ed 100%);
+    --tool-surface: #ffffff;
+    --tool-surface-strong: #f8f5ff;
+    --tool-surface-muted: #fff7ed;
+    --tool-border: #ddd6fe;
+    --tool-border-strong: #c4b5fd;
+    --tool-text: #2f2542;
+    --tool-text-muted: #6b5c7b;
+    --tool-heading: #1f1433;
+    --tool-accent: #7c3aed;
+    --tool-accent-strong: #6d28d9;
+    --tool-accent-soft: rgba(124, 58, 237, 0.12);
+    --tool-focus-ring: rgba(124, 58, 237, 0.18);
+    --tool-success: #15803d;
+    --tool-warning: #d97706;
+    --tool-danger: #b91c1c;
+    --tool-danger-rgb: 185, 28, 28;
+    --tool-stage-bg: #fffdf8;
+    --tool-stage-grid: rgba(124, 58, 237, 0.08);
+    --tool-stage-grid-strong: rgba(249, 115, 22, 0.1);
+    --tool-node-bg: #ffffff;
+    --tool-node-border: #c4b5fd;
+    --tool-node-shadow: 0 18px 30px rgba(150, 84, 24, 0.1);
+    --tool-connector: #111827;
+    --tool-connector-active: #111827;
+    --tool-selection: rgba(124, 58, 237, 0.14);
+    --tool-border-strong-rgb: 196, 181, 253;
+    --tool-accent-rgb: 124, 58, 237;
+    --tool-accent-hover: #6d28d9;
+    --tool-accent-deep: #5b21b6;
+    --tool-accent-text: #5b21b6;
+    --tool-accent-pale: #f5f3ff;
+    --tool-accent-pale-rgb: 245, 243, 255;
+    --tool-accent-panel: #faf7ff;
+    --tool-accent-panel-rgb: 250, 247, 255;
+    --tool-accent-tint: #ede9fe;
+    --tool-accent-tint-strong: #ddd6fe;
+    --tool-accent-muted-rgb: 237, 233, 254;
+    --tool-secondary: #f97316;
+    --tool-secondary-rgb: 249, 115, 22;
+    --tool-secondary-strong: #c2410c;
+    --tool-secondary-surface: #fff7ed;
+    --tool-secondary-surface-rgb: 255, 247, 237;
+    --tool-secondary-border: #fed7aa;
+    --tool-placeholder: #7c6a8d;
+    --tool-shadow-rgb: 76, 29, 149;
+    --tool-popover-shadow-rgb: 68, 38, 12;
+    --tool-primary-gradient: linear-gradient(135deg, #7c3aed 0%, #f97316 100%);
+    --tool-primary-gradient-hover: linear-gradient(135deg, #6d28d9 0%, #ea580c 100%);
+    --tool-active-gradient: linear-gradient(135deg, rgba(124, 58, 237, 0.12) 0%, rgba(249, 115, 22, 0.12) 100%);
+    --tool-output-gradient: linear-gradient(135deg, rgba(245, 243, 255, 0.96) 0%, rgba(255, 247, 237, 0.96) 100%);
+    --tool-panel-gradient: linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
+    --tool-panel-gradient-soft: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(250, 247, 255, 0.96) 100%);
+    --tool-table-head-gradient: linear-gradient(180deg, #f8f5ff 0%, #fff7ed 100%);
+    --tool-score-track: rgba(226, 232, 240, 0.96);
+    --tool-score-ring: #c2410c;
+    --tool-score-ring-rgb: 194, 65, 12;
+    --tool-neutral-surface: #f8fafc;
+    --tool-neutral-chip-text: #334155;
+    --tool-neutral-border-rgb: 148, 163, 184;
+    --tool-font-size-micro: 11px;
+    --tool-font-size-xs: 12px;
+    --tool-font-size-xs-plus: 12.5px;
+    --tool-font-size-sm: 13px;
+    --tool-font-size-sm-plus: 13.5px;
+    --tool-font-size-base: 14px;
+    --tool-font-size-md: 15px;
+    --tool-font-size-lg: 17px;
+    --tool-font-size-xl: 18px;
+    --tool-font-size-2xl: 19px;
+    --tool-font-size-3xl: 20px;
+    --tool-font-size-score: 29px;
+    --tool-font-size-score-compact: 26px;
+    --tool-font-size-inline-code: 0.875em;
+    --tool-radius-xs: 8px;
+    --tool-radius-sm: 12px;
+    --tool-radius-md: 16px;
+    --tool-radius-lg: 18px;
+    --tool-radius-xl: 22px;
+    --tool-gap-xs: 8px;
+    --tool-gap-sm: 12px;
+    --tool-gap-md: 16px;
+    --tool-gap-lg: 18px;
+    --tool-gap-xl: 24px;
+    --tool-shadow-sm: 0 8px 18px rgba(132, 66, 16, 0.08);
+    --tool-shadow-md: 0 16px 32px rgba(132, 66, 16, 0.1);
+    --tool-shadow-lg: 0 24px 40px rgba(132, 66, 16, 0.12);
+    color: var(--tool-text);
+    font-size: var(--tool-font-size-base);
+    line-height: 1.5;
+}
+
+.markdown-content {
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.markdown-content p,
+.markdown-content li {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #4b5563;
+}
+
+.markdown-content > [class*="-markdown-card"] li,
+.markdown-content > [class*="-markdown-card"] li p {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
+}
+
+.markdown-content li,
+.markdown-content li p {
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
+}
+
+.markdown-content h3 {
+    margin-top: 22px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+.markdown-content :not(pre) > code {
+    font-size: 0.875em;
+    line-height: inherit;
+    padding: 0 6px;
+    border-radius: 6px;
+}
+
+.markdown-content > .content-card {
+    padding-top: 18px;
+    padding-bottom: 20px;
+    margin-top: 18px;
+    margin-bottom: 18px;
+}
+
+.markdown-content > .content-card > h2:first-child {
+    margin-bottom: 12px;
+}
+
+.__TOOL_CLASS__,
+.__TOOL_CLASS__ *,
+.__TOOL_CLASS__ *::before,
+.__TOOL_CLASS__ *::after {
+    box-sizing: border-box;
+}
+
+.__TOOL_CLASS__ button,
+.__TOOL_CLASS__ input,
+.__TOOL_CLASS__ select,
+.__TOOL_CLASS__ textarea {
+    font: inherit;
+}
+
+.__TOOL_CLASS__ button {
+    cursor: pointer;
+}
+
+.__TOOL_CLASS__ button:disabled,
+.__TOOL_CLASS__ input:disabled,
+.__TOOL_CLASS__ select:disabled,
+.__TOOL_CLASS__ textarea:disabled {
+    cursor: not-allowed;
+    opacity: 0.62;
+}
+
+.__TOOL_CLASS__ .d-none {
+    display: none !important;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    white-space: nowrap;
+}
+
+.__TOOL_CLASS__ .tool-shell {
+    background: var(--tool-surface);
+    border: 1px solid var(--tool-border);
+    border-radius: var(--tool-radius-md);
+    box-shadow: var(--tool-shadow-sm);
+    min-width: 0;
+}
+
+.__TOOL_CLASS__ section.tool-shell {
+    padding: 0;
+}
+
+.__TOOL_CLASS__ .tool-prompt-shell {
+    padding: 26px 30px;
+    background: var(--tool-panel-gradient);
+    border-radius: var(--tool-radius-lg);
+}
+
+.__TOOL_CLASS__ .tool-shell-header,
+.__TOOL_CLASS__ .tool-shell-body {
+    padding: 16px 18px;
+}
+
+.__TOOL_CLASS__ .tool-shell-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid rgba(var(--tool-border-strong-rgb), 0.52);
+}
+
+.__TOOL_CLASS__ .tool-shell-title {
+    margin: 0;
+    color: var(--tool-heading);
+    font-size: var(--tool-font-size-xl);
+    font-weight: 800;
+    letter-spacing: 0;
+}
+
+.__TOOL_CLASS__ .tool-shell-subtitle {
+    margin: 6px 0 0;
+    color: var(--tool-text-muted);
+    font-size: var(--tool-font-size-base);
+    line-height: 1.6;
+    text-align: left;
+    text-justify: auto;
+    word-spacing: normal;
+}
+
+.__TOOL_CLASS__ .tool-main-label,
+.__TOOL_CLASS__ .tool-control-label {
+    color: var(--tool-heading);
+    font-size: var(--tool-font-size-base);
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.__TOOL_CLASS__ .form-control,
+.__TOOL_CLASS__ .form-select {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid var(--tool-border);
+    border-radius: var(--tool-radius-sm);
+    background: #ffffff;
+    color: var(--tool-text);
+    box-shadow: none;
+    padding: 10px 14px;
+    font-size: var(--tool-font-size-base);
+    line-height: 1.5;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.__TOOL_CLASS__ .form-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--tool-text-muted) 50%), linear-gradient(135deg, var(--tool-text-muted) 50%, transparent 50%);
+    background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 38px;
+}
+
+.__TOOL_CLASS__ input.form-control,
+.__TOOL_CLASS__ select.form-select {
+    height: 46px;
+}
+
+.__TOOL_CLASS__ textarea.form-control {
+    min-height: 120px;
+}
+
+.__TOOL_CLASS__ textarea.__PREFIX__-prompt {
+    min-height: 236px;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-native-select {
+    display: none !important;
+}
+
+.__TOOL_CLASS__ .form-control::placeholder {
+    color: var(--tool-placeholder);
+    opacity: 1;
+}
+
+.__TOOL_CLASS__ .form-control:hover,
+.__TOOL_CLASS__ .form-select:hover {
+    border-color: var(--tool-border-strong);
+}
+
+.__TOOL_CLASS__ .form-control:focus,
+.__TOOL_CLASS__ .form-select:focus {
+    border-color: var(--tool-accent);
+    box-shadow: 0 0 0 4px var(--tool-focus-ring);
+    outline: none;
+}
+
+.__TOOL_CLASS__ .tool-control-hint {
+    margin: 12px 0 0;
+    color: var(--tool-text-muted);
+    font-size: var(--tool-font-size-sm);
+    line-height: 1.6;
+}
+
+.__TOOL_CLASS__ .tool-action-btn {
+    min-height: 46px;
+    border-radius: var(--tool-radius-sm);
+    border: 1px solid transparent;
+    font-size: var(--tool-font-size-base);
+    font-weight: 700;
+    line-height: 1.2;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.__TOOL_CLASS__ .tool-action-btn:hover {
+    transform: translateY(-1px);
+}
+
+.__TOOL_CLASS__ .tool-action-btn-primary {
+    background: var(--tool-primary-gradient);
+    border-color: var(--tool-accent-hover);
+    color: #ffffff;
+}
+
+.__TOOL_CLASS__ .tool-action-btn-primary:hover,
+.__TOOL_CLASS__ .tool-action-btn-primary:focus {
+    background: var(--tool-primary-gradient-hover);
+    border-color: var(--tool-accent-strong);
+    color: #ffffff;
+}
+
+.__TOOL_CLASS__ .tool-action-btn-secondary {
+    background: #ffffff;
+    border-color: var(--tool-border);
+    color: var(--tool-heading);
+}
+
+.__TOOL_CLASS__ .tool-action-btn-secondary:hover,
+.__TOOL_CLASS__ .tool-action-btn-secondary:focus {
+    background: var(--tool-accent-pale);
+    border-color: var(--tool-border-strong);
+    color: var(--tool-heading);
+}
+
+.__TOOL_CLASS__ .tool-action-btn-ghost {
+    background: rgba(var(--tool-accent-pale-rgb), 0.6);
+    border-color: rgba(var(--tool-border-strong-rgb), 0.64);
+    color: var(--tool-text);
+}
+
+.__TOOL_CLASS__ .tool-action-btn-ghost:hover,
+.__TOOL_CLASS__ .tool-action-btn-ghost:focus {
+    background: rgba(var(--tool-accent-rgb), 0.08);
+    border-color: rgba(var(--tool-accent-rgb), 0.24);
+    color: var(--tool-heading);
+}
+
+.__TOOL_CLASS__ .tool-error-state,
+.__TOOL_CLASS__ .tool-empty-state {
+    border-radius: var(--tool-radius-sm);
+    border: 1px solid rgba(185, 28, 28, 0.16);
+    background: rgba(254, 242, 242, 0.92);
+    color: var(--tool-danger);
+    padding: 14px 16px;
+    font-size: var(--tool-font-size-base);
+    line-height: 1.6;
+}
+
+.__TOOL_CLASS__ .tool-empty-state {
+    border: 1px dashed rgba(var(--tool-accent-rgb), 0.34);
+    border-radius: var(--tool-radius-md);
+    background: linear-gradient(180deg, rgba(var(--tool-accent-panel-rgb), 0.98) 0%, rgba(var(--tool-accent-rgb), 0.07) 100%);
+    color: var(--tool-accent-text);
+    padding: 18px;
+    font-size: var(--tool-font-size-md);
+    line-height: 1.7;
+}
+
+@media (max-width: 767.98px) {
+    .__TOOL_CLASS__ .tool-shell-header,
+    .__TOOL_CLASS__ .tool-shell-body {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+}
+
+/* ns:start family.architecture.workspace.02_basic-settings */
+
+.__TOOL_CLASS__ .__PREFIX__-native-select {
+    display: none !important;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select {
+    position: relative;
+    width: 100%;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select.open {
+    z-index: 90;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select-trigger {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid var(--tool-border);
+    border-radius: var(--tool-radius-sm);
+    background: #ffffff;
+    color: var(--tool-text);
+    box-shadow: none;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: var(--tool-font-size-base);
+    line-height: 1.5;
+    text-align: left;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select-trigger:hover,
+.__TOOL_CLASS__ .__PREFIX__-custom-select-trigger:focus,
+.__TOOL_CLASS__ .__PREFIX__-custom-select.open .__PREFIX__-custom-select-trigger {
+    border-color: var(--tool-accent);
+    box-shadow: 0 0 0 4px var(--tool-focus-ring);
+    outline: none;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select-value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select-trigger i {
+    color: var(--tool-text-muted);
+    font-size: var(--tool-font-size-xs);
+    transition: transform 0.2s ease;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select.open .__PREFIX__-custom-select-trigger i {
+    transform: rotate(180deg);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 80;
+    max-height: 238px;
+    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.72);
+    border-radius: var(--tool-radius-sm);
+    background: #ffffff;
+    box-shadow: 0 18px 32px rgba(var(--tool-popover-shadow-rgb), 0.16);
+    padding: 6px;
+    display: none;
+    overflow-y: auto;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select.open .__PREFIX__-custom-select-menu {
+    display: grid;
+    gap: 4px;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select-option {
+    width: 100%;
+    min-height: 34px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--tool-text);
+    padding: 0 10px;
+    text-align: left;
+    font-size: var(--tool-font-size-sm);
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select-option:hover,
+.__TOOL_CLASS__ .__PREFIX__-custom-select-option:focus {
+    background: rgba(var(--tool-accent-rgb), 0.09);
+    color: var(--tool-heading);
+    outline: none;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-custom-select-option.selected {
+    background: var(--tool-active-gradient);
+    color: var(--tool-secondary-strong);
+}
+
+.__TOOL_CLASS__ .tool-inspector-shell .tool-shell-body {
+    display: grid;
+    gap: 24px;
+}
+
+.__TOOL_CLASS__ .tool-inspector-shell > .tool-shell-header {
+    border-bottom: 0;
+    padding-bottom: 4px;
+}
+
+.__TOOL_CLASS__ .tool-inspector-section.__PREFIX__-basic-preset-section {
+    border: 0;
+    border-bottom: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 0 0 24px;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-basic-grid,
+.__TOOL_CLASS__ .__PREFIX__-config-grid {
+    display: grid;
+    gap: 18px;
+    min-width: 0;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-basic-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.__TOOL_CLASS__ .__PREFIX__-config-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.__TOOL_CLASS__ .__PREFIX__-control-stack {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    min-width: 0;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-control-stack > .tool-control-hint {
+    margin-top: 0;
+}
+
+.__TOOL_CLASS__ #__DOM_PREFIX__PresetDescription {
+    grid-column: 1 / -1;
+    max-width: 100%;
+    margin-top: -4px;
+    font-style: italic;
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+    text-wrap: pretty;
+}
+
+.__TOOL_CLASS__ .tool-inspector-section {
+    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.52);
+    border-radius: var(--tool-radius-sm);
+    background: var(--tool-panel-gradient);
+    padding: 14px;
+    display: grid;
+    gap: 12px;
+}
+
+@media (max-width: 767.98px) {
+    .__TOOL_CLASS__ .__PREFIX__-basic-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .__TOOL_CLASS__ #__DOM_PREFIX__PresetDescription {
+        white-space: normal;
+    }
+}
+
+/* ns:end family.architecture.workspace.02_basic-settings */

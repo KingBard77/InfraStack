@@ -2,7 +2,7 @@
 
 Owns generated text output, empty text, command copy state, and before/after text preview behavior in section demos.
 
-Source baseline: `templates/content/family/shell/workspace/`, with historical snapshot ranges under `templates/content/family/shell/baseline/source/`.
+Source baseline: `templates/content/family/shell/workspace/`, with historical snapshot ranges under `templates/content/family/shell/source/`.
 
 Demo rule: before and after states must stack vertically as two rows in one column. Do not present these states side by side.
 

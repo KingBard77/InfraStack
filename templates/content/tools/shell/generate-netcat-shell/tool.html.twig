@@ -1,84 +1,102 @@
 {# tool.html.twig #}
 
 <div class="generate-netcat-shell-tool" data-tool-slug="generate-netcat-shell" data-tool-category="Shell">
+  {# ns:start family._base.workspace.00_shell #}
   <div class="tool-box mb-4">
-    {# ns:start family.shell.workspace.01_input-target #}
+    {# ns:start family._base.workspace.01_input-brief #}
     <form class="generate-netcat-shell-form" id="generateNetcatShellForm" aria-label="Netcat command builder">
-    <div class="generate-netcat-shell-main-row">
-      <label for="generateNetcatShellPrimaryHost" class="generate-netcat-shell-main-label">
-        <span id="generateNetcatShellPrimaryHostLabel">Target host:</span>
-        <span class="info-dot" title="This field is the remote target in client and scan modes, or the bind address in listen mode">i</span>
-      </label>
+    <div class="generate-netcat-shell-input-card">
+      <div class="generate-netcat-shell-input-brief" data-input-layout="inline">
+        <div class="generate-netcat-shell-main-row generate-netcat-shell-input-row">
+          <div class="generate-netcat-shell-input-label-wrap">
+            <label for="generateNetcatShellPrimaryHost" class="generate-netcat-shell-main-label generate-netcat-shell-input-label"><span id="generateNetcatShellPrimaryHostLabel">Target host:</span></label>
+            <span class="generate-netcat-shell-helper-chip" title="This field is the remote target in client and scan modes, or the bind address in listen mode" aria-label="This field is the remote target in client and scan modes, or the bind address in listen mode">i</span>
+          </div>
 
-      <div class="generate-netcat-shell-main-input-grid">
-        <input
-          type="text"
-          id="generateNetcatShellPrimaryHost"
-          class="form-control"
-          placeholder="example.com"
-          value="example.com"
-        >
-
-        <div class="generate-netcat-shell-main-actions">
-          <button type="submit" class="btn btn-primary generate-netcat-shell-submit-btn" id="generateNetcatShellSubmit">Generate</button>
-          <button type="button" class="generate-netcat-shell-secondary-btn generate-netcat-shell-secondary-btn-ghost generate-netcat-shell-reset-btn" id="generateNetcatShellReset">Reset</button>
-        </div>
-      </div>
-    </div>
-    {# ns:end family.shell.workspace.01_input-target #}
-    {# ns:start family.shell.workspace.02_basic-setting #}
-    <div class="generate-netcat-shell-basic-panel">
-      <div class="generate-netcat-shell-inner-panel">
-        <div class="generate-netcat-shell-setting-row">
-          <label for="generateNetcatShellPreset" class="generate-netcat-shell-setting-label">
-            Preset:
-            <span class="info-dot" title="Load a realistic netcat workflow as a starting point">i</span>
-          </label>
-
-          <div class="generate-netcat-shell-setting-field">
-            <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-two">
-              <select id="generateNetcatShellPreset" class="form-select">
-                <option value="tcp-client" selected>TCP client</option>
-                <option value="udp-check">UDP payload check</option>
-                <option value="listen-verbose">Verbose listener</option>
-                <option value="port-scan">Port sweep</option>
-                <option value="tls-listener">TLS listener</option>
-                <option value="proxy-tunnel">Proxy tunnel</option>
-                <option value="custom">Current settings</option>
-              </select>
-
-              <button type="button" class="generate-netcat-shell-secondary-btn" id="generateNetcatShellApplyPreset">Apply preset</button>
-            </div>
+          <div class="generate-netcat-shell-main-input-grid generate-netcat-shell-input-stack">
+            <input
+              type="text"
+              id="generateNetcatShellPrimaryHost"
+              class="form-control generate-netcat-shell-input-control"
+              placeholder="example.com"
+              value="example.com"
+            >
+            <div class="generate-netcat-shell-input-error d-none" id="generateNetcatShellInputError" role="alert"></div>
           </div>
         </div>
 
-        <div class="generate-netcat-shell-setting-row">
-          <label for="generateNetcatShellShell" class="generate-netcat-shell-setting-label">
-            Environment:
-            <span class="info-dot" title="Pick the shell, netcat implementation, and flag style the generated command should match">i</span>
+        <div class="generate-netcat-shell-main-actions generate-netcat-shell-input-actions">
+          <button
+            type="submit"
+            class="btn btn-primary generate-netcat-shell-submit-btn generate-netcat-shell-action-btn generate-netcat-shell-action-btn-primary"
+            id="generateNetcatShellSubmit"
+            data-tool-share-generate
+          >
+            <i class="bi bi-terminal" aria-hidden="true"></i>
+            <span>Generate</span>
+          </button>
+          <button
+            type="button"
+            class="generate-netcat-shell-secondary-btn generate-netcat-shell-secondary-btn-ghost generate-netcat-shell-reset-btn generate-netcat-shell-action-btn generate-netcat-shell-action-btn-secondary"
+            id="generateNetcatShellReset"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        <div class="generate-netcat-shell-input-helper-card">
+          <span class="generate-netcat-shell-input-hint">Use a concrete path, command target, or scope before generating shell output.</span>
+          <span class="generate-netcat-shell-helper-chip generate-netcat-shell-helper-chip-inline" title="This field is the remote target in client and scan modes, or the bind address in listen mode" aria-label="This field is the remote target in client and scan modes, or the bind address in listen mode">i</span>
+        </div>
+      </div>
+    </div>
+    {# ns:end family._base.workspace.01_input-brief #}
+    {# ns:start family._base.workspace.02_basic-settings #}
+    <div class="generate-netcat-shell-basic-panel">
+      <div class="generate-netcat-shell-inner-panel generate-netcat-shell-basic-card">
+
+        <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
+          <label class="generate-netcat-shell-setting-label">
+            Command profile:
+            <span class="info-dot generate-netcat-shell-helper-chip" title="Pick the preset, shell, and netcat implementation for the generated command">i</span>
           </label>
 
           <div class="generate-netcat-shell-setting-field">
             <div class="generate-netcat-shell-stacked-grid">
-              <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
-                <select id="generateNetcatShellShell" class="form-select">
-                  <option value="bash" selected>Bash / Zsh</option>
-                  <option value="powershell">PowerShell</option>
-                  <option value="cmd">Windows CMD</option>
-                </select>
+              <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-two">
+                <div class="generate-netcat-shell-native-select-wrap">
+                  <select id="generateNetcatShellPreset" class="form-select generate-netcat-shell-native-select">
+                    <option value="tcp-client" selected>TCP client</option>
+                    <option value="udp-check">UDP payload check</option>
+                    <option value="listen-verbose">Verbose listener</option>
+                    <option value="port-scan">Port sweep</option>
+                    <option value="tls-listener">TLS listener</option>
+                    <option value="proxy-tunnel">Proxy tunnel</option>
+                    <option value="custom">Current settings</option>
+                  </select>
+                </div>
 
-                <select id="generateNetcatShellImplementation" class="form-select">
-                  <option value="openbsd" selected>OpenBSD nc</option>
-                  <option value="traditional">Traditional netcat</option>
-                  <option value="busybox">BusyBox nc</option>
-                  <option value="ncat">Nmap ncat</option>
-                </select>
+                <button type="button" class="generate-netcat-shell-secondary-btn" id="generateNetcatShellApplyPreset">Apply preset</button>
+              </div>
 
-                <select id="generateNetcatShellFlagStyle" class="form-select">
-                  <option value="mixed" selected>Mixed flags</option>
-                  <option value="short">Short flags</option>
-                  <option value="long">Long flags when available</option>
-                </select>
+              <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-two">
+                <div class="generate-netcat-shell-native-select-wrap">
+                  <select id="generateNetcatShellShell" class="form-select generate-netcat-shell-native-select">
+                    <option value="bash" selected>Bash / Zsh</option>
+                    <option value="powershell">PowerShell</option>
+                    <option value="cmd">Windows CMD</option>
+                  </select>
+                </div>
+
+                <div class="generate-netcat-shell-native-select-wrap">
+                  <select id="generateNetcatShellImplementation" class="form-select generate-netcat-shell-native-select">
+                    <option value="openbsd" selected>OpenBSD nc</option>
+                    <option value="traditional">Traditional netcat</option>
+                    <option value="busybox">BusyBox nc</option>
+                    <option value="ncat">Nmap ncat</option>
+                  </select>
+                </div>
               </div>
 
               <div class="generate-netcat-shell-flag-hint" id="generateNetcatShellCapabilityHint">OpenBSD nc is active. TLS and execution helpers are dropped with warnings, while listen mode, UDP, scans, and shutdown-after-stdin EOF stay available.</div>
@@ -86,61 +104,29 @@
           </div>
         </div>
 
-        <div class="generate-netcat-shell-setting-row">
-          <label for="generateNetcatShellCustomBinary" class="generate-netcat-shell-setting-label">
-            Output shape:
-            <span class="info-dot" title="Control how the command is formatted and optionally override the binary prefix">i</span>
-          </label>
-
-          <div class="generate-netcat-shell-setting-field">
-            <div class="generate-netcat-shell-stacked-grid">
-              <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
-                <input
-                  type="text"
-                  id="generateNetcatShellCustomBinary"
-                  class="form-control"
-                  placeholder="Optional override, for example sudo ncat"
-                >
-
-                <label class="switch generate-netcat-shell-switch-wrap">
-                  <input type="checkbox" id="generateNetcatShellCombineShortFlags" checked>
-                  <span class="slider"></span>
-                  <span class="generate-netcat-shell-switch-label">Combine short flags</span>
-                </label>
-
-                <label class="switch generate-netcat-shell-switch-wrap">
-                  <input type="checkbox" id="generateNetcatShellMultiline" checked>
-                  <span class="slider"></span>
-                  <span class="generate-netcat-shell-switch-label">Multi-line command</span>
-                </label>
-              </div>
-
-              <div class="generate-netcat-shell-flag-hint" id="generateNetcatShellShellHint">Bash and PowerShell can use multi-line output. CMD is forced to a single line so carets do not become a paperwork incident.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="generate-netcat-shell-setting-row">
+        <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
           <label for="generateNetcatShellConnectionType" class="generate-netcat-shell-setting-label">
             Session mode:
-            <span class="info-dot" title="Choose whether the command connects out, listens for inbound sessions, or scans a port range">i</span>
+            <span class="info-dot generate-netcat-shell-helper-chip" title="Choose whether the command connects out, listens for inbound sessions, or scans a port range">i</span>
           </label>
 
           <div class="generate-netcat-shell-setting-field">
             <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
-              <select id="generateNetcatShellConnectionType" class="form-select">
-                <option value="client" selected>Client</option>
-                <option value="listen">Listen</option>
-                <option value="scan">Scan</option>
-              </select>
+              <div class="generate-netcat-shell-native-select-wrap">
+                <select id="generateNetcatShellConnectionType" class="form-select generate-netcat-shell-native-select">
+                  <option value="client" selected>Client</option>
+                  <option value="listen">Listen</option>
+                  <option value="scan">Scan</option>
+                </select>
+              </div>
 
-              <label class="switch generate-netcat-shell-switch-wrap">
+              <label class="switch generate-netcat-shell-switch-wrap generate-netcat-shell-switch-card">
                 <input type="checkbox" id="generateNetcatShellUseUdp">
                 <span class="slider"></span>
                 <span class="generate-netcat-shell-switch-label">Use UDP</span>
               </label>
 
-              <label class="switch generate-netcat-shell-switch-wrap">
+              <label class="switch generate-netcat-shell-switch-wrap generate-netcat-shell-switch-card">
                 <input type="checkbox" id="generateNetcatShellForceIpv6">
                 <span class="slider"></span>
                 <span class="generate-netcat-shell-switch-label">Force IPv6</span>
@@ -149,10 +135,10 @@
           </div>
         </div>
 
-        <div class="generate-netcat-shell-setting-row">
+        <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
           <label for="generateNetcatShellTargetPort" class="generate-netcat-shell-setting-label">
             Ports:
-            <span class="info-dot" title="The visible fields change with client, listen, and scan mode so the generated command stays anchored to one socket role at a time">i</span>
+            <span class="info-dot generate-netcat-shell-helper-chip" title="The visible fields change with client, listen, and scan mode so the generated command stays anchored to one socket role at a time">i</span>
           </label>
 
           <div class="generate-netcat-shell-setting-field">
@@ -162,7 +148,7 @@
                   <input
                     type="number"
                     id="generateNetcatShellTargetPort"
-                    class="form-control"
+                    class="form-control generate-netcat-shell-text-field"
                     min="1"
                     max="65535"
                     step="1"
@@ -175,7 +161,7 @@
                   <input
                     type="number"
                     id="generateNetcatShellListenPort"
-                    class="form-control"
+                    class="form-control generate-netcat-shell-text-field"
                     min="1"
                     max="65535"
                     step="1"
@@ -188,7 +174,7 @@
                   <input
                     type="number"
                     id="generateNetcatShellStartPort"
-                    class="form-control"
+                    class="form-control generate-netcat-shell-text-field"
                     min="1"
                     max="65535"
                     step="1"
@@ -201,7 +187,7 @@
                   <input
                     type="number"
                     id="generateNetcatShellEndPort"
-                    class="form-control"
+                    class="form-control generate-netcat-shell-text-field"
                     min="1"
                     max="65535"
                     step="1"
@@ -216,190 +202,274 @@
           </div>
         </div>
 
-        <div class="generate-netcat-shell-setting-row">
-          <label for="generateNetcatShellKeepListening" class="generate-netcat-shell-setting-label">
-            Behavior:
-            <span class="info-dot" title="Turn on classic session flags such as keep-open listeners, verbose output, zero-I/O probes, and numeric-only resolution">i</span>
-          </label>
-
-          <div class="generate-netcat-shell-setting-field">
-            <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-two">
-              <label class="switch generate-netcat-shell-switch-wrap">
-                <input type="checkbox" id="generateNetcatShellKeepListening">
-                <span class="slider"></span>
-                <span class="generate-netcat-shell-switch-label">Keep listening (-k)</span>
-              </label>
-
-              <label class="switch generate-netcat-shell-switch-wrap">
-                <input type="checkbox" id="generateNetcatShellVerbose">
-                <span class="slider"></span>
-                <span class="generate-netcat-shell-switch-label">Verbose output (-v)</span>
-              </label>
-
-              <label class="switch generate-netcat-shell-switch-wrap">
-                <input type="checkbox" id="generateNetcatShellZeroIo">
-                <span class="slider"></span>
-                <span class="generate-netcat-shell-switch-label">Zero I/O probe (-z)</span>
-              </label>
-
-              <label class="switch generate-netcat-shell-switch-wrap">
-                <input type="checkbox" id="generateNetcatShellNumericOnly">
-                <span class="slider"></span>
-                <span class="generate-netcat-shell-switch-label">Numeric only (-n)</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="generate-netcat-shell-setting-row">
-          <label for="generateNetcatShellTimeout" class="generate-netcat-shell-setting-label">
-            Timers:
-            <span class="info-dot" title="Timeouts, quit-after-EOF delays, and line pacing vary by implementation, so unsupported requests are surfaced in warnings">i</span>
-          </label>
-
-          <div class="generate-netcat-shell-setting-field">
-            <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
-              <input
-                type="number"
-                id="generateNetcatShellTimeout"
-                class="form-control"
-                min="0"
-                step="1"
-                value="5"
-                placeholder="Timeout (s)"
-              >
-
-              <input
-                type="number"
-                id="generateNetcatShellQuitAfterEof"
-                class="form-control"
-                min="0"
-                step="1"
-                placeholder="Quit after EOF (s)"
-              >
-
-              <input
-                type="number"
-                id="generateNetcatShellSendDelay"
-                class="form-control"
-                min="0"
-                step="0.1"
-                placeholder="Send delay (-i)"
-              >
-            </div>
-          </div>
-        </div>
-
-        <div class="generate-netcat-shell-setting-row">
-          <label for="generateNetcatShellSourceAddress" class="generate-netcat-shell-setting-label">
-            Local socket:
-            <span class="info-dot" title="Set the local source address and port, then optionally attach an execution handler for supported flavours">i</span>
-          </label>
-
-          <div class="generate-netcat-shell-setting-field">
-            <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
-              <input
-                type="text"
-                id="generateNetcatShellSourceAddress"
-                class="form-control"
-                placeholder="Source address (-s)"
-              >
-
-              <input
-                type="number"
-                id="generateNetcatShellSourcePort"
-                class="form-control"
-                min="1"
-                max="65535"
-                step="1"
-                placeholder="Source port (-p)"
-              >
-
-              <select id="generateNetcatShellExecutionMode" class="form-select">
-                <option value="none" selected>No execution</option>
-                <option value="exec">Execute command (-e)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="generate-netcat-shell-setting-row">
-          <label for="generateNetcatShellCommandToRun" class="generate-netcat-shell-setting-label">
-            Handler:
-            <span class="info-dot" title="Execution and TLS options are intentionally narrow because not every netcat flavour or session mode can honor them">i</span>
-          </label>
-
-          <div class="generate-netcat-shell-setting-field">
-            <div class="generate-netcat-shell-stacked-grid">
-              <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
-                <div class="d-none" id="generateNetcatShellCommandToRunWrap">
-                  <input
-                    type="text"
-                    id="generateNetcatShellCommandToRun"
-                    class="form-control"
-                    placeholder="/bin/sh"
-                  >
-                </div>
-
-                <label class="switch generate-netcat-shell-switch-wrap">
-                  <input type="checkbox" id="generateNetcatShellUseTls">
-                  <span class="slider"></span>
-                  <span class="generate-netcat-shell-switch-label">Use TLS / SSL</span>
-                </label>
-
-                <div class="d-none" id="generateNetcatShellVerifyCertWrap">
-                  <label class="switch generate-netcat-shell-switch-wrap">
-                    <input type="checkbox" id="generateNetcatShellVerifyCert" checked>
-                    <span class="slider"></span>
-                    <span class="generate-netcat-shell-switch-label">Verify certificate</span>
-                  </label>
-                </div>
-              </div>
-
-              <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-two d-none" id="generateNetcatShellTlsCredentialsWrap">
-                <input
-                  type="text"
-                  id="generateNetcatShellClientCertPath"
-                  class="form-control"
-                  placeholder="Client cert path"
-                >
-
-                <input
-                  type="text"
-                  id="generateNetcatShellClientKeyPath"
-                  class="form-control"
-                  placeholder="Client key path"
-                >
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
-    {# ns:end family.shell.workspace.02_basic-setting #}
-    {# ns:start family.shell.workspace.03_advanced-setting #}
-    <details class="generate-netcat-shell-advanced">
+    {# ns:end family._base.workspace.02_basic-settings #}
+    {# ns:start family._base.workspace.03_custom-settings #}
+    <details class="generate-netcat-shell-advanced" data-custom-layout="compact_two_column_multi_row">
       <summary class="generate-netcat-shell-advanced-summary">
         <span>Custom</span>
+          <span class="generate-netcat-shell-custom-arrow-slot" aria-hidden="true"></span>
       </summary>
 
       <div class="generate-netcat-shell-advanced-body">
         <div class="generate-netcat-shell-inner-panel">
-          <div class="generate-netcat-shell-setting-row">
-            <label for="generateNetcatShellProxyType" class="generate-netcat-shell-setting-label">
-              Proxy path:
-              <span class="info-dot" title="Proxy routing is only meaningful for outbound client sessions and is translated per implementation when supported">i</span>
+          <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
+            <label for="generateNetcatShellCustomBinary" class="generate-netcat-shell-setting-label">
+              Output shape:
+              <span class="info-dot generate-netcat-shell-helper-chip" title="Control flag style, binary prefix, and generated command formatting">i</span>
             </label>
 
             <div class="generate-netcat-shell-setting-field">
               <div class="generate-netcat-shell-stacked-grid">
                 <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
-                  <select id="generateNetcatShellProxyType" class="form-select">
-                    <option value="none" selected>No proxy</option>
-                    <option value="http">HTTP CONNECT</option>
-                    <option value="socks4">SOCKS4</option>
-                    <option value="socks5">SOCKS5</option>
+                  <input
+                    type="text"
+                    id="generateNetcatShellCustomBinary"
+                    class="form-control generate-netcat-shell-text-field"
+                    placeholder="Optional override, for example sudo ncat"
+                  >
+
+                  <div class="generate-netcat-shell-native-select-wrap">
+                    <select id="generateNetcatShellFlagStyle" class="form-select generate-netcat-shell-native-select">
+                      <option value="mixed" selected>Mixed flags</option>
+                      <option value="short">Short flags</option>
+                      <option value="long">Long flags when available</option>
+                    </select>
+                  </div>
+
+                  <label class="switch generate-netcat-shell-switch-wrap generate-netcat-shell-switch-card">
+                    <input type="checkbox" id="generateNetcatShellCombineShortFlags" checked>
+                    <span class="slider"></span>
+                    <span class="generate-netcat-shell-switch-label">Combine short flags</span>
+                  </label>
+                </div>
+
+                <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-two">
+                  <label class="switch generate-netcat-shell-switch-wrap generate-netcat-shell-switch-card">
+                    <input type="checkbox" id="generateNetcatShellMultiline" checked>
+                    <span class="slider"></span>
+                    <span class="generate-netcat-shell-switch-label">Multi-line command</span>
+                  </label>
+                </div>
+
+                <div class="generate-netcat-shell-flag-hint" id="generateNetcatShellShellHint">Bash and PowerShell can use multi-line output. CMD is forced to a single line so carets do not become a paperwork incident.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
+            <label for="generateNetcatShellKeepListening" class="generate-netcat-shell-setting-label">
+              Behavior:
+              <span class="info-dot generate-netcat-shell-helper-chip" title="Turn on classic session flags such as keep-open listeners, verbose output, zero-I/O probes, and numeric-only resolution">i</span>
+            </label>
+
+            <div class="generate-netcat-shell-setting-field">
+              <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-two">
+                <label class="switch generate-netcat-shell-switch-wrap generate-netcat-shell-switch-card">
+                  <input type="checkbox" id="generateNetcatShellKeepListening">
+                  <span class="slider"></span>
+                  <span class="generate-netcat-shell-switch-label">Keep listening (-k)</span>
+                </label>
+
+                <label class="switch generate-netcat-shell-switch-wrap generate-netcat-shell-switch-card">
+                  <input type="checkbox" id="generateNetcatShellVerbose">
+                  <span class="slider"></span>
+                  <span class="generate-netcat-shell-switch-label">Verbose output (-v)</span>
+                </label>
+
+                <label class="switch generate-netcat-shell-switch-wrap generate-netcat-shell-switch-card">
+                  <input type="checkbox" id="generateNetcatShellZeroIo">
+                  <span class="slider"></span>
+                  <span class="generate-netcat-shell-switch-label">Zero I/O probe (-z)</span>
+                </label>
+
+                <label class="switch generate-netcat-shell-switch-wrap generate-netcat-shell-switch-card">
+                  <input type="checkbox" id="generateNetcatShellNumericOnly">
+                  <span class="slider"></span>
+                  <span class="generate-netcat-shell-switch-label">Numeric only (-n)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
+            <label for="generateNetcatShellTimeout" class="generate-netcat-shell-setting-label">
+              Timers:
+              <span class="info-dot generate-netcat-shell-helper-chip" title="Timeouts, quit-after-EOF delays, and line pacing vary by implementation, so unsupported requests are surfaced in warnings">i</span>
+            </label>
+
+            <div class="generate-netcat-shell-setting-field">
+              <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
+                <input
+                  type="number"
+                  id="generateNetcatShellTimeout"
+                  class="form-control generate-netcat-shell-text-field"
+                  min="0"
+                  step="1"
+                  value="5"
+                  placeholder="Timeout (s)"
+                >
+
+                <input
+                  type="number"
+                  id="generateNetcatShellQuitAfterEof"
+                  class="form-control generate-netcat-shell-text-field"
+                  min="0"
+                  step="1"
+                  placeholder="Quit after EOF (s)"
+                >
+
+                <input
+                  type="number"
+                  id="generateNetcatShellSendDelay"
+                  class="form-control generate-netcat-shell-text-field"
+                  min="0"
+                  step="0.1"
+                  placeholder="Send delay (-i)"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
+            <label for="generateNetcatShellSourceAddress" class="generate-netcat-shell-setting-label">
+              Local socket:
+              <span class="info-dot generate-netcat-shell-helper-chip" title="Set the local source address and port, then optionally attach an execution handler for supported flavours">i</span>
+            </label>
+
+            <div class="generate-netcat-shell-setting-field">
+              <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
+                <input
+                  type="text"
+                  id="generateNetcatShellSourceAddress"
+                  class="form-control generate-netcat-shell-text-field"
+                  placeholder="Source address (-s)"
+                >
+
+                <input
+                  type="number"
+                  id="generateNetcatShellSourcePort"
+                  class="form-control generate-netcat-shell-text-field"
+                  min="1"
+                  max="65535"
+                  step="1"
+                  placeholder="Source port (-p)"
+                >
+
+                <div class="generate-netcat-shell-native-select-wrap">
+                  <select id="generateNetcatShellExecutionMode" class="form-select generate-netcat-shell-native-select">
+                    <option value="none" selected>No execution</option>
+                    <option value="exec">Execute command (-e)</option>
                   </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
+            <label for="generateNetcatShellCommandToRun" class="generate-netcat-shell-setting-label">
+              Handler:
+              <span class="info-dot generate-netcat-shell-helper-chip" title="Execution and TLS options are intentionally narrow because not every netcat flavour or session mode can honor them">i</span>
+            </label>
+
+            <div class="generate-netcat-shell-setting-field">
+              <div class="generate-netcat-shell-stacked-grid">
+                <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
+                  <div class="d-none" id="generateNetcatShellCommandToRunWrap">
+                    <input
+                      type="text"
+                      id="generateNetcatShellCommandToRun"
+                      class="form-control generate-netcat-shell-text-field"
+                      placeholder="/bin/sh"
+                    >
+                  </div>
+
+                  <label class="switch generate-netcat-shell-switch-wrap generate-netcat-shell-switch-card">
+                    <input type="checkbox" id="generateNetcatShellUseTls">
+                    <span class="slider"></span>
+                    <span class="generate-netcat-shell-switch-label">Use TLS / SSL</span>
+                  </label>
+
+                  <div class="d-none" id="generateNetcatShellVerifyCertWrap">
+                    <label class="switch generate-netcat-shell-switch-wrap generate-netcat-shell-switch-card">
+                      <input type="checkbox" id="generateNetcatShellVerifyCert" checked>
+                      <span class="slider"></span>
+                      <span class="generate-netcat-shell-switch-label">Verify certificate</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-two d-none" id="generateNetcatShellTlsCredentialsWrap">
+                  <input
+                    type="text"
+                    id="generateNetcatShellClientCertPath"
+                    class="form-control generate-netcat-shell-text-field"
+                    placeholder="Client cert path"
+                  >
+
+                  <input
+                    type="text"
+                    id="generateNetcatShellClientKeyPath"
+                    class="form-control generate-netcat-shell-text-field"
+                    placeholder="Client key path"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
+            <label for="generateNetcatShellProxyType" class="generate-netcat-shell-setting-label">
+              Proxy path:
+              <span class="info-dot generate-netcat-shell-helper-chip" title="Proxy routing is only meaningful for outbound client sessions and is translated per implementation when supported">i</span>
+            </label>
+
+            <div class="generate-netcat-shell-setting-field">
+              <div class="generate-netcat-shell-stacked-grid">
+                <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
+                  <input type="hidden" id="generateNetcatShellProxyType" value="none">
+
+                  <details class="generate-netcat-shell-custom-dropdown" data-custom-dropdown-for="generateNetcatShellProxyType">
+                    <summary class="generate-netcat-shell-custom-dropdown-summary">
+                      <span data-custom-dropdown-label>No proxy</span>
+                        <span class="generate-netcat-shell-custom-arrow-slot" aria-hidden="true"></span>
+                    </summary>
+
+                    <div class="generate-netcat-shell-custom-dropdown-menu" role="listbox" aria-label="Custom option">
+                      <button
+                        type="button"
+                        class="generate-netcat-shell-custom-dropdown-option active"
+                        data-custom-dropdown-value="none"
+                        role="option"
+                        aria-selected="true"
+                      >No proxy</button>
+
+                      <button
+                        type="button"
+                        class="generate-netcat-shell-custom-dropdown-option"
+                        data-custom-dropdown-value="http"
+                        role="option"
+                        aria-selected="false"
+                      >HTTP CONNECT</button>
+
+                      <button
+                        type="button"
+                        class="generate-netcat-shell-custom-dropdown-option"
+                        data-custom-dropdown-value="socks4"
+                        role="option"
+                        aria-selected="false"
+                      >SOCKS4</button>
+
+                      <button
+                        type="button"
+                        class="generate-netcat-shell-custom-dropdown-option"
+                        data-custom-dropdown-value="socks5"
+                        role="option"
+                        aria-selected="false"
+                      >SOCKS5</button>
+                    </div>
+                  </details>
 
                   <div class="d-none" id="generateNetcatShellProxyHostWrap">
                     <input
@@ -435,10 +505,10 @@
             </div>
           </div>
 
-          <div class="generate-netcat-shell-setting-row">
+          <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
             <label for="generateNetcatShellIdleTimeout" class="generate-netcat-shell-setting-label">
               Session extras:
-              <span class="info-dot" title="Idle cut-offs, listener caps, and stream logging mainly apply to richer ncat-style workflows">i</span>
+              <span class="info-dot generate-netcat-shell-helper-chip" title="Idle cut-offs, listener caps, and stream logging mainly apply to richer ncat-style workflows">i</span>
             </label>
 
             <div class="generate-netcat-shell-setting-field">
@@ -471,39 +541,36 @@
             </div>
           </div>
 
-          <div class="generate-netcat-shell-setting-row">
+          <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
             <label for="generateNetcatShellReceiveOnly" class="generate-netcat-shell-setting-label">
               Direction:
-              <span class="info-dot" title="Receive-only, send-only, and shutdown-after-stdin EOF are flavour-specific, so the warning panel stays honest about anything dropped">i</span>
+              <span class="info-dot generate-netcat-shell-helper-chip" title="Receive-only, send-only, and shutdown-after-stdin EOF are flavour-specific, so the warning panel stays honest about anything dropped">i</span>
             </label>
 
             <div class="generate-netcat-shell-setting-field">
               <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
-                <label class="switch generate-netcat-shell-switch-wrap">
+                <label class="generate-netcat-shell-custom-checkbox-option">
                   <input type="checkbox" id="generateNetcatShellReceiveOnly">
-                  <span class="slider"></span>
-                  <span class="generate-netcat-shell-switch-label">Receive only</span>
+                  <span>Receive only</span>
                 </label>
 
-                <label class="switch generate-netcat-shell-switch-wrap">
+                <label class="generate-netcat-shell-custom-checkbox-option">
                   <input type="checkbox" id="generateNetcatShellSendOnly">
-                  <span class="slider"></span>
-                  <span class="generate-netcat-shell-switch-label">Send only</span>
+                  <span>Send only</span>
                 </label>
 
-                <label class="switch generate-netcat-shell-switch-wrap">
+                <label class="generate-netcat-shell-custom-checkbox-option">
                   <input type="checkbox" id="generateNetcatShellShutdownAfterEof">
-                  <span class="slider"></span>
-                  <span class="generate-netcat-shell-switch-label">Shutdown after stdin EOF (-N)</span>
+                  <span>Shutdown after stdin EOF (-N)</span>
                 </label>
               </div>
             </div>
           </div>
 
-          <div class="generate-netcat-shell-setting-row">
+          <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
             <label for="generateNetcatShellExtraFlags" class="generate-netcat-shell-setting-label">
               Extra flags:
-              <span class="info-dot" title="Append raw flags when a runbook needs something narrower than the builder currently exposes">i</span>
+              <span class="info-dot generate-netcat-shell-helper-chip" title="Append raw flags when a runbook needs something narrower than the builder currently exposes">i</span>
             </label>
 
             <div class="generate-netcat-shell-setting-field">
@@ -523,7 +590,8 @@
       </div>
     </details>
     </form>
-    {# ns:end family.shell.workspace.03_advanced-setting #}
+    {# ns:end family._base.workspace.03_custom-settings #}
+    {# ns:start family._base.workspace.05_result-summary #}
     {# ns:start family.shell.workspace.04_result-text #}
     <div class="generate-netcat-shell-result-panel" id="generateNetcatShellOutputShell" aria-label="Command output">
       <div class="tool-empty-state generate-netcat-shell-result-empty" id="generateNetcatShellResultEmpty">Generate a netcat command to inspect the final command line, option summary, implementation warnings, and normalized JSON output.</div>
@@ -531,10 +599,9 @@
       <div class="generate-netcat-shell-output-content generate-netcat-shell-result-content d-none" id="generateNetcatShellResultContent">
       <div class="generate-netcat-shell-output-inner generate-netcat-shell-result-shell">
     {# ns:end family.shell.workspace.04_result-text #}
-    {# ns:start family.shell.workspace.05_score-card #}
-        <div class="generate-netcat-shell-result-summary" id="generateNetcatShellResultSummary"></div>
-    {# ns:end family.shell.workspace.05_score-card #}
-    {# ns:start family.shell.workspace.06_sort-card #}
+    {# ns:end family._base.workspace.05_result-summary #}
+        <div class="generate-netcat-shell-result-summary" id="generateNetcatShellResultSummary" data-share-snapshot-source data-share-kind="shell-summary"></div>
+    {# ns:start family._base.workspace.06_output-toolbar #}
         <div class="generate-netcat-shell-toolbar-shell">
           <div class="generate-netcat-shell-toolbar tool-output-toolbar tool-result-toolbar">
             <div class="generate-netcat-shell-toolbar-main">
@@ -583,17 +650,22 @@
             </div>
           </div>
         </div>
-    {# ns:end family.shell.workspace.06_sort-card #}
-    {# ns:start family.shell.workspace.07_table #}
+    {# ns:end family._base.workspace.06_output-toolbar #}
+    {# ns:start family._base.workspace.07_table-output #}
         <div class="generate-netcat-shell-tabs-shell">
           <div class="tool-tabs generate-netcat-shell-tabs" role="tablist" aria-label="Netcat command output views">
+
+            <button type="button" class="tool-tab-btn generate-netcat-shell-tab-btn active" id="generateNetcatShellOptionsTab" data-tab-target="generateNetcatShellOptionsPanel" role="tab" aria-controls="generateNetcatShellOptionsPanel" aria-selected="true" tabindex="0">
+              <i class="bi bi-list-check" aria-hidden="true"></i>
+              <span>Operations</span>
+            </button>
             <button type="button" class="tool-tab-btn generate-netcat-shell-tab-btn" id="generateNetcatShellCommandTab" data-tab-target="generateNetcatShellCommandPanel" role="tab" aria-controls="generateNetcatShellCommandPanel" aria-selected="false" tabindex="-1">
               <i class="bi bi-terminal" aria-hidden="true"></i>
               <span>Command</span>
             </button>
-            <button type="button" class="tool-tab-btn generate-netcat-shell-tab-btn active" id="generateNetcatShellOptionsTab" data-tab-target="generateNetcatShellOptionsPanel" role="tab" aria-controls="generateNetcatShellOptionsPanel" aria-selected="true" tabindex="0">
-              <i class="bi bi-list-check" aria-hidden="true"></i>
-              <span>Operations</span>
+            <button type="button" class="tool-tab-btn generate-netcat-shell-tab-btn" id="generateNetcatShellDetailsTab" data-tab-target="generateNetcatShellDetailsPanel" role="tab" aria-controls="generateNetcatShellDetailsPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-card-text" aria-hidden="true"></i>
+              <span>Details</span>
             </button>
             <button type="button" class="tool-tab-btn generate-netcat-shell-tab-btn" id="generateNetcatShellWarningsTab" data-tab-target="generateNetcatShellWarningsPanel" role="tab" aria-controls="generateNetcatShellWarningsPanel" aria-selected="false" tabindex="-1">
               <i class="bi bi-card-text" aria-hidden="true"></i>
@@ -610,13 +682,13 @@
               <div class="generate-netcat-shell-command-head">
                 <h3 class="generate-netcat-shell-command-title">Generated netcat Command</h3>
                 <div class="generate-netcat-shell-command-actions">
-                  <button type="button" class="generate-netcat-shell-action-btn" id="generateNetcatShellCopyCommand">
-                    <i class="bi bi-clipboard"></i>
-                    <span class="generate-netcat-shell-command-copy-label">Copy</span>
+                  <button type="button" class="generate-netcat-shell-action-btn" id="generateNetcatShellCopyCommand" aria-label="Copy generated netcat command" title="Copy generated netcat command">
+                    <i class="bi bi-clipboard" aria-hidden="true"></i>
+                    <span class="generate-netcat-shell-command-copy-label tool-sr-only">Copy</span>
                   </button>
                 </div>
               </div>
-              <pre class="generate-netcat-shell-command-pre"><code id="generateNetcatShellCommandOutput"></code></pre>
+              <pre class="generate-netcat-shell-command-pre"><code id="generateNetcatShellCommandOutput" data-share-snapshot-source data-share-kind="shell-command"></code></pre>
             </div>
           </div>
 
@@ -641,7 +713,27 @@
             </div>
           </div>
 
-          <div class="tool-tab-panel generate-netcat-shell-tab-panel" id="generateNetcatShellWarningsPanel" data-tab-panel="generateNetcatShellWarningsPanel" role="tabpanel" aria-labelledby="generateNetcatShellWarningsTab" hidden>
+          <div class="tool-tab-panel generate-netcat-shell-tab-panel" id="generateNetcatShellDetailsPanel" data-tab-panel="generateNetcatShellDetailsPanel" role="tabpanel" aria-labelledby="generateNetcatShellDetailsTab" hidden>
+            <section class="generate-netcat-shell-section-card tool-result-section-card">
+              <h3 class="generate-netcat-shell-section-title tool-result-section-title">Command Details</h3>
+              <div class="generate-netcat-shell-table-output-note-grid">
+                <article class="generate-netcat-shell-table-output-note-card">
+                  <h4 class="generate-netcat-shell-table-output-note-title">Mode Preview</h4>
+                  <p class="generate-netcat-shell-table-output-note-copy">Operation rows follow the selected connect, listen, scan, or transfer mode and target settings.</p>
+                </article>
+                <article class="generate-netcat-shell-table-output-note-card">
+                  <h4 class="generate-netcat-shell-table-output-note-title">Run Boundary</h4>
+                  <p class="generate-netcat-shell-table-output-note-copy">Review warnings before running network probes against systems you do not control.</p>
+                </article>
+                <article class="generate-netcat-shell-table-output-note-card">
+                  <h4 class="generate-netcat-shell-table-output-note-title">JSON Boundary</h4>
+                  <p class="generate-netcat-shell-table-output-note-copy">The JSON tab preserves target, port, mode, generated command, options, warnings, and errors.</p>
+                </article>
+              </div>
+            </section>
+          </div>
+
+          <div class="tool-tab-panel generate-netcat-shell-tab-panel" id="generateNetcatShellWarningsPanel" data-tab-panel="generateNetcatShellWarningsPanel" data-share-snapshot-source data-share-kind="shell-warnings" role="tabpanel" aria-labelledby="generateNetcatShellWarningsTab" hidden>
             <div class="generate-netcat-shell-warning-grid">
               <div class="generate-netcat-shell-message-card">
                 <h3 class="generate-netcat-shell-message-title">Warnings</h3>
@@ -656,12 +748,19 @@
           </div>
 
           <div class="tool-tab-panel generate-netcat-shell-tab-panel" id="generateNetcatShellJsonPanel" data-tab-panel="generateNetcatShellJsonPanel" role="tabpanel" aria-labelledby="generateNetcatShellJsonTab" hidden>
-            <div class="generate-netcat-shell-command-wrap tool-json-panel">
-              <div class="tool-json-head">
-                <span class="tool-json-title">JSON Output</span>
+            {# ns:start family._base.workspace.08_json-restore #}
+            <div class="generate-netcat-shell-json-restore-shell" id="generateNetcatShellJsonRestoreShell">
+            <section class="generate-netcat-shell-json-card tool-json-panel" aria-label="Command JSON output and restore state">
+              <div class="generate-netcat-shell-json-head tool-json-head">
+                <div class="generate-netcat-shell-json-title-wrap">
+                  <span class="generate-netcat-shell-json-title tool-json-title">JSON Output</span>
+                  <span class="generate-netcat-shell-json-helper">Exported command state should include target, options, generated command, warnings, and output rows.</span>
+                </div>
+                <span class="generate-netcat-shell-json-status is-hidden" id="generateNetcatShellJsonRestoreStatus" role="status" aria-live="polite"></span>
               </div>
-              <pre class="generate-netcat-shell-command-pre tool-json-output"><code id="generateNetcatShellJsonOutput"></code></pre>
-            </div>
+              <div class="generate-netcat-shell-json-empty is-hidden" id="generateNetcatShellJsonRestoreEmpty">Generate a command before exporting JSON.</div>
+              <pre class="generate-netcat-shell-json-output tool-json-output"><code id="generateNetcatShellJsonOutput"></code></pre>
+            </section>
           </div>
         </div>
       </div>
@@ -669,7 +768,10 @@
 
     <div class="generate-netcat-shell-result-error d-none" id="generateNetcatShellResultError"></div>
     </div>
-    <input type="file" id="generateNetcatShellImportJson" class="d-none" accept="application/json">
-    {# ns:end family.shell.workspace.07_table #}
+    <input type="file" id="generateNetcatShellImportJson" class="generate-netcat-shell-import-input d-none" accept="application/json">
+    {# ns:end family._base.workspace.08_json-restore #}
+    {# ns:end family._base.workspace.07_table-output #}
   </div>
+</div>
+  {# ns:end family._base.workspace.00_shell #}
 </div>

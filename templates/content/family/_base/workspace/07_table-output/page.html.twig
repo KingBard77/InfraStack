@@ -1,0 +1,173 @@
+{# Source section: 07_table-output #}
+<div class="__PREFIX__-table-output-shell" id="__DOM_PREFIX__TableOutputShell">
+    <div class="__PREFIX__-table-empty" id="__DOM_PREFIX__TableEmpty">__TABLE_EMPTY_TEXT__</div>
+
+    <div class="__PREFIX__-table-tabs" role="tablist" aria-label="__TABLE_ARIA_LABEL__">
+        <button type="button" class="__PREFIX__-table-tab-btn is-active" id="__DOM_PREFIX__TableTabOne" data-tab-target="__DOM_PREFIX__TablePanelOne" role="tab" aria-controls="__DOM_PREFIX__TablePanelOne" aria-selected="true" tabindex="0">
+            <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi __TABLE_TAB_ONE_ICON__"></i></span>
+            <span>__TABLE_TAB_ONE_LABEL__</span>
+        </button>
+        <button type="button" class="__PREFIX__-table-tab-btn" id="__DOM_PREFIX__TableTabTwo" data-tab-target="__DOM_PREFIX__TablePanelTwo" role="tab" aria-controls="__DOM_PREFIX__TablePanelTwo" aria-selected="false" tabindex="-1">
+            <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi __TABLE_TAB_TWO_ICON__"></i></span>
+            <span>__TABLE_TAB_TWO_LABEL__</span>
+        </button>
+        <button type="button" class="__PREFIX__-table-tab-btn" id="__DOM_PREFIX__TableTabThree" data-tab-target="__DOM_PREFIX__TablePanelThree" role="tab" aria-controls="__DOM_PREFIX__TablePanelThree" aria-selected="false" tabindex="-1">
+            <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi __TABLE_TAB_THREE_ICON__"></i></span>
+            <span>__TABLE_TAB_THREE_LABEL__</span>
+        </button>
+        <button type="button" class="__PREFIX__-table-tab-btn" id="__DOM_PREFIX__TableTabFour" data-tab-target="__DOM_PREFIX__TablePanelFour" role="tab" aria-controls="__DOM_PREFIX__TablePanelFour" aria-selected="false" tabindex="-1">
+            <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi __TABLE_TAB_FOUR_ICON__"></i></span>
+            <span>__TABLE_TAB_FOUR_LABEL__</span>
+        </button>
+        <button type="button" class="__PREFIX__-table-tab-btn" id="__DOM_PREFIX__TableTabFive" data-tab-target="__DOM_PREFIX__TablePanelFive" role="tab" aria-controls="__DOM_PREFIX__TablePanelFive" aria-selected="false" tabindex="-1">
+            <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi __TABLE_TAB_FIVE_ICON__"></i></span>
+            <span>__TABLE_TAB_FIVE_LABEL__</span>
+        </button>
+        <button type="button" class="__PREFIX__-table-tab-btn" id="__DOM_PREFIX__TableTabJson" data-tab-target="__DOM_PREFIX__TablePanelJson" role="tab" aria-controls="__DOM_PREFIX__TablePanelJson" aria-selected="false" tabindex="-1">
+            <span class="__PREFIX__-table-tab-icon" aria-hidden="true"><i class="bi bi-braces"></i></span>
+            <span>JSON</span>
+        </button>
+    </div>
+
+    <div class="__PREFIX__-table-panel is-active" id="__DOM_PREFIX__TablePanelOne" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabOne">
+        <section class="__PREFIX__-section-card">
+            <h3 class="__PREFIX__-section-title">__TABLE_PRIMARY_TITLE__</h3>
+            <div class="__PREFIX__-table-wrap">
+                <table class="__PREFIX__-output-table">
+                    <thead>
+                        <tr>
+                            <th class="__PREFIX__-rownum-head" scope="col">#</th>
+                            <th scope="col">__TABLE_PRIMARY_COL_TWO__</th>
+                            <th scope="col">__TABLE_PRIMARY_COL_THREE__</th>
+                            <th class="__PREFIX__-status-head" scope="col">__TABLE_PRIMARY_COL_FOUR__</th>
+                            <th class="__PREFIX__-action-head" scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="__DOM_PREFIX__PrimaryTableBody">
+                        <tr class="__PREFIX__-empty-row">
+                            <td colspan="5">
+                                <div class="__PREFIX__-empty-block">__TABLE_PRIMARY_EMPTY__</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <div class="__PREFIX__-table-panel" id="__DOM_PREFIX__TablePanelTwo" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabTwo" hidden>
+        <section class="__PREFIX__-section-card">
+            <h3 class="__PREFIX__-section-title">__TABLE_SECONDARY_TITLE__</h3>
+            <div class="__PREFIX__-table-wrap">
+                <table class="__PREFIX__-output-table __PREFIX__-output-table-compact">
+                    <thead>
+                        <tr>
+                            <th class="__PREFIX__-rownum-head" scope="col">#</th>
+                            <th scope="col">__TABLE_SECONDARY_COL_TWO__</th>
+                            <th scope="col">__TABLE_SECONDARY_COL_THREE__</th>
+                            <th scope="col">__TABLE_SECONDARY_COL_FOUR__</th>
+                            <th class="__PREFIX__-action-head" scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="__DOM_PREFIX__SecondaryTableBody">
+                        <tr class="__PREFIX__-empty-row">
+                            <td colspan="5">
+                                <div class="__PREFIX__-empty-block">__TABLE_SECONDARY_EMPTY__</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <div class="__PREFIX__-table-panel" id="__DOM_PREFIX__TablePanelThree" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabThree" hidden>
+        <section class="__PREFIX__-section-card">
+            <h3 class="__PREFIX__-section-title">__TABLE_TERTIARY_TITLE__</h3>
+            <div class="__PREFIX__-table-wrap">
+                <table class="__PREFIX__-output-table __PREFIX__-output-table-compact">
+                    <thead>
+                        <tr>
+                            <th class="__PREFIX__-rownum-head" scope="col">#</th>
+                            <th scope="col">__TABLE_TERTIARY_COL_TWO__</th>
+                            <th scope="col">__TABLE_TERTIARY_COL_THREE__</th>
+                            <th scope="col">__TABLE_TERTIARY_COL_FOUR__</th>
+                            <th class="__PREFIX__-action-head" scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="__DOM_PREFIX__TertiaryTableBody">
+                        <tr class="__PREFIX__-empty-row">
+                            <td colspan="5">
+                                <div class="__PREFIX__-empty-block">__TABLE_TERTIARY_EMPTY__</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <div class="__PREFIX__-table-panel" id="__DOM_PREFIX__TablePanelFour" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabFour" hidden>
+        <section class="__PREFIX__-section-card">
+            <h3 class="__PREFIX__-section-title">__TABLE_NOTES_TITLE__</h3>
+            <div class="__PREFIX__-note-grid">
+                <article class="__PREFIX__-note-card">
+                    <h4 class="__PREFIX__-note-title">__TABLE_NOTE_ONE_TITLE__</h4>
+                    <p class="__PREFIX__-note-copy">__TABLE_NOTE_ONE_COPY__</p>
+                    <button type="button" class="__PREFIX__-row-copy-btn" data-copy-row="__TABLE_NOTE_ONE_TITLE__" aria-label="Copy note one" title="Copy row">
+                        <i class="bi bi-clipboard" aria-hidden="true"></i>
+                    </button>
+                </article>
+                <article class="__PREFIX__-note-card">
+                    <h4 class="__PREFIX__-note-title">__TABLE_NOTE_TWO_TITLE__</h4>
+                    <p class="__PREFIX__-note-copy">__TABLE_NOTE_TWO_COPY__</p>
+                    <button type="button" class="__PREFIX__-row-copy-btn" data-copy-row="__TABLE_NOTE_TWO_TITLE__" aria-label="Copy note two" title="Copy row">
+                        <i class="bi bi-clipboard" aria-hidden="true"></i>
+                    </button>
+                </article>
+                <article class="__PREFIX__-note-card">
+                    <h4 class="__PREFIX__-note-title">__TABLE_NOTE_THREE_TITLE__</h4>
+                    <p class="__PREFIX__-note-copy">__TABLE_NOTE_THREE_COPY__</p>
+                    <button type="button" class="__PREFIX__-row-copy-btn" data-copy-row="__TABLE_NOTE_THREE_TITLE__" aria-label="Copy note three" title="Copy row">
+                        <i class="bi bi-clipboard" aria-hidden="true"></i>
+                    </button>
+                </article>
+            </div>
+        </section>
+    </div>
+
+    <div class="__PREFIX__-table-panel" id="__DOM_PREFIX__TablePanelFive" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabFive" hidden>
+        <section class="__PREFIX__-section-card">
+            <h3 class="__PREFIX__-section-title">__TABLE_EXTRA_TITLE__</h3>
+            <div class="__PREFIX__-table-wrap">
+                <table class="__PREFIX__-output-table __PREFIX__-output-table-compact">
+                    <thead>
+                        <tr>
+                            <th class="__PREFIX__-rownum-head" scope="col">#</th>
+                            <th scope="col">__TABLE_EXTRA_COL_TWO__</th>
+                            <th scope="col">__TABLE_EXTRA_COL_THREE__</th>
+                            <th scope="col">__TABLE_EXTRA_COL_FOUR__</th>
+                            <th class="__PREFIX__-action-head" scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="__DOM_PREFIX__ExtraTableBody">
+                        <tr class="__PREFIX__-empty-row">
+                            <td colspan="5">
+                                <div class="__PREFIX__-empty-block">__TABLE_EXTRA_EMPTY__</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <div class="__PREFIX__-table-panel" id="__DOM_PREFIX__TablePanelJson" role="tabpanel" aria-labelledby="__DOM_PREFIX__TableTabJson" hidden>
+        <section class="__PREFIX__-json-panel">
+            <div class="__PREFIX__-json-head">
+                <span class="__PREFIX__-json-title">JSON Output</span>
+            </div>
+            <pre class="__PREFIX__-json-output"><code id="__DOM_PREFIX__JsonOutput">{}</code></pre>
+        </section>
+    </div>
+</div>

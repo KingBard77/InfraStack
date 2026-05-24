@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Base Result Summary Demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        body {
+            margin: 0;
+            background: #f8fafc;
+            color: #111827;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .demo-wrap {
+            display: grid;
+            gap: 20px;
+            width: min(1360px, calc(100% - 32px));
+            margin: 32px auto;
+        }
+
+        .demo-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            color: #111827;
+            font-size: 22px;
+            line-height: 1.2;
+        }
+
+        .demo-title-icon {
+            display: inline-flex;
+            width: 34px;
+            height: 34px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .base-demo-tool {
+            --base-result-accent: #2563eb;
+            --base-result-accent-soft: rgba(37, 99, 235, 0.1);
+            --base-result-border: #dbe4f0;
+            --base-result-border-strong: #bfdbfe;
+            --base-result-surface: #ffffff;
+            --base-result-surface-soft: #f8fafc;
+            --base-result-heading: #111827;
+            --base-result-text: #334155;
+            --base-result-muted: #64748b;
+            --base-result-track: #dbeafe;
+        }
+    </style>
+    <link rel="stylesheet" href="section.css">
+</head>
+<body>
+    <main class="demo-wrap">
+        <h1 class="demo-title">
+            <span class="demo-title-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
+            <span class="demo-title-text">Base Result Summary Demo</span>
+        </h1>
+
+        <section class="base-demo-tool __TOOL_CLASS__">
+            <div class="__PREFIX__-result-summary" id="__DOM_PREFIX__ResultSummary" data-result-tone="success" data-result-layout="overview">
+                <header class="__PREFIX__-result-header" aria-label="Result summary header">
+                    <div class="__PREFIX__-result-header-main">
+                        <span class="__PREFIX__-result-header-icon" aria-hidden="true"><i class="bi bi-bar-chart-line"></i></span>
+                        <div class="__PREFIX__-result-header-copy">
+                            <h2 class="__PREFIX__-result-header-title">Result Summary</h2>
+                            <p>Overview of the current generated result and key metrics.</p>
+                        </div>
+                    </div>
+
+                    <div class="__PREFIX__-result-header-meta" aria-label="Result summary status">
+                        <span class="__PREFIX__-result-header-chip __PREFIX__-result-chip-ready">
+                            <span class="__PREFIX__-result-chip-icon" aria-hidden="true"><i class="bi bi-record-fill"></i></span>
+                            <span>Completed</span>
+                        </span>
+                        <span class="__PREFIX__-result-header-chip __PREFIX__-result-chip-updated">
+                            <span class="__PREFIX__-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span>
+                            <span>May 19, 10:44 PM</span>
+                        </span>
+                    </div>
+                </header>
+
+                <div class="__PREFIX__-result-hero-grid">
+                    <section class="__PREFIX__-result-card __PREFIX__-result-card-primary" data-result-visual="ring" aria-label="Primary result">
+                        <div class="__PREFIX__-result-primary-heading __PREFIX__-result-visual-copy __PREFIX__-result-visual-copy-top">
+                            <div class="__PREFIX__-result-kicker">Primary Result</div>
+                            <h3 class="__PREFIX__-result-title __PREFIX__-result-title-center">Visible result value</h3>
+                        </div>
+
+                        <div class="__PREFIX__-result-primary-visual" id="__DOM_PREFIX__ResultVisual" aria-label="Primary result visual">
+                            <span class="__PREFIX__-result-card-icon __PREFIX__-result-card-icon-primary" aria-hidden="true"><i class="bi bi-card-checklist"></i></span>
+
+                            <div class="__PREFIX__-result-ring" style="--__PREFIX__-result-progress: 352deg; --__PREFIX__-result-value-chars: 7;">
+                                <div class="__PREFIX__-result-ring-center">
+                                    <strong class="__PREFIX__-result-ring-value">137.93</strong>
+                                    <span class="__PREFIX__-result-ring-unit">Value</span>
+                                </div>
+                            </div>
+
+                            <div class="__PREFIX__-result-primary-number">
+                                <strong class="__PREFIX__-result-primary-number-value">98</strong>
+                                <span class="__PREFIX__-result-primary-number-unit">/100</span>
+                            </div>
+
+                            <div class="__PREFIX__-result-primary-text">
+                                <strong class="__PREFIX__-result-primary-text-value">3 generated rows</strong>
+                                <span class="__PREFIX__-result-primary-text-unit">Selected item placeholder</span>
+                            </div>
+
+                            <div class="__PREFIX__-result-primary-metric">
+                                <span class="__PREFIX__-result-primary-metric-label">Primary metric</span>
+                                <strong class="__PREFIX__-result-primary-metric-value">98.4</strong>
+                                <span class="__PREFIX__-result-primary-metric-copy">Decimal metric placeholder.</span>
+                            </div>
+
+                            <div class="__PREFIX__-result-primary-svg" aria-hidden="true">
+                                <svg viewBox="0 0 160 96" role="img" aria-label="Placeholder visual">
+                                    <path d="M18 72h124" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" opacity=".18"></path>
+                                    <path d="M28 68 62 40l28 18 42-38" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+
+                            <span class="__PREFIX__-result-primary-pill __PREFIX__-result-chip __PREFIX__-result-chip-outcome">
+                                <span class="__PREFIX__-result-chip-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span>
+                                <span>Source placeholder</span>
+                            </span>
+                        </div>
+
+                        <div class="__PREFIX__-result-visual-copy">
+                            <p class="__PREFIX__-result-copy __PREFIX__-result-copy-center">Primary result copy explains the current generated outcome.</p>
+                        </div>
+
+                        <span class="__PREFIX__-result-card-divider" aria-hidden="true"></span>
+
+                        <div class="__PREFIX__-result-chip-row __PREFIX__-result-chip-row-center" aria-label="Primary result outcome">
+                            <span class="__PREFIX__-result-chip __PREFIX__-result-chip-outcome __PREFIX__-result-chip-ready">
+                                <span class="__PREFIX__-result-chip-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span>
+                                <span>Source placeholder</span>
+                            </span>
+                        </div>
+                    </section>
+
+                    <section class="__PREFIX__-result-card __PREFIX__-result-card-summary" aria-label="Result summary">
+                        <div class="__PREFIX__-result-summary-intro">
+                            <span class="__PREFIX__-result-card-icon __PREFIX__-result-card-icon-summary" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>
+                            <div class="__PREFIX__-result-summary-copy">
+                                <div class="__PREFIX__-result-kicker">Descriptive Summary</div>
+                                <h3 class="__PREFIX__-result-title">Filtered output set</h3>
+                                <p class="__PREFIX__-result-copy">The summary, table, JSON, and exports should all derive from the current normalized state.</p>
+                            </div>
+                        </div>
+
+                        <span class="__PREFIX__-result-card-divider" aria-hidden="true"></span>
+
+                        <div class="__PREFIX__-result-chip-grid" aria-label="Result summary chips">
+                            <span class="__PREFIX__-result-chip __PREFIX__-result-chip-ready">
+                                <span class="__PREFIX__-result-chip-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span>
+                                <span>Source placeholder</span>
+                            </span>
+                            <span class="__PREFIX__-result-chip __PREFIX__-result-chip-baseline">
+                                <span class="__PREFIX__-result-chip-icon" aria-hidden="true"><i class="bi bi-people"></i></span>
+                                <span>Family placeholder</span>
+                            </span>
+                            <span class="__PREFIX__-result-chip __PREFIX__-result-chip-baseline">
+                                <span class="__PREFIX__-result-chip-icon" aria-hidden="true"><i class="bi bi-folder2-open"></i></span>
+                                <span>Section placeholder</span>
+                            </span>
+                            <span class="__PREFIX__-result-chip __PREFIX__-result-chip-baseline">
+                                <span class="__PREFIX__-result-chip-icon" aria-hidden="true"><i class="bi bi-flag"></i></span>
+                                <span>Status placeholder</span>
+                            </span>
+                            <span class="__PREFIX__-result-chip __PREFIX__-result-chip-warning">
+                                <span class="__PREFIX__-result-chip-icon" aria-hidden="true"><i class="bi bi-funnel"></i></span>
+                                <span>Filter placeholder</span>
+                            </span>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="__PREFIX__-result-metric-grid" aria-label="Result metrics">
+                    <section class="__PREFIX__-result-metric-card __PREFIX__-result-metric-success">
+                        <span class="__PREFIX__-result-metric-icon" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+                        <span class="__PREFIX__-result-metric-label">Metric One</span>
+                        <strong class="__PREFIX__-result-metric-value">3</strong>
+                        <span class="__PREFIX__-result-metric-copy">Metric copy stays inside the card.</span>
+                        <span class="__PREFIX__-result-metric-accent" aria-hidden="true"></span>
+                    </section>
+
+                    <section class="__PREFIX__-result-metric-card __PREFIX__-result-metric-info">
+                        <span class="__PREFIX__-result-metric-icon" aria-hidden="true"><i class="bi bi-eye"></i></span>
+                        <span class="__PREFIX__-result-metric-label">Metric Two</span>
+                        <strong class="__PREFIX__-result-metric-value">3</strong>
+                        <span class="__PREFIX__-result-metric-copy">Rows rendered in the generated table.</span>
+                        <span class="__PREFIX__-result-metric-accent" aria-hidden="true"></span>
+                    </section>
+
+                    <section class="__PREFIX__-result-metric-card __PREFIX__-result-metric-accent-tone">
+                        <span class="__PREFIX__-result-metric-icon" aria-hidden="true"><i class="bi bi-layers"></i></span>
+                        <span class="__PREFIX__-result-metric-label">Metric Three</span>
+                        <strong class="__PREFIX__-result-metric-value">3</strong>
+                        <span class="__PREFIX__-result-metric-copy">Section rollups from the generated set.</span>
+                        <span class="__PREFIX__-result-metric-accent" aria-hidden="true"></span>
+                    </section>
+
+                    <section class="__PREFIX__-result-metric-card __PREFIX__-result-metric-warning">
+                        <span class="__PREFIX__-result-metric-icon" aria-hidden="true"><i class="bi bi-code-slash"></i></span>
+                        <span class="__PREFIX__-result-metric-label">Metric Four</span>
+                        <strong class="__PREFIX__-result-metric-value">24</strong>
+                        <span class="__PREFIX__-result-metric-copy">Lines, files, rows, or selected artifacts.</span>
+                        <span class="__PREFIX__-result-metric-accent" aria-hidden="true"></span>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="section.js"></script>
+</body>
+</html>

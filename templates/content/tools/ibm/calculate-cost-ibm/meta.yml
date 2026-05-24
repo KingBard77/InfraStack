@@ -3,9 +3,10 @@
 title: IBM Cloud Cost Calculator
 author: Badrul Amin
 author_role: Infrastructure & DevOps Specialist
-author_image: "images/author/author-bg-black.png"
+author_image: "images/author/author-bg-white.png"
 date: "May. 11th, 2026"
 comments: Interactive tool
+publication_status: ready
 category_label: IBM Cloud
 group: cloud
 family: calculate
@@ -17,8 +18,18 @@ intro: >-
     Review visible assumptions and export CSV or JSON snapshots for team review, archive notes, or later estimate comparison.
 tags:
     - IBM Cloud
-    - Pricing
-    - FinOps
-    - VPC
-    - Code Engine
     - Cost
+    - FinOps
+related_links:
+    - links-title: IBM Cloud Architecture
+      links-label: InfraStack tool
+      links-description: Open the related InfraStack IBM Cloud Architecture workspace.
+      links-url: https://infrastack.my/tools/ibm/architecture-cloud-ibm
+      links-embed: https://infrastack.my/embed/ibm/architecture-cloud-ibm
+      links-icon: bi-cloud
+    - links-title: Project Budget Burn Calculator
+      links-label: Simplified Tools
+      links-description: Open the embeddable Simplified Tools Project Budget Burn Calculator workspace.
+      links-url: https://www.simplified.tools/calculate_project_budget_burn
+      links-embed: https://www.simplified.tools/embed/calculate_project_budget_burn?share=embed
+      links-icon: bi-calculator

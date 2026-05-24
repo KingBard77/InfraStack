@@ -1,0 +1,154 @@
+{# Source section: 03_custom-settings #}
+<details class="__PREFIX__-custom-settings" id="__DOM_PREFIX__CustomSettings" data-custom-layout="__CUSTOM_LAYOUT__">
+    <summary class="__PREFIX__-custom-summary">
+        <span>Custom</span>
+        <span class="__PREFIX__-custom-arrow-slot" aria-hidden="true"></span>
+    </summary>
+
+    <div class="__PREFIX__-custom-body">
+        <div class="__PREFIX__-custom-tabs" role="tablist" aria-label="__CUSTOM_ARIA_LABEL__">
+            <button type="button" class="__PREFIX__-custom-tab active" id="__DOM_PREFIX__CustomTabOne" data-custom-tab-target="__DOM_PREFIX__CustomPanelOne" role="tab" aria-controls="__DOM_PREFIX__CustomPanelOne" aria-selected="true" tabindex="0">__CUSTOM_TAB_ONE_LABEL__</button>
+            <button type="button" class="__PREFIX__-custom-tab" id="__DOM_PREFIX__CustomTabTwo" data-custom-tab-target="__DOM_PREFIX__CustomPanelTwo" role="tab" aria-controls="__DOM_PREFIX__CustomPanelTwo" aria-selected="false" tabindex="-1">__CUSTOM_TAB_TWO_LABEL__</button>
+            <button type="button" class="__PREFIX__-custom-tab" id="__DOM_PREFIX__CustomTabThree" data-custom-tab-target="__DOM_PREFIX__CustomPanelThree" role="tab" aria-controls="__DOM_PREFIX__CustomPanelThree" aria-selected="false" tabindex="-1">__CUSTOM_TAB_THREE_LABEL__</button>
+        </div>
+
+        <div class="__PREFIX__-custom-panel active" id="__DOM_PREFIX__CustomPanelOne" data-custom-panel role="tabpanel" aria-labelledby="__DOM_PREFIX__CustomTabOne">
+            <div class="__PREFIX__-custom-grid" data-custom-columns="__CUSTOM_COLUMNS__">
+                <div class="__PREFIX__-custom-card">
+                    <div class="__PREFIX__-custom-label-wrap">
+                        <label class="__PREFIX__-custom-label" for="__DOM_PREFIX__CustomText">__CUSTOM_TEXT_LABEL__</label>
+                        <span class="__PREFIX__-custom-helper-chip" title="__CUSTOM_TEXT_HELPER__" aria-label="__CUSTOM_TEXT_HELPER__">i</span>
+                    </div>
+
+                    <input
+                        type="text"
+                        id="__DOM_PREFIX__CustomText"
+                        class="form-control __PREFIX__-custom-text-field"
+                        placeholder="__CUSTOM_TEXT_PLACEHOLDER__"
+                    >
+
+                    <p class="__PREFIX__-custom-hint">__CUSTOM_TEXT_HELPER__</p>
+                </div>
+
+                <div class="__PREFIX__-custom-card">
+                    <div class="__PREFIX__-custom-label-wrap">
+                        <label class="__PREFIX__-custom-label" for="__DOM_PREFIX__CustomSelect">__CUSTOM_SELECT_LABEL__</label>
+                        <span class="__PREFIX__-custom-helper-chip" title="__CUSTOM_SELECT_HELPER__" aria-label="__CUSTOM_SELECT_HELPER__">i</span>
+                    </div>
+
+                    <details id="__DOM_PREFIX__CustomSelect" class="__PREFIX__-custom-dropdown">
+                        <summary class="__PREFIX__-custom-dropdown-summary">
+                            <span id="__DOM_PREFIX__CustomSelectValue">Standard option</span>
+                            <span class="__PREFIX__-custom-arrow-slot" aria-hidden="true"></span>
+                        </summary>
+
+                        <div class="__PREFIX__-custom-dropdown-menu" role="listbox" aria-label="__CUSTOM_SELECT_LABEL__">
+                            <button type="button" class="__PREFIX__-custom-dropdown-option active" data-custom-dropdown-value="standard" role="option" aria-selected="true">Standard option</button>
+                            <button type="button" class="__PREFIX__-custom-dropdown-option" data-custom-dropdown-value="override" role="option" aria-selected="false">Override option</button>
+                            <button type="button" class="__PREFIX__-custom-dropdown-option" data-custom-dropdown-value="custom" role="option" aria-selected="false">Custom option</button>
+                        </div>
+                    </details>
+
+                    <p class="__PREFIX__-custom-hint">__CUSTOM_SELECT_HELPER__</p>
+                </div>
+
+                <div class="__PREFIX__-custom-card">
+                    <div class="__PREFIX__-custom-label-wrap">
+                        <span class="__PREFIX__-custom-label">__CUSTOM_RADIO_LABEL__</span>
+                        <span class="__PREFIX__-custom-helper-chip" title="__CUSTOM_RADIO_HELPER__" aria-label="__CUSTOM_RADIO_HELPER__">i</span>
+                    </div>
+
+                    <div class="__PREFIX__-custom-radio-group" role="radiogroup" aria-label="__CUSTOM_RADIO_LABEL__">
+                        <label class="__PREFIX__-custom-radio-card">
+                            <input type="radio" id="__DOM_PREFIX__CustomRadioStandard" name="__DOM_PREFIX__CustomRadio" value="standard" checked>
+                            <span>
+                                <span class="__PREFIX__-custom-radio-title">Standard</span>
+                                <span class="__PREFIX__-custom-radio-copy">__CUSTOM_RADIO_STANDARD_COPY__</span>
+                            </span>
+                        </label>
+
+                        <label class="__PREFIX__-custom-radio-card">
+                            <input type="radio" id="__DOM_PREFIX__CustomRadioOverride" name="__DOM_PREFIX__CustomRadio" value="override">
+                            <span>
+                                <span class="__PREFIX__-custom-radio-title">Override</span>
+                                <span class="__PREFIX__-custom-radio-copy">__CUSTOM_RADIO_OVERRIDE_COPY__</span>
+                            </span>
+                        </label>
+                    </div>
+
+                    <p class="__PREFIX__-custom-hint">__CUSTOM_RADIO_HELPER__</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="__PREFIX__-custom-panel" id="__DOM_PREFIX__CustomPanelTwo" data-custom-panel role="tabpanel" aria-labelledby="__DOM_PREFIX__CustomTabTwo" hidden>
+            <div class="__PREFIX__-custom-grid" data-custom-columns="__CUSTOM_COLUMNS__">
+                <section class="__PREFIX__-custom-group" data-span="2">
+                    <div class="__PREFIX__-custom-group-head">
+                        <h4 class="__PREFIX__-custom-group-title">__CUSTOM_GROUP_LABEL__</h4>
+                    </div>
+
+                    <div class="__PREFIX__-custom-group-body">
+                        <div class="__PREFIX__-custom-field">
+                            <div class="__PREFIX__-custom-label-wrap">
+                                <label class="__PREFIX__-custom-label" for="__DOM_PREFIX__CustomNumber">__CUSTOM_NUMBER_LABEL__</label>
+                                <span class="__PREFIX__-custom-helper-chip" title="__CUSTOM_NUMBER_HELPER__" aria-label="__CUSTOM_NUMBER_HELPER__">i</span>
+                            </div>
+
+                            <input
+                                type="number"
+                                id="__DOM_PREFIX__CustomNumber"
+                                class="form-control __PREFIX__-custom-number-field"
+                                min="0"
+                                step="1"
+                                placeholder="0"
+                                value="0"
+                            >
+
+                            <p class="__PREFIX__-custom-hint">__CUSTOM_NUMBER_HELPER__</p>
+                        </div>
+
+                        <div class="__PREFIX__-custom-field">
+                            <div class="__PREFIX__-custom-label-wrap">
+                                <span class="__PREFIX__-custom-label">__CUSTOM_TOGGLE_LABEL__</span>
+                                <span class="__PREFIX__-custom-helper-chip" title="__CUSTOM_TOGGLE_HELPER__" aria-label="__CUSTOM_TOGGLE_HELPER__">i</span>
+                            </div>
+
+                            <label class="__PREFIX__-custom-checkbox-option">
+                                <input type="checkbox" id="__DOM_PREFIX__CustomToggle">
+                                <span>Enabled</span>
+                            </label>
+
+                            <p class="__PREFIX__-custom-hint">__CUSTOM_TOGGLE_HELPER__</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="__PREFIX__-custom-panel" id="__DOM_PREFIX__CustomPanelThree" data-custom-panel role="tabpanel" aria-labelledby="__DOM_PREFIX__CustomTabThree" hidden>
+            <div class="__PREFIX__-custom-grid" data-custom-columns="1">
+                <div class="__PREFIX__-custom-card">
+                    <div class="__PREFIX__-custom-label-wrap">
+                        <label class="__PREFIX__-custom-label" for="__DOM_PREFIX__CustomTextarea">__CUSTOM_TEXTAREA_LABEL__</label>
+                        <span class="__PREFIX__-custom-helper-chip" title="__CUSTOM_TEXTAREA_HELPER__" aria-label="__CUSTOM_TEXTAREA_HELPER__">i</span>
+                    </div>
+
+                    <textarea
+                        id="__DOM_PREFIX__CustomTextarea"
+                        class="form-control __PREFIX__-custom-textarea"
+                        rows="3"
+                        placeholder="__CUSTOM_TEXTAREA_PLACEHOLDER__"
+                    ></textarea>
+
+                    <p class="__PREFIX__-custom-hint">__CUSTOM_TEXTAREA_HELPER__</p>
+                </div>
+
+                <div class="__PREFIX__-custom-info" data-span="2" data-info-layout="auto">
+                    <span>-- __CUSTOM_INFO_ITEM_ONE__</span>
+                    <span>-- __CUSTOM_INFO_ITEM_TWO__</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</details>

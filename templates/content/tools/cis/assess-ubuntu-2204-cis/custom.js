@@ -1,51 +1,190 @@
 // custom.js
 
-// ns:start family.assessment.workspace.01_input-brief
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.assessment.workspace.01_input-brief
-// ns:start family.assessment.workspace.02_basic-settings
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.assessment.workspace.02_basic-settings
-// ns:start family.assessment.workspace.03_advanced-settings
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.assessment.workspace.03_advanced-settings
+function initializeInfraStackCustomDropdowns(root) {
+    const scope = root || document;
+    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
+
+    dropdowns.forEach(function (dropdown) {
+        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
+        const targetInput = targetId ? document.getElementById(targetId) : null;
+        const label = dropdown.querySelector('[data-custom-dropdown-label]');
+        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
+
+        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
+            return;
+        }
+
+        function sync(value) {
+            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
+            let selectedOption = options.find(function (option) {
+                return option.dataset.customDropdownValue === selectedValue;
+            }) || options[0];
+
+            if (!selectedOption) {
+                return;
+            }
+
+            const nextValue = selectedOption.dataset.customDropdownValue || '';
+
+            if (targetInput.value !== nextValue) {
+                targetInput.value = nextValue;
+            }
+            label.textContent = selectedOption.textContent.trim();
+            options.forEach(function (option) {
+                const isActive = option === selectedOption;
+
+                option.classList.toggle('active', isActive);
+                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+        }
+
+        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
+            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+
+            if (descriptor && descriptor.get && descriptor.set) {
+                Object.defineProperty(targetInput, 'value', {
+                    configurable: true,
+                    get: function () {
+                        return descriptor.get.call(this);
+                    },
+                    set: function (nextValue) {
+                        descriptor.set.call(this, nextValue);
+                        window.requestAnimationFrame(function () {
+                            sync(String(nextValue || ''));
+                        });
+                    }
+                });
+                targetInput.dataset.customDropdownValueProxy = 'true';
+            }
+        }
+
+        options.forEach(function (option) {
+            option.addEventListener('click', function () {
+                sync(option.dataset.customDropdownValue || '');
+                targetInput.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+                dropdown.removeAttribute('open');
+            });
+        });
+
+        targetInput.addEventListener('change', function () {
+            sync(targetInput.value);
+        });
+        sync(targetInput.value);
+        dropdown.dataset.customDropdownBound = 'true';
+    });
+}
+
 // ns:start family.assessment.workspace.04_selected-item
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family.assessment.workspace.04_selected-item
-// ns:start family.assessment.workspace.05_result-summary
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.assessment.workspace.05_result-summary
-// ns:start family.assessment.workspace.06_result-view
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.assessment.workspace.06_result-view
-// ns:start family.assessment.workspace.07_table-export
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.assessment.workspace.07_table-export
-// ns:start family.assessment.workspace.08_json-restore
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.assessment.workspace.08_json-restore
+// ns:start family._base.workspace.05_result-summary
+function installInfraStackResultSummaryNormalizer(prefix) {
+    function normalizeSummary(summary) {
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
+
+        if (!hero) {
+            return;
+        }
+
+        const cards = Array.from(hero.querySelectorAll(':scope > .' + prefix + '-result-card'));
+        const primaryCard = cards.find(function (card) {
+            return card.classList.contains(prefix + '-result-card-primary') || card.classList.contains(prefix + '-result-card-visual') || card.classList.contains(prefix + '-result-card-command');
+        }) || cards[0];
+        const summaryCard = cards.find(function (card) {
+            return card !== primaryCard && (card.classList.contains(prefix + '-result-card-summary') || card.classList.contains(prefix + '-result-card-main'));
+        }) || cards.find(function (card) {
+            return card !== primaryCard;
+        });
+
+        if (primaryCard) {
+            primaryCard.classList.add(prefix + '-result-card-primary');
+            if (!primaryCard.dataset.resultVisual) {
+                if (primaryCard.querySelector('.' + prefix + '-result-ring')) {
+                    primaryCard.dataset.resultVisual = 'ring';
+                } else if (primaryCard.querySelector('.' + prefix + '-result-primary-number')) {
+                    primaryCard.dataset.resultVisual = 'number';
+                } else if (primaryCard.querySelector('.' + prefix + '-result-primary-metric')) {
+                    primaryCard.dataset.resultVisual = 'metric';
+                } else if (primaryCard.querySelector('.' + prefix + '-result-card-icon-primary')) {
+                    primaryCard.dataset.resultVisual = 'icon';
+                } else {
+                    primaryCard.dataset.resultVisual = 'text';
+                }
+            }
+        }
+
+        if (summaryCard) {
+            summaryCard.classList.add(prefix + '-result-card-summary');
+            const chipRow = summaryCard.querySelector('.' + prefix + '-result-chip-row');
+
+            if (chipRow && !summaryCard.querySelector('.' + prefix + '-result-chip-grid')) {
+                chipRow.classList.add(prefix + '-result-chip-grid');
+            }
+        }
+
+        if (primaryCard && hero.firstElementChild !== primaryCard) {
+            hero.insertBefore(primaryCard, hero.firstElementChild);
+        }
+
+        if (primaryCard && summaryCard && primaryCard.nextElementSibling !== summaryCard) {
+            hero.insertBefore(summaryCard, primaryCard.nextElementSibling);
+        }
+    }
+
+    function normalize() {
+        document.querySelectorAll('.' + prefix + '-result-summary').forEach(normalizeSummary);
+    }
+
+    function scheduleNormalize() {
+        window.requestAnimationFrame(normalize);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            normalize();
+            new MutationObserver(scheduleNormalize).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }, { once: true });
+        return;
+    }
+
+    normalize();
+    new MutationObserver(scheduleNormalize).observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+installInfraStackResultSummaryNormalizer('assess-ubuntu-2204-cis');
+// ns:end family._base.workspace.05_result-summary
 
 const assessUbuntu2204CisData = {{ include('content/tools/cis/assess-ubuntu-2204-cis/assets/custom.json.twig')|raw }};
 const assessUbuntu2204CisScriptEndpoint = '{{ path('app_cis_assess_ubuntu_2204_cis_script') }}';
 
+// ns:start family._base.workspace.00_shell
 document.addEventListener('DOMContentLoaded', function () {
     const benchmark = assessUbuntu2204CisData.benchmark || {};
     const families = Array.isArray(assessUbuntu2204CisData.families) ? assessUbuntu2204CisData.families.slice() : [];
     const sections = Array.isArray(assessUbuntu2204CisData.sections) ? assessUbuntu2204CisData.sections.slice() : [];
     const controls = Array.isArray(assessUbuntu2204CisData.controls) ? assessUbuntu2204CisData.controls.slice() : [];
+// ns:start family._base.workspace.01_input-brief
     const form = document.getElementById('assessUbuntu2204CisForm');
     const queryInput = document.getElementById('assessUbuntu2204CisQuery');
     const submitButton = document.getElementById('assessUbuntu2204CisSubmit');
+// ns:end family._base.workspace.01_input-brief
+// ns:start family._base.workspace.02_basic-settings
     const familyInput = document.getElementById('assessUbuntu2204CisFamily');
     const familySummary = document.getElementById('assessUbuntu2204CisFamilySummary');
     const familySelect = document.getElementById('assessUbuntu2204CisFamilySelect');
     const familyOptionsContainer = document.getElementById('assessUbuntu2204CisFamilyOptions');
-    const familyResetButton = document.getElementById('assessUbuntu2204CisFamilyReset');
     const sectionPathInput = document.getElementById('assessUbuntu2204CisSectionPath');
     const sectionSummary = document.getElementById('assessUbuntu2204CisSectionSummary');
     const sectionSelect = document.getElementById('assessUbuntu2204CisSectionSelect');
     const sectionOptionsContainer = document.getElementById('assessUbuntu2204CisSectionOptions');
-    const sectionResetButton = document.getElementById('assessUbuntu2204CisSectionReset');
     const criticalityInput = document.getElementById('assessUbuntu2204CisCriticality');
     const criticalitySummary = document.getElementById('assessUbuntu2204CisCriticalitySummary');
     const criticalitySelect = document.getElementById('assessUbuntu2204CisCriticalitySelect');
@@ -54,15 +193,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const controlSummary = document.getElementById('assessUbuntu2204CisControlSummary');
     const controlSelect = document.getElementById('assessUbuntu2204CisControlSelect');
     const controlOptionsContainer = document.getElementById('assessUbuntu2204CisControlOptions');
-    const controlResetButton = document.getElementById('assessUbuntu2204CisControlReset');
+// ns:end family._base.workspace.02_basic-settings
     const sortInput = document.getElementById('assessUbuntu2204CisSort');
     const sortSummary = document.getElementById('assessUbuntu2204CisSortSummary');
     const sortSelect = document.getElementById('assessUbuntu2204CisSortSelect');
     const sortOptionsContainer = document.getElementById('assessUbuntu2204CisSortOptions');
     const rowLimitInput = document.getElementById('assessUbuntu2204CisRowLimit');
-    const rowLimitSummary = document.getElementById('assessUbuntu2204CisRowLimitSummary');
-    const rowLimitSelect = document.getElementById('assessUbuntu2204CisRowLimitSelect');
-    const rowLimitOptionsContainer = document.getElementById('assessUbuntu2204CisRowLimitOptions');
     const criticalityRow = document.getElementById('assessUbuntu2204CisCriticalityRow');
     const resultEmpty = document.getElementById('assessUbuntu2204CisResultEmpty');
     const resultError = document.getElementById('assessUbuntu2204CisResultError');
@@ -80,6 +216,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const downloadCsvButton = document.getElementById('assessUbuntu2204CisDownloadCsv');
     const copyJsonButton = document.getElementById('assessUbuntu2204CisCopyJson');
     const downloadJsonButton = document.getElementById('assessUbuntu2204CisDownloadJson');
+    const importJsonButton = document.getElementById('assessUbuntu2204CisImportJsonButton');
+    const importJsonInput = document.getElementById('assessUbuntu2204CisImportJson');
     const tabButtons = Array.from(document.querySelectorAll('.assess-ubuntu-2204-cis-tab-btn'));
     const tabPanels = Array.from(document.querySelectorAll('.assess-ubuntu-2204-cis-tab-panel'));
 
@@ -94,20 +232,26 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         {
             value: 'title',
-            title: 'Title',
+            title: 'A-Z',
             meta: 'Sort alphabetically by control title'
         },
         {
             value: 'section',
-            title: 'Section path',
+            title: 'Section',
             meta: 'Group scripts by the directory path that contains them'
         },
         {
             value: 'criticality',
             title: 'Criticality',
             meta: 'Show declared criticality before unspecified scripts'
+        },
+        {
+            value: 'script',
+            title: 'Script',
+            meta: 'Sort by script filename'
         }
     ];
+// ns:start family._base.workspace.03_custom-settings
     const rowLimitCatalog = [
         {
             value: '25',
@@ -130,6 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
             meta: 'Render every matched script'
         }
     ];
+// ns:end family._base.workspace.03_custom-settings
     const defaultUrlState = {
         query: '',
         family: 'all',
@@ -162,12 +307,10 @@ document.addEventListener('DOMContentLoaded', function () {
         !familySummary ||
         !familySelect ||
         !familyOptionsContainer ||
-        !familyResetButton ||
         !sectionPathInput ||
         !sectionSummary ||
         !sectionSelect ||
         !sectionOptionsContainer ||
-        !sectionResetButton ||
         !criticalityInput ||
         !criticalitySummary ||
         !criticalitySelect ||
@@ -176,15 +319,11 @@ document.addEventListener('DOMContentLoaded', function () {
         !controlSummary ||
         !controlSelect ||
         !controlOptionsContainer ||
-        !controlResetButton ||
         !sortInput ||
         !sortSummary ||
         !sortSelect ||
         !sortOptionsContainer ||
         !rowLimitInput ||
-        !rowLimitSummary ||
-        !rowLimitSelect ||
-        !rowLimitOptionsContainer ||
         !criticalityRow ||
         !resultEmpty ||
         !resultError ||
@@ -202,6 +341,8 @@ document.addEventListener('DOMContentLoaded', function () {
         !downloadCsvButton ||
         !copyJsonButton ||
         !downloadJsonButton ||
+        !importJsonButton ||
+        !importJsonInput ||
         controls.length === 0 ||
         sections.length === 0 ||
         tabButtons.length === 0 ||
@@ -426,21 +567,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }) || null;
     }
 
-    function renderSelectOptions(container, options, groupName, selectedValue) {
+    function renderSelectOptions(container, options, selectedValue) {
         container.innerHTML = options.map(function (option) {
-            const isChecked = option.value === selectedValue;
+            const isActive = option.value === selectedValue;
             const metaMarkup = option.meta
                 ? `<span class="assess-ubuntu-2204-cis-select-meta">${escapeHtml(option.meta)}</span>`
                 : '';
 
             return `
-                <label class="assess-ubuntu-2204-cis-select-card">
-                  <input type="radio" name="${escapeHtml(groupName)}" value="${escapeHtml(option.value)}"${isChecked ? ' checked' : ''}>
-                  <span>
+                <button
+                  type="button"
+                  class="assess-ubuntu-2204-cis-select-option${isActive ? ' is-active' : ''}"
+                  data-select-value="${escapeHtml(option.value)}"
+                  aria-selected="${isActive ? 'true' : 'false'}"
+                >
                     <span class="assess-ubuntu-2204-cis-select-title">${escapeHtml(option.title)}</span>
                     ${metaMarkup}
-                  </span>
-                </label>
+                </button>
             `;
         }).join('');
     }
@@ -467,7 +610,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         controlSelect.classList.remove('assess-ubuntu-2204-cis-select-inactive');
 
-        renderSelectOptions(controlOptionsContainer, buildControlCatalog(controlList), 'assessUbuntu2204CisControlOption', selectedValue);
+        renderSelectOptions(controlOptionsContainer, buildControlCatalog(controlList), selectedValue);
     }
 
     function buildControlCatalog(controlList) {
@@ -519,6 +662,12 @@ document.addEventListener('DOMContentLoaded', function () {
         summaryElement.textContent = option ? option.title : fallbackText;
     }
 
+    function setRowLimitValue(value, fallbackValue) {
+        const requestedValue = String(value || rowLimitInput.value || fallbackValue);
+        const allowedValues = ['25', '50', '100', 'all'];
+        rowLimitInput.value = allowedValues.includes(requestedValue) ? requestedValue : fallbackValue;
+    }
+
     function controlSummaryText(control) {
         if (!control) {
             return 'No matched script';
@@ -528,37 +677,37 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function renderStaticSelects(state, filteredControls, selectedControl) {
-        renderSelectOptions(familyOptionsContainer, familyCatalog, 'assessUbuntu2204CisFamilyOption', state.family);
-        renderSelectOptions(sectionOptionsContainer, buildSectionCatalog(state.family), 'assessUbuntu2204CisSectionOption', state.sectionPath);
-        renderSelectOptions(criticalityOptionsContainer, criticalityCatalog, 'assessUbuntu2204CisCriticalityOption', state.criticality);
+        renderSelectOptions(familyOptionsContainer, familyCatalog, state.family);
+        renderSelectOptions(sectionOptionsContainer, buildSectionCatalog(state.family), state.sectionPath);
+        renderSelectOptions(criticalityOptionsContainer, criticalityCatalog, state.criticality);
         renderSortOptions(sortOptionsContainer, sortCatalog, state.sort);
-        renderSelectOptions(rowLimitOptionsContainer, rowLimitCatalog, 'assessUbuntu2204CisRowLimitOption', state.rowLimit);
         renderControlOptions(filteredControls, state.selectedControl);
+        setRowLimitValue(state.rowLimit, '50');
 
         updateSelectSummary(familySummary, familyCatalog, state.family, 'All sections');
         updateSelectSummary(sectionSummary, buildSectionCatalog(state.family), state.sectionPath, 'All paths');
         updateSelectSummary(criticalitySummary, criticalityCatalog, state.criticality, 'All criticality');
         updateSelectSummary(sortSummary, sortCatalog, state.sort, 'ID');
-        updateSelectSummary(rowLimitSummary, rowLimitCatalog, state.rowLimit, '50 rows');
         controlSummary.textContent = controlSummaryText(selectedControl);
     }
 
-    function attachRadioChangeHandler(container, hiddenInput, detailsElement, onAfterChange) {
-        container.addEventListener('change', function (event) {
-            const target = event.target;
+    function attachSelectOptionHandler(container, hiddenInput, detailsElement, onAfterChange) {
+        container.addEventListener('click', function (event) {
+            const target = event.target instanceof HTMLElement ? event.target : null;
+            const button = target ? target.closest('button[data-select-value]') : null;
 
-            if (!(target instanceof HTMLInputElement) || target.type !== 'radio') {
+            if (!button || !container.contains(button)) {
                 return;
             }
 
-            hiddenInput.value = target.value;
+            hiddenInput.value = button.getAttribute('data-select-value') || '';
 
             if (detailsElement) {
                 detailsElement.removeAttribute('open');
             }
 
             if (typeof onAfterChange === 'function') {
-                onAfterChange(target.value);
+                onAfterChange(hiddenInput.value);
             }
         });
     }
@@ -720,6 +869,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 return rightWeight - leftWeight || naturalCompare(leftControl.id, rightControl.id);
             }
 
+            if (sortValue === 'script') {
+                return naturalCompare(leftControl.script_name, rightControl.script_name)
+                    || naturalCompare(leftControl.id, rightControl.id);
+            }
+
             return Number(leftControl.order) - Number(rightControl.order);
         });
 
@@ -770,49 +924,110 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function buildSummaryMarkup(result) {
-        const queryBadge = result.state.query
-            ? `<span class="assess-ubuntu-2204-cis-badge">Filter: ${escapeHtml(result.state.query)}</span>`
-            : '';
-        const familyBadge = `<span class="assess-ubuntu-2204-cis-badge">Family: ${escapeHtml(result.state.family === 'all' ? 'All sections' : result.state.family)}</span>`;
-        const sectionBadge = `<span class="assess-ubuntu-2204-cis-badge">Section: ${escapeHtml(result.state.sectionPath === 'all' ? 'All paths' : result.state.sectionPath)}</span>`;
-        const criticalityBadge = `<span class="assess-ubuntu-2204-cis-badge">Criticality: ${escapeHtml(findOptionByValue(criticalityCatalog, result.state.criticality).title)}</span>`;
+        const familyLabel = result.state.family === 'all' ? 'All sections' : result.state.family;
+        const sectionLabel = result.state.sectionPath === 'all' ? 'All paths' : result.state.sectionPath;
+        const criticalityLabel = findOptionByValue(criticalityCatalog, result.state.criticality).title;
         const selectedMeta = result.selectedControl
-            ? `${escapeHtml(result.selectedControl.id)} • ${escapeHtml(result.selectedControl.script_name)}`
+            ? `${result.selectedControl.id} / ${result.selectedControl.script_name}`
             : 'No matched script';
+        const queryLabel = result.state.query ? `Filter: ${result.state.query}` : 'Filter: none';
+        const updatedText = new Date().toLocaleString();
+        const visibleRows = String(result.visibleControls.length);
+        const matchedScripts = String(result.filteredControls.length);
+        const visibleSections = String(result.visibleSections.length);
+        const selectedScriptLines = String(result.selectedControl ? result.selectedControl.script_line_count : 0);
+        const selectedScriptCopy = result.selectedControl ? 'Lines in the displayed script body.' : 'No script currently selected.';
+
+        resultSummary.dataset.resultTone = result.filteredControls.length > 0 ? 'success' : 'warning';
+        resultSummary.dataset.resultLayout = 'number';
 
         return `
-            <div class="assess-ubuntu-2204-cis-summary-grid">
-              <article class="assess-ubuntu-2204-cis-summary-card">
-                <span class="assess-ubuntu-2204-cis-summary-kicker">Matched scripts</span>
-                <strong class="assess-ubuntu-2204-cis-summary-value">${result.filteredControls.length}</strong>
-                <span class="assess-ubuntu-2204-cis-summary-meta">Controls currently matching the selected filters</span>
-              </article>
-              <article class="assess-ubuntu-2204-cis-summary-card">
-                <span class="assess-ubuntu-2204-cis-summary-kicker">Visible rows</span>
-                <strong class="assess-ubuntu-2204-cis-summary-value">${result.visibleControls.length}</strong>
-                <span class="assess-ubuntu-2204-cis-summary-meta">Rows rendered in the controls table</span>
-              </article>
-              <article class="assess-ubuntu-2204-cis-summary-card">
-                <span class="assess-ubuntu-2204-cis-summary-kicker">Matched sections</span>
-                <strong class="assess-ubuntu-2204-cis-summary-value">${result.visibleSections.length}</strong>
-                <span class="assess-ubuntu-2204-cis-summary-meta">Section rollups built from the filtered control set</span>
-              </article>
-              <article class="assess-ubuntu-2204-cis-summary-card">
-                <span class="assess-ubuntu-2204-cis-summary-kicker">Selected script</span>
-                <strong class="assess-ubuntu-2204-cis-summary-value">${result.selectedControl ? result.selectedControl.script_line_count : 0}</strong>
-                <span class="assess-ubuntu-2204-cis-summary-meta">${result.selectedControl ? 'Lines in the displayed script body' : 'No script currently selected'}</span>
-              </article>
+            <header class="assess-ubuntu-2204-cis-result-header" aria-label="Result summary header">
+                <div class="assess-ubuntu-2204-cis-result-header-main">
+                    <span class="assess-ubuntu-2204-cis-result-header-icon" aria-hidden="true"><i class="bi bi-bar-chart-line"></i></span>
+                    <div class="assess-ubuntu-2204-cis-result-header-copy">
+                        <h2 class="assess-ubuntu-2204-cis-result-header-title">Result Summary</h2>
+                        <p>Overview of the current assessment results and key metrics</p>
+                    </div>
+                </div>
+                <div class="assess-ubuntu-2204-cis-result-header-meta" aria-label="Result summary status">
+                    <span class="assess-ubuntu-2204-cis-result-header-chip assess-ubuntu-2204-cis-result-chip-ready"><span class="assess-ubuntu-2204-cis-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span>
+                    <span class="assess-ubuntu-2204-cis-result-header-chip assess-ubuntu-2204-cis-result-chip-updated"><span class="assess-ubuntu-2204-cis-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>${escapeHtml(updatedText)}</span></span>
+                </div>
+            </header>
+
+            <div class="assess-ubuntu-2204-cis-result-hero-grid" aria-live="polite">
+                <article class="assess-ubuntu-2204-cis-result-card assess-ubuntu-2204-cis-result-card-primary" data-result-visual="number" aria-label="Primary result">
+                    <div class="assess-ubuntu-2204-cis-result-primary-heading assess-ubuntu-2204-cis-result-visual-copy assess-ubuntu-2204-cis-result-visual-copy-top"><div class="assess-ubuntu-2204-cis-result-kicker">Primary Result</div><h3 class="assess-ubuntu-2204-cis-result-title assess-ubuntu-2204-cis-result-title-center">${escapeHtml(visibleRows)} visible rows</h3></div>
+                    <div class="assess-ubuntu-2204-cis-result-primary-visual" id="assessUbuntu2204CisResultVisual" aria-label="Primary assessment result">
+                        <span class="assess-ubuntu-2204-cis-result-card-icon assess-ubuntu-2204-cis-result-card-icon-primary" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span>
+                        <div class="assess-ubuntu-2204-cis-result-primary-number">
+                            <strong class="assess-ubuntu-2204-cis-result-primary-number-value">${escapeHtml(visibleRows)}</strong>
+                            <span class="assess-ubuntu-2204-cis-result-primary-number-unit">visible rows</span>
+                        </div>
+                    </div>
+                    <div class="assess-ubuntu-2204-cis-result-visual-copy">
+                        <p class="assess-ubuntu-2204-cis-result-copy assess-ubuntu-2204-cis-result-copy-center">Selected: ${escapeHtml(selectedMeta)}</p>
+                    </div>
+                    <span class="assess-ubuntu-2204-cis-result-card-divider" aria-hidden="true"></span>
+                    <div class="assess-ubuntu-2204-cis-result-chip-row assess-ubuntu-2204-cis-result-chip-row-center" aria-label="Primary result source">
+                        <span class="assess-ubuntu-2204-cis-result-chip assess-ubuntu-2204-cis-result-chip-outcome assess-ubuntu-2204-cis-result-chip-ready"><span class="assess-ubuntu-2204-cis-result-chip-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>Benchmark: ${escapeHtml(benchmark.name || 'Ubuntu 22.04 CIS')}</span></span>
+                    </div>
+                </article>
+
+                <article class="assess-ubuntu-2204-cis-result-card assess-ubuntu-2204-cis-result-card-summary" aria-label="Assessment summary">
+                    <div class="assess-ubuntu-2204-cis-result-summary-intro">
+                        <span class="assess-ubuntu-2204-cis-result-card-icon assess-ubuntu-2204-cis-result-card-icon-summary" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>
+                        <div class="assess-ubuntu-2204-cis-result-summary-copy">
+                            <div class="assess-ubuntu-2204-cis-result-kicker">Descriptive Summary</div>
+                            <h3 class="assess-ubuntu-2204-cis-result-title">Filtered CIS control set</h3>
+                            <p class="assess-ubuntu-2204-cis-result-copy">The table, section rollups, selected script body, JSON, and exports are all derived from the current filters.</p>
+                        </div>
+                    </div>
+                    <span class="assess-ubuntu-2204-cis-result-card-divider" aria-hidden="true"></span>
+                    <div class="assess-ubuntu-2204-cis-result-chip-grid" aria-label="Assessment state">
+                        <span class="assess-ubuntu-2204-cis-result-chip assess-ubuntu-2204-cis-result-chip-ready"><span class="assess-ubuntu-2204-cis-result-chip-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>Benchmark: ${escapeHtml(benchmark.name || 'Ubuntu 22.04 CIS')}</span></span>
+                        <span class="assess-ubuntu-2204-cis-result-chip assess-ubuntu-2204-cis-result-chip-baseline"><span class="assess-ubuntu-2204-cis-result-chip-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span>Family: ${escapeHtml(familyLabel)}</span></span>
+                        <span class="assess-ubuntu-2204-cis-result-chip assess-ubuntu-2204-cis-result-chip-baseline"><span class="assess-ubuntu-2204-cis-result-chip-icon" aria-hidden="true"><i class="bi bi-folder2-open"></i></span><span>Section: ${escapeHtml(sectionLabel)}</span></span>
+                        <span class="assess-ubuntu-2204-cis-result-chip assess-ubuntu-2204-cis-result-chip-baseline"><span class="assess-ubuntu-2204-cis-result-chip-icon" aria-hidden="true"><i class="bi bi-flag"></i></span><span>Criticality: ${escapeHtml(criticalityLabel)}</span></span>
+                        <span class="assess-ubuntu-2204-cis-result-chip assess-ubuntu-2204-cis-result-chip-warning"><span class="assess-ubuntu-2204-cis-result-chip-icon" aria-hidden="true"><i class="bi bi-funnel"></i></span><span>${escapeHtml(queryLabel)}</span></span>
+                    </div>
+                </article>
             </div>
-            <div class="assess-ubuntu-2204-cis-badge-row">
-              <span class="assess-ubuntu-2204-cis-badge">Benchmark: ${escapeHtml(benchmark.name || 'Ubuntu 22.04 CIS')}</span>
-              ${familyBadge}
-              ${sectionBadge}
-              ${criticalityBadge}
-              <span class="assess-ubuntu-2204-cis-badge">Selected: ${selectedMeta}</span>
-              ${queryBadge}
+
+            <div class="assess-ubuntu-2204-cis-result-metric-grid" aria-label="Assessment metrics">
+                <article class="assess-ubuntu-2204-cis-result-metric-card assess-ubuntu-2204-cis-result-metric-success">
+                    <span class="assess-ubuntu-2204-cis-result-metric-icon" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+                    <span class="assess-ubuntu-2204-cis-result-metric-label">Matched Scripts</span>
+                    <strong class="assess-ubuntu-2204-cis-result-metric-value">${escapeHtml(matchedScripts)}</strong>
+                    <span class="assess-ubuntu-2204-cis-result-metric-copy">Controls matching the selected filters.</span>
+                    <span class="assess-ubuntu-2204-cis-result-metric-accent" aria-hidden="true"></span>
+                </article>
+                <article class="assess-ubuntu-2204-cis-result-metric-card assess-ubuntu-2204-cis-result-metric-info">
+                    <span class="assess-ubuntu-2204-cis-result-metric-icon" aria-hidden="true"><i class="bi bi-eye"></i></span>
+                    <span class="assess-ubuntu-2204-cis-result-metric-label">Visible Rows</span>
+                    <strong class="assess-ubuntu-2204-cis-result-metric-value">${escapeHtml(visibleRows)}</strong>
+                    <span class="assess-ubuntu-2204-cis-result-metric-copy">Rows rendered in the controls table.</span>
+                    <span class="assess-ubuntu-2204-cis-result-metric-accent" aria-hidden="true"></span>
+                </article>
+                <article class="assess-ubuntu-2204-cis-result-metric-card assess-ubuntu-2204-cis-result-metric-accent-tone">
+                    <span class="assess-ubuntu-2204-cis-result-metric-icon" aria-hidden="true"><i class="bi bi-layers"></i></span>
+                    <span class="assess-ubuntu-2204-cis-result-metric-label">Sections</span>
+                    <strong class="assess-ubuntu-2204-cis-result-metric-value">${escapeHtml(visibleSections)}</strong>
+                    <span class="assess-ubuntu-2204-cis-result-metric-copy">Section rollups from the filtered set.</span>
+                    <span class="assess-ubuntu-2204-cis-result-metric-accent" aria-hidden="true"></span>
+                </article>
+                <article class="assess-ubuntu-2204-cis-result-metric-card assess-ubuntu-2204-cis-result-metric-warning">
+                    <span class="assess-ubuntu-2204-cis-result-metric-icon" aria-hidden="true"><i class="bi bi-code"></i></span>
+                    <span class="assess-ubuntu-2204-cis-result-metric-label">Selected Script</span>
+                    <strong class="assess-ubuntu-2204-cis-result-metric-value">${escapeHtml(selectedScriptLines)}</strong>
+                    <span class="assess-ubuntu-2204-cis-result-metric-copy">${escapeHtml(selectedScriptCopy)}</span>
+                    <span class="assess-ubuntu-2204-cis-result-metric-accent" aria-hidden="true"></span>
+                </article>
             </div>
         `;
     }
+
 
     function renderToolbarMeta(result) {
         const rowLimitLabel = normalizeRowLimit(result.state.rowLimit) === 'all'
@@ -1252,6 +1467,77 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
+    function readStateFromJsonPayload(payload) {
+        if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+            throw new Error('Import a JSON object exported by this assessment tool.');
+        }
+
+        const filters = payload.filters && typeof payload.filters === 'object'
+            ? payload.filters
+            : payload.state && typeof payload.state === 'object'
+                ? payload.state
+                : payload;
+
+        if (!filters || typeof filters !== 'object' || Array.isArray(filters)) {
+            throw new Error('The JSON file does not include restorable filter state.');
+        }
+
+        return normalizeState({
+            query: filters.query || '',
+            family: filters.family || 'all',
+            sectionPath: filters.section_path || filters.sectionPath || 'all',
+            criticality: filters.criticality || 'all',
+            selectedControl: filters.selected_control || filters.selectedControl || '',
+            sort: filters.sort || 'id',
+            rowLimit: filters.row_limit || filters.rowLimit || '50'
+        });
+    }
+
+// ns:start family._base.workspace.08_json-restore
+    function showImportError(message) {
+        resultError.textContent = message || 'Unable to import JSON.';
+        resultError.classList.remove('d-none');
+    }
+
+    function restoreFromJsonPayload(payload) {
+        const restoredState = readStateFromJsonPayload(payload);
+        const result = buildResult(restoredState);
+
+        queryInput.value = restoredState.query;
+        syncUrlQuery(result);
+        renderResult(result);
+        resultError.classList.add('d-none');
+        flashButton(importJsonButton, 'Imported');
+    }
+
+    function handleJsonImportFile(file) {
+        if (!file) {
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.addEventListener('load', function () {
+            try {
+                restoreFromJsonPayload(JSON.parse(String(reader.result || '{}')));
+            } catch (error) {
+                showImportError(error instanceof Error ? error.message : 'Unable to import JSON.');
+                flashButton(importJsonButton, 'Failed');
+            } finally {
+                importJsonInput.value = '';
+            }
+        });
+
+        reader.addEventListener('error', function () {
+            showImportError('Unable to read the selected JSON file.');
+            flashButton(importJsonButton, 'Failed');
+            importJsonInput.value = '';
+        });
+
+        reader.readAsText(file);
+    }
+// ns:end family._base.workspace.08_json-restore
+
     function buildResult(state) {
         const normalizedState = normalizeState(state);
         const familyScopedControls = filterControlsByFamily(controls, normalizedState.family);
@@ -1300,6 +1586,9 @@ document.addEventListener('DOMContentLoaded', function () {
         latestResult = result;
         syncInputsFromResult(result);
         showResultState();
+        resultSummary.classList.add('assess-ubuntu-2204-cis-result-summary');
+        resultSummary.dataset.resultTone = 'ready';
+        resultSummary.dataset.resultLayout = 'assessment_overview';
         resultSummary.innerHTML = buildSummaryMarkup(result);
         renderToolbarMeta(result);
         renderControlsTable(result);
@@ -1337,27 +1626,28 @@ document.addEventListener('DOMContentLoaded', function () {
     syncInputsFromResult(initialResult);
     syncUrlQuery(initialResult);
 
-    attachRadioChangeHandler(familyOptionsContainer, familyInput, familySelect, function () {
+    attachSelectOptionHandler(familyOptionsContainer, familyInput, familySelect, function () {
         sectionPathInput.value = 'all';
         selectedControlInput.value = '';
         renderExplorer();
     });
-    attachRadioChangeHandler(sectionOptionsContainer, sectionPathInput, sectionSelect, function () {
+    attachSelectOptionHandler(sectionOptionsContainer, sectionPathInput, sectionSelect, function () {
         selectedControlInput.value = '';
         renderExplorer();
     });
-    attachRadioChangeHandler(criticalityOptionsContainer, criticalityInput, criticalitySelect, function () {
+    attachSelectOptionHandler(criticalityOptionsContainer, criticalityInput, criticalitySelect, function () {
         selectedControlInput.value = '';
         renderExplorer();
     });
-    attachRadioChangeHandler(controlOptionsContainer, selectedControlInput, controlSelect, function () {
+    attachSelectOptionHandler(controlOptionsContainer, selectedControlInput, controlSelect, function () {
         renderExplorer();
         if (latestResult) {
             activateTab('assessUbuntu2204CisScriptPanel');
         }
     });
     attachSortButtonHandler();
-    attachRadioChangeHandler(rowLimitOptionsContainer, rowLimitInput, rowLimitSelect, function () {
+    rowLimitInput.addEventListener('change', function () {
+        setRowLimitValue(rowLimitInput.value, '50');
         renderExplorer();
     });
 
@@ -1365,27 +1655,6 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         selectedControlInput.value = '';
         renderExplorer({ showResult: true });
-    });
-
-    familyResetButton.addEventListener('click', function () {
-        familyInput.value = 'all';
-        sectionPathInput.value = 'all';
-        selectedControlInput.value = '';
-        renderExplorer();
-    });
-
-    sectionResetButton.addEventListener('click', function () {
-        sectionPathInput.value = 'all';
-        selectedControlInput.value = '';
-        renderExplorer();
-    });
-
-    controlResetButton.addEventListener('click', function () {
-        selectedControlInput.value = '';
-        renderExplorer();
-        if (latestResult) {
-            activateTab('assessUbuntu2204CisScriptPanel');
-        }
     });
 
     tabButtons.forEach(function (button) {
@@ -1443,6 +1712,7 @@ document.addEventListener('DOMContentLoaded', function () {
         flashButton(downloadScriptButton, 'Saved');
     });
 
+// ns:start family._base.workspace.06_output-toolbar
     exportPdfButton.addEventListener('click', function () {
         if (!latestResult) {
             return;
@@ -1477,4 +1747,147 @@ document.addEventListener('DOMContentLoaded', function () {
         downloadFile('assess-ubuntu-2204-cis.json', JSON.stringify(latestResult.jsonPayload, null, 2), 'application/json;charset=utf-8');
         flashButton(downloadJsonButton, 'Saved');
     });
+// ns:end family._base.workspace.06_output-toolbar
+
+    importJsonButton.addEventListener('click', function () {
+        importJsonInput.click();
+    });
+
+    importJsonInput.addEventListener('change', function () {
+        const file = importJsonInput.files && importJsonInput.files[0] ? importJsonInput.files[0] : null;
+        handleJsonImportFile(file);
+    });
+
+    initializeInfraStackCustomDropdowns(document);
 });
+// ns:end family._base.workspace.00_shell
+// ns:start family._base.workspace.07_table-output
+(function setupAssessUbuntu2204CisTableOutputStandard() {
+    const rootSelector = '.assess-ubuntu-2204-cis-tool';
+    const tableSelector = '.tool-result-table tbody tr, .assess-ubuntu-2204-cis-table tbody tr';
+    const tbodySelector = '.tool-result-table tbody, .assess-ubuntu-2204-cis-table tbody';
+    const clampClass = 'assess-ubuntu-2204-cis-table-cell-text';
+    const cellClampClass = 'assess-ubuntu-2204-cis-cell-clamp';
+    const statusColumnClass = 'assess-ubuntu-2204-cis-table-status-cell';
+
+    function hasActionColumn(cells, table) {
+        const lastCell = cells[cells.length - 1];
+        const lastHead = table ? table.querySelector('thead th:last-child') : null;
+        const headText = lastHead ? String(lastHead.textContent || '') : '';
+
+        return Boolean(
+            lastCell && lastCell.querySelector('button, [data-copy-row], [data-inventory-copy-row], [data-control-copy-row], [data-options-copy], [data-operation-copy], [data-copy-value]')
+        ) || /copy|action|actions/i.test(headText);
+    }
+
+    function isStatusLikeHeader(text) {
+        return /^(status|signal|criticality|severity|state|health|outcome|result|level|label)$/i.test(String(text || '').trim());
+    }
+
+    function getBodyCells(row) {
+        return Array.from(row.children).filter(function filterCells(cell) {
+            return cell.tagName && cell.tagName.toLowerCase() === 'td';
+        });
+    }
+
+    function applyStatusAlignment(root) {
+        root.querySelectorAll('.tool-result-table, .assess-ubuntu-2204-cis-table').forEach(function alignStatusTable(table) {
+            const headers = Array.from(table.querySelectorAll('thead th'));
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            table.querySelectorAll('.' + statusColumnClass).forEach(function clearStatusCell(cell) {
+                cell.classList.remove(statusColumnClass);
+            });
+
+            headers.forEach(function alignStatusColumn(header, index) {
+                const statusLike = isStatusLikeHeader(header.textContent);
+                header.classList.toggle(statusColumnClass, statusLike);
+
+                if (!statusLike) {
+                    return;
+                }
+
+                rows.forEach(function alignStatusCell(row) {
+                    const cells = getBodyCells(row);
+                    const cell = cells[index];
+
+                    if (cell && cell.colSpan <= 1) {
+                        cell.classList.add(statusColumnClass);
+                    }
+                });
+            });
+        });
+    }
+
+    function clampCell(cell) {
+        if (!cell || cell.colSpan > 1 || cell.querySelector('.' + clampClass + ', .' + cellClampClass)) {
+            return;
+        }
+
+        if (cell.children.length === 1 && !cell.firstElementChild.matches('button')) {
+            cell.firstElementChild.classList.add(clampClass);
+            return;
+        }
+
+        const wrapper = document.createElement('span');
+        wrapper.className = clampClass;
+
+        while (cell.firstChild) {
+            wrapper.appendChild(cell.firstChild);
+        }
+
+        cell.appendChild(wrapper);
+    }
+
+    function applyTableOutputClamp() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        applyStatusAlignment(root);
+
+        root.querySelectorAll(tableSelector).forEach(function clampRow(row) {
+            const cells = getBodyCells(row);
+            const table = row.closest('table');
+            const actionColumn = hasActionColumn(cells, table);
+
+            cells.forEach(function clampDataCell(cell, index) {
+                const isFirst = index === 0;
+                const isAction = actionColumn && index === cells.length - 1;
+
+                if (!isFirst && !isAction) {
+                    clampCell(cell);
+                }
+            });
+        });
+    }
+
+    function observeTables() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        root.querySelectorAll(tbodySelector).forEach(function observeBody(tbody) {
+            if (tbody.dataset.tableOutputClampObserver === 'true') {
+                return;
+            }
+
+            tbody.dataset.tableOutputClampObserver = 'true';
+            new MutationObserver(applyTableOutputClamp).observe(tbody, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        applyTableOutputClamp();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', observeTables);
+    } else {
+        observeTables();
+    }
+}());
+// ns:end family._base.workspace.07_table-output

@@ -1,0 +1,174 @@
+/* section.css */
+
+.__TOOL_CLASS__ .__PREFIX__-json-restore-shell,
+.__TOOL_CLASS__ .__PREFIX__-json-card,
+.__TOOL_CLASS__ .__PREFIX__-json-head,
+.__TOOL_CLASS__ .__PREFIX__-json-title-wrap,
+.__TOOL_CLASS__ .__PREFIX__-json-output,
+.__TOOL_CLASS__ .__PREFIX__-json-empty,
+.__TOOL_CLASS__ .__PREFIX__-json-status {
+    min-width: 0;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-restore-shell {
+    display: grid;
+    gap: 12px;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-card {
+    display: grid;
+    grid-auto-rows: max-content;
+    align-content: start;
+    gap: 0;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--base-json-border, #ddd6fe);
+    border-radius: var(--base-json-radius, 14px);
+    background: var(--base-json-surface, #ffffff);
+    color: var(--base-json-text, #1f1733);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--base-json-border-soft, #efe7ff);
+    background: var(--base-json-head-bg, #f8f5ff);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-title-wrap {
+    display: grid;
+    gap: 4px;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-title {
+    color: var(--base-json-heading, #1f1433);
+    font-size: var(--base-json-title-size, 15px);
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-helper {
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-sm, 13px);
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-status {
+    display: none;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-xs, 12px);
+    font-weight: 850;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-status:empty,
+.__TOOL_CLASS__ .__PREFIX__-json-status.is-hidden {
+    display: none;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-status.is-success {
+    display: inline-flex;
+    color: var(--state-success, #16a34a);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-status.is-error {
+    display: inline-flex;
+    color: var(--state-error, #dc2626);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-empty {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--base-json-border-soft, #efe7ff);
+    background: var(--base-json-empty-bg, #fffaf5);
+    color: var(--base-json-muted, #6b5b7e);
+    font-size: var(--base-json-font-sm, 13px);
+    font-weight: 750;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-empty:empty,
+.__TOOL_CLASS__ .__PREFIX__-json-empty.is-hidden {
+    display: none;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-output {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-height: 220px;
+    max-height: 520px;
+    margin: 0;
+    padding: 16px;
+    overflow: auto;
+    background: var(--base-json-code-bg, #f4f7fb);
+    color: var(--base-json-code-text, #0f172a);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: var(--base-json-code-size, 13px);
+    line-height: 1.7;
+    tab-size: 2;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-output code {
+    display: block;
+    min-width: max-content;
+    color: inherit;
+    white-space: pre;
+    word-break: normal;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-key,
+.__TOOL_CLASS__ .tool-json-key {
+    color: var(--base-json-key, #475569);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-string,
+.__TOOL_CLASS__ .tool-json-string {
+    color: var(--base-json-string, #047857);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-number,
+.__TOOL_CLASS__ .tool-json-number {
+    color: var(--base-json-number, #b45309);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-boolean,
+.__TOOL_CLASS__ .tool-json-boolean {
+    color: var(--base-json-boolean, #7c3aed);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-json-null,
+.__TOOL_CLASS__ .tool-json-null {
+    color: var(--base-json-null, #b91c1c);
+}
+
+.__TOOL_CLASS__ .__PREFIX__-import-input.d-none,
+.__TOOL_CLASS__ .__PREFIX__-import-input[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 767.98px) {
+    .__TOOL_CLASS__ .__PREFIX__-json-head {
+        display: grid;
+    }
+
+    .__TOOL_CLASS__ .__PREFIX__-json-output {
+        min-height: 180px;
+        max-height: 420px;
+        padding: 14px;
+    }
+}

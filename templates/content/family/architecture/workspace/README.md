@@ -7,7 +7,7 @@ This folder defines the family-specific workspace grammar for architecture tools
 Use it when a requested tool is a diagram, topology, flow, dependency map, visual planner, or editable visual model.
 
 The shared scaffold owns reusable content rhythm.
-This workspace source owns architecture workspace sections and architecture behavior.
+This workspace source composes shared `_base` workspace sections with architecture-owned visual and inspector behavior.
 The shared main content sections own content delivery.
 
 ## Reference Workspace
@@ -33,18 +33,21 @@ The workspace baseline was refreshed on 2026-05-18.
 
 Baseline rules:
 
-- Workspace section folders `01_input-brief` through `09_result-table` are the current source for architecture workspace grammar.
-- Full copied AWS VPC Architecture source lives under `templates/content/family/architecture/baseline/source/` for traceability only.
-- Workspace CSS and JavaScript are fully extracted into section-owned `section.css` and `section.js`; do not use root `workspace/custom.css`, root `workspace/custom.js`, or full runtime copies inside section folders.
-- Extraction anchors use `ns:start/ns:end family.architecture.workspace.<section>` in `tool.html.twig`, `custom.css`, and `custom.js`.
+- `workspace/manifest.yml` `workspace_namespaces` is the active composition source.
+- Common shell, input, settings, summary, toolbar, table, and JSON restore sections are sourced from `templates/content/family/_base/workspace/`.
+- Architecture-owned section folders are `04_visual-contract` and `04_selected-item`.
+- Workspace source inherits the platform two-font system: `Nunito` through `--heading-font` for headings and `Roboto` through `--default-font` for body, labels, controls, tables, and tool UI.
+- Full copied AWS VPC Architecture source lives under `templates/content/family/architecture/source/` for traceability only. Do not audit this as active source.
+- Workspace CSS and JavaScript are section-owned; do not use root `workspace/custom.css`, root `workspace/custom.js`, or full runtime copies inside section folders.
+- Extraction anchors use composed `_base` and architecture namespace markers in `tool.html.twig`, `custom.css`, and `custom.js`.
 - Each `section.css` keeps only the minimal shared demo foundation plus selectors for its section. Each `section.js` records the matching custom.js line ranges, DOM IDs, classes, variables, functions, and behavior ownership for that section.
 - Body/helper text may receive `More info` markers. Headings, field labels, tab labels, button text, and every-text-node marking are out of standard.
 - Before generation, the output shell shows only the dashed notice: `Generate an architecture diagram to review technical inventory, service mix, and exportable JSON.`
-- After generation, output uses result text, diagram, score card, Sort toolbar, export actions, tabs, inventory table, secondary table cards, prompt notes, advisory pillar breakdown, advisory risk level, and JSON output. Compose `07_score-card` separately when a score/status banner is needed.
+- After generation, output uses architecture visual contract, selected-item inspector, `_base` summary, Sort toolbar, export actions, tabs, inventory table, secondary table cards, prompt notes, advisory pillar breakdown, advisory risk level, and JSON output.
 - Before/after section demos should stack as two rows in one column, not side-by-side columns.
 - Standalone `demo.html` files own demo chrome separately from extracted section source. Each demo should include any icon stylesheet it needs, a visible `demo-title-icon`, `demo-title-text`, and an architecture placeholder icon such as `bi bi-diagram-3`.
-- `04_selected-item`, `06_result-diagram`, and `09_result-table` demos should show before/after dummy states where practical.
-- `09_result-table/demo.html` shows generated dummy AWS-style inventory rows, secondary table rows, pillar rows, risk copy, and JSON output to demonstrate how the output should appear after generation.
+- `04_visual-contract` and `04_selected-item` demos should show before/after dummy states where practical.
+- `_base` table and JSON demos show generated dummy inventory rows, secondary table rows, pillar rows, risk copy, and JSON output to demonstrate how the output should appear after generation.
 - Result table dummy rows may use placeholder model data, but the `Action` column must render copy-row buttons, not long text.
 - Sort defaults to `ID`; available baseline modes are `ID`, `A-Z`, `Component`, `Placement`, and `Purpose`.
 - Basic tab dropdowns keep their wrapper, custom styled menu, trigger-width dropdown menu, and 46px control height without placeholder chips; the Sort dropdown uses the same 46px control height and trigger-width menu but shows only the selected sort label and no placeholder chip.
@@ -76,12 +79,11 @@ Architecture workspaces use this baseline flow:
 1. Prompt or preset seeds a normalized visual model.
 2. Basic controls set provider, region, zone, scope, or topology defaults.
 3. Custom controls refine network, workload, service, security, label, and output choices.
-4. Selected-item controls edit movable stage objects and connector handles when the diagram is editable.
-5. Result text summarizes the current model and owns the pre-generate output notice.
-6. Diagram stage renders the visual model with toolbar controls.
-7. Score or status card summarizes advisory quality and assumptions.
-8. Sort and export controls operate on generated output.
-9. Inventory, assessment tabs, notes, JSON output, and JSON restore derive from the same model.
+4. Architecture visual contract renders the stage, viewport controls, connector grammar, and generated visual model.
+5. Selected-item controls edit movable stage objects and connector handles when the diagram is editable.
+6. Score or status summary describes advisory quality and assumptions.
+7. Sort and export controls operate on generated output.
+8. Inventory, assessment tabs, notes, JSON output, and JSON restore derive from the same model.
 
 ## Section Use
 
@@ -105,19 +107,20 @@ Architecture content adaptation:
 - `content/04_tips-prompts` stays prompt-led.
 - `content/10_references` is used for complete factual content delivery and source-backed citations. Every in-text citation links to its matching References row. Substantial `Technical Details` sections must be 1500+ words, cite at least two official or source-of-truth websites or docs when they make technical claims, and use structured review aids such as bullets or tables when they clarify behavior. Factual `content.md` should carry at least three real references.
 
-Architecture workspace sections:
+Composed architecture workspace sections:
 
-- `01_input-brief` remains the primary prompt shell.
-- `02_basic-settings` becomes architecture preset, region, zone, or scope controls with baseline select wrappers, custom dropdown enhancement, and no placeholder-chip overlay.
-- `03_advanced-settings` becomes grouped architecture controls.
+- `_base.00_shell` provides the common workspace shell.
+- `_base.01_input-brief` remains the primary prompt shell.
+- `_base.02_basic-settings` provides architecture preset, region, zone, or scope controls with baseline select wrappers, custom dropdown enhancement, and no placeholder-chip overlay.
+- `_base.03_custom-settings` provides grouped architecture controls.
+- `04_visual-contract` provides the diagram stage, connector grammar, viewport controls, generated visual model, engine-runtime reference, and model-core reference.
 - `04_selected-item` is required when visual objects or connectors are movable or selectable.
-- `05_result-text` becomes stage title, metadata, exact pre-generate notice, and generated text summary.
-- `06_result-diagram` remains the diagram stage, connector, and toolbar source.
-- `07_score-card` becomes advisory score, quality, status, risk, or assumption summary.
-- `08_sort-card` becomes Sort, PNG, SVG, JSON copy/download, and JSON import action source.
-- `09_result-table` becomes inventory, secondary tables, prompt notes, pillar breakdown, risk level, JSON output, import, restore, and normalized state boundary.
+- `_base.05_result-summary` provides advisory score, quality, status, risk, or assumption summary.
+- `_base.06_output-toolbar` provides Sort, PNG, SVG, JSON copy/download, and JSON import action source.
+- `_base.07_table-output` provides inventory, secondary tables, prompt notes, pillar breakdown, and risk level output shell.
+- `_base.08_json-restore` provides JSON output, import, restore, and normalized state boundary.
 
-Do not put the full AWS `custom.css` or `custom.js` runtime back into individual workspace section files. If the runtime changes, update the matching extracted section source and keep `baseline/source/` as reference-only traceability.
+Do not put the full AWS `custom.css` or `custom.js` runtime back into individual workspace section files. If the runtime changes, update the matching extracted section source and keep `source/` as reference-only traceability.
 
 Do not create a family-local `sections/` directory.
 

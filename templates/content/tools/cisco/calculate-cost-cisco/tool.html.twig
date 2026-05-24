@@ -1,60 +1,75 @@
 {# tool.html.twig #}
-{# ns:start family.calculate.workspace.01_input-brief #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.01_input-brief #}
-{# ns:start family.calculate.workspace.02_basic-settings #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.02_basic-settings #}
-{# ns:start family.calculate.workspace.03_advanced-settings #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.03_advanced-settings #}
 {# ns:start family.calculate.workspace.04_selected-item #}
 {# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
 {# ns:end family.calculate.workspace.04_selected-item #}
-{# ns:start family.calculate.workspace.05_result-summary #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.05_result-summary #}
-{# ns:start family.calculate.workspace.06_result-view #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.06_result-view #}
-{# ns:start family.calculate.workspace.07_table-export #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.07_table-export #}
-{# ns:start family.calculate.workspace.08_json-restore #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.08_json-restore #}
 
+{# ns:start family._base.workspace.00_shell #}
 <div class="calculate-cost-cisco-tool" data-tool-slug="calculate-cost-cisco" data-tool-category="Cisco">
 <div class="tool-box">
   <form class="calculate-cost-cisco-form" id="calculateCostCiscoForm">
-    <div class="calculate-cost-cisco-main-row">
-      <label for="calculateCostCiscoLabel" class="calculate-cost-cisco-main-label">
-        Estimate label:
-        <span class="info-dot" title="Name the workload or environment you want to estimate">i</span>
-      </label>
+{# ns:start family._base.workspace.01_input-brief #}
+    <div class="calculate-cost-cisco-input-card">
+      <div class="calculate-cost-cisco-input-brief" data-input-layout="inline">
+        <div class="calculate-cost-cisco-main-row calculate-cost-cisco-input-row">
+          <div class="calculate-cost-cisco-input-label-wrap">
+            <label for="calculateCostCiscoLabel" class="calculate-cost-cisco-main-label calculate-cost-cisco-input-label">Estimate label:</label>
+            <span class="calculate-cost-cisco-helper-chip" title="Name the workload or environment you want to estimate" aria-label="Name the workload or environment you want to estimate">i</span>
+          </div>
 
-      <div class="calculate-cost-cisco-main-input-grid">
-        <input
-          type="text"
-          id="calculateCostCiscoLabel"
-          class="form-control"
-          placeholder="Production API stack"
-          value="Lean web platform"
-        >
+          <div class="calculate-cost-cisco-main-input-grid calculate-cost-cisco-input-stack">
+            <input
+              type="text"
+              id="calculateCostCiscoLabel"
+              class="form-control calculate-cost-cisco-input-control"
+              placeholder="Production API stack"
+              value="Lean web platform"
+            >
+            <div class="calculate-cost-cisco-input-error d-none" id="calculateCostCiscoInputError" role="alert"></div>
+          </div>
+        </div>
 
-        <div class="calculate-cost-cisco-main-actions">
-          <button type="submit" class="btn btn-primary calculate-cost-cisco-submit-btn" id="calculateCostCiscoSubmit">Estimate</button>
-          <button type="button" class="calculate-cost-cisco-secondary-btn calculate-cost-cisco-reset-btn" id="calculateCostCiscoReset">Reset</button>
+        <div class="calculate-cost-cisco-main-actions calculate-cost-cisco-input-actions">
+          <button
+            type="submit"
+            class="btn btn-primary calculate-cost-cisco-submit-btn calculate-cost-cisco-action-btn calculate-cost-cisco-action-btn-primary"
+            id="calculateCostCiscoSubmit"
+            data-tool-share-generate
+          >
+            <i class="bi bi-calculator" aria-hidden="true"></i>
+            <span>Estimate</span>
+          </button>
+          <button
+            type="button"
+            class="calculate-cost-cisco-secondary-btn calculate-cost-cisco-reset-btn calculate-cost-cisco-action-btn calculate-cost-cisco-action-btn-secondary"
+            id="calculateCostCiscoReset"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        <div class="calculate-cost-cisco-input-helper-card">
+          <span class="calculate-cost-cisco-input-hint">Use a short label that can travel with exported estimate data.</span>
+          <span class="calculate-cost-cisco-helper-chip calculate-cost-cisco-helper-chip-inline" title="Name the workload or environment you want to estimate" aria-label="Name the workload or environment you want to estimate">i</span>
         </div>
       </div>
     </div>
+{# ns:end family._base.workspace.01_input-brief #}
 
+{# ns:start family._base.workspace.02_basic-settings #}
     <div class="calculate-cost-cisco-basic-panel">
-      <div class="calculate-cost-cisco-inner-panel">
-        <div class="calculate-cost-cisco-setting-row">
+      <div class="calculate-cost-cisco-inner-panel calculate-cost-cisco-basic-card">
+
+        <div class="calculate-cost-cisco-example-card">
+          <span class="calculate-cost-cisco-example-label">Example estimate settings</span>
+          <strong class="calculate-cost-cisco-example-value">Branch network refresh, monthly USD, starter catalog</strong>
+          <span class="calculate-cost-cisco-example-helper">Preset and basis controls must update totals, tables, and JSON together.</span>
+        </div>
+
+        <div class="calculate-cost-cisco-setting-row calculate-cost-cisco-setting-card">
           <label for="calculateCostCiscoPreset" class="calculate-cost-cisco-setting-label">
             Preset:
-            <span class="info-dot" title="Load a starting cost shape for a common Cisco workload">i</span>
+            <span class="info-dot calculate-cost-cisco-helper-chip" title="Load a starting cost shape for a common Cisco workload">i</span>
           </label>
 
           <div class="calculate-cost-cisco-setting-field">
@@ -62,26 +77,27 @@
               <details class="calculate-cost-cisco-select" id="calculateCostCiscoPresetSelect">
                 <summary class="calculate-cost-cisco-select-summary">
                   <span id="calculateCostCiscoPresetSummary">Lean web platform</span>
+                  <span class="calculate-cost-cisco-select-arrow-slot" aria-hidden="true"></span>
                 </summary>
 
                 <div class="calculate-cost-cisco-select-body">
                   <div class="calculate-cost-cisco-select-grid calculate-cost-cisco-select-grid-list">
-                    <label class="calculate-cost-cisco-select-card">
+                    <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                       <input type="radio" name="calculateCostCiscoPresetOption" value="lean-web" checked>
                       <span class="calculate-cost-cisco-select-title">Branch access bundle</span>
                     </label>
 
-                    <label class="calculate-cost-cisco-select-card">
+                    <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                       <input type="radio" name="calculateCostCiscoPresetOption" value="serverless-api">
                       <span class="calculate-cost-cisco-select-title">Wireless refresh</span>
                     </label>
 
-                    <label class="calculate-cost-cisco-select-card">
+                    <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                       <input type="radio" name="calculateCostCiscoPresetOption" value="steady-platform">
                       <span class="calculate-cost-cisco-select-title">Campus core refresh</span>
                     </label>
 
-                    <label class="calculate-cost-cisco-select-card">
+                    <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                       <input type="radio" name="calculateCostCiscoPresetOption" value="blank">
                       <span class="calculate-cost-cisco-select-title">Blank estimate</span>
                     </label>
@@ -95,10 +111,10 @@
           </div>
         </div>
 
-        <div class="calculate-cost-cisco-setting-row">
+        <div class="calculate-cost-cisco-setting-row calculate-cost-cisco-setting-card">
           <label class="calculate-cost-cisco-setting-label">
             Pricing basis:
-            <span class="info-dot" title="Starter prices are visible and editable in Advanced so the estimate stays auditable">i</span>
+            <span class="info-dot calculate-cost-cisco-helper-chip" title="Starter prices are visible and editable in Custom so the estimate stays auditable">i</span>
           </label>
 
           <div class="calculate-cost-cisco-setting-field">
@@ -126,7 +142,7 @@
                 <p class="calculate-cost-cisco-service-copy">Switch count, lifecycle window, and purchase model.</p>
               </div>
 
-              <label class="switch calculate-cost-cisco-switch-wrap">
+              <label class="switch calculate-cost-cisco-switch-wrap calculate-cost-cisco-switch-card">
                 <input type="checkbox" id="calculateCostCiscoIncludeCompute" checked>
                 <span class="slider"></span>
                 <span class="calculate-cost-cisco-switch-label">Include</span>
@@ -140,46 +156,47 @@
                   <details class="calculate-cost-cisco-select" id="calculateCostCiscoComputeInstanceSelect">
                     <summary class="calculate-cost-cisco-select-summary">
                       <span id="calculateCostCiscoComputeInstanceSummary">Catalyst 9200 access switch</span>
+                      <span class="calculate-cost-cisco-select-arrow-slot" aria-hidden="true"></span>
                     </summary>
 
                     <div class="calculate-cost-cisco-select-body">
                       <div class="calculate-cost-cisco-select-grid calculate-cost-cisco-select-grid-list">
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="b2s">
                           <span class="calculate-cost-cisco-select-title">Cisco Business switch</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="b2ms">
                           <span class="calculate-cost-cisco-select-title">Catalyst 9200 access switch</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="d2s-v5" checked>
                           <span class="calculate-cost-cisco-select-title">Catalyst 9200 access switch</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="d4s-v5">
                           <span class="calculate-cost-cisco-select-title">Catalyst 9300 access switch</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="d8s-v5">
                           <span class="calculate-cost-cisco-select-title">Catalyst 9500 distribution switch</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="f4s-v2">
                           <span class="calculate-cost-cisco-select-title">Meraki MS access switch</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="e4s-v5">
                           <span class="calculate-cost-cisco-select-title">Catalyst 9600 core allocation</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="custom">
                           <span class="calculate-cost-cisco-select-title" id="calculateCostCiscoComputeCustomOptionLabel">Custom size - user defined</span>
                         </label>
@@ -194,36 +211,37 @@
                   <details class="calculate-cost-cisco-select" id="calculateCostCiscoComputePurchaseSelect">
                     <summary class="calculate-cost-cisco-select-summary">
                       <span id="calculateCostCiscoComputePurchaseSummary">Monthly allocation</span>
+                      <span class="calculate-cost-cisco-select-arrow-slot" aria-hidden="true"></span>
                     </summary>
 
                     <div class="calculate-cost-cisco-select-body">
                       <div class="calculate-cost-cisco-select-grid calculate-cost-cisco-select-grid-two">
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="onDemand" checked>
                           <span class="calculate-cost-cisco-select-title">Monthly allocation</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="spot">
                           <span class="calculate-cost-cisco-select-title">Lab or spare allocation</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="savings1">
                           <span class="calculate-cost-cisco-select-title">EA 1yr</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="savings3">
                           <span class="calculate-cost-cisco-select-title">EA 3yr</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="reserved1">
                           <span class="calculate-cost-cisco-select-title">Smart Net 1yr</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="reserved3">
                           <span class="calculate-cost-cisco-select-title">Smart Net 3yr</span>
                         </label>
@@ -239,7 +257,7 @@
                     <input
                       type="text"
                       id="calculateCostCiscoComputeCustomLabel"
-                      class="form-control"
+                      class="form-control calculate-cost-cisco-text-field"
 	                      placeholder="Custom switching profile"
                       value=""
                     >
@@ -250,7 +268,7 @@
                     <input
                       type="number"
                       id="calculateCostCiscoComputeCustomVcpu"
-                      class="form-control"
+                      class="form-control calculate-cost-cisco-text-field"
                       min="1"
                       step="1"
                       value="4"
@@ -262,7 +280,7 @@
                     <input
                       type="number"
                       id="calculateCostCiscoComputeCustomMemoryGiB"
-                      class="form-control"
+                      class="form-control calculate-cost-cisco-text-field"
                       min="1"
                       step="0.5"
                       value="16"
@@ -270,16 +288,16 @@
                   </div>
                 </div>
 
-	                <p class="calculate-cost-cisco-field-hint calculate-cost-cisco-card-span-two d-none" id="calculateCostCiscoComputeCustomHint">Custom profile uses the device monthly override in Advanced. Set planning units and management footprint here, then price it with the override field.</p>
+	                <p class="calculate-cost-cisco-field-hint calculate-cost-cisco-card-span-two d-none" id="calculateCostCiscoComputeCustomHint">Custom profile uses the device monthly override in Custom. Set planning units and management footprint here, then price it with the override field.</p>
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoComputeCount" class="calculate-cost-cisco-field-label">Device count</label>
-                  <input type="number" id="calculateCostCiscoComputeCount" class="form-control" min="0" step="1" value="2">
+                  <input type="number" id="calculateCostCiscoComputeCount" class="form-control calculate-cost-cisco-text-field" min="0" step="1" value="2">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoComputeHours" class="calculate-cost-cisco-field-label">Monthly hours</label>
-                  <input type="number" id="calculateCostCiscoComputeHours" class="form-control" min="0" max="744" step="1" value="730">
+                  <input type="number" id="calculateCostCiscoComputeHours" class="form-control calculate-cost-cisco-text-field" min="0" max="744" step="1" value="730">
                 </div>
               </div>
             </div>
@@ -292,7 +310,7 @@
                 <p class="calculate-cost-cisco-service-copy">Access point units, controller capacity, and throughput allowance.</p>
               </div>
 
-              <label class="switch calculate-cost-cisco-switch-wrap">
+              <label class="switch calculate-cost-cisco-switch-wrap calculate-cost-cisco-switch-card">
                 <input type="checkbox" id="calculateCostCiscoIncludeDisk" checked>
                 <span class="slider"></span>
                 <span class="calculate-cost-cisco-switch-label">Include</span>
@@ -303,17 +321,17 @@
               <div class="calculate-cost-cisco-card-grid calculate-cost-cisco-card-grid-two">
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoDiskStorageGb" class="calculate-cost-cisco-field-label">Access point units</label>
-                  <input type="number" id="calculateCostCiscoDiskStorageGb" class="form-control" min="0" step="1" value="160">
+                  <input type="number" id="calculateCostCiscoDiskStorageGb" class="form-control calculate-cost-cisco-text-field" min="0" step="1" value="160">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoDiskIops" class="calculate-cost-cisco-field-label">Controller capacity units</label>
-                  <input type="number" id="calculateCostCiscoDiskIops" class="form-control" min="0" step="100" value="3000">
+                  <input type="number" id="calculateCostCiscoDiskIops" class="form-control calculate-cost-cisco-text-field" min="0" step="100" value="3000">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack calculate-cost-cisco-card-span-two">
                   <label for="calculateCostCiscoDiskThroughput" class="calculate-cost-cisco-field-label">Throughput allowance Mbps</label>
-                  <input type="number" id="calculateCostCiscoDiskThroughput" class="form-control" min="0" step="1" value="125">
+                  <input type="number" id="calculateCostCiscoDiskThroughput" class="form-control calculate-cost-cisco-text-field" min="0" step="1" value="125">
                 </div>
               </div>
             </div>
@@ -326,7 +344,7 @@
                 <p class="calculate-cost-cisco-service-copy">License units, telemetry checks, and entitlement changes.</p>
               </div>
 
-              <label class="switch calculate-cost-cisco-switch-wrap">
+              <label class="switch calculate-cost-cisco-switch-wrap calculate-cost-cisco-switch-card">
                 <input type="checkbox" id="calculateCostCiscoIncludeBlob" checked>
                 <span class="slider"></span>
                 <span class="calculate-cost-cisco-switch-label">Include</span>
@@ -337,22 +355,22 @@
               <div class="calculate-cost-cisco-card-grid calculate-cost-cisco-card-grid-two">
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoBlobStorageGb" class="calculate-cost-cisco-field-label">License units</label>
-                  <input type="number" id="calculateCostCiscoBlobStorageGb" class="form-control" min="0" step="1" value="250">
+                  <input type="number" id="calculateCostCiscoBlobStorageGb" class="form-control calculate-cost-cisco-text-field" min="0" step="1" value="250">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoBlobEgressGb" class="calculate-cost-cisco-field-label">Telemetry transfer GB</label>
-                  <input type="number" id="calculateCostCiscoBlobEgressGb" class="form-control" min="0" step="1" value="180">
+                  <input type="number" id="calculateCostCiscoBlobEgressGb" class="form-control calculate-cost-cisco-text-field" min="0" step="1" value="180">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoBlobGetRequestsK" class="calculate-cost-cisco-field-label">Policy checks (1k)</label>
-                  <input type="number" id="calculateCostCiscoBlobGetRequestsK" class="form-control" min="0" step="1" value="2200">
+                  <input type="number" id="calculateCostCiscoBlobGetRequestsK" class="form-control calculate-cost-cisco-text-field" min="0" step="1" value="2200">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoBlobPutRequestsK" class="calculate-cost-cisco-field-label">Config changes (1k)</label>
-                  <input type="number" id="calculateCostCiscoBlobPutRequestsK" class="form-control" min="0" step="1" value="120">
+                  <input type="number" id="calculateCostCiscoBlobPutRequestsK" class="form-control calculate-cost-cisco-text-field" min="0" step="1" value="120">
                 </div>
               </div>
             </div>
@@ -365,7 +383,7 @@
                 <p class="calculate-cost-cisco-service-copy">Automation jobs, runtime, and worker sizing.</p>
               </div>
 
-              <label class="switch calculate-cost-cisco-switch-wrap">
+              <label class="switch calculate-cost-cisco-switch-wrap calculate-cost-cisco-switch-card">
                 <input type="checkbox" id="calculateCostCiscoIncludeFunctions" checked>
                 <span class="slider"></span>
                 <span class="calculate-cost-cisco-switch-label">Include</span>
@@ -376,17 +394,17 @@
               <div class="calculate-cost-cisco-card-grid calculate-cost-cisco-card-grid-two">
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoFunctionsRequestsMillion" class="calculate-cost-cisco-field-label">Jobs (million)</label>
-                  <input type="number" id="calculateCostCiscoFunctionsRequestsMillion" class="form-control" min="0" step="0.1" value="1.2">
+                  <input type="number" id="calculateCostCiscoFunctionsRequestsMillion" class="form-control calculate-cost-cisco-text-field" min="0" step="0.1" value="1.2">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoFunctionsDurationMs" class="calculate-cost-cisco-field-label">Avg duration ms</label>
-                  <input type="number" id="calculateCostCiscoFunctionsDurationMs" class="form-control" min="0" step="1" value="140">
+                  <input type="number" id="calculateCostCiscoFunctionsDurationMs" class="form-control calculate-cost-cisco-text-field" min="0" step="1" value="140">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack calculate-cost-cisco-card-span-two">
                   <label for="calculateCostCiscoFunctionsMemoryMb" class="calculate-cost-cisco-field-label">Memory MB</label>
-                  <input type="number" id="calculateCostCiscoFunctionsMemoryMb" class="form-control" min="128" step="128" value="512">
+                  <input type="number" id="calculateCostCiscoFunctionsMemoryMb" class="form-control calculate-cost-cisco-text-field" min="128" step="128" value="512">
                 </div>
               </div>
             </div>
@@ -399,7 +417,7 @@
                 <p class="calculate-cost-cisco-service-copy">Dashboard calls, API activity, and response transfer.</p>
               </div>
 
-              <label class="switch calculate-cost-cisco-switch-wrap">
+              <label class="switch calculate-cost-cisco-switch-wrap calculate-cost-cisco-switch-card">
                 <input type="checkbox" id="calculateCostCiscoIncludeApi" checked>
                 <span class="slider"></span>
                 <span class="calculate-cost-cisco-switch-label">Include</span>
@@ -413,16 +431,17 @@
                   <details class="calculate-cost-cisco-select" id="calculateCostCiscoApiTypeSelect">
                     <summary class="calculate-cost-cisco-select-summary">
                       <span id="calculateCostCiscoApiTypeSummary">Essentials management</span>
+                      <span class="calculate-cost-cisco-select-arrow-slot" aria-hidden="true"></span>
                     </summary>
 
                     <div class="calculate-cost-cisco-select-body">
                       <div class="calculate-cost-cisco-select-grid calculate-cost-cisco-select-grid-two">
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoApiTypeOption" value="http" checked>
                           <span class="calculate-cost-cisco-select-title">Essentials management</span>
                         </label>
 
-                        <label class="calculate-cost-cisco-select-card">
+                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
                           <input type="radio" name="calculateCostCiscoApiTypeOption" value="rest">
                           <span class="calculate-cost-cisco-select-title">Advantage management</span>
                         </label>
@@ -434,12 +453,12 @@
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoApiRequestsMillion" class="calculate-cost-cisco-field-label">Calls (million)</label>
-                  <input type="number" id="calculateCostCiscoApiRequestsMillion" class="form-control" min="0" step="0.1" value="8">
+                  <input type="number" id="calculateCostCiscoApiRequestsMillion" class="form-control calculate-cost-cisco-text-field" min="0" step="0.1" value="8">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack calculate-cost-cisco-card-span-two">
                   <label for="calculateCostCiscoApiResponseKb" class="calculate-cost-cisco-field-label">Avg response KB</label>
-                  <input type="number" id="calculateCostCiscoApiResponseKb" class="form-control" min="0" step="1" value="32">
+                  <input type="number" id="calculateCostCiscoApiResponseKb" class="form-control calculate-cost-cisco-text-field" min="0" step="1" value="32">
                 </div>
               </div>
             </div>
@@ -457,22 +476,22 @@
               <div class="calculate-cost-cisco-card-grid calculate-cost-cisco-card-grid-two">
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoSharedEgressGb" class="calculate-cost-cisco-field-label">Shared transfer GB</label>
-                  <input type="number" id="calculateCostCiscoSharedEgressGb" class="form-control" min="0" step="1" value="120">
+                  <input type="number" id="calculateCostCiscoSharedEgressGb" class="form-control calculate-cost-cisco-text-field" min="0" step="1" value="120">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoSupportPct" class="calculate-cost-cisco-field-label">Support uplift %</label>
-                  <input type="number" id="calculateCostCiscoSupportPct" class="form-control" min="0" step="0.1" value="8">
+                  <input type="number" id="calculateCostCiscoSupportPct" class="form-control calculate-cost-cisco-text-field" min="0" step="0.1" value="8">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoContingencyPct" class="calculate-cost-cisco-field-label">Contingency %</label>
-                  <input type="number" id="calculateCostCiscoContingencyPct" class="form-control" min="0" step="0.1" value="10">
+                  <input type="number" id="calculateCostCiscoContingencyPct" class="form-control calculate-cost-cisco-text-field" min="0" step="0.1" value="10">
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoManualAdjustment" class="calculate-cost-cisco-field-label">Manual adjustment $</label>
-                  <input type="number" id="calculateCostCiscoManualAdjustment" class="form-control" step="0.01" value="0">
+                  <input type="number" id="calculateCostCiscoManualAdjustment" class="form-control calculate-cost-cisco-text-field" step="0.01" value="0">
                 </div>
               </div>
             </div>
@@ -480,174 +499,176 @@
         </div>
       </div>
     </div>
+{# ns:end family._base.workspace.02_basic-settings #}
 
-    <details class="calculate-cost-cisco-advanced" id="calculateCostCiscoAdvanced">
-      <summary class="calculate-cost-cisco-advanced-summary">Advanced</summary>
+{# ns:start family._base.workspace.03_custom-settings #}
+    <details class="calculate-cost-cisco-advanced" data-custom-layout="compact_two_column_multi_row" id="calculateCostCiscoAdvanced">
+      <summary class="calculate-cost-cisco-advanced-summary">
+        <span>Custom</span>
+          <span class="calculate-cost-cisco-custom-arrow-slot" aria-hidden="true"></span>
+      </summary>
 
       <div class="calculate-cost-cisco-advanced-body">
         <div class="calculate-cost-cisco-inner-panel">
-          <div class="calculate-cost-cisco-setting-row">
+          <div class="calculate-cost-cisco-setting-row calculate-cost-cisco-setting-card">
             <label class="calculate-cost-cisco-setting-label">
               Free tier toggles:
-              <span class="info-dot" title="Apply the starter free-tier allowances that most affect this model">i</span>
+              <span class="info-dot calculate-cost-cisco-helper-chip" title="Apply the starter free-tier allowances that most affect this model">i</span>
             </label>
 
             <div class="calculate-cost-cisco-setting-field">
               <div class="calculate-cost-cisco-toggle-grid">
-                <label class="switch calculate-cost-cisco-switch-wrap calculate-cost-cisco-switch-card">
+                <label class="calculate-cost-cisco-custom-checkbox-option">
                   <input type="checkbox" id="calculateCostCiscoFreeTierFunctions" checked>
-                  <span class="slider"></span>
-                  <span class="calculate-cost-cisco-switch-label">automation jobs + GB-s</span>
+                  <span>automation jobs + GB-s</span>
                 </label>
 
-                <label class="switch calculate-cost-cisco-switch-wrap calculate-cost-cisco-switch-card">
+                <label class="calculate-cost-cisco-custom-checkbox-option">
                   <input type="checkbox" id="calculateCostCiscoFreeTierApi" checked>
-                  <span class="slider"></span>
-                  <span class="calculate-cost-cisco-switch-label">Cloud management calls</span>
+                  <span>Cloud management calls</span>
                 </label>
 
-                <label class="switch calculate-cost-cisco-switch-wrap calculate-cost-cisco-switch-card">
+                <label class="calculate-cost-cisco-custom-checkbox-option">
                   <input type="checkbox" id="calculateCostCiscoFreeTierEgress" checked>
-                  <span class="slider"></span>
-                  <span class="calculate-cost-cisco-switch-label">Shared 100 GB transfer</span>
+                  <span>Shared 100 GB transfer</span>
                 </label>
               </div>
             </div>
           </div>
 
-          <div class="calculate-cost-cisco-setting-row">
+          <div class="calculate-cost-cisco-setting-row calculate-cost-cisco-setting-card">
             <label for="calculateCostCiscoRegionalUpliftPct" class="calculate-cost-cisco-setting-label">
               Regional uplift:
-              <span class="info-dot" title="Apply a percentage uplift to starter rates when you want to approximate a pricier region">i</span>
+              <span class="info-dot calculate-cost-cisco-helper-chip" title="Apply a percentage uplift to starter rates when you want to approximate a pricier region">i</span>
             </label>
 
             <div class="calculate-cost-cisco-setting-field">
               <div class="calculate-cost-cisco-inline-grid calculate-cost-cisco-inline-grid-regional">
                 <div class="calculate-cost-cisco-field-stack calculate-cost-cisco-field-stack-compact">
-                  <input type="number" id="calculateCostCiscoRegionalUpliftPct" class="form-control" min="0" step="0.1" value="0">
+                  <input type="number" id="calculateCostCiscoRegionalUpliftPct" class="form-control" min="0" step="0.1" value="0" placeholder="0">
                 </div>
                 <div class="calculate-cost-cisco-inline-note">Use direct overrides below when you know the real regional rate.</div>
               </div>
             </div>
           </div>
 
-          <div class="calculate-cost-cisco-setting-row calculate-cost-cisco-setting-row-stacked">
+          <div class="calculate-cost-cisco-setting-row calculate-cost-cisco-setting-row-stacked calculate-cost-cisco-setting-card">
             <label class="calculate-cost-cisco-setting-label">
               Rate overrides:
-              <span class="info-dot" title="Set a value here to override the bundled starter rate for that specific cost component">i</span>
+              <span class="info-dot calculate-cost-cisco-helper-chip" title="Set a value here to override the bundled starter rate for that specific cost component">i</span>
             </label>
 
             <div class="calculate-cost-cisco-setting-field">
               <div class="calculate-cost-cisco-override-grid">
-                <section class="calculate-cost-cisco-override-card calculate-cost-cisco-override-card--single">
-                  <div class="calculate-cost-cisco-override-card-head">
-                    <h4 class="calculate-cost-cisco-override-card-title">Switching hardware</h4>
+                <section class="calculate-cost-cisco-override-group calculate-cost-cisco-override-group--single">
+                  <div class="calculate-cost-cisco-override-group-head">
+                    <h4 class="calculate-cost-cisco-override-group-title">Switching hardware</h4>
                   </div>
 
-                  <div class="calculate-cost-cisco-override-card-body">
+                  <div class="calculate-cost-cisco-override-group-body">
                     <div class="calculate-cost-cisco-field-stack">
                       <label for="calculateCostCiscoComputeHourlyOverride" class="calculate-cost-cisco-field-label">Hourly rate</label>
-                      <input type="number" id="calculateCostCiscoComputeHourlyOverride" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoComputeHourlyOverride" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
 
-                <section class="calculate-cost-cisco-override-card">
-                  <div class="calculate-cost-cisco-override-card-head">
-                    <h4 class="calculate-cost-cisco-override-card-title">Wireless access</h4>
+                <section class="calculate-cost-cisco-override-group">
+                  <div class="calculate-cost-cisco-override-group-head">
+                    <h4 class="calculate-cost-cisco-override-group-title">Wireless access</h4>
                   </div>
 
-                  <div class="calculate-cost-cisco-override-card-body">
+                  <div class="calculate-cost-cisco-override-group-body">
                     <div class="calculate-cost-cisco-field-stack">
                       <label for="calculateCostCiscoDiskStorageRate" class="calculate-cost-cisco-field-label">Access point rate</label>
-                      <input type="number" id="calculateCostCiscoDiskStorageRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoDiskStorageRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-cisco-field-stack">
                       <label for="calculateCostCiscoDiskIopsRate" class="calculate-cost-cisco-field-label">Controller capacity rate</label>
-                      <input type="number" id="calculateCostCiscoDiskIopsRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoDiskIopsRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-cisco-field-stack calculate-cost-cisco-card-span-two">
                       <label for="calculateCostCiscoDiskThroughputRate" class="calculate-cost-cisco-field-label">Throughput allowance rate</label>
-                      <input type="number" id="calculateCostCiscoDiskThroughputRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoDiskThroughputRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
 
-                <section class="calculate-cost-cisco-override-card">
-                  <div class="calculate-cost-cisco-override-card-head">
-                    <h4 class="calculate-cost-cisco-override-card-title">Licensing</h4>
+                <section class="calculate-cost-cisco-override-group">
+                  <div class="calculate-cost-cisco-override-group-head">
+                    <h4 class="calculate-cost-cisco-override-group-title">Licensing</h4>
                   </div>
 
-                  <div class="calculate-cost-cisco-override-card-body">
+                  <div class="calculate-cost-cisco-override-group-body">
                     <div class="calculate-cost-cisco-field-stack">
                       <label for="calculateCostCiscoBlobStorageRate" class="calculate-cost-cisco-field-label">License unit rate</label>
-                      <input type="number" id="calculateCostCiscoBlobStorageRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoBlobStorageRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-cisco-field-stack">
                       <label for="calculateCostCiscoBlobGetRate" class="calculate-cost-cisco-field-label">Policy check rate</label>
-                      <input type="number" id="calculateCostCiscoBlobGetRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoBlobGetRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-cisco-field-stack calculate-cost-cisco-card-span-two">
                       <label for="calculateCostCiscoBlobPutRate" class="calculate-cost-cisco-field-label">Config change rate</label>
-                      <input type="number" id="calculateCostCiscoBlobPutRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoBlobPutRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
 
-                <section class="calculate-cost-cisco-override-card">
-                  <div class="calculate-cost-cisco-override-card-head">
-                    <h4 class="calculate-cost-cisco-override-card-title">Controller automation</h4>
+                <section class="calculate-cost-cisco-override-group">
+                  <div class="calculate-cost-cisco-override-group-head">
+                    <h4 class="calculate-cost-cisco-override-group-title">Controller automation</h4>
                   </div>
 
-                  <div class="calculate-cost-cisco-override-card-body">
+                  <div class="calculate-cost-cisco-override-group-body">
                     <div class="calculate-cost-cisco-field-stack">
                       <label for="calculateCostCiscoFunctionsRequestRate" class="calculate-cost-cisco-field-label">Job rate</label>
-                      <input type="number" id="calculateCostCiscoFunctionsRequestRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoFunctionsRequestRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-cisco-field-stack">
                       <label for="calculateCostCiscoFunctionsGbSecondRate" class="calculate-cost-cisco-field-label">Runtime rate</label>
-                      <input type="number" id="calculateCostCiscoFunctionsGbSecondRate" class="form-control" min="0" step="0.0000000001" value="">
+                      <input type="number" id="calculateCostCiscoFunctionsGbSecondRate" class="form-control" min="0" step="0.0000000001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
 
-                <section class="calculate-cost-cisco-override-card">
-                  <div class="calculate-cost-cisco-override-card-head">
-                    <h4 class="calculate-cost-cisco-override-card-title">Cloud management</h4>
+                <section class="calculate-cost-cisco-override-group">
+                  <div class="calculate-cost-cisco-override-group-head">
+                    <h4 class="calculate-cost-cisco-override-group-title">Cloud management</h4>
                   </div>
 
-                  <div class="calculate-cost-cisco-override-card-body">
+                  <div class="calculate-cost-cisco-override-group-body">
                     <div class="calculate-cost-cisco-field-stack">
                       <label for="calculateCostCiscoApiHttpFirstRate" class="calculate-cost-cisco-field-label">Essentials first tier</label>
-                      <input type="number" id="calculateCostCiscoApiHttpFirstRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoApiHttpFirstRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-cisco-field-stack">
                       <label for="calculateCostCiscoApiHttpNextRate" class="calculate-cost-cisco-field-label">Essentials next tier</label>
-                      <input type="number" id="calculateCostCiscoApiHttpNextRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoApiHttpNextRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-cisco-field-stack calculate-cost-cisco-card-span-two">
                       <label for="calculateCostCiscoApiRestRate" class="calculate-cost-cisco-field-label">Advantage rate</label>
-                      <input type="number" id="calculateCostCiscoApiRestRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoApiRestRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
 
-                <section class="calculate-cost-cisco-override-card calculate-cost-cisco-override-card--single">
-                  <div class="calculate-cost-cisco-override-card-head">
-                    <h4 class="calculate-cost-cisco-override-card-title">Network</h4>
+                <section class="calculate-cost-cisco-override-group calculate-cost-cisco-override-group--single">
+                  <div class="calculate-cost-cisco-override-group-head">
+                    <h4 class="calculate-cost-cisco-override-group-title">Network</h4>
                   </div>
 
-                  <div class="calculate-cost-cisco-override-card-body">
+                  <div class="calculate-cost-cisco-override-group-body">
                     <div class="calculate-cost-cisco-field-stack">
                       <label for="calculateCostCiscoEgressRate" class="calculate-cost-cisco-field-label">Transfer rate</label>
-                      <input type="number" id="calculateCostCiscoEgressRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostCiscoEgressRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
@@ -657,45 +678,35 @@
         </div>
       </div>
     </details>
+{# ns:end family._base.workspace.03_custom-settings #}
   </form>
 
+{# ns:start family._base.workspace.05_result-summary #}
   <div class="calculate-cost-cisco-result-panel" id="calculateCostCiscoPanel">
     <div class="calculate-cost-cisco-result-empty" id="calculateCostCiscoResultEmpty">Build an estimate to review line-item cost drivers, service mix, and exportable JSON.</div>
 
     <div class="calculate-cost-cisco-result-content d-none" id="calculateCostCiscoResultContent">
-      <div class="calculate-cost-cisco-result-summary" id="calculateCostCiscoResultSummary"></div>
+      <div class="calculate-cost-cisco-result-summary" id="calculateCostCiscoResultSummary" data-share-snapshot-source data-share-kind="estimate-summary"></div>
+{# ns:end family._base.workspace.05_result-summary #}
 
+{# ns:start family._base.workspace.06_output-toolbar #}
       <div class="calculate-cost-cisco-toolbar-shell">
         <div class="calculate-cost-cisco-toolbar tool-output-toolbar tool-result-toolbar">
           <div class="calculate-cost-cisco-toolbar-left tool-result-toolbar-main">
             <label for="calculateCostCiscoSort" class="calculate-cost-cisco-sort-label">Sort</label>
             <div class="calculate-cost-cisco-sort-wrap">
               <details class="calculate-cost-cisco-select calculate-cost-cisco-sort-select" id="calculateCostCiscoSortSelect">
-                <summary class="calculate-cost-cisco-select-summary">
+                <summary class="calculate-cost-cisco-select-summary calculate-cost-cisco-sort-summary" aria-haspopup="listbox" aria-expanded="false" aria-controls="calculateCostCiscoSortMenu">
                   <span id="calculateCostCiscoSortSummary">ID</span>
                 </summary>
 
-                <div class="calculate-cost-cisco-select-body">
-                  <div class="calculate-cost-cisco-select-grid">
-                    <label class="calculate-cost-cisco-select-card">
-                      <input type="radio" name="calculateCostCiscoSortOption" value="id" checked>
-                      <span class="calculate-cost-cisco-select-title">ID</span>
-                    </label>
-
-                    <label class="calculate-cost-cisco-select-card">
-                      <input type="radio" name="calculateCostCiscoSortOption" value="cost-desc">
-                      <span class="calculate-cost-cisco-select-title">Highest monthly cost</span>
-                    </label>
-
-                    <label class="calculate-cost-cisco-select-card">
-                      <input type="radio" name="calculateCostCiscoSortOption" value="service">
-                      <span class="calculate-cost-cisco-select-title">Service</span>
-                    </label>
-
-                    <label class="calculate-cost-cisco-select-card">
-                      <input type="radio" name="calculateCostCiscoSortOption" value="component">
-                      <span class="calculate-cost-cisco-select-title">Component</span>
-                    </label>
+                <div class="calculate-cost-cisco-sort-menu" id="calculateCostCiscoSortMenu" role="listbox">
+                  <div class="calculate-cost-cisco-sort-grid">
+                    <button type="button" class="calculate-cost-cisco-sort-option is-active" data-sort-value="id" aria-pressed="true" role="option">ID</button>
+                    <button type="button" class="calculate-cost-cisco-sort-option" data-sort-value="cost-desc" aria-pressed="false" role="option">Cost</button>
+                    <button type="button" class="calculate-cost-cisco-sort-option" data-sort-value="service" aria-pressed="false" role="option">Service</button>
+                    <button type="button" class="calculate-cost-cisco-sort-option" data-sort-value="component" aria-pressed="false" role="option">Component</button>
+                    <button type="button" class="calculate-cost-cisco-sort-option" data-sort-value="basis" aria-pressed="false" role="option">Basis</button>
                   </div>
                 </div>
               </details>
@@ -727,6 +738,10 @@
           </div>
         </div>
       </div>
+{# ns:end family._base.workspace.06_output-toolbar #}
+
+{# ns:start family._base.workspace.07_table-output #}
+
 
       <div class="calculate-cost-cisco-tabs-shell">
         <div class="calculate-cost-cisco-tabs" role="tablist" aria-label="Cisco network estimate output views">
@@ -741,6 +756,10 @@
           <button type="button" class="calculate-cost-cisco-tab-btn" data-tab-target="assumptions" role="tab" aria-selected="false">
             <i class="bi bi-card-list" aria-hidden="true"></i>
             <span>Assumptions</span>
+          </button>
+          <button type="button" class="calculate-cost-cisco-tab-btn" data-tab-target="guidance" role="tab" aria-selected="false">
+            <i class="bi bi-lightbulb" aria-hidden="true"></i>
+            <span>Guidance</span>
           </button>
           <button type="button" class="calculate-cost-cisco-tab-btn" data-tab-target="json" role="tab" aria-selected="false">
             <i class="bi bi-braces" aria-hidden="true"></i>
@@ -775,7 +794,7 @@
           <div class="calculate-cost-cisco-section-card tool-result-section-card">
             <h3 class="calculate-cost-cisco-section-title tool-result-section-title">Service Mix</h3>
             <div class="table-responsive calculate-cost-cisco-table-wrap calculate-cost-cisco-table-wrap-compact tool-result-table-wrap">
-              <table class="table calculate-cost-cisco-service-table mb-0 tool-result-table tool-result-table--compact">
+              <table class="table calculate-cost-cisco-service-table mb-0 tool-result-table tool-result-table--compact" data-share-snapshot-source data-share-kind="cost-table">
                 <thead>
                   <tr>
                     <th class="tool-generated-rownum-head">#</th>
@@ -791,8 +810,6 @@
               </table>
             </div>
           </div>
-
-          <div class="calculate-cost-cisco-recommendation-grid" id="calculateCostCiscoRecommendations"></div>
         </div>
 
         <div class="calculate-cost-cisco-tab-panel d-none" data-tab-panel="assumptions" role="tabpanel">
@@ -813,23 +830,45 @@
               </table>
             </div>
           </div>
+        </div>
 
-          <div class="calculate-cost-cisco-method-grid" id="calculateCostCiscoMethodology"></div>
+        <div class="calculate-cost-cisco-tab-panel d-none" data-tab-panel="guidance" role="tabpanel">
+          <div class="calculate-cost-cisco-section-card tool-result-section-card">
+            <h3 class="calculate-cost-cisco-section-title tool-result-section-title">Recommendations</h3>
+            <div class="calculate-cost-cisco-recommendation-grid" id="calculateCostCiscoRecommendations"></div>
+          </div>
+
+          <div class="calculate-cost-cisco-section-card tool-result-section-card">
+            <h3 class="calculate-cost-cisco-section-title tool-result-section-title">Methodology</h3>
+            <div class="calculate-cost-cisco-method-grid" id="calculateCostCiscoMethodology"></div>
+          </div>
         </div>
 
         <div class="calculate-cost-cisco-tab-panel d-none" data-tab-panel="json" role="tabpanel">
-          <div class="calculate-cost-cisco-json-wrap tool-json-panel">
+{# ns:start family._base.workspace.08_json-restore #}
+                  <div class="calculate-cost-cisco-json-restore-shell" id="calculateCostCiscoJsonRestoreShell">
+          <section class="calculate-cost-cisco-json-card tool-json-panel" aria-label="Estimate JSON output and restore state">
             <div class="calculate-cost-cisco-json-head tool-json-head">
-              <span class="calculate-cost-cisco-json-title tool-json-title">JSON Output</span>
+              <div class="calculate-cost-cisco-json-title-wrap">
+                <span class="calculate-cost-cisco-json-title tool-json-title">JSON Output</span>
+                <span class="calculate-cost-cisco-json-helper">Exported estimate state should include inputs, assumptions, line items, totals, and generated output.</span>
+              </div>
+              <span class="calculate-cost-cisco-json-status is-hidden" id="calculateCostCiscoJsonRestoreStatus" role="status" aria-live="polite"></span>
             </div>
+            <div class="calculate-cost-cisco-json-empty is-hidden" id="calculateCostCiscoJsonRestoreEmpty">Build an estimate before exporting JSON.</div>
             <pre class="calculate-cost-cisco-json-output tool-json-output"><code id="calculateCostCiscoJsonOutput"></code></pre>
-          </div>
+          </section>
         </div>
+{# ns:end family._base.workspace.08_json-restore #}
       </div>
     </div>
+{# ns:end family._base.workspace.07_table-output #}
+
 
     <div class="calculate-cost-cisco-result-error d-none" id="calculateCostCiscoResultError"></div>
-    <input type="file" id="calculateCostCiscoImportJson" class="d-none" accept="application/json">
+    <input type="file" id="calculateCostCiscoImportJson" class="calculate-cost-cisco-import-input d-none" accept="application/json">
   </div>
 </div>
 </div>
+</div>
+{# ns:end family._base.workspace.00_shell #}

@@ -1,81 +1,97 @@
 {# tool.html.twig #}
 
 <div class="generate-chmod-shell-tool tool-box mb-4" data-tool-slug="generate-chmod-shell" data-tool-category="Shell">
-  {# ns:start family.shell.workspace.01_input-target #}
+  {# ns:start family._base.workspace.00_shell #}
+  {# ns:start family._base.workspace.01_input-brief #}
   <form class="generate-chmod-shell-form" id="generateChmodShellForm" aria-label="Chmod command builder">
-    <div class="generate-chmod-shell-main-row">
-      <label for="generateChmodShellTarget" class="generate-chmod-shell-main-label">
-        Target path:
-        <span class="info-dot" title="Enter the file or directory path that the generated chmod command should target">i</span>
-      </label>
+    <div class="generate-chmod-shell-input-card">
+      <div class="generate-chmod-shell-input-brief" data-input-layout="inline">
+        <div class="generate-chmod-shell-main-row generate-chmod-shell-input-row">
+          <div class="generate-chmod-shell-input-label-wrap">
+            <label for="generateChmodShellTarget" class="generate-chmod-shell-main-label generate-chmod-shell-input-label">Target path:</label>
+            <span class="generate-chmod-shell-helper-chip" title="Enter the file or directory path that the generated chmod command should target" aria-label="Enter the file or directory path that the generated chmod command should target">i</span>
+          </div>
 
-      <div class="generate-chmod-shell-main-input-grid">
-        <input
-          type="text"
-          id="generateChmodShellTarget"
-          class="form-control"
-          placeholder="/srv/app/current"
-          value="./deploy.sh"
-        >
+          <div class="generate-chmod-shell-main-input-grid generate-chmod-shell-input-stack">
+            <input
+              type="text"
+              id="generateChmodShellTarget"
+              class="form-control generate-chmod-shell-input-control"
+              placeholder="/srv/app/current"
+              value="./deploy.sh"
+            >
+            <div class="generate-chmod-shell-input-error d-none" id="generateChmodShellInputError" role="alert"></div>
+          </div>
+        </div>
 
-        <div class="generate-chmod-shell-main-actions">
-          <button type="submit" class="btn btn-primary generate-chmod-shell-submit-btn" id="generateChmodShellSubmit">Generate</button>
-          <button type="button" class="generate-chmod-shell-secondary-btn generate-chmod-shell-secondary-btn-ghost generate-chmod-shell-reset-btn" id="generateChmodShellReset">Reset</button>
+        <div class="generate-chmod-shell-main-actions generate-chmod-shell-input-actions">
+          <button
+            type="submit"
+            class="btn btn-primary generate-chmod-shell-submit-btn generate-chmod-shell-action-btn generate-chmod-shell-action-btn-primary"
+            id="generateChmodShellSubmit"
+            data-tool-share-generate
+          >
+            <i class="bi bi-terminal" aria-hidden="true"></i>
+            <span>Generate</span>
+          </button>
+          <button
+            type="button"
+            class="generate-chmod-shell-secondary-btn generate-chmod-shell-secondary-btn-ghost generate-chmod-shell-reset-btn generate-chmod-shell-action-btn generate-chmod-shell-action-btn-secondary"
+            id="generateChmodShellReset"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        <div class="generate-chmod-shell-input-helper-card">
+          <span class="generate-chmod-shell-input-hint">Use a concrete path, command target, or scope before generating shell output.</span>
+          <span class="generate-chmod-shell-helper-chip generate-chmod-shell-helper-chip-inline" title="Enter the file or directory path that the generated chmod command should target" aria-label="Enter the file or directory path that the generated chmod command should target">i</span>
         </div>
       </div>
     </div>
 
-  {# ns:end family.shell.workspace.01_input-target #}
-    {# ns:start family.shell.workspace.02_basic-setting #}
+  {# ns:end family._base.workspace.01_input-brief #}
+    {# ns:start family._base.workspace.02_basic-settings #}
     <div class="generate-chmod-shell-basic-panel">
-      <div class="generate-chmod-shell-inner-panel">
-        <div class="generate-chmod-shell-setting-row">
-          <label for="generateChmodShellPreset" class="generate-chmod-shell-setting-label">
-            Preset:
-            <span class="info-dot" title="Load a common file or directory permission pattern as a starting point">i</span>
-          </label>
+      <div class="generate-chmod-shell-inner-panel generate-chmod-shell-basic-card">
 
-          <div class="generate-chmod-shell-setting-field">
-            <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-two">
-              <select id="generateChmodShellPreset" class="form-select">
-                <option value="deploy-script" selected>Deploy script (0755)</option>
-                <option value="private-config">Private config (0640)</option>
-                <option value="web-file">Web file (0644)</option>
-                <option value="web-directory">Web directory (0755)</option>
-                <option value="group-directory">Group directory (2775)</option>
-                <option value="shared-temp">Shared temp (1777)</option>
-                <option value="manual">Current mode</option>
-              </select>
-
-              <button type="button" class="generate-chmod-shell-secondary-btn" id="generateChmodShellApplyPreset">Apply preset</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="generate-chmod-shell-setting-row">
-          <label for="generateChmodShellTargetType" class="generate-chmod-shell-setting-label">
+        <div class="generate-chmod-shell-setting-row generate-chmod-shell-setting-card">
+          <label class="generate-chmod-shell-setting-label">
             Target profile:
-            <span class="info-dot" title="Target type changes the ls preview and how symbolic X behaves">i</span>
+            <span class="info-dot generate-chmod-shell-helper-chip" title="Preset, target type, and directory recursion define the normal chmod target shape">i</span>
           </label>
 
           <div class="generate-chmod-shell-setting-field">
             <div class="generate-chmod-shell-stacked-grid">
-              <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-three">
-                <select id="generateChmodShellTargetType" class="form-select">
-                  <option value="file" selected>File</option>
-                  <option value="directory">Directory</option>
-                </select>
+              <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-two">
+                <div class="generate-chmod-shell-native-select-wrap">
+                  <select id="generateChmodShellPreset" class="form-select generate-chmod-shell-native-select">
+                    <option value="deploy-script" selected>Deploy script (0755)</option>
+                    <option value="private-config">Private config (0640)</option>
+                    <option value="web-file">Web file (0644)</option>
+                    <option value="web-directory">Web directory (0755)</option>
+                    <option value="group-directory">Group directory (2775)</option>
+                    <option value="shared-temp">Shared temp (1777)</option>
+                    <option value="manual">Current mode</option>
+                  </select>
+                </div>
 
-                <label class="switch generate-chmod-shell-switch-wrap">
+                <button type="button" class="generate-chmod-shell-secondary-btn" id="generateChmodShellApplyPreset">Apply preset</button>
+              </div>
+
+              <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-two">
+                <div class="generate-chmod-shell-native-select-wrap">
+                  <select id="generateChmodShellTargetType" class="form-select generate-chmod-shell-native-select">
+                    <option value="file" selected>File</option>
+                    <option value="directory">Directory</option>
+                  </select>
+                </div>
+
+                <label class="switch generate-chmod-shell-switch-wrap generate-chmod-shell-switch-card">
                   <input type="checkbox" id="generateChmodShellRecursive">
                   <span class="slider"></span>
                   <span class="generate-chmod-shell-switch-label">Recursive (-R)</span>
-                </label>
-
-                <label class="switch generate-chmod-shell-switch-wrap">
-                  <input type="checkbox" id="generateChmodShellVerbose">
-                  <span class="slider"></span>
-                  <span class="generate-chmod-shell-switch-label">Verbose (-v)</span>
                 </label>
               </div>
 
@@ -84,10 +100,10 @@
           </div>
         </div>
 
-        <div class="generate-chmod-shell-setting-row">
-          <label for="generateChmodShellNumericMode" class="generate-chmod-shell-setting-label">
+        <div class="generate-chmod-shell-setting-row generate-chmod-shell-setting-card">
+          <label class="generate-chmod-shell-setting-label">
             Current mode:
-            <span class="info-dot" title="The numeric, symbolic, and ls-style views stay aligned with the current permission state">i</span>
+            <span class="info-dot generate-chmod-shell-helper-chip" title="The numeric, symbolic, and ls-style views stay aligned with the current permission state">i</span>
           </label>
 
           <div class="generate-chmod-shell-setting-field">
@@ -110,10 +126,10 @@
           </div>
         </div>
 
-        <div class="generate-chmod-shell-setting-row">
+        <div class="generate-chmod-shell-setting-row generate-chmod-shell-setting-card">
           <label class="generate-chmod-shell-setting-label">
             Permissions:
-            <span class="info-dot" title="Toggle read, write, and execute for user, group, and others">i</span>
+            <span class="info-dot generate-chmod-shell-helper-chip" title="Toggle read, write, and execute for user, group, and others">i</span>
           </label>
 
           <div class="generate-chmod-shell-setting-field">
@@ -211,144 +227,177 @@
           </div>
         </div>
 
-        <div class="generate-chmod-shell-setting-row">
-          <label class="generate-chmod-shell-setting-label">
-            Special bits:
-            <span class="info-dot" title="Setuid, setgid, and sticky add the leading chmod digit and alter ls output">i</span>
-          </label>
-
-          <div class="generate-chmod-shell-setting-field">
-            <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-three">
-              <label class="generate-chmod-shell-special-toggle">
-                <input type="checkbox" id="generateChmodShellSetuid">
-                <span class="generate-chmod-shell-special-token">u+s</span>
-                <span class="generate-chmod-shell-special-body">
-                  <span class="generate-chmod-shell-special-title">Setuid</span>
-                  <span class="generate-chmod-shell-special-copy">Owner identity on execution.</span>
-                </span>
-              </label>
-
-              <label class="generate-chmod-shell-special-toggle">
-                <input type="checkbox" id="generateChmodShellSetgid">
-                <span class="generate-chmod-shell-special-token">g+s</span>
-                <span class="generate-chmod-shell-special-body">
-                  <span class="generate-chmod-shell-special-title">Setgid</span>
-                  <span class="generate-chmod-shell-special-copy">Group inheritance or execution identity.</span>
-                </span>
-              </label>
-
-              <label class="generate-chmod-shell-special-toggle">
-                <input type="checkbox" id="generateChmodShellSticky">
-                <span class="generate-chmod-shell-special-token">o+t</span>
-                <span class="generate-chmod-shell-special-body">
-                  <span class="generate-chmod-shell-special-title">Sticky</span>
-                  <span class="generate-chmod-shell-special-copy">Delete protection on shared directories.</span>
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="generate-chmod-shell-setting-row">
-          <label for="generateChmodShellNumericMode" class="generate-chmod-shell-setting-label">
-            Direct editing:
-            <span class="info-dot" title="Numeric and symbolic modes replace the current state; operations mutate it">i</span>
-          </label>
-
-          <div class="generate-chmod-shell-setting-field">
-            <div class="generate-chmod-shell-stacked-grid">
-              <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-two">
-                <div class="generate-chmod-shell-editor-stack">
-                  <input
-                    type="text"
-                    id="generateChmodShellNumericMode"
-                    class="form-control"
-                    placeholder="0755 or 2755"
-                    value="0755"
-                  >
-                  <div class="generate-chmod-shell-feedback d-none" id="generateChmodShellNumericFeedback"></div>
-                </div>
-
-                <div class="generate-chmod-shell-editor-stack">
-                  <input
-                    type="text"
-                    id="generateChmodShellSymbolicMode"
-                    class="form-control"
-                    placeholder="u=rwx,g=rx,o=rx"
-                    value="u=rwx,g=rx,o=rx"
-                  >
-                  <div class="generate-chmod-shell-feedback d-none" id="generateChmodShellSymbolicFeedback"></div>
-                </div>
-              </div>
-
-              <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-operation">
-                <input
-                  type="text"
-                  id="generateChmodShellOperation"
-                  class="form-control"
-                  placeholder="a+rwX, g=u, u-s"
-                >
-
-                <button type="button" class="generate-chmod-shell-secondary-btn" id="generateChmodShellApplyOperation">Apply</button>
-              </div>
-
-              <div class="generate-chmod-shell-quick-actions">
-                <button type="button" class="generate-chmod-shell-action-chip" data-operation="u=rwx,go=rx">u=rwx,go=rx</button>
-                <button type="button" class="generate-chmod-shell-action-chip" data-operation="a+rwX">a+rwX</button>
-                <button type="button" class="generate-chmod-shell-action-chip" data-operation="g+w">g+w</button>
-                <button type="button" class="generate-chmod-shell-action-chip" data-operation="o-rwx">o-rwx</button>
-                <button type="button" class="generate-chmod-shell-action-chip" data-operation="u-s,g-s,o-t">clear s/t</button>
-              </div>
-
-              <div class="generate-chmod-shell-feedback d-none" id="generateChmodShellOperationFeedback"></div>
-              <div class="generate-chmod-shell-field-hint">Absolute symbolic mode expects assignment clauses such as <code>u=rw,g=r,o=</code>. Use the operation field for incremental changes.</div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
-    {# ns:end family.shell.workspace.02_basic-setting #}
-    {# ns:start family.shell.workspace.03_advanced-setting #}
-    <details class="generate-chmod-shell-advanced">
+    {# ns:end family._base.workspace.02_basic-settings #}
+    {# ns:start family._base.workspace.03_custom-settings #}
+    <details class="generate-chmod-shell-advanced" data-custom-layout="compact_two_column_multi_row">
       <summary class="generate-chmod-shell-advanced-summary">
         <span>Custom</span>
+          <span class="generate-chmod-shell-custom-arrow-slot" aria-hidden="true"></span>
       </summary>
 
       <div class="generate-chmod-shell-advanced-body">
-        <div class="generate-chmod-shell-inner-panel">
-          <div class="generate-chmod-shell-setting-row">
+          <div class="generate-chmod-shell-setting-row generate-chmod-shell-setting-card">
+            <label class="generate-chmod-shell-setting-label">
+              Command flags:
+              <span class="info-dot generate-chmod-shell-helper-chip" title="Optional chmod flags that change command output or traversal behavior">i</span>
+            </label>
+
+            <div class="generate-chmod-shell-setting-field">
+              <div class="generate-chmod-shell-stacked-grid">
+                <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-two">
+                  <label class="generate-chmod-shell-toggle-item">
+                    <span class="generate-chmod-shell-toggle-copy">Verbose output (-v)</span>
+                    <input type="checkbox" id="generateChmodShellVerbose">
+                  </label>
+                </div>
+
+                <div class="generate-chmod-shell-flag-hint">Verbose mode adds <code>-v</code> so chmod reports changed files when the command runs in a real shell.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="generate-chmod-shell-setting-row generate-chmod-shell-setting-card">
+            <label class="generate-chmod-shell-setting-label">
+              Special bits:
+              <span class="info-dot generate-chmod-shell-helper-chip" title="Setuid, setgid, and sticky add the leading chmod digit and alter ls output">i</span>
+            </label>
+
+            <div class="generate-chmod-shell-setting-field">
+              <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-three">
+                <label class="generate-chmod-shell-special-toggle">
+                  <input type="checkbox" id="generateChmodShellSetuid">
+                  <span class="generate-chmod-shell-special-token">u+s</span>
+                  <span class="generate-chmod-shell-special-body">
+                    <span class="generate-chmod-shell-special-title">Setuid</span>
+                    <span class="generate-chmod-shell-special-copy">Owner identity on execution.</span>
+                  </span>
+                </label>
+
+                <label class="generate-chmod-shell-special-toggle">
+                  <input type="checkbox" id="generateChmodShellSetgid">
+                  <span class="generate-chmod-shell-special-token">g+s</span>
+                  <span class="generate-chmod-shell-special-body">
+                    <span class="generate-chmod-shell-special-title">Setgid</span>
+                    <span class="generate-chmod-shell-special-copy">Group inheritance or execution identity.</span>
+                  </span>
+                </label>
+
+                <label class="generate-chmod-shell-special-toggle">
+                  <input type="checkbox" id="generateChmodShellSticky">
+                  <span class="generate-chmod-shell-special-token">o+t</span>
+                  <span class="generate-chmod-shell-special-body">
+                    <span class="generate-chmod-shell-special-title">Sticky</span>
+                    <span class="generate-chmod-shell-special-copy">Delete protection on shared directories.</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="generate-chmod-shell-setting-row generate-chmod-shell-setting-card">
+            <label for="generateChmodShellNumericMode" class="generate-chmod-shell-setting-label">
+              Direct editing:
+              <span class="info-dot generate-chmod-shell-helper-chip" title="Numeric and symbolic modes replace the current state; operations mutate it">i</span>
+            </label>
+
+            <div class="generate-chmod-shell-setting-field">
+              <div class="generate-chmod-shell-stacked-grid">
+                <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-two">
+                  <div class="generate-chmod-shell-editor-stack">
+                    <input
+                      type="text"
+                      id="generateChmodShellNumericMode"
+                      class="form-control generate-chmod-shell-text-field"
+                      placeholder="0755 or 2755"
+                      value="0755"
+                    >
+                    <div class="generate-chmod-shell-feedback d-none" id="generateChmodShellNumericFeedback"></div>
+                  </div>
+
+                  <div class="generate-chmod-shell-editor-stack">
+                    <input
+                      type="text"
+                      id="generateChmodShellSymbolicMode"
+                      class="form-control generate-chmod-shell-text-field"
+                      placeholder="u=rwx,g=rx,o=rx"
+                      value="u=rwx,g=rx,o=rx"
+                    >
+                    <div class="generate-chmod-shell-feedback d-none" id="generateChmodShellSymbolicFeedback"></div>
+                  </div>
+                </div>
+
+                <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-operation">
+                  <input
+                    type="text"
+                    id="generateChmodShellOperation"
+                    class="form-control generate-chmod-shell-text-field"
+                    placeholder="a+rwX, g=u, u-s"
+                  >
+
+                  <button type="button" class="generate-chmod-shell-secondary-btn" id="generateChmodShellApplyOperation">Apply</button>
+                </div>
+
+                <div class="generate-chmod-shell-quick-actions">
+                  <button type="button" class="generate-chmod-shell-action-chip" data-operation="u=rwx,go=rx">u=rwx,go=rx</button>
+                  <button type="button" class="generate-chmod-shell-action-chip" data-operation="a+rwX">a+rwX</button>
+                  <button type="button" class="generate-chmod-shell-action-chip" data-operation="g+w">g+w</button>
+                  <button type="button" class="generate-chmod-shell-action-chip" data-operation="o-rwx">o-rwx</button>
+                  <button type="button" class="generate-chmod-shell-action-chip" data-operation="u-s,g-s,o-t">clear s/t</button>
+                </div>
+
+                <div class="generate-chmod-shell-feedback d-none" id="generateChmodShellOperationFeedback"></div>
+                <div class="generate-chmod-shell-field-hint">Absolute symbolic mode expects assignment clauses such as <code>u=rw,g=r,o=</code>. Use the operation field for incremental changes.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="generate-chmod-shell-setting-row generate-chmod-shell-setting-row-stacked generate-chmod-shell-setting-card">
             <label for="generateChmodShellUmask" class="generate-chmod-shell-setting-label">
               Umask explorer:
-              <span class="info-dot" title="Preview how a umask clears bits from standard file and directory base modes">i</span>
+              <span class="info-dot generate-chmod-shell-helper-chip" title="Preview how a umask clears bits from standard file and directory base modes">i</span>
             </label>
 
             <div class="generate-chmod-shell-setting-field">
               <div class="generate-chmod-shell-stacked-grid">
                 <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-three">
-                  <input
-                    type="text"
-                    id="generateChmodShellUmask"
-                    class="form-control"
-                    placeholder="022"
-                    value="022"
-                  >
+                  <div class="generate-chmod-shell-umask-input">
+                    <label class="generate-chmod-shell-field-label" for="generateChmodShellUmask">Umask</label>
+                    <input
+                      type="text"
+                      id="generateChmodShellUmask"
+                      class="form-control"
+                      inputmode="numeric"
+                      placeholder="Umask, e.g. 022"
+                      value="022"
+                    >
+                  </div>
 
-                  <input
-                    type="text"
-                    id="generateChmodShellUmaskFileBase"
-                    class="form-control"
-                    placeholder="666"
-                    value="666"
-                  >
+                  <div class="generate-chmod-shell-umask-input">
+                    <label class="generate-chmod-shell-field-label" for="generateChmodShellUmaskFileBase">File base</label>
+                    <input
+                      type="text"
+                      id="generateChmodShellUmaskFileBase"
+                      class="form-control"
+                      inputmode="numeric"
+                      placeholder="File base, e.g. 666"
+                      value="666"
+                    >
+                  </div>
 
-                  <input
-                    type="text"
-                    id="generateChmodShellUmaskDirBase"
-                    class="form-control"
-                    placeholder="777"
-                    value="777"
-                  >
+                  <div class="generate-chmod-shell-umask-input">
+                    <label class="generate-chmod-shell-field-label" for="generateChmodShellUmaskDirBase">Directory base</label>
+                    <input
+                      type="text"
+                      id="generateChmodShellUmaskDirBase"
+                      class="form-control"
+                      inputmode="numeric"
+                      placeholder="Directory base, e.g. 777"
+                      value="777"
+                    >
+                  </div>
                 </div>
 
                 <div class="generate-chmod-shell-umask-grid">
@@ -366,16 +415,20 @@
                 </div>
 
                 <div class="generate-chmod-shell-feedback d-none" id="generateChmodShellUmaskFeedback"></div>
-                <div class="generate-chmod-shell-flag-hint">Files commonly start from <code>0666</code> and directories from <code>0777</code>. The umask removes bits from those bases rather than subtracting digits like a bar trick.</div>
+                <div class="generate-chmod-shell-flag-hint generate-chmod-shell-umask-note">
+                  <span>Files commonly start from <code>0666</code>.</span>
+                  <span>Directories commonly start from <code>0777</code>.</span>
+                  <span>The umask removes bits from those bases.</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
       </div>
     </details>
   </form>
-    {# ns:end family.shell.workspace.03_advanced-setting #}
+    {# ns:end family._base.workspace.03_custom-settings #}
 
+  {# ns:start family._base.workspace.05_result-summary #}
   {# ns:start family.shell.workspace.04_result-text #}
   <div class="generate-chmod-shell-result-panel" id="generateChmodShellResultPanel" aria-label="Command output">
     <div class="tool-empty-state generate-chmod-shell-result-empty" id="generateChmodShellResultEmpty">Generate a chmod mode to inspect the command, permission tables, operation effects, warnings, and normalized JSON payload.</div>
@@ -383,11 +436,10 @@
     <div class="generate-chmod-shell-output-content generate-chmod-shell-result-content d-none" id="generateChmodShellResultContent">
       <div class="generate-chmod-shell-output-inner generate-chmod-shell-result-shell">
   {# ns:end family.shell.workspace.04_result-text #}
-        {# ns:start family.shell.workspace.05_score-card #}
-        <div class="generate-chmod-shell-result-summary" id="generateChmodShellResultSummary"></div>
+  {# ns:end family._base.workspace.05_result-summary #}
+        <div class="generate-chmod-shell-result-summary" id="generateChmodShellResultSummary" data-share-snapshot-source data-share-kind="shell-summary"></div>
 
-        {# ns:end family.shell.workspace.05_score-card #}
-        {# ns:start family.shell.workspace.06_sort-card #}
+        {# ns:start family._base.workspace.06_output-toolbar #}
         <div class="generate-chmod-shell-toolbar-shell">
           <div class="generate-chmod-shell-toolbar tool-output-toolbar tool-result-toolbar">
             <div class="generate-chmod-shell-toolbar-main">
@@ -437,17 +489,22 @@
           </div>
         </div>
 
-        {# ns:end family.shell.workspace.06_sort-card #}
-        {# ns:start family.shell.workspace.07_table #}
+        {# ns:end family._base.workspace.06_output-toolbar #}
+        {# ns:start family._base.workspace.07_table-output #}
         <div class="generate-chmod-shell-tabs-shell">
           <div class="tool-tabs generate-chmod-shell-tabs" role="tablist" aria-label="chmod command output views">
-            <button type="button" class="tool-tab-btn generate-chmod-shell-tab-btn" id="generateChmodShellCommandTab" data-tab-target="generateChmodShellCommandPanel" role="tab" aria-controls="generateChmodShellCommandPanel" aria-selected="false" tabindex="-1">
-              <i class="bi bi-terminal" aria-hidden="true"></i>
-              <span>Command</span>
-            </button>
+
             <button type="button" class="tool-tab-btn generate-chmod-shell-tab-btn active" id="generateChmodShellOperationsTab" data-tab-target="generateChmodShellOperationsPanel" role="tab" aria-controls="generateChmodShellOperationsPanel" aria-selected="true" tabindex="0">
               <i class="bi bi-list-check" aria-hidden="true"></i>
               <span>Operations</span>
+            </button>
+<button type="button" class="tool-tab-btn generate-chmod-shell-tab-btn" id="generateChmodShellCommandTab" data-tab-target="generateChmodShellCommandPanel" role="tab" aria-controls="generateChmodShellCommandPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-terminal" aria-hidden="true"></i>
+              <span>Command</span>
+            </button>
+            <button type="button" class="tool-tab-btn generate-chmod-shell-tab-btn" id="generateChmodShellDetailsTab" data-tab-target="generateChmodShellDetailsPanel" role="tab" aria-controls="generateChmodShellDetailsPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-card-text" aria-hidden="true"></i>
+              <span>Details</span>
             </button>
             <button type="button" class="tool-tab-btn generate-chmod-shell-tab-btn" id="generateChmodShellWarningsTab" data-tab-target="generateChmodShellWarningsPanel" role="tab" aria-controls="generateChmodShellWarningsPanel" aria-selected="false" tabindex="-1">
               <i class="bi bi-card-text" aria-hidden="true"></i>
@@ -465,13 +522,13 @@
                 <div class="generate-chmod-shell-section-head">
                   <h3 class="generate-chmod-shell-section-title tool-result-section-title">Generated chmod Command</h3>
                   <div class="generate-chmod-shell-section-actions">
-                    <button type="button" class="generate-chmod-shell-action-btn" id="generateChmodShellCopyCommand">
-                      <i class="bi bi-clipboard"></i>
-                      <span class="generate-chmod-shell-command-copy-label">Copy</span>
+                    <button type="button" class="generate-chmod-shell-action-btn" id="generateChmodShellCopyCommand" aria-label="Copy generated chmod command" title="Copy generated chmod command">
+                      <i class="bi bi-clipboard" aria-hidden="true"></i>
+                      <span class="generate-chmod-shell-command-copy-label tool-sr-only">Copy</span>
                     </button>
                   </div>
                 </div>
-                <pre class="generate-chmod-shell-code-pre"><code id="generateChmodShellCommandOutput"></code></pre>
+                <pre class="generate-chmod-shell-code-pre"><code id="generateChmodShellCommandOutput" data-share-snapshot-source data-share-kind="shell-command"></code></pre>
               </section>
 
               <section class="generate-chmod-shell-section-card tool-result-section-card">
@@ -557,7 +614,27 @@
             </div>
           </div>
 
-          <div class="tool-tab-panel generate-chmod-shell-tab-panel" id="generateChmodShellWarningsPanel" data-tab-panel="generateChmodShellWarningsPanel" role="tabpanel" aria-labelledby="generateChmodShellWarningsTab" hidden>
+          <div class="tool-tab-panel generate-chmod-shell-tab-panel" id="generateChmodShellDetailsPanel" data-tab-panel="generateChmodShellDetailsPanel" role="tabpanel" aria-labelledby="generateChmodShellDetailsTab" hidden>
+            <section class="generate-chmod-shell-section-card tool-result-section-card">
+              <h3 class="generate-chmod-shell-section-title tool-result-section-title">Command Details</h3>
+              <div class="generate-chmod-shell-table-output-note-grid">
+                <article class="generate-chmod-shell-table-output-note-card">
+                  <h4 class="generate-chmod-shell-table-output-note-title">Mode Preview</h4>
+                  <p class="generate-chmod-shell-table-output-note-copy">Command, permission, and umask rows are generated from the same target path and selected chmod mode.</p>
+                </article>
+                <article class="generate-chmod-shell-table-output-note-card">
+                  <h4 class="generate-chmod-shell-table-output-note-title">Run Boundary</h4>
+                  <p class="generate-chmod-shell-table-output-note-copy">Review warnings before applying permission changes to a live filesystem.</p>
+                </article>
+                <article class="generate-chmod-shell-table-output-note-card">
+                  <h4 class="generate-chmod-shell-table-output-note-title">JSON Boundary</h4>
+                  <p class="generate-chmod-shell-table-output-note-copy">The JSON tab preserves target path, mode, symbolic output, warning state, and table rows.</p>
+                </article>
+              </div>
+            </section>
+          </div>
+
+          <div class="tool-tab-panel generate-chmod-shell-tab-panel" id="generateChmodShellWarningsPanel" data-tab-panel="generateChmodShellWarningsPanel" data-share-snapshot-source data-share-kind="shell-warnings" role="tabpanel" aria-labelledby="generateChmodShellWarningsTab" hidden>
             <div class="generate-chmod-shell-warning-grid">
               <div class="generate-chmod-shell-message-card">
                 <h3 class="generate-chmod-shell-message-title">Warnings</h3>
@@ -572,19 +649,29 @@
           </div>
 
           <div class="tool-tab-panel generate-chmod-shell-tab-panel" id="generateChmodShellJsonPanel" data-tab-panel="generateChmodShellJsonPanel" role="tabpanel" aria-labelledby="generateChmodShellJsonTab" hidden>
-            <div class="generate-chmod-shell-command-wrap tool-json-panel">
-              <div class="tool-json-head">
-                <span class="tool-json-title">JSON Output</span>
+                      {# ns:start family._base.workspace.08_json-restore #}
+                      <div class="generate-chmod-shell-json-restore-shell" id="generateChmodShellJsonRestoreShell">
+            <section class="generate-chmod-shell-json-card tool-json-panel" aria-label="Command JSON output and restore state">
+              <div class="generate-chmod-shell-json-head tool-json-head">
+                <div class="generate-chmod-shell-json-title-wrap">
+                  <span class="generate-chmod-shell-json-title tool-json-title">JSON Output</span>
+                  <span class="generate-chmod-shell-json-helper">Exported command state should include target, options, generated command, warnings, and output rows.</span>
+                </div>
+                <span class="generate-chmod-shell-json-status is-hidden" id="generateChmodShellJsonRestoreStatus" role="status" aria-live="polite"></span>
               </div>
-              <pre class="generate-chmod-shell-code-pre tool-json-output"><code id="generateChmodShellJsonOutput"></code></pre>
-            </div>
+              <div class="generate-chmod-shell-json-empty is-hidden" id="generateChmodShellJsonRestoreEmpty">Generate a command before exporting JSON.</div>
+              <pre class="generate-chmod-shell-json-output tool-json-output"><code id="generateChmodShellJsonOutput"></code></pre>
+            </section>
           </div>
         </div>
       </div>
     </div>
 
     <div class="generate-chmod-shell-result-error d-none" id="generateChmodShellResultError"></div>
-    <input type="file" id="generateChmodShellImportJson" class="d-none" accept="application/json">
+    <input type="file" id="generateChmodShellImportJson" class="generate-chmod-shell-import-input d-none" accept="application/json">
+    {# ns:end family._base.workspace.08_json-restore #}
   </div>
-        {# ns:end family.shell.workspace.07_table #}
+        {# ns:end family._base.workspace.07_table-output #}
+</div>
+  {# ns:end family._base.workspace.00_shell #}
 </div>

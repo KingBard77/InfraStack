@@ -1,8 +1,8 @@
 source: assessment-family-workspace
 family: assessment
-version: 1.0.0
+version: 1.1.0
 status: active
-description: Family-specific workspace grammar for InfraStack assessment tools using the current CIS Ubuntu Benchmark 2204 filter, summary, toolbar, table, artifact, and JSON baseline.
+description: Family-specific workspace grammar for InfraStack assessment tools composed from shared `_base` workspace structure plus assessment-owned selected artifact review.
 agent_map: templates/content/family/assessment/FAMILY.md
 
 family_path: templates/content/family/assessment/
@@ -22,19 +22,20 @@ reference_workspace:
 
 runtime_baseline:
     source_tool: templates/content/tools/cis/assess-ubuntu-2204-cis/
-    source_snapshot: templates/content/family/assessment/baseline/source/
+    source_snapshot: templates/content/family/assessment/source/
     workspace_sections: templates/content/family/assessment/workspace/
-    copy_mode: section_owned
+    copy_mode: base_plus_family_contract
     css_js_mode: section_owned
     model_core: null
     model_core_sha256: null
-    data_payload_source: templates/content/family/assessment/baseline/source/assets/custom.json.twig
+    data_payload_source: templates/content/family/assessment/source/assets/custom.json.twig
     data_payload_sha256: b8593d6097526c15bda181237cc599b229a4caff1d8faa46d8471ef1bbe3bc8c
     source_hashes:
         tool_html_twig: d9cef445d2909e737523b173ae94b12b55ece67ff953bf1837ed72d7b10a0a8b
         custom_css: 7826c5ae39bbe50145875a34912e44d0f5f4df7163fac56f9b2704542c9d600a
         custom_js: 78b269bbc8fd8d6d8cfe175cae312580d5f093392da3eac808706c8244eac12d
         custom_json_twig: b8593d6097526c15bda181237cc599b229a4caff1d8faa46d8471ef1bbe3bc8c
+    role: The source snapshot is reference-only. Do not audit this as active source. Common workspace sections are sourced from `_base`; assessment workspace owns only selected artifact review.
 
 selection_triggers:
     - assessment
@@ -58,15 +59,27 @@ workspace_flow:
     - selected_artifact_review
     - json_snapshot_output_restore_when_implemented
 
+workspace_namespaces:
+    - family._base.workspace.00_shell
+    - family._base.workspace.01_input-brief
+    - family._base.workspace.02_basic-settings
+    - family._base.workspace.03_custom-settings
+    - family.assessment.workspace.04_selected-item
+    - family._base.workspace.05_result-summary
+    - family._base.workspace.06_output-toolbar
+    - family._base.workspace.07_table-output
+    - family._base.workspace.08_json-restore
+
 workspace_sections:
-    01_input-brief: primary query, brief, assessment filter, and assess/explore action
-    02_basic-settings: scope, section, severity, status, profile, row-limit, and required selectors
-    03_advanced-settings: optional advanced filters or assessment options; no-op unless separated from basic scope
     04_selected-item: selected script, rule, finding, requirement, evidence, or source body review
-    05_result-summary: matched counts, selected item, coverage, gaps, status, and metadata summary cards
-    06_result-view: findings/control table plus section, family, category, severity, status, or ownership rollups
-    07_table-export: ID-first sort, compact actions, copy, CSV, report, JSON, and optional import controls
-    08_json-restore: assessment JSON snapshot output and optional restore handling
+    _base.00_shell: shared workspace frame, panel rhythm, section slots, and responsive shell
+    _base.01_input-brief: shared query, brief, assessment filter, and assess/explore action frame
+    _base.02_basic-settings: shared scope, section, severity, status, profile, row-limit, and required selector frame
+    _base.03_custom-settings: shared optional Custom settings panel frame
+    _base.05_result-summary: shared matched counts, selected item, coverage, gaps, status, and metadata summary card frame
+    _base.06_output-toolbar: shared ID-first sort, compact actions, copy, CSV, report, JSON, and optional import toolbar frame
+    _base.07_table-output: shared findings/control table plus rollup, selected artifact, notes, and JSON shell
+    _base.08_json-restore: shared assessment JSON snapshot output and optional restore handling frame
 
 section_file_contract:
     required_per_section:
@@ -75,7 +88,7 @@ section_file_contract:
         - page.html.twig
         - section.css
         - section.js
-    role: Keep assessment workspace sections structurally equivalent to architecture workspace sections while preserving assessment-specific behavior.
+    role: Keep assessment-owned workspace sections structurally equivalent to architecture workspace sections while preserving assessment-specific behavior. Common sections are sourced from `_base/workspace`.
 
 scaffold_content_adaptation:
     01_overview: assessment purpose, input boundary, output boundary, and trust boundary
@@ -107,10 +120,12 @@ state_contract:
 
 generation_rules:
     - Select this workspace source for assessment-family tool requests.
-    - Use this workspace source for assessment-specific workspace sections.
-    - Keep each workspace section folder complete with README.md, demo.html, page.html.twig, section.css, and section.js.
-    - When an assessment tool is accepted as a baseline, keep its full copied runtime source under baseline/source/ as a reference-only snapshot.
-    - Keep reusable assessment runtime behavior in section-owned page.html.twig, section.css, section.js, and demo.html files.
+    - Compose assessment workspace output from `workspace_namespaces`, not from duplicated assessment copies of `_base` sections.
+    - Source common shell, input, settings, summary, toolbar, table, and JSON restore sections from `_base/workspace`.
+    - Keep each assessment-owned workspace section folder complete with README.md, demo.html, page.html.twig, section.css, and section.js.
+    - When an assessment tool is accepted as a baseline, keep its full copied runtime source under source/ as a reference-only snapshot. Do not audit this as active source.
+    - Keep reusable assessment-owned runtime behavior in section-owned page.html.twig, section.css, section.js, and demo.html files.
+    - Keep only selected item, selected artifact, evidence detail, or source body behavior in assessment workspace files.
     - Use shared main content sections for reusable content rhythm.
     - Apply shared main content sections as a full contract: content.md markup, section.css visual behavior, and section.js helper behavior when present.
     - Final tool custom.css and custom.js must preserve the applied section card frame, heading divider, typography, table, list, details, FAQ, copy, citation, prompt, or command behavior unless a documented shared include exists.
@@ -130,11 +145,14 @@ generation_rules:
 validation_rules:
     - workspace/README.md exists.
     - workspace/manifest.yml exists.
+    - workspace_namespaces lists `_base` common sections plus assessment-owned selected-item sections.
     - reference workspace path exists when used.
-    - assessment workspace section folders exist.
-    - baseline/source/tool.html.twig, baseline/source/custom.css, baseline/source/custom.js, and baseline/source/assets/custom.json.twig exist.
+    - assessment-owned workspace section folders exist.
+    - only assessment-owned workspace section folders remain.
+    - source/tool.html.twig, source/custom.css, source/custom.js, and source/assets/custom.json.twig exist.
+    - source/ is reference-only and must not be audited as active source.
     - root workspace/custom.css and workspace/custom.js do not exist.
-    - every assessment workspace section folder contains README.md, demo.html, page.html.twig, section.css, and section.js.
+    - every assessment-owned workspace section folder contains README.md, demo.html, page.html.twig, section.css, and section.js.
     - shared main content section source exists.
     - Applied shared content sections are validated in the final tool package for namespace markers, unresolved placeholders, required custom.css selectors, and helper hooks when used.
     - citation links and References rows are paired when 10_references is used.

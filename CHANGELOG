@@ -3,8 +3,14 @@
 ## Unreleased
 
 ### Fixed
+- Fixed `deployer.sh` spinner handling so rsync and remote heredoc deploy phases use the spinner runner instead of blocking in foreground.
+- Fixed `deployer.sh --env FALSE` existing-repo pulls so stale or dangling remote-tracking refs are deleted, recreated from GitHub, and verified before deploy continues.
 - Fixed tool detail intro alignment so the visible intro paragraph remains justified across desktop and mobile.
 - Fixed mobile support-copy readability by keeping markdown body paragraphs, FAQ answers, and tool card summaries left-aligned on narrow screens.
 - Tightened tool detail breadcrumb-to-title spacing by reducing page-title padding and removing stacked content-page AOS transforms.
 - Moved new share snapshot image storage from `public/snapshot` to `var/snapshot/image` so production snapshot creation no longer depends on a writable web-root directory.
 - Preserved existing legacy snapshot images under `public/snapshot` through fallback reads while serving public snapshot image URLs through `/share/{category}/{slug}/{snapshotId}/image`.
+
+### Validated
+- Verified GitHub `main` and remote `/opt/infrastack` had diverged, reproduced the remote dangling `origin/main` failure, then smoke-tested the deployer heredoc deletes stale refs, force-fetches `main:refs/remotes/origin/main`, and verifies the deployed revision.
+- Ran `bash -n deployer.sh`, `bash deployer.sh all --env FALSE ... test`, and a no-network deployer smoke test with fake `ssh`.

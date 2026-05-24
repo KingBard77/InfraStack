@@ -1,60 +1,75 @@
 {# tool.html.twig #}
-{# ns:start family.calculate.workspace.01_input-brief #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.01_input-brief #}
-{# ns:start family.calculate.workspace.02_basic-settings #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.02_basic-settings #}
-{# ns:start family.calculate.workspace.03_advanced-settings #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.03_advanced-settings #}
 {# ns:start family.calculate.workspace.04_selected-item #}
 {# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
 {# ns:end family.calculate.workspace.04_selected-item #}
-{# ns:start family.calculate.workspace.05_result-summary #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.05_result-summary #}
-{# ns:start family.calculate.workspace.06_result-view #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.06_result-view #}
-{# ns:start family.calculate.workspace.07_table-export #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.07_table-export #}
-{# ns:start family.calculate.workspace.08_json-restore #}
-{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
-{# ns:end family.calculate.workspace.08_json-restore #}
 
+{# ns:start family._base.workspace.00_shell #}
 <div class="calculate-cost-ibm-tool" data-tool-slug="calculate-cost-ibm" data-tool-category="IBM Cloud">
 <div class="tool-box">
   <form class="calculate-cost-ibm-form" id="calculateCostIbmForm">
-    <div class="calculate-cost-ibm-main-row">
-      <label for="calculateCostIbmLabel" class="calculate-cost-ibm-main-label">
-        Estimate label:
-        <span class="info-dot" title="Name the workload or environment you want to estimate">i</span>
-      </label>
+{# ns:start family._base.workspace.01_input-brief #}
+    <div class="calculate-cost-ibm-input-card">
+      <div class="calculate-cost-ibm-input-brief" data-input-layout="inline">
+        <div class="calculate-cost-ibm-main-row calculate-cost-ibm-input-row">
+          <div class="calculate-cost-ibm-input-label-wrap">
+            <label for="calculateCostIbmLabel" class="calculate-cost-ibm-main-label calculate-cost-ibm-input-label">Estimate label:</label>
+            <span class="calculate-cost-ibm-helper-chip" title="Name the workload or environment you want to estimate" aria-label="Name the workload or environment you want to estimate">i</span>
+          </div>
 
-      <div class="calculate-cost-ibm-main-input-grid">
-        <input
-          type="text"
-          id="calculateCostIbmLabel"
-          class="form-control"
-          placeholder="Production API stack"
-          value="Lean web platform"
-        >
+          <div class="calculate-cost-ibm-main-input-grid calculate-cost-ibm-input-stack">
+            <input
+              type="text"
+              id="calculateCostIbmLabel"
+              class="form-control calculate-cost-ibm-input-control"
+              placeholder="Production API stack"
+              value="Lean web platform"
+            >
+            <div class="calculate-cost-ibm-input-error d-none" id="calculateCostIbmInputError" role="alert"></div>
+          </div>
+        </div>
 
-        <div class="calculate-cost-ibm-main-actions">
-          <button type="submit" class="btn btn-primary calculate-cost-ibm-submit-btn" id="calculateCostIbmSubmit">Estimate</button>
-          <button type="button" class="calculate-cost-ibm-secondary-btn calculate-cost-ibm-reset-btn" id="calculateCostIbmReset">Reset</button>
+        <div class="calculate-cost-ibm-main-actions calculate-cost-ibm-input-actions">
+          <button
+            type="submit"
+            class="btn btn-primary calculate-cost-ibm-submit-btn calculate-cost-ibm-action-btn calculate-cost-ibm-action-btn-primary"
+            id="calculateCostIbmSubmit"
+            data-tool-share-generate
+          >
+            <i class="bi bi-calculator" aria-hidden="true"></i>
+            <span>Estimate</span>
+          </button>
+          <button
+            type="button"
+            class="calculate-cost-ibm-secondary-btn calculate-cost-ibm-reset-btn calculate-cost-ibm-action-btn calculate-cost-ibm-action-btn-secondary"
+            id="calculateCostIbmReset"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        <div class="calculate-cost-ibm-input-helper-card">
+          <span class="calculate-cost-ibm-input-hint">Use a short label that can travel with exported estimate data.</span>
+          <span class="calculate-cost-ibm-helper-chip calculate-cost-ibm-helper-chip-inline" title="Name the workload or environment you want to estimate" aria-label="Name the workload or environment you want to estimate">i</span>
         </div>
       </div>
     </div>
+{# ns:end family._base.workspace.01_input-brief #}
 
+{# ns:start family._base.workspace.02_basic-settings #}
     <div class="calculate-cost-ibm-basic-panel">
-      <div class="calculate-cost-ibm-inner-panel">
-        <div class="calculate-cost-ibm-setting-row">
+      <div class="calculate-cost-ibm-inner-panel calculate-cost-ibm-basic-card">
+
+        <div class="calculate-cost-ibm-example-card">
+          <span class="calculate-cost-ibm-example-label">Example estimate settings</span>
+          <strong class="calculate-cost-ibm-example-value">Lean web platform, monthly USD, starter catalog</strong>
+          <span class="calculate-cost-ibm-example-helper">Preset and basis controls must update totals, tables, and JSON together.</span>
+        </div>
+
+        <div class="calculate-cost-ibm-setting-row calculate-cost-ibm-setting-card">
           <label for="calculateCostIbmPreset" class="calculate-cost-ibm-setting-label">
             Preset:
-            <span class="info-dot" title="Load a starting cost shape for a common IBM Cloud workload">i</span>
+            <span class="info-dot calculate-cost-ibm-helper-chip" title="Load a starting cost shape for a common IBM Cloud workload">i</span>
           </label>
 
           <div class="calculate-cost-ibm-setting-field">
@@ -62,26 +77,27 @@
               <details class="calculate-cost-ibm-select" id="calculateCostIbmPresetSelect">
                 <summary class="calculate-cost-ibm-select-summary">
                   <span id="calculateCostIbmPresetSummary">Lean web platform</span>
+                  <span class="calculate-cost-ibm-select-arrow-slot" aria-hidden="true"></span>
                 </summary>
 
                 <div class="calculate-cost-ibm-select-body">
                   <div class="calculate-cost-ibm-select-grid calculate-cost-ibm-select-grid-list">
-                    <label class="calculate-cost-ibm-select-card">
+                    <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                       <input type="radio" name="calculateCostIbmPresetOption" value="lean-web" checked>
                       <span class="calculate-cost-ibm-select-title">Lean web platform</span>
                     </label>
 
-                    <label class="calculate-cost-ibm-select-card">
+                    <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                       <input type="radio" name="calculateCostIbmPresetOption" value="serverless-api">
                       <span class="calculate-cost-ibm-select-title">Serverless API</span>
                     </label>
 
-                    <label class="calculate-cost-ibm-select-card">
+                    <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                       <input type="radio" name="calculateCostIbmPresetOption" value="steady-platform">
                       <span class="calculate-cost-ibm-select-title">Steady application platform</span>
                     </label>
 
-                    <label class="calculate-cost-ibm-select-card">
+                    <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                       <input type="radio" name="calculateCostIbmPresetOption" value="blank">
                       <span class="calculate-cost-ibm-select-title">Blank estimate</span>
                     </label>
@@ -95,10 +111,10 @@
           </div>
         </div>
 
-        <div class="calculate-cost-ibm-setting-row">
+        <div class="calculate-cost-ibm-setting-row calculate-cost-ibm-setting-card">
           <label class="calculate-cost-ibm-setting-label">
             Pricing basis:
-            <span class="info-dot" title="Starter prices are visible and editable in Advanced so the estimate stays auditable">i</span>
+            <span class="info-dot calculate-cost-ibm-helper-chip" title="Starter prices are visible and editable in Custom so the estimate stays auditable">i</span>
           </label>
 
           <div class="calculate-cost-ibm-setting-field">
@@ -126,7 +142,7 @@
                 <p class="calculate-cost-ibm-service-copy">VSI count, runtime, and purchase model.</p>
               </div>
 
-              <label class="switch calculate-cost-ibm-switch-wrap">
+              <label class="switch calculate-cost-ibm-switch-wrap calculate-cost-ibm-switch-card">
                 <input type="checkbox" id="calculateCostIbmIncludeCompute" checked>
                 <span class="slider"></span>
                 <span class="calculate-cost-ibm-switch-label">Include</span>
@@ -140,36 +156,37 @@
                   <details class="calculate-cost-ibm-select" id="calculateCostIbmComputeInstanceSelect">
                     <summary class="calculate-cost-ibm-select-summary">
                       <span id="calculateCostIbmComputeInstanceSummary">bx2-2x8 - 2 vCPU - 8 GiB</span>
+                      <span class="calculate-cost-ibm-select-arrow-slot" aria-hidden="true"></span>
                     </summary>
 
                     <div class="calculate-cost-ibm-select-body">
                       <div class="calculate-cost-ibm-select-grid calculate-cost-ibm-select-grid-list">
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputeInstanceOption" value="bx2-2x8" checked>
                           <span class="calculate-cost-ibm-select-title">bx2-2x8 - 2 vCPU - 8 GiB</span>
                         </label>
 
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputeInstanceOption" value="bx2-4x16">
                           <span class="calculate-cost-ibm-select-title">bx2-4x16 - 4 vCPU - 16 GiB</span>
                         </label>
 
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputeInstanceOption" value="cx2-4x8">
                           <span class="calculate-cost-ibm-select-title">cx2-4x8 - 4 vCPU - 8 GiB</span>
                         </label>
 
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputeInstanceOption" value="mx2-4x32">
                           <span class="calculate-cost-ibm-select-title">mx2-4x32 - 4 vCPU - 32 GiB</span>
                         </label>
 
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputeInstanceOption" value="bx3d-4x20">
                           <span class="calculate-cost-ibm-select-title">bx3d-4x20 - 4 vCPU - 20 GiB</span>
                         </label>
 
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputeInstanceOption" value="custom">
                           <span class="calculate-cost-ibm-select-title" id="calculateCostIbmComputeCustomOptionLabel">Custom size - user defined</span>
                         </label>
@@ -184,36 +201,37 @@
                   <details class="calculate-cost-ibm-select" id="calculateCostIbmComputePurchaseSelect">
                     <summary class="calculate-cost-ibm-select-summary">
                       <span id="calculateCostIbmComputePurchaseSummary">Hourly</span>
+                      <span class="calculate-cost-ibm-select-arrow-slot" aria-hidden="true"></span>
                     </summary>
 
                     <div class="calculate-cost-ibm-select-body">
                       <div class="calculate-cost-ibm-select-grid calculate-cost-ibm-select-grid-two">
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputePurchaseOption" value="onDemand" checked>
                           <span class="calculate-cost-ibm-select-title">Hourly</span>
                         </label>
 
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputePurchaseOption" value="spot">
                           <span class="calculate-cost-ibm-select-title">Spot</span>
                         </label>
 
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputePurchaseOption" value="savings1">
                           <span class="calculate-cost-ibm-select-title">Commitment 1yr</span>
                         </label>
 
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputePurchaseOption" value="savings3">
                           <span class="calculate-cost-ibm-select-title">Commitment 3yr</span>
                         </label>
 
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputePurchaseOption" value="reserved1">
                           <span class="calculate-cost-ibm-select-title">Reserved 1yr</span>
                         </label>
 
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmComputePurchaseOption" value="reserved3">
                           <span class="calculate-cost-ibm-select-title">Reserved 3yr</span>
                         </label>
@@ -229,7 +247,7 @@
                     <input
                       type="text"
                       id="calculateCostIbmComputeCustomLabel"
-                      class="form-control"
+                      class="form-control calculate-cost-ibm-text-field"
                       placeholder="Custom instance profile"
                       value=""
                     >
@@ -240,7 +258,7 @@
                     <input
                       type="number"
                       id="calculateCostIbmComputeCustomVcpu"
-                      class="form-control"
+                      class="form-control calculate-cost-ibm-text-field"
                       min="1"
                       step="1"
                       value="4"
@@ -252,7 +270,7 @@
                     <input
                       type="number"
                       id="calculateCostIbmComputeCustomMemoryGiB"
-                      class="form-control"
+                      class="form-control calculate-cost-ibm-text-field"
                       min="1"
                       step="0.5"
                       value="16"
@@ -260,16 +278,16 @@
                   </div>
                 </div>
 
-                <p class="calculate-cost-ibm-field-hint calculate-cost-ibm-card-span-two d-none" id="calculateCostIbmComputeCustomHint">Custom size uses the VSI hourly override in Advanced. Set the custom vCPU and memory here, then price it with the override field.</p>
+                <p class="calculate-cost-ibm-field-hint calculate-cost-ibm-card-span-two d-none" id="calculateCostIbmComputeCustomHint">Custom size uses the VSI hourly override in Custom. Set the custom vCPU and memory here, then price it with the override field.</p>
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmComputeCount" class="calculate-cost-ibm-field-label">VSI count</label>
-                  <input type="number" id="calculateCostIbmComputeCount" class="form-control" min="0" step="1" value="2">
+                  <input type="number" id="calculateCostIbmComputeCount" class="form-control calculate-cost-ibm-text-field" min="0" step="1" value="2">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmComputeHours" class="calculate-cost-ibm-field-label">Monthly hours</label>
-                  <input type="number" id="calculateCostIbmComputeHours" class="form-control" min="0" max="744" step="1" value="730">
+                  <input type="number" id="calculateCostIbmComputeHours" class="form-control calculate-cost-ibm-text-field" min="0" max="744" step="1" value="730">
                 </div>
               </div>
             </div>
@@ -282,7 +300,7 @@
                 <p class="calculate-cost-ibm-service-copy">Block capacity plus optional IOPS and throughput.</p>
               </div>
 
-              <label class="switch calculate-cost-ibm-switch-wrap">
+              <label class="switch calculate-cost-ibm-switch-wrap calculate-cost-ibm-switch-card">
                 <input type="checkbox" id="calculateCostIbmIncludeDisk" checked>
                 <span class="slider"></span>
                 <span class="calculate-cost-ibm-switch-label">Include</span>
@@ -293,17 +311,17 @@
               <div class="calculate-cost-ibm-card-grid calculate-cost-ibm-card-grid-two">
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmDiskStorageGb" class="calculate-cost-ibm-field-label">Storage GB</label>
-                  <input type="number" id="calculateCostIbmDiskStorageGb" class="form-control" min="0" step="1" value="160">
+                  <input type="number" id="calculateCostIbmDiskStorageGb" class="form-control calculate-cost-ibm-text-field" min="0" step="1" value="160">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmDiskIops" class="calculate-cost-ibm-field-label">Provisioned IOPS</label>
-                  <input type="number" id="calculateCostIbmDiskIops" class="form-control" min="0" step="100" value="3000">
+                  <input type="number" id="calculateCostIbmDiskIops" class="form-control calculate-cost-ibm-text-field" min="0" step="100" value="3000">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack calculate-cost-ibm-card-span-two">
                   <label for="calculateCostIbmDiskThroughput" class="calculate-cost-ibm-field-label">Throughput MB/s</label>
-                  <input type="number" id="calculateCostIbmDiskThroughput" class="form-control" min="0" step="1" value="125">
+                  <input type="number" id="calculateCostIbmDiskThroughput" class="form-control calculate-cost-ibm-text-field" min="0" step="1" value="125">
                 </div>
               </div>
             </div>
@@ -316,7 +334,7 @@
                 <p class="calculate-cost-ibm-service-copy">Object storage, request volume, and outbound transfer.</p>
               </div>
 
-              <label class="switch calculate-cost-ibm-switch-wrap">
+              <label class="switch calculate-cost-ibm-switch-wrap calculate-cost-ibm-switch-card">
                 <input type="checkbox" id="calculateCostIbmIncludeBlob" checked>
                 <span class="slider"></span>
                 <span class="calculate-cost-ibm-switch-label">Include</span>
@@ -327,22 +345,22 @@
               <div class="calculate-cost-ibm-card-grid calculate-cost-ibm-card-grid-two">
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmBlobStorageGb" class="calculate-cost-ibm-field-label">Storage GB</label>
-                  <input type="number" id="calculateCostIbmBlobStorageGb" class="form-control" min="0" step="1" value="250">
+                  <input type="number" id="calculateCostIbmBlobStorageGb" class="form-control calculate-cost-ibm-text-field" min="0" step="1" value="250">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmBlobEgressGb" class="calculate-cost-ibm-field-label">Transfer out GB</label>
-                  <input type="number" id="calculateCostIbmBlobEgressGb" class="form-control" min="0" step="1" value="180">
+                  <input type="number" id="calculateCostIbmBlobEgressGb" class="form-control calculate-cost-ibm-text-field" min="0" step="1" value="180">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmBlobGetRequestsK" class="calculate-cost-ibm-field-label">GET requests (1k)</label>
-                  <input type="number" id="calculateCostIbmBlobGetRequestsK" class="form-control" min="0" step="1" value="2200">
+                  <input type="number" id="calculateCostIbmBlobGetRequestsK" class="form-control calculate-cost-ibm-text-field" min="0" step="1" value="2200">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmBlobPutRequestsK" class="calculate-cost-ibm-field-label">PUT/LIST requests (1k)</label>
-                  <input type="number" id="calculateCostIbmBlobPutRequestsK" class="form-control" min="0" step="1" value="120">
+                  <input type="number" id="calculateCostIbmBlobPutRequestsK" class="form-control calculate-cost-ibm-text-field" min="0" step="1" value="120">
                 </div>
               </div>
             </div>
@@ -355,7 +373,7 @@
                 <p class="calculate-cost-ibm-service-copy">Requests, duration, and memory drive the bill.</p>
               </div>
 
-              <label class="switch calculate-cost-ibm-switch-wrap">
+              <label class="switch calculate-cost-ibm-switch-wrap calculate-cost-ibm-switch-card">
                 <input type="checkbox" id="calculateCostIbmIncludeFunctions" checked>
                 <span class="slider"></span>
                 <span class="calculate-cost-ibm-switch-label">Include</span>
@@ -366,17 +384,17 @@
               <div class="calculate-cost-ibm-card-grid calculate-cost-ibm-card-grid-two">
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmFunctionsRequestsMillion" class="calculate-cost-ibm-field-label">Requests (million)</label>
-                  <input type="number" id="calculateCostIbmFunctionsRequestsMillion" class="form-control" min="0" step="0.1" value="1.2">
+                  <input type="number" id="calculateCostIbmFunctionsRequestsMillion" class="form-control calculate-cost-ibm-text-field" min="0" step="0.1" value="1.2">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmFunctionsDurationMs" class="calculate-cost-ibm-field-label">Avg duration ms</label>
-                  <input type="number" id="calculateCostIbmFunctionsDurationMs" class="form-control" min="0" step="1" value="140">
+                  <input type="number" id="calculateCostIbmFunctionsDurationMs" class="form-control calculate-cost-ibm-text-field" min="0" step="1" value="140">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack calculate-cost-ibm-card-span-two">
                   <label for="calculateCostIbmFunctionsMemoryMb" class="calculate-cost-ibm-field-label">Memory MB</label>
-                  <input type="number" id="calculateCostIbmFunctionsMemoryMb" class="form-control" min="128" step="128" value="512">
+                  <input type="number" id="calculateCostIbmFunctionsMemoryMb" class="form-control calculate-cost-ibm-text-field" min="128" step="128" value="512">
                 </div>
               </div>
             </div>
@@ -389,7 +407,7 @@
                 <p class="calculate-cost-ibm-service-copy">HTTP and REST requests with response egress.</p>
               </div>
 
-              <label class="switch calculate-cost-ibm-switch-wrap">
+              <label class="switch calculate-cost-ibm-switch-wrap calculate-cost-ibm-switch-card">
                 <input type="checkbox" id="calculateCostIbmIncludeApi" checked>
                 <span class="slider"></span>
                 <span class="calculate-cost-ibm-switch-label">Include</span>
@@ -403,16 +421,17 @@
                   <details class="calculate-cost-ibm-select" id="calculateCostIbmApiTypeSelect">
                     <summary class="calculate-cost-ibm-select-summary">
                       <span id="calculateCostIbmApiTypeSummary">Essentials gateway</span>
+                      <span class="calculate-cost-ibm-select-arrow-slot" aria-hidden="true"></span>
                     </summary>
 
                     <div class="calculate-cost-ibm-select-body">
                       <div class="calculate-cost-ibm-select-grid calculate-cost-ibm-select-grid-two">
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmApiTypeOption" value="http" checked>
                           <span class="calculate-cost-ibm-select-title">Essentials gateway</span>
                         </label>
 
-                        <label class="calculate-cost-ibm-select-card">
+                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
                           <input type="radio" name="calculateCostIbmApiTypeOption" value="rest">
                           <span class="calculate-cost-ibm-select-title">Standard gateway</span>
                         </label>
@@ -424,12 +443,12 @@
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmApiRequestsMillion" class="calculate-cost-ibm-field-label">Requests (million)</label>
-                  <input type="number" id="calculateCostIbmApiRequestsMillion" class="form-control" min="0" step="0.1" value="8">
+                  <input type="number" id="calculateCostIbmApiRequestsMillion" class="form-control calculate-cost-ibm-text-field" min="0" step="0.1" value="8">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack calculate-cost-ibm-card-span-two">
                   <label for="calculateCostIbmApiResponseKb" class="calculate-cost-ibm-field-label">Avg response KB</label>
-                  <input type="number" id="calculateCostIbmApiResponseKb" class="form-control" min="0" step="1" value="32">
+                  <input type="number" id="calculateCostIbmApiResponseKb" class="form-control calculate-cost-ibm-text-field" min="0" step="1" value="32">
                 </div>
               </div>
             </div>
@@ -447,22 +466,22 @@
               <div class="calculate-cost-ibm-card-grid calculate-cost-ibm-card-grid-two">
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmSharedEgressGb" class="calculate-cost-ibm-field-label">Shared egress GB</label>
-                  <input type="number" id="calculateCostIbmSharedEgressGb" class="form-control" min="0" step="1" value="120">
+                  <input type="number" id="calculateCostIbmSharedEgressGb" class="form-control calculate-cost-ibm-text-field" min="0" step="1" value="120">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmSupportPct" class="calculate-cost-ibm-field-label">Support uplift %</label>
-                  <input type="number" id="calculateCostIbmSupportPct" class="form-control" min="0" step="0.1" value="8">
+                  <input type="number" id="calculateCostIbmSupportPct" class="form-control calculate-cost-ibm-text-field" min="0" step="0.1" value="8">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmContingencyPct" class="calculate-cost-ibm-field-label">Contingency %</label>
-                  <input type="number" id="calculateCostIbmContingencyPct" class="form-control" min="0" step="0.1" value="10">
+                  <input type="number" id="calculateCostIbmContingencyPct" class="form-control calculate-cost-ibm-text-field" min="0" step="0.1" value="10">
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmManualAdjustment" class="calculate-cost-ibm-field-label">Manual adjustment $</label>
-                  <input type="number" id="calculateCostIbmManualAdjustment" class="form-control" step="0.01" value="0">
+                  <input type="number" id="calculateCostIbmManualAdjustment" class="form-control calculate-cost-ibm-text-field" step="0.01" value="0">
                 </div>
               </div>
             </div>
@@ -470,174 +489,176 @@
         </div>
       </div>
     </div>
+{# ns:end family._base.workspace.02_basic-settings #}
 
-    <details class="calculate-cost-ibm-advanced" id="calculateCostIbmAdvanced">
-      <summary class="calculate-cost-ibm-advanced-summary">Advanced</summary>
+{# ns:start family._base.workspace.03_custom-settings #}
+    <details class="calculate-cost-ibm-advanced" data-custom-layout="compact_two_column_multi_row" id="calculateCostIbmAdvanced">
+      <summary class="calculate-cost-ibm-advanced-summary">
+        <span>Custom</span>
+          <span class="calculate-cost-ibm-custom-arrow-slot" aria-hidden="true"></span>
+      </summary>
 
       <div class="calculate-cost-ibm-advanced-body">
         <div class="calculate-cost-ibm-inner-panel">
-          <div class="calculate-cost-ibm-setting-row">
+          <div class="calculate-cost-ibm-setting-row calculate-cost-ibm-setting-card">
             <label class="calculate-cost-ibm-setting-label">
               Free tier toggles:
-              <span class="info-dot" title="Apply the starter free-tier allowances that most affect this model">i</span>
+              <span class="info-dot calculate-cost-ibm-helper-chip" title="Apply the starter free-tier allowances that most affect this model">i</span>
             </label>
 
             <div class="calculate-cost-ibm-setting-field">
               <div class="calculate-cost-ibm-toggle-grid">
-                <label class="switch calculate-cost-ibm-switch-wrap calculate-cost-ibm-switch-card">
+                <label class="calculate-cost-ibm-custom-checkbox-option">
                   <input type="checkbox" id="calculateCostIbmFreeTierFunctions" checked>
-                  <span class="slider"></span>
-                  <span class="calculate-cost-ibm-switch-label">Code Engine requests + GB-s</span>
+                  <span>Code Engine requests + GB-s</span>
                 </label>
 
-                <label class="switch calculate-cost-ibm-switch-wrap calculate-cost-ibm-switch-card">
+                <label class="calculate-cost-ibm-custom-checkbox-option">
                   <input type="checkbox" id="calculateCostIbmFreeTierApi" checked>
-                  <span class="slider"></span>
-                  <span class="calculate-cost-ibm-switch-label">API Connect calls</span>
+                  <span>API Connect calls</span>
                 </label>
 
-                <label class="switch calculate-cost-ibm-switch-wrap calculate-cost-ibm-switch-card">
+                <label class="calculate-cost-ibm-custom-checkbox-option">
                   <input type="checkbox" id="calculateCostIbmFreeTierEgress" checked>
-                  <span class="slider"></span>
-                  <span class="calculate-cost-ibm-switch-label">Shared 100 GB egress</span>
+                  <span>Shared 100 GB egress</span>
                 </label>
               </div>
             </div>
           </div>
 
-          <div class="calculate-cost-ibm-setting-row">
+          <div class="calculate-cost-ibm-setting-row calculate-cost-ibm-setting-card">
             <label for="calculateCostIbmRegionalUpliftPct" class="calculate-cost-ibm-setting-label">
               Regional uplift:
-              <span class="info-dot" title="Apply a percentage uplift to starter rates when you want to approximate a pricier region">i</span>
+              <span class="info-dot calculate-cost-ibm-helper-chip" title="Apply a percentage uplift to starter rates when you want to approximate a pricier region">i</span>
             </label>
 
             <div class="calculate-cost-ibm-setting-field">
               <div class="calculate-cost-ibm-inline-grid calculate-cost-ibm-inline-grid-regional">
                 <div class="calculate-cost-ibm-field-stack calculate-cost-ibm-field-stack-compact">
-                  <input type="number" id="calculateCostIbmRegionalUpliftPct" class="form-control" min="0" step="0.1" value="0">
+                  <input type="number" id="calculateCostIbmRegionalUpliftPct" class="form-control" min="0" step="0.1" value="0" placeholder="0">
                 </div>
                 <div class="calculate-cost-ibm-inline-note">Use direct overrides below when you know the real regional rate.</div>
               </div>
             </div>
           </div>
 
-          <div class="calculate-cost-ibm-setting-row calculate-cost-ibm-setting-row-stacked">
+          <div class="calculate-cost-ibm-setting-row calculate-cost-ibm-setting-row-stacked calculate-cost-ibm-setting-card">
             <label class="calculate-cost-ibm-setting-label">
               Rate overrides:
-              <span class="info-dot" title="Set a value here to override the bundled starter rate for that specific cost component">i</span>
+              <span class="info-dot calculate-cost-ibm-helper-chip" title="Set a value here to override the bundled starter rate for that specific cost component">i</span>
             </label>
 
             <div class="calculate-cost-ibm-setting-field">
               <div class="calculate-cost-ibm-override-grid">
-                <section class="calculate-cost-ibm-override-card calculate-cost-ibm-override-card--single">
-                  <div class="calculate-cost-ibm-override-card-head">
-                    <h4 class="calculate-cost-ibm-override-card-title">Virtual Servers</h4>
+                <section class="calculate-cost-ibm-override-group calculate-cost-ibm-override-group--single">
+                  <div class="calculate-cost-ibm-override-group-head">
+                    <h4 class="calculate-cost-ibm-override-group-title">Virtual Servers</h4>
                   </div>
 
-                  <div class="calculate-cost-ibm-override-card-body">
+                  <div class="calculate-cost-ibm-override-group-body">
                     <div class="calculate-cost-ibm-field-stack">
                       <label for="calculateCostIbmComputeHourlyOverride" class="calculate-cost-ibm-field-label">Hourly rate</label>
-                      <input type="number" id="calculateCostIbmComputeHourlyOverride" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmComputeHourlyOverride" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
 
-                <section class="calculate-cost-ibm-override-card">
-                  <div class="calculate-cost-ibm-override-card-head">
-                    <h4 class="calculate-cost-ibm-override-card-title">Block Storage</h4>
+                <section class="calculate-cost-ibm-override-group">
+                  <div class="calculate-cost-ibm-override-group-head">
+                    <h4 class="calculate-cost-ibm-override-group-title">Block Storage</h4>
                   </div>
 
-                  <div class="calculate-cost-ibm-override-card-body">
+                  <div class="calculate-cost-ibm-override-group-body">
                     <div class="calculate-cost-ibm-field-stack">
                       <label for="calculateCostIbmDiskStorageRate" class="calculate-cost-ibm-field-label">Storage rate</label>
-                      <input type="number" id="calculateCostIbmDiskStorageRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmDiskStorageRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-ibm-field-stack">
                       <label for="calculateCostIbmDiskIopsRate" class="calculate-cost-ibm-field-label">IOPS rate</label>
-                      <input type="number" id="calculateCostIbmDiskIopsRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmDiskIopsRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-ibm-field-stack calculate-cost-ibm-card-span-two">
                       <label for="calculateCostIbmDiskThroughputRate" class="calculate-cost-ibm-field-label">Throughput rate</label>
-                      <input type="number" id="calculateCostIbmDiskThroughputRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmDiskThroughputRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
 
-                <section class="calculate-cost-ibm-override-card">
-                  <div class="calculate-cost-ibm-override-card-head">
-                    <h4 class="calculate-cost-ibm-override-card-title">Cloud Object Storage</h4>
+                <section class="calculate-cost-ibm-override-group">
+                  <div class="calculate-cost-ibm-override-group-head">
+                    <h4 class="calculate-cost-ibm-override-group-title">Cloud Object Storage</h4>
                   </div>
 
-                  <div class="calculate-cost-ibm-override-card-body">
+                  <div class="calculate-cost-ibm-override-group-body">
                     <div class="calculate-cost-ibm-field-stack">
                       <label for="calculateCostIbmBlobStorageRate" class="calculate-cost-ibm-field-label">Storage rate</label>
-                      <input type="number" id="calculateCostIbmBlobStorageRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmBlobStorageRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-ibm-field-stack">
                       <label for="calculateCostIbmBlobGetRate" class="calculate-cost-ibm-field-label">GET rate</label>
-                      <input type="number" id="calculateCostIbmBlobGetRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmBlobGetRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-ibm-field-stack calculate-cost-ibm-card-span-two">
                       <label for="calculateCostIbmBlobPutRate" class="calculate-cost-ibm-field-label">PUT/LIST rate</label>
-                      <input type="number" id="calculateCostIbmBlobPutRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmBlobPutRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
 
-                <section class="calculate-cost-ibm-override-card">
-                  <div class="calculate-cost-ibm-override-card-head">
-                    <h4 class="calculate-cost-ibm-override-card-title">Code Engine</h4>
+                <section class="calculate-cost-ibm-override-group">
+                  <div class="calculate-cost-ibm-override-group-head">
+                    <h4 class="calculate-cost-ibm-override-group-title">Code Engine</h4>
                   </div>
 
-                  <div class="calculate-cost-ibm-override-card-body">
+                  <div class="calculate-cost-ibm-override-group-body">
                     <div class="calculate-cost-ibm-field-stack">
                       <label for="calculateCostIbmFunctionsRequestRate" class="calculate-cost-ibm-field-label">Request rate</label>
-                      <input type="number" id="calculateCostIbmFunctionsRequestRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmFunctionsRequestRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-ibm-field-stack">
                       <label for="calculateCostIbmFunctionsGbSecondRate" class="calculate-cost-ibm-field-label">Compute rate</label>
-                      <input type="number" id="calculateCostIbmFunctionsGbSecondRate" class="form-control" min="0" step="0.0000000001" value="">
+                      <input type="number" id="calculateCostIbmFunctionsGbSecondRate" class="form-control" min="0" step="0.0000000001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
 
-                <section class="calculate-cost-ibm-override-card">
-                  <div class="calculate-cost-ibm-override-card-head">
-                    <h4 class="calculate-cost-ibm-override-card-title">API Connect</h4>
+                <section class="calculate-cost-ibm-override-group">
+                  <div class="calculate-cost-ibm-override-group-head">
+                    <h4 class="calculate-cost-ibm-override-group-title">API Connect</h4>
                   </div>
 
-                  <div class="calculate-cost-ibm-override-card-body">
+                  <div class="calculate-cost-ibm-override-group-body">
                     <div class="calculate-cost-ibm-field-stack">
                       <label for="calculateCostIbmApiHttpFirstRate" class="calculate-cost-ibm-field-label">HTTP first tier</label>
-                      <input type="number" id="calculateCostIbmApiHttpFirstRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmApiHttpFirstRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-ibm-field-stack">
                       <label for="calculateCostIbmApiHttpNextRate" class="calculate-cost-ibm-field-label">HTTP next tier</label>
-                      <input type="number" id="calculateCostIbmApiHttpNextRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmApiHttpNextRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
 
                     <div class="calculate-cost-ibm-field-stack calculate-cost-ibm-card-span-two">
                       <label for="calculateCostIbmApiRestRate" class="calculate-cost-ibm-field-label">REST rate</label>
-                      <input type="number" id="calculateCostIbmApiRestRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmApiRestRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
 
-                <section class="calculate-cost-ibm-override-card calculate-cost-ibm-override-card--single">
-                  <div class="calculate-cost-ibm-override-card-head">
-                    <h4 class="calculate-cost-ibm-override-card-title">Network</h4>
+                <section class="calculate-cost-ibm-override-group calculate-cost-ibm-override-group--single">
+                  <div class="calculate-cost-ibm-override-group-head">
+                    <h4 class="calculate-cost-ibm-override-group-title">Network</h4>
                   </div>
 
-                  <div class="calculate-cost-ibm-override-card-body">
+                  <div class="calculate-cost-ibm-override-group-body">
                     <div class="calculate-cost-ibm-field-stack">
                       <label for="calculateCostIbmEgressRate" class="calculate-cost-ibm-field-label">Egress rate</label>
-                      <input type="number" id="calculateCostIbmEgressRate" class="form-control" min="0" step="0.0001" value="">
+                      <input type="number" id="calculateCostIbmEgressRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
                     </div>
                   </div>
                 </section>
@@ -647,45 +668,35 @@
         </div>
       </div>
     </details>
+{# ns:end family._base.workspace.03_custom-settings #}
   </form>
 
+{# ns:start family._base.workspace.05_result-summary #}
   <div class="calculate-cost-ibm-result-panel" id="calculateCostIbmPanel">
     <div class="calculate-cost-ibm-result-empty" id="calculateCostIbmResultEmpty">Build an estimate to review line-item cost drivers, service mix, and exportable JSON.</div>
 
     <div class="calculate-cost-ibm-result-content d-none" id="calculateCostIbmResultContent">
-      <div class="calculate-cost-ibm-result-summary" id="calculateCostIbmResultSummary"></div>
+      <div class="calculate-cost-ibm-result-summary" id="calculateCostIbmResultSummary" data-share-snapshot-source data-share-kind="estimate-summary"></div>
+{# ns:end family._base.workspace.05_result-summary #}
 
+{# ns:start family._base.workspace.06_output-toolbar #}
       <div class="calculate-cost-ibm-toolbar-shell">
         <div class="calculate-cost-ibm-toolbar tool-output-toolbar tool-result-toolbar">
           <div class="calculate-cost-ibm-toolbar-left tool-result-toolbar-main">
             <label for="calculateCostIbmSort" class="calculate-cost-ibm-sort-label">Sort</label>
             <div class="calculate-cost-ibm-sort-wrap">
               <details class="calculate-cost-ibm-select calculate-cost-ibm-sort-select" id="calculateCostIbmSortSelect">
-                <summary class="calculate-cost-ibm-select-summary">
+                <summary class="calculate-cost-ibm-select-summary calculate-cost-ibm-sort-summary" aria-haspopup="listbox" aria-expanded="false" aria-controls="calculateCostIbmSortMenu">
                   <span id="calculateCostIbmSortSummary">ID</span>
                 </summary>
 
-                <div class="calculate-cost-ibm-select-body">
-                  <div class="calculate-cost-ibm-select-grid">
-                    <label class="calculate-cost-ibm-select-card">
-                      <input type="radio" name="calculateCostIbmSortOption" value="id" checked>
-                      <span class="calculate-cost-ibm-select-title">ID</span>
-                    </label>
-
-                    <label class="calculate-cost-ibm-select-card">
-                      <input type="radio" name="calculateCostIbmSortOption" value="cost-desc">
-                      <span class="calculate-cost-ibm-select-title">Highest monthly cost</span>
-                    </label>
-
-                    <label class="calculate-cost-ibm-select-card">
-                      <input type="radio" name="calculateCostIbmSortOption" value="service">
-                      <span class="calculate-cost-ibm-select-title">Service</span>
-                    </label>
-
-                    <label class="calculate-cost-ibm-select-card">
-                      <input type="radio" name="calculateCostIbmSortOption" value="component">
-                      <span class="calculate-cost-ibm-select-title">Component</span>
-                    </label>
+                <div class="calculate-cost-ibm-sort-menu" id="calculateCostIbmSortMenu" role="listbox">
+                  <div class="calculate-cost-ibm-sort-grid">
+                    <button type="button" class="calculate-cost-ibm-sort-option is-active" data-sort-value="id" aria-pressed="true" role="option">ID</button>
+                    <button type="button" class="calculate-cost-ibm-sort-option" data-sort-value="cost-desc" aria-pressed="false" role="option">Cost</button>
+                    <button type="button" class="calculate-cost-ibm-sort-option" data-sort-value="service" aria-pressed="false" role="option">Service</button>
+                    <button type="button" class="calculate-cost-ibm-sort-option" data-sort-value="component" aria-pressed="false" role="option">Component</button>
+                    <button type="button" class="calculate-cost-ibm-sort-option" data-sort-value="basis" aria-pressed="false" role="option">Basis</button>
                   </div>
                 </div>
               </details>
@@ -717,6 +728,10 @@
           </div>
         </div>
       </div>
+{# ns:end family._base.workspace.06_output-toolbar #}
+
+{# ns:start family._base.workspace.07_table-output #}
+
 
       <div class="calculate-cost-ibm-tabs-shell">
         <div class="calculate-cost-ibm-tabs" role="tablist" aria-label="IBM Cloud cost estimate output views">
@@ -731,6 +746,10 @@
           <button type="button" class="calculate-cost-ibm-tab-btn" data-tab-target="assumptions" role="tab" aria-selected="false">
             <i class="bi bi-card-list" aria-hidden="true"></i>
             <span>Assumptions</span>
+          </button>
+          <button type="button" class="calculate-cost-ibm-tab-btn" data-tab-target="guidance" role="tab" aria-selected="false">
+            <i class="bi bi-lightbulb" aria-hidden="true"></i>
+            <span>Guidance</span>
           </button>
           <button type="button" class="calculate-cost-ibm-tab-btn" data-tab-target="json" role="tab" aria-selected="false">
             <i class="bi bi-braces" aria-hidden="true"></i>
@@ -765,7 +784,7 @@
           <div class="calculate-cost-ibm-section-card tool-result-section-card">
             <h3 class="calculate-cost-ibm-section-title tool-result-section-title">Service Mix</h3>
             <div class="table-responsive calculate-cost-ibm-table-wrap calculate-cost-ibm-table-wrap-compact tool-result-table-wrap">
-              <table class="table calculate-cost-ibm-service-table mb-0 tool-result-table tool-result-table--compact">
+              <table class="table calculate-cost-ibm-service-table mb-0 tool-result-table tool-result-table--compact" data-share-snapshot-source data-share-kind="cost-table">
                 <thead>
                   <tr>
                     <th class="tool-generated-rownum-head">#</th>
@@ -781,8 +800,6 @@
               </table>
             </div>
           </div>
-
-          <div class="calculate-cost-ibm-recommendation-grid" id="calculateCostIbmRecommendations"></div>
         </div>
 
         <div class="calculate-cost-ibm-tab-panel d-none" data-tab-panel="assumptions" role="tabpanel">
@@ -803,23 +820,45 @@
               </table>
             </div>
           </div>
+        </div>
 
-          <div class="calculate-cost-ibm-method-grid" id="calculateCostIbmMethodology"></div>
+        <div class="calculate-cost-ibm-tab-panel d-none" data-tab-panel="guidance" role="tabpanel">
+          <div class="calculate-cost-ibm-section-card tool-result-section-card">
+            <h3 class="calculate-cost-ibm-section-title tool-result-section-title">Recommendations</h3>
+            <div class="calculate-cost-ibm-recommendation-grid" id="calculateCostIbmRecommendations"></div>
+          </div>
+
+          <div class="calculate-cost-ibm-section-card tool-result-section-card">
+            <h3 class="calculate-cost-ibm-section-title tool-result-section-title">Methodology</h3>
+            <div class="calculate-cost-ibm-method-grid" id="calculateCostIbmMethodology"></div>
+          </div>
         </div>
 
         <div class="calculate-cost-ibm-tab-panel d-none" data-tab-panel="json" role="tabpanel">
-          <div class="calculate-cost-ibm-json-wrap tool-json-panel">
+{# ns:start family._base.workspace.08_json-restore #}
+                  <div class="calculate-cost-ibm-json-restore-shell" id="calculateCostIbmJsonRestoreShell">
+          <section class="calculate-cost-ibm-json-card tool-json-panel" aria-label="Estimate JSON output and restore state">
             <div class="calculate-cost-ibm-json-head tool-json-head">
-              <span class="calculate-cost-ibm-json-title tool-json-title">JSON Output</span>
+              <div class="calculate-cost-ibm-json-title-wrap">
+                <span class="calculate-cost-ibm-json-title tool-json-title">JSON Output</span>
+                <span class="calculate-cost-ibm-json-helper">Exported estimate state should include inputs, assumptions, line items, totals, and generated output.</span>
+              </div>
+              <span class="calculate-cost-ibm-json-status is-hidden" id="calculateCostIbmJsonRestoreStatus" role="status" aria-live="polite"></span>
             </div>
+            <div class="calculate-cost-ibm-json-empty is-hidden" id="calculateCostIbmJsonRestoreEmpty">Build an estimate before exporting JSON.</div>
             <pre class="calculate-cost-ibm-json-output tool-json-output"><code id="calculateCostIbmJsonOutput"></code></pre>
-          </div>
+          </section>
         </div>
+{# ns:end family._base.workspace.08_json-restore #}
       </div>
     </div>
+{# ns:end family._base.workspace.07_table-output #}
+
 
     <div class="calculate-cost-ibm-result-error d-none" id="calculateCostIbmResultError"></div>
-    <input type="file" id="calculateCostIbmImportJson" class="d-none" accept="application/json">
+    <input type="file" id="calculateCostIbmImportJson" class="calculate-cost-ibm-import-input d-none" accept="application/json">
   </div>
 </div>
 </div>
+</div>
+{# ns:end family._base.workspace.00_shell #}

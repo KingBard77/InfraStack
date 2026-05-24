@@ -1,29 +1,348 @@
 // custom.js
 
-// ns:start family.scanning.workspace.01_input-brief
+function initializeInfraStackCustomDropdowns(root) {
+    const scope = root || document;
+    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
+
+    dropdowns.forEach(function (dropdown) {
+        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
+        const targetInput = targetId ? document.getElementById(targetId) : null;
+        const label = dropdown.querySelector('[data-custom-dropdown-label]');
+        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
+
+        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
+            return;
+        }
+
+        function sync(value) {
+            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
+            let selectedOption = options.find(function (option) {
+                return option.dataset.customDropdownValue === selectedValue;
+            }) || options[0];
+
+            if (!selectedOption) {
+                return;
+            }
+
+            const nextValue = selectedOption.dataset.customDropdownValue || '';
+
+            if (targetInput.value !== nextValue) {
+                targetInput.value = nextValue;
+            }
+            label.textContent = selectedOption.textContent.trim();
+            options.forEach(function (option) {
+                const isActive = option === selectedOption;
+
+                option.classList.toggle('active', isActive);
+                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+        }
+
+        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
+            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+
+            if (descriptor && descriptor.get && descriptor.set) {
+                Object.defineProperty(targetInput, 'value', {
+                    configurable: true,
+                    get: function () {
+                        return descriptor.get.call(this);
+                    },
+                    set: function (nextValue) {
+                        descriptor.set.call(this, nextValue);
+                        window.requestAnimationFrame(function () {
+                            sync(String(nextValue || ''));
+                        });
+                    }
+                });
+                targetInput.dataset.customDropdownValueProxy = 'true';
+            }
+        }
+
+        options.forEach(function (option) {
+            option.addEventListener('click', function () {
+                sync(option.dataset.customDropdownValue || '');
+                targetInput.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+                dropdown.removeAttribute('open');
+            });
+        });
+
+        targetInput.addEventListener('change', function () {
+            sync(targetInput.value);
+        });
+        sync(targetInput.value);
+        dropdown.dataset.customDropdownBound = 'true';
+    });
+}
+
+// ns:start family._base.workspace.00_shell
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.scanning.workspace.01_input-brief
-// ns:start family.scanning.workspace.02_basic-settings
+// ns:end family._base.workspace.00_shell
+// ns:start family._base.workspace.01_input-brief
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.scanning.workspace.02_basic-settings
-// ns:start family.scanning.workspace.03_advanced-settings
+// ns:end family._base.workspace.01_input-brief
+// ns:start family._base.workspace.02_basic-settings
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.scanning.workspace.03_advanced-settings
+// ns:end family._base.workspace.02_basic-settings
+// ns:start family._base.workspace.03_custom-settings
+// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
+// ns:end family._base.workspace.03_custom-settings
 // ns:start family.scanning.workspace.04_selected-item
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family.scanning.workspace.04_selected-item
-// ns:start family.scanning.workspace.05_result-summary
+// ns:start family._base.workspace.05_result-summary
+function installInfraStackResultSummaryNormalizer(prefix) {
+    function formatUpdatedLabel() {
+        return new Intl.DateTimeFormat('en', {
+            month: 'short',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        }).format(new Date());
+    }
+
+    function createChip(text, tone, iconClass) {
+        const chip = document.createElement('span');
+        const icon = iconClass || 'bi bi-info-circle';
+
+        chip.className = prefix + '-result-chip ' + prefix + '-result-chip-' + tone;
+        chip.innerHTML = '<span class="' + prefix + '-result-chip-icon"><i class="' + icon + '" aria-hidden="true"></i></span>';
+        chip.append(document.createTextNode(text));
+
+        return chip;
+    }
+
+    function textFrom(element, fallback) {
+        const value = element ? element.textContent.trim() : '';
+
+        return value || fallback;
+    }
+
+    function compactPrimaryText(primaryCard, summaryCard) {
+        const summaryTitle = textFrom(summaryCard.querySelector('.' + prefix + '-result-title'), 'Primary result');
+        const currentValue = textFrom(primaryCard.querySelector('.' + prefix + '-result-command-value'), '');
+        const compactTitle = summaryTitle
+            .replace(/\s+command$/i, '')
+            .replace(/\s+preview$/i, '')
+            .replace(/^generated\s+/i, '')
+            .trim();
+
+        if (!currentValue || currentValue.length > 48 || /\b(curl|chmod|nc|ncat|netcat|sudo|crontab)\b/i.test(currentValue)) {
+            return compactTitle || 'Primary result';
+        }
+
+        return currentValue;
+    }
+
+    function ensureSummaryChips(summaryCard) {
+        let chipRow = summaryCard.querySelector('.' + prefix + '-result-chip-row');
+
+        if (!chipRow) {
+            chipRow = document.createElement('div');
+            chipRow.className = prefix + '-result-chip-row';
+            chipRow.setAttribute('aria-label', 'Result summary state');
+            const copy = summaryCard.querySelector('.' + prefix + '-result-copy');
+            if (copy && copy.nextSibling) {
+                summaryCard.insertBefore(chipRow, copy.nextSibling);
+            } else {
+                summaryCard.appendChild(chipRow);
+            }
+        }
+
+        const chipText = Array.from(chipRow.querySelectorAll('.' + prefix + '-result-chip'))
+            .map(function (chip) {
+                return chip.textContent.trim();
+            })
+            .join(' ');
+
+        if (!/\b(updated|last run|generated at)\b/i.test(chipText)) {
+            chipRow.appendChild(createChip('Updated ' + formatUpdatedLabel(), 'updated', 'bi bi-clock-history'));
+        }
+
+        while (chipRow.querySelectorAll('.' + prefix + '-result-chip').length < 4) {
+            chipRow.appendChild(createChip('Result ready', 'baseline', 'bi bi-check2-circle'));
+        }
+    }
+
+    function ensurePrimaryOutcome(primaryCard, summaryCard) {
+        let outcomeRow = primaryCard.querySelector('.' + prefix + '-result-chip-row-center');
+
+        if (!outcomeRow) {
+            outcomeRow = document.createElement('div');
+            outcomeRow.className = prefix + '-result-chip-row ' + prefix + '-result-chip-row-center';
+            outcomeRow.setAttribute('aria-label', 'Primary result outcome');
+            primaryCard.appendChild(outcomeRow);
+        }
+
+        if (outcomeRow.querySelector('.' + prefix + '-result-chip')) {
+            return;
+        }
+
+        const sourceChip = summaryCard.querySelector('.' + prefix + '-result-chip-ready, .' + prefix + '-result-chip-success, .' + prefix + '-result-chip-baseline, .' + prefix + '-result-chip-warning');
+        const outcomeChip = sourceChip ? sourceChip.cloneNode(true) : createChip('Primary result', 'outcome', 'bi bi-check2-circle');
+
+        outcomeChip.classList.add(prefix + '-result-chip-outcome');
+        outcomeRow.appendChild(outcomeChip);
+    }
+
+    function normalizeRingPrimary(primaryCard, summaryCard) {
+        const ring = primaryCard.querySelector('.' + prefix + '-result-ring');
+
+        if (!ring) {
+            return false;
+        }
+
+        primaryCard.dataset.resultVisual = 'ring';
+        let topCopy = primaryCard.querySelector('.' + prefix + '-result-visual-copy-top');
+
+        if (!topCopy) {
+            topCopy = document.createElement('div');
+            topCopy.className = prefix + '-result-visual-copy ' + prefix + '-result-visual-copy-top';
+            primaryCard.insertBefore(topCopy, ring);
+        }
+
+        let kicker = Array.from(primaryCard.querySelectorAll('.' + prefix + '-result-kicker')).find(function (item) {
+            return /primary/i.test(item.textContent);
+        }) || topCopy.querySelector('.' + prefix + '-result-kicker');
+
+        if (!kicker) {
+            kicker = document.createElement('span');
+            kicker.className = prefix + '-result-kicker';
+        }
+
+        kicker.textContent = 'Primary Result';
+        if (!topCopy.contains(kicker)) {
+            topCopy.appendChild(kicker);
+        }
+
+        let bottomCopy = Array.from(primaryCard.querySelectorAll('.' + prefix + '-result-visual-copy')).find(function (item) {
+            return item !== topCopy;
+        });
+
+        if (!bottomCopy) {
+            bottomCopy = document.createElement('div');
+            bottomCopy.className = prefix + '-result-visual-copy';
+            ring.insertAdjacentElement('afterend', bottomCopy);
+        }
+
+        Array.from(bottomCopy.querySelectorAll('.' + prefix + '-result-kicker')).forEach(function (item) {
+            if (item !== kicker) {
+                item.remove();
+            }
+        });
+
+        let title = topCopy.querySelector('.' + prefix + '-result-title-center, .' + prefix + '-result-title');
+
+        if (!title) {
+            title = bottomCopy.querySelector('.' + prefix + '-result-title-center, .' + prefix + '-result-title');
+        }
+
+        if (title && !topCopy.contains(title)) {
+            topCopy.appendChild(title);
+        }
+
+        if (!bottomCopy.querySelector('.' + prefix + '-result-copy')) {
+            const copy = document.createElement('p');
+            const summaryCopy = summaryCard.querySelector('.' + prefix + '-result-copy');
+            copy.className = prefix + '-result-copy ' + prefix + '-result-copy-center';
+            copy.textContent = textFrom(summaryCopy, 'Primary output generated from the current inputs.');
+            bottomCopy.appendChild(copy);
+        }
+
+        ensurePrimaryOutcome(primaryCard, summaryCard);
+
+        return true;
+    }
+
+    function normalizeTextPrimary(primaryCard, summaryCard) {
+        primaryCard.dataset.resultVisual = primaryCard.classList.contains(prefix + '-result-card-command') ? 'command' : 'text';
+
+        const kicker = primaryCard.querySelector('.' + prefix + '-result-kicker');
+        if (kicker) {
+            kicker.textContent = 'Primary Result';
+        }
+
+        const commandValue = primaryCard.querySelector('.' + prefix + '-result-command-value');
+        if (commandValue) {
+            commandValue.textContent = compactPrimaryText(primaryCard, summaryCard);
+        }
+
+        ensurePrimaryOutcome(primaryCard, summaryCard);
+    }
+
+    function normalize() {
+        const summary = document.querySelector('.' + prefix + '-result-summary');
+        if (!summary) {
+            return;
+        }
+
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
+        if (!hero) {
+            return;
+        }
+
+        const cards = Array.from(hero.querySelectorAll(':scope > .' + prefix + '-result-card'));
+        const primaryCard = cards.find(function (card) {
+            return card.classList.contains(prefix + '-result-card-primary') || card.classList.contains(prefix + '-result-card-visual') || card.classList.contains(prefix + '-result-card-command');
+        }) || cards[0];
+        const summaryCard = cards.find(function (card) {
+            return card !== primaryCard && (card.classList.contains(prefix + '-result-card-summary') || card.classList.contains(prefix + '-result-card-main'));
+        }) || cards.find(function (card) {
+            return card !== primaryCard;
+        });
+
+        if (!primaryCard || !summaryCard) {
+            return;
+        }
+
+        primaryCard.classList.add(prefix + '-result-card-primary');
+        summaryCard.classList.add(prefix + '-result-card-summary');
+
+        if (hero.firstElementChild !== primaryCard) {
+            hero.insertBefore(primaryCard, hero.firstElementChild);
+        }
+        if (primaryCard.nextElementSibling !== summaryCard) {
+            hero.insertBefore(summaryCard, primaryCard.nextElementSibling);
+        }
+
+        const hasRing = normalizeRingPrimary(primaryCard, summaryCard);
+        if (!hasRing) {
+            normalizeTextPrimary(primaryCard, summaryCard);
+        }
+        ensureSummaryChips(summaryCard);
+    }
+
+    function scheduleNormalize() {
+        window.requestAnimationFrame(normalize);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            normalize();
+            new MutationObserver(scheduleNormalize).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }, { once: true });
+        return;
+    }
+
+    normalize();
+    new MutationObserver(scheduleNormalize).observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+installInfraStackResultSummaryNormalizer('scan-web-security');
+// ns:end family._base.workspace.05_result-summary
+// ns:start family._base.workspace.06_output-toolbar
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.scanning.workspace.05_result-summary
-// ns:start family.scanning.workspace.06_result-view
+// ns:end family._base.workspace.06_output-toolbar
+// ns:start family._base.workspace.08_json-restore
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.scanning.workspace.06_result-view
-// ns:start family.scanning.workspace.07_table-export
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.scanning.workspace.07_table-export
-// ns:start family.scanning.workspace.08_json-restore
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.scanning.workspace.08_json-restore
+// ns:end family._base.workspace.08_json-restore
 
 document.addEventListener('DOMContentLoaded', function () {
     const root = document.querySelector('.scan-web-security-tool');
@@ -39,17 +358,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = getById('scanWebSecurityForm');
     const urlInput = getById('scanWebSecurityUrl');
     const methodInput = getById('scanWebSecurityMethod');
-    const methodSummary = getById('scanWebSecurityMethodSummary');
-    const methodSelect = getById('scanWebSecurityMethodSelect');
-    const methodOptions = Array.from(methodSelect ? methodSelect.querySelectorAll('.scan-web-security-select-option') : []);
     const followRedirectsInput = getById('scanWebSecurityFollowRedirects');
     const timeoutInput = getById('scanWebSecurityTimeout');
     const validateTlsInput = getById('scanWebSecurityValidateTls');
     const fallbackGetInput = getById('scanWebSecurityFallbackGet');
     const userAgentInput = getById('scanWebSecurityUserAgent');
-    const userAgentSummary = getById('scanWebSecurityUserAgentSummary');
-    const userAgentSelect = getById('scanWebSecurityUserAgentSelect');
-    const userAgentOptions = Array.from(userAgentSelect ? userAgentSelect.querySelectorAll('.scan-web-security-select-option') : []);
     const wellKnownInput = getById('scanWebSecurityWellKnown');
     const httpUpgradeInput = getById('scanWebSecurityHttpUpgrade');
     const submitButton = getById('scanWebSecuritySubmit');
@@ -225,15 +538,11 @@ document.addEventListener('DOMContentLoaded', function () {
         !form ||
         !urlInput ||
         !methodInput ||
-        !methodSummary ||
-        methodOptions.length === 0 ||
         !followRedirectsInput ||
         !timeoutInput ||
         !validateTlsInput ||
         !fallbackGetInput ||
         !userAgentInput ||
-        !userAgentSummary ||
-        userAgentOptions.length === 0 ||
         !wellKnownInput ||
         !httpUpgradeInput ||
         !submitButton ||
@@ -463,41 +772,26 @@ document.addEventListener('DOMContentLoaded', function () {
         return Math.round(timeoutSeconds);
     }
 
-    function getSelectedSingleValue(options, fallbackValue) {
-        const selectedOption = options.find((option) => option.classList.contains('is-active'));
-
-        return selectedOption ? selectedOption.dataset.optionValue : fallbackValue;
+    function setInlineDropdownValue(input, value, fallbackValue, allowedValues) {
+        const requestedValue = String(value || input.value || fallbackValue);
+        input.value = allowedValues.includes(requestedValue) ? requestedValue : fallbackValue;
     }
 
-    function updateSingleSelectState(options, hiddenInput, summaryElement, detailsElement, value) {
-        const normalizedValue = value || hiddenInput.value;
-        const selectedOption = options.find((option) => option.dataset.optionValue === normalizedValue) || options[0];
+    function getInlineDropdownValue(input, fallbackValue, allowedValues) {
+        setInlineDropdownValue(input, input.value, fallbackValue, allowedValues);
 
-        options.forEach((option) => {
-            const isActive = option === selectedOption;
-            option.classList.toggle('is-active', isActive);
-            option.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-        });
-
-        if (selectedOption) {
-            hiddenInput.value = selectedOption.dataset.optionValue;
-            summaryElement.textContent = selectedOption.textContent.trim();
-        }
-
-        if (detailsElement) {
-            detailsElement.removeAttribute('open');
-        }
+        return input.value || fallbackValue;
     }
 
     function buildQuery() {
         return {
             url: normalizeUrl(urlInput.value),
-            method: getSelectedSingleValue(methodOptions, 'HEAD').toUpperCase(),
+            method: getInlineDropdownValue(methodInput, 'HEAD', ['HEAD', 'GET']).toUpperCase(),
             followRedirects: Boolean(followRedirectsInput.checked),
             timeoutSeconds: normalizeTimeoutSeconds(timeoutInput.value),
             validateTls: Boolean(validateTlsInput.checked),
             fallbackGetOn405: Boolean(fallbackGetInput.checked),
-            userAgentProfile: getSelectedSingleValue(userAgentOptions, 'default').toLowerCase(),
+            userAgentProfile: getInlineDropdownValue(userAgentInput, 'default', ['default', 'desktop', 'mobile']).toLowerCase(),
             checkWellKnownFiles: Boolean(wellKnownInput.checked),
             probeHttpUpgrade: Boolean(httpUpgradeInput.checked)
         };
@@ -668,11 +962,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 return getSeverityRank(left.severity) - getSeverityRank(right.severity);
             });
         }
-
         if (sortValue === 'category') {
             return findings.sort((left, right) => {
                 if (left.category !== right.category) {
                     return String(left.category).localeCompare(String(right.category));
+                }
+
+                return left.index - right.index;
+            });
+        }
+
+        if (sortValue === 'evidence') {
+            return findings.sort((left, right) => {
+                const evidenceSort = String(left.evidence || '').localeCompare(String(right.evidence || ''), undefined, {
+                    numeric: true,
+                    sensitivity: 'base'
+                });
+
+                if (evidenceSort !== 0) {
+                    return evidenceSort;
                 }
 
                 return left.index - right.index;
@@ -767,67 +1075,87 @@ document.addEventListener('DOMContentLoaded', function () {
         const tone = getScoreTone(summary);
         const schemeLabel = String(summary.finalScheme || '').toUpperCase() || 'UNKNOWN';
         const statusText = `${summary.finalStatus || 0} ${summary.finalStatusText || ''}`.trim();
+        const schemeTone = schemeLabel === 'HTTPS' ? 'success' : 'error';
+        const failTone = Number(summary.failCount || 0) > 0 ? 'error' : 'success';
+        const warnTone = Number(summary.warnCount || 0) > 0 ? 'warning' : 'success';
+        const stateTone = function (state) {
+            if (state === 'pass') {
+                return 'success';
+            }
+
+            if (state === 'warn') {
+                return 'warning';
+            }
+
+            if (state === 'fail') {
+                return 'error';
+            }
+
+            return 'baseline';
+        };
 
         return `
-            <div class="scan-web-security-overview">
-                <div class="scan-web-security-score-card">
-                    <div class="scan-web-security-score-ring" id="scanWebSecurityScoreRing" style="--scan-web-security-progress: ${progressAngle.toFixed(1)}deg; --scan-web-security-ring-color: ${tone.ringColor};" aria-label="Hardening score ${escapeHtml(score)} out of 100">
+            <div class="scan-web-security-result-hero-grid" aria-live="polite">
+                <article class="scan-web-security-result-card scan-web-security-result-card-main">
+                    <span class="scan-web-security-result-kicker">Scan summary</span>
+                    <h3 class="scan-web-security-result-title">Visible web posture review</h3>
+                    <p class="scan-web-security-result-copy">Final target: ${escapeHtml(summary.finalUrl || result.query.url || '')}. Treat the score as local evidence organization, not a security guarantee.</p>
+                    <div class="scan-web-security-result-chip-row" aria-label="Scan state">
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${schemeTone}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-shield-lock" aria-hidden="true"></i></span>${escapeHtml(schemeLabel)} final</span>
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${failTone}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-x-circle" aria-hidden="true"></i></span>${escapeHtml(summary.failCount || 0)} fail</span>
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${warnTone}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>${escapeHtml(summary.warnCount || 0)} warn</span>
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${stateTone(summary.httpUpgradeState || 'info')}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-arrow-up-right-circle" aria-hidden="true"></i></span>${escapeHtml(summary.httpUpgradeLabel || 'HTTP upgrade not probed')}</span>
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${stateTone(summary.hstsState || 'info')}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-lock" aria-hidden="true"></i></span>${escapeHtml(summary.hstsLabel || 'HSTS unknown')}</span>
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-baseline"><span class="scan-web-security-result-chip-icon"><i class="bi bi-clock-history" aria-hidden="true"></i></span>Last run: ${escapeHtml(lastRunText)}</span>
+                    </div>
+                </article>
+
+                <article class="scan-web-security-result-card scan-web-security-result-card-visual">
+                    <div class="scan-web-security-result-visual-copy scan-web-security-result-visual-copy-top">
+                        <span class="scan-web-security-result-kicker">Primary Result</span>
+                        <h3 class="scan-web-security-result-title scan-web-security-result-title-center">Grade ${escapeHtml(grade)}</h3>
+                    </div>
+                    <div class="scan-web-security-result-ring scan-web-security-score-ring" id="scanWebSecurityScoreRing" style="--scan-web-security-result-progress: ${escapeHtml(progressAngle.toFixed(1))}deg; --scan-web-security-progress: ${escapeHtml(progressAngle.toFixed(1))}deg; --scan-web-security-ring-color: ${tone.ringColor};" aria-label="Hardening score ${escapeHtml(score)} out of 100">
                         <div class="scan-web-security-score-echart" id="scanWebSecurityScoreChart" aria-hidden="true"></div>
-                        <div class="scan-web-security-score-center">
-                            <div class="scan-web-security-score-value">${escapeHtml(score)}</div>
-                            <div class="scan-web-security-score-denominator">/100</div>
+                        <div class="scan-web-security-result-ring-center scan-web-security-score-center">
+                            <div class="scan-web-security-result-ring-value scan-web-security-score-value">${escapeHtml(score)}</div>
+                            <div class="scan-web-security-result-ring-unit scan-web-security-score-denominator">/100</div>
                         </div>
                     </div>
-                    <div class="scan-web-security-score-label">Hardening Score</div>
-                    <div class="scan-web-security-score-grade">Grade ${escapeHtml(grade)}</div>
-                    <div class="scan-web-security-score-note">${escapeHtml(summary.scoreNote || 'Visible web posture only')}</div>
-                </div>
-                <div class="scan-web-security-summary-panel">
-                    <div class="scan-web-security-badge-row">
-                        <span class="scan-web-security-badge ${schemeLabel === 'HTTPS' ? 'scan-web-security-badge-pass' : 'scan-web-security-badge-fail'}">${escapeHtml(schemeLabel)} final</span>
-                        <span class="scan-web-security-badge ${tone.badgeClass}">${escapeHtml(summary.failCount || 0)} fail</span>
-                        <span class="scan-web-security-badge scan-web-security-badge-warn">${escapeHtml(summary.warnCount || 0)} warn</span>
-                        <span class="scan-web-security-badge ${getBadgeClassForState(summary.httpUpgradeState || 'info')}">${escapeHtml(summary.httpUpgradeLabel || 'HTTP upgrade not probed')}</span>
-                        <span class="scan-web-security-badge ${getBadgeClassForState(summary.hstsState || 'info')}">${escapeHtml(summary.hstsLabel || 'HSTS unknown')}</span>
-                        <span class="scan-web-security-badge scan-web-security-badge-neutral">Last run: ${escapeHtml(lastRunText)}</span>
+                    <div class="scan-web-security-result-visual-copy">
+                        <p class="scan-web-security-result-copy">${escapeHtml(summary.scoreNote || 'Visible web posture only')}</p>
                     </div>
-                    <div class="scan-web-security-summary-url">
-                        <span class="scan-web-security-summary-url-label">Final URL</span>
-                        <span class="scan-web-security-summary-url-value">${escapeHtml(summary.finalUrl || result.query.url || '')}</span>
-                    </div>
-                    <div class="scan-web-security-stat-grid">
-                        <div class="scan-web-security-stat-card">
-                            <span class="scan-web-security-stat-label">Findings</span>
-                            <span class="scan-web-security-stat-value">${escapeHtml(summary.findingCount || 0)}</span>
-                        </div>
-                        <div class="scan-web-security-stat-card">
-                            <span class="scan-web-security-stat-label">Final status</span>
-                            <span class="scan-web-security-stat-value">${escapeHtml(statusText || '0')}</span>
-                        </div>
-                        <div class="scan-web-security-stat-card">
-                            <span class="scan-web-security-stat-label">Duration</span>
-                            <span class="scan-web-security-stat-value">${escapeHtml(summary.durationMs || 0)} ms</span>
-                        </div>
-                        <div class="scan-web-security-stat-card">
-                            <span class="scan-web-security-stat-label">Headers</span>
-                            <span class="scan-web-security-stat-value">${escapeHtml(summary.headerCount || 0)}</span>
-                        </div>
-                        <div class="scan-web-security-stat-card">
-                            <span class="scan-web-security-stat-label">Cookies</span>
-                            <span class="scan-web-security-stat-value">${escapeHtml(summary.cookieCount || 0)}</span>
-                        </div>
-                        <div class="scan-web-security-stat-card">
-                            <span class="scan-web-security-stat-label">Known files</span>
-                            <span class="scan-web-security-stat-value">${escapeHtml(summary.knownFilePresentCount || 0)}/${escapeHtml(summary.knownFileCount || 0)}</span>
-                        </div>
-                    </div>
-                    <div class="scan-web-security-chip-row">
-                        <span class="scan-web-security-chip scan-web-security-chip-neutral">Method used ${escapeHtml(summary.methodUsed || result.query.method || 'HEAD')}</span>
-                        <span class="scan-web-security-chip ${result.query.followRedirects ? 'scan-web-security-chip-pass' : 'scan-web-security-chip-neutral'}">Redirects ${result.query.followRedirects ? 'followed' : 'not followed'}</span>
-                        <span class="scan-web-security-chip ${result.query.validateTls ? 'scan-web-security-chip-pass' : 'scan-web-security-chip-warn'}">TLS validation ${result.query.validateTls ? 'on' : 'off'}</span>
-                        <span class="scan-web-security-chip ${result.query.checkWellKnownFiles ? 'scan-web-security-chip-pass' : 'scan-web-security-chip-neutral'}">Well-known files ${result.query.checkWellKnownFiles ? 'checked' : 'skipped'}</span>
-                    </div>
-                </div>
+                </article>
+            </div>
+
+            <div class="scan-web-security-result-metric-grid" aria-label="Scan metrics">
+                <article class="scan-web-security-result-metric-card">
+                    <span class="scan-web-security-result-metric-label">Findings</span>
+                    <strong class="scan-web-security-result-metric-value">${escapeHtml(summary.findingCount || 0)}</strong>
+                    <span class="scan-web-security-result-metric-copy">Rows in the evidence table.</span>
+                </article>
+                <article class="scan-web-security-result-metric-card">
+                    <span class="scan-web-security-result-metric-label">Final status</span>
+                    <strong class="scan-web-security-result-metric-value">${escapeHtml(statusText || '0')}</strong>
+                    <span class="scan-web-security-result-metric-copy">Observed response status.</span>
+                </article>
+                <article class="scan-web-security-result-metric-card">
+                    <span class="scan-web-security-result-metric-label">Duration</span>
+                    <strong class="scan-web-security-result-metric-value">${escapeHtml(summary.durationMs || 0)} ms</strong>
+                    <span class="scan-web-security-result-metric-copy">Client-side scan timing.</span>
+                </article>
+                <article class="scan-web-security-result-metric-card">
+                    <span class="scan-web-security-result-metric-label">Known files</span>
+                    <strong class="scan-web-security-result-metric-value">${escapeHtml(summary.knownFilePresentCount || 0)}/${escapeHtml(summary.knownFileCount || 0)}</strong>
+                    <span class="scan-web-security-result-metric-copy">Well-known file probes.</span>
+                </article>
+            </div>
+
+            <div class="scan-web-security-result-chip-row" aria-label="Scan options">
+                <span class="scan-web-security-result-chip scan-web-security-result-chip-baseline"><span class="scan-web-security-result-chip-icon"><i class="bi bi-terminal" aria-hidden="true"></i></span>Method ${escapeHtml(summary.methodUsed || result.query.method || 'HEAD')}</span>
+                <span class="scan-web-security-result-chip scan-web-security-result-chip-${result.query.followRedirects ? 'ready' : 'baseline'}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-signpost-split" aria-hidden="true"></i></span>Redirects ${result.query.followRedirects ? 'followed' : 'not followed'}</span>
+                <span class="scan-web-security-result-chip scan-web-security-result-chip-${result.query.validateTls ? 'ready' : 'warning'}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-patch-check" aria-hidden="true"></i></span>TLS validation ${result.query.validateTls ? 'on' : 'off'}</span>
+                <span class="scan-web-security-result-chip scan-web-security-result-chip-${result.query.checkWellKnownFiles ? 'ready' : 'baseline'}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-file-earmark-check" aria-hidden="true"></i></span>Well-known files ${result.query.checkWellKnownFiles ? 'checked' : 'skipped'}</span>
             </div>
         `;
     }
@@ -996,8 +1324,8 @@ document.addEventListener('DOMContentLoaded', function () {
         fallbackGetInput.checked = query.fallbackGetOn405 !== false;
         wellKnownInput.checked = query.checkWellKnownFiles !== false;
         httpUpgradeInput.checked = query.probeHttpUpgrade !== false;
-        updateSingleSelectState(methodOptions, methodInput, methodSummary, null, query.method || 'HEAD');
-        updateSingleSelectState(userAgentOptions, userAgentInput, userAgentSummary, null, query.userAgentProfile || 'default');
+        setInlineDropdownValue(methodInput, query.method || 'HEAD', 'HEAD', ['HEAD', 'GET']);
+        setInlineDropdownValue(userAgentInput, query.userAgentProfile || 'default', 'default', ['default', 'desktop', 'mobile']);
     }
 
     function toCsv(rows) {
@@ -1032,6 +1360,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const tone = getScoreTone(summary);
 
         destroyScoreRingChart();
+        resultSummary.classList.add('scan-web-security-result-summary');
+        resultSummary.dataset.resultTone = Number(summary.failCount || 0) > 0 ? 'error' : Number(summary.warnCount || 0) > 0 ? 'warning' : 'success';
+        resultSummary.dataset.resultLayout = 'scan_overview';
         resultSummary.innerHTML = buildSummaryHtml(latestResult);
         renderScoreRingChart(score, tone);
         findingTableBody.innerHTML = sortedFindings.length > 0
@@ -1096,7 +1427,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (['HEAD', 'GET'].includes(method)) {
-            updateSingleSelectState(methodOptions, methodInput, methodSummary, null, method);
+            setInlineDropdownValue(methodInput, method, 'HEAD', ['HEAD', 'GET']);
         }
 
         timeoutInput.value = String(timeoutSeconds);
@@ -1114,7 +1445,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (['default', 'desktop', 'mobile'].includes(userAgent)) {
-            updateSingleSelectState(userAgentOptions, userAgentInput, userAgentSummary, null, userAgent);
+            setInlineDropdownValue(userAgentInput, userAgent, 'default', ['default', 'desktop', 'mobile']);
         }
 
         if ((params.get('files') || '') === '0') {
@@ -1188,16 +1519,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    methodOptions.forEach((option) => {
-        option.addEventListener('click', function () {
-            updateSingleSelectState(methodOptions, methodInput, methodSummary, methodSelect, option.dataset.optionValue);
-        });
+    methodInput.addEventListener('change', function () {
+        setInlineDropdownValue(methodInput, methodInput.value, 'HEAD', ['HEAD', 'GET']);
     });
 
-    userAgentOptions.forEach((option) => {
-        option.addEventListener('click', function () {
-            updateSingleSelectState(userAgentOptions, userAgentInput, userAgentSummary, userAgentSelect, option.dataset.optionValue);
-        });
+    userAgentInput.addEventListener('change', function () {
+        setInlineDropdownValue(userAgentInput, userAgentInput.value, 'default', ['default', 'desktop', 'mobile']);
     });
 
     tabButtons.forEach((button) => {
@@ -1332,8 +1659,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     setSortMode(sortInput.value || 'id', false);
-    updateSingleSelectState(methodOptions, methodInput, methodSummary, null);
-    updateSingleSelectState(userAgentOptions, userAgentInput, userAgentSummary, null);
+    setInlineDropdownValue(methodInput, methodInput.value, 'HEAD', ['HEAD', 'GET']);
+    setInlineDropdownValue(userAgentInput, userAgentInput.value, 'default', ['default', 'desktop', 'mobile']);
     activateTab('findings');
 
     document.addEventListener('click', function (event) {
@@ -1345,4 +1672,135 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     restoreStateFromQuery();
+    initializeInfraStackCustomDropdowns(document);
 });
+// ns:start family._base.workspace.07_table-output
+(function setupScanWebSecurityTableOutputStandard() {
+    const rootSelector = '.scan-web-security-tool';
+    const tableSelector = '.tool-result-table tbody tr, .scan-web-security-table tbody tr';
+    const tbodySelector = '.tool-result-table tbody, .scan-web-security-table tbody';
+    const clampClass = 'scan-web-security-table-cell-text';
+    const cellClampClass = 'scan-web-security-cell-clamp';
+    const statusColumnClass = 'scan-web-security-table-status-cell';
+
+    function hasActionColumn(cells, table) {
+        const lastCell = cells[cells.length - 1];
+        const lastHead = table ? table.querySelector('thead th:last-child') : null;
+        const headText = lastHead ? String(lastHead.textContent || '') : '';
+
+        return Boolean(
+            lastCell && lastCell.querySelector('button, [data-copy-row], [data-inventory-copy-row], [data-control-copy-row], [data-options-copy], [data-operation-copy], [data-copy-value]')
+        ) || /copy|action|actions/i.test(headText);
+    }
+
+    function isStatusLikeHeader(text) {
+        return /^(status|signal|criticality|severity|state|health|outcome|result|level|label)$/i.test(String(text || '').trim());
+    }
+
+    function getBodyCells(row) {
+        return Array.from(row.children).filter(function filterCells(cell) {
+            return cell.tagName && cell.tagName.toLowerCase() === 'td';
+        });
+    }
+
+    function applyStatusAlignment(root) {
+        root.querySelectorAll('.tool-result-table, .scan-web-security-table').forEach(function alignStatusTable(table) {
+            const headers = Array.from(table.querySelectorAll('thead th'));
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            table.querySelectorAll('.' + statusColumnClass).forEach(function clearStatusCell(cell) {
+                cell.classList.remove(statusColumnClass);
+            });
+
+            headers.forEach(function alignStatusColumn(header, index) {
+                const statusLike = isStatusLikeHeader(header.textContent);
+                header.classList.toggle(statusColumnClass, statusLike);
+
+                if (!statusLike) {
+                    return;
+                }
+
+                rows.forEach(function alignStatusCell(row) {
+                    const cells = getBodyCells(row);
+                    const cell = cells[index];
+
+                    if (cell && cell.colSpan <= 1) {
+                        cell.classList.add(statusColumnClass);
+                    }
+                });
+            });
+        });
+    }
+
+    function clampCell(cell) {
+        if (!cell || cell.colSpan > 1 || cell.querySelector('.' + clampClass + ', .' + cellClampClass)) {
+            return;
+        }
+
+        if (cell.children.length === 1 && !cell.firstElementChild.matches('button')) {
+            cell.firstElementChild.classList.add(clampClass);
+            return;
+        }
+
+        const wrapper = document.createElement('span');
+        wrapper.className = clampClass;
+
+        while (cell.firstChild) {
+            wrapper.appendChild(cell.firstChild);
+        }
+
+        cell.appendChild(wrapper);
+    }
+
+    function applyTableOutputClamp() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        applyStatusAlignment(root);
+
+        root.querySelectorAll(tableSelector).forEach(function clampRow(row) {
+            const cells = getBodyCells(row);
+            const table = row.closest('table');
+            const actionColumn = hasActionColumn(cells, table);
+
+            cells.forEach(function clampDataCell(cell, index) {
+                const isFirst = index === 0;
+                const isAction = actionColumn && index === cells.length - 1;
+
+                if (!isFirst && !isAction) {
+                    clampCell(cell);
+                }
+            });
+        });
+    }
+
+    function observeTables() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        root.querySelectorAll(tbodySelector).forEach(function observeBody(tbody) {
+            if (tbody.dataset.tableOutputClampObserver === 'true') {
+                return;
+            }
+
+            tbody.dataset.tableOutputClampObserver = 'true';
+            new MutationObserver(applyTableOutputClamp).observe(tbody, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        applyTableOutputClamp();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', observeTables);
+    } else {
+        observeTables();
+    }
+}());
+// ns:end family._base.workspace.07_table-output

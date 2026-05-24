@@ -1,0 +1,72 @@
+section: 04_visual-contract
+family: scanning
+status: active
+optional: true
+version: 1.0.0
+title: Scanning Visual Contract
+description: Scanner-neutral visual and model contract for scan posture, severity metrics, evidence cards, finding rows, coverage state, and normalized result tones.
+
+owns:
+    - normalized scan visual state
+    - posture or status ring primitives
+    - severity and evidence metrics
+    - evidence driver cards
+    - finding distribution rows
+    - scan coverage and phase tones
+    - pure model helper reference
+
+does_not_own:
+    - target input
+    - scan options
+    - selected finding inspector
+    - output toolbar
+    - evidence table shell
+    - JSON restore shell
+    - final scanner evidence facts
+
+files:
+    required:
+        - README.md
+        - manifest.yml
+        - demo.html
+        - page.html.twig
+        - section.css
+        - section.js
+        - model-core.js
+
+namespace:
+    page: family.scanning.workspace.04_visual-contract
+    css: family.scanning.workspace.04_visual-contract
+    js: family.scanning.workspace.04_visual-contract
+
+model_contract:
+    inputs:
+        - target
+        - tone
+        - score
+        - metrics
+        - evidence
+        - findings
+        - phases
+    outputs:
+        - primary_status
+        - severity_counts
+        - evidence_summary
+        - finding_summary
+        - status_tone
+        - coverage_summary
+
+application_rules:
+    - Use for scanners with reusable visual result surfaces, posture rings, severity metrics, evidence cards, or finding distribution visuals.
+    - Omit for pure target-input and table scanners, and record the omission as accepted divergence.
+    - Keep scanner facts, findings, service names, probe logic, and evidence copy final-tool native.
+    - Keep selected finding or evidence inspection in an inspector section when that behavior exists.
+    - Keep pure model helpers free of DOM, Twig, and browser event dependencies.
+
+validation_rules:
+    - section files exist.
+    - page.html.twig uses scanner-neutral placeholders.
+    - section.css is scoped with `__TOOL_CLASS__`.
+    - section.js registers scanning workspace metadata.
+    - model-core.js parses as JavaScript.
+    - demo.html includes demo title chrome and does not depend on final runtime files.

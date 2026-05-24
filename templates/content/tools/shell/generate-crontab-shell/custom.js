@@ -1,5 +1,159 @@
 // custom.js
 
+// ns:start family._base.workspace.00_shell
+// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
+// ns:end family._base.workspace.00_shell
+
+function initializeInfraStackCustomDropdowns(root) {
+    const scope = root || document;
+    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
+
+    dropdowns.forEach(function (dropdown) {
+        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
+        const targetInput = targetId ? document.getElementById(targetId) : null;
+        const label = dropdown.querySelector('[data-custom-dropdown-label]');
+        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
+
+        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
+            return;
+        }
+
+        function sync(value) {
+            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
+            let selectedOption = options.find(function (option) {
+                return option.dataset.customDropdownValue === selectedValue;
+            }) || options[0];
+
+            if (!selectedOption) {
+                return;
+            }
+
+            const nextValue = selectedOption.dataset.customDropdownValue || '';
+
+            if (targetInput.value !== nextValue) {
+                targetInput.value = nextValue;
+            }
+            label.textContent = selectedOption.textContent.trim();
+            options.forEach(function (option) {
+                const isActive = option === selectedOption;
+
+                option.classList.toggle('active', isActive);
+                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+        }
+
+        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
+            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+
+            if (descriptor && descriptor.get && descriptor.set) {
+                Object.defineProperty(targetInput, 'value', {
+                    configurable: true,
+                    get: function () {
+                        return descriptor.get.call(this);
+                    },
+                    set: function (nextValue) {
+                        descriptor.set.call(this, nextValue);
+                        window.requestAnimationFrame(function () {
+                            sync(String(nextValue || ''));
+                        });
+                    }
+                });
+                targetInput.dataset.customDropdownValueProxy = 'true';
+            }
+        }
+
+        options.forEach(function (option) {
+            option.addEventListener('click', function () {
+                sync(option.dataset.customDropdownValue || '');
+                targetInput.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+                dropdown.removeAttribute('open');
+            });
+        });
+
+        targetInput.addEventListener('change', function () {
+            sync(targetInput.value);
+        });
+        sync(targetInput.value);
+        dropdown.dataset.customDropdownBound = 'true';
+    });
+}
+
+
+// ns:start family._base.workspace.05_result-summary
+function installInfraStackResultSummaryNormalizer(prefix) {
+    function normalizeSummary(summary) {
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
+
+        if (!hero) {
+            return;
+        }
+
+        const cards = Array.from(hero.querySelectorAll(':scope > .' + prefix + '-result-card'));
+        const primaryCard = cards.find(function (card) {
+            return card.classList.contains(prefix + '-result-card-primary') || card.classList.contains(prefix + '-result-card-visual') || card.classList.contains(prefix + '-result-card-command');
+        }) || cards[0];
+        const summaryCard = cards.find(function (card) {
+            return card !== primaryCard && (card.classList.contains(prefix + '-result-card-summary') || card.classList.contains(prefix + '-result-card-main'));
+        }) || cards.find(function (card) {
+            return card !== primaryCard;
+        });
+
+        if (primaryCard) {
+            primaryCard.classList.add(prefix + '-result-card-primary');
+            if (!primaryCard.dataset.resultVisual) {
+                primaryCard.dataset.resultVisual = primaryCard.querySelector('.' + prefix + '-result-command-output') ? 'command' : 'text';
+            }
+        }
+
+        if (summaryCard) {
+            summaryCard.classList.add(prefix + '-result-card-summary');
+            const chipRow = summaryCard.querySelector('.' + prefix + '-result-chip-row');
+
+            if (chipRow && !summaryCard.querySelector('.' + prefix + '-result-chip-grid')) {
+                chipRow.classList.add(prefix + '-result-chip-grid');
+            }
+        }
+
+        if (primaryCard && hero.firstElementChild !== primaryCard) {
+            hero.insertBefore(primaryCard, hero.firstElementChild);
+        }
+
+        if (primaryCard && summaryCard && primaryCard.nextElementSibling !== summaryCard) {
+            hero.insertBefore(summaryCard, primaryCard.nextElementSibling);
+        }
+    }
+
+    function normalize() {
+        document.querySelectorAll('.' + prefix + '-result-summary').forEach(normalizeSummary);
+    }
+
+    function scheduleNormalize() {
+        window.requestAnimationFrame(normalize);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            normalize();
+            new MutationObserver(scheduleNormalize).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }, { once: true });
+        return;
+    }
+
+    normalize();
+    new MutationObserver(scheduleNormalize).observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+installInfraStackResultSummaryNormalizer('generate-crontab-shell');
+// ns:end family._base.workspace.05_result-summary
+
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('generateCrontabShellForm');
     const submitButton = document.getElementById('generateCrontabShellSubmit');
@@ -1378,7 +1532,7 @@ document.addEventListener('DOMContentLoaded', function () {
         updateFieldCardUi(fieldKey);
     }
 
-// ns:start family.shell.workspace.02_basic-setting
+// ns:start family._base.workspace.02_basic-settings
     function applyPreset(presetKey) {
         const preset = presetCatalog[presetKey] || presetCatalog['daily-midnight'];
 
@@ -1394,7 +1548,7 @@ document.addEventListener('DOMContentLoaded', function () {
         syncAllEnhancedSelects();
     }
 
-// ns:end family.shell.workspace.02_basic-setting
+// ns:end family._base.workspace.02_basic-settings
     function resetFormState() {
         commandInput.value = '/usr/bin/rotate-logs --quiet';
         presetInput.value = 'daily-midnight';
@@ -1897,58 +2051,30 @@ document.addEventListener('DOMContentLoaded', function () {
         tableBody.innerHTML = `<tr class="generate-crontab-shell-empty-row"><td colspan="${colspan}">${escapeHtml(label)}</td></tr>`;
     }
 
-// ns:start family.shell.workspace.05_score-card
+// ns:start family._base.workspace.05_result-summary
     function renderSummary(result) {
         const commandLabel = result.command ? result.command : 'Blank command';
         const nextRunLabel = result.upcomingRuns.length > 0 ? result.upcomingRuns[0].run : (macroInput.value === '@reboot' ? 'Boot event only' : 'No preview found');
-        const warningBadgeClass = result.warnings.length > 0 ? 'generate-crontab-shell-badge-warn' : 'generate-crontab-shell-badge-success';
-        const previewBadgeClass = macroInput.value === '@reboot' ? 'generate-crontab-shell-badge-danger' : 'generate-crontab-shell-badge-neutral';
+        const warningTone = result.warnings.length > 0 ? 'warning' : 'success';
+        const previewTone = macroInput.value === '@reboot' ? 'need-work' : 'baseline';
+        const resultTone = result.warnings.length > 0 ? 'warning' : 'ready';
+        const updatedText = new Date().toLocaleString();
 
+        resultSummary.dataset.resultTone = resultTone;
+        resultSummary.dataset.resultLayout = 'command';
         resultSummary.innerHTML = `
-            <div class="generate-crontab-shell-summary-shell">
-              <div class="generate-crontab-shell-summary-gauge">
-                <span class="generate-crontab-shell-summary-method">Field Expression</span>
-                <div class="generate-crontab-shell-summary-host">${escapeHtml(result.expression)}</div>
-                <div class="generate-crontab-shell-summary-shell-name">${escapeHtml(result.humanSummary)}</div>
-              </div>
-
-              <div class="generate-crontab-shell-summary-side">
-                <div class="generate-crontab-shell-summary-route">
-                  <span class="generate-crontab-shell-summary-route-label">Full Crontab Line</span>
-                  <span class="generate-crontab-shell-summary-route-value">${escapeHtml(result.fullLine)}</span>
-                </div>
-
-                <div class="generate-crontab-shell-summary-badges">
-                  <span class="generate-crontab-shell-badge generate-crontab-shell-badge-neutral">${escapeHtml(result.modeLabel)}</span>
-                  <span class="generate-crontab-shell-badge ${warningBadgeClass}">${escapeHtml(`${result.warnings.length} warning${result.warnings.length === 1 ? '' : 's'}`)}</span>
-                  <span class="generate-crontab-shell-badge ${previewBadgeClass}">${escapeHtml(macroInput.value === '@reboot' ? 'Boot event preview' : 'Calendar preview')}</span>
-                </div>
-              </div>
+            <header class="generate-crontab-shell-result-header" aria-label="Result summary header"><div class="generate-crontab-shell-result-header-main"><span class="generate-crontab-shell-result-header-icon" aria-hidden="true"><i class="bi bi-calendar2-week"></i></span><div class="generate-crontab-shell-result-header-copy"><h2 class="generate-crontab-shell-result-header-title">Result Summary</h2><p>Overview of the generated crontab schedule and key metrics</p></div></div><div class="generate-crontab-shell-result-header-meta" aria-label="Result summary status"><span class="generate-crontab-shell-result-header-chip generate-crontab-shell-result-chip-ready"><span class="generate-crontab-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span><span class="generate-crontab-shell-result-header-chip generate-crontab-shell-result-chip-updated"><span class="generate-crontab-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>${escapeHtml(updatedText)}</span></span></div></header>
+            <div class="generate-crontab-shell-result-hero-grid" aria-live="polite">
+                <article class="generate-crontab-shell-result-card generate-crontab-shell-result-card-primary" data-result-visual="command" aria-label="Primary schedule result"><div class="generate-crontab-shell-result-primary-heading generate-crontab-shell-result-visual-copy generate-crontab-shell-result-visual-copy-top"><div class="generate-crontab-shell-result-kicker">Primary Result</div><h3 class="generate-crontab-shell-result-title generate-crontab-shell-result-title-center">Schedule expression</h3></div><div class="generate-crontab-shell-result-primary-visual" id="generateCrontabShellResultVisual" aria-label="Primary schedule expression"><div class="generate-crontab-shell-result-command-output"><code class="generate-crontab-shell-result-command-value">${escapeHtml(result.expression)}</code></div></div><div class="generate-crontab-shell-result-visual-copy"><p class="generate-crontab-shell-result-copy generate-crontab-shell-result-copy-center">Compact cron expression preview for the generated line.</p></div><span class="generate-crontab-shell-result-card-divider" aria-hidden="true"></span><div class="generate-crontab-shell-result-chip-row generate-crontab-shell-result-chip-row-center" aria-label="Primary result outcome"><span class="generate-crontab-shell-result-chip generate-crontab-shell-result-chip-outcome generate-crontab-shell-result-chip-ready"><span class="generate-crontab-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar-event"></i></span><span>Schedule Generated</span></span></div></article>
+                <article class="generate-crontab-shell-result-card generate-crontab-shell-result-card-summary" aria-label="Schedule summary"><div class="generate-crontab-shell-result-summary-intro"><span class="generate-crontab-shell-result-card-icon generate-crontab-shell-result-card-icon-summary" aria-hidden="true"><i class="bi bi-calendar2-week"></i></span><div class="generate-crontab-shell-result-summary-copy"><div class="generate-crontab-shell-result-kicker">Descriptive Summary</div><h3 class="generate-crontab-shell-result-title">Crontab schedule preview</h3><p class="generate-crontab-shell-result-copy">The expression, next run preview, and generated line stay tied to the selected schedule mode and command.</p></div></div><span class="generate-crontab-shell-result-card-divider" aria-hidden="true"></span><div class="generate-crontab-shell-result-chip-grid" aria-label="Schedule state"><span class="generate-crontab-shell-result-chip generate-crontab-shell-result-chip-baseline"><span class="generate-crontab-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-clock"></i></span><span>${escapeHtml(result.modeLabel)}</span></span><span class="generate-crontab-shell-result-chip generate-crontab-shell-result-chip-${warningTone}"><span class="generate-crontab-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-exclamation-triangle"></i></span><span>${escapeHtml(`${result.warnings.length} warning${result.warnings.length === 1 ? '' : 's'}`)}</span></span><span class="generate-crontab-shell-result-chip generate-crontab-shell-result-chip-${previewTone}"><span class="generate-crontab-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar-event"></i></span><span>${escapeHtml(macroInput.value === '@reboot' ? 'Boot event preview' : 'Calendar preview')}</span></span></div></article>
             </div>
-
-            <div class="generate-crontab-shell-summary-cards">
-                <div class="generate-crontab-shell-stat-card">
-                  <span class="generate-crontab-shell-stat-label">Command</span>
-                  <span class="generate-crontab-shell-stat-value">${escapeHtml(commandLabel)}</span>
-                </div>
-                <div class="generate-crontab-shell-stat-card">
-                  <span class="generate-crontab-shell-stat-label">Warnings</span>
-                  <span class="generate-crontab-shell-stat-value">${escapeHtml(String(result.warnings.length))}</span>
-                </div>
-                <div class="generate-crontab-shell-stat-card">
-                  <span class="generate-crontab-shell-stat-label">Next run</span>
-                  <span class="generate-crontab-shell-stat-value">${escapeHtml(nextRunLabel)}</span>
-                </div>
-                <div class="generate-crontab-shell-stat-card">
-                  <span class="generate-crontab-shell-stat-label">Full line</span>
-                  <span class="generate-crontab-shell-stat-value">${escapeHtml(result.fullLine)}</span>
-                </div>
-              </div>
+            <div class="generate-crontab-shell-result-metric-grid" aria-label="Schedule metrics"><article class="generate-crontab-shell-result-metric-card generate-crontab-shell-result-metric-success"><span class="generate-crontab-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span class="generate-crontab-shell-result-metric-label">Command</span><strong class="generate-crontab-shell-result-metric-value">${escapeHtml(commandLabel)}</strong><span class="generate-crontab-shell-result-metric-copy">Command field content.</span><span class="generate-crontab-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-crontab-shell-result-metric-card generate-crontab-shell-result-metric-info"><span class="generate-crontab-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-exclamation-triangle"></i></span><span class="generate-crontab-shell-result-metric-label">Warnings</span><strong class="generate-crontab-shell-result-metric-value">${escapeHtml(String(result.warnings.length))}</strong><span class="generate-crontab-shell-result-metric-copy">Validation notes for this schedule.</span><span class="generate-crontab-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-crontab-shell-result-metric-card generate-crontab-shell-result-metric-accent-tone"><span class="generate-crontab-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-calendar-check"></i></span><span class="generate-crontab-shell-result-metric-label">Next run</span><strong class="generate-crontab-shell-result-metric-value">${escapeHtml(nextRunLabel)}</strong><span class="generate-crontab-shell-result-metric-copy">First previewed execution.</span><span class="generate-crontab-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-crontab-shell-result-metric-card generate-crontab-shell-result-metric-warning"><span class="generate-crontab-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-braces"></i></span><span class="generate-crontab-shell-result-metric-label">Expression</span><strong class="generate-crontab-shell-result-metric-value">${escapeHtml(result.expression)}</strong><span class="generate-crontab-shell-result-metric-copy">Cron field expression.</span><span class="generate-crontab-shell-result-metric-accent" aria-hidden="true"></span></article></div>
         `;
     }
 
-// ns:end family.shell.workspace.05_score-card
-// ns:start family.shell.workspace.06_sort-card
+// ns:end family._base.workspace.05_result-summary
+
+// ns:start family._base.workspace.06_output-toolbar
     function updateSortState() {
         const selectedButton = sortOptionButtons.find((button) => button.dataset.sortValue === sortInput.value) || sortOptionButtons[0];
         const selectedLabel = selectedButton
@@ -1969,7 +2095,7 @@ document.addEventListener('DOMContentLoaded', function () {
         sortSelect.removeAttribute('open');
     }
 
-// ns:end family.shell.workspace.06_sort-card
+// ns:end family._base.workspace.06_output-toolbar
     function getSortedFieldRows(result) {
         if (!result) {
             return [];
@@ -2032,7 +2158,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return rows.sort((left, right) => left.index - right.index);
     }
 
-// ns:start family.shell.workspace.07_table
+// ns:start family._base.workspace.07_table-output
     function renderTables(result) {
         expressionOutput.textContent = result.expression;
         lineOutput.textContent = result.fullLine;
@@ -2077,14 +2203,17 @@ document.addEventListener('DOMContentLoaded', function () {
                   <td>${escapeHtml(row.source)}</td>
                   <td>${escapeHtml(row.meaning)}</td>
                   <td class="generate-crontab-shell-table-copy-cell">
-                    <button type="button" class="generate-crontab-shell-table-btn" data-field-copy="${escapeHtml(row.token)}">Copy</button>
+                    <button type="button" class="generate-crontab-shell-row-copy generate-crontab-shell-row-copy-btn" data-field-copy="${escapeHtml(row.token)}" aria-label="Copy schedule field row ${index + 1}" title="Copy schedule field row">
+                      <i class="bi bi-clipboard" aria-hidden="true"></i>
+                    </button>
                   </td>
                 </tr>
             `)
             .join('');
     }
 
-// ns:end family.shell.workspace.07_table
+// ns:end family._base.workspace.07_table-output
+// ns:start family._base.workspace.05_result-summary
 // ns:start family.shell.workspace.04_result-text
     function renderResult(result) {
         latestResult = result;
@@ -2102,6 +2231,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 // ns:end family.shell.workspace.04_result-text
+// ns:end family._base.workspace.05_result-summary
     function showErrorState(message) {
         resultEmpty.classList.add('d-none');
         resultContent.classList.add('d-none');
@@ -2114,7 +2244,7 @@ document.addEventListener('DOMContentLoaded', function () {
         submitButton.textContent = isLoading ? 'Generating...' : 'Generate';
     }
 
-// ns:start family.shell.workspace.03_advanced-setting
+// ns:start family._base.workspace.03_custom-settings
     function buildResult() {
         clearAllFieldFeedback();
 
@@ -2154,8 +2284,8 @@ document.addEventListener('DOMContentLoaded', function () {
         return result;
     }
 
-// ns:end family.shell.workspace.03_advanced-setting
-// ns:start family.shell.workspace.01_input-target
+// ns:end family._base.workspace.03_custom-settings
+// ns:start family._base.workspace.01_input-brief
     function generateAndRender() {
         setGeneratingState(true);
 
@@ -2170,7 +2300,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-// ns:end family.shell.workspace.01_input-target
+// ns:end family._base.workspace.01_input-brief
     function shouldParseUserToken(tokens) {
         if (tokens.length < 2) {
             return false;
@@ -2580,13 +2710,19 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const copyValue = target.getAttribute('data-field-copy');
+        const copyButton = target.closest('.generate-crontab-shell-row-copy, .generate-crontab-shell-row-copy-btn');
+
+        if (!copyButton || !fieldsTableBody.contains(copyButton)) {
+            return;
+        }
+
+        const copyValue = copyButton.getAttribute('data-field-copy');
 
         if (copyValue === null) {
             return;
         }
 
-        copyText(copyValue, target);
+        copyText(copyValue, copyButton);
     });
 
     updateSortState();
@@ -2657,6 +2793,7 @@ document.addEventListener('DOMContentLoaded', function () {
         flashButton(downloadJsonButton, 'Downloaded');
     });
 
+    // ns:start family._base.workspace.08_json-restore
     importJsonButton.addEventListener('click', function () {
         importJsonInput.click();
     });
@@ -2679,6 +2816,7 @@ document.addEventListener('DOMContentLoaded', function () {
             importJsonInput.value = '';
         }
     });
+    // ns:end family._base.workspace.08_json-restore
 
     if (!restoreStateFromQuery()) {
         resetFormState();
@@ -2691,4 +2829,135 @@ document.addEventListener('DOMContentLoaded', function () {
     if (latestResult) {
         syncUrlState(latestResult);
     }
+    initializeInfraStackCustomDropdowns(document);
 });
+/* ns:start family._base.workspace.07_table-output */
+(function setupGenerateCrontabShellTableOutputStandard() {
+    const rootSelector = '.generate-crontab-shell-tool';
+    const tableSelector = '.tool-result-table tbody tr, .generate-crontab-shell-table tbody tr';
+    const tbodySelector = '.tool-result-table tbody, .generate-crontab-shell-table tbody';
+    const clampClass = 'generate-crontab-shell-table-cell-text';
+    const cellClampClass = 'generate-crontab-shell-cell-clamp';
+    const statusColumnClass = 'generate-crontab-shell-table-status-cell';
+
+    function hasActionColumn(cells, table) {
+        const lastCell = cells[cells.length - 1];
+        const lastHead = table ? table.querySelector('thead th:last-child') : null;
+        const headText = lastHead ? String(lastHead.textContent || '') : '';
+
+        return Boolean(
+            lastCell && lastCell.querySelector('button, [data-copy-row], [data-inventory-copy-row], [data-control-copy-row], [data-options-copy], [data-operation-copy], [data-copy-value]')
+        ) || /copy|action|actions/i.test(headText);
+    }
+
+    function isStatusLikeHeader(text) {
+        return /^(status|signal|criticality|severity|state|health|outcome|result|level|label)$/i.test(String(text || '').trim());
+    }
+
+    function getBodyCells(row) {
+        return Array.from(row.children).filter(function filterCells(cell) {
+            return cell.tagName && cell.tagName.toLowerCase() === 'td';
+        });
+    }
+
+    function applyStatusAlignment(root) {
+        root.querySelectorAll('.tool-result-table, .generate-crontab-shell-table').forEach(function alignStatusTable(table) {
+            const headers = Array.from(table.querySelectorAll('thead th'));
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            table.querySelectorAll('.' + statusColumnClass).forEach(function clearStatusCell(cell) {
+                cell.classList.remove(statusColumnClass);
+            });
+
+            headers.forEach(function alignStatusColumn(header, index) {
+                const statusLike = isStatusLikeHeader(header.textContent);
+                header.classList.toggle(statusColumnClass, statusLike);
+
+                if (!statusLike) {
+                    return;
+                }
+
+                rows.forEach(function alignStatusCell(row) {
+                    const cells = getBodyCells(row);
+                    const cell = cells[index];
+
+                    if (cell && cell.colSpan <= 1) {
+                        cell.classList.add(statusColumnClass);
+                    }
+                });
+            });
+        });
+    }
+
+    function clampCell(cell) {
+        if (!cell || cell.colSpan > 1 || cell.querySelector('.' + clampClass + ', .' + cellClampClass)) {
+            return;
+        }
+
+        if (cell.children.length === 1 && !cell.firstElementChild.matches('button')) {
+            cell.firstElementChild.classList.add(clampClass);
+            return;
+        }
+
+        const wrapper = document.createElement('span');
+        wrapper.className = clampClass;
+
+        while (cell.firstChild) {
+            wrapper.appendChild(cell.firstChild);
+        }
+
+        cell.appendChild(wrapper);
+    }
+
+    function applyTableOutputClamp() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        applyStatusAlignment(root);
+
+        root.querySelectorAll(tableSelector).forEach(function clampRow(row) {
+            const cells = getBodyCells(row);
+            const table = row.closest('table');
+            const actionColumn = hasActionColumn(cells, table);
+
+            cells.forEach(function clampDataCell(cell, index) {
+                const isFirst = index === 0;
+                const isAction = actionColumn && index === cells.length - 1;
+
+                if (!isFirst && !isAction) {
+                    clampCell(cell);
+                }
+            });
+        });
+    }
+
+    function observeTables() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        root.querySelectorAll(tbodySelector).forEach(function observeBody(tbody) {
+            if (tbody.dataset.tableOutputClampObserver === 'true') {
+                return;
+            }
+
+            tbody.dataset.tableOutputClampObserver = 'true';
+            new MutationObserver(applyTableOutputClamp).observe(tbody, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        applyTableOutputClamp();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', observeTables);
+    } else {
+        observeTables();
+    }
+}());
+/* ns:end family._base.workspace.07_table-output */

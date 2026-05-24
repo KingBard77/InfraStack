@@ -1,41 +1,191 @@
 // custom.js
 
-// ns:start family.calculate.workspace.01_input-brief
+function initializeInfraStackCustomDropdowns(root) {
+    const scope = root || document;
+    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
+
+    dropdowns.forEach(function (dropdown) {
+        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
+        const targetInput = targetId ? document.getElementById(targetId) : null;
+        const label = dropdown.querySelector('[data-custom-dropdown-label]');
+        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
+
+        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
+            return;
+        }
+
+        function sync(value) {
+            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
+            let selectedOption = options.find(function (option) {
+                return option.dataset.customDropdownValue === selectedValue;
+            }) || options[0];
+
+            if (!selectedOption) {
+                return;
+            }
+
+            const nextValue = selectedOption.dataset.customDropdownValue || '';
+
+            if (targetInput.value !== nextValue) {
+                targetInput.value = nextValue;
+            }
+            label.textContent = selectedOption.textContent.trim();
+            options.forEach(function (option) {
+                const isActive = option === selectedOption;
+
+                option.classList.toggle('active', isActive);
+                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+        }
+
+        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
+            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+
+            if (descriptor && descriptor.get && descriptor.set) {
+                Object.defineProperty(targetInput, 'value', {
+                    configurable: true,
+                    get: function () {
+                        return descriptor.get.call(this);
+                    },
+                    set: function (nextValue) {
+                        descriptor.set.call(this, nextValue);
+                        window.requestAnimationFrame(function () {
+                            sync(String(nextValue || ''));
+                        });
+                    }
+                });
+                targetInput.dataset.customDropdownValueProxy = 'true';
+            }
+        }
+
+        options.forEach(function (option) {
+            option.addEventListener('click', function () {
+                sync(option.dataset.customDropdownValue || '');
+                targetInput.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+                dropdown.removeAttribute('open');
+            });
+        });
+
+        targetInput.addEventListener('change', function () {
+            sync(targetInput.value);
+        });
+        sync(targetInput.value);
+        dropdown.dataset.customDropdownBound = 'true';
+    });
+}
+
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.calculate.workspace.01_input-brief
-// ns:start family.calculate.workspace.02_basic-settings
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.calculate.workspace.02_basic-settings
-// ns:start family.calculate.workspace.03_advanced-settings
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.calculate.workspace.03_advanced-settings
 // ns:start family.calculate.workspace.04_selected-item
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family.calculate.workspace.04_selected-item
-// ns:start family.calculate.workspace.05_result-summary
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.calculate.workspace.05_result-summary
-// ns:start family.calculate.workspace.06_result-view
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.calculate.workspace.06_result-view
-// ns:start family.calculate.workspace.07_table-export
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.calculate.workspace.07_table-export
-// ns:start family.calculate.workspace.08_json-restore
-// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
-// ns:end family.calculate.workspace.08_json-restore
+// ns:start family._base.workspace.05_result-summary
+function installInfraStackResultSummaryNormalizer(prefix) {
+    function normalizeSummary(summary) {
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
 
+        if (!hero) {
+            return;
+        }
+
+        const cards = Array.from(hero.querySelectorAll(':scope > .' + prefix + '-result-card'));
+        const primaryCard = cards.find(function (card) {
+            return card.classList.contains(prefix + '-result-card-primary') || card.classList.contains(prefix + '-result-card-visual') || card.classList.contains(prefix + '-result-card-command');
+        }) || cards[0];
+        const summaryCard = cards.find(function (card) {
+            return card !== primaryCard && (card.classList.contains(prefix + '-result-card-summary') || card.classList.contains(prefix + '-result-card-main'));
+        }) || cards.find(function (card) {
+            return card !== primaryCard;
+        });
+
+        if (primaryCard) {
+            primaryCard.classList.add(prefix + '-result-card-primary');
+            if (!primaryCard.dataset.resultVisual) {
+                if (primaryCard.querySelector('.' + prefix + '-result-ring')) {
+                    primaryCard.dataset.resultVisual = 'ring';
+                } else if (primaryCard.querySelector('.' + prefix + '-result-primary-number')) {
+                    primaryCard.dataset.resultVisual = 'number';
+                } else if (primaryCard.querySelector('.' + prefix + '-result-primary-metric')) {
+                    primaryCard.dataset.resultVisual = 'metric';
+                } else if (primaryCard.querySelector('.' + prefix + '-result-card-icon-primary')) {
+                    primaryCard.dataset.resultVisual = 'icon';
+                } else {
+                    primaryCard.dataset.resultVisual = 'text';
+                }
+            }
+        }
+
+        if (summaryCard) {
+            summaryCard.classList.add(prefix + '-result-card-summary');
+            const chipRow = summaryCard.querySelector('.' + prefix + '-result-chip-row');
+
+            if (chipRow && !summaryCard.querySelector('.' + prefix + '-result-chip-grid')) {
+                chipRow.classList.add(prefix + '-result-chip-grid');
+            }
+        }
+
+        if (primaryCard && hero.firstElementChild !== primaryCard) {
+            hero.insertBefore(primaryCard, hero.firstElementChild);
+        }
+
+        if (primaryCard && summaryCard && primaryCard.nextElementSibling !== summaryCard) {
+            hero.insertBefore(summaryCard, primaryCard.nextElementSibling);
+        }
+    }
+
+    function normalize() {
+        document.querySelectorAll('.' + prefix + '-result-summary').forEach(normalizeSummary);
+    }
+
+    function scheduleNormalize() {
+        window.requestAnimationFrame(normalize);
+    }
+
+    if (document.readyState === 'loading') {
 document.addEventListener('DOMContentLoaded', function () {
+            normalize();
+            new MutationObserver(scheduleNormalize).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }, { once: true });
+        return;
+    }
+
+    normalize();
+    new MutationObserver(scheduleNormalize).observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+installInfraStackResultSummaryNormalizer('calculate-cost-azure');
+// ns:end family._base.workspace.05_result-summary
+
+// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
+// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
+// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
+
+// ns:start family._base.workspace.00_shell
+document.addEventListener('DOMContentLoaded', function () {
+// ns:start family._base.workspace.01_input-brief
     const form = document.getElementById('calculateCostAzureForm');
     const labelInput = document.getElementById('calculateCostAzureLabel');
+// ns:end family._base.workspace.01_input-brief
+// ns:start family._base.workspace.02_basic-settings
     const presetInput = document.getElementById('calculateCostAzurePreset');
     const presetSummary = document.getElementById('calculateCostAzurePresetSummary');
     const presetOptionInputs = Array.from(document.querySelectorAll('input[name="calculateCostAzurePresetOption"]'));
     const presetSelect = document.getElementById('calculateCostAzurePresetSelect');
     const applyPresetButton = document.getElementById('calculateCostAzureApplyPreset');
+// ns:end family._base.workspace.02_basic-settings
     const submitButton = document.getElementById('calculateCostAzureSubmit');
     const resetButton = document.getElementById('calculateCostAzureReset');
 
+// ns:start family._base.workspace.03_custom-settings
     const includeComputeInput = document.getElementById('calculateCostAzureIncludeCompute');
     const includeDiskInput = document.getElementById('calculateCostAzureIncludeDisk');
     const includeBlobInput = document.getElementById('calculateCostAzureIncludeBlob');
@@ -103,6 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const apiRestRateInput = document.getElementById('calculateCostAzureApiRestRate');
     const egressRateInput = document.getElementById('calculateCostAzureEgressRate');
 
+// ns:end family._base.workspace.03_custom-settings
     const resultEmpty = document.getElementById('calculateCostAzureResultEmpty');
     const resultContent = document.getElementById('calculateCostAzureResultContent');
     const resultError = document.getElementById('calculateCostAzureResultError');
@@ -116,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const sortInput = document.getElementById('calculateCostAzureSort');
     const sortSummary = document.getElementById('calculateCostAzureSortSummary');
-    const sortOptionInputs = Array.from(document.querySelectorAll('input[name="calculateCostAzureSortOption"]'));
+    const sortOptionButtons = Array.from(document.querySelectorAll('.calculate-cost-azure-sort-option'));
     const sortSelect = document.getElementById('calculateCostAzureSortSelect');
     const exportPdfButton = document.getElementById('calculateCostAzureExportPdf');
     const downloadCsvButton = document.getElementById('calculateCostAzureDownloadCsv');
@@ -238,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function () {
         !jsonOutput ||
         !sortInput ||
         !sortSummary ||
-        sortOptionInputs.length === 0 ||
+        sortOptionButtons.length === 0 ||
         !sortSelect ||
         !exportPdfButton ||
         !downloadCsvButton ||
@@ -276,12 +427,6 @@ document.addEventListener('DOMContentLoaded', function () {
             hiddenInput: apiTypeInput,
             summaryElement: apiTypeSummary,
             detailsElement: apiTypeSelect
-        },
-        {
-            inputs: sortOptionInputs,
-            hiddenInput: sortInput,
-            summaryElement: sortSummary,
-            detailsElement: sortSelect
         }
     ];
 
@@ -1114,6 +1259,24 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function setSortOption(value, shouldRender) {
+        const selectedValue = sortOptionButtons.some((button) => button.dataset.sortValue === value) ? value : 'id';
+        const activeButton = sortOptionButtons.find((button) => button.dataset.sortValue === selectedValue);
+
+        sortInput.value = selectedValue;
+        sortOptionButtons.forEach((button) => {
+            const isActive = button === activeButton;
+            button.classList.toggle('is-active', isActive);
+            button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+        sortSummary.textContent = activeButton ? activeButton.textContent.trim() : 'ID';
+        sortSelect.removeAttribute('open');
+
+        if (shouldRender && latestResult) {
+            renderResult(latestResult);
+        }
+    }
+
     function setLoadingState(message) {
         destroySpendRingChart();
         resultEmpty.textContent = message;
@@ -1229,7 +1392,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 if (query.overrides.computeHourly === null) {
-                    return 'Set VM hourly override in Advanced when using Custom size.';
+                    return 'Set VM hourly override in Custom when using Custom size.';
                 }
             } else if (!COMPUTE_CATALOG[query.computeInstance]) {
                 return 'Choose a supported VM profile.';
@@ -1307,7 +1470,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function resetResultSort() {
-        setImportedSingleSelect(sortOptionInputs, sortInput, sortSummary, 'id');
+        setSortOption('id', false);
     }
 
     function applyImportedQuery(importedQuery) {
@@ -2123,12 +2286,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 return right.monthly - left.monthly;
             });
         }
-
         if (sortInput.value === 'component') {
             return items.sort((left, right) => left.component.localeCompare(right.component, undefined, {
                 numeric: true,
                 sensitivity: 'base'
             }));
+        }
+
+        if (sortInput.value === 'basis') {
+            return items.sort((left, right) => {
+                const basisSort = String(left.unitBasis || '').localeCompare(String(right.unitBasis || ''), undefined, {
+                    numeric: true,
+                    sensitivity: 'base'
+                });
+
+                if (basisSort !== 0) {
+                    return basisSort;
+                }
+
+                return right.monthly - left.monthly;
+            });
         }
 
         return items.sort((left, right) => right.monthly - left.monthly);
@@ -2249,64 +2426,107 @@ document.addEventListener('DOMContentLoaded', function () {
         const generatedAt = new Date(result.generatedAt);
         const generatedAtText = Number.isNaN(generatedAt.getTime()) ? 'Just now' : generatedAt.toLocaleString();
         const overrideCount = getOverrideCount(result.query);
+        const overrideTone = overrideCount > 0 ? 'warning' : 'baseline';
         const progressAngle = Math.round(getRunRateRingPercent(result.totals.monthlyTotal) * 3.6);
+        const activeServices = Number(result.totals.activeServices || 0);
+        const topDriver = result.totals.topDriver || 'Modeled services';
+        const monthlyTotal = formatCurrency(result.totals.monthlyTotal);
+        const primaryValueChars = Math.max(monthlyTotal.length, 3);
+        const combinedEgress = `${formatNumber(result.totals.combinedEgressGb, 1)} GB`;
+
+        resultSummary.dataset.resultTone = overrideCount > 0 ? 'warning' : 'success';
+        resultSummary.dataset.resultLayout = 'ring';
 
         return `
-            <section class="calculate-cost-azure-overview" aria-live="polite">
-                <article class="calculate-cost-azure-spend-card">
-                    <div class="calculate-cost-azure-spend-ring" id="calculateCostAzureSpendRing" style="--progress-angle: ${escapeHtml(String(progressAngle))}deg;" aria-label="Estimated monthly Azure run rate ${escapeHtml(formatCurrency(result.totals.monthlyTotal))}">
-                        <div class="calculate-cost-azure-spend-chart" id="calculateCostAzureSpendChart" aria-hidden="true"></div>
-                        <div class="calculate-cost-azure-spend-value">
-                            <strong>${escapeHtml(formatCurrency(result.totals.monthlyTotal))}</strong>
-                            <span>Monthly</span>
+            <header class="calculate-cost-azure-result-header" aria-label="Result summary header">
+                <div class="calculate-cost-azure-result-header-main">
+                    <span class="calculate-cost-azure-result-header-icon" aria-hidden="true"><i class="bi bi-calculator"></i></span>
+                    <div class="calculate-cost-azure-result-header-copy">
+                        <h2 class="calculate-cost-azure-result-header-title">Result Summary</h2>
+                        <p>Overview of the current Azure estimate result and key metrics</p>
+                    </div>
+                </div>
+                <div class="calculate-cost-azure-result-header-meta" aria-label="Result summary status">
+                    <span class="calculate-cost-azure-result-header-chip calculate-cost-azure-result-chip-ready"><span class="calculate-cost-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Estimated</span></span>
+                    <span class="calculate-cost-azure-result-header-chip calculate-cost-azure-result-chip-updated"><span class="calculate-cost-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>${escapeHtml(generatedAtText)}</span></span>
+                </div>
+            </header>
+
+            <div class="calculate-cost-azure-result-hero-grid" aria-live="polite">
+                <article class="calculate-cost-azure-result-card calculate-cost-azure-result-card-primary" data-result-visual="ring" aria-label="Primary estimate result">
+                    <div class="calculate-cost-azure-result-primary-heading calculate-cost-azure-result-visual-copy calculate-cost-azure-result-visual-copy-top"><div class="calculate-cost-azure-result-kicker">Primary Result</div><h3 class="calculate-cost-azure-result-title calculate-cost-azure-result-title-center">Estimated run rate</h3></div>
+                    <div class="calculate-cost-azure-result-primary-visual" id="calculateCostAzureResultVisual" aria-label="Primary estimate result visual">
+                        <span class="calculate-cost-azure-result-card-icon calculate-cost-azure-result-card-icon-primary" aria-hidden="true"><i class="bi bi-cash-coin"></i></span>
+                        <div class="calculate-cost-azure-result-ring calculate-cost-azure-spend-ring" id="calculateCostAzureSpendRing" style="--calculate-cost-azure-result-progress: ${escapeHtml(String(progressAngle))}deg; --progress-angle: ${escapeHtml(String(progressAngle))}deg; --calculate-cost-azure-result-value-chars: ${escapeHtml(String(primaryValueChars))};" aria-label="Estimated monthly Azure run rate ${escapeHtml(monthlyTotal)}">
+                            <div class="calculate-cost-azure-spend-chart" id="calculateCostAzureSpendChart" aria-hidden="true"></div>
+                            <div class="calculate-cost-azure-result-ring-center calculate-cost-azure-spend-value">
+                                <strong class="calculate-cost-azure-result-ring-value">${escapeHtml(monthlyTotal)}</strong>
+                                <span class="calculate-cost-azure-result-ring-unit">Monthly</span>
+                            </div>
                         </div>
                     </div>
-                    <h3 class="calculate-cost-azure-spend-label">Estimated Azure run rate</h3>
-                    <p class="calculate-cost-azure-spend-copy">Built from current workload assumptions, not from your billing account. The math is visible so the argument can be too.</p>
+                    <div class="calculate-cost-azure-result-visual-copy">
+                        <p class="calculate-cost-azure-result-copy calculate-cost-azure-result-copy-center">Modeled monthly total from the current assumptions.</p>
+                    </div>
+                    <span class="calculate-cost-azure-result-card-divider" aria-hidden="true"></span>
+                    <div class="calculate-cost-azure-result-chip-row calculate-cost-azure-result-chip-row-center" aria-label="Primary result outcome">
+                        <span class="calculate-cost-azure-result-chip calculate-cost-azure-result-chip-outcome calculate-cost-azure-result-chip-ready"><span class="calculate-cost-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-cash-coin"></i></span><span>Monthly Estimate</span></span>
+                    </div>
                 </article>
 
-                <section class="calculate-cost-azure-summary-panel" aria-label="Azure estimate summary">
-                    <div class="calculate-cost-azure-badge-row">
-                        <span class="calculate-cost-azure-badge">${escapeHtml(presetLabel)}</span>
-                        <span class="calculate-cost-azure-badge">Services ${escapeHtml(String(result.totals.activeServices))}</span>
-                        <span class="calculate-cost-azure-badge">Overrides ${escapeHtml(String(overrideCount))}</span>
-                        <span class="calculate-cost-azure-badge calculate-cost-azure-badge-muted">Updated ${escapeHtml(generatedAtText)}</span>
-                    </div>
-
-                    <div class="calculate-cost-azure-summary-route">
-                        <span class="calculate-cost-azure-summary-route-label">Top driver</span>
-                        <span class="calculate-cost-azure-summary-route-value">${escapeHtml(result.totals.topDriver)}</span>
-                    </div>
-
-                    <div class="calculate-cost-azure-stat-grid">
-                        <div class="calculate-cost-azure-stat-card">
-                            <span class="calculate-cost-azure-stat-label">Annual</span>
-                            <span class="calculate-cost-azure-stat-value">${escapeHtml(formatCurrency(result.totals.annualTotal))}</span>
-                            <span class="calculate-cost-azure-stat-note">Projected from the current monthly run rate.</span>
-                        </div>
-
-                        <div class="calculate-cost-azure-stat-card">
-                            <span class="calculate-cost-azure-stat-label">Daily</span>
-                            <span class="calculate-cost-azure-stat-value">${escapeHtml(formatCurrency(result.totals.dailyTotal))}</span>
-                            <span class="calculate-cost-azure-stat-note">Thirty-day planning average.</span>
-                        </div>
-
-                        <div class="calculate-cost-azure-stat-card">
-                            <span class="calculate-cost-azure-stat-label">Hourly</span>
-                            <span class="calculate-cost-azure-stat-value">${escapeHtml(formatCurrency(result.totals.hourlyTotal))}</span>
-                            <span class="calculate-cost-azure-stat-note">Useful for sanity-checking long-running workloads.</span>
-                        </div>
-
-                        <div class="calculate-cost-azure-stat-card">
-                            <span class="calculate-cost-azure-stat-label">Egress</span>
-                            <span class="calculate-cost-azure-stat-value">${escapeHtml(formatNumber(result.totals.combinedEgressGb, 1))} GB</span>
-                            <span class="calculate-cost-azure-stat-note">Combined Blob Storage, API response, and shared outbound traffic.</span>
+                <article class="calculate-cost-azure-result-card calculate-cost-azure-result-card-summary" aria-label="Estimate summary">
+                    <div class="calculate-cost-azure-result-summary-intro">
+                        <span class="calculate-cost-azure-result-card-icon calculate-cost-azure-result-card-icon-summary" aria-hidden="true"><i class="bi bi-receipt"></i></span>
+                        <div class="calculate-cost-azure-result-summary-copy">
+                            <div class="calculate-cost-azure-result-kicker">Descriptive Summary</div>
+                            <h3 class="calculate-cost-azure-result-title">Azure run-rate estimate</h3>
+                            <p class="calculate-cost-azure-result-copy">Top driver: ${escapeHtml(topDriver)}. Totals are derived from the current assumptions, visible overrides, and generated service mix.</p>
                         </div>
                     </div>
-                </section>
-            </section>
+                    <span class="calculate-cost-azure-result-card-divider" aria-hidden="true"></span>
+                    <div class="calculate-cost-azure-result-chip-grid" aria-label="Estimate state">
+                        <span class="calculate-cost-azure-result-chip calculate-cost-azure-result-chip-ready"><span class="calculate-cost-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>${escapeHtml(presetLabel)}</span></span>
+                        <span class="calculate-cost-azure-result-chip calculate-cost-azure-result-chip-baseline"><span class="calculate-cost-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-grid-3x3-gap"></i></span><span>${escapeHtml(String(activeServices))} services</span></span>
+                        <span class="calculate-cost-azure-result-chip calculate-cost-azure-result-chip-${overrideTone}"><span class="calculate-cost-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-sliders"></i></span><span>${escapeHtml(String(overrideCount))} overrides</span></span>
+                        <span class="calculate-cost-azure-result-chip calculate-cost-azure-result-chip-baseline"><span class="calculate-cost-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-graph-up-arrow"></i></span><span>Top driver: ${escapeHtml(topDriver)}</span></span>
+                        <span class="calculate-cost-azure-result-chip calculate-cost-azure-result-chip-warning"><span class="calculate-cost-azure-result-chip-icon" aria-hidden="true"><i class="bi bi-hdd-network"></i></span><span>Egress: ${escapeHtml(combinedEgress)}</span></span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="calculate-cost-azure-result-metric-grid" aria-label="Estimate metrics">
+                <article class="calculate-cost-azure-result-metric-card calculate-cost-azure-result-metric-success">
+                    <span class="calculate-cost-azure-result-metric-icon" aria-hidden="true"><i class="bi bi-calendar2-check"></i></span>
+                    <span class="calculate-cost-azure-result-metric-label">Annual</span>
+                    <strong class="calculate-cost-azure-result-metric-value">${escapeHtml(formatCurrency(result.totals.annualTotal))}</strong>
+                    <span class="calculate-cost-azure-result-metric-copy">Projected from the current monthly run rate.</span>
+                    <span class="calculate-cost-azure-result-metric-accent" aria-hidden="true"></span>
+                </article>
+                <article class="calculate-cost-azure-result-metric-card calculate-cost-azure-result-metric-info">
+                    <span class="calculate-cost-azure-result-metric-icon" aria-hidden="true"><i class="bi bi-sun"></i></span>
+                    <span class="calculate-cost-azure-result-metric-label">Daily</span>
+                    <strong class="calculate-cost-azure-result-metric-value">${escapeHtml(formatCurrency(result.totals.dailyTotal))}</strong>
+                    <span class="calculate-cost-azure-result-metric-copy">Thirty-day planning average.</span>
+                    <span class="calculate-cost-azure-result-metric-accent" aria-hidden="true"></span>
+                </article>
+                <article class="calculate-cost-azure-result-metric-card calculate-cost-azure-result-metric-accent-tone">
+                    <span class="calculate-cost-azure-result-metric-icon" aria-hidden="true"><i class="bi bi-clock"></i></span>
+                    <span class="calculate-cost-azure-result-metric-label">Hourly</span>
+                    <strong class="calculate-cost-azure-result-metric-value">${escapeHtml(formatCurrency(result.totals.hourlyTotal))}</strong>
+                    <span class="calculate-cost-azure-result-metric-copy">Useful for long-running workload checks.</span>
+                    <span class="calculate-cost-azure-result-metric-accent" aria-hidden="true"></span>
+                </article>
+                <article class="calculate-cost-azure-result-metric-card calculate-cost-azure-result-metric-warning">
+                    <span class="calculate-cost-azure-result-metric-icon" aria-hidden="true"><i class="bi bi-hdd-network"></i></span>
+                    <span class="calculate-cost-azure-result-metric-label">Egress</span>
+                    <strong class="calculate-cost-azure-result-metric-value">${escapeHtml(combinedEgress)}</strong>
+                    <span class="calculate-cost-azure-result-metric-copy">Combined modeled outbound traffic.</span>
+                    <span class="calculate-cost-azure-result-metric-accent" aria-hidden="true"></span>
+                </article>
+            </div>
         `;
     }
+
 
     function buildBreakdownRow(item, index) {
         return `
@@ -2415,6 +2635,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function renderResult(result) {
         destroySpendRingChart();
+        resultSummary.classList.add('calculate-cost-azure-result-summary');
+        resultSummary.dataset.resultTone = 'ready';
+        resultSummary.dataset.resultLayout = 'cost_overview';
         resultSummary.innerHTML = buildSummaryHtml(result);
         breakdownTableBody.innerHTML = getSortedLineItems().map(buildBreakdownRow).join('');
         serviceTableBody.innerHTML = result.serviceRows.map(buildServiceRow).join('');
@@ -2494,16 +2717,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
         config.inputs.forEach((input) => {
             input.addEventListener('change', function () {
-                        updateSingleSelectState(config.inputs, config.hiddenInput, config.summaryElement, config.detailsElement);
+                updateSingleSelectState(config.inputs, config.hiddenInput, config.summaryElement, config.detailsElement);
 
-                        if (config.hiddenInput === sortInput && latestResult) {
-                            renderResult(latestResult);
-                        }
+                if (config.hiddenInput === computeInstanceInput) {
+                    syncCustomInstanceState();
+                }
+            });
+        });
+    });
 
-                        if (config.hiddenInput === computeInstanceInput) {
-                            syncCustomInstanceState();
-                        }
-                    });
+    setSortOption(sortInput.value || 'id', false);
+
+    sortOptionButtons.forEach((button) => {
+        button.addEventListener('click', function () {
+            setSortOption(button.dataset.sortValue || 'id', true);
         });
     });
 
@@ -2579,7 +2806,7 @@ document.addEventListener('DOMContentLoaded', function () {
     resetButton.addEventListener('click', function () {
         applyPreset('lean-web');
         latestResult = null;
-        setLoadingState('Build an estimate to review line-item cost drivers, service mix, and exportable JSON.');
+    setLoadingState('Build an estimate to review line-item cost drivers, service mix, and exportable JSON.');
         toggleSubmitState(false);
     });
 
@@ -2599,6 +2826,7 @@ document.addEventListener('DOMContentLoaded', function () {
         await copyText(button.getAttribute('data-copy') || '', button);
     });
 
+// ns:start family._base.workspace.06_output-toolbar
     exportPdfButton.addEventListener('click', function () {
         if (!latestResult) {
             return;
@@ -2650,6 +2878,8 @@ document.addEventListener('DOMContentLoaded', function () {
         flashButton(downloadJsonButton, 'Saved');
     });
 
+// ns:end family._base.workspace.06_output-toolbar
+// ns:start family._base.workspace.08_json-restore
     importJsonButton.addEventListener('click', function () {
         importJsonInput.click();
     });
@@ -2673,5 +2903,140 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+// ns:end family._base.workspace.08_json-restore
     setLoadingState('Build an estimate to review line-item cost drivers, service mix, and exportable JSON.');
+    initializeInfraStackCustomDropdowns(document);
 });
+// ns:end family._base.workspace.00_shell
+// ns:start family._base.workspace.07_table-output
+/* table-output-standard:start */
+(function setupCalculateCostAzureTableOutputStandard() {
+    const rootSelector = '.calculate-cost-azure-tool';
+    const tableSelector = '.tool-result-table tbody tr, .calculate-cost-azure-table tbody tr';
+    const tbodySelector = '.tool-result-table tbody, .calculate-cost-azure-table tbody';
+    const clampClass = 'calculate-cost-azure-table-cell-text';
+    const cellClampClass = 'calculate-cost-azure-cell-clamp';
+    const statusColumnClass = 'calculate-cost-azure-table-status-cell';
+
+    function hasActionColumn(cells, table) {
+        const lastCell = cells[cells.length - 1];
+        const lastHead = table ? table.querySelector('thead th:last-child') : null;
+        const headText = lastHead ? String(lastHead.textContent || '') : '';
+
+        return Boolean(
+            lastCell && lastCell.querySelector('button, [data-copy-row], [data-inventory-copy-row], [data-control-copy-row], [data-options-copy], [data-operation-copy], [data-copy-value]')
+        ) || /copy|action|actions/i.test(headText);
+    }
+
+    function isStatusLikeHeader(text) {
+        return /^(status|signal|criticality|severity|state|health|outcome|result|level|label)$/i.test(String(text || '').trim());
+    }
+
+    function getBodyCells(row) {
+        return Array.from(row.children).filter(function filterCells(cell) {
+            return cell.tagName && cell.tagName.toLowerCase() === 'td';
+        });
+    }
+
+    function applyStatusAlignment(root) {
+        root.querySelectorAll('.tool-result-table, .calculate-cost-azure-table').forEach(function alignStatusTable(table) {
+            const headers = Array.from(table.querySelectorAll('thead th'));
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            table.querySelectorAll('.' + statusColumnClass).forEach(function clearStatusCell(cell) {
+                cell.classList.remove(statusColumnClass);
+            });
+
+            headers.forEach(function alignStatusColumn(header, index) {
+                const statusLike = isStatusLikeHeader(header.textContent);
+                header.classList.toggle(statusColumnClass, statusLike);
+
+                if (!statusLike) {
+                    return;
+                }
+
+                rows.forEach(function alignStatusCell(row) {
+                    const cells = getBodyCells(row);
+                    const cell = cells[index];
+
+                    if (cell && cell.colSpan <= 1) {
+                        cell.classList.add(statusColumnClass);
+                    }
+                });
+            });
+        });
+    }
+
+    function clampCell(cell) {
+        if (!cell || cell.colSpan > 1 || cell.querySelector('.' + clampClass + ', .' + cellClampClass)) {
+            return;
+        }
+
+        if (cell.children.length === 1 && !cell.firstElementChild.matches('button')) {
+            cell.firstElementChild.classList.add(clampClass);
+            return;
+        }
+
+        const wrapper = document.createElement('span');
+        wrapper.className = clampClass;
+
+        while (cell.firstChild) {
+            wrapper.appendChild(cell.firstChild);
+        }
+
+        cell.appendChild(wrapper);
+    }
+
+    function applyTableOutputClamp() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        applyStatusAlignment(root);
+
+        root.querySelectorAll(tableSelector).forEach(function clampRow(row) {
+            const cells = getBodyCells(row);
+            const table = row.closest('table');
+            const actionColumn = hasActionColumn(cells, table);
+
+            cells.forEach(function clampDataCell(cell, index) {
+                const isFirst = index === 0;
+                const isAction = actionColumn && index === cells.length - 1;
+
+                if (!isFirst && !isAction) {
+                    clampCell(cell);
+                }
+            });
+        });
+    }
+
+    function observeTables() {
+        const root = document.querySelector(rootSelector);
+        if (!root) {
+            return;
+        }
+
+        root.querySelectorAll(tbodySelector).forEach(function observeBody(tbody) {
+            if (tbody.dataset.tableOutputClampObserver === 'true') {
+                return;
+            }
+
+            tbody.dataset.tableOutputClampObserver = 'true';
+            new MutationObserver(applyTableOutputClamp).observe(tbody, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        applyTableOutputClamp();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', observeTables);
+    } else {
+        observeTables();
+    }
+}());
+/* table-output-standard:end */
+// ns:end family._base.workspace.07_table-output

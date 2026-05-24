@@ -3,9 +3,10 @@
 title: Chmod Command Generator
 author: Badrul Amin
 author_role: Infrastructure & DevOps Specialist
-author_image: "images/author/author-bg-black.png"
+author_image: "images/author/author-bg-white.png"
 date: "Apr. 5th, 2026"
 comments: Interactive tool
+publication_status: ready
 category_label: Shell
 group: shell
 family: shell
@@ -18,7 +19,17 @@ intro: >-
 tags:
     - Shell
     - chmod
-    - Linux
     - Permissions
-    - Filesystem
-    - Sysadmin
+related_links:
+    - links-title: Generate SSH Shell
+      links-label: InfraStack tool
+      links-description: Open the related InfraStack Generate SSH Shell workspace.
+      links-url: https://infrastack.my/tools/shell/generate-ssh-shell
+      links-embed: https://infrastack.my/embed/shell/generate-ssh-shell
+      links-icon: bi-terminal
+    - links-title: chmod Calculator
+      links-label: Simplified Tools
+      links-description: Open the embeddable Simplified Tools chmod Calculator workspace.
+      links-url: https://www.simplified.tools/calculate_chmod
+      links-embed: https://www.simplified.tools/embed/calculate_chmod?share=embed
+      links-icon: bi-shield-lock

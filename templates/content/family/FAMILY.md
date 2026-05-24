@@ -4,7 +4,7 @@ This file governs reusable family baselines under `templates/content/family/` an
 
 Family sources guide composition. They do not replace final tool packages.
 
-After a family baseline is promoted, that family source is the source of truth for future family application. Reapplying a family to existing tools requires structural, visual, and runtime parity with the family workspace source, proven against the final runtime packages. Namespace markers, source comments, copied support text, family demo screenshots, `_tool.sh audit-namespace`, or `_tool.sh validate` by itself do not count.
+After a family baseline is promoted, that family source is the source of truth for future family application. Reapplying a family to existing tools requires structural, visual, and runtime parity with the family workspace source, proven against the final runtime packages. Namespace markers, source comments, copied support text, family demo screenshots, `family-package.sh namespace audit`, or `tool-package.sh validate` by itself do not count.
 
 ## Local Active Families
 
@@ -17,13 +17,61 @@ After a family baseline is promoted, that family source is the source of truth f
 ## Local Family Rules
 
 - Each active family should own `FAMILY.md`, `README.md`, `manifest.yml`, and `workspace/`.
+- Shared family structure can be sourced from `templates/content/family/_base/` when the same workspace shape applies across multiple families.
 - Family workspace sections belong under `templates/content/family/<family>/workspace/`.
+- Family-level `source/` folders are traceability snapshots only. Do not audit this as active source; audit `workspace/manifest.yml` and the section folders it composes.
 - Shared content sections belong under `templates/content/main/sections/`.
 - Do not create duplicated `sections/` folders inside family baselines.
+- Do not duplicate `_base` sections into multiple family-specific variants just to change input labels, button text, helper copy, icons, or stacked-versus-inline layout. Use the `_base` preference map first, then adapt the one canonical section source.
+- A family workspace manifest may declare `workspace_namespaces` to compose ordered source blocks from both `family._base.workspace.<section>` and `family.<family>.workspace.<section>`.
+- When `workspace_namespaces` points at `_base`, the active family should not keep redundant local copies of those `_base` section folders.
 - Do not make final tools depend on family files at runtime unless a shared include/import system is deliberately implemented.
 - Final tools still live under `templates/content/tools/<category>/<tool-slug>/`.
 - Prompt and command support examples inherit centered title-case terminal strip titles from the shared main content sections.
 - Support markdown typography inherits the cross-family standard from `templates/content/main/MAIN.md`: bullets stay left-aligned, markdown-card list items inherit parent list size and line height, and inline code chips use `0.875em`.
+- Font usage inherits the platform two-font standard: `Nunito` for headings and titles, `Roboto` for body, navigation, labels, controls, tables, tool UI, and support copy. Do not introduce other proportional font families in family sources or generated tools.
+
+## Base Workspace Foundation
+
+`templates/content/family/_base/` is a shared source foundation, not a public runtime family.
+
+Use `_base` when a section shape is common across families and only the meaning changes. `_base` owns shape; the active family owns state, behavior, output meaning, and validation; the final tool owns provider or domain labels.
+
+For input briefs, use the single canonical `_base/workspace/01_input-brief` section. Select the applied input preference from `_base/workspace/manifest.yml` using this order:
+
+1. explicit user-requested family
+2. existing tool `family` metadata
+3. dominant behavior inferred from the request
+4. category fallback
+5. generic default
+
+The preference selects layout, input kind, label, helper chip, helper copy, primary action, secondary action, and Bootstrap Icon classes. It does not create a separate section source.
+
+When a preference sets `secondary_action.required: false`, remove the secondary button during family or tool adaptation unless the final tool implements a real reset/default action.
+
+For basic settings, use the single canonical `_base/workspace/02_basic-settings` section. Basic settings are the high-frequency controls immediately after the primary input, such as presets, regions, scopes, shell modes, request options, row limits, and visible assumptions.
+
+All basic setting controls must live inside cards. Dropdowns, native selects, radio-card options, text inputs, textareas, numeric fields, placeholders, toggles, helper chips, and example inputs must have explicit CSS in the applied family or runtime package. Mobile layout must collapse to one column, keep controls full width, keep dropdowns within the viewport, and preserve tappable control height.
+
+For custom settings, use the single canonical `_base/workspace/03_custom-settings` section for optional non-primary controls. Existing family and runtime compatibility markers may still be named `03_advanced-settings` or shell `03_advanced-setting`, but the visible panel label must be `Custom`, not `Advanced`.
+
+Custom settings must use a compact disclosure panel with a chevron-in-circle indicator. Controls inside the panel must remain compact and card-contained. Use inline CSS dropdowns instead of browser-native select popups, simple radio inputs instead of radio cards, simple checkboxes instead of custom switch cards, spacing instead of internal divider lines, and dashed information rows for long helper text. Dropdowns, simple radio options, checkboxes, text inputs, textareas, numeric fields, placeholders, helper chips, and placeholder examples must have explicit CSS in the applied family or runtime package. Keep each setting to one outer card with no nested card around the input, unit, prefix, quantity value, or placeholder. Use one column by default, auto-fit compact columns only when the selected family preference requires it, and allow multiple compact rows when the family has many real controls. Mobile layout must collapse to one column, keep controls full width, keep dropdowns within the viewport, and preserve tappable control height.
+
+For result summaries, use the single canonical `_base/workspace/05_result-summary` section when the result surface uses summary cards, score cards, status cards, run-rate cards, scan result cards, shell mode cards, or assessment count cards. The summary must sit inside a card, keep all text inside its card, align the left primary result card and right summary card, and keep metric cards aligned across rows. Outlined pill chips must include icon slots and use state tones for success, warning, error, baseline, ready, and need-work. Architecture, calculate, and scanning summaries may use a centered ring inside the left primary card with the primary-result kicker above the ring and the result title, copy, and outcome chip centered below it. Shell summaries may adapt that left primary card into compact mode text such as `chmod mode 0777`; do not place a full direct command there. Estimate summaries should use the right summary card for the title, short summary, and at least four chips including updated time. Result shell colors must follow family/category/provider tokens; warning state should not turn the whole card orange. Mobile layout must collapse to one column without clipping values or chips.
+
+For detailed table outputs, use the single canonical `_base/workspace/07_table-output` section when a family needs tabbed generated output, table frames, row actions, empty rows, notes, findings, assumptions, warnings, risks, pillars, command fields, or JSON. The output shell must have at least five top-level tab sections, the tab section must align right on desktop, the first tab must be a table, and the final tab must be JSON. The fifth tab/panel is an optional extra placeholder section for families that need one more output area before JSON. Every tab button must be rounded and carry an icon. Each section must have a visible title inside the section card with output below it. Tables should use compact meaningful columns, not wide spreadsheet dumps. The first column must be centered `#`, middle columns must use logical start alignment, and the final column must be a centered sticky icon-only copy action whenever a multi-column table scrolls horizontally. Generated row text must be clamped to 2-3 lines. Empty states must remain inside the table or output frame. Mobile layout must preserve readable tabs, horizontal table scrolling when needed, and readable JSON.
+
+## Family Visual Contracts
+
+Family visual contracts sit above `_base/workspace` and below final tool packages.
+
+Use a family visual contract when the shared `_base` section shape is not enough to describe a family-specific visual or model agreement. `_base` owns common shell, input, settings, summary frame, toolbar, table, and JSON restore shapes. A family visual contract owns the family-specific visual state, model primitives, render primitives, and validation boundary.
+
+For calculate, `templates/content/family/calculate/workspace/04_visual-contract/` owns normalized estimate visual state, metric cards, driver cards, formula rows, rings, charts, and result tones. It is optional for pure form-and-table calculators. Selected-item editing, details panels, and runtime inspector controls belong in an inspector section such as `04_selected-item` or a future dedicated visual inspector, not inside the visual contract.
+
+For scanning, `templates/content/family/scanning/workspace/04_visual-contract/` owns normalized scan visual state, posture rings, severity metrics, evidence cards, finding rows, coverage state, and scanner result tones. It is optional for pure target-input and table scanners. Selected finding, evidence detail, and runtime inspector behavior belong in `04_selected-item` or a future dedicated visual inspector, not inside the visual contract.
+
+For shell, `templates/content/family/shell/workspace/04_visual-contract/` owns normalized command visual state, command preview, token chips, option groups, warning tones, and operation rows. It is optional for pure form-and-command-output tools. Generated command source of truth stays in `04_result-text` or final tool model logic; the visual contract mirrors normalized command state and does not execute commands.
 
 ---
 
@@ -320,7 +368,7 @@ Complete content delivery uses `01_overview`, `02_technical-details`, `04_tips-p
 
 Applying a shared main content section to a final tool means applying its full section contract: `content.md` markup, `section.css` visual behavior, and `section.js` helper behavior when present. Final tools do not automatically load main section CSS or JavaScript. Copy or adapt required card frames, section title icons, heading divider lines, Technical Details subsection separators, row icons, typography, tables, lists, details/FAQ behavior, copy controls, citation styling, prompt terminals, and command terminals into the final package `custom.css` and `custom.js` unless a documented shared include exists.
 
-Use exactly one normal example section: `03_example-prompts` for architecture-family, prompt-driven, and preset-brief examples, or `09_example-commands` for shell, command-generator, runbook, scanner, or assessment examples that users copy as literal terminal commands. Use `10_references` for complete factual content delivery and when final tool content includes citations. Choose `08_acronyms` only for abbreviation expansion tables; choose `11_glossary` only for broader domain, command, or workflow terminology. Do not include both unless a deliberate exception is recorded. Substantial `Technical Details` sections must be 1500+ words, cite at least two official or source-of-truth websites or docs when they make technical claims, and use structured review aids such as bullets or tables when they clarify behavior. Factual `content.md` should carry at least three real references. Prompt and command terminal strip titles must stay centered and title case.
+Use exactly one normal example section: `03_example-prompts` for architecture-family, prompt-driven, and preset-brief examples, or `09_example-commands` for shell, command-generator, runbook, scanner, or assessment examples that users copy as literal terminal commands. Use `10_references` for complete factual content delivery and when final tool content includes citations. Choose `08_acronyms` only for abbreviation expansion tables; choose `11_glossary` only for broader domain, command, or workflow terminology. Do not include both unless a deliberate exception is recorded. Substantial `Technical Details` sections must be 1500+ words, cite at least two official or source-of-truth websites or docs when they make technical claims, and use structured review aids such as bullets or tables when they clarify behavior. Factual `content.md` should carry at least three real references. Reference URLs must not ship with hard `404`, retired, parked, or unrelated-redirect targets, and every cited source must be source-of-truth for the exact claim it supports. Prompt and command terminal strip titles must stay centered and title case.
 
 `templates/content/main/scaffold/` owns the package skeleton. `templates/content/main/sections/` owns content delivery. Do not substitute the scaffold for content section sources.
 
@@ -361,6 +409,8 @@ templates/content/family/<family>/workspace/01_<section-name>/
 └── section.js
 ```
 
+When a common section is sourced from `_base`, the family manifest should declare it through `workspace_namespaces` instead of copying that folder under the active family. Keep family-local workspace folders for family-specific contracts such as visual models, inspectors, parsers, or behavior that `_base` cannot own.
+
 `demo.html` is demo chrome plus a section preview. The demo chrome is not extracted runtime source: keep its page shell, icon stylesheet, `demo-title`, `demo-title-icon`, `demo-title-text`, and demo-only visibility controls local to the demo. Use a family-appropriate placeholder icon, and do not copy demo chrome into `page.html.twig`, final runtime packages, or namespace blocks.
 
 Do not create one folder per profile, archetype, or variant unless generator code actually needs separate files. Prefer compact `manifest.yml` data plus real workspace section source files.
@@ -373,8 +423,8 @@ Reapplication is strict and must be proven by a parity gate against the final ru
 
 - final tools must match the family source's section structure, visual rhythm, DOM pattern, implemented controls, output framing, export behavior, import behavior, and restore boundary where that behavior exists
 - the gate must inspect visible labels, control count and order, DOM hooks, CSS selectors and shape rules, JavaScript handlers, output tabs, export/import actions, normalized state behavior, support content section contracts, and model/export/import files when present
-- namespace markers, source markers, copied comments, copied support text, family demo screenshots, or `_tool.sh audit-namespace` output are not acceptance evidence
-- `_tool.sh validate` remains required for affected packages, but it is not sufficient unless it runs the relevant family parity gate
+- namespace markers, source markers, copied comments, copied support text, family demo screenshots, or `family-package.sh namespace audit` output are not acceptance evidence
+- `tool-package.sh validate` remains required for affected packages, but it is not sufficient without the relevant family parity gate
 - a reference tool is not exempt when it is part of the reapply scope; it must pass the same current family-source parity gate as every other target package
 - tool-specific adaptation is limited to domain labels, provider/category tokens, icons, examples, command or model logic, stable route paths, stable DOM IDs needed by existing behavior, and exported schema compatibility
 - every intentional divergence must be recorded in the task record, closeout, and `evidence/` when it affects validation or parity
@@ -402,7 +452,7 @@ Examples:
 ```text
 family.architecture.workspace.01_input-brief
 family.assessment.workspace.06_result-view
-family.calculate.workspace.07_table-export
+family.calculate.workspace.04_visual-contract
 main.content.03_example-prompts
 main.content.10_references
 ```
@@ -416,8 +466,8 @@ A namespace marker is not enough to prove a section was applied. Final package v
 Use:
 
 ```bash
-codex/bin/_tool.sh audit-namespace family.assessment.workspace.01_input-brief
-codex/bin/_tool.sh migrate-namespace family.assessment.workspace.01_input-brief --dry-run
+codex/bin/family-package.sh namespace audit family.assessment.workspace.01_input-brief
+codex/bin/family-package.sh namespace migrate family.assessment.workspace.01_input-brief --dry-run
 ```
 
 Migration apply mode remains blocked until the target blocks are marked and not customized.
@@ -448,6 +498,7 @@ The manifest should define:
 - description
 - status
 - required sections
+- `workspace_namespaces` when the family composes `_base` sections with family-owned sections
 - required output files
 - reference tool if available
 - generation rules
@@ -646,7 +697,7 @@ Examples:
 templates/content/family/scanning/
 ```
 
-Use `templates/content/family/scanning/workspace/` for scanner target setup, option panels, hidden-first result output, evidence tables, export controls, and JSON restore boundaries.
+Use `templates/content/family/scanning/workspace/` for scanner-specific visual/model contracts, selected-item inspection, and reusable scanner model-core sources. Use `templates/content/family/_base/workspace/` for common shell, target input, settings, result summary, output toolbar, table output, and JSON restore shape.
 
 The current working baseline reference is:
 
@@ -654,7 +705,7 @@ The current working baseline reference is:
 templates/content/tools/security/scan-web-security/
 ```
 
-Use `scan` as the family verb for new scanning tools. Reuse workflow grammar and structure, not web-header-specific wording.
+Use `scan` as the family verb for new scanning tools. Reuse workflow grammar and structure, not web-header-specific wording. Scanning workspace composition should be declared through `workspace_namespaces` instead of duplicating `_base` sections under scanning.
 
 ---
 
@@ -713,32 +764,36 @@ Examples:
 templates/content/family/shell/
 ```
 
-Use `templates/content/family/shell/workspace/` for shell command generator grammar and `templates/content/main/sections/content/` for shared content section structure.
+Use `templates/content/family/shell/workspace/` for shell-owned generated command grammar, `templates/content/family/_base/workspace/` for shared workspace shape, and `templates/content/main/sections/content/` for shared content section structure.
 
-Shell workspace sections are scoped as:
+Shell workspace composition is declared through `workspace_namespaces`:
 
 ```text
-templates/content/family/shell/workspace/
-├── 01_input-target/
-├── 02_basic-setting/
-├── 03_advanced-setting/
-├── 04_result-text/
-├── 05_score-card/
-├── 06_sort-card/
-└── 07_table/
+family._base.workspace.00_shell
+family._base.workspace.01_input-brief
+family._base.workspace.02_basic-settings
+family._base.workspace.03_custom-settings
+family.shell.workspace.04_visual-contract
+family.shell.workspace.04_result-text
+family._base.workspace.05_result-summary
+family._base.workspace.06_output-toolbar
+family._base.workspace.07_table-output
+family._base.workspace.08_json-restore
 ```
 
 Result-related shell family demos must stack before and after states vertically as two rows in one column.
 
-Shell workspace CSS and JavaScript are section-owned extracted sources. Keep each numbered `section.css` scoped to its section with the repeated minimal shell demo foundation, and keep each `section.js` as a source ownership map covering custom.js line ranges, DOM IDs, classes, variables, functions, and behaviors. Do not create root `workspace/custom.css` or `workspace/custom.js` snapshots, and do not put full custom runtime strings into shell section folders.
+Shell-generated command result text remains family-owned in `04_result-text` because `_base` does not own command generation, copyable command preview, or empty command output behavior. `04_visual-contract` is optional and mirrors normalized command state without becoming the command source of truth.
+
+Shell-owned CSS and JavaScript are section-owned extracted sources. Keep shell-owned `section.css` scoped to its section with the repeated minimal demo foundation, and keep each `section.js` as a source ownership map covering custom.js line ranges, DOM IDs, classes, variables, functions, and behaviors. Do not create root `workspace/custom.css` or `workspace/custom.js` snapshots, and do not put full custom runtime strings into shell section folders.
 
 The Netcat shell snapshot is marker-anchored for extraction under `templates/content/family/shell/baseline/source/`. Use `source:start/source:end family.shell.workspace.<section>` ranges from that snapshot before regenerating shell workspace sections. Final runtime packages must be checked against the family workspace source, not treated as complete because source markers exist. Family demos should render the extracted section snippets with dummy state, and placeholder replacement must keep `generate-netcat-shell-toolbar` as `__PREFIX__-toolbar` rather than corrupting it into a root-class placeholder.
 
-When reapplying shell to existing tools, apply all seven workspace sections to every shell runtime package in scope, including `generate-netcat-shell` when it is named. The accepted result is shell-family structural, visual, and runtime parity for the command builder, Basic and Custom panels, generated command, summary cards, Sort toolbar, tabs, operation table, warnings, JSON, exports, and restore imports where implemented, with only command-native differences preserved.
+When reapplying shell to existing tools, apply the composed workspace namespaces to every shell runtime package in scope, including `generate-netcat-shell` when it is named. The accepted result is structural, visual, and runtime parity with `_base` for common command-builder shape plus shell-family parity for generated command result text and optional visual command state, with only command-native differences preserved.
 
 The shell parity gate must check the final runtime package, not only the shell demo or snapshot:
 
-- visible Custom panel label is `Custom`; `03_advanced-setting` may remain only as the folder and namespace name
+- visible Custom panel label is `Custom`; legacy `03_advanced-setting` may remain only as a compatibility marker name
 - the Custom panel has no direct nested card frame inside the opened panel body
 - Sort options are exactly `ID`, `A-Z`, `Field`, `Value`, and `Length` unless an intentional command-native divergence is recorded
 - the output action set for current shell generators is exactly `Export PDF`, `Download CSV`, `Copy JSON`, `Download JSON`, and `Import JSON`
@@ -773,7 +828,7 @@ Examples:
 templates/content/family/calculate/
 ```
 
-Use `templates/content/family/calculate/workspace/` for calculate workspace grammar and `templates/content/main/sections/content/` for shared content section structure.
+Use `templates/content/family/calculate/workspace/` for calculate-specific workspace grammar, `templates/content/family/_base/workspace/` for shared workspace shape, and `templates/content/main/sections/content/` for shared content section structure.
 
 The current working baseline references are:
 
@@ -785,7 +840,7 @@ templates/content/tools/ibm/calculate-cost-ibm/
 
 Use the stabilized three-tool calculate grammar as the quality bar: estimate label or brief, preset settings, component cards, visible advanced assumptions, two-column result summary, architecture-style output toolbar, ID-first table sorting, tabbed output shell, JSON output, optional JSON restore, support-content tables that fit the content column, Example Prompts with paired `Copy prompt` controls, provider-native service replacement, and category/provider token adaptation.
 
-When a calculate tool is promoted as the baseline, full-copy its stabilized source into `templates/content/family/calculate/baseline/source/` for traceability, then extract reusable markup, CSS, and JavaScript into the matching section-owned workspace files. Do not keep root workspace `custom.css`, `custom.js`, or `demo.html.twig` files for the calculate family baseline.
+When a calculate tool is promoted as the baseline, full-copy its stabilized source into `templates/content/family/calculate/baseline/source/` for traceability, then extract reusable calculate-specific markup, CSS, JavaScript, and model contracts into matching calculate-owned workspace files. Common shell, input, settings, summary, toolbar, table, and JSON restore structure should be referenced through `workspace_namespaces` from `_base`, not copied into calculate. Do not keep root workspace `custom.css`, `custom.js`, or `demo.html.twig` files for the calculate family baseline.
 
 The reusable baseline remains `templates/content/family/calculate/`. Reuse workflow grammar and structure, not AWS, Azure, IBM Cloud, or other provider wording, color tokens, or pricing assumptions.
 
@@ -798,26 +853,29 @@ templates/content/family/calculate/
 └── workspace/
     ├── README.md
     ├── manifest.yml
-    ├── 01_input-brief/
+    ├── 04_visual-contract/
     │   ├── README.md
     │   ├── demo.html
+    │   ├── manifest.yml
+    │   ├── model-core.js
     │   ├── page.html.twig
     │   ├── section.css
     │   └── section.js
-    ├── 02_basic-settings/
-    │   └── ...
-    ├── 03_advanced-settings/
-    │   └── ...
     ├── 04_selected-item/
     │   └── ...
-    ├── 05_result-summary/
-    │   └── ...
-    ├── 06_result-view/
-    │   └── ...
-    ├── 07_table-export/
-    │   └── ...
-    └── 08_json-restore/
-        └── ...
+```
+
+Common calculate sections are declared in `workspace/manifest.yml` as `_base` namespaces:
+
+```text
+family._base.workspace.00_shell
+family._base.workspace.01_input-brief
+family._base.workspace.02_basic-settings
+family._base.workspace.03_custom-settings
+family._base.workspace.05_result-summary
+family._base.workspace.06_output-toolbar
+family._base.workspace.07_table-output
+family._base.workspace.08_json-restore
 ```
 
 ---

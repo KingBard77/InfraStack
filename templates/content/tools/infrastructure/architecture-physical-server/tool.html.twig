@@ -1,54 +1,73 @@
 {# tool.html.twig #}
+{# ns:start family._base.workspace.00_shell #}
 
 <div class="architecture-physical-server-tool" data-tool-slug="architecture-physical-server" data-tool-category="infrastructure" data-tool-family="architecture" data-tool-canonical="architecture_physical_server">
   <div class="tool-box">
-    {# ns:start family.architecture.workspace.01_input-brief #}
-    <div class="tool-shell tool-prompt-shell architecture-physical-server-prompt-shell" id="architecturePhysicalServerPromptShell" data-section="architecture-prompt" data-root-selector=".architecture-physical-server-tool">
-      <div class="tool-main-row">
-        <label for="architecturePhysicalServerPrompt" class="tool-main-label">Architecture prompt</label>
-        <div class="tool-main-input-grid architecture-physical-server-main-input-grid">
-          <textarea
-            id="architecturePhysicalServerPrompt"
-            class="form-control architecture-physical-server-prompt"
-            rows="5"
-            placeholder="Describe racks, physical servers, hypervisor platform, storage, VLANs, monitoring, backup, power, cooling, and security."
-          >Create an on-premises infrastructure stack with 2 racks and 3 hypervisor nodes. Use Proxmox VE for cluster management, OpenStack for tenant workloads, Synology HA NAS for iSCSI and NFS storage, VLAN 10 management 10.0.10.0/24, VLAN 20 storage 10.0.20.0/24, VLAN 30 tenant 10.0.30.0/24, VLAN 40 backup 10.0.40.0/24, firewall, core switch, Zabbix, syslog, snapshots, offsite backup, redundant power, cooling, IPMI, and physical security.</textarea>
+    {# ns:start family._base.workspace.01_input-brief #}
+    <div class="tool-shell tool-prompt-shell architecture-physical-server-prompt-shell architecture-physical-server-input-card" id="architecturePhysicalServerPromptShell" data-section="architecture-prompt" data-root-selector=".architecture-physical-server-tool">
+      <div class="architecture-physical-server-input-brief" data-input-layout="stacked">
+        <div class="architecture-physical-server-input-row">
+          <div class="architecture-physical-server-input-label-wrap">
+            <label for="architecturePhysicalServerPrompt" class="tool-main-label architecture-physical-server-input-label">Architecture prompt</label>
+            <span class="architecture-physical-server-helper-chip" title="Describe the architecture prompt boundary." aria-label="Describe the architecture prompt boundary.">i</span>
+          </div>
+          <div class="tool-main-input-grid architecture-physical-server-main-input-grid architecture-physical-server-input-stack">
+            <textarea
+              id="architecturePhysicalServerPrompt"
+              class="form-control architecture-physical-server-prompt architecture-physical-server-input-control"
+              rows="7"
+              placeholder="Describe racks, physical servers, hypervisor platform, storage, VLANs, monitoring, backup, power, cooling, and security."
+            >Create an on-premises infrastructure stack with 2 racks and 3 hypervisor nodes. Use Proxmox VE for cluster management, OpenStack for tenant workloads, Synology HA NAS for iSCSI and NFS storage, VLAN 10 management 10.0.10.0/24, VLAN 20 storage 10.0.20.0/24, VLAN 30 tenant 10.0.30.0/24, VLAN 40 backup 10.0.40.0/24, firewall, core switch, Zabbix, syslog, snapshots, offsite backup, redundant power, cooling, IPMI, and physical security.</textarea>
+            <div class="architecture-physical-server-input-error d-none" id="architecturePhysicalServerInputError" role="alert"></div>
+          </div>
+        </div>
+
+        <div class="architecture-physical-server-main-actions architecture-physical-server-input-actions">
+          <button
+            type="button"
+            class="tool-action-btn tool-action-btn-primary architecture-physical-server-action-btn architecture-physical-server-action-btn-primary"
+            id="architecturePhysicalServerGenerate"
+          >
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span data-button-label>Generate Diagram</span>
+          </button>
+          <button
+            type="button"
+            class="tool-action-btn tool-action-btn-secondary architecture-physical-server-action-btn architecture-physical-server-action-btn-secondary"
+            id="architecturePhysicalServerReset"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            <span data-button-label>Load Default</span>
+          </button>
+        </div>
+
+        <div class="architecture-physical-server-input-helper-card">
+          <span class="architecture-physical-server-input-hint">Use one brief with rack count, hypervisor nodes, virtualization platform, shared storage, segmented networks, monitoring, backup, and facility controls. Preset selection or Generate Diagram creates the editable workspace.</span>
+          <span class="architecture-physical-server-helper-chip architecture-physical-server-helper-chip-inline" title="Describe the architecture prompt boundary." aria-label="Describe the architecture prompt boundary.">i</span>
         </div>
       </div>
-
-      <p class="tool-control-hint architecture-physical-server-prompt-hint">
-        Use one brief with rack count, hypervisor nodes, virtualization platform, shared storage, segmented networks, monitoring, backup, and facility controls. Preset selection or Generate Diagram creates the editable workspace.
-      </p>
-
-      <div class="architecture-physical-server-main-actions">
-        <button type="button" class="tool-action-btn tool-action-btn-primary" id="architecturePhysicalServerGenerate">
-          <i class="bi bi-stars" aria-hidden="true"></i>
-          <span data-button-label>Generate Diagram</span>
-        </button>
-        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architecturePhysicalServerReset">
-          <span data-button-label>Load Default</span>
-        </button>
-      </div>
     </div>
-    {# ns:end family.architecture.workspace.01_input-brief #}
+    {# ns:end family._base.workspace.01_input-brief #}
 
     <div class="tool-error-state d-none" id="architecturePhysicalServerErrorState" hidden></div>
 
-    <section class="tool-shell tool-inspector-shell" id="architecturePhysicalServerConfigShell" aria-labelledby="architecturePhysicalServerConfigTitle">
-      <div class="tool-shell-header">
-        <div>
-          <h2 class="tool-shell-title" id="architecturePhysicalServerConfigTitle">Basic</h2>
-        </div>
-      </div>
+    <section class="tool-shell tool-inspector-shell" id="architecturePhysicalServerConfigShell" aria-label="Configuration">
 
       <div class="tool-shell-body">
-        {# ns:start family.architecture.workspace.02_basic-settings #}
-        <div class="tool-inspector-section architecture-physical-server-basic-section" id="architecturePhysicalServerBasicConfig" data-section="basic-tab" data-root-selector=".architecture-physical-server-tool">
+        {# ns:start family._base.workspace.02_basic-settings #}
+        <div class="tool-inspector-section architecture-physical-server-basic-section architecture-physical-server-basic-card" id="architecturePhysicalServerBasicConfig" data-section="basic-tab" data-root-selector=".architecture-physical-server-tool">
+
+          <div class="architecture-physical-server-example-card">
+            <span class="architecture-physical-server-example-label">Example architecture settings</span>
+            <strong class="architecture-physical-server-example-value">On-prem private cloud, 2 racks, 6 hypervisor nodes</strong>
+            <span class="architecture-physical-server-example-helper">Region, zone count, and preset should change the generated model and exported JSON.</span>
+          </div>
+
           <div class="architecture-physical-server-basic-grid">
-            <div class="architecture-physical-server-control-stack">
-              <label class="tool-control-label" for="architecturePhysicalServerPreset">Preset</label>
+            <div class="architecture-physical-server-control-stack architecture-physical-server-setting-card">
+              <label class="tool-control-label architecture-physical-server-setting-label" for="architecturePhysicalServerPreset">Preset <span class="architecture-physical-server-helper-chip" title="Choose a starting preset that updates the visible controls and generated output." aria-label="Choose a starting preset that updates the visible controls and generated output.">i</span></label>
               <div class="architecture-physical-server-select-wrap">
-                <select id="architecturePhysicalServerPreset" class="form-select architecture-physical-server-select">
+                <select id="architecturePhysicalServerPreset" class="form-select architecture-physical-server-select architecture-physical-server-native-select">
                   <option value="onprem-private-cloud" selected>On-Prem Private Cloud</option>
                   <option value="storage-backed-virtualization">Storage-Backed Virtualization</option>
                   <option value="backup-focused-cluster">Backup-Focused Cluster</option>
@@ -57,10 +76,10 @@
               </div>
             </div>
 
-            <div class="architecture-physical-server-control-stack">
-              <label class="tool-control-label" for="architecturePhysicalServerRackCount">Racks</label>
+            <div class="architecture-physical-server-control-stack architecture-physical-server-setting-card">
+              <label class="tool-control-label architecture-physical-server-setting-label" for="architecturePhysicalServerRackCount">Racks <span class="architecture-physical-server-helper-chip" title="Choose the rack count used by the physical layout assumptions." aria-label="Choose the rack count used by the physical layout assumptions.">i</span></label>
               <div class="architecture-physical-server-select-wrap">
-                <select id="architecturePhysicalServerRackCount" class="form-select architecture-physical-server-select">
+                <select id="architecturePhysicalServerRackCount" class="form-select architecture-physical-server-select architecture-physical-server-native-select">
                   <option value="1">1 rack</option>
                   <option value="2" selected>2 racks</option>
                   <option value="3">3 racks</option>
@@ -69,10 +88,10 @@
               </div>
             </div>
 
-            <div class="architecture-physical-server-control-stack">
-              <label class="tool-control-label" for="architecturePhysicalServerHypervisorCount">Hypervisor nodes</label>
+            <div class="architecture-physical-server-control-stack architecture-physical-server-setting-card">
+              <label class="tool-control-label architecture-physical-server-setting-label" for="architecturePhysicalServerHypervisorCount">Hypervisor nodes <span class="architecture-physical-server-helper-chip" title="Choose the hypervisor node count used by the physical layout assumptions." aria-label="Choose the hypervisor node count used by the physical layout assumptions.">i</span></label>
               <div class="architecture-physical-server-select-wrap">
-                <select id="architecturePhysicalServerHypervisorCount" class="form-select architecture-physical-server-select">
+                <select id="architecturePhysicalServerHypervisorCount" class="form-select architecture-physical-server-select architecture-physical-server-native-select">
                   <option value="1">1 node</option>
                   <option value="2">2 nodes</option>
                   <option value="3" selected>3 nodes</option>
@@ -82,16 +101,16 @@
                 </select>
               </div>
             </div>
-            <p class="tool-control-hint" id="architecturePhysicalServerPresetDescription">Proxmox VE, OpenStack, Synology HA storage, segmented VLANs, monitoring, backup, and redundant facility controls.</p>
+            <p class="tool-control-hint architecture-physical-server-setting-hint" id="architecturePhysicalServerPresetDescription">Proxmox VE, OpenStack, Synology HA storage, segmented VLANs, monitoring, backup, and redundant facility controls.</p>
           </div>
         </div>
-        {# ns:end family.architecture.workspace.02_basic-settings #}
+        {# ns:end family._base.workspace.02_basic-settings #}
 
-        {# ns:start family.architecture.workspace.03_advanced-settings #}
-        <details class="architecture-physical-server-custom-panel" id="architecturePhysicalServerCustomControls" data-section="custom-tab" data-root-selector=".architecture-physical-server-tool">
+        {# ns:start family._base.workspace.03_custom-settings #}
+        <details class="architecture-physical-server-custom-panel" data-custom-layout="tabbed_two_column" id="architecturePhysicalServerCustomControls" data-section="custom-tab" data-root-selector=".architecture-physical-server-tool">
           <summary class="architecture-physical-server-custom-panel-summary">
             <span>Custom</span>
-            <i class="bi bi-chevron-down" aria-hidden="true"></i>
+              <span class="architecture-physical-server-custom-arrow-slot" aria-hidden="true"></span>
           </summary>
 
           <div class="architecture-physical-server-custom-panel-body">
@@ -105,48 +124,163 @@
             <div class="tool-inspector-section architecture-physical-server-config-panel active" id="architecturePhysicalServerPlatformPanel" data-config-panel role="tabpanel" aria-labelledby="architecturePhysicalServerPlatformTab">
               <div class="architecture-physical-server-config-grid">
                 <div class="architecture-physical-server-control-stack">
-                  <label class="tool-control-label" for="architecturePhysicalServerPlatform">Virtualization platform</label>
-                  <select id="architecturePhysicalServerPlatform" class="form-select">
-                    <option value="proxmox-openstack" selected>Proxmox + OpenStack</option>
-                    <option value="proxmox">Proxmox VE</option>
-                    <option value="openstack">OpenStack</option>
-                    <option value="vmware">VMware</option>
-                    <option value="mixed">Mixed platform</option>
-                  </select>
+                  <label class="tool-control-label" for="architecturePhysicalServerPlatform">Virtualization platform <span class="architecture-physical-server-helper-chip architecture-physical-server-custom-helper-chip" title="Tune virtualization platform before regenerating the diagram." aria-label="Tune virtualization platform before regenerating the diagram.">i</span></label>
+                  <input type="hidden" id="architecturePhysicalServerPlatform" value="proxmox-openstack">
+
+                  <details class="architecture-physical-server-custom-dropdown" data-custom-dropdown-for="architecturePhysicalServerPlatform">
+                    <summary class="architecture-physical-server-custom-dropdown-summary">
+                      <span data-custom-dropdown-label>Proxmox + OpenStack</span>
+                        <span class="architecture-physical-server-custom-arrow-slot" aria-hidden="true"></span>
+                    </summary>
+
+                    <div class="architecture-physical-server-custom-dropdown-menu" role="listbox" aria-label="Custom option">
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option active"
+                        data-custom-dropdown-value="proxmox-openstack"
+                        role="option"
+                        aria-selected="true"
+                      >Proxmox + OpenStack</button>
+
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option"
+                        data-custom-dropdown-value="proxmox"
+                        role="option"
+                        aria-selected="false"
+                      >Proxmox VE</button>
+
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option"
+                        data-custom-dropdown-value="openstack"
+                        role="option"
+                        aria-selected="false"
+                      >OpenStack</button>
+
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option"
+                        data-custom-dropdown-value="vmware"
+                        role="option"
+                        aria-selected="false"
+                      >VMware</button>
+
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option"
+                        data-custom-dropdown-value="mixed"
+                        role="option"
+                        aria-selected="false"
+                      >Mixed platform</button>
+                    </div>
+                  </details>
                 </div>
 
                 <div class="architecture-physical-server-control-stack">
-                  <label class="tool-control-label" for="architecturePhysicalServerStorageModel">Storage model</label>
-                  <select id="architecturePhysicalServerStorageModel" class="form-select">
-                    <option value="synology-ha" selected>Synology HA NAS</option>
-                    <option value="san-nas">SAN / NAS</option>
-                    <option value="local-raid">Local RAID / SSD</option>
-                    <option value="hybrid">Hybrid local + shared</option>
-                  </select>
+                  <label class="tool-control-label" for="architecturePhysicalServerStorageModel">Storage model <span class="architecture-physical-server-helper-chip architecture-physical-server-custom-helper-chip" title="Tune storage model before regenerating the diagram." aria-label="Tune storage model before regenerating the diagram.">i</span></label>
+                  <input type="hidden" id="architecturePhysicalServerStorageModel" value="synology-ha">
+
+                  <details class="architecture-physical-server-custom-dropdown" data-custom-dropdown-for="architecturePhysicalServerStorageModel">
+                    <summary class="architecture-physical-server-custom-dropdown-summary">
+                      <span data-custom-dropdown-label>Synology HA NAS</span>
+                        <span class="architecture-physical-server-custom-arrow-slot" aria-hidden="true"></span>
+                    </summary>
+
+                    <div class="architecture-physical-server-custom-dropdown-menu" role="listbox" aria-label="Custom option">
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option active"
+                        data-custom-dropdown-value="synology-ha"
+                        role="option"
+                        aria-selected="true"
+                      >Synology HA NAS</button>
+
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option"
+                        data-custom-dropdown-value="san-nas"
+                        role="option"
+                        aria-selected="false"
+                      >SAN / NAS</button>
+
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option"
+                        data-custom-dropdown-value="local-raid"
+                        role="option"
+                        aria-selected="false"
+                      >Local RAID / SSD</button>
+
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option"
+                        data-custom-dropdown-value="hybrid"
+                        role="option"
+                        aria-selected="false"
+                      >Hybrid local + shared</button>
+                    </div>
+                  </details>
                 </div>
 
                 <div class="architecture-physical-server-control-stack">
-                  <label class="tool-control-label" for="architecturePhysicalServerNetworkMode">Network pattern</label>
-                  <select id="architecturePhysicalServerNetworkMode" class="form-select">
-                    <option value="segmented-vlans" selected>Segmented VLANs</option>
-                    <option value="dual-switch-ha">Dual-switch HA</option>
-                    <option value="dmz-edge">DMZ edge stack</option>
-                    <option value="flat-lab">Flat lab network</option>
-                  </select>
+                  <label class="tool-control-label" for="architecturePhysicalServerNetworkMode">Network pattern <span class="architecture-physical-server-helper-chip architecture-physical-server-custom-helper-chip" title="Tune network pattern before regenerating the diagram." aria-label="Tune network pattern before regenerating the diagram.">i</span></label>
+                  <input type="hidden" id="architecturePhysicalServerNetworkMode" value="segmented-vlans">
+
+                  <details class="architecture-physical-server-custom-dropdown" data-custom-dropdown-for="architecturePhysicalServerNetworkMode">
+                    <summary class="architecture-physical-server-custom-dropdown-summary">
+                      <span data-custom-dropdown-label>Segmented VLANs</span>
+                        <span class="architecture-physical-server-custom-arrow-slot" aria-hidden="true"></span>
+                    </summary>
+
+                    <div class="architecture-physical-server-custom-dropdown-menu" role="listbox" aria-label="Custom option">
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option active"
+                        data-custom-dropdown-value="segmented-vlans"
+                        role="option"
+                        aria-selected="true"
+                      >Segmented VLANs</button>
+
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option"
+                        data-custom-dropdown-value="dual-switch-ha"
+                        role="option"
+                        aria-selected="false"
+                      >Dual-switch HA</button>
+
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option"
+                        data-custom-dropdown-value="dmz-edge"
+                        role="option"
+                        aria-selected="false"
+                      >DMZ edge stack</button>
+
+                      <button
+                        type="button"
+                        class="architecture-physical-server-custom-dropdown-option"
+                        data-custom-dropdown-value="flat-lab"
+                        role="option"
+                        aria-selected="false"
+                      >Flat lab network</button>
+                    </div>
+                  </details>
                 </div>
 
                 <div class="architecture-physical-server-control-stack">
-                  <label class="tool-control-label" for="architecturePhysicalServerServerModel">Server model</label>
+                  <label class="tool-control-label" for="architecturePhysicalServerServerModel">Server model <span class="architecture-physical-server-helper-chip architecture-physical-server-custom-helper-chip" title="Tune server model before regenerating the diagram." aria-label="Tune server model before regenerating the diagram.">i</span></label>
                   <input type="text" id="architecturePhysicalServerServerModel" class="form-control" value="Dell PowerEdge R740xd">
                 </div>
 
                 <div class="architecture-physical-server-control-stack">
-                  <label class="tool-control-label" for="architecturePhysicalServerStoragePlatform">Storage platform</label>
+                  <label class="tool-control-label" for="architecturePhysicalServerStoragePlatform">Storage platform <span class="architecture-physical-server-helper-chip architecture-physical-server-custom-helper-chip" title="Tune storage platform before regenerating the diagram." aria-label="Tune storage platform before regenerating the diagram.">i</span></label>
                   <input type="text" id="architecturePhysicalServerStoragePlatform" class="form-control" value="Synology NAS Cluster">
                 </div>
 
                 <div class="architecture-physical-server-control-stack">
-                  <label class="tool-control-label" for="architecturePhysicalServerMgmtTool">Management plane</label>
+                  <label class="tool-control-label" for="architecturePhysicalServerMgmtTool">Management plane <span class="architecture-physical-server-helper-chip architecture-physical-server-custom-helper-chip" title="Tune management plane before regenerating the diagram." aria-label="Tune management plane before regenerating the diagram.">i</span></label>
                   <input type="text" id="architecturePhysicalServerMgmtTool" class="form-control" value="Proxmox VE + OpenStack Horizon">
                 </div>
               </div>
@@ -155,23 +289,23 @@
             <div class="tool-inspector-section architecture-physical-server-config-panel" id="architecturePhysicalServerNetworkPanel" data-config-panel role="tabpanel" aria-labelledby="architecturePhysicalServerNetworkTab" hidden>
               <div class="architecture-physical-server-config-grid">
                 <div class="architecture-physical-server-control-stack">
-                  <label class="tool-control-label" for="architecturePhysicalServerManagementNetwork">Management network</label>
+                  <label class="tool-control-label" for="architecturePhysicalServerManagementNetwork">Management network <span class="architecture-physical-server-helper-chip architecture-physical-server-custom-helper-chip" title="Tune management network before regenerating the diagram." aria-label="Tune management network before regenerating the diagram.">i</span></label>
                   <input type="text" id="architecturePhysicalServerManagementNetwork" class="form-control" value="VLAN 10 - 10.0.10.0/24">
                 </div>
                 <div class="architecture-physical-server-control-stack">
-                  <label class="tool-control-label" for="architecturePhysicalServerStorageNetwork">Storage network</label>
+                  <label class="tool-control-label" for="architecturePhysicalServerStorageNetwork">Storage network <span class="architecture-physical-server-helper-chip architecture-physical-server-custom-helper-chip" title="Tune storage network before regenerating the diagram." aria-label="Tune storage network before regenerating the diagram.">i</span></label>
                   <input type="text" id="architecturePhysicalServerStorageNetwork" class="form-control" value="VLAN 20 - 10.0.20.0/24">
                 </div>
                 <div class="architecture-physical-server-control-stack">
-                  <label class="tool-control-label" for="architecturePhysicalServerTenantNetwork">Tenant / VM network</label>
+                  <label class="tool-control-label" for="architecturePhysicalServerTenantNetwork">Tenant / VM network <span class="architecture-physical-server-helper-chip architecture-physical-server-custom-helper-chip" title="Tune tenant / vm network before regenerating the diagram." aria-label="Tune tenant / vm network before regenerating the diagram.">i</span></label>
                   <input type="text" id="architecturePhysicalServerTenantNetwork" class="form-control" value="VLAN 30 - 10.0.30.0/24">
                 </div>
                 <div class="architecture-physical-server-control-stack">
-                  <label class="tool-control-label" for="architecturePhysicalServerBackupNetwork">Backup network</label>
+                  <label class="tool-control-label" for="architecturePhysicalServerBackupNetwork">Backup network <span class="architecture-physical-server-helper-chip architecture-physical-server-custom-helper-chip" title="Tune backup network before regenerating the diagram." aria-label="Tune backup network before regenerating the diagram.">i</span></label>
                   <input type="text" id="architecturePhysicalServerBackupNetwork" class="form-control" value="VLAN 40 - 10.0.40.0/24">
                 </div>
                 <div class="architecture-physical-server-control-stack architecture-physical-server-wide-control">
-                  <label class="tool-control-label" for="architecturePhysicalServerNetworkNotes">Network notes</label>
+                  <label class="tool-control-label" for="architecturePhysicalServerNetworkNotes">Network notes <span class="architecture-physical-server-helper-chip architecture-physical-server-custom-helper-chip" title="Tune network notes before regenerating the diagram." aria-label="Tune network notes before regenerating the diagram.">i</span></label>
                   <textarea id="architecturePhysicalServerNetworkNotes" class="form-control architecture-physical-server-note-input">Router / gateway, firewall, core switch, separated management, storage, tenant, and backup traffic.</textarea>
                 </div>
               </div>
@@ -236,7 +370,7 @@
             </div>
           </div>
         </details>
-        {# ns:end family.architecture.workspace.03_advanced-settings #}
+        {# ns:end family._base.workspace.03_custom-settings #}
 
         {# ns:start family.architecture.workspace.04_selected-item #}
         <div class="tool-inspector-section architecture-physical-server-selected-section" id="architecturePhysicalServerSelectedShell" data-section="selected-item" data-root-selector=".architecture-physical-server-tool">
@@ -296,7 +430,7 @@
     </section>
 
     <section class="tool-shell tool-stage-shell architecture-physical-server-stage-shell" id="architecturePhysicalServerStageShell" data-section="diagram-buttons" data-root-selector=".architecture-physical-server-tool" aria-labelledby="architecturePhysicalServerStageTitle">
-      {# ns:start family.architecture.workspace.05_result-text #}
+      {# ns:start family.architecture.workspace.04_visual-contract #}
       <header class="tool-shell-header architecture-physical-server-stage-header">
         <div class="architecture-physical-server-stage-heading">
           <h2 class="tool-shell-title" id="architecturePhysicalServerStageTitle">Physical Server Architecture</h2>
@@ -304,9 +438,9 @@
         </div>
         <div class="architecture-physical-server-stage-meta" id="architecturePhysicalServerStageMeta"></div>
       </header>
-      {# ns:end family.architecture.workspace.05_result-text #}
+      {# ns:end family.architecture.workspace.04_visual-contract #}
 
-      {# ns:start family.architecture.workspace.06_result-diagram #}
+      {# ns:start family.architecture.workspace.04_visual-contract #}
       <div class="tool-stage-toolbar">
         <div class="architecture-physical-server-stage-toolbar-actions">
           <div class="architecture-physical-server-zoom-control" id="architecturePhysicalServerZoomControl">
@@ -321,7 +455,7 @@
           <button type="button" class="architecture-physical-server-icon-btn" id="architecturePhysicalServerHighlightAll" aria-label="Highlight entire diagram" title="Highlight entire diagram" aria-pressed="false"><i class="bi bi-bounding-box" aria-hidden="true"></i></button>
           <button type="button" class="architecture-physical-server-icon-btn" id="architecturePhysicalServerZoomHideUi" aria-label="Hide UI" title="Hide UI"><i class="bi bi-eye-slash" aria-hidden="true"></i><span class="architecture-physical-server-visually-hidden">Hide UI</span></button>
           <button type="button" class="architecture-physical-server-icon-btn" id="architecturePhysicalServerFullscreen" aria-label="Open fullscreen" title="Open fullscreen"><i class="bi bi-arrows-fullscreen" aria-hidden="true"></i></button>
-          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-physical-server-stage-toolbar-btn" id="architecturePhysicalServerResetLayout">Reset layout</button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-physical-server-stage-toolbar-btn" id="architecturePhysicalServerResetLayout" aria-label="Auto arrange layout" title="Auto arrange layout">Auto layout</button>
         </div>
       </div>
 
@@ -357,7 +491,7 @@
           </div>
         </div>
       </div>
-      {# ns:end family.architecture.workspace.06_result-diagram #}
+      {# ns:end family.architecture.workspace.04_visual-contract #}
     </section>
 
     <section class="tool-shell tool-output-shell" id="architecturePhysicalServerOutputShell" data-section="table-export" data-root-selector=".architecture-physical-server-tool" aria-labelledby="architecturePhysicalServerOutputTitle">
@@ -366,19 +500,61 @@
 
       <div class="architecture-physical-server-output-content d-none" id="architecturePhysicalServerOutputContent">
         <div class="architecture-physical-server-output-shell">
-          {# ns:start family.architecture.workspace.07_score-card #}
+          {# ns:start family._base.workspace.05_result-summary #}
           <div class="architecture-physical-server-output-summary">
-            <div class="architecture-physical-server-output-status-card" data-section="score-card" data-root-selector=".architecture-physical-server-tool" aria-live="polite">
-              <div class="architecture-physical-server-score-card" id="architecturePhysicalServerOutputStatus">
-                <div class="architecture-physical-server-score-kicker">Architecture Score</div>
-                <div class="architecture-physical-server-score-summary" id="architecturePhysicalServerScoreSummary">Ready</div>
-                <div class="architecture-physical-server-score-detail" id="architecturePhysicalServerScoreDetail">Generate a physical server architecture to review the draft.</div>
+            <div class="architecture-physical-server-output-status-card" data-section="result-summary" data-root-selector=".architecture-physical-server-tool" aria-live="polite">
+              <div class="architecture-physical-server-score-card architecture-physical-server-result-summary" id="architecturePhysicalServerOutputStatus" data-result-tone="ready" data-result-layout="architecture_score">
+                <header class="architecture-physical-server-result-header" aria-label="Result summary header">
+                  <div class="architecture-physical-server-result-header-main">
+                    <span class="architecture-physical-server-result-header-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span>
+                    <div class="architecture-physical-server-result-header-copy">
+                      <h2 class="architecture-physical-server-result-header-title">Result Summary</h2>
+                      <p>Overview of the current architecture result and key metrics.</p>
+                    </div>
+                  </div>
+                  <div class="architecture-physical-server-result-header-meta" aria-label="Result summary status">
+                    <span class="architecture-physical-server-result-header-chip architecture-physical-server-result-chip architecture-physical-server-result-chip-ready"><span class="architecture-physical-server-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span>
+                    <span class="architecture-physical-server-result-header-chip architecture-physical-server-result-chip architecture-physical-server-result-chip-updated"><span class="architecture-physical-server-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>Ready</span></span>
+                  </div>
+                </header>
+                <div class="architecture-physical-server-result-hero-grid" aria-live="polite">
+                  <article class="architecture-physical-server-result-card architecture-physical-server-result-card-primary" data-result-visual="ring" aria-label="Primary result">
+                    <div class="architecture-physical-server-result-primary-heading"><div class="architecture-physical-server-result-kicker">Primary Result</div></div>
+                    <div class="architecture-physical-server-result-primary-visual" id="architecturePhysicalServerResultVisual" aria-label="Primary result visual">
+                      <div class="architecture-physical-server-result-ring" style="--architecture-physical-server-result-progress: 0deg; --progress-angle: 0deg; --architecture-physical-server-result-value-chars: 5;">
+                        <div class="architecture-physical-server-result-ring-center"><strong class="architecture-physical-server-result-ring-value">Ready</strong><span class="architecture-physical-server-result-ring-unit">/100</span></div>
+                      </div>
+                    </div>
+                    <div class="architecture-physical-server-result-visual-copy"><h3 class="architecture-physical-server-result-title architecture-physical-server-result-title-center">Visible result value</h3><p class="architecture-physical-server-result-copy architecture-physical-server-result-copy-center">Generate a diagram to review the current architecture outcome.</p></div>
+                    <span class="architecture-physical-server-result-card-divider" aria-hidden="true"></span>
+                    <div class="architecture-physical-server-result-chip-row architecture-physical-server-result-chip-row-center" aria-label="Primary result outcome"><span class="architecture-physical-server-result-chip architecture-physical-server-result-chip-outcome architecture-physical-server-result-chip-ready"><span class="architecture-physical-server-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>Model ready</span></span></div>
+                  </article>
+                  <article class="architecture-physical-server-result-card architecture-physical-server-result-card-summary" aria-label="Result summary">
+                    <div class="architecture-physical-server-result-summary-intro">
+                      <span class="architecture-physical-server-result-card-icon architecture-physical-server-result-card-icon-summary" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>
+                      <div class="architecture-physical-server-result-summary-copy"><div class="architecture-physical-server-result-kicker">Descriptive Summary</div><h3 class="architecture-physical-server-result-title">Filtered output set</h3><p class="architecture-physical-server-result-copy">The summary, table, JSON, and exports should all derive from the current normalized state.</p></div>
+                    </div>
+                    <span class="architecture-physical-server-result-card-divider" aria-hidden="true"></span>
+                    <div class="architecture-physical-server-result-chip-grid" aria-label="Result summary state">
+                      <span class="architecture-physical-server-result-chip architecture-physical-server-result-chip-ready"><span class="architecture-physical-server-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>Model source</span></span>
+                      <span class="architecture-physical-server-result-chip architecture-physical-server-result-chip-baseline"><span class="architecture-physical-server-result-chip-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span>Architecture family</span></span>
+                      <span class="architecture-physical-server-result-chip architecture-physical-server-result-chip-baseline"><span class="architecture-physical-server-result-chip-icon" aria-hidden="true"><i class="bi bi-folder2-open"></i></span><span>Result summary</span></span>
+                      <span class="architecture-physical-server-result-chip architecture-physical-server-result-chip-warning"><span class="architecture-physical-server-result-chip-icon" aria-hidden="true"><i class="bi bi-filter"></i></span><span>Generated state</span></span>
+                    </div>
+                  </article>
+                </div>
+                <div class="architecture-physical-server-result-metric-grid" aria-label="Result metrics">
+                  <section class="architecture-physical-server-result-metric-card architecture-physical-server-result-metric-success"><span class="architecture-physical-server-result-metric-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span class="architecture-physical-server-result-metric-label">Model</span><strong class="architecture-physical-server-result-metric-value">Generated</strong><span class="architecture-physical-server-result-metric-copy">Current architecture model state.</span><span class="architecture-physical-server-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-physical-server-result-metric-card architecture-physical-server-result-metric-info"><span class="architecture-physical-server-result-metric-icon" aria-hidden="true"><i class="bi bi-grid-3x3-gap"></i></span><span class="architecture-physical-server-result-metric-label">Inventory</span><strong class="architecture-physical-server-result-metric-value">3</strong><span class="architecture-physical-server-result-metric-copy">Modeled items in the generated inventory.</span><span class="architecture-physical-server-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-physical-server-result-metric-card architecture-physical-server-result-metric-accent-tone"><span class="architecture-physical-server-result-metric-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span class="architecture-physical-server-result-metric-label">Services</span><strong class="architecture-physical-server-result-metric-value">3</strong><span class="architecture-physical-server-result-metric-copy">Generated service and dependency groups.</span><span class="architecture-physical-server-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-physical-server-result-metric-card architecture-physical-server-result-metric-warning"><span class="architecture-physical-server-result-metric-icon" aria-hidden="true"><i class="bi bi-database"></i></span><span class="architecture-physical-server-result-metric-label">Risk</span><strong class="architecture-physical-server-result-metric-value">24</strong><span class="architecture-physical-server-result-metric-copy">Advisory risk signal for review.</span><span class="architecture-physical-server-result-metric-accent" aria-hidden="true"></span></section>
+                </div>
               </div>
             </div>
           </div>
-          {# ns:end family.architecture.workspace.07_score-card #}
+          {# ns:end family._base.workspace.05_result-summary #}
 
-          {# ns:start family.architecture.workspace.08_sort-card #}
+          {# ns:start family._base.workspace.06_output-toolbar #}
           <div class="architecture-physical-server-toolbar-shell">
             <div class="architecture-physical-server-toolbar tool-output-toolbar">
               <div class="architecture-physical-server-toolbar-main">
@@ -410,9 +586,9 @@
               </div>
             </div>
           </div>
-          {# ns:end family.architecture.workspace.08_sort-card #}
+          {# ns:end family._base.workspace.06_output-toolbar #}
 
-          {# ns:start family.architecture.workspace.09_result-table #}
+          {# ns:start family._base.workspace.07_table-output #}
           <div class="architecture-physical-server-tabs-shell">
             <div class="tool-tabs architecture-physical-server-output-tabs" role="tablist" aria-label="Generated architecture output">
               <button type="button" class="tool-tab-btn architecture-physical-server-tab-btn active" id="architecturePhysicalServerInventoryTab" data-output-tab-target="architecturePhysicalServerInventoryPanel" data-tab-target="architecturePhysicalServerInventoryPanel" role="tab" aria-controls="architecturePhysicalServerInventoryPanel" aria-selected="true" tabindex="0"><i class="bi bi-list-check" aria-hidden="true"></i><span>Technical Inventory</span></button>
@@ -504,17 +680,28 @@
         </div>
 
         <div class="tool-tab-panel architecture-physical-server-tab-panel" id="architecturePhysicalServerJsonPanel" data-output-panel role="tabpanel" aria-labelledby="architecturePhysicalServerJsonTab" hidden>
-          <div class="tool-json-shell">
-            <div class="architecture-physical-server-json-header">JSON Output</div>
-            <pre class="architecture-physical-server-json-code" id="architecturePhysicalServerJsonOutput"></pre>
-          </div>
+                  {# ns:start family._base.workspace.08_json-restore #}
+                  <div class="architecture-physical-server-json-restore-shell" id="architecturePhysicalServerJsonRestoreShell">
+          <section class="architecture-physical-server-json-card tool-json-panel" aria-label="Architecture JSON model and restore state">
+            <div class="architecture-physical-server-json-head tool-json-head">
+              <div class="architecture-physical-server-json-title-wrap">
+                <span class="architecture-physical-server-json-title tool-json-title">JSON Output</span>
+                <span class="architecture-physical-server-json-helper">Exported model state should include diagram components, layout edits, selected items, and output data.</span>
+              </div>
+              <span class="architecture-physical-server-json-status is-hidden" id="architecturePhysicalServerJsonRestoreStatus" role="status" aria-live="polite"></span>
+            </div>
+            <div class="architecture-physical-server-json-empty is-hidden" id="architecturePhysicalServerJsonRestoreEmpty">Generate a diagram before exporting architecture JSON.</div>
+            <pre class="architecture-physical-server-json-output tool-json-output"><code id="architecturePhysicalServerJsonOutput"></code></pre>
+          </section>
         </div>
+                  {# ns:end family._base.workspace.08_json-restore #}
         </div>
-          {# ns:end family.architecture.workspace.09_result-table #}
+          {# ns:end family._base.workspace.07_table-output #}
         </div>
       </div>
-
-      <input type="file" id="architecturePhysicalServerImportJson" class="d-none" accept="application/json">
+      </div>
     </section>
+    <input type="file" id="architecturePhysicalServerImportJson" class="architecture-physical-server-import-input d-none" accept="application/json">
   </div>
 </div>
+{# ns:end family._base.workspace.00_shell #}

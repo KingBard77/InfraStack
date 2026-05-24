@@ -1,53 +1,72 @@
 {# tool.html.twig #}
+{# ns:start family._base.workspace.00_shell #}
 
 <div class="architecture-cloud-tmcloud-tool" data-tool-slug="architecture-cloud-tmcloud" data-tool-category="tmcloud" data-tool-family="architecture" data-tool-canonical="architecture_cloud_tmcloud">
   <div class="tool-box">
-    {# ns:start family.architecture.workspace.01_input-brief #}
-    <section class="tool-shell tool-prompt-shell architecture-cloud-tmcloud-prompt-shell" id="architectureCloudTmcloudPromptShell" data-section="architecture-prompt" data-root-selector=".architecture-cloud-tmcloud-tool" aria-label="TM Cloud Alpha architecture prompt">
-      <div class="tool-main-row">
-        <label for="architectureCloudTmcloudPrompt" class="tool-main-label">Architecture prompt</label>
-        <div class="tool-main-input-grid architecture-cloud-tmcloud-main-input-grid">
-          <textarea
-            id="architectureCloudTmcloudPrompt"
-            class="form-control architecture-cloud-tmcloud-prompt"
-            rows="5"
-            placeholder="Describe the TM Cloud Alpha VPC, region, availability zones, subnet tiers, ingress path, workload runtime, data services, security, and hybrid connectivity."
-          >Create a medium TM Cloud Alpha architecture across 3 availability zones. Use VPC CIDR 10.80.0.0/16 with public ingress subnet 10.80.0.0/24, private app subnet 10.80.10.0/24, and private data subnet 10.80.20.0/24. Add Cloud Alpha Edge, TM Cloud Alpha Load Balancer, security groups, network ACLs, Egress Gateway, IAM controls, key controls, Monitoring and Logs, VPC flow logs, environment group prod-app-env, and edge protected ingress.</textarea>
+    {# ns:start family._base.workspace.01_input-brief #}
+    <section class="tool-shell tool-prompt-shell architecture-cloud-tmcloud-prompt-shell architecture-cloud-tmcloud-input-card" id="architectureCloudTmcloudPromptShell" data-section="architecture-prompt" data-root-selector=".architecture-cloud-tmcloud-tool" aria-label="TM Cloud Alpha architecture prompt">
+      <div class="architecture-cloud-tmcloud-input-brief" data-input-layout="stacked">
+        <div class="architecture-cloud-tmcloud-input-row">
+          <div class="architecture-cloud-tmcloud-input-label-wrap">
+            <label for="architectureCloudTmcloudPrompt" class="tool-main-label architecture-cloud-tmcloud-input-label">Architecture prompt</label>
+            <span class="architecture-cloud-tmcloud-helper-chip" title="Describe the architecture prompt boundary." aria-label="Describe the architecture prompt boundary.">i</span>
+          </div>
+          <div class="tool-main-input-grid architecture-cloud-tmcloud-main-input-grid architecture-cloud-tmcloud-input-stack">
+            <textarea
+              id="architectureCloudTmcloudPrompt"
+              class="form-control architecture-cloud-tmcloud-prompt architecture-cloud-tmcloud-input-control"
+              rows="7"
+              placeholder="Describe the TM Cloud Alpha VPC, region, availability zones, subnet tiers, ingress path, workload runtime, data services, security, and hybrid connectivity."
+            >Create a medium TM Cloud Alpha architecture across 3 availability zones. Use VPC CIDR 10.80.0.0/16 with public ingress subnet 10.80.0.0/24, private app subnet 10.80.10.0/24, and private data subnet 10.80.20.0/24. Add Cloud Alpha Edge, TM Cloud Alpha Load Balancer, security groups, network ACLs, Egress Gateway, IAM controls, key controls, Monitoring and Logs, VPC flow logs, environment group prod-app-env, and edge protected ingress.</textarea>
+            <div class="architecture-cloud-tmcloud-input-error d-none" id="architectureCloudTmcloudInputError" role="alert"></div>
+          </div>
+        </div>
+
+        <div class="architecture-cloud-tmcloud-main-actions architecture-cloud-tmcloud-input-actions">
+          <button
+            type="button"
+            class="tool-action-btn tool-action-btn-primary architecture-cloud-tmcloud-action-btn architecture-cloud-tmcloud-action-btn-primary"
+            id="architectureCloudTmcloudGenerate"
+          >
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span data-button-label>Generate Architecture</span>
+          </button>
+          <button
+            type="button"
+            class="tool-action-btn tool-action-btn-secondary architecture-cloud-tmcloud-action-btn architecture-cloud-tmcloud-action-btn-secondary"
+            id="architectureCloudTmcloudReset"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            <span data-button-label>Load Default</span>
+          </button>
+        </div>
+
+        <div class="architecture-cloud-tmcloud-input-helper-card">
+          <span class="architecture-cloud-tmcloud-input-hint">Use one brief prompt with workload scale, availability zones, VPC CIDR, subnet tiers, ingress, workload runtime, managed services, security controls, operations, and hybrid connectivity. Preset selection or Generate Architecture creates the editable workspace.</span>
+          <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-helper-chip-inline" title="Describe the architecture prompt boundary." aria-label="Describe the architecture prompt boundary.">i</span>
         </div>
       </div>
-
-      <p class="tool-control-hint architecture-cloud-tmcloud-prompt-hint">
-        Use one brief prompt with workload scale, availability zones, VPC CIDR, subnet tiers, ingress, workload runtime, managed services, security controls, operations, and hybrid connectivity. Preset selection or Generate Architecture creates the editable workspace.
-      </p>
-
-      <div class="architecture-cloud-tmcloud-main-actions">
-        <button type="button" class="tool-action-btn tool-action-btn-primary" id="architectureCloudTmcloudGenerate">
-          <i class="bi bi-stars" aria-hidden="true"></i>
-          <span data-button-label>Generate Architecture</span>
-        </button>
-        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="architectureCloudTmcloudReset">
-          <span data-button-label>Load Default</span>
-        </button>
-      </div>
     </section>
-    {# ns:end family.architecture.workspace.01_input-brief #}
+    {# ns:end family._base.workspace.01_input-brief #}
 
     <div class="tool-error-state d-none" id="architectureCloudTmcloudErrorState" hidden></div>
 
-    <section class="tool-shell tool-inspector-shell" id="architectureCloudTmcloudConfigShell" aria-labelledby="architectureCloudTmcloudConfigTitle">
-      <div class="tool-shell-header">
-        <div>
-          <h2 class="tool-shell-title" id="architectureCloudTmcloudConfigTitle">Basic</h2>
-        </div>
-      </div>
+    <section class="tool-shell tool-inspector-shell" id="architectureCloudTmcloudConfigShell" aria-label="Configuration">
 
       <div class="tool-shell-body">
-        {# ns:start family.architecture.workspace.02_basic-settings #}
-        <div class="tool-inspector-section architecture-cloud-tmcloud-basic-section" id="architectureCloudTmcloudBasicConfig" data-section="basic-tab" data-root-selector=".architecture-cloud-tmcloud-tool">
+        {# ns:start family._base.workspace.02_basic-settings #}
+        <div class="tool-inspector-section architecture-cloud-tmcloud-basic-section architecture-cloud-tmcloud-basic-card" id="architectureCloudTmcloudBasicConfig" data-section="basic-tab" data-root-selector=".architecture-cloud-tmcloud-tool">
+
+          <div class="architecture-cloud-tmcloud-example-card">
+            <span class="architecture-cloud-tmcloud-example-label">Example architecture settings</span>
+            <strong class="architecture-cloud-tmcloud-example-value">Secure VPC app, medium, 2 availability zones</strong>
+            <span class="architecture-cloud-tmcloud-example-helper">Region, zone count, and preset should change the generated model and exported JSON.</span>
+          </div>
+
           <div class="architecture-cloud-tmcloud-basic-grid">
-            <div class="architecture-cloud-tmcloud-control-stack">
-              <label class="tool-control-label" for="architectureCloudTmcloudPreset">Preset</label>
-              <select id="architectureCloudTmcloudPreset" class="form-select">
+            <div class="architecture-cloud-tmcloud-control-stack architecture-cloud-tmcloud-setting-card">
+              <label class="tool-control-label architecture-cloud-tmcloud-setting-label" for="architectureCloudTmcloudPreset">Preset <span class="architecture-cloud-tmcloud-helper-chip" title="Choose a starting preset that updates the visible controls and generated output." aria-label="Choose a starting preset that updates the visible controls and generated output.">i</span></label>
+              <select id="architectureCloudTmcloudPreset" class="form-select architecture-cloud-tmcloud-native-select">
                 <option value="secure-vpc-app" selected>Secure VPC App</option>
                 <option value="container-platform">Container Platform</option>
                 <option value="data-services">Data Services</option>
@@ -55,33 +74,33 @@
               </select>
             </div>
 
-            <div class="architecture-cloud-tmcloud-control-stack">
-              <label class="tool-control-label" for="architectureCloudTmcloudSize">Workload scale</label>
-              <select id="architectureCloudTmcloudSize" class="form-select">
+            <div class="architecture-cloud-tmcloud-control-stack architecture-cloud-tmcloud-setting-card">
+              <label class="tool-control-label architecture-cloud-tmcloud-setting-label" for="architectureCloudTmcloudSize">Workload scale <span class="architecture-cloud-tmcloud-helper-chip" title="Choose the workload scale used by generated capacity assumptions." aria-label="Choose the workload scale used by generated capacity assumptions.">i</span></label>
+              <select id="architectureCloudTmcloudSize" class="form-select architecture-cloud-tmcloud-native-select">
                 <option value="small">Small</option>
                 <option value="medium" selected>Medium</option>
                 <option value="large">Large</option>
               </select>
             </div>
 
-            <div class="architecture-cloud-tmcloud-control-stack">
-              <label class="tool-control-label" for="architectureCloudTmcloudAccessBlocks">Availability zones</label>
-              <select id="architectureCloudTmcloudAccessBlocks" class="form-select">
+            <div class="architecture-cloud-tmcloud-control-stack architecture-cloud-tmcloud-setting-card">
+              <label class="tool-control-label architecture-cloud-tmcloud-setting-label" for="architectureCloudTmcloudAccessBlocks">Availability zones <span class="architecture-cloud-tmcloud-helper-chip" title="Choose the zone count used by placement and resilience assumptions." aria-label="Choose the zone count used by placement and resilience assumptions.">i</span></label>
+              <select id="architectureCloudTmcloudAccessBlocks" class="form-select architecture-cloud-tmcloud-native-select">
                 <option value="1">1 zone</option>
                 <option value="2">2 zones</option>
                 <option value="3" selected>3 zones</option>
               </select>
             </div>
-            <p class="tool-control-hint" id="architectureCloudTmcloudPresetDescription">Cloud Alpha Edge, public ingress, private app/data subnets, security groups, flow logs, and monitored operations.</p>
+            <p class="tool-control-hint architecture-cloud-tmcloud-setting-hint" id="architectureCloudTmcloudPresetDescription">Cloud Alpha Edge, public ingress, private app/data subnets, security groups, flow logs, and monitored operations.</p>
           </div>
         </div>
-        {# ns:end family.architecture.workspace.02_basic-settings #}
+        {# ns:end family._base.workspace.02_basic-settings #}
 
-        {# ns:start family.architecture.workspace.03_advanced-settings #}
-        <details class="architecture-cloud-tmcloud-custom-panel" id="architectureCloudTmcloudCustomControls" data-section="custom-tab" data-root-selector=".architecture-cloud-tmcloud-tool">
+        {# ns:start family._base.workspace.03_custom-settings #}
+        <details class="architecture-cloud-tmcloud-custom-panel" data-custom-layout="tabbed_two_column" id="architectureCloudTmcloudCustomControls" data-section="custom-tab" data-root-selector=".architecture-cloud-tmcloud-tool">
           <summary class="architecture-cloud-tmcloud-custom-panel-summary">
             <span>Custom</span>
-            <i class="bi bi-chevron-down" aria-hidden="true"></i>
+              <span class="architecture-cloud-tmcloud-custom-arrow-slot" aria-hidden="true"></span>
           </summary>
 
           <div class="architecture-cloud-tmcloud-custom-panel-body">
@@ -94,54 +113,90 @@
             <div class="tool-inspector-section architecture-cloud-tmcloud-config-panel active" id="architectureCloudTmcloudNetworkPanel" data-config-panel role="tabpanel" aria-labelledby="architectureCloudTmcloudNetworkTab">
               <div class="architecture-cloud-tmcloud-config-grid">
                 <div class="architecture-cloud-tmcloud-control-stack">
-                  <label class="tool-control-label" for="architectureCloudTmcloudRouting">Connectivity pattern</label>
-                  <select id="architectureCloudTmcloudRouting" class="form-select">
-                    <option value="public-private">Public/private tiers</option>
-                    <option value="private-only">Private endpoint only</option>
-                    <option value="hybrid">Hybrid connectivity</option>
-                    <option value="edge-protected" selected>Edge protected ingress</option>
-                  </select>
+                  <label class="tool-control-label" for="architectureCloudTmcloudRouting">Connectivity pattern <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-custom-helper-chip" title="Tune connectivity pattern before regenerating the diagram." aria-label="Tune connectivity pattern before regenerating the diagram.">i</span></label>
+                  <input type="hidden" id="architectureCloudTmcloudRouting" value="edge-protected">
+
+                  <details class="architecture-cloud-tmcloud-custom-dropdown" data-custom-dropdown-for="architectureCloudTmcloudRouting">
+                    <summary class="architecture-cloud-tmcloud-custom-dropdown-summary">
+                      <span data-custom-dropdown-label>Edge protected ingress</span>
+                        <span class="architecture-cloud-tmcloud-custom-arrow-slot" aria-hidden="true"></span>
+                    </summary>
+
+                    <div class="architecture-cloud-tmcloud-custom-dropdown-menu" role="listbox" aria-label="Custom option">
+                      <button
+                        type="button"
+                        class="architecture-cloud-tmcloud-custom-dropdown-option"
+                        data-custom-dropdown-value="public-private"
+                        role="option"
+                        aria-selected="false"
+                      >Public/private tiers</button>
+
+                      <button
+                        type="button"
+                        class="architecture-cloud-tmcloud-custom-dropdown-option"
+                        data-custom-dropdown-value="private-only"
+                        role="option"
+                        aria-selected="false"
+                      >Private endpoint only</button>
+
+                      <button
+                        type="button"
+                        class="architecture-cloud-tmcloud-custom-dropdown-option"
+                        data-custom-dropdown-value="hybrid"
+                        role="option"
+                        aria-selected="false"
+                      >Hybrid connectivity</button>
+
+                      <button
+                        type="button"
+                        class="architecture-cloud-tmcloud-custom-dropdown-option active"
+                        data-custom-dropdown-value="edge-protected"
+                        role="option"
+                        aria-selected="true"
+                      >Edge protected ingress</button>
+                    </div>
+                  </details>
                 </div>
 
                 <div class="architecture-cloud-tmcloud-control-stack architecture-cloud-tmcloud-vlan-stack">
-                  <label class="tool-control-label" for="architectureCloudTmcloudVlans">Subnet tiers</label>
+                  <label class="tool-control-label" for="architectureCloudTmcloudVlans">Subnet tiers <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-custom-helper-chip" title="Tune subnet tiers before regenerating the diagram." aria-label="Tune subnet tiers before regenerating the diagram.">i</span></label>
                   <textarea id="architectureCloudTmcloudVlans" class="form-control architecture-cloud-tmcloud-vlan-input">Public ingress subnet 10.80.0.0/24
 Private app subnet 10.80.10.0/24
 Private data subnet 10.80.20.0/24</textarea>
                 </div>
 
                 <div class="architecture-cloud-tmcloud-control-stack">
-                  <label class="tool-control-label" for="architectureCloudTmcloudTrunkVlans">VPC CIDR</label>
+                  <label class="tool-control-label" for="architectureCloudTmcloudTrunkVlans">VPC CIDR <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-custom-helper-chip" title="Tune vpc cidr before regenerating the diagram." aria-label="Tune vpc cidr before regenerating the diagram.">i</span></label>
                   <input type="text" id="architectureCloudTmcloudTrunkVlans" class="form-control" value="10.80.0.0/16">
                 </div>
 
                 <div class="architecture-cloud-tmcloud-control-stack">
-                  <label class="tool-control-label" for="architectureCloudTmcloudNativeVlan">Public subnet CIDR</label>
+                  <label class="tool-control-label" for="architectureCloudTmcloudNativeVlan">Public subnet CIDR <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-custom-helper-chip" title="Tune public subnet cidr before regenerating the diagram." aria-label="Tune public subnet cidr before regenerating the diagram.">i</span></label>
                   <input type="text" id="architectureCloudTmcloudNativeVlan" class="form-control" value="10.80.0.0/24">
                 </div>
 
                 <div class="architecture-cloud-tmcloud-control-stack">
-                  <label class="tool-control-label" for="architectureCloudTmcloudAccessVlan">Private app subnet CIDR</label>
+                  <label class="tool-control-label" for="architectureCloudTmcloudAccessVlan">Private app subnet CIDR <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-custom-helper-chip" title="Tune private app subnet cidr before regenerating the diagram." aria-label="Tune private app subnet cidr before regenerating the diagram.">i</span></label>
                   <input type="text" id="architectureCloudTmcloudAccessVlan" class="form-control" value="10.80.10.0/24">
                 </div>
 
                 <div class="architecture-cloud-tmcloud-control-stack">
-                  <label class="tool-control-label" for="architectureCloudTmcloudSviGateway">Data subnet CIDR</label>
+                  <label class="tool-control-label" for="architectureCloudTmcloudSviGateway">Data subnet CIDR <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-custom-helper-chip" title="Tune data subnet cidr before regenerating the diagram." aria-label="Tune data subnet cidr before regenerating the diagram.">i</span></label>
                   <input type="text" id="architectureCloudTmcloudSviGateway" class="form-control" value="10.80.20.0/24">
                 </div>
 
                 <div class="architecture-cloud-tmcloud-control-stack">
-                  <label class="tool-control-label" for="architectureCloudTmcloudOspfArea">Environment group</label>
+                  <label class="tool-control-label" for="architectureCloudTmcloudOspfArea">Environment group <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-custom-helper-chip" title="Tune environment group before regenerating the diagram." aria-label="Tune environment group before regenerating the diagram.">i</span></label>
                   <input type="text" id="architectureCloudTmcloudOspfArea" class="form-control" value="prod-app-env">
                 </div>
 
                 <div class="architecture-cloud-tmcloud-control-stack">
-                  <label class="tool-control-label" for="architectureCloudTmcloudBgpAsn">Edge ASN</label>
+                  <label class="tool-control-label" for="architectureCloudTmcloudBgpAsn">Edge ASN <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-custom-helper-chip" title="Tune edge asn before regenerating the diagram." aria-label="Tune edge asn before regenerating the diagram.">i</span></label>
                   <input type="text" id="architectureCloudTmcloudBgpAsn" class="form-control" value="64520">
                 </div>
 
                 <div class="architecture-cloud-tmcloud-control-stack">
-                  <label class="tool-control-label" for="architectureCloudTmcloudRedundancyVip">DNS zone</label>
+                  <label class="tool-control-label" for="architectureCloudTmcloudRedundancyVip">DNS zone <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-custom-helper-chip" title="Tune dns zone before regenerating the diagram." aria-label="Tune dns zone before regenerating the diagram.">i</span></label>
                   <input type="text" id="architectureCloudTmcloudRedundancyVip" class="form-control" value="app.example.com">
                 </div>
               </div>
@@ -206,14 +261,15 @@ Private data subnet 10.80.20.0/24</textarea>
             </div>
           </div>
         </details>
-        {# ns:end family.architecture.workspace.03_advanced-settings #}
+        {# ns:end family._base.workspace.03_custom-settings #}
 
         {# ns:start family.architecture.workspace.04_selected-item #}
         <div class="tool-inspector-section architecture-cloud-tmcloud-selected-section" id="architectureCloudTmcloudSelectedShell" data-section="selected-item" data-root-selector=".architecture-cloud-tmcloud-tool">
           <h3 class="architecture-cloud-tmcloud-section-title">Selected item</h3>
-          <p class="architecture-cloud-tmcloud-selected-empty architecture-cloud-tmcloud-selected-empty-chips" id="architectureCloudTmcloudSelectedEmpty" aria-label="Select a node or boundary box to move, resize, or highlight it. Arrow keys move the selected item; Shift moves faster; Alt + arrow keys resize; Cmd/Ctrl + Z undoes the last stage edit.">
+          <p class="architecture-cloud-tmcloud-selected-empty architecture-cloud-tmcloud-selected-empty-chips" id="architectureCloudTmcloudSelectedEmpty" aria-label="Select a node or boundary box to move, resize, or highlight it. Select a connector line to adjust its arrow handles. Arrow keys move the selected item; Shift moves faster; Alt + arrow keys resize; Cmd/Ctrl + Z undoes the last stage edit.">
             <span class="architecture-cloud-tmcloud-selected-empty-copy">
               <span class="architecture-cloud-tmcloud-selected-hint-chip architecture-cloud-tmcloud-selected-hint-chip-select"><i class="bi bi-cursor" aria-hidden="true"></i>Select a node or boundary box</span>
+              <span class="architecture-cloud-tmcloud-selected-hint-chip architecture-cloud-tmcloud-selected-hint-chip-action"><i class="bi bi-bezier2" aria-hidden="true"></i>Select a line to adjust arrows</span>
               <span class="architecture-cloud-tmcloud-selected-hint-chip architecture-cloud-tmcloud-selected-hint-chip-action"><i class="bi bi-arrows-move" aria-hidden="true"></i>Move, resize, or highlight</span>
               <span class="architecture-cloud-tmcloud-selected-hint-chip architecture-cloud-tmcloud-selected-hint-chip-keyboard"><i class="bi bi-arrow-up-right-square" aria-hidden="true"></i>Arrow keys move selected item</span>
               <span class="architecture-cloud-tmcloud-selected-hint-chip architecture-cloud-tmcloud-selected-hint-chip-keyboard"><i class="bi bi-shift" aria-hidden="true"></i>Shift moves faster</span>
@@ -268,7 +324,7 @@ Private data subnet 10.80.20.0/24</textarea>
     </section>
 
     <section class="tool-shell tool-stage-shell architecture-cloud-tmcloud-stage-shell" id="architectureCloudTmcloudStageShell" data-section="diagram-buttons" data-root-selector=".architecture-cloud-tmcloud-tool" aria-labelledby="architectureCloudTmcloudStageTitle">
-      {# ns:start family.architecture.workspace.05_result-text #}
+      {# ns:start family.architecture.workspace.04_visual-contract #}
       <div class="tool-shell-header architecture-cloud-tmcloud-stage-header" id="architectureCloudTmcloudStageHeader" data-section="title" data-root-selector=".architecture-cloud-tmcloud-tool">
         <div class="architecture-cloud-tmcloud-stage-heading">
           <h2 class="tool-shell-title" id="architectureCloudTmcloudStageTitle">TM Cloud Alpha Architecture</h2>
@@ -278,9 +334,9 @@ Private data subnet 10.80.20.0/24</textarea>
         </div>
         <div class="architecture-cloud-tmcloud-stage-meta" id="architectureCloudTmcloudStageMeta"></div>
       </div>
-      {# ns:end family.architecture.workspace.05_result-text #}
+      {# ns:end family.architecture.workspace.04_visual-contract #}
 
-      {# ns:start family.architecture.workspace.06_result-diagram #}
+      {# ns:start family.architecture.workspace.04_visual-contract #}
       <div class="tool-stage-toolbar">
         <div class="architecture-cloud-tmcloud-stage-toolbar-actions">
           <div class="architecture-cloud-tmcloud-zoom-control" id="architectureCloudTmcloudZoomControl">
@@ -312,7 +368,7 @@ Private data subnet 10.80.20.0/24</textarea>
           <button type="button" class="architecture-cloud-tmcloud-icon-btn" id="architectureCloudTmcloudFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
             <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
           </button>
-          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-cloud-tmcloud-stage-toolbar-btn" id="architectureCloudTmcloudResetLayout">Reset layout</button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-cloud-tmcloud-stage-toolbar-btn" id="architectureCloudTmcloudResetLayout" aria-label="Auto arrange layout" title="Auto arrange layout">Auto layout</button>
         </div>
       </div>
 
@@ -410,7 +466,7 @@ Private data subnet 10.80.20.0/24</textarea>
           </div>
         </div>
       </div>
-      {# ns:end family.architecture.workspace.06_result-diagram #}
+      {# ns:end family.architecture.workspace.04_visual-contract #}
     </section>
 
     <section class="tool-shell tool-output-shell" id="architectureCloudTmcloudOutputShell" data-section="table-export" data-root-selector=".architecture-cloud-tmcloud-tool">
@@ -418,20 +474,64 @@ Private data subnet 10.80.20.0/24</textarea>
 
       <div class="architecture-cloud-tmcloud-output-content d-none" id="architectureCloudTmcloudOutputContent">
         <div class="architecture-cloud-tmcloud-output-shell">
-          {# ns:start family.architecture.workspace.07_score-card #}
+          {# ns:start family._base.workspace.05_result-summary #}
           <div class="architecture-cloud-tmcloud-output-summary">
-            <div class="architecture-cloud-tmcloud-output-status-card" data-section="score-card" data-root-selector=".architecture-cloud-tmcloud-tool" aria-live="polite">
-              <div class="architecture-cloud-tmcloud-score-card" id="architectureCloudTmcloudOutputStatus">
-                <div class="architecture-cloud-tmcloud-score-kicker">Architecture Score</div>
-                <div class="architecture-cloud-tmcloud-score-summary">Ready</div>
-                <div class="architecture-cloud-tmcloud-score-detail">Generate an architecture to score the TM Cloud Alpha draft.</div>
+            <div class="architecture-cloud-tmcloud-output-status-card" data-section="result-summary" data-root-selector=".architecture-cloud-tmcloud-tool" aria-live="polite">
+              <div class="architecture-cloud-tmcloud-score-card architecture-cloud-tmcloud-result-summary" id="architectureCloudTmcloudOutputStatus" data-result-tone="ready" data-result-layout="architecture_score">
+                <header class="architecture-cloud-tmcloud-result-header" aria-label="Result summary header">
+                  <div class="architecture-cloud-tmcloud-result-header-main">
+                    <span class="architecture-cloud-tmcloud-result-header-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span>
+                    <div class="architecture-cloud-tmcloud-result-header-copy">
+                      <h2 class="architecture-cloud-tmcloud-result-header-title">Result Summary</h2>
+                      <p>Overview of the current architecture result and key metrics.</p>
+                    </div>
+                  </div>
+                  <div class="architecture-cloud-tmcloud-result-header-meta" aria-label="Result summary status">
+                    <span class="architecture-cloud-tmcloud-result-header-chip architecture-cloud-tmcloud-result-chip architecture-cloud-tmcloud-result-chip-ready"><span class="architecture-cloud-tmcloud-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span>
+                    <span class="architecture-cloud-tmcloud-result-header-chip architecture-cloud-tmcloud-result-chip architecture-cloud-tmcloud-result-chip-updated"><span class="architecture-cloud-tmcloud-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>Ready</span></span>
+                  </div>
+                </header>
+                <div class="architecture-cloud-tmcloud-result-hero-grid" aria-live="polite">
+                  <article class="architecture-cloud-tmcloud-result-card architecture-cloud-tmcloud-result-card-primary" data-result-visual="ring" aria-label="Primary result">
+                    <div class="architecture-cloud-tmcloud-result-primary-heading"><div class="architecture-cloud-tmcloud-result-kicker">Primary Result</div></div>
+                    <div class="architecture-cloud-tmcloud-result-primary-visual" id="architectureCloudTmcloudResultVisual" aria-label="Primary result visual">
+                      <div class="architecture-cloud-tmcloud-result-ring" style="--architecture-cloud-tmcloud-result-progress: 0deg; --progress-angle: 0deg; --architecture-cloud-tmcloud-result-value-chars: 5;">
+                        <div class="architecture-cloud-tmcloud-result-ring-center"><strong class="architecture-cloud-tmcloud-result-ring-value">Ready</strong><span class="architecture-cloud-tmcloud-result-ring-unit">/100</span></div>
+                      </div>
+                    </div>
+                    <div class="architecture-cloud-tmcloud-result-visual-copy"><h3 class="architecture-cloud-tmcloud-result-title architecture-cloud-tmcloud-result-title-center">Visible result value</h3><p class="architecture-cloud-tmcloud-result-copy architecture-cloud-tmcloud-result-copy-center">Generate a diagram to review the current architecture outcome.</p></div>
+                    <span class="architecture-cloud-tmcloud-result-card-divider" aria-hidden="true"></span>
+                    <div class="architecture-cloud-tmcloud-result-chip-row architecture-cloud-tmcloud-result-chip-row-center" aria-label="Primary result outcome"><span class="architecture-cloud-tmcloud-result-chip architecture-cloud-tmcloud-result-chip-outcome architecture-cloud-tmcloud-result-chip-ready"><span class="architecture-cloud-tmcloud-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>Model ready</span></span></div>
+                  </article>
+                  <article class="architecture-cloud-tmcloud-result-card architecture-cloud-tmcloud-result-card-summary" aria-label="Result summary">
+                    <div class="architecture-cloud-tmcloud-result-summary-intro">
+                      <span class="architecture-cloud-tmcloud-result-card-icon architecture-cloud-tmcloud-result-card-icon-summary" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>
+                      <div class="architecture-cloud-tmcloud-result-summary-copy"><div class="architecture-cloud-tmcloud-result-kicker">Descriptive Summary</div><h3 class="architecture-cloud-tmcloud-result-title">Filtered output set</h3><p class="architecture-cloud-tmcloud-result-copy">The summary, table, JSON, and exports should all derive from the current normalized state.</p></div>
+                    </div>
+                    <span class="architecture-cloud-tmcloud-result-card-divider" aria-hidden="true"></span>
+                    <div class="architecture-cloud-tmcloud-result-chip-grid" aria-label="Result summary state">
+                      <span class="architecture-cloud-tmcloud-result-chip architecture-cloud-tmcloud-result-chip-ready"><span class="architecture-cloud-tmcloud-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>Model source</span></span>
+                      <span class="architecture-cloud-tmcloud-result-chip architecture-cloud-tmcloud-result-chip-baseline"><span class="architecture-cloud-tmcloud-result-chip-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span>Architecture family</span></span>
+                      <span class="architecture-cloud-tmcloud-result-chip architecture-cloud-tmcloud-result-chip-baseline"><span class="architecture-cloud-tmcloud-result-chip-icon" aria-hidden="true"><i class="bi bi-folder2-open"></i></span><span>Result summary</span></span>
+                      <span class="architecture-cloud-tmcloud-result-chip architecture-cloud-tmcloud-result-chip-warning"><span class="architecture-cloud-tmcloud-result-chip-icon" aria-hidden="true"><i class="bi bi-filter"></i></span><span>Generated state</span></span>
+                    </div>
+                  </article>
+                </div>
+                <div class="architecture-cloud-tmcloud-result-metric-grid" aria-label="Result metrics">
+                  <section class="architecture-cloud-tmcloud-result-metric-card architecture-cloud-tmcloud-result-metric-success"><span class="architecture-cloud-tmcloud-result-metric-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span class="architecture-cloud-tmcloud-result-metric-label">Model</span><strong class="architecture-cloud-tmcloud-result-metric-value">Generated</strong><span class="architecture-cloud-tmcloud-result-metric-copy">Current architecture model state.</span><span class="architecture-cloud-tmcloud-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-cloud-tmcloud-result-metric-card architecture-cloud-tmcloud-result-metric-info"><span class="architecture-cloud-tmcloud-result-metric-icon" aria-hidden="true"><i class="bi bi-grid-3x3-gap"></i></span><span class="architecture-cloud-tmcloud-result-metric-label">Inventory</span><strong class="architecture-cloud-tmcloud-result-metric-value">3</strong><span class="architecture-cloud-tmcloud-result-metric-copy">Modeled items in the generated inventory.</span><span class="architecture-cloud-tmcloud-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-cloud-tmcloud-result-metric-card architecture-cloud-tmcloud-result-metric-accent-tone"><span class="architecture-cloud-tmcloud-result-metric-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span class="architecture-cloud-tmcloud-result-metric-label">Services</span><strong class="architecture-cloud-tmcloud-result-metric-value">3</strong><span class="architecture-cloud-tmcloud-result-metric-copy">Generated service and dependency groups.</span><span class="architecture-cloud-tmcloud-result-metric-accent" aria-hidden="true"></span></section>
+                  <section class="architecture-cloud-tmcloud-result-metric-card architecture-cloud-tmcloud-result-metric-warning"><span class="architecture-cloud-tmcloud-result-metric-icon" aria-hidden="true"><i class="bi bi-database"></i></span><span class="architecture-cloud-tmcloud-result-metric-label">Risk</span><strong class="architecture-cloud-tmcloud-result-metric-value">24</strong><span class="architecture-cloud-tmcloud-result-metric-copy">Advisory risk signal for review.</span><span class="architecture-cloud-tmcloud-result-metric-accent" aria-hidden="true"></span></section>
+                </div>
               </div>
             </div>
           </div>
-          {# ns:end family.architecture.workspace.07_score-card #}
+          {# ns:end family._base.workspace.05_result-summary #}
 
-          {# ns:start family.architecture.workspace.08_sort-card #}
-          <div class="architecture-cloud-tmcloud-toolbar tool-output-toolbar">
+          {# ns:start family._base.workspace.06_output-toolbar #}
+          <div class="architecture-cloud-tmcloud-toolbar-shell">
+
+            <div class="architecture-cloud-tmcloud-toolbar tool-output-toolbar">
             <div class="architecture-cloud-tmcloud-toolbar-main">
               <label for="architectureCloudTmcloudInventorySort" class="architecture-cloud-tmcloud-sort-label">Sort</label>
               <div class="architecture-cloud-tmcloud-sort-wrap">
@@ -443,8 +543,10 @@ Private data subnet 10.80.20.0/24</textarea>
                   <div class="architecture-cloud-tmcloud-sort-menu">
                     <div class="architecture-cloud-tmcloud-sort-grid">
                       <button type="button" class="architecture-cloud-tmcloud-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
+                      <button type="button" class="architecture-cloud-tmcloud-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
                       <button type="button" class="architecture-cloud-tmcloud-sort-option" data-sort-value="component" aria-pressed="false">Component</button>
                       <button type="button" class="architecture-cloud-tmcloud-sort-option" data-sort-value="placement" aria-pressed="false">Placement</button>
+                      <button type="button" class="architecture-cloud-tmcloud-sort-option" data-sort-value="purpose" aria-pressed="false">Purpose</button>
                     </div>
                   </div>
                 </details>
@@ -475,9 +577,10 @@ Private data subnet 10.80.20.0/24</textarea>
               </button>
             </div>
           </div>
-          {# ns:end family.architecture.workspace.08_sort-card #}
+          </div>
+          {# ns:end family._base.workspace.06_output-toolbar #}
 
-          {# ns:start family.architecture.workspace.09_result-table #}
+          {# ns:start family._base.workspace.07_table-output #}
           <div class="architecture-cloud-tmcloud-tabs-shell">
             <div class="tool-tabs" role="tablist" aria-label="TM Cloud Alpha output views">
               <button type="button" class="tool-tab-btn architecture-cloud-tmcloud-tab-btn active" id="architectureCloudTmcloudInventoryTab" data-output-tab-target="architectureCloudTmcloudInventoryPanel" data-tab-target="architectureCloudTmcloudInventoryPanel" role="tab" aria-controls="architectureCloudTmcloudInventoryPanel" aria-selected="true" tabindex="0">
@@ -565,22 +668,28 @@ Private data subnet 10.80.20.0/24</textarea>
             </div>
 
             <div class="tool-tab-panel architecture-cloud-tmcloud-tab-panel" id="architectureCloudTmcloudJsonPanel" data-output-panel role="tabpanel" aria-labelledby="architectureCloudTmcloudJsonTab" hidden>
-              <div class="tool-json-shell architecture-cloud-tmcloud-json-shell" id="architectureCloudTmcloudJsonShell">
-                <div class="architecture-cloud-tmcloud-json-header">
-                  <div>
-                    <h3 class="architecture-cloud-tmcloud-json-title">Restorable state</h3>
-                    <p>JSON preserves editable TM Cloud Alpha architecture state.</p>
+                          {# ns:start family._base.workspace.08_json-restore #}
+                          <div class="architecture-cloud-tmcloud-json-restore-shell" id="architectureCloudTmcloudJsonRestoreShell">
+              <section class="architecture-cloud-tmcloud-json-card tool-json-panel" aria-label="Architecture JSON model and restore state">
+                <div class="architecture-cloud-tmcloud-json-head tool-json-head">
+                  <div class="architecture-cloud-tmcloud-json-title-wrap">
+                    <span class="architecture-cloud-tmcloud-json-title tool-json-title">JSON Output</span>
+                    <span class="architecture-cloud-tmcloud-json-helper">Exported model state should include diagram components, layout edits, selected items, and output data.</span>
                   </div>
+                  <span class="architecture-cloud-tmcloud-json-status is-hidden" id="architectureCloudTmcloudJsonRestoreStatus" role="status" aria-live="polite"></span>
                 </div>
-                <pre class="architecture-cloud-tmcloud-json-code" id="architectureCloudTmcloudJsonOutput"></pre>
-              </div>
+                <div class="architecture-cloud-tmcloud-json-empty is-hidden" id="architectureCloudTmcloudJsonRestoreEmpty">Generate a diagram before exporting architecture JSON.</div>
+                <pre class="architecture-cloud-tmcloud-json-output tool-json-output"><code id="architectureCloudTmcloudJsonOutput"></code></pre>
+              </section>
             </div>
+                          {# ns:end family._base.workspace.08_json-restore #}
           </div>
-          {# ns:end family.architecture.workspace.09_result-table #}
+          {# ns:end family._base.workspace.07_table-output #}
         </div>
       </div>
-
-      <input type="file" id="architectureCloudTmcloudImportJson" class="d-none" accept="application/json">
+      </div>
     </section>
+    <input type="file" id="architectureCloudTmcloudImportJson" class="architecture-cloud-tmcloud-import-input d-none" accept="application/json">
   </div>
 </div>
+{# ns:end family._base.workspace.00_shell #}
