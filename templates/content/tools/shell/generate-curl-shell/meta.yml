@@ -27,9 +27,9 @@ related_links:
       links-url: https://infrastack.my/tools/security/scan-web-security
       links-embed: https://infrastack.my/embed/security/scan-web-security
       links-icon: bi-shield-check
-    - links-title: cURL Command Generator
-      links-label: Simplified Tools
-      links-description: Open the embeddable Simplified Tools cURL Command Generator workspace.
-      links-url: https://www.simplified.tools/generate_curl_command
-      links-embed: https://www.simplified.tools/embed/generate_curl_command?share=embed
-      links-icon: bi-terminal
+#     - links-title: cURL Command Generator
+#       links-label: Simplified Tools
+#       links-description: Open the embeddable Simplified Tools cURL Command Generator workspace.
+#       links-url: https://www.simplified.tools/generate_curl_command
+#       links-embed: https://www.simplified.tools/embed/generate_curl_command?share=embed
+#       links-icon: bi-terminal

@@ -1,27 +1,44 @@
 const GenerateSshShellModelCore = (function () {
     const toolId = 'generate-ssh-shell';
     const toolVersion = '1.0.0';
-    const profiles = ['Direct SSH', 'Jump host', 'Verbose debug'];
-    const shellTargets = ['Bash / Zsh', 'PowerShell', 'POSIX sh'];
-    const addressFamilies = ['auto', 'ipv4', 'ipv6'];
-    const logLevels = ['INFO', 'ERROR', 'QUIET', 'VERBOSE', 'DEBUG'];
-    const preferredAuthMethods = ['default', 'publickey', 'publickey,password', 'password', 'keyboard-interactive'];
-    const ttyModes = ['default', 'force', 'disable'];
-    const identityPolicies = ['Optional', 'Required'];
-    const controlMasterModes = ['no', 'auto', 'yes'];
+    const profiles = ['interactive', 'bastion', 'port-forward', 'batch'];
+    const shellStyles = ['posix', 'bash', 'powershell'];
+    const strictHostKeyModes = ['accept-new', 'yes', 'no'];
     const exportFormats = ['command', 'pdf', 'csv', 'json'];
 
+    function normalizeBoolean(value) {
+        return value === true || value === 'true' || value === '1' || value === 1;
+    }
+
+    function normalizeText(value, fallback) {
+        const text = String(value || '').trim();
+
+        return text || fallback;
+    }
+
+    function normalizeChoice(value, allowed, fallback) {
+        const text = String(value || '').trim();
+
+        return allowed.includes(text) ? text : fallback;
+    }
+
+    function normalizePort(value) {
+        const port = Number.parseInt(value, 10);
+
+        return Number.isInteger(port) && port >= 1 && port <= 65535 ? String(port) : '22';
+    }
+
     /**
-     * Returns the stable tool identifier used by package validation and exported payloads.
+     * Returns the stable InfraStack tool identifier.
      *
-     * @returns {string} Stable InfraStack tool identifier.
+     * @returns {string} Stable tool identifier.
      */
     function getToolId() {
         return toolId;
     }
 
     /**
-     * Returns the current model contract version for the SSH generator.
+     * Returns the current SSH command model version.
      *
      * @returns {string} Semantic model contract version.
      */
@@ -30,202 +47,59 @@ const GenerateSshShellModelCore = (function () {
     }
 
     /**
-     * Normalizes a command profile to a supported SSH route mode.
+     * Normalizes an SSH target profile to a supported profile key.
      *
-     * @param {unknown} value Command profile candidate.
-     * @returns {string} Supported command profile label.
+     * @param {unknown} value Profile candidate.
+     * @returns {string} Supported profile key.
      */
     function normalizeProfile(value) {
-        const profile = String(value || profiles[0]).trim();
-
-        return profiles.includes(profile) ? profile : profiles[0];
+        return normalizeChoice(value, profiles, 'interactive');
     }
 
     /**
-     * Normalizes a candidate shell target to a supported renderer.
+     * Normalizes the generated shell output style.
      *
-     * @param {unknown} value Shell target candidate.
-     * @returns {string} Supported shell target label.
+     * @param {unknown} value Shell style candidate.
+     * @returns {string} Supported shell style key.
      */
-    function normalizeShellTarget(value) {
-        const target = String(value || shellTargets[0]).trim();
-
-        return shellTargets.includes(target) ? target : shellTargets[0];
+    function normalizeShellStyle(value) {
+        return normalizeChoice(value, shellStyles, 'posix');
     }
 
     /**
-     * Normalizes a TCP port number.
+     * Normalizes StrictHostKeyChecking posture.
      *
-     * @param {unknown} value Port candidate.
-     * @param {number} fallback Port returned when the candidate is invalid.
-     * @returns {number} Integer port between 1 and 65535.
+     * @param {unknown} value StrictHostKeyChecking candidate.
+     * @returns {string} Supported OpenSSH host-key posture.
      */
-    function normalizePort(value, fallback) {
-        const numericFallback = Number.isInteger(fallback) ? fallback : 22;
-        const port = Number(value);
-
-        if (!Number.isInteger(port) || port < 1 || port > 65535) {
-            return numericFallback;
-        }
-
-        return port;
+    function normalizeStrictHostKey(value) {
+        return normalizeChoice(value, strictHostKeyModes, 'accept-new');
     }
 
     /**
-     * Normalizes a positive integer setting.
+     * Builds a normalized SSH command state snapshot from raw form-like input.
      *
-     * @param {unknown} value Number candidate.
-     * @param {number} fallback Number returned when the candidate is invalid.
-     * @returns {number} Positive integer value.
-     */
-    function normalizePositiveInteger(value, fallback) {
-        const numericFallback = Number.isInteger(fallback) && fallback > 0 ? fallback : 1;
-        const number = Number(value);
-
-        if (!Number.isInteger(number) || number < 1) {
-            return numericFallback;
-        }
-
-        return number;
-    }
-
-    /**
-     * Normalizes a non-negative integer setting.
-     *
-     * @param {unknown} value Number candidate.
-     * @param {number} fallback Number returned when the candidate is invalid.
-     * @returns {number} Non-negative integer value.
-     */
-    function normalizeNonNegativeInteger(value, fallback) {
-        const numericFallback = Number.isInteger(fallback) && fallback >= 0 ? fallback : 0;
-        const number = Number(value);
-
-        if (!Number.isInteger(number) || number < 0) {
-            return numericFallback;
-        }
-
-        return number;
-    }
-
-    /**
-     * Normalizes an address family selector to a supported OpenSSH family flag.
-     *
-     * @param {unknown} value Address family candidate.
-     * @returns {string} Supported address family key.
-     */
-    function normalizeAddressFamily(value) {
-        const family = String(value || addressFamilies[0]).toLowerCase();
-
-        return addressFamilies.includes(family) ? family : addressFamilies[0];
-    }
-
-    /**
-     * Normalizes a LogLevel selector to a supported OpenSSH value.
-     *
-     * @param {unknown} value LogLevel candidate.
-     * @returns {string} Supported LogLevel value.
-     */
-    function normalizeLogLevel(value) {
-        const level = String(value || logLevels[0]).toUpperCase();
-
-        return logLevels.includes(level) ? level : logLevels[0];
-    }
-
-    /**
-     * Normalizes a PreferredAuthentications selector to a supported value.
-     *
-     * @param {unknown} value PreferredAuthentications candidate.
-     * @returns {string} Supported preferred authentication value.
-     */
-    function normalizePreferredAuth(value) {
-        const auth = String(value || preferredAuthMethods[0]).toLowerCase();
-
-        return preferredAuthMethods.includes(auth) ? auth : preferredAuthMethods[0];
-    }
-
-    /**
-     * Normalizes a TTY selector to a supported request mode.
-     *
-     * @param {unknown} value TTY mode candidate.
-     * @returns {string} Supported TTY mode key.
-     */
-    function normalizeTtyMode(value) {
-        const mode = String(value || ttyModes[0]).toLowerCase();
-
-        return ttyModes.includes(mode) ? mode : ttyModes[0];
-    }
-
-    /**
-     * Normalizes an identity policy selector to a supported policy label.
-     *
-     * @param {unknown} value Identity policy candidate.
-     * @returns {string} Supported identity policy label.
-     */
-    function normalizeIdentityPolicy(value) {
-        const policy = String(value || identityPolicies[0]).trim();
-
-        return identityPolicies.includes(policy) ? policy : identityPolicies[0];
-    }
-
-    /**
-     * Normalizes a ControlMaster selector to a supported value.
-     *
-     * @param {unknown} value ControlMaster candidate.
-     * @returns {string} Supported ControlMaster value.
-     */
-    function normalizeControlMaster(value) {
-        const mode = String(value || controlMasterModes[0]).toLowerCase();
-
-        return controlMasterModes.includes(mode) ? mode : controlMasterModes[0];
-    }
-
-    /**
-     * Builds a normalized command state snapshot from raw form-like input.
-     *
-     * @param {Record<string, unknown>} input Raw command input.
-     * @returns {Record<string, unknown>} Normalized command state.
+     * @param {Record<string, unknown>} input Raw SSH command input.
+     * @returns {Record<string, unknown>} Normalized SSH command state.
      */
     function normalizeCommandState(input) {
         const source = input && typeof input === 'object' ? input : {};
 
         return {
-            input: String(source.input || '').trim(),
-            binary: String(source.binary || '').trim(),
-            configFile: String(source.configFile || '').trim(),
-            multiline: source.multiline !== false,
+            target: normalizeText(source.target, 'deploy@app01.example.com'),
             profile: normalizeProfile(source.profile),
-            mode: normalizeProfile(source.mode),
-            shellStyle: normalizeShellTarget(source.shellStyle),
-            host: String(source.host || 'host.example.com').trim() || 'host.example.com',
-            keepAlive: source.keepAlive !== false,
-            user: String(source.user || 'admin').trim() || 'admin',
-            proxyJump: String(source.proxyJump || '').trim(),
-            port: normalizePort(source.port, 22),
-            aliveCountMax: normalizePositiveInteger(source.aliveCountMax, 3),
-            connectTimeout: normalizeNonNegativeInteger(source.connectTimeout, 10),
-            connectionAttempts: normalizePositiveInteger(source.connectionAttempts, 1),
-            addressFamily: normalizeAddressFamily(source.addressFamily),
-            compression: source.compression === true,
-            exitOnForwardFailure: source.exitOnForwardFailure !== false,
-            strictHostKey: source.strictHostKey !== false,
-            identitiesOnly: source.identitiesOnly === true,
-            knownHostsFile: String(source.knownHostsFile || '').trim(),
-            logLevel: normalizeLogLevel(source.logLevel),
-            checkHostIp: source.checkHostIp !== false,
-            preferredAuth: normalizePreferredAuth(source.preferredAuth),
-            agentForward: source.agentForward === true,
-            batchMode: source.batchMode === true,
-            identity: String(source.identity || '').trim(),
-            forwarding: String(source.forwarding || '').trim(),
-            ttyMode: normalizeTtyMode(source.ttyMode),
-            remoteCommand: String(source.remoteCommand || '').trim(),
-            sendEnv: String(source.sendEnv || '').trim(),
-            x11Forward: source.x11Forward === true,
-            clearForwardings: source.clearForwardings === true,
-            proxyCommand: String(source.proxyCommand || '').trim(),
-            controlMaster: normalizeControlMaster(source.controlMaster),
-            controlPath: String(source.controlPath || '').trim(),
-            identityPolicy: normalizeIdentityPolicy(source.identityPolicy),
+            shellStyle: normalizeShellStyle(source.shellStyle),
+            loginUser: normalizeText(source.loginUser, 'deploy'),
+            proxyEnabled: normalizeBoolean(source.proxyEnabled),
+            proxyJump: normalizeText(source.proxyJump, 'bastion.example.com'),
+            port: normalizePort(source.port),
+            identityFile: String(source.identityFile || '').trim(),
+            compression: normalizeBoolean(source.compression),
+            strictHostKey: normalizeStrictHostKey(source.strictHostKey),
+            sessionMode: String(source.sessionMode || '') === 'batch' ? 'batch' : 'interactive',
+            agentForward: normalizeBoolean(source.agentForward),
+            tty: normalizeBoolean(source.tty),
+            extraArgs: String(source.extraArgs || '').trim()
         };
     }
 
@@ -242,16 +116,8 @@ const GenerateSshShellModelCore = (function () {
         getToolId,
         getToolVersion,
         normalizeProfile,
-        normalizeShellTarget,
-        normalizePort,
-        normalizePositiveInteger,
-        normalizeNonNegativeInteger,
-        normalizeAddressFamily,
-        normalizeLogLevel,
-        normalizePreferredAuth,
-        normalizeTtyMode,
-        normalizeIdentityPolicy,
-        normalizeControlMaster,
+        normalizeShellStyle,
+        normalizeStrictHostKey,
         normalizeCommandState,
         getExportFormats
     };

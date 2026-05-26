@@ -1,1304 +1,1268 @@
 // custom.js
-(function () {
-    const root = document.querySelector('.generate-ssh-shell-tool');
 
-    if (!root) {
+// ns:start family._base.workspace.00_shell
+function initializeGenerateSshShellDropdowns(root) {
+    const scope = root || document;
+    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
+
+    dropdowns.forEach(function (dropdown) {
+        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
+        const targetInput = targetId ? document.getElementById(targetId) : null;
+        const label = dropdown.querySelector('[data-custom-dropdown-label]');
+        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
+
+        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
+            return;
+        }
+
+        function sync(value) {
+            const fallback = options[0] ? options[0].dataset.customDropdownValue : '';
+            const selectedValue = value || targetInput.value || fallback;
+            const selectedOption = options.find(function (option) {
+                return option.dataset.customDropdownValue === selectedValue;
+            }) || options[0];
+
+            if (!selectedOption) {
+                return;
+            }
+
+            targetInput.value = selectedOption.dataset.customDropdownValue || '';
+            label.textContent = selectedOption.textContent.trim();
+            options.forEach(function (option) {
+                const active = option === selectedOption;
+
+                option.classList.toggle('active', active);
+                option.classList.toggle('is-active', active);
+                option.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+        }
+
+        options.forEach(function (option) {
+            option.addEventListener('click', function () {
+                sync(option.dataset.customDropdownValue || '');
+                targetInput.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+                dropdown.removeAttribute('open');
+            });
+        });
+
+        targetInput.addEventListener('change', function () {
+            sync(targetInput.value);
+        });
+        sync(targetInput.value);
+        dropdown.dataset.customDropdownBound = 'true';
+    });
+}
+// ns:end family._base.workspace.00_shell
+
+// ns:start family._base.workspace.05_result-summary
+function installGenerateSshShellResultSummaryNormalizer(prefix) {
+    function normalizeSummary(summary) {
+        const hero = summary.querySelector('.' + prefix + '-result-hero-grid');
+
+        if (!hero) {
+            return;
+        }
+
+        const cards = Array.from(hero.querySelectorAll(':scope > .' + prefix + '-result-card'));
+        const primaryCard = cards.find(function (card) {
+            return card.classList.contains(prefix + '-result-card-primary');
+        }) || cards[0];
+        const summaryCard = cards.find(function (card) {
+            return card !== primaryCard && card.classList.contains(prefix + '-result-card-summary');
+        }) || cards.find(function (card) {
+            return card !== primaryCard;
+        });
+
+        if (primaryCard) {
+            primaryCard.classList.add(prefix + '-result-card-primary');
+            primaryCard.dataset.resultVisual = 'command';
+        }
+
+        if (summaryCard) {
+            summaryCard.classList.add(prefix + '-result-card-summary');
+        }
+
+        if (primaryCard && hero.firstElementChild !== primaryCard) {
+            hero.insertBefore(primaryCard, hero.firstElementChild);
+        }
+
+        if (primaryCard && summaryCard && primaryCard.nextElementSibling !== summaryCard) {
+            hero.insertBefore(summaryCard, primaryCard.nextElementSibling);
+        }
+    }
+
+    function normalize() {
+        document.querySelectorAll('.' + prefix + '-result-summary').forEach(normalizeSummary);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', normalize, { once: true });
         return;
     }
 
-    const fields = {
-        form: root.querySelector('#generateSshShellForm'),
-        input: root.querySelector('#generateSshShellInput'),
-        inputError: root.querySelector('#generateSshShellInputError'),
-        primaryAction: root.querySelector('#generateSshShellPrimaryAction'),
-        secondaryAction: root.querySelector('#generateSshShellSecondaryAction'),
-        binary: root.querySelector('#generateSshShellBinary'),
-	        configFile: root.querySelector('#generateSshShellConfigFile'),
-	        multiline: root.querySelector('#generateSshShellMultiline'),
-	        profile: root.querySelector('#generateSshShellBasicPrimary'),
-	        shellStyle: root.querySelector('#generateSshShellBasicOption'),
-	        shellSummary: root.querySelector('#generateSshShellBasicSelectSummary'),
-	        host: root.querySelector('#generateSshShellBasicText'),
-	        keepAlive: root.querySelector('#generateSshShellBasicToggle'),
-	        user: root.querySelector('#generateSshShellCustomText'),
-	        proxyJump: root.querySelector('#generateSshShellProxyJump'),
-	        mode: root.querySelector('#generateSshShellCustomSelectValueInput'),
-	        modeSummary: root.querySelector('#generateSshShellCustomSelectValue'),
-	        port: root.querySelector('#generateSshShellCustomNumber'),
-        aliveCountMax: root.querySelector('#generateSshShellServerAliveCountMax'),
-        connectTimeout: root.querySelector('#generateSshShellConnectTimeout'),
-        connectionAttempts: root.querySelector('#generateSshShellConnectionAttempts'),
-        addressFamily: root.querySelector('#generateSshShellAddressFamily'),
-        compression: root.querySelector('#generateSshShellCompression'),
-        exitOnForwardFailure: root.querySelector('#generateSshShellExitOnForwardFailure'),
-        strictHostKey: root.querySelector('#generateSshShellCustomToggle'),
-        identitiesOnly: root.querySelector('#generateSshShellIdentitiesOnly'),
-        knownHostsFile: root.querySelector('#generateSshShellKnownHostsFile'),
-        logLevel: root.querySelector('#generateSshShellLogLevel'),
-        checkHostIp: root.querySelector('#generateSshShellCheckHostIp'),
-        preferredAuth: root.querySelector('#generateSshShellPreferredAuth'),
-        agentForward: root.querySelector('#generateSshShellAgentForward'),
-        batchMode: root.querySelector('#generateSshShellBatchMode'),
-        identity: root.querySelector('#generateSshShellCustomTextarea'),
-        forwarding: root.querySelector('#generateSshShellForwardTextarea'),
-        ttyMode: root.querySelector('#generateSshShellTtyMode'),
-        remoteCommand: root.querySelector('#generateSshShellRemoteCommand'),
-        sendEnv: root.querySelector('#generateSshShellSendEnv'),
-        x11Forward: root.querySelector('#generateSshShellX11Forward'),
-        clearForwardings: root.querySelector('#generateSshShellClearForwardings'),
-	        proxyCommand: root.querySelector('#generateSshShellProxyCommand'),
-	        controlMaster: root.querySelector('#generateSshShellControlMaster'),
-	        controlPath: root.querySelector('#generateSshShellControlPath'),
-	        identityPolicy: root.querySelector('#generateSshShellIdentityPolicy'),
-	        resultEmpty: root.querySelector('#generateSshShellResultEmpty'),
-        resultContent: root.querySelector('#generateSshShellResultContent'),
-        resultError: root.querySelector('#generateSshShellResultError'),
-        resultSummary: root.querySelector('#generateSshShellResultSummary'),
-        command: root.querySelector('#generateSshShellCommand'),
-        optionsTableBody: root.querySelector('#generateSshShellOptionsTableBody'),
-        warningsList: root.querySelector('#generateSshShellWarningsList'),
-        errorsList: root.querySelector('#generateSshShellErrorsList'),
-        jsonOutput: root.querySelector('#generateSshShellJsonOutput'),
-        jsonStatus: root.querySelector('#generateSshShellJsonRestoreStatus'),
-        jsonEmpty: root.querySelector('#generateSshShellJsonRestoreEmpty'),
-        sortInput: root.querySelector('#generateSshShellSort'),
-        sortSummary: root.querySelector('#generateSshShellSortSummary'),
-        sortSelect: root.querySelector('#generateSshShellSortSelect'),
-        copyCommandButton: root.querySelector('#generateSshShellCopyCommand'),
-        exportPdfButton: root.querySelector('#generateSshShellExportPdf'),
-        downloadCsvButton: root.querySelector('#generateSshShellDownloadCsv'),
-        copyJsonButton: root.querySelector('#generateSshShellCopyJson'),
-        downloadJsonButton: root.querySelector('#generateSshShellDownloadJson'),
-        importJsonButton: root.querySelector('#generateSshShellImportJsonButton'),
-        importJsonInput: root.querySelector('#generateSshShellImportJson'),
-        contractStatus: root.querySelector('#generateSshShellContractStatus'),
-        contractShell: root.querySelector('#generateSshShellContractShell'),
-        contractCommand: root.querySelector('#generateSshShellContractCommand'),
-        contractCommandCopy: root.querySelector('#generateSshShellContractCommandCopy'),
-        modelLabel: root.querySelector('#generateSshShellModelLabel'),
-        commandTokens: root.querySelector('#generateSshShellCommandTokens'),
-        metricAuth: root.querySelector('#generateSshShellMetricAuth'),
-        metricJump: root.querySelector('#generateSshShellMetricJump'),
-        metricKeepalive: root.querySelector('#generateSshShellMetricKeepalive'),
-        operationOne: root.querySelector('#generateSshShellOperationOne'),
-        operationTwo: root.querySelector('#generateSshShellOperationTwo'),
-    };
-    const sortOptionButtons = Array.from(root.querySelectorAll('.generate-ssh-shell-sort-option[data-sort-value]'));
-    const tabButtons = Array.from(root.querySelectorAll('.generate-ssh-shell-tab-btn'));
-    const tabPanels = Array.from(root.querySelectorAll('.generate-ssh-shell-tab-panel'));
+    normalize();
+}
+
+installGenerateSshShellResultSummaryNormalizer('generate-ssh-shell');
+// ns:end family._base.workspace.05_result-summary
+
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('generateSshShellForm');
+    const input = document.getElementById('generateSshShellInput');
+    const inputError = document.getElementById('generateSshShellInputError');
+    const primaryAction = document.getElementById('generateSshShellPrimaryAction');
+    const secondaryAction = document.getElementById('generateSshShellSecondaryAction');
+    const profile = document.getElementById('generateSshShellBasicPrimary');
+    const applyPreset = document.getElementById('generateSshShellApplyPreset');
+    const shellStyle = document.getElementById('generateSshShellShellStyle');
+    const loginUser = document.getElementById('generateSshShellBasicText');
+    const proxyEnabled = document.getElementById('generateSshShellBasicToggle');
+    const proxyJump = document.getElementById('generateSshShellProxyJump');
+    const previewShell = document.getElementById('generateSshShellPreviewShell');
+    const previewTarget = document.getElementById('generateSshShellPreviewTarget');
+    const previewRoute = document.getElementById('generateSshShellPreviewRoute');
+    const verbose = document.getElementById('generateSshShellVerbose');
+    const quiet = document.getElementById('generateSshShellQuiet');
+    const ipv4 = document.getElementById('generateSshShellIpv4');
+    const ipv6 = document.getElementById('generateSshShellIpv6');
+    const port = document.getElementById('generateSshShellCustomNumber');
+    const identityFile = document.getElementById('generateSshShellCustomText');
+    const compression = document.getElementById('generateSshShellCustomToggle');
+    const strictHostKey = document.getElementById('generateSshShellStrictHostKey');
+    const knownHostsFile = document.getElementById('generateSshShellKnownHostsFile');
+    const logLevel = document.getElementById('generateSshShellLogLevel');
+    const sessionModes = Array.from(document.querySelectorAll('input[name="generateSshShellSessionMode"]'));
+    const agentForward = document.getElementById('generateSshShellAgentForward');
+    const tty = document.getElementById('generateSshShellTty');
+    const connectTimeout = document.getElementById('generateSshShellConnectTimeout');
+    const serverAliveInterval = document.getElementById('generateSshShellServerAliveInterval');
+    const serverAliveCountMax = document.getElementById('generateSshShellServerAliveCountMax');
+    const localForward = document.getElementById('generateSshShellLocalForward');
+    const remoteForward = document.getElementById('generateSshShellRemoteForward');
+    const dynamicForward = document.getElementById('generateSshShellDynamicForward');
+    const extraArgs = document.getElementById('generateSshShellCustomTextarea');
+    const resultEmpty = document.getElementById('generateSshShellResultEmpty');
+    const resultContent = document.getElementById('generateSshShellResultContent');
+    const resultError = document.getElementById('generateSshShellResultError');
+    const resultSummary = document.getElementById('generateSshShellResultSummary');
+    const commandOutput = document.getElementById('generateSshShellCommand');
+    const summaryTableBody = document.getElementById('generateSshShellSummaryTableBody');
+    const operationsTableBody = document.getElementById('generateSshShellOperationsTableBody');
+    const warningsList = document.getElementById('generateSshShellWarningsList');
+    const errorsList = document.getElementById('generateSshShellErrorsList');
+    const jsonOutput = document.getElementById('generateSshShellJsonOutput');
+    const jsonStatus = document.getElementById('generateSshShellJsonRestoreStatus');
+    const sortInput = document.getElementById('generateSshShellSort');
+    const sortSummary = document.getElementById('generateSshShellSortSummary');
+    const sortSelect = document.getElementById('generateSshShellSortSelect');
+    const sortOptionButtons = Array.from(document.querySelectorAll('.generate-ssh-shell-sort-option[data-sort-value]'));
+    const copyCommandButton = document.getElementById('generateSshShellCopyCommand');
+    const exportPdfButton = document.getElementById('generateSshShellExportPdf');
+    const downloadCsvButton = document.getElementById('generateSshShellDownloadCsv');
+    const copyJsonButton = document.getElementById('generateSshShellCopyJson');
+    const downloadJsonButton = document.getElementById('generateSshShellDownloadJson');
+    const importJsonButton = document.getElementById('generateSshShellImportJsonButton');
+    const importJsonInput = document.getElementById('generateSshShellImportJson');
+    const tabButtons = Array.from(document.querySelectorAll('.generate-ssh-shell-tab-btn'));
+    const tabPanels = Array.from(document.querySelectorAll('.generate-ssh-shell-tab-panel'));
 
     if (
-        !fields.form ||
-        !fields.input ||
-        !fields.inputError ||
-        !fields.primaryAction ||
-        !fields.secondaryAction ||
-        !fields.binary ||
-	        !fields.configFile ||
-	        !fields.multiline ||
-	        !fields.profile ||
-	        !fields.shellStyle ||
-	        !fields.shellSummary ||
-        !fields.host ||
-        !fields.keepAlive ||
-	        !fields.user ||
-	        !fields.proxyJump ||
-	        !fields.mode ||
-	        !fields.modeSummary ||
-        !fields.port ||
-        !fields.aliveCountMax ||
-        !fields.connectTimeout ||
-        !fields.connectionAttempts ||
-        !fields.addressFamily ||
-        !fields.compression ||
-        !fields.exitOnForwardFailure ||
-        !fields.strictHostKey ||
-        !fields.identitiesOnly ||
-        !fields.knownHostsFile ||
-        !fields.logLevel ||
-        !fields.checkHostIp ||
-        !fields.preferredAuth ||
-        !fields.agentForward ||
-        !fields.batchMode ||
-        !fields.identity ||
-        !fields.forwarding ||
-        !fields.ttyMode ||
-        !fields.remoteCommand ||
-        !fields.sendEnv ||
-        !fields.x11Forward ||
-        !fields.clearForwardings ||
-        !fields.proxyCommand ||
-	        !fields.controlMaster ||
-	        !fields.controlPath ||
-	        !fields.identityPolicy ||
-        !fields.resultEmpty ||
-        !fields.resultContent ||
-        !fields.resultError ||
-        !fields.resultSummary ||
-        !fields.command ||
-        !fields.optionsTableBody ||
-        !fields.warningsList ||
-        !fields.errorsList ||
-        !fields.jsonOutput ||
-        !fields.jsonStatus ||
-        !fields.jsonEmpty ||
-        !fields.sortInput ||
-        !fields.sortSummary ||
-        !fields.sortSelect ||
-        !fields.copyCommandButton ||
-        !fields.exportPdfButton ||
-        !fields.downloadCsvButton ||
-        !fields.copyJsonButton ||
-        !fields.downloadJsonButton ||
-        !fields.importJsonButton ||
-        !fields.importJsonInput ||
-        !fields.contractStatus ||
-        !fields.contractShell ||
-        !fields.contractCommand ||
-        !fields.contractCommandCopy ||
-        !fields.modelLabel ||
-        !fields.commandTokens ||
-        !fields.metricAuth ||
-        !fields.metricJump ||
-        !fields.metricKeepalive ||
-        !fields.operationOne ||
-        !fields.operationTwo ||
+        !form ||
+        !input ||
+        !inputError ||
+        !primaryAction ||
+        !secondaryAction ||
+        !profile ||
+        !applyPreset ||
+        !shellStyle ||
+        !loginUser ||
+        !proxyEnabled ||
+        !proxyJump ||
+        !previewShell ||
+        !previewTarget ||
+        !previewRoute ||
+        !verbose ||
+        !quiet ||
+        !ipv4 ||
+        !ipv6 ||
+        !port ||
+        !identityFile ||
+        !compression ||
+        !strictHostKey ||
+        !knownHostsFile ||
+        !logLevel ||
+        sessionModes.length === 0 ||
+        !agentForward ||
+        !tty ||
+        !connectTimeout ||
+        !serverAliveInterval ||
+        !serverAliveCountMax ||
+        !localForward ||
+        !remoteForward ||
+        !dynamicForward ||
+        !extraArgs ||
+        !resultEmpty ||
+        !resultContent ||
+        !resultError ||
+        !resultSummary ||
+        !commandOutput ||
+        !summaryTableBody ||
+        !operationsTableBody ||
+        !warningsList ||
+        !errorsList ||
+        !jsonOutput ||
+        !jsonStatus ||
+        !sortInput ||
+        !sortSummary ||
+        !sortSelect ||
         sortOptionButtons.length === 0 ||
+        !copyCommandButton ||
+        !exportPdfButton ||
+        !downloadCsvButton ||
+        !copyJsonButton ||
+        !downloadJsonButton ||
+        !importJsonButton ||
+        !importJsonInput ||
         tabButtons.length === 0 ||
         tabPanels.length === 0
     ) {
         return;
     }
 
-    const defaults = {
-        input: '',
-        binary: '',
-        configFile: '',
-        multiline: true,
-        profile: 'Direct SSH',
-        mode: 'Direct SSH',
-        shellStyle: 'Bash / Zsh',
-        host: 'host.example.com',
-        keepAlive: true,
-        user: 'admin',
-        proxyJump: '',
-        port: '22',
-        aliveCountMax: '3',
-        connectTimeout: '10',
-        connectionAttempts: '1',
-        addressFamily: 'auto',
-        compression: false,
-        exitOnForwardFailure: true,
-        strictHostKey: true,
-        identitiesOnly: false,
-        knownHostsFile: '',
-        logLevel: 'INFO',
-        checkHostIp: true,
-        preferredAuth: 'default',
-        agentForward: false,
-        batchMode: false,
-        identity: '',
-        forwarding: '',
-        ttyMode: 'default',
-        remoteCommand: '',
-        sendEnv: '',
-        x11Forward: false,
-        clearForwardings: false,
-        proxyCommand: '',
-        controlMaster: 'no',
-        controlPath: '',
-        identityPolicy: 'Optional',
+    let currentPayload = null;
+    let hasGenerated = false;
+    const enhancedSelects = [];
+
+    const profileDefaults = {
+        interactive: {
+            proxy: false,
+            sessionMode: 'interactive',
+            port: '22',
+            tty: false,
+            agent: false,
+            compression: false,
+            strict: 'accept-new',
+            knownHosts: '',
+            logLevel: '',
+            connectTimeout: '',
+            serverAliveInterval: '',
+            serverAliveCountMax: '',
+            localForward: '',
+            remoteForward: '',
+            dynamicForward: '',
+            verbose: false,
+            quiet: false,
+            ipv4: false,
+            ipv6: false,
+            extra: ''
+        },
+        bastion: {
+            proxy: true,
+            sessionMode: 'interactive',
+            port: '22',
+            tty: false,
+            agent: false,
+            compression: true,
+            strict: 'accept-new',
+            knownHosts: '',
+            logLevel: '',
+            connectTimeout: '',
+            serverAliveInterval: '30',
+            serverAliveCountMax: '3',
+            localForward: '',
+            remoteForward: '',
+            dynamicForward: '',
+            verbose: false,
+            quiet: false,
+            ipv4: false,
+            ipv6: false,
+            extra: ''
+        },
+        'port-forward': {
+            proxy: true,
+            sessionMode: 'interactive',
+            port: '22',
+            tty: false,
+            agent: false,
+            compression: true,
+            strict: 'accept-new',
+            knownHosts: '',
+            logLevel: '',
+            connectTimeout: '',
+            serverAliveInterval: '30',
+            serverAliveCountMax: '3',
+            localForward: '15432:db.internal:5432',
+            remoteForward: '',
+            dynamicForward: '',
+            verbose: false,
+            quiet: false,
+            ipv4: false,
+            ipv6: false,
+            extra: '-N'
+        },
+        batch: {
+            proxy: false,
+            sessionMode: 'batch',
+            port: '22',
+            tty: false,
+            agent: false,
+            compression: false,
+            strict: 'yes',
+            knownHosts: '',
+            logLevel: 'ERROR',
+            connectTimeout: '10',
+            serverAliveInterval: '',
+            serverAliveCountMax: '',
+            localForward: '',
+            remoteForward: '',
+            dynamicForward: '',
+            verbose: false,
+            quiet: true,
+            ipv4: false,
+            ipv6: false,
+            extra: ''
+        }
     };
-    let latestResult = null;
 
-	    function cleanValue(value, fallback) {
-	        const cleaned = String(value || '').trim();
-	        return cleaned || fallback;
+    function trim(value) {
+        return String(value || '').trim();
     }
 
-    function validPort(value) {
-        const port = Number.parseInt(value, 10);
-        return Number.isInteger(port) && port >= 1 && port <= 65535 ? String(port) : defaults.port;
+    function closeEnhancedSelects(exceptSelect) {
+        enhancedSelects.forEach(function (entry) {
+            if (exceptSelect && entry.select === exceptSelect) {
+                return;
+            }
+
+            entry.wrapper.classList.remove('is-open');
+            entry.toggle.setAttribute('aria-expanded', 'false');
+        });
     }
 
-    function positiveNumber(value, fallback) {
-        const number = Number.parseInt(value, 10);
-        return Number.isInteger(number) && number >= 1 ? String(number) : fallback;
+    function syncEnhancedSelect(entry) {
+        const selectedOption = entry.select.options[entry.select.selectedIndex] || entry.select.options[0];
+
+        entry.toggle.textContent = selectedOption ? selectedOption.textContent : '';
+        entry.wrapper.classList.toggle('is-disabled', Boolean(entry.select.disabled));
+        entry.optionButtons.forEach(function (button) {
+            button.classList.toggle('is-active', button.dataset.value === entry.select.value);
+        });
     }
 
-	    function shellQuote(value, shellStyle) {
-        const text = String(value);
+    function enhanceNativeSelect(select) {
+        if (!select || select.dataset.generateSshShellEnhanced === '1') {
+            return;
+        }
 
-        if (/^[A-Za-z0-9_./:@%+=,-]+$/.test(text)) {
+        const wrapper = document.createElement('div');
+        const toggle = document.createElement('button');
+        const menu = document.createElement('div');
+        const optionButtons = [];
+
+        select.dataset.generateSshShellEnhanced = '1';
+        select.classList.add('generate-ssh-shell-native-select');
+        wrapper.className = 'generate-ssh-shell-enhanced-select';
+        toggle.type = 'button';
+        toggle.className = 'generate-ssh-shell-enhanced-select-toggle';
+        toggle.setAttribute('aria-haspopup', 'listbox');
+        toggle.setAttribute('aria-expanded', 'false');
+        menu.className = 'generate-ssh-shell-enhanced-select-menu';
+        menu.setAttribute('role', 'listbox');
+
+        Array.from(select.options).forEach(function (option) {
+            const optionButton = document.createElement('button');
+
+            optionButton.type = 'button';
+            optionButton.className = 'generate-ssh-shell-enhanced-select-option';
+            optionButton.dataset.value = option.value;
+            optionButton.textContent = option.textContent;
+            optionButton.disabled = option.disabled;
+            optionButton.setAttribute('role', 'option');
+
+            optionButton.addEventListener('click', function () {
+                if (select.disabled || option.disabled) {
+                    return;
+                }
+
+                select.value = option.value;
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+                select.dispatchEvent(new Event('input', { bubbles: true }));
+                closeEnhancedSelects();
+            });
+
+            menu.appendChild(optionButton);
+            optionButtons.push(optionButton);
+        });
+
+        toggle.addEventListener('click', function () {
+            if (select.disabled) {
+                return;
+            }
+
+            const isOpen = wrapper.classList.contains('is-open');
+
+            closeEnhancedSelects(select);
+            wrapper.classList.toggle('is-open', !isOpen);
+            toggle.setAttribute('aria-expanded', String(!isOpen));
+        });
+
+        wrapper.appendChild(toggle);
+        wrapper.appendChild(menu);
+        select.insertAdjacentElement('afterend', wrapper);
+
+        const entry = {
+            select: select,
+            wrapper: wrapper,
+            toggle: toggle,
+            menu: menu,
+            optionButtons: optionButtons
+        };
+
+        select.addEventListener('change', function () {
+            syncEnhancedSelect(entry);
+        });
+        select.addEventListener('input', function () {
+            syncEnhancedSelect(entry);
+        });
+
+        enhancedSelects.push(entry);
+        syncEnhancedSelect(entry);
+    }
+
+    function getSessionMode() {
+        const selected = sessionModes.find(function (item) {
+            return item.checked;
+        });
+
+        return selected ? selected.value : 'interactive';
+    }
+
+    function setSessionMode(value) {
+        const nextValue = value === 'batch' ? 'batch' : 'interactive';
+
+        sessionModes.forEach(function (item) {
+            item.checked = item.value === nextValue;
+        });
+    }
+
+    function setValue(element, value) {
+        element.value = value;
+        element.dispatchEvent(new Event('change', {
+            bubbles: true
+        }));
+    }
+
+    function quoteShell(value) {
+        const text = String(value || '');
+
+        if (/^[A-Za-z0-9_@%+=:,./~-]+$/.test(text)) {
             return text;
         }
 
-        if (shellStyle === 'PowerShell') {
-            return `'${text.replace(/'/g, "''")}'`;
+        return "'" + text.replace(/'/g, "'\"'\"'") + "'";
+    }
+
+    function tokenizeExtra(value) {
+        return trim(value).split(/\s+/).filter(Boolean);
+    }
+
+    function parseTarget(rawTarget, fallbackUser) {
+        const stripped = trim(rawTarget).replace(/^ssh\s+/i, '');
+        const parts = stripped.split(/\s+/).filter(Boolean);
+        let target = parts.length ? parts[parts.length - 1] : '';
+
+        if (target.startsWith('-')) {
+            target = '';
         }
 
-        return `'${text.replace(/'/g, "'\\''")}'`;
-    }
-
-    function splitWords(value) {
-        return String(value || '')
-            .split(/\s+/)
-            .map((item) => item.trim())
-            .filter(Boolean);
-    }
-
-    function splitLines(value) {
-        return String(value || '')
-            .split(/\n+/)
-            .map((item) => item.trim())
-            .filter(Boolean);
-    }
-
-    function escapeHtml(value) {
-        return String(value)
-            .replaceAll('&', '&amp;')
-            .replaceAll('<', '&lt;')
-            .replaceAll('>', '&gt;')
-            .replaceAll('"', '&quot;')
-            .replaceAll("'", '&#039;');
-    }
-
-    function escapeJsonHtml(value) {
-        return String(value)
-            .replaceAll('&', '&amp;')
-            .replaceAll('<', '&lt;')
-            .replaceAll('>', '&gt;');
-    }
-
-    function highlightJsonText(text) {
-        return escapeJsonHtml(text).replace(
-            /("(\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\btrue\b|\bfalse\b|\bnull\b|-?\d+(?:\.\d+)?(?:[eE][+\-]?\d+)?)/g,
-            function (match) {
-                if (match.startsWith('"')) {
-                    return `<span class="${match.endsWith(':') ? 'tool-json-key' : 'tool-json-string'}">${match}</span>`;
-                }
-
-                if (match === 'true' || match === 'false') {
-                    return `<span class="tool-json-boolean">${match}</span>`;
-                }
-
-                if (match === 'null') {
-                    return `<span class="tool-json-null">${match}</span>`;
-                }
-
-                return `<span class="tool-json-number">${match}</span>`;
-            }
-        );
-    }
-
-    function renderJsonOutput(payload) {
-        fields.jsonOutput.innerHTML = highlightJsonText(JSON.stringify(payload, null, 2));
-        fields.jsonEmpty.classList.toggle('is-hidden', Boolean(payload));
-    }
-
-    function setJsonRestoreStatus(message, tone) {
-        fields.jsonStatus.textContent = message;
-        fields.jsonStatus.classList.toggle('is-hidden', !message);
-        fields.jsonStatus.classList.toggle('is-success', tone === 'success');
-        fields.jsonStatus.classList.toggle('is-error', tone === 'error');
-    }
-
-    function briefRoute(brief) {
-        const tokens = splitWords(brief);
-        const routeToken = tokens.find((token) => /^[\w.-]+@[\w.-]+$/.test(token))
-            || tokens.find((token) => /^([\w-]+\.)+[\w-]+$/.test(token))
-            || tokens.find((token) => /^localhost$/.test(token))
-            || tokens.find((token) => /^\d{1,3}(\.\d{1,3}){3}$/.test(token));
-        const portIndex = tokens.findIndex((token) => token === '-p' || token.toLowerCase() === 'port');
-        const parsed = {
-            user: '',
-            host: '',
-            port: '',
-        };
-
-        if (routeToken) {
-            const routeParts = routeToken.split('@');
-            parsed.user = routeParts.length > 1 ? routeParts[0] : '';
-            parsed.host = routeParts.length > 1 ? routeParts[1] : routeParts[0];
-        }
-
-        if (portIndex >= 0 && tokens[portIndex + 1]) {
-            parsed.port = validPort(tokens[portIndex + 1]);
-        }
-
-        return parsed;
-    }
-
-    function identityConfig(shellStyle) {
-        const config = {
-            path: '',
-            extraOptions: [],
-        };
-
-        splitLines(fields.identity.value).forEach((line) => {
-            if (!config.path && !line.includes('=') && !line.startsWith('-')) {
-                config.path = line;
-                return;
-            }
-
-            if (line.startsWith('-o ')) {
-                config.extraOptions.push(...splitWords(line));
-                return;
-            }
-
-            if (line.startsWith('-')) {
-                config.extraOptions.push(...splitWords(line));
-                return;
-            }
-
-            config.extraOptions.push('-o', shellQuote(line, shellStyle));
-        });
-
-        return config;
-    }
-
-    function forwardingArgs() {
-        return splitLines(fields.forwarding.value).flatMap((line) => splitWords(line));
-    }
-
-    function setError(message) {
-        fields.inputError.textContent = message;
-        fields.inputError.classList.toggle('d-none', !message);
-    }
-
-	    function syncCssDropdown(targetId, nextValue) {
-	        const target = root.querySelector(`#${targetId}`);
-	        const dropdown = root.querySelector(`[data-dropdown-target="${targetId}"]`);
-	        const summary = dropdown
-	            ? root.querySelector(`#${dropdown.dataset.dropdownSummary}`)
-	            : null;
-	        const options = dropdown
-	            ? Array.from(dropdown.querySelectorAll('[data-dropdown-value]'))
-	            : [];
-	        const selectedOption = options.find((option) => option.dataset.dropdownValue === nextValue) || options[0];
-
-	        if (!target || !selectedOption) {
-	            return;
-	        }
-
-	        target.value = selectedOption.dataset.dropdownValue || '';
-
-	        if (summary) {
-	            summary.textContent = selectedOption.textContent.trim();
-	        }
-
-	        options.forEach((option) => {
-	            const active = option === selectedOption;
-	            option.classList.toggle('active', active);
-	            option.classList.toggle('is-active', active);
-	            option.setAttribute('aria-selected', active ? 'true' : 'false');
-	        });
-	    }
-
-	    function setDropdownValue(button) {
-	        const details = button.closest('details');
-	        const targetId = details ? details.dataset.dropdownTarget : '';
-	        const value = button.dataset.dropdownValue || button.textContent.trim();
-
-	        if (targetId) {
-	            syncCssDropdown(targetId, value);
-	        }
-
-	        if (details) {
-	            details.open = false;
-	        }
-	    }
-
-	    function syncAllCssDropdowns() {
-	        root.querySelectorAll('[data-dropdown-target]').forEach((dropdown) => {
-	            const targetId = dropdown.dataset.dropdownTarget;
-	            const target = targetId ? root.querySelector(`#${targetId}`) : null;
-
-	            if (target) {
-	                syncCssDropdown(targetId, target.value);
-	            }
-	        });
-	    }
-
-    function workspaceState() {
-	        const brief = fields.input.value.trim();
-	        const parsedBrief = briefRoute(brief);
-	        const profile = fields.profile.value || defaults.profile;
-	        const shellStyle = fields.shellStyle.value || defaults.shellStyle;
-	        const mode = fields.mode.value || defaults.mode;
-        const identity = identityConfig(shellStyle);
-        const proxyJump = fields.proxyJump.value.trim();
-        const binary = fields.binary.value.trim() || (shellStyle === 'PowerShell' ? 'ssh.exe' : 'ssh');
-        const route = {
-            user: cleanValue(parsedBrief.user || fields.user.value, defaults.user),
-            host: cleanValue(parsedBrief.host || fields.host.value, defaults.host),
-            port: validPort(parsedBrief.port || fields.port.value),
-        };
-        const aliveCountMax = positiveNumber(fields.aliveCountMax.value, defaults.aliveCountMax);
-        const connectTimeout = positiveNumber(fields.connectTimeout.value, defaults.connectTimeout);
-        const connectionAttempts = positiveNumber(fields.connectionAttempts.value, defaults.connectionAttempts);
-        const usesJump = profile === 'Jump host' || mode === 'Jump host' || Boolean(proxyJump);
-        const verbose = profile === 'Verbose debug' || mode === 'Verbose debug';
+        const atIndex = target.indexOf('@');
+        const user = atIndex > 0 ? target.slice(0, atIndex) : trim(fallbackUser);
+        const host = atIndex > 0 ? target.slice(atIndex + 1) : target;
 
         return {
-            brief,
-            binary,
-            configFile: fields.configFile.value.trim(),
-            multiline: fields.multiline.checked,
-            profile,
-            shellStyle,
-            mode,
-            identity,
-            proxyJump,
-            route,
-            aliveCountMax,
-            connectTimeout,
-            connectionAttempts,
-            addressFamily: fields.addressFamily.value,
-            compression: fields.compression.checked,
-            exitOnForwardFailure: fields.exitOnForwardFailure.checked,
-            usesJump,
-            verbose,
-            keepAlive: fields.keepAlive.checked,
-            strictHostKey: fields.strictHostKey.checked,
-            identitiesOnly: fields.identitiesOnly.checked,
-            knownHostsFile: fields.knownHostsFile.value.trim(),
-            logLevel: fields.logLevel.value,
-            checkHostIp: fields.checkHostIp.checked,
-            preferredAuth: fields.preferredAuth.value,
-            agentForward: fields.agentForward.checked,
-            batchMode: fields.batchMode.checked,
-            ttyMode: fields.ttyMode.value,
-            remoteCommand: fields.remoteCommand.value.trim(),
-            sendEnv: fields.sendEnv.value.trim(),
-            x11Forward: fields.x11Forward.checked,
-            clearForwardings: fields.clearForwardings.checked,
-            proxyCommand: fields.proxyCommand.value.trim(),
-            controlMaster: fields.controlMaster.value,
-            controlPath: fields.controlPath.value.trim(),
-	            identityPolicy: fields.identityPolicy.value || defaults.identityPolicy,
-            forwarding: forwardingArgs(),
+            raw: stripped,
+            user: user,
+            host: host,
+            target: user ? user + '@' + host : host
         };
     }
 
-    function commandParts(state) {
-        const parts = [state.binary, '-p', state.route.port];
-
-        if (state.configFile) {
-            parts.push('-F', shellQuote(state.configFile, state.shellStyle));
-        }
-
-        if (state.addressFamily === 'ipv4') {
-            parts.push('-4');
-        }
-
-        if (state.addressFamily === 'ipv6') {
-            parts.push('-6');
-        }
-
-        if (state.verbose) {
-            parts.push('-vvv');
-        }
-
-        if (state.compression) {
-            parts.push('-C');
-        }
-
-        if (state.agentForward) {
-            parts.push('-A');
-        }
-
-        if (state.x11Forward) {
-            parts.push('-X');
-        }
-
-        if (state.ttyMode === 'force') {
-            parts.push('-t');
-        }
-
-        if (state.ttyMode === 'disable') {
-            parts.push('-T');
-        }
-
-        if (state.identity.path) {
-            parts.push('-i', shellQuote(state.identity.path, state.shellStyle));
-        }
-
-        parts.push('-o', `ConnectTimeout=${state.connectTimeout}`);
-        parts.push('-o', `ConnectionAttempts=${state.connectionAttempts}`);
-
-        if (state.keepAlive) {
-            parts.push('-o', 'ServerAliveInterval=30');
-            parts.push('-o', `ServerAliveCountMax=${state.aliveCountMax}`);
-        }
-
-        parts.push('-o', `StrictHostKeyChecking=${state.strictHostKey ? 'yes' : 'no'}`);
-        parts.push('-o', `CheckHostIP=${state.checkHostIp ? 'yes' : 'no'}`);
-        parts.push('-o', `LogLevel=${state.logLevel}`);
-
-        if (state.knownHostsFile) {
-            parts.push('-o', shellQuote(`UserKnownHostsFile=${state.knownHostsFile}`, state.shellStyle));
-        }
-
-        if (state.identitiesOnly) {
-            parts.push('-o', 'IdentitiesOnly=yes');
-        }
-
-        if (state.preferredAuth !== 'default') {
-            parts.push('-o', `PreferredAuthentications=${state.preferredAuth}`);
-        }
-
-        if (state.batchMode) {
-            parts.push('-o', 'BatchMode=yes');
-        }
-
-        if (state.exitOnForwardFailure) {
-            parts.push('-o', 'ExitOnForwardFailure=yes');
-        }
-
-        if (state.clearForwardings) {
-            parts.push('-o', 'ClearAllForwardings=yes');
-        }
-
-        if (state.sendEnv) {
-            parts.push('-o', shellQuote(`SendEnv=${state.sendEnv}`, state.shellStyle));
-        }
-
-        parts.push(...state.identity.extraOptions);
-
-        if (state.proxyCommand) {
-            parts.push('-o', shellQuote(`ProxyCommand=${state.proxyCommand}`, state.shellStyle));
-        }
-
-        if (state.controlMaster !== 'no') {
-            parts.push('-o', `ControlMaster=${state.controlMaster}`);
-        }
-
-        if (state.controlPath) {
-            parts.push('-o', shellQuote(`ControlPath=${state.controlPath}`, state.shellStyle));
-        }
-
-        if (state.usesJump && !state.proxyCommand) {
-            parts.push('-J', shellQuote(state.proxyJump || 'jump-host', state.shellStyle));
-        }
-
-        parts.push(...state.forwarding);
-        parts.push(`${state.route.user}@${state.route.host}`);
-
-        if (state.remoteCommand) {
-            parts.push(shellQuote(state.remoteCommand, state.shellStyle));
-        }
-
-        return parts;
+    function readState() {
+        return {
+            target: trim(input.value),
+            profile: profile.value,
+            shellStyle: shellStyle.value || 'posix',
+            loginUser: trim(loginUser.value),
+            proxyEnabled: proxyEnabled.checked,
+            proxyJump: trim(proxyJump.value),
+            verbose: verbose.checked,
+            quiet: quiet.checked,
+            ipv4: ipv4.checked,
+            ipv6: ipv6.checked,
+            port: trim(port.value),
+            identityFile: trim(identityFile.value),
+            compression: compression.checked,
+            strictHostKey: strictHostKey.value || 'accept-new',
+            knownHostsFile: trim(knownHostsFile.value),
+            logLevel: logLevel.value || '',
+            sessionMode: getSessionMode(),
+            agentForward: agentForward.checked,
+            tty: tty.checked,
+            connectTimeout: trim(connectTimeout.value),
+            serverAliveInterval: trim(serverAliveInterval.value),
+            serverAliveCountMax: trim(serverAliveCountMax.value),
+            localForward: trim(localForward.value),
+            remoteForward: trim(remoteForward.value),
+            dynamicForward: trim(dynamicForward.value),
+            extraArgs: trim(extraArgs.value)
+        };
     }
 
-    function formatCommand(parts, shellStyle, multiline) {
-        if (parts.length <= 4 || !multiline) {
-            return parts.join(' ');
-        }
-
-        const joiner = shellStyle === 'PowerShell' ? ' `\n  ' : ' \\\n  ';
-        return parts.join(joiner);
-    }
-
-    function buildWarnings(state) {
-        const warnings = ['Preview only: no SSH connection is opened by this workspace.'];
-
-        if (state.identityPolicy === 'Required' && !state.identity.path) {
-            warnings.push('Identity is marked required, but no identity file path is provided.');
-        }
-
-        if (!state.strictHostKey) {
-            warnings.push('StrictHostKeyChecking=no reduces host-key protection; keep it for controlled lab workflows only.');
-        }
-
-        if (state.agentForward) {
-            warnings.push('Agent forwarding is enabled; review remote host trust before running the command.');
-        }
-
-        if (state.x11Forward) {
-            warnings.push('X11 forwarding is enabled and should be limited to trusted paths.');
-        }
-
-        if (state.proxyCommand && state.usesJump) {
-            warnings.push('ProxyCommand is set, so ProxyJump is represented in the route summary but omitted from the command tokens.');
-        }
-
-        if (state.batchMode && state.preferredAuth === 'password') {
-            warnings.push('BatchMode with password-only authentication can fail without interactive prompting.');
-        }
-
-        if (state.remoteCommand && state.ttyMode === 'disable') {
-            warnings.push('A remote command is present while TTY allocation is disabled.');
-        }
-
-        return warnings;
-    }
-
-    function buildErrors(state) {
+    function validateState(state) {
         const errors = [];
+        const target = parseTarget(state.target, state.loginUser);
+        const portNumber = Number.parseInt(state.port, 10);
 
-        if (!state.route.host) {
-            errors.push('Target host is required.');
+        if (!target.host || /[<>]/.test(target.host)) {
+            errors.push('Enter a valid SSH host or user@host target.');
         }
 
-        if (!state.route.user) {
-            errors.push('SSH user is required.');
+        if (!Number.isInteger(portNumber) || portNumber < 1 || portNumber > 65535) {
+            errors.push('Port must be a number from 1 to 65535.');
         }
+
+        if (state.proxyEnabled && !state.proxyJump) {
+            errors.push('ProxyJump is enabled, so enter a jump host.');
+        }
+
+        if (state.ipv4 && state.ipv6) {
+            errors.push('Choose IPv4 or IPv6, not both address-family flags.');
+        }
+
+        [
+            ['ConnectTimeout', state.connectTimeout, 1, 600],
+            ['ServerAliveInterval', state.serverAliveInterval, 1, 3600],
+            ['ServerAliveCountMax', state.serverAliveCountMax, 1, 20]
+        ].forEach(function (item) {
+            const label = item[0];
+            const value = item[1];
+            const min = item[2];
+            const max = item[3];
+            const number = Number.parseInt(value, 10);
+
+            if (value && (!Number.isInteger(number) || number < min || number > max)) {
+                errors.push(label + ' must be a number from ' + min + ' to ' + max + '.');
+            }
+        });
 
         return errors;
     }
 
-    function summarizeRows(state, command, warnings, errors) {
-        const route = `${state.route.user}@${state.route.host}`;
-        const jumpLabel = state.proxyCommand
-            ? 'ProxyCommand'
-            : state.usesJump
-                ? state.proxyJump || 'jump-host'
-                : 'Direct';
+    function updateBasicPreview() {
+        const state = readState();
+        const target = parseTarget(state.target, state.loginUser);
+        const selectedShell = shellStyle.options[shellStyle.selectedIndex]
+            ? shellStyle.options[shellStyle.selectedIndex].text
+            : state.shellStyle;
 
-        return [
-            ['Brief', state.brief || 'No SSH intent entered'],
-            ['Command', command],
-            ['Binary', state.binary],
-            ['Shell', state.shellStyle],
-            ['Profile', state.profile],
-            ['Connection mode', state.mode],
-            ['Target route', route],
-            ['Port', state.route.port],
-            ['Config file', state.configFile || 'Default SSH config'],
-            ['Address family', state.addressFamily],
-            ['Connect timeout', `${state.connectTimeout}s`],
-            ['Connection attempts', state.connectionAttempts],
-            ['Compression', state.compression ? 'Enabled' : 'Not set'],
-            ['Keepalive', state.keepAlive ? `ServerAliveInterval=30, ServerAliveCountMax=${state.aliveCountMax}` : 'Not set'],
-            ['Strict host key', state.strictHostKey ? 'StrictHostKeyChecking=yes' : 'StrictHostKeyChecking=no'],
-            ['CheckHostIP', state.checkHostIp ? 'Enabled' : 'Disabled'],
-            ['Known hosts file', state.knownHostsFile || 'Default known_hosts'],
-            ['LogLevel', state.logLevel],
-            ['Identity policy', state.identityPolicy],
-            ['Identity file', state.identity.path || 'Not provided'],
-            ['IdentitiesOnly', state.identitiesOnly ? 'Enabled' : 'Not set'],
-            ['Preferred auth', state.preferredAuth],
-            ['Agent forwarding', state.agentForward ? 'Enabled' : 'Not set'],
-            ['BatchMode', state.batchMode ? 'Enabled' : 'Not set'],
-            ['Jump path', jumpLabel],
-            ['ProxyJump', state.usesJump ? state.proxyJump || 'jump-host' : 'Not used'],
-            ['ProxyCommand', state.proxyCommand || 'Not used'],
-            ['ControlMaster', state.controlMaster],
-            ['ControlPath', state.controlPath || 'Not set'],
-            ['Forwarding args', state.forwarding.join(' ') || 'None'],
-            ['TTY mode', state.ttyMode],
-            ['Remote command', state.remoteCommand || 'None'],
-            ['SendEnv', state.sendEnv || 'Not set'],
-            ['X11 forwarding', state.x11Forward ? 'Enabled' : 'Not set'],
-            ['ExitOnForwardFailure', state.exitOnForwardFailure ? 'Enabled' : 'Not set'],
-            ['ClearAllForwardings', state.clearForwardings ? 'Enabled' : 'Not set'],
-            ['Warnings', String(warnings.length)],
-            ['Errors', String(errors.length)],
-        ];
+        previewShell.textContent = selectedShell.replace(/\s+note$/i, '');
+        previewTarget.textContent = target.target || 'target required';
+        previewRoute.textContent = state.proxyEnabled ? 'via ' + (state.proxyJump || 'jump host') : 'direct';
     }
 
-    function buildJsonPayload(result) {
+    // ns:start family.shell.workspace.04_result-text
+    function buildModel(state) {
+        const errors = validateState(state);
+        const target = parseTarget(state.target, state.loginUser);
+        const warnings = [];
+        const tokens = ['ssh'];
+        const optionRows = [];
+
+        function addOption(field, value, action, optionTokens) {
+            const rowTokens = optionTokens || [];
+
+            optionRows.push({
+                id: optionRows.length + 1,
+                field: field,
+                value: value,
+                action: action
+            });
+            rowTokens.forEach(function (token) {
+                tokens.push(token);
+            });
+        }
+
+        if (!errors.length) {
+            if (state.verbose) {
+                addOption('Verbose output', 'enabled', 'Add -v', ['-v']);
+            }
+
+            if (state.quiet) {
+                addOption('Quiet mode', 'enabled', 'Add -q', ['-q']);
+            }
+
+            if (state.ipv4) {
+                addOption('Address family', 'IPv4 only', 'Add -4', ['-4']);
+            }
+
+            if (state.ipv6) {
+                addOption('Address family', 'IPv6 only', 'Add -6', ['-6']);
+            }
+
+            if (String(state.port) !== '22') {
+                addOption('Port', state.port, 'Add -p', ['-p', state.port]);
+            }
+
+            if (state.identityFile) {
+                addOption('Identity file', state.identityFile, 'Add -i', ['-i', quoteShell(state.identityFile)]);
+            }
+
+            if (state.proxyEnabled) {
+                addOption('ProxyJump', state.proxyJump, 'Add -J', ['-J', quoteShell(state.proxyJump)]);
+            }
+
+            if (state.strictHostKey) {
+                addOption('StrictHostKeyChecking', state.strictHostKey, 'Add -o', ['-o', 'StrictHostKeyChecking=' + state.strictHostKey]);
+            }
+
+            if (state.knownHostsFile) {
+                addOption('UserKnownHostsFile', state.knownHostsFile, 'Add -o', ['-o', 'UserKnownHostsFile=' + quoteShell(state.knownHostsFile)]);
+            }
+
+            if (state.logLevel) {
+                addOption('LogLevel', state.logLevel, 'Add -o', ['-o', 'LogLevel=' + state.logLevel]);
+            }
+
+            if (state.compression) {
+                addOption('Compression', 'enabled', 'Add -C', ['-C']);
+            }
+
+            if (state.agentForward) {
+                addOption('Agent forwarding', 'enabled', 'Add -A', ['-A']);
+                warnings.push('Agent forwarding can expose agent access to the remote session. Use it only when the trust boundary is understood.');
+            }
+
+            if (state.tty || state.sessionMode === 'interactive') {
+                addOption('TTY', state.tty ? 'forced' : 'default interactive', state.tty ? 'Add -tt' : 'No explicit flag', state.tty ? ['-tt'] : []);
+            }
+
+            if (state.sessionMode === 'batch') {
+                addOption('BatchMode', 'enabled', 'Add -o', ['-o', 'BatchMode=yes']);
+            }
+
+            if (state.connectTimeout) {
+                addOption('ConnectTimeout', state.connectTimeout + 's', 'Add -o', ['-o', 'ConnectTimeout=' + state.connectTimeout]);
+            }
+
+            if (state.serverAliveInterval) {
+                addOption('ServerAliveInterval', state.serverAliveInterval + 's', 'Add -o', ['-o', 'ServerAliveInterval=' + state.serverAliveInterval]);
+            }
+
+            if (state.serverAliveCountMax) {
+                addOption('ServerAliveCountMax', state.serverAliveCountMax, 'Add -o', ['-o', 'ServerAliveCountMax=' + state.serverAliveCountMax]);
+            }
+
+            if (state.localForward) {
+                addOption('LocalForward', state.localForward, 'Add -L', ['-L', quoteShell(state.localForward)]);
+                warnings.push('Local forwarding opens a local listener. Confirm bind address and exposed port before running the command.');
+            }
+
+            if (state.remoteForward) {
+                addOption('RemoteForward', state.remoteForward, 'Add -R', ['-R', quoteShell(state.remoteForward)]);
+                warnings.push('Remote forwarding opens a listener on the remote side. Confirm remote bind policy before using it.');
+            }
+
+            if (state.dynamicForward) {
+                addOption('DynamicForward', state.dynamicForward, 'Add -D', ['-D', quoteShell(state.dynamicForward)]);
+                warnings.push('Dynamic forwarding starts a SOCKS listener. Confirm local exposure before routing traffic through it.');
+            }
+
+            tokenizeExtra(state.extraArgs).forEach(function (token) {
+                tokens.push(token);
+            });
+
+            if (state.extraArgs) {
+                addOption('Extra arguments', state.extraArgs.replace(/\s+/g, ' '), 'Append before target');
+                warnings.push('Extra arguments are appended as entered. Review quoting before running the command.');
+            }
+
+            if (state.strictHostKey === 'no') {
+                warnings.push('StrictHostKeyChecking=no relaxes host-key verification and should not be used as a normal default.');
+            }
+
+            if (state.quiet && state.verbose) {
+                warnings.push('Quiet and verbose flags are unusual together. Review the command output expectation before use.');
+            }
+
+            tokens.push(quoteShell(target.target));
+        }
+
+        const command = errors.length ? '' : formatCommand(tokens, state.shellStyle);
+        const summaryRows = [
+            {
+                id: 1,
+                field: 'Target',
+                value: target.target || 'Not set'
+            },
+            {
+                id: 2,
+                field: 'Profile',
+                value: profile.options[profile.selectedIndex] ? profile.options[profile.selectedIndex].text : state.profile
+            },
+            {
+                id: 3,
+                field: 'Shell style',
+                value: state.shellStyle
+            },
+            {
+                id: 4,
+                field: 'Generated options',
+                value: String(optionRows.length)
+            }
+        ];
+
         return {
             tool: 'generate-ssh-shell',
             version: '1.0.0',
-            generated_at: result.generatedAtIso,
-            state: result.state,
-            command: result.command,
-            warnings: result.warnings,
-            errors: result.errors,
-            summary_rows: result.summaryRows.map((row, index) => ({
-                id: index + 1,
-                field: row[0],
-                value: row[1],
-            })),
+            generatedAt: new Date().toISOString(),
+            state: state,
+            target: target,
+            command: command,
+            summaryRows: summaryRows,
+            optionRows: optionRows,
+            warnings: warnings,
+            errors: errors
         };
     }
 
-    function buildResult() {
-        const state = workspaceState();
-        const parts = commandParts(state);
-        const command = formatCommand(parts, state.shellStyle, state.multiline);
-        const warnings = buildWarnings(state);
-        const errors = buildErrors(state);
-        const result = {
-            generatedAtIso: new Date().toISOString(),
-            state,
-            parts,
-            command,
-            route: `${state.route.user}@${state.route.host}`,
-            warnings,
-            errors,
-            summaryLine: `${state.profile} to ${state.route.user}@${state.route.host}:${state.route.port}`,
-            jumpLabel: state.proxyCommand
-                ? 'ProxyCommand'
-                : state.usesJump
-                    ? state.proxyJump || 'jump-host'
-                    : 'Direct',
-            authLabel: state.identity.path
-                ? 'IdentityFile'
-                : state.preferredAuth !== 'default'
-                    ? state.preferredAuth
-                    : state.identityPolicy === 'Required'
-                        ? 'Required key missing'
-                        : 'Optional key',
-        };
+    function formatCommand(tokens, style) {
+        if (style === 'bash') {
+            return tokens.map(quoteRenderedToken).join(' \\\n  ');
+        }
 
-        result.summaryRows = summarizeRows(state, command, warnings, errors);
-        result.jsonPayload = buildJsonPayload(result);
+        if (style === 'powershell') {
+            return tokens.map(quoteRenderedToken).join(' `\n  ');
+        }
 
-        return result;
+        return tokens.map(quoteRenderedToken).join(' ');
     }
 
-    function renderSummary(result) {
-        const warningCount = result.warnings.length;
-        const errorCount = result.errors.length;
-        const resultTone = errorCount > 0 ? 'error' : warningCount > 1 ? 'warning' : 'ready';
-        const updatedText = new Date(result.generatedAtIso).toLocaleString();
+    function quoteRenderedToken(token) {
+        return String(token || '');
+    }
+    // ns:end family.shell.workspace.04_result-text
 
-        fields.resultSummary.dataset.resultTone = resultTone;
-        fields.resultSummary.dataset.resultLayout = 'command';
-        fields.resultSummary.innerHTML = `
-            <header class="generate-ssh-shell-result-header" aria-label="Result summary header"><div class="generate-ssh-shell-result-header-main"><span class="generate-ssh-shell-result-header-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><div class="generate-ssh-shell-result-header-copy"><h2 class="generate-ssh-shell-result-header-title">Result Summary</h2><p>Overview of the generated SSH command and key review metrics</p></div></div><div class="generate-ssh-shell-result-header-meta" aria-label="Result summary status"><span class="generate-ssh-shell-result-header-chip generate-ssh-shell-result-chip-ready"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span><span class="generate-ssh-shell-result-header-chip generate-ssh-shell-result-chip-updated"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>${escapeHtml(updatedText)}</span></span></div></header>
-            <div class="generate-ssh-shell-result-hero-grid" aria-live="polite"><article class="generate-ssh-shell-result-card generate-ssh-shell-result-card-primary" data-result-visual="command" aria-label="Primary SSH command result"><div class="generate-ssh-shell-result-primary-heading generate-ssh-shell-result-visual-copy generate-ssh-shell-result-visual-copy-top"><div class="generate-ssh-shell-result-kicker">Primary Result</div><h3 class="generate-ssh-shell-result-title generate-ssh-shell-result-title-center">SSH route</h3></div><div class="generate-ssh-shell-result-primary-visual" id="generateSshShellResultVisual" aria-label="Primary SSH route"><div class="generate-ssh-shell-result-command-output"><code class="generate-ssh-shell-result-command-value">${escapeHtml(result.summaryLine)}</code></div></div><div class="generate-ssh-shell-result-visual-copy"><p class="generate-ssh-shell-result-copy generate-ssh-shell-result-copy-center">Compact route preview for the generated SSH command.</p></div><span class="generate-ssh-shell-result-card-divider" aria-hidden="true"></span><div class="generate-ssh-shell-result-chip-row generate-ssh-shell-result-chip-row-center" aria-label="Primary result outcome"><span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-outcome generate-ssh-shell-result-chip-ready"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span>Command Generated</span></span></div></article><article class="generate-ssh-shell-result-card generate-ssh-shell-result-card-summary" aria-label="SSH command summary"><div class="generate-ssh-shell-result-summary-intro"><span class="generate-ssh-shell-result-card-icon generate-ssh-shell-result-card-icon-summary" aria-hidden="true"><i class="bi bi-shield-lock"></i></span><div class="generate-ssh-shell-result-summary-copy"><div class="generate-ssh-shell-result-kicker">Descriptive Summary</div><h3 class="generate-ssh-shell-result-title">${escapeHtml(result.state.profile)} command</h3><p class="generate-ssh-shell-result-copy">The generated command and comparison output stay aligned with the selected shell, target, authentication, jump, and OpenSSH option model.</p></div></div><span class="generate-ssh-shell-result-card-divider" aria-hidden="true"></span><div class="generate-ssh-shell-result-chip-grid" aria-label="Command state"><span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-baseline"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span>${escapeHtml(result.state.binary)}</span></span><span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-ready"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>${escapeHtml(result.jumpLabel)}</span></span><span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-${warningCount > 1 ? 'warning' : 'success'}"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-exclamation-triangle"></i></span><span>${warningCount} warning${warningCount === 1 ? '' : 's'}</span></span><span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-${errorCount > 0 ? 'error' : 'success'}"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-x-circle"></i></span><span>${errorCount} error${errorCount === 1 ? '' : 's'}</span></span></div></article></div>
-            <div class="generate-ssh-shell-result-metric-grid" aria-label="Command metrics"><article class="generate-ssh-shell-result-metric-card generate-ssh-shell-result-metric-success"><span class="generate-ssh-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-person"></i></span><span class="generate-ssh-shell-result-metric-label">Target</span><strong class="generate-ssh-shell-result-metric-value">${escapeHtml(result.route)}</strong><span class="generate-ssh-shell-result-metric-copy">Selected user and host.</span><span class="generate-ssh-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-ssh-shell-result-metric-card generate-ssh-shell-result-metric-info"><span class="generate-ssh-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-ethernet"></i></span><span class="generate-ssh-shell-result-metric-label">Port</span><strong class="generate-ssh-shell-result-metric-value">${escapeHtml(result.state.route.port)}</strong><span class="generate-ssh-shell-result-metric-copy">SSH destination port.</span><span class="generate-ssh-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-ssh-shell-result-metric-card generate-ssh-shell-result-metric-accent-tone"><span class="generate-ssh-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-list-check"></i></span><span class="generate-ssh-shell-result-metric-label">Tokens</span><strong class="generate-ssh-shell-result-metric-value">${escapeHtml(String(result.parts.length))}</strong><span class="generate-ssh-shell-result-metric-copy">Generated token count.</span><span class="generate-ssh-shell-result-metric-accent" aria-hidden="true"></span></article><article class="generate-ssh-shell-result-metric-card generate-ssh-shell-result-metric-warning"><span class="generate-ssh-shell-result-metric-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span class="generate-ssh-shell-result-metric-label">Shell</span><strong class="generate-ssh-shell-result-metric-value">${escapeHtml(result.state.shellStyle)}</strong><span class="generate-ssh-shell-result-metric-copy">Output quoting mode.</span><span class="generate-ssh-shell-result-metric-accent" aria-hidden="true"></span></article></div>
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    // ns:start family.shell.workspace.04_visual-contract
+    function renderResultSummary(payload) {
+        const state = payload.state;
+        const warningTone = payload.warnings.length > 0 ? 'warning' : 'success';
+        const resultTone = payload.errors.length ? 'warning' : 'ready';
+        const status = payload.errors.length ? 'Needs input' : 'Generated';
+        const updated = new Date(payload.generatedAt).toLocaleString();
+        const commandPreview = payload.command || 'No command generated';
+
+        resultSummary.dataset.resultTone = resultTone;
+        resultSummary.dataset.resultLayout = 'command';
+        resultSummary.innerHTML = `
+            <header class="generate-ssh-shell-result-header" aria-label="Result summary header">
+                <div class="generate-ssh-shell-result-header-main">
+                    <span class="generate-ssh-shell-result-header-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span>
+                    <div class="generate-ssh-shell-result-header-copy">
+                        <h2 class="generate-ssh-shell-result-header-title">Result Summary</h2>
+                        <p>Overview of the generated SSH command result and key metrics</p>
+                    </div>
+                </div>
+                <div class="generate-ssh-shell-result-header-meta" aria-label="Result summary status">
+                    <span class="generate-ssh-shell-result-header-chip generate-ssh-shell-result-chip-ready"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>${escapeHtml(status)}</span></span>
+                    <span class="generate-ssh-shell-result-header-chip generate-ssh-shell-result-chip-updated"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>${escapeHtml(updated)}</span></span>
+                </div>
+            </header>
+            <div class="generate-ssh-shell-result-hero-grid" aria-live="polite">
+                <article class="generate-ssh-shell-result-card generate-ssh-shell-result-card-primary" data-result-visual="command" aria-label="Primary SSH command result">
+                    <div class="generate-ssh-shell-result-primary-heading generate-ssh-shell-result-visual-copy generate-ssh-shell-result-visual-copy-top"><div class="generate-ssh-shell-result-kicker">Primary Result</div><h3 class="generate-ssh-shell-result-title generate-ssh-shell-result-title-center">SSH command</h3></div>
+                    <div class="generate-ssh-shell-result-primary-visual" id="generateSshShellResultVisual" aria-label="Primary SSH command result">
+                        <div class="generate-ssh-shell-result-command-output"><code class="generate-ssh-shell-result-command-value">${escapeHtml(commandPreview)}</code></div>
+                    </div>
+                    <div class="generate-ssh-shell-result-visual-copy"><p class="generate-ssh-shell-result-copy generate-ssh-shell-result-copy-center">Compact command preview for the selected OpenSSH options.</p></div>
+                    <span class="generate-ssh-shell-result-card-divider" aria-hidden="true"></span>
+                    <div class="generate-ssh-shell-result-chip-row generate-ssh-shell-result-chip-row-center" aria-label="Primary result outcome"><span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-outcome generate-ssh-shell-result-chip-ready"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span>Command Generated</span></span></div>
+                </article>
+                <article class="generate-ssh-shell-result-card generate-ssh-shell-result-card-summary" aria-label="Command summary">
+                    <div class="generate-ssh-shell-result-summary-intro"><span class="generate-ssh-shell-result-card-icon generate-ssh-shell-result-card-icon-summary" aria-hidden="true"><i class="bi bi-terminal"></i></span><div class="generate-ssh-shell-result-summary-copy"><div class="generate-ssh-shell-result-kicker">Descriptive Summary</div><h3 class="generate-ssh-shell-result-title">OpenSSH command preview</h3><p class="generate-ssh-shell-result-copy">Target, option rows, warning rows, and JSON output are generated locally from the visible SSH controls.</p></div></div>
+                    <span class="generate-ssh-shell-result-card-divider" aria-hidden="true"></span>
+                    <div class="generate-ssh-shell-result-chip-grid" aria-label="Command state">
+                        <span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-baseline"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-person"></i></span><span>${escapeHtml(state.profile)}</span></span>
+                        <span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-ready"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>${escapeHtml(state.strictHostKey)}</span></span>
+                        <span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-${warningTone}"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-exclamation-triangle"></i></span><span>${escapeHtml(`${payload.warnings.length} warning${payload.warnings.length === 1 ? '' : 's'}`)}</span></span>
+                        <span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-baseline"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span>${escapeHtml(state.shellStyle)} shell</span></span>
+                    </div>
+                </article>
+            </div>
+            <div class="generate-ssh-shell-result-metric-grid" aria-label="Command metrics">
+                ${renderMetric('Host', payload.target.host || '-', 'Parsed SSH host', 'success', 'bi-hdd-network')}
+                ${renderMetric('Port', state.port || '22', 'Connection port', 'info', 'bi-ethernet')}
+                ${renderMetric('Options', payload.optionRows.length, 'Generated rows', 'accent-tone', 'bi-list-check')}
+                ${renderMetric('Warnings', payload.warnings.length, 'Review notes', 'warning', 'bi-exclamation-triangle')}
+            </div>
         `;
     }
 
-	    function updateSortState() {
-	        const selectedButton = sortOptionButtons.find((button) => button.dataset.sortValue === fields.sortInput.value) || sortOptionButtons[0];
-
-        if (!selectedButton) {
-            return;
-        }
-
-        fields.sortInput.value = selectedButton.dataset.sortValue || 'id';
-        fields.sortSummary.textContent = selectedButton.textContent.trim();
-        sortOptionButtons.forEach((button) => {
-            const active = button === selectedButton;
-            button.classList.toggle('is-active', active);
-            button.setAttribute('aria-pressed', active ? 'true' : 'false');
-	        });
-	        fields.sortSelect.removeAttribute('open');
-	        syncSortExpandedState();
-	    }
-
-	    function syncSortExpandedState() {
-	        const summary = fields.sortSelect.querySelector('.generate-ssh-shell-sort-summary');
-
-	        if (summary) {
-	            summary.setAttribute('aria-expanded', fields.sortSelect.open ? 'true' : 'false');
-	        }
-	    }
-
-    function sortRows(rows, sortValue) {
-        const normalizedRows = rows.map(([field, value], index) => ({
-            field,
-            value,
-            id: index + 1,
-            index,
-        }));
-
-        if (sortValue === 'alphabetical' || sortValue === 'field') {
-            return normalizedRows
-                .sort((left, right) => left.field.localeCompare(right.field, undefined, {
-                    numeric: true,
-                    sensitivity: 'base',
-                }) || left.index - right.index);
-        }
-
-        if (sortValue === 'value') {
-            return normalizedRows
-                .sort((left, right) => left.value.localeCompare(right.value, undefined, {
-                    numeric: true,
-                    sensitivity: 'base',
-                }) || left.index - right.index);
-        }
-
-        if (sortValue === 'length') {
-            return normalizedRows
-                .sort((left, right) => right.value.length - left.value.length || left.index - right.index);
-        }
-
-        return normalizedRows.sort((left, right) => left.index - right.index);
-    }
-
-    function getSortedSummaryRows(result) {
-        return sortRows(result.summaryRows, fields.sortInput.value)
-            .map((row) => [row.field, row.value, row.id]);
-    }
-
-    function buildCsvRows(result, rows) {
+    function renderMetric(label, value, copy, tone, icon) {
         return [
-            ['ID', 'Field', 'Value'],
-            ...rows.map((row) => [row[2], row[0], row[1]]),
-            [],
-            ['Command', result.command],
-            ['Warnings', result.warnings.join(' | ') || 'None'],
-            ['Errors', result.errors.join(' | ') || 'None'],
-        ];
+            '<article class="generate-ssh-shell-result-metric-card generate-ssh-shell-result-metric-' + escapeHtml(tone) + '">',
+            '<span class="generate-ssh-shell-result-metric-icon" aria-hidden="true"><i class="bi ' + escapeHtml(icon) + '"></i></span>',
+            '<span class="generate-ssh-shell-result-metric-label">' + escapeHtml(label) + '</span>',
+            '<strong class="generate-ssh-shell-result-metric-value">' + escapeHtml(value) + '</strong>',
+            '<span class="generate-ssh-shell-result-metric-copy">' + escapeHtml(copy) + '</span>',
+            '<span class="generate-ssh-shell-result-metric-accent" aria-hidden="true"></span>',
+            '</article>'
+        ].join('');
     }
+    // ns:end family.shell.workspace.04_visual-contract
 
-    function renderOptionsTable(result) {
-        fields.optionsTableBody.innerHTML = getSortedSummaryRows(result)
-            .map((row, index) => `
-                <tr>
-                    <td>${escapeHtml(row[2] || index + 1)}</td>
-                    <td>${escapeHtml(row[0])}</td>
-                    <td>${escapeHtml(row[1])}</td>
-                    <td class="generate-ssh-shell-table-copy-cell">
-                        <button type="button" class="generate-ssh-shell-row-copy generate-ssh-shell-row-copy-btn" data-options-copy="${escapeHtml(row[1])}" aria-label="Copy operation row ${escapeHtml(row[2] || index + 1)}" title="Copy operation row">
-                            <i class="bi bi-clipboard" aria-hidden="true"></i>
-                        </button>
-                    </td>
-                </tr>
-            `)
-            .join('');
-    }
+    function sortRows(rows) {
+        const mode = sortInput.value || 'id';
+        const sorted = rows.slice();
 
-    function renderMessageList(element, messages, emptyText) {
-        if (!messages.length) {
-            element.className = 'generate-ssh-shell-message-list generate-ssh-shell-message-list-empty';
-            element.innerHTML = `<li>${escapeHtml(emptyText)}</li>`;
-            return;
-        }
-
-        element.className = 'generate-ssh-shell-message-list';
-        element.innerHTML = messages
-            .map((message) => `<li>${escapeHtml(message)}</li>`)
-            .join('');
-    }
-
-    function replaceTokens(tokens) {
-        fields.commandTokens.replaceChildren();
-        tokens.forEach((token) => {
-            const item = document.createElement('span');
-            item.className = 'generate-ssh-shell-visual-contract-token';
-            item.textContent = token;
-            fields.commandTokens.appendChild(item);
-        });
-    }
-
-    function renderVisualContract(result) {
-        fields.contractStatus.textContent = result.state.brief ? 'Generated from brief' : 'Generated';
-        fields.contractCommand.textContent = result.command;
-        fields.contractShell.textContent = result.state.shellStyle;
-        fields.contractCommandCopy.textContent = `${result.state.profile}; ${result.state.mode}; ${result.state.shellStyle}; preview only, no SSH connection is opened.`;
-        fields.modelLabel.textContent = `${result.state.shellStyle} OpenSSH preview`;
-        fields.metricAuth.textContent = result.authLabel;
-        fields.metricJump.textContent = result.jumpLabel;
-        fields.metricKeepalive.textContent = result.state.keepAlive ? `30 x ${result.state.aliveCountMax}` : `Off (${result.state.aliveCountMax} held)`;
-        fields.operationOne.textContent = result.route;
-        fields.operationTwo.textContent = result.state.strictHostKey ? 'StrictHostKeyChecking=yes' : 'StrictHostKeyChecking=no';
-        replaceTokens(result.parts.slice(0, 18));
-    }
-
-    function renderResult(result) {
-        latestResult = result;
-        fields.resultEmpty.classList.add('d-none');
-        fields.resultContent.classList.remove('d-none');
-        fields.resultError.classList.add('d-none');
-        fields.resultError.textContent = '';
-        fields.command.textContent = result.command;
-        renderSummary(result);
-        renderOptionsTable(result);
-        renderJsonOutput(result.jsonPayload);
-        renderMessageList(fields.warningsList, result.warnings, 'No warnings for the current SSH command.');
-        renderMessageList(fields.errorsList, result.errors, 'No blocking errors for the current SSH command.');
-        renderVisualContract(result);
-        activateTab('generateSshShellOptionsPanel');
-    }
-
-    function showResultError(message) {
-        fields.resultError.classList.remove('d-none');
-        fields.resultError.textContent = message;
-    }
-
-    function activateTab(tabTarget) {
-        tabButtons.forEach((button) => {
-            const active = button.dataset.tabTarget === tabTarget;
-            button.classList.toggle('active', active);
-            button.setAttribute('aria-selected', active ? 'true' : 'false');
-            button.setAttribute('tabindex', active ? '0' : '-1');
-        });
-
-        tabPanels.forEach((panel) => {
-            const active = panel.id === tabTarget || panel.dataset.tabPanel === tabTarget;
-            panel.classList.toggle('active', active);
-            panel.hidden = !active;
-        });
-    }
-
-    function flashButton(button, text) {
-        const label = button.querySelector('[data-button-label]') || button.querySelector('.generate-ssh-shell-command-copy-label');
-
-        if (!label && button.classList.contains('generate-ssh-shell-row-copy')) {
-            button.classList.add('copied');
-            window.setTimeout(function () {
-                button.classList.remove('copied');
-            }, 1400);
-            return;
-        }
-
-        const originalText = button.dataset.defaultLabel || (label ? label.textContent : button.textContent);
-        button.dataset.defaultLabel = originalText;
-        button.dataset.state = text === 'Copied' ? 'copied' : '';
-
-        if (label) {
-            label.textContent = text;
-        } else {
-            button.textContent = text;
-        }
-
-        window.setTimeout(function () {
-            if (label) {
-                label.textContent = originalText;
-                button.dataset.state = '';
-                return;
+        sorted.sort(function (left, right) {
+            if (mode === 'alphabetical') {
+                return String(left.field).localeCompare(String(right.field));
             }
 
-            button.textContent = originalText;
-            button.dataset.state = '';
-        }, 1400);
+            if (mode === 'field') {
+                return String(left.field).localeCompare(String(right.field));
+            }
+
+            if (mode === 'value') {
+                return String(left.value).localeCompare(String(right.value));
+            }
+
+            if (mode === 'length') {
+                return String(right.value).length - String(left.value).length;
+            }
+
+            return Number(left.id) - Number(right.id);
+        });
+
+        return sorted;
     }
 
-    async function copyText(text, button) {
-        try {
-            await navigator.clipboard.writeText(text);
-            flashButton(button, 'Copied');
-        } catch (error) {
-            flashButton(button, 'Failed');
+    function renderTableRows(rows, body, includeAction) {
+        body.innerHTML = sortRows(rows).map(function (row, index) {
+            const action = includeAction
+                ? '<td><button type="button" class="generate-ssh-shell-action-btn generate-ssh-shell-row-action" data-row-copy="' + escapeHtml(row.value) + '" aria-label="Copy row value"><i class="bi bi-clipboard" aria-hidden="true"></i></button></td>'
+                : '';
+
+            return [
+                '<tr>',
+                '<td class="text-center">' + String(index + 1) + '</td>',
+                '<td>' + escapeHtml(row.field) + '</td>',
+                '<td>' + escapeHtml(row.value) + '</td>',
+                action,
+                '</tr>'
+            ].join('');
+        }).join('');
+    }
+
+    function renderList(list, values, emptyText) {
+        list.innerHTML = values.length
+            ? values.map(function (item) {
+                return '<li>' + escapeHtml(item) + '</li>';
+            }).join('')
+            : '<li>' + escapeHtml(emptyText) + '</li>';
+    }
+
+    function renderPayload(payload) {
+        currentPayload = payload;
+        hasGenerated = true;
+        resultEmpty.classList.add('d-none');
+        resultContent.classList.remove('d-none');
+        resultError.classList.toggle('d-none', payload.errors.length === 0);
+        resultError.textContent = payload.errors.join(' ');
+        inputError.classList.toggle('d-none', payload.errors.length === 0);
+        inputError.textContent = payload.errors[0] || '';
+        commandOutput.textContent = payload.command || 'Resolve input errors before copying the command.';
+        renderResultSummary(payload);
+        renderTableRows(payload.summaryRows, summaryTableBody, false);
+        renderTableRows(payload.optionRows.length ? payload.optionRows : [{
+            id: 1,
+            field: 'Command',
+            value: payload.errors.length ? 'Blocked by input error' : 'No optional flags selected',
+            action: 'Review'
+        }], operationsTableBody, true);
+        renderList(warningsList, payload.warnings, 'No warnings for the current command preview.');
+        renderList(errorsList, payload.errors, 'No input errors.');
+        jsonOutput.textContent = JSON.stringify(payload, null, 2);
+    }
+
+    function generateCommand() {
+        const payload = buildModel(readState());
+
+        renderPayload(payload);
+
+        if (!payload.errors.length) {
+            syncSafeStateToUrl(payload.state);
         }
     }
 
-    function convertRowsToCsv(rows) {
-        return rows
-            .map((row) => row.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(','))
-            .join('\n');
+    function hideGeneratedOutput() {
+        hasGenerated = false;
+        currentPayload = null;
+        resultEmpty.classList.remove('d-none');
+        resultContent.classList.add('d-none');
+        resultError.classList.add('d-none');
+        inputError.classList.add('d-none');
+        inputError.textContent = '';
+        jsonOutput.textContent = '';
     }
 
-    function downloadFile(filename, contents, mimeType) {
-        const blob = new Blob([contents], { type: mimeType });
-        const objectUrl = window.URL.createObjectURL(blob);
+    function applyProfileDefaults() {
+        const defaults = profileDefaults[profile.value] || profileDefaults.interactive;
+
+        proxyEnabled.checked = defaults.proxy;
+        setSessionMode(defaults.sessionMode);
+        verbose.checked = defaults.verbose;
+        quiet.checked = defaults.quiet;
+        ipv4.checked = defaults.ipv4;
+        ipv6.checked = defaults.ipv6;
+        port.value = defaults.port;
+        tty.checked = defaults.tty;
+        agentForward.checked = defaults.agent;
+        compression.checked = defaults.compression;
+        setValue(strictHostKey, defaults.strict);
+        knownHostsFile.value = defaults.knownHosts;
+        logLevel.value = defaults.logLevel;
+        connectTimeout.value = defaults.connectTimeout;
+        serverAliveInterval.value = defaults.serverAliveInterval;
+        serverAliveCountMax.value = defaults.serverAliveCountMax;
+        localForward.value = defaults.localForward;
+        remoteForward.value = defaults.remoteForward;
+        dynamicForward.value = defaults.dynamicForward;
+        extraArgs.value = defaults.extra;
+        updateBasicPreview();
+
+        if (hasGenerated) {
+            generateCommand();
+        }
+    }
+
+    function resetForm() {
+        input.value = 'deploy@app01.example.com';
+        profile.value = 'interactive';
+        setValue(shellStyle, 'posix');
+        loginUser.value = 'deploy';
+        proxyEnabled.checked = false;
+        proxyJump.value = 'bastion.example.com';
+        verbose.checked = false;
+        quiet.checked = false;
+        ipv4.checked = false;
+        ipv6.checked = false;
+        port.value = '22';
+        identityFile.value = '~/.ssh/id_ed25519';
+        compression.checked = false;
+        setValue(strictHostKey, 'accept-new');
+        knownHostsFile.value = '';
+        logLevel.value = '';
+        setSessionMode('interactive');
+        agentForward.checked = false;
+        tty.checked = false;
+        connectTimeout.value = '';
+        serverAliveInterval.value = '';
+        serverAliveCountMax.value = '';
+        localForward.value = '';
+        remoteForward.value = '';
+        dynamicForward.value = '';
+        extraArgs.value = '';
+        updateBasicPreview();
+        hideGeneratedOutput();
+        clearSafeStateFromUrl();
+    }
+
+    function buildCsvRows(payload) {
+        const rows = [['Section', 'Field', 'Value']];
+
+        payload.summaryRows.forEach(function (row) {
+            rows.push(['Summary', row.field, row.value]);
+        });
+        payload.optionRows.forEach(function (row) {
+            rows.push(['Option', row.field, row.value]);
+        });
+        payload.warnings.forEach(function (warning) {
+            rows.push(['Warning', 'Review', warning]);
+        });
+        payload.errors.forEach(function (error) {
+            rows.push(['Error', 'Input', error]);
+        });
+
+        return rows.map(function (row) {
+            return row.map(function (cell) {
+                return '"' + String(cell).replace(/"/g, '""') + '"';
+            }).join(',');
+        }).join('\n');
+    }
+
+    function downloadFile(name, content, type) {
+        const blob = new Blob([content], {
+            type: type
+        });
+        const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
 
-        link.href = objectUrl;
-        link.download = filename;
+        link.href = url;
+        link.download = name;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        window.URL.revokeObjectURL(objectUrl);
+        URL.revokeObjectURL(url);
     }
 
-    function exportResultShellAsPdf(filenameStem) {
-        const exportWindow = window.open('', '_blank', 'noopener,noreferrer');
-        const shell = fields.resultContent.querySelector('.generate-ssh-shell-result-shell') || fields.resultContent;
-
-        if (!exportWindow || !shell) {
-            window.print();
+    function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text);
             return;
         }
 
-        const styles = Array.from(document.head.querySelectorAll('link[rel="stylesheet"], style'))
-            .map((node) => node.outerHTML)
-            .join('\n');
+        const area = document.createElement('textarea');
 
-        exportWindow.document.write(`<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>${escapeHtml(filenameStem)}</title>
-  ${styles}
-</head>
-<body>
-  ${shell.outerHTML}
-</body>
-</html>`);
-        exportWindow.document.close();
-        exportWindow.focus();
-        window.setTimeout(() => {
-            exportWindow.print();
-        }, 250);
+        area.value = text;
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand('copy');
+        document.body.removeChild(area);
     }
 
-	    function getImportedState(payload) {
-        const importedState = payload && typeof payload === 'object'
-            ? payload.state || payload.query
-            : null;
+    function getExportPayload() {
+        if (!currentPayload) {
+            const payload = buildModel(readState());
 
-        if (!importedState || typeof importedState !== 'object' || payload.tool !== 'generate-ssh-shell') {
-            throw new Error('The selected JSON is not a Generate SSH Shell export.');
+            renderPayload(payload);
+            return payload;
         }
 
-        return importedState;
+        return currentPayload;
     }
 
-    function applyImportedState(importedState) {
-        applyState(importedState);
-        generateAndRender();
-        setJsonRestoreStatus('Imported', 'success');
+    function applyImportedState(state) {
+        if (!state || typeof state !== 'object') {
+            throw new Error('Imported JSON does not include an SSH state object.');
+        }
+
+        input.value = trim(state.target) || input.value;
+        profile.value = state.profile || 'interactive';
+        setValue(shellStyle, state.shellStyle || 'posix');
+        loginUser.value = trim(state.loginUser);
+        proxyEnabled.checked = Boolean(state.proxyEnabled);
+        proxyJump.value = trim(state.proxyJump);
+        verbose.checked = Boolean(state.verbose);
+        quiet.checked = Boolean(state.quiet);
+        ipv4.checked = Boolean(state.ipv4);
+        ipv6.checked = Boolean(state.ipv6);
+        port.value = trim(state.port) || '22';
+        identityFile.value = trim(state.identityFile);
+        compression.checked = Boolean(state.compression);
+        setValue(strictHostKey, state.strictHostKey || 'accept-new');
+        knownHostsFile.value = trim(state.knownHostsFile);
+        logLevel.value = state.logLevel || '';
+        setSessionMode(state.sessionMode);
+        agentForward.checked = Boolean(state.agentForward);
+        tty.checked = Boolean(state.tty);
+        connectTimeout.value = trim(state.connectTimeout);
+        serverAliveInterval.value = trim(state.serverAliveInterval);
+        serverAliveCountMax.value = trim(state.serverAliveCountMax);
+        localForward.value = trim(state.localForward);
+        remoteForward.value = trim(state.remoteForward);
+        dynamicForward.value = trim(state.dynamicForward);
+        extraArgs.value = trim(state.extraArgs);
+        updateBasicPreview();
     }
 
-    function applyState(state) {
-        fields.input.value = state.input || state.brief || defaults.input;
-        fields.binary.value = state.binary || defaults.binary;
-        fields.configFile.value = state.configFile || defaults.configFile;
-	        fields.multiline.checked = state.multiline !== undefined ? Boolean(state.multiline) : defaults.multiline;
-	        fields.profile.value = state.profile || defaults.profile;
-	        fields.shellStyle.value = state.shellStyle || defaults.shellStyle;
-	        fields.host.value = state.route?.host || state.host || defaults.host;
-	        fields.keepAlive.checked = state.keepAlive !== undefined ? Boolean(state.keepAlive) : defaults.keepAlive;
-	        fields.user.value = state.route?.user || state.user || defaults.user;
-	        fields.proxyJump.value = state.proxyJump || defaults.proxyJump;
-	        fields.mode.value = state.mode || defaults.mode;
-	        fields.port.value = state.route?.port || state.port || defaults.port;
-        fields.aliveCountMax.value = state.aliveCountMax || defaults.aliveCountMax;
-        fields.connectTimeout.value = state.connectTimeout || defaults.connectTimeout;
-        fields.connectionAttempts.value = state.connectionAttempts || defaults.connectionAttempts;
-        fields.addressFamily.value = state.addressFamily || defaults.addressFamily;
-        fields.compression.checked = state.compression !== undefined ? Boolean(state.compression) : defaults.compression;
-        fields.exitOnForwardFailure.checked = state.exitOnForwardFailure !== undefined ? Boolean(state.exitOnForwardFailure) : defaults.exitOnForwardFailure;
-        fields.strictHostKey.checked = state.strictHostKey !== undefined ? Boolean(state.strictHostKey) : defaults.strictHostKey;
-        fields.identitiesOnly.checked = state.identitiesOnly !== undefined ? Boolean(state.identitiesOnly) : defaults.identitiesOnly;
-        fields.knownHostsFile.value = state.knownHostsFile || defaults.knownHostsFile;
-        fields.logLevel.value = state.logLevel || defaults.logLevel;
-        fields.checkHostIp.checked = state.checkHostIp !== undefined ? Boolean(state.checkHostIp) : defaults.checkHostIp;
-        fields.preferredAuth.value = state.preferredAuth || defaults.preferredAuth;
-        fields.agentForward.checked = state.agentForward !== undefined ? Boolean(state.agentForward) : defaults.agentForward;
-        fields.batchMode.checked = state.batchMode !== undefined ? Boolean(state.batchMode) : defaults.batchMode;
-        fields.identity.value = state.identity?.path || state.identityText || defaults.identity;
-        fields.forwarding.value = Array.isArray(state.forwarding) ? state.forwarding.join('\n') : state.forwarding || defaults.forwarding;
-        fields.ttyMode.value = state.ttyMode || defaults.ttyMode;
-        fields.remoteCommand.value = state.remoteCommand || defaults.remoteCommand;
-        fields.sendEnv.value = state.sendEnv || defaults.sendEnv;
-        fields.x11Forward.checked = state.x11Forward !== undefined ? Boolean(state.x11Forward) : defaults.x11Forward;
-        fields.clearForwardings.checked = state.clearForwardings !== undefined ? Boolean(state.clearForwardings) : defaults.clearForwardings;
-	        fields.proxyCommand.value = state.proxyCommand || defaults.proxyCommand;
-	        fields.controlMaster.value = state.controlMaster || defaults.controlMaster;
-	        fields.controlPath.value = state.controlPath || defaults.controlPath;
-	        fields.identityPolicy.value = state.identityPolicy || defaults.identityPolicy;
+    function setJsonStatus(message) {
+        jsonStatus.textContent = message;
+        jsonStatus.classList.remove('is-hidden');
+        window.setTimeout(function () {
+            jsonStatus.classList.add('is-hidden');
+        }, 2800);
+    }
 
-	        syncAllCssDropdowns();
-	    }
+    function encodeState(state) {
+        return window.btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    }
 
-    function syncSafeStateToUrl(result) {
-        const params = new URLSearchParams();
-        const state = result.state;
+    function decodeState(value) {
+        return JSON.parse(decodeURIComponent(escape(window.atob(value))));
+    }
 
-        if (state.brief) {
-            params.set('q', state.brief);
+    function syncSafeStateToUrl(state) {
+        if (!window.history || !window.URLSearchParams) {
+            return;
         }
 
-        params.set('host', state.route.host);
-        params.set('user', state.route.user);
-        params.set('port', state.route.port);
-        params.set('profile', state.profile);
-        params.set('mode', state.mode);
-        params.set('shell', state.shellStyle);
+        const url = new URL(window.location.href);
 
-        if (state.proxyJump) {
-            params.set('jump', state.proxyJump);
+        url.searchParams.set('sshState', encodeState(state));
+        window.history.replaceState({}, '', url.toString());
+    }
+
+    function clearSafeStateFromUrl() {
+        if (!window.history || !window.URLSearchParams) {
+            return;
         }
 
-        if (!state.keepAlive) {
-            params.set('keepalive', '0');
-        }
+        const url = new URL(window.location.href);
 
-        if (!state.strictHostKey) {
-            params.set('strict', '0');
-        }
-
-        if (state.connectTimeout !== defaults.connectTimeout) {
-            params.set('timeout', state.connectTimeout);
-        }
-
-        if (fields.sortInput.value !== 'id') {
-            params.set('sort', fields.sortInput.value);
-        }
-
-        const nextUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
-        window.history.replaceState({}, '', nextUrl);
+        url.searchParams.delete('sshState');
+        window.history.replaceState({}, '', url.toString());
     }
 
     function restoreSafeStateFromUrl() {
         const params = new URLSearchParams(window.location.search);
+        const encoded = params.get('sshState');
 
-        if (!params.toString()) {
-            return false;
+        if (!encoded) {
+            hideGeneratedOutput();
+            return;
         }
 
-        applyState({
-            input: params.get('q') || defaults.input,
-            host: params.get('host') || defaults.host,
-            user: params.get('user') || defaults.user,
-            port: params.get('port') || defaults.port,
-            profile: params.get('profile') || defaults.profile,
-            mode: params.get('mode') || defaults.mode,
-            shellStyle: params.get('shell') || defaults.shellStyle,
-            proxyJump: params.get('jump') || defaults.proxyJump,
-            keepAlive: params.get('keepalive') === '0' ? false : defaults.keepAlive,
-            strictHostKey: params.get('strict') === '0' ? false : defaults.strictHostKey,
-            connectTimeout: params.get('timeout') || defaults.connectTimeout,
-        });
-
-        if (params.get('sort')) {
-            fields.sortInput.value = params.get('sort');
+        try {
+            applyImportedState(decodeState(encoded));
+            renderPayload(buildModel(readState()));
+            setJsonStatus('Restored from URL state.');
+        } catch (error) {
+            hideGeneratedOutput();
         }
-
-        return true;
     }
 
-    function reset() {
-        applyState(defaults);
-        generateAndRender();
-    }
-
-    function generateAndRender() {
-        fields.primaryAction.disabled = true;
-        fields.primaryAction.querySelector('span').textContent = 'Generating...';
-
-        window.setTimeout(() => {
-            const result = buildResult();
-            renderResult(result);
-            syncSafeStateToUrl(result);
-            setError('');
-
-            if (result.errors.length > 0) {
-                activateTab('generateSshShellWarningsPanel');
-                showResultError('Fix the blocking fields listed below to produce a valid SSH command.');
-            }
-
-            fields.primaryAction.disabled = false;
-            fields.primaryAction.querySelector('span').textContent = 'Generate';
-        }, 30);
-    }
-
-	    root.querySelectorAll('input, textarea').forEach((control) => {
-	        control.addEventListener('input', generateAndRender);
-	        control.addEventListener('change', generateAndRender);
-	    });
-
-	    root.querySelectorAll('[data-dropdown-value]').forEach((button) => {
-	        button.addEventListener('click', () => {
-	            setDropdownValue(button);
-	            generateAndRender();
-	        });
-    });
-
-    tabButtons.forEach((button) => {
+    // ns:start family._base.workspace.06_output-toolbar
+    sortOptionButtons.forEach(function (button) {
         button.addEventListener('click', function () {
-            activateTab(button.dataset.tabTarget);
+            const value = button.dataset.sortValue || 'id';
+
+            sortInput.value = value;
+            sortSummary.textContent = button.textContent.trim();
+            sortOptionButtons.forEach(function (option) {
+                const active = option === button;
+
+                option.classList.toggle('is-active', active);
+                option.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+            sortSelect.removeAttribute('open');
+
+            if (currentPayload) {
+                renderTableRows(currentPayload.summaryRows, summaryTableBody, false);
+                renderTableRows(currentPayload.optionRows.length ? currentPayload.optionRows : [{
+                    id: 1,
+                    field: 'Command',
+                    value: currentPayload.errors.length ? 'Blocked by input error' : 'No optional flags selected',
+                    action: 'Review'
+                }], operationsTableBody, true);
+            }
         });
     });
 
-	    sortOptionButtons.forEach((button) => {
-	        button.addEventListener('click', function () {
-	            fields.sortInput.value = button.dataset.sortValue || 'id';
-            updateSortState();
-
-            if (latestResult) {
-                renderOptionsTable(latestResult);
-            }
-	        });
-	    });
-	    fields.sortSelect.addEventListener('toggle', syncSortExpandedState);
-
-    fields.optionsTableBody.addEventListener('click', function (event) {
-        const target = event.target;
-
-        if (!(target instanceof HTMLElement)) {
-            return;
-        }
-
-        const copyButton = target.closest('.generate-ssh-shell-row-copy');
-
-        if (!copyButton || !fields.optionsTableBody.contains(copyButton)) {
-            return;
-        }
-
-        const copyValue = copyButton.getAttribute('data-options-copy');
-
-        if (copyValue !== null) {
-            copyText(copyValue, copyButton);
-        }
+    copyCommandButton.addEventListener('click', function () {
+        copyText(getExportPayload().command || '');
     });
 
-    fields.copyCommandButton.addEventListener('click', function () {
-        if (latestResult && latestResult.command) {
-            copyText(latestResult.command, fields.copyCommandButton);
-        }
+    exportPdfButton.addEventListener('click', function () {
+        getExportPayload();
+        window.print();
     });
 
-    fields.exportPdfButton.addEventListener('click', function () {
-        if (!latestResult) {
-            return;
-        }
+    downloadCsvButton.addEventListener('click', function () {
+        const payload = getExportPayload();
 
-        exportResultShellAsPdf('generate-ssh-shell');
-        flashButton(fields.exportPdfButton, 'Opened');
+        downloadFile('generate-ssh-shell.csv', buildCsvRows(payload), 'text/csv;charset=utf-8');
     });
 
-    fields.downloadCsvButton.addEventListener('click', function () {
-        if (!latestResult) {
-            return;
-        }
-
-        downloadFile(
-            'generate-ssh-shell-options.csv',
-            `${convertRowsToCsv(buildCsvRows(latestResult, getSortedSummaryRows(latestResult)))}\n`,
-            'text/csv;charset=utf-8'
-        );
-        flashButton(fields.downloadCsvButton, 'Downloaded');
+    copyJsonButton.addEventListener('click', function () {
+        copyText(JSON.stringify(getExportPayload(), null, 2));
     });
 
-    fields.copyJsonButton.addEventListener('click', function () {
-        if (latestResult) {
-            copyText(JSON.stringify(latestResult.jsonPayload, null, 2), fields.copyJsonButton);
-        }
+    downloadJsonButton.addEventListener('click', function () {
+        downloadFile('generate-ssh-shell.json', JSON.stringify(getExportPayload(), null, 2), 'application/json;charset=utf-8');
     });
 
-    fields.downloadJsonButton.addEventListener('click', function () {
-        if (!latestResult) {
-            return;
-        }
-
-        downloadFile('generate-ssh-shell.json', `${JSON.stringify(latestResult.jsonPayload, null, 2)}\n`, 'application/json;charset=utf-8');
-        flashButton(fields.downloadJsonButton, 'Downloaded');
+    importJsonButton.addEventListener('click', function () {
+        importJsonInput.click();
     });
+    // ns:end family._base.workspace.06_output-toolbar
 
-    fields.importJsonButton.addEventListener('click', function () {
-        fields.importJsonInput.click();
-    });
-
-    fields.importJsonInput.addEventListener('change', async function () {
-        const file = fields.importJsonInput.files && fields.importJsonInput.files[0];
+    // ns:start family._base.workspace.08_json-restore
+    importJsonInput.addEventListener('change', function () {
+        const file = importJsonInput.files && importJsonInput.files[0];
 
         if (!file) {
             return;
         }
 
-        try {
-            const payload = JSON.parse(await file.text());
+        const reader = new FileReader();
 
-            applyImportedState(getImportedState(payload));
-            flashButton(fields.importJsonButton, 'Imported');
-        } catch (error) {
-            const message = error instanceof Error ? error.message : 'The selected JSON file could not be imported.';
+        reader.addEventListener('load', function () {
+            try {
+                const payload = JSON.parse(String(reader.result || '{}'));
+                const state = payload.state || payload;
 
-            showResultError(message);
-            setJsonRestoreStatus('Import failed', 'error');
-            flashButton(fields.importJsonButton, 'Failed');
-        } finally {
-            fields.importJsonInput.value = '';
+                applyImportedState(state);
+                renderPayload(buildModel(readState()));
+                syncSafeStateToUrl(readState());
+                setJsonStatus('Imported JSON state.');
+            } catch (error) {
+                resultError.textContent = error.message;
+                resultError.classList.remove('d-none');
+            } finally {
+                importJsonInput.value = '';
+            }
+        });
+        reader.readAsText(file);
+    });
+    // ns:end family._base.workspace.08_json-restore
+
+    // ns:start family._base.workspace.07_table-output
+    function activateTab(button) {
+        const targetId = button.dataset.tabTarget;
+
+        tabButtons.forEach(function (tab) {
+            const active = tab === button;
+
+            tab.classList.toggle('active', active);
+            tab.setAttribute('aria-selected', active ? 'true' : 'false');
+            tab.setAttribute('tabindex', active ? '0' : '-1');
+        });
+
+        tabPanels.forEach(function (panel) {
+            const active = panel.id === targetId;
+
+            panel.classList.toggle('active', active);
+            panel.hidden = !active;
+        });
+    }
+
+    tabButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            activateTab(button);
+        });
+    });
+
+    operationsTableBody.addEventListener('click', function (event) {
+        const button = event.target.closest('[data-row-copy]');
+
+        if (button) {
+            copyText(button.dataset.rowCopy || '');
         }
     });
+    // ns:end family._base.workspace.07_table-output
 
-    fields.form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        generateAndRender();
-    });
-    fields.secondaryAction.addEventListener('click', reset);
     document.addEventListener('click', function (event) {
         const target = event.target;
 
@@ -1306,20 +1270,96 @@
             return;
         }
 
-	        if (!fields.sortSelect.contains(target)) {
-	            fields.sortSelect.removeAttribute('open');
-	            syncSortExpandedState();
-	        }
-	    });
-	    document.addEventListener('keydown', function (event) {
-	        if (event.key === 'Escape') {
-	            fields.sortSelect.removeAttribute('open');
-	            syncSortExpandedState();
-	        }
-	    });
+        if (enhancedSelects.some(function (entry) {
+            return entry.wrapper.contains(target);
+        })) {
+            return;
+        }
 
-	    syncAllCssDropdowns();
-	    restoreSafeStateFromUrl();
-	    updateSortState();
-    generateAndRender();
-}());
+        closeEnhancedSelects();
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeEnhancedSelects();
+        }
+    });
+
+    // ns:start family._base.workspace.01_input-brief
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        generateCommand();
+    });
+
+    primaryAction.addEventListener('click', function (event) {
+        event.preventDefault();
+        generateCommand();
+    });
+
+    secondaryAction.addEventListener('click', resetForm);
+
+    input.addEventListener('input', function () {
+        inputError.classList.add('d-none');
+        updateBasicPreview();
+        if (hasGenerated) {
+            generateCommand();
+        }
+    });
+    // ns:end family._base.workspace.01_input-brief
+
+    // ns:start family._base.workspace.02_basic-settings
+    applyPreset.addEventListener('click', applyProfileDefaults);
+
+    [profile, shellStyle, loginUser, proxyEnabled, proxyJump].forEach(function (field) {
+        field.addEventListener('change', function () {
+            updateBasicPreview();
+            if (hasGenerated) {
+                generateCommand();
+            }
+        });
+        field.addEventListener('input', updateBasicPreview);
+    });
+    // ns:end family._base.workspace.02_basic-settings
+
+    // ns:start family._base.workspace.03_custom-settings
+    [
+        verbose,
+        quiet,
+        ipv4,
+        ipv6,
+        port,
+        identityFile,
+        compression,
+        strictHostKey,
+        knownHostsFile,
+        logLevel,
+        agentForward,
+        tty,
+        connectTimeout,
+        serverAliveInterval,
+        serverAliveCountMax,
+        localForward,
+        remoteForward,
+        dynamicForward,
+        extraArgs
+    ].forEach(function (field) {
+        field.addEventListener('change', function () {
+            if (hasGenerated) {
+                generateCommand();
+            }
+        });
+    });
+    sessionModes.forEach(function (field) {
+        field.addEventListener('change', function () {
+            if (hasGenerated) {
+                generateCommand();
+            }
+        });
+    });
+    // ns:end family._base.workspace.03_custom-settings
+
+    initializeGenerateSshShellDropdowns(document.querySelector('.generate-ssh-shell-tool'));
+    Array.from(form.querySelectorAll('select')).forEach(enhanceNativeSelect);
+    updateBasicPreview();
+    restoreSafeStateFromUrl();
+});

@@ -1,0 +1,2717 @@
+# manifest.yml
+
+source: base-workspace-contract
+family: _base
+version: 0.7.11
+status: draft
+description: Shared Phase 1 workspace contract for family baselines. Provides neutral shell, input, settings, custom settings, result summary, output toolbar, table output, and JSON restore sections.
+
+workspace_path: templates/content/factory/phase-1/_base/workspace/
+
+section_file_contract:
+    required_per_section:
+        - README.md
+        - demo.html
+        - page.html.twig
+        - section.css
+        - section.js
+
+workspace_sections:
+    00_shell:
+        role: shared workspace frame
+        owns:
+            - namespace root wrapper
+            - workspace grid
+            - panel shell rhythm
+            - section title rows
+            - helper text rhythm
+            - neutral empty/loading/error surface shape
+            - responsive stacking
+        does_not_own:
+            - family state
+            - output meaning
+            - provider labels
+    01_input-brief:
+        role: neutral primary input card
+        owns:
+            - input card frame
+            - input field frame
+            - label and helper chip rhythm
+            - primary and secondary action row
+            - icon-ready action buttons
+            - stacked and inline input layouts
+            - inline error slot
+            - prompt, label, scenario, target, or query placeholder shape
+            - stacked helper card alignment with the input control column
+            - inline input stack single-column control width
+        does_not_own:
+            - parser behavior
+            - calculation formulas
+            - scanner probes
+            - diagram generation
+            - final state schema
+        runtime_contract:
+            contract_version: 1
+            source_section: 01_input-brief
+            variant_storage: manifest_only
+            no_variant_subfolders: true
+            required_dom_hooks:
+                input:
+                    source_id: __DOM_PREFIX__Input
+                    allowed_elements:
+                        - input
+                        - textarea
+                    required_classes:
+                        - __PREFIX__-input-control
+                    runtime_rule: Bind value changes to family or tool state before the primary action runs.
+                primary_action:
+                    source_id: __DOM_PREFIX__PrimaryAction
+                    required_classes:
+                        - __PREFIX__-action-btn
+                        - __PREFIX__-action-btn-primary
+                    runtime_rule: Validate the input and run the family-specific action. Do not leave this as a visual-only button.
+                secondary_action:
+                    source_id: __DOM_PREFIX__SecondaryAction
+                    required_when_visible: true
+                    required_classes:
+                        - __PREFIX__-action-btn
+                        - __PREFIX__-action-btn-secondary
+                    runtime_rule: Reset, load defaults, or perform another real implemented action when rendered.
+                error_slot:
+                    source_id: __DOM_PREFIX__InputError
+                    required_classes:
+                        - __PREFIX__-input-error
+                    runtime_rule: Stay hidden by default and become visible only for validation or restore errors.
+                helper_card:
+                    required_classes:
+                        - __PREFIX__-input-helper-card
+                        - __PREFIX__-input-hint
+                    runtime_rule: Explain the real input boundary for the selected family variant.
+            required_data_attributes:
+                - data-input-layout
+            allowed_layouts:
+                - stacked
+                - inline
+            required_runtime_behaviors:
+                - primary action has an addEventListener handler in the final runtime package
+                - visible secondary action has an addEventListener handler in the final runtime package
+                - input value is validated before mutating generated output state
+                - input error slot is hidden on valid input and shown with actionable copy on invalid input
+                - helper text, label, placeholder, and action labels are family-native after adaptation
+                - final runtime package preserves stable input, action, and error IDs after placeholder replacement
+            forbidden_shortcuts:
+                - creating family-specific input brief section folders only for label, icon, helper, or layout changes
+                - showing a secondary button without implemented behavior
+                - auto-running generated output on first view through the input section
+                - shipping unresolved `__INPUT_*__`, `__PREFIX__`, or `__DOM_PREFIX__` placeholders
+            family_owned_behaviors:
+                - parser behavior
+                - command generation
+                - scan execution
+                - calculation formulas
+                - diagram generation
+                - restore schema
+    02_basic-settings:
+        role: neutral basic settings card
+        owns:
+            - setting card frame
+            - helper chip rhythm
+            - example input card
+            - custom dropdown popup menus with hidden state inputs, plain option rows, and soft hover or selected states
+            - explicit CSS hooks for native selects, custom dropdowns, dropdown option rows, hidden state inputs, text inputs, number inputs, textareas, placeholders, switches, and buttons
+            - mobile one-column stacking
+            - viewport-safe dropdown surface
+        does_not_own:
+            - family state model
+            - preset catalog behavior
+            - scanner request behavior
+            - calculator formula behavior
+            - shell command behavior
+            - assessment filtering behavior
+        runtime_contract:
+            contract_version: 1
+            source_section: 02_basic-settings
+            variant_storage: manifest_only
+            no_variant_subfolders: true
+            required_dom_hooks:
+                primary_control:
+                    source_id: __DOM_PREFIX__BasicPrimary
+                    allowed_elements:
+                        - select
+                        - input
+                        - button
+                    required_classes:
+                        - __PREFIX__-native-select
+                    runtime_rule: Bind high-frequency preset, scope, mode, or primary option changes to family or tool state.
+                custom_select:
+                    source_id: __DOM_PREFIX__BasicSelect
+                    allowed_elements:
+                        - details
+                        - div
+                    required_classes:
+                        - __PREFIX__-select
+                    runtime_rule: Provide a custom popup dropdown or equivalent control with real option state.
+                custom_select_summary:
+                    source_id: __DOM_PREFIX__BasicSelectSummary
+                    required_parent_classes:
+                        - __PREFIX__-select-summary
+                    runtime_rule: Reflect the selected value shown to the user.
+                custom_select_menu:
+                    source_id: __DOM_PREFIX__BasicSelectMenu
+                    required_classes:
+                        - __PREFIX__-select-body
+                    runtime_rule: Open as a popup surface without changing card height.
+                text_control:
+                    source_id: __DOM_PREFIX__BasicText
+                    allowed_elements:
+                        - input
+                        - textarea
+                    required_classes:
+                        - __PREFIX__-text-field
+                    runtime_rule: Persist typed setting values in normalized family or tool state.
+                toggle_control:
+                    source_id: __DOM_PREFIX__BasicToggle
+                    allowed_elements:
+                        - input
+                    input_type: checkbox
+                    required_wrapper_classes:
+                        - __PREFIX__-switch-card
+                    runtime_rule: Persist boolean setting state and keep visual switch state synchronized.
+                example_card:
+                    required_classes:
+                        - __PREFIX__-example-card
+                        - __PREFIX__-example-label
+                        - __PREFIX__-example-value
+                        - __PREFIX__-example-helper
+                    runtime_rule: Show a real example or equivalent basic setting context after adaptation.
+            required_runtime_behaviors:
+                - every visible basic setting control updates normalized family or tool state
+                - every visible basic setting control is read by the primary action or output renderer
+                - custom dropdown options are selectable through implemented JavaScript or native details/radio behavior with final state synchronization
+                - custom dropdown summary updates when the selected option changes
+                - text, number, URL, and textarea controls validate family-specific bounds before generated output state mutates
+                - toggle controls keep checkbox semantics and synchronized visible state
+                - mobile layout keeps controls full width and dropdown menus viewport-safe
+            forbidden_shortcuts:
+                - creating family-specific basic settings section folders only for control labels or order
+                - showing dropdowns, toggles, text fields, or mode buttons without state binding
+                - rendering custom dropdown options as nested cards, bordered rows, or visible radio controls
+                - showing a basic setting that is not consumed by generated output, export, or restore payloads
+                - shipping unresolved `__BASIC_*__`, `__PREFIX__`, or `__DOM_PREFIX__` placeholders
+            family_owned_behaviors:
+                - preset catalog behavior
+                - scanner request behavior
+                - calculation formulas
+                - shell command behavior
+                - assessment filtering behavior
+                - final state schema
+    03_custom-settings:
+        role: neutral compact Custom panel
+        owns:
+            - visible Custom disclosure label
+            - compact chevron disclosure indicator
+            - compact panel body rhythm
+            - optional tab row and tab panel framing
+            - card-contained custom controls
+            - helper chip rhythm
+            - example placeholders inside control cards
+            - inline CSS dropdowns without browser-native popups or nested card menus
+            - simple radio controls without radio cards
+            - simple checkbox controls with switch-style visual rendering, neutral off color, and strong accent on color while preserving checkbox state semantics
+            - dashed information rows for long helper details
+            - grouped custom cards for many related custom controls
+            - count-based inner columns for dense override or rate groups
+            - one outer card per setting with no nested input, unit, prefix, or quantity cards
+            - typed placeholder examples for CIDR, number, and quantity fields
+            - explicit CSS hooks for inline dropdowns, simple radios, text inputs, number inputs, textareas, placeholders, checkboxes, info rows, and buttons
+            - preference-driven one-column, count-based grouped-column, or multi-row layout
+            - mobile one-column stacking
+            - viewport-safe dropdown surface
+        does_not_own:
+            - family state model
+            - tab activation behavior beyond source hooks
+            - preset catalog behavior
+            - scanner request behavior
+            - calculator formula behavior
+            - shell command behavior
+            - assessment filtering behavior
+        runtime_contract:
+            contract_version: 1
+            source_section: 03_custom-settings
+            variant_storage: manifest_only
+            no_variant_subfolders: true
+            compatibility_sections:
+                - 03_advanced-settings
+                - 03_advanced-setting
+            required_dom_hooks:
+                disclosure:
+                    source_id: __DOM_PREFIX__CustomSettings
+                    allowed_elements:
+                        - details
+                    required_classes:
+                        - __PREFIX__-custom-settings
+                    visible_label: Custom
+                    runtime_rule: Disclosure open state must be real and must not rely on decorative-only toggles.
+                disclosure_summary:
+                    required_classes:
+                        - __PREFIX__-custom-summary
+                        - __PREFIX__-custom-arrow-slot
+                    runtime_rule: Show exactly one right-aligned arrow slot, pointing right by default and down when open.
+                tab_buttons:
+                    source_ids:
+                        - __DOM_PREFIX__CustomTabOne
+                        - __DOM_PREFIX__CustomTabTwo
+                        - __DOM_PREFIX__CustomTabThree
+                    required_classes:
+                        - __PREFIX__-custom-tab
+                    runtime_rule: Render only when tabs have real panels, and keep selected, hidden, tabindex, and aria state synchronized.
+                tab_panels:
+                    source_ids:
+                        - __DOM_PREFIX__CustomPanelOne
+                        - __DOM_PREFIX__CustomPanelTwo
+                        - __DOM_PREFIX__CustomPanelThree
+                    required_classes:
+                        - __PREFIX__-custom-panel
+                    runtime_rule: Hidden panels must use `hidden` or equivalent panel-scoped state, never broad CSS that hides the outer disclosure.
+                text_control:
+                    source_id: __DOM_PREFIX__CustomText
+                    required_classes:
+                        - __PREFIX__-custom-text-field
+                    runtime_rule: Persist typed custom text state when rendered.
+                dropdown:
+                    source_id: __DOM_PREFIX__CustomSelect
+                    required_classes:
+                        - __PREFIX__-custom-dropdown
+                    runtime_rule: Open as a CSS popup dropdown, not a browser-native select or inline height-expanding card.
+                dropdown_value:
+                    source_id: __DOM_PREFIX__CustomSelectValue
+                    required_parent_classes:
+                        - __PREFIX__-custom-dropdown-summary
+                    runtime_rule: Reflect the selected dropdown value after state changes.
+                radio_controls:
+                    source_ids:
+                        - __DOM_PREFIX__CustomRadioStandard
+                        - __DOM_PREFIX__CustomRadioOverride
+                    required_wrapper_classes:
+                        - __PREFIX__-custom-radio-card
+                    runtime_rule: Preserve radio semantics and CSS-drawn visible state without exposing native radio controls.
+                number_control:
+                    source_id: __DOM_PREFIX__CustomNumber
+                    required_classes:
+                        - __PREFIX__-custom-number-field
+                    runtime_rule: Persist numeric custom state and validate family-specific bounds when rendered.
+                toggle_control:
+                    source_id: __DOM_PREFIX__CustomToggle
+                    required_wrapper_classes:
+                        - __PREFIX__-custom-checkbox-option
+                    runtime_rule: Preserve checkbox semantics and CSS-drawn switch state without exposing native checkbox controls.
+                textarea_control:
+                    source_id: __DOM_PREFIX__CustomTextarea
+                    required_classes:
+                        - __PREFIX__-custom-textarea
+                    runtime_rule: Persist multiline notes, raw arguments, evidence notes, or output preferences when rendered.
+                info_rows:
+                    required_classes:
+                        - __PREFIX__-custom-info
+                    runtime_rule: Use dashed helper rows for long information that would crowd compact controls.
+            required_runtime_behaviors:
+                - visible disclosure label remains `Custom`
+                - disclosure and dropdown arrows have one arrow slot, point right by default, and point down when open
+                - rendered tab buttons activate real panels and synchronize selected, hidden, tabindex, and aria state
+                - visible dropdown, radio, checkbox, text, number, and textarea controls update normalized family or tool state
+                - generated output, export payloads, and restore payloads read the same normalized custom state
+                - custom dropdown option rows are selectable through implemented JavaScript or details/button behavior with final state synchronization
+                - custom number inputs validate bounds and hide browser-native spinner boxes
+                - mobile layout keeps controls full width and dropdown menus viewport-safe
+            forbidden_shortcuts:
+                - creating family-specific custom settings section folders only for control labels, tabs, or layout
+                - showing `Advanced` as the visible disclosure label
+                - showing dropdowns, toggles, radios, tabs, text fields, number fields, or textareas without state binding
+                - showing a custom control that is not consumed by generated output, export, restore, filtering, validation, or command/model generation
+                - using broad panel CSS that can hide the outer Custom disclosure
+                - showing duplicate arrows, native disclosure markers, or up arrows for open state
+                - shipping unresolved `__CUSTOM_*__`, `__PREFIX__`, or `__DOM_PREFIX__` placeholders
+            family_owned_behaviors:
+                - topology override behavior
+                - calculation assumption behavior
+                - shell flag and raw argument behavior
+                - scanner probe behavior
+                - assessment filter behavior
+                - final state schema
+    05_result-summary:
+        role: neutral generated result summary cards
+        owns:
+            - empty and error result callout shape
+            - generated result card shell
+            - top result header with status and updated chips
+            - left primary result card and right summary card rhythm
+            - optional result ring card for architecture, calculate, and scanning
+            - shell-compatible primary result card replacement rhythm
+            - aligned metric card grid
+            - metric icon badge and accent bar rhythm
+            - outlined pill chips with icon slots
+            - success, warning, error, baseline, ready, and need-work chip tones
+            - text wrapping inside all result cards
+            - mobile one-column stacking
+        does_not_own:
+            - family result state model
+            - score formulas
+            - calculation formulas
+            - scanner probes
+            - shell command generation
+            - assessment filtering behavior
+            - export or restore payloads
+        runtime_contract:
+            contract_version: 1
+            source_section: 05_result-summary
+            variant_storage: manifest_only
+            no_variant_subfolders: true
+            compatibility_sections:
+                - 05_result-summary
+                - 05_score-card
+                - 07_score-card
+            required_dom_hooks:
+                empty_state:
+                    source_id: __DOM_PREFIX__ResultEmpty
+                    required_classes:
+                        - __PREFIX__-result-empty
+                    runtime_rule: Show only before generation or after reset when no generated result exists.
+                error_state:
+                    source_id: __DOM_PREFIX__ResultError
+                    required_classes:
+                        - __PREFIX__-result-error
+                    runtime_rule: Stay hidden by default and show actionable error copy without stale generated values.
+                generated_summary:
+                    source_id: __DOM_PREFIX__ResultSummary
+                    required_classes:
+                        - __PREFIX__-result-summary
+                    runtime_rule: Render only from normalized result state after the family or tool action completes.
+                primary_visual:
+                    source_id: __DOM_PREFIX__ResultVisual
+                    required_classes:
+                        - __PREFIX__-result-primary-visual
+                    runtime_rule: Reflect the primary generated value, score, status, command mode, row count, or artifact metric.
+                result_header_title:
+                    required_classes:
+                        - __PREFIX__-result-header-title
+                    required_text: Result Summary
+                    runtime_rule: Start at the top of the result card with no blank gap before the heading.
+                status_chip:
+                    required_classes:
+                        - __PREFIX__-result-header-chip
+                    runtime_rule: Show a real generated, estimated, completed, ready, warning, or error state.
+                updated_chip:
+                    required_classes:
+                        - __PREFIX__-result-chip-updated
+                    runtime_rule: Show a real generated or updated timestamp label owned by runtime state.
+                primary_card:
+                    required_classes:
+                        - __PREFIX__-result-card-primary
+                    runtime_rule: Stay aligned as the left primary card on desktop and first card on mobile.
+                summary_card:
+                    required_classes:
+                        - __PREFIX__-result-card-summary
+                    runtime_rule: Stay aligned as the right descriptive summary card on desktop and second card on mobile.
+                metric_cards:
+                    required_classes:
+                        - __PREFIX__-result-metric-card
+                        - __PREFIX__-result-metric-value
+                        - __PREFIX__-result-metric-accent
+                    runtime_rule: Render real generated metric values with bottom accent bars aligned across cards.
+            required_runtime_behaviors:
+                - empty, error, and generated summary states are mutually exclusive
+                - hidden-first families do not show generated summary values on first view
+                - generated summary values come from normalized result state
+                - status and updated chips are runtime values, not static placeholders
+                - primary and descriptive summary cards stay aligned on desktop and stack cleanly on mobile
+                - metric cards render real generated values and remain aligned even with wrapped copy
+                - result heading starts flush inside the card without an empty band above it
+                - result tone uses approved state tokens and does not recolor the whole card for warning states
+                - export and JSON payloads agree with visible result values when those surfaces exist
+            forbidden_shortcuts:
+                - creating family-specific result summary section folders only for labels, icons, visual kind, or metric names
+                - showing generated result values before the user action when the family requires hidden-first behavior
+                - leaving empty or error states visible with stale generated values
+                - showing static placeholder metrics that are not generated from state
+                - claiming certification, compliance, security, production readiness, billing accuracy, or validation unless separately proven
+                - shipping unresolved `__RESULT_*__`, `__PREFIX__`, or `__DOM_PREFIX__` placeholders
+            family_owned_behaviors:
+                - result state model
+                - score formulas
+                - calculation formulas
+                - scanner probes and findings
+                - shell command generation
+                - assessment filtering behavior
+                - export and restore payloads
+    06_output-toolbar:
+        role: neutral sortable output toolbar
+        owns:
+            - one Sort label and custom CSS dropdown control
+            - ID-first visible sort default
+            - hidden `id` default sort value
+            - dropdown menu width matching the closed summary
+            - overflow-visible toolbar and dropdown wrappers
+            - open dropdown layering above nearby cards
+            - exactly five icon-ready output action buttons
+            - compact square-like action button radius
+            - desktop right-aligned action layout
+            - mobile full-width stacking
+        does_not_own:
+            - family sort state model
+            - table row sorting behavior
+            - export payload generation
+            - restore validation
+            - output tab content
+            - provider or domain labels
+    07_table-output:
+        role: neutral tabbed table output shell
+        owns:
+            - five top-level tab section rhythm
+            - tab section align right on desktop
+            - one-line horizontally scrollable tab section when tabs exceed width
+            - flat output tab states without shadow or lifted transform
+            - runtime override requirement for older tool-local active-tab shadows
+            - first tab as table output
+            - last tab as JSON output
+            - rounded icon-bearing tab buttons
+            - section cards with visible titles before output
+            - primary, secondary, and tertiary table frame shape
+            - empty row and empty output state shape
+            - centered `#` first column convention
+            - logical start alignment for middle table columns
+            - centered status-like label column convention
+            - centered row action final column convention
+            - sticky final row action column on multi-column horizontally scrolling tables
+            - flat sticky action column without side shadow
+            - 2-3 line clamp rhythm for generated row text
+            - optional fifth placeholder tab and table panel before JSON
+            - icon-only row copy action shape
+            - compact note cards for non-table supporting output
+            - JSON panel frame and scroll behavior
+            - mobile one-line tab scrolling and table overflow behavior
+        does_not_own:
+            - family output state model
+            - generated row meaning
+            - exact final column schema
+            - row sorting behavior
+            - row copy payload generation
+            - export payload generation
+            - restore validation
+            - scanner probes
+            - calculation formulas
+            - command generation
+            - provider or domain labels
+    08_json-restore:
+        role: neutral JSON output and restore frame
+        owns:
+            - framed JSON output card
+            - neutral non-section JSON card source markup
+            - global section padding reset for JSON card frames
+            - visible JSON title and helper rhythm
+            - hidden restore status slot
+            - explicit empty JSON state
+            - scrollable JSON code frame
+            - default JSON syntax token colors
+            - hidden JSON import file input
+            - mobile-readable JSON frame
+        does_not_own:
+            - family JSON schema
+            - payload construction
+            - import validation
+            - restore mapping
+            - state mutation
+            - export file naming
+            - provider or domain labels
+
+placeholders:
+    common:
+        - __TOOL_CLASS__
+        - __PREFIX__
+        - __DOM_PREFIX__
+        - __TOOL_NAME__
+    input_brief:
+        - __INPUT_LABEL__
+        - __INPUT_LAYOUT__
+        - __INPUT_ROWS__
+        - __INPUT_PLACEHOLDER__
+        - __INPUT_DEFAULT__
+        - __HELPER_CHIP_TEXT__
+        - __PRIMARY_ACTION_LABEL__
+        - __PRIMARY_ACTION_ICON__
+        - __SECONDARY_ACTION_LABEL__
+        - __SECONDARY_ACTION_ICON__
+        - __HELPER_TEXT__
+    basic_settings:
+        - __BASIC_EXAMPLE_LABEL__
+        - __BASIC_EXAMPLE_VALUE__
+        - __BASIC_EXAMPLE_HELPER__
+        - __BASIC_PRIMARY_LABEL__
+        - __BASIC_PRIMARY_HELPER__
+        - __BASIC_SELECT_LABEL__
+        - __BASIC_SELECT_HELPER__
+        - __BASIC_TEXT_LABEL__
+        - __BASIC_TEXT_PLACEHOLDER__
+        - __BASIC_TEXT_HELPER__
+        - __BASIC_TOGGLE_LABEL__
+        - __BASIC_TOGGLE_HELPER__
+    custom_settings:
+        - __CUSTOM_ARIA_LABEL__
+        - __CUSTOM_LAYOUT__
+        - __CUSTOM_COLUMNS__
+        - __CUSTOM_TAB_ONE_LABEL__
+        - __CUSTOM_TAB_TWO_LABEL__
+        - __CUSTOM_TAB_THREE_LABEL__
+        - __CUSTOM_TEXT_LABEL__
+        - __CUSTOM_TEXT_PLACEHOLDER__
+        - __CUSTOM_TEXT_HELPER__
+        - __CUSTOM_SELECT_LABEL__
+        - __CUSTOM_SELECT_HELPER__
+        - __CUSTOM_RADIO_LABEL__
+        - __CUSTOM_RADIO_HELPER__
+        - __CUSTOM_NUMBER_LABEL__
+        - __CUSTOM_NUMBER_HELPER__
+        - __CUSTOM_TOGGLE_LABEL__
+        - __CUSTOM_TOGGLE_HELPER__
+        - __CUSTOM_TEXTAREA_LABEL__
+        - __CUSTOM_TEXTAREA_PLACEHOLDER__
+        - __CUSTOM_TEXTAREA_HELPER__
+        - __CUSTOM_INFO_ITEM_ONE__
+        - __CUSTOM_INFO_ITEM_TWO__
+    result_summary:
+        - __RESULT_EMPTY_TEXT__
+        - __RESULT_ERROR_TEXT__
+        - __RESULT_TONE__
+        - __RESULT_LAYOUT__
+        - __RESULT_VISUAL_KIND__
+        - __RESULT_HEADER_TITLE__
+        - __RESULT_HEADER_COPY__
+        - __RESULT_HEADER_ICON__
+        - __RESULT_HEADER_STATUS_LABEL__
+        - __RESULT_HEADER_STATUS_ICON__
+        - __RESULT_HEADER_UPDATED_LABEL__
+        - __RESULT_HEADER_UPDATED_ICON__
+        - __RESULT_PRIMARY_KICKER__
+        - __RESULT_PRIMARY_TITLE__
+        - __RESULT_PRIMARY_COPY__
+        - __RESULT_SUMMARY_ICON__
+        - __RESULT_STATUS_LABEL__
+        - __RESULT_STATUS_ICON__
+        - __RESULT_SECONDARY_LABEL__
+        - __RESULT_SECONDARY_ICON__
+        - __RESULT_TERTIARY_LABEL__
+        - __RESULT_TERTIARY_ICON__
+        - __RESULT_QUATERNARY_LABEL__
+        - __RESULT_QUATERNARY_ICON__
+        - __RESULT_QUINARY_LABEL__
+        - __RESULT_QUINARY_ICON__
+        - __RESULT_UPDATED_LABEL__
+        - __RESULT_UPDATED_ICON__
+        - __RESULT_VISUAL_KICKER__
+        - __RESULT_VISUAL_ICON__
+        - __RESULT_VISUAL_VALUE__
+        - __RESULT_VISUAL_UNIT__
+        - __RESULT_VISUAL_TITLE__
+        - __RESULT_VISUAL_COPY__
+        - __RESULT_PROGRESS_DEG__
+        - __RESULT_PRIMARY_VISUAL_LABEL__
+        - __RESULT_PRIMARY_VISUAL_COPY__
+        - __RESULT_PRIMARY_SVG__
+        - __RESULT_PRIMARY_CHIP_LABEL__
+        - __RESULT_PRIMARY_CHIP_ICON__
+        - __RESULT_METRIC_ONE_LABEL__
+        - __RESULT_METRIC_ONE_VALUE__
+        - __RESULT_METRIC_ONE_COPY__
+        - __RESULT_METRIC_ONE_ICON__
+        - __RESULT_METRIC_TWO_LABEL__
+        - __RESULT_METRIC_TWO_VALUE__
+        - __RESULT_METRIC_TWO_COPY__
+        - __RESULT_METRIC_TWO_ICON__
+        - __RESULT_METRIC_THREE_LABEL__
+        - __RESULT_METRIC_THREE_VALUE__
+        - __RESULT_METRIC_THREE_COPY__
+        - __RESULT_METRIC_THREE_ICON__
+        - __RESULT_METRIC_FOUR_LABEL__
+        - __RESULT_METRIC_FOUR_VALUE__
+        - __RESULT_METRIC_FOUR_COPY__
+        - __RESULT_METRIC_FOUR_ICON__
+    output_toolbar:
+        - __SORT_OPTION_TWO_VALUE__
+        - __SORT_OPTION_TWO_LABEL__
+        - __SORT_OPTION_THREE_VALUE__
+        - __SORT_OPTION_THREE_LABEL__
+        - __SORT_OPTION_FOUR_VALUE__
+        - __SORT_OPTION_FOUR_LABEL__
+        - __SORT_OPTION_FIVE_VALUE__
+        - __SORT_OPTION_FIVE_LABEL__
+        - __OUTPUT_ACTION_ONE_ID__
+        - __OUTPUT_ACTION_ONE_ICON__
+        - __OUTPUT_ACTION_ONE_LABEL__
+        - __OUTPUT_ACTION_TWO_ID__
+        - __OUTPUT_ACTION_TWO_ICON__
+        - __OUTPUT_ACTION_TWO_LABEL__
+        - __OUTPUT_ACTION_THREE_ID__
+        - __OUTPUT_ACTION_THREE_ICON__
+        - __OUTPUT_ACTION_THREE_LABEL__
+        - __OUTPUT_ACTION_FOUR_ID__
+        - __OUTPUT_ACTION_FOUR_ICON__
+        - __OUTPUT_ACTION_FOUR_LABEL__
+        - __OUTPUT_ACTION_FIVE_ID__
+        - __OUTPUT_ACTION_FIVE_ICON__
+        - __OUTPUT_ACTION_FIVE_LABEL__
+    table_output:
+        - __TABLE_ARIA_LABEL__
+        - __TABLE_EMPTY_TEXT__
+        - __TABLE_TAB_ONE_LABEL__
+        - __TABLE_TAB_ONE_ICON__
+        - __TABLE_TAB_TWO_LABEL__
+        - __TABLE_TAB_TWO_ICON__
+        - __TABLE_TAB_THREE_LABEL__
+        - __TABLE_TAB_THREE_ICON__
+        - __TABLE_TAB_FOUR_LABEL__
+        - __TABLE_TAB_FOUR_ICON__
+        - __TABLE_TAB_FIVE_LABEL__
+        - __TABLE_TAB_FIVE_ICON__
+        - __TABLE_PRIMARY_TITLE__
+        - __TABLE_PRIMARY_COL_TWO__
+        - __TABLE_PRIMARY_COL_THREE__
+        - __TABLE_PRIMARY_COL_FOUR__
+        - __TABLE_PRIMARY_EMPTY__
+        - __TABLE_SECONDARY_TITLE__
+        - __TABLE_SECONDARY_COL_TWO__
+        - __TABLE_SECONDARY_COL_THREE__
+        - __TABLE_SECONDARY_COL_FOUR__
+        - __TABLE_SECONDARY_EMPTY__
+        - __TABLE_TERTIARY_TITLE__
+        - __TABLE_TERTIARY_COL_TWO__
+        - __TABLE_TERTIARY_COL_THREE__
+        - __TABLE_TERTIARY_COL_FOUR__
+        - __TABLE_TERTIARY_EMPTY__
+        - __TABLE_EXTRA_TITLE__
+        - __TABLE_EXTRA_COL_TWO__
+        - __TABLE_EXTRA_COL_THREE__
+        - __TABLE_EXTRA_COL_FOUR__
+        - __TABLE_EXTRA_EMPTY__
+        - __TABLE_NOTES_TITLE__
+        - __TABLE_NOTE_ONE_TITLE__
+        - __TABLE_NOTE_ONE_COPY__
+        - __TABLE_NOTE_TWO_TITLE__
+        - __TABLE_NOTE_TWO_COPY__
+        - __TABLE_NOTE_THREE_TITLE__
+        - __TABLE_NOTE_THREE_COPY__
+    json_restore:
+        - __JSON_RESTORE_ARIA_LABEL__
+        - __JSON_RESTORE_TITLE__
+        - __JSON_RESTORE_HELPER__
+        - __JSON_RESTORE_EMPTY_TEXT__
+        - __JSON_RESTORE_ACCEPT__
+
+generation_rules:
+    - Apply `00_shell` before family-specific workspace sections when a family needs the common workspace frame.
+    - Adapt `01_input-brief` into a prompt textarea, label input, target input, scenario input, or query input as the family requires.
+    - Use `data-input-layout="stacked"` for large prompt cards and `data-input-layout="inline"` for compact label, target, URL, or filter rows.
+    - Select the input brief preference from `input_brief_preferences` before creating family-specific variants.
+    - Treat `input_brief_runtime_contract` as mandatory when applying `01_input-brief`; visual differences must come from `input_brief_variants` and `input_brief_preferences`.
+    - Do not create `01_input-brief/variants/` folders. Keep variants as manifest data until generator code needs separate source files.
+    - Keep one canonical `01_input-brief` source section; preferences fill placeholders and may remove unsupported actions.
+    - Keep section CSS neutral enough to inherit family category/provider tokens after adaptation.
+    - Keep section JavaScript as metadata or optional neutral helpers; final behavior belongs to family or tool JavaScript.
+    - Select the basic settings preference from `basic_settings_preferences` before creating family-specific variants.
+    - Treat `basic_settings_runtime_contract` as mandatory when applying `02_basic-settings`; visual and control differences must come from `basic_settings_variants` and `basic_settings_preferences`.
+    - Do not create `02_basic-settings/variants/` folders. Keep variants as manifest data until generator code needs separate source files.
+    - Keep one canonical `02_basic-settings` source section; preferences fill labels, helper copy, examples, and expected control emphasis.
+    - Do not add visible `Basic settings` title or subtitle copy to final runtime tools unless the tool already has a native section heading that must be preserved.
+    - Skip `02_basic-settings` for tools that do not have real high-frequency basic controls.
+    - Do not add outlined pill chips when they only duplicate the selected dropdown summary or placeholder.
+    - When an outlined reset, default, or scope pill chip provides a distinct action, keep it in the left label column; the right column should hold the active control, selected value, placeholder, hidden field, or dropdown surface only.
+    - Every applied basic setting field must be inside a card and have CSS for placeholder, focus, disabled, hover, mobile, and selected states where relevant.
+    - Select the custom settings preference from `custom_settings_preferences` before creating family-specific variants.
+    - Treat `custom_settings_runtime_contract` as mandatory when applying `03_custom-settings`; visual and control differences must come from `custom_settings_variants` and `custom_settings_preferences`.
+    - Do not create `03_custom-settings/variants/` folders. Keep variants as manifest data until generator code needs separate source files.
+    - Keep one canonical `03_custom-settings` source section; preferences fill tab names, placeholder examples, control emphasis, density, row shape, and column behavior.
+    - Use visible `Custom` copy for the disclosure label even when preserving existing `03_advanced-settings` or `03_advanced-setting` namespace markers.
+    - Skip `03_custom-settings` for tools that do not have real optional/custom controls.
+    - Every applied custom setting field must be inside a card and have CSS for placeholder, focus, disabled, hover, mobile, and selected states where relevant.
+    - Use inline CSS dropdowns for Custom by default; do not rely on browser-native select popups and do not nest option cards inside dropdown menus.
+    - Use simple radio inputs for Custom; do not adapt Custom radio choices as card buttons unless a tool-specific behavior explicitly requires it.
+    - Use simple checkbox inputs for Custom; render them with neutral-off and strong-accent-on switch-style CSS without converting them to switch-card markup.
+    - Keep each Custom setting to one outer card. Do not put another card around the active input, unit, currency prefix, quantity value, or placeholder.
+    - Within a Custom setting card, place the label and helper chip first, the active control second, and explanatory text below the control. Put group-level information above related compact controls as dashed text rows.
+    - Match placeholder examples to the field type: CIDR/network fields use slash notation such as `10.0.0.0/16`, number fields use numeric examples, and quantity fields use quantity examples with units outside the input.
+    - Separate Custom subsections with spacing, not divider lines.
+    - When many custom cards are present, organize related settings as outer grouped cards before aligning controls inside each card.
+    - Dense override or rate groups must use one outer grouped card per row. Inside each grouped card, one field uses one column, two fields use two columns, and three or more fields use three columns on desktop.
+    - Neutralize shared span helpers inside override group bodies so a third field cannot force a second full-width row.
+    - Long informational helper text should use dashed info rows that can wrap into columns or rows.
+    - Select the result summary preference from `result_summary_preferences` before creating family-specific variants.
+    - Treat `result_summary_runtime_contract` as mandatory when applying `05_result-summary`; visual and metric differences must come from `result_summary_variants` and `result_summary_preferences`.
+    - Do not create `05_result-summary/variants/` folders. Keep variants as manifest data until generator code needs separate source files.
+    - Keep one canonical `05_result-summary` source section; preferences fill header labels, result tone, visual kind, chip labels, metric labels, icons, and generated copy.
+    - Use result summary as the shared visual rhythm for existing family slots such as `05_result-summary`, `05_score-card`, and `07_score-card` when the result surface is summary-card based.
+    - The generated result summary must stay inside a card with a top header row, and all text must wrap inside its parent card.
+    - Use outlined pill chips with icon slots and state tones: success, warning, error, baseline, ready, and need-work.
+    - Keep the left primary result card and right summary card aligned; use the left card for a ring when the family is architecture, calculate, or scanning.
+    - Put the primary result kicker above the ring, then center the result title, copy, and outcome chip below the ring.
+    - Shell families may adapt the left primary card into compact command, mode, route, or comparison text while preserving the same grid rhythm; do not show a full direct command in the primary result card.
+    - Estimate summaries should use the right summary card with a title, short summary, and four to six outlined chips including updated date/time.
+    - Metric cards should include an icon badge and bottom accent bar when adapted to assessment, calculate, generator, scanning, or shell summaries.
+    - The result shell must inherit family/category/provider color tokens; only state chips should use success, warning, error, baseline, ready, and need-work tones.
+    - Do not put validation, certification, billing accuracy, compliance, security, or production-readiness claims in this section unless those outcomes are actually validated.
+    - Select the output toolbar preference from `output_toolbar_preferences` before creating family-specific variants.
+    - Keep one canonical `06_output-toolbar` source section; preferences fill sort options, action labels, action icons, and action IDs.
+    - Use output toolbar as the shared visual rhythm for existing family slots such as `06_sort-card`, `07_table-export`, and `08_sort-card` when a sortable output action bar is needed.
+    - Keep `ID` as the first visible sort option and `id` as the hidden default sort value.
+    - Keep the custom sort dropdown menu the same width as the closed sort summary.
+    - Keep toolbar wrappers and dropdown wrappers overflow-visible so the menu is not clipped behind the next card.
+    - Use exactly five output action buttons, right-aligned on desktop and full-width stacked on mobile.
+    - Every output action button must include an icon and compact square-like corners.
+    - Do not show an action unless the family or final tool implements the matching behavior.
+    - Select the table output preference from `table_output_preferences` before creating family-specific variants.
+    - Keep one canonical `07_table-output` source section; preferences fill tab labels, tab icons, table titles, compact column labels, empty text, and note labels.
+    - Use table output as the shared visual rhythm for existing family slots such as `07_table`, `07_table-export`, and `09_result-table` when a detailed tabbed output surface is needed.
+    - Keep at least five top-level output tabs after adaptation.
+    - Keep the table output tab section align right on desktop and horizontally scrollable on one line when tabs exceed width.
+    - Keep the first top-level output tab as a table section.
+    - Use the fifth tab and panel as an optional extra placeholder section before JSON when a family needs more output sections.
+    - Keep the final top-level output tab as JSON.
+    - Every output tab button must be rounded and include an icon.
+    - Every output panel must include a visible section title inside the section card before generated output.
+    - Keep generated tables compact and meaningful. Do not add columns only because data exists in state.
+    - The first table column must be a centered `#` column.
+    - Middle table columns must use logical start alignment.
+    - The final table column must be a centered row action column.
+    - The final row action column must be sticky when a multi-column table scrolls horizontally.
+    - Row action buttons must be icon-only copy buttons with accessible labels.
+    - Generated row text should use `.__PREFIX__-table-cell-text` or `.__PREFIX__-cell-clamp` and stay clamped to 2-3 lines.
+    - Empty table states must stay inside the table frame.
+    - Mobile layouts must preserve one-line scrollable output tabs, horizontal table scrolling when needed, and readable JSON.
+    - Select the JSON restore preference from `json_restore_preferences` before creating family-specific variants.
+    - Keep one canonical `08_json-restore` source section; preferences fill JSON panel labels, helper copy, empty text, and accepted import type.
+    - Use JSON restore as the shared visual rhythm for existing family slots such as `08_json-restore`, `09_result-table`, and `07_table` when a JSON output/import/restore frame is needed.
+    - Keep JSON output inside a framed card with a visible title before the code frame.
+    - Use a neutral `div` with `role="region"` for the JSON card in the base source; do not emit a `section` JSON card from `_base`.
+    - Reset global `section` padding on the JSON card when final compatibility markup must keep a `section` element so the header is flush to the framed card top.
+    - Keep a restore status slot near the JSON frame and do not use it to imply validation that did not run.
+    - Keep empty JSON state explicit and separate from generated JSON output.
+    - Keep imported JSON file input scoped, hidden when needed, and configured for JSON files.
+    - Apply JSON syntax color highlighting by default and keep long JSON horizontally scrollable.
+    - Family and final tool code must parse and validate imported JSON before mutating state.
+    - Do not make restore depend on prompt replay alone.
+
+input_brief_selection:
+    source_section: 01_input-brief
+    canonical_source_only: true
+    runtime_contract: input_brief_runtime_contract
+    variant_source: input_brief_variants
+    preference_source: input_brief_preferences
+    selection_order:
+        - explicit_user_family
+        - existing_tool_family_metadata
+        - dominant_behavior
+        - category_fallback
+        - generic_default
+    category_fallbacks:
+        cloud: architecture
+        security: scanning
+        cis: assessment
+        shell: shell
+    rule: Use the matching preference to fill placeholders. Do not duplicate the source section for each family.
+
+input_brief_runtime_contract:
+    source_section: 01_input-brief
+    namespace: family._base.workspace.01_input-brief
+    contract_version: 1
+    storage_rule: Keep one flat source folder. Store variant rules in this manifest, not in variant subfolders.
+    required_source_files:
+        - README.md
+        - demo.html
+        - page.html.twig
+        - section.css
+        - section.js
+    required_markup:
+        root_classes:
+            - __PREFIX__-input-card
+            - __PREFIX__-input-brief
+        data_attributes:
+            - data-input-layout
+        hooks:
+            input: __DOM_PREFIX__Input
+            primary_action: __DOM_PREFIX__PrimaryAction
+            secondary_action: __DOM_PREFIX__SecondaryAction
+            error_slot: __DOM_PREFIX__InputError
+    required_final_runtime:
+        - final input ID exists and is referenced by JavaScript
+        - final primary action ID exists and has a real click handler
+        - final secondary action ID exists and has a real click handler when the button is visible
+        - final error slot exists when JavaScript can reject or restore input
+        - final input value is persisted in normalized family or tool state
+        - final primary action validates input before rendering generated output
+        - final first view does not auto-render generated output when the selected family requires hidden-first results
+    allowed_adaptations:
+        - replace textarea with input for inline text, URL, label, target, or filter variants
+        - remove the secondary action only when the selected preference marks it not required and the runtime has no reset/default behavior
+        - change icons, labels, helper text, placeholders, and row count to family-native copy
+        - preserve stable existing final-tool IDs when reapplying to an existing runtime package
+    forbidden_adaptations:
+        - duplicating the source section into family-specific folders for layout-only differences
+        - rendering native browser popups or cards inside the input brief action row
+        - leaving a visible action button without an implemented handler
+        - using unresolved placeholders in final tool files
+
+input_brief_variants:
+    stacked_prompt:
+        layout: stacked
+        input_kinds:
+            - textarea
+        expected_rows:
+            min: 4
+            max: 9
+        action_layout: right_aligned_below_input
+        helper_layout: aligned_to_input_column
+        used_by:
+            - generic
+            - architecture
+    inline_label:
+        layout: inline
+        input_kinds:
+            - text
+        expected_rows:
+            min: 1
+            max: 1
+        action_layout: same_row_right
+        helper_layout: full_width_below_row
+        used_by:
+            - calculate
+    inline_target:
+        layout: inline
+        input_kinds:
+            - text
+        expected_rows:
+            min: 1
+            max: 1
+        action_layout: same_row_right
+        helper_layout: full_width_below_row
+        used_by:
+            - shell
+    inline_url:
+        layout: inline
+        input_kinds:
+            - url
+        expected_rows:
+            min: 1
+            max: 1
+        action_layout: same_row_right
+        helper_layout: full_width_below_row
+        used_by:
+            - scanning
+    inline_filter:
+        layout: inline
+        input_kinds:
+            - text
+            - search
+        expected_rows:
+            min: 1
+            max: 1
+        action_layout: same_row_right
+        helper_layout: full_width_below_row
+        used_by:
+            - assessment
+
+input_brief_preferences:
+    generic:
+        variant: stacked_prompt
+        layout: stacked
+        input_kind: textarea
+        rows: 4
+        label: Primary input
+        placeholder: Describe the model, target, scenario, or request.
+        helper_chip: Explain the expected input boundary.
+        helper_text: Provide the minimum information needed to build the model, then review generated output before exporting.
+        primary_action:
+            label: Run
+            icon: bi-play-fill
+        secondary_action:
+            required: true
+            label: Reset
+            icon: bi-arrow-counterclockwise
+    architecture:
+        variant: stacked_prompt
+        layout: stacked
+        input_kind: textarea
+        rows: 7
+        label: Architecture prompt
+        placeholder: Describe topology, placement, ingress, private tiers, shared services, and export requirements.
+        helper_chip: Describe the architecture prompt boundary.
+        helper_text: Use one brief prompt with region, zone count, ingress, private tiers, supporting services, and any output expectations.
+        primary_action:
+            label: Generate Diagram
+            icon: bi-stars
+        secondary_action:
+            required: true
+            label: Load Default
+            icon: bi-arrow-counterclockwise
+    calculate:
+        variant: inline_label
+        layout: inline
+        input_kind: text
+        rows: 1
+        label: Estimate label
+        placeholder: Production API stack
+        helper_chip: Name the workload or environment being estimated.
+        helper_text: Use a short label that can travel with exported estimate data.
+        primary_action:
+            label: Estimate
+            icon: bi-calculator
+        secondary_action:
+            required: true
+            label: Reset
+            icon: bi-arrow-counterclockwise
+    shell:
+        variant: inline_target
+        layout: inline
+        input_kind: text
+        rows: 1
+        label: Target path
+        placeholder: ./deploy.sh
+        helper_chip: Identify the path, command target, or script scope.
+        helper_text: Use a concrete path, command target, or scope before generating shell output.
+        primary_action:
+            label: Generate
+            icon: bi-terminal
+        secondary_action:
+            required: true
+            label: Reset
+            icon: bi-arrow-counterclockwise
+    scanning:
+        variant: inline_url
+        layout: inline
+        input_kind: url
+        rows: 1
+        label: URL target
+        placeholder: https://example.com
+        helper_chip: Enter the target URL or bounded scan target.
+        helper_text: Use a valid target and review evidence before treating scan output as actionable.
+        primary_action:
+            label: Scan
+            icon: bi-shield-check
+        secondary_action:
+            required: false
+            label: Reset
+            icon: bi-arrow-counterclockwise
+    assessment:
+        variant: inline_filter
+        layout: inline
+        input_kind: text
+        rows: 1
+        label: Control filter
+        placeholder: 1.1.1.1, ssh, auditd
+        helper_chip: Filter controls by ID, service, package, or keyword.
+        helper_text: Filter the assessment scope before reviewing control evidence and output.
+        primary_action:
+            label: Explore
+            icon: bi-search
+        secondary_action:
+            required: false
+            label: Reset
+            icon: bi-arrow-counterclockwise
+
+basic_settings_selection:
+    source_section: 02_basic-settings
+    canonical_source_only: true
+    runtime_contract: basic_settings_runtime_contract
+    variant_source: basic_settings_variants
+    preference_source: basic_settings_preferences
+    selection_order:
+        - explicit_user_family
+        - existing_tool_family_metadata
+        - dominant_behavior
+        - category_fallback
+        - generic_default
+    category_fallbacks:
+        cloud: architecture
+        security: scanning
+        cis: assessment
+        shell: shell
+    rule: Use the matching preference to fill labels, helper chips, examples, control emphasis, and mobile behavior. Do not duplicate the base section for each family.
+
+basic_settings_runtime_contract:
+    source_section: 02_basic-settings
+    namespace: family._base.workspace.02_basic-settings
+    contract_version: 1
+    storage_rule: Keep one flat source folder. Store variant rules in this manifest, not in variant subfolders.
+    required_source_files:
+        - README.md
+        - demo.html
+        - page.html.twig
+        - section.css
+        - section.js
+    required_markup:
+        root_classes:
+            - __PREFIX__-basic-card
+            - __PREFIX__-basic-grid
+        card_classes:
+            - __PREFIX__-setting-card
+            - __PREFIX__-example-card
+        hooks:
+            primary_control: __DOM_PREFIX__BasicPrimary
+            custom_select: __DOM_PREFIX__BasicSelect
+            custom_select_summary: __DOM_PREFIX__BasicSelectSummary
+            custom_select_menu: __DOM_PREFIX__BasicSelectMenu
+            text_control: __DOM_PREFIX__BasicText
+            toggle_control: __DOM_PREFIX__BasicToggle
+    required_final_runtime:
+        - final basic setting IDs exist and are referenced by JavaScript when the controls are visible
+        - visible dropdown, select, text, number, URL, textarea, toggle, and mode controls have real state-binding handlers
+        - selected dropdown summaries update when state changes
+        - generated output, export payloads, and restore payloads read the same normalized state
+        - custom dropdown menus open without changing card height or clipping behind nearby cards
+        - dropdown options render as plain option rows without visible radio controls
+        - every visible basic setting affects generated output, export, restore, filtering, or validation
+    allowed_adaptations:
+        - replace native select with a custom dropdown when the family requires option descriptions
+        - replace text input with number, URL, textarea, segmented buttons, or equivalent control when state binding is preserved
+        - remove a source control only when the final tool has no real matching setting and the remaining controls still satisfy the family variant
+        - preserve stable existing final-tool IDs when reapplying to an existing runtime package
+    forbidden_adaptations:
+        - duplicating the source section into family-specific folders for layout-only or label-only differences
+        - showing fake controls that do not update normalized state
+        - showing controls that do not affect generated output, export, restore, filtering, or validation
+        - using unresolved placeholders in final tool files
+        - treating namespace markers as proof that runtime behavior exists
+
+basic_settings_variants:
+    generic_options:
+        layout: card_grid
+        required_control_groups:
+            - preset_or_scope
+            - option_dropdown
+            - text_or_label
+            - boolean_toggle
+        expected_controls:
+            - dropdown
+            - text
+            - toggle
+        used_by:
+            - generic
+    architecture_preset:
+        layout: card_grid
+        required_control_groups:
+            - viewpoint_or_preset
+            - environment_or_region
+            - zone_or_node_count
+            - layout_or_stateful_toggle
+        expected_controls:
+            - dropdown
+            - native_select
+            - number
+            - toggle
+        used_by:
+            - architecture
+    calculate_assumptions:
+        layout: card_grid
+        required_control_groups:
+            - estimate_preset
+            - estimate_basis
+            - assumption_label
+            - visible_assumption_toggle
+        expected_controls:
+            - dropdown
+            - basis_card
+            - text
+            - toggle
+        used_by:
+            - calculate
+    shell_command_options:
+        layout: card_grid
+        required_control_groups:
+            - command_preset
+            - shell_or_implementation
+            - mode_or_operation
+            - target_or_flag_option
+        expected_controls:
+            - native_select
+            - custom_dropdown
+            - text
+            - number
+            - toggle
+        used_by:
+            - shell
+    scanning_request_options:
+        layout: card_grid
+        required_control_groups:
+            - request_method
+            - timeout
+            - redirects
+            - tls_or_fallback_probe
+        expected_controls:
+            - button_dropdown
+            - number
+            - toggle
+            - text
+        used_by:
+            - scanning
+    assessment_scope_filters:
+        layout: card_grid
+        required_control_groups:
+            - section_scope
+            - path_or_profile_scope
+            - criticality_or_status
+            - row_limit
+        expected_controls:
+            - radio_card_dropdown
+            - dynamic_options
+            - number
+            - reset_button
+        used_by:
+            - assessment
+
+basic_settings_preferences:
+    generic:
+        variant: generic_options
+        example_label: Example input
+        example_value: Preset, scope, option, and note
+        example_helper: Keep high-frequency settings visible and advanced options outside this card.
+        text_placeholder: Example setting value
+        control_emphasis:
+            - dropdown
+            - radio_card
+            - text
+            - toggle
+        mobile_rule: one_column_full_width
+    architecture:
+        variant: architecture_preset
+        example_label: Example architecture settings
+        example_value: 3-tier web, us-east-1, 2 zones
+        example_helper: Region, zone count, and preset should change the generated model and exported JSON.
+        text_placeholder: 3-tier web in us-east-1
+        control_emphasis:
+            - dropdown
+            - native_select
+            - helper_hint
+        mobile_rule: one_column_full_width
+    calculate:
+        variant: calculate_assumptions
+        example_label: Example estimate settings
+        example_value: Lean web platform, monthly USD, starter catalog
+        example_helper: Preset and basis controls must update totals, tables, and JSON together.
+        text_placeholder: Lean web platform
+        control_emphasis:
+            - radio_card_dropdown
+            - action_button
+            - basis_card
+        mobile_rule: one_column_full_width
+    shell:
+        variant: shell_command_options
+        example_label: Example command settings
+        example_value: TCP client, Bash/Zsh, OpenBSD nc, port 443
+        example_helper: Basic fields should control generated command shape without hiding unsupported flags.
+        text_placeholder: example.com:443
+        control_emphasis:
+            - native_select
+            - text
+            - number
+            - toggle
+        mobile_rule: one_column_full_width
+    scanning:
+        variant: scanning_request_options
+        example_label: Example scan settings
+        example_value: HEAD, follow redirects, 12 second timeout
+        example_helper: Scanner defaults should stay bounded, visible, and restorable.
+        text_placeholder: https://example.com
+        control_emphasis:
+            - button_dropdown
+            - number
+            - toggle
+        mobile_rule: one_column_full_width
+    assessment:
+        variant: assessment_scope_filters
+        example_label: Example assessment settings
+        example_value: All sections, all paths, all criticality, 50 rows
+        example_helper: Scope changes must rerender summaries, tables, artifacts, exports, and JSON together.
+        text_placeholder: 1.1.1, ssh, auditd
+        control_emphasis:
+            - radio_card_dropdown
+            - reset_button
+            - dynamic_options
+        mobile_rule: one_column_full_width
+
+custom_settings_selection:
+    source_section: 03_custom-settings
+    canonical_source_only: true
+    runtime_contract: custom_settings_runtime_contract
+    variant_source: custom_settings_variants
+    preference_source: custom_settings_preferences
+    compatibility_sections:
+        - 03_advanced-settings
+        - 03_advanced-setting
+    selection_order:
+        - explicit_user_family
+        - existing_tool_family_metadata
+        - dominant_behavior
+        - category_fallback
+        - generic_default
+    category_fallbacks:
+        cloud: architecture
+        security: scanning
+        cis: assessment
+        shell: shell
+    rule: Use the matching preference to fill tabs, helper chips, placeholder examples, density, row shape, and column behavior. Do not duplicate the base section for each family.
+
+custom_settings_runtime_contract:
+    source_section: 03_custom-settings
+    namespace: family._base.workspace.03_custom-settings
+    contract_version: 1
+    storage_rule: Keep one flat source folder. Store variant rules in this manifest, not in variant subfolders.
+    compatibility_sections:
+        - 03_advanced-settings
+        - 03_advanced-setting
+    visible_label: Custom
+    required_source_files:
+        - README.md
+        - demo.html
+        - page.html.twig
+        - section.css
+        - section.js
+    required_markup:
+        root_classes:
+            - __PREFIX__-custom-settings
+            - __PREFIX__-custom-summary
+            - __PREFIX__-custom-body
+        data_attributes:
+            - data-custom-layout
+        hooks:
+            disclosure: __DOM_PREFIX__CustomSettings
+            tab_one: __DOM_PREFIX__CustomTabOne
+            tab_two: __DOM_PREFIX__CustomTabTwo
+            tab_three: __DOM_PREFIX__CustomTabThree
+            panel_one: __DOM_PREFIX__CustomPanelOne
+            panel_two: __DOM_PREFIX__CustomPanelTwo
+            panel_three: __DOM_PREFIX__CustomPanelThree
+            text_control: __DOM_PREFIX__CustomText
+            dropdown: __DOM_PREFIX__CustomSelect
+            dropdown_value: __DOM_PREFIX__CustomSelectValue
+            radio_standard: __DOM_PREFIX__CustomRadioStandard
+            radio_override: __DOM_PREFIX__CustomRadioOverride
+            number_control: __DOM_PREFIX__CustomNumber
+            toggle_control: __DOM_PREFIX__CustomToggle
+            textarea_control: __DOM_PREFIX__CustomTextarea
+    required_final_runtime:
+        - final Custom disclosure exists when optional settings are rendered
+        - visible disclosure label is `Custom`, even when compatibility namespace markers use advanced wording
+        - visible tab IDs and panel IDs exist and are referenced by JavaScript when tabs are rendered
+        - visible dropdown, radio, checkbox, text, number, and textarea controls have real state-binding handlers
+        - disclosure and dropdown arrows use one arrow slot, point right by default, and point down when open
+        - dropdown summaries update when state changes
+        - generated output, export payloads, and restore payloads read the same normalized custom state
+        - fake Custom controls are removed instead of shown
+    allowed_adaptations:
+        - remove unused source controls when the final tool has no real matching optional setting
+        - preserve compatibility namespace markers `03_advanced-settings` or `03_advanced-setting` when existing stable packages require them
+        - preserve stable existing final-tool IDs when reapplying to an existing runtime package
+        - collapse tabs into one compact panel when the family variant does not need multiple real panels
+    forbidden_adaptations:
+        - duplicating the source section into family-specific folders for layout-only, tab-only, or label-only differences
+        - showing `Advanced` as the visible disclosure label
+        - rendering fake controls that do not update normalized state
+        - showing duplicate arrows, native disclosure markers, or up arrows for open state
+        - using unresolved placeholders in final tool files
+        - treating namespace markers as proof that runtime behavior exists
+
+custom_settings_variants:
+    generic_custom_options:
+        layout: compact_one_column
+        columns: 1
+        required_control_groups:
+            - details
+            - options
+            - output
+        expected_controls:
+            - text
+            - inline_css_dropdown
+            - simple_radio
+            - simple_checkbox
+            - textarea
+        used_by:
+            - generic
+    architecture_custom_topology:
+        layout: tabbed_two_column
+        columns: 2
+        required_control_groups:
+            - network_layout
+            - workload
+            - services_and_controls
+        expected_controls:
+            - tabbed_controls
+            - inline_css_dropdown
+            - text
+            - simple_radio
+            - simple_checkbox
+            - textarea
+        used_by:
+            - architecture
+    calculate_custom_assumptions:
+        layout: compact_two_column_multi_row
+        columns: 2
+        required_control_groups:
+            - components
+            - assumptions
+            - overrides
+        expected_controls:
+            - numeric_inputs
+            - inline_css_dropdown
+            - simple_radio
+            - simple_checkbox
+            - compact_auto_fit_cards
+            - textarea
+        used_by:
+            - calculate
+    shell_custom_flags:
+        layout: compact_two_column_multi_row
+        columns: 2
+        required_control_groups:
+            - flags
+            - network
+            - runtime
+        expected_controls:
+            - inline_css_dropdown
+            - simple_radio
+            - text
+            - number
+            - simple_checkbox
+            - textarea
+        used_by:
+            - shell
+    scanning_custom_probes:
+        layout: compact_one_column
+        columns: 1
+        required_control_groups:
+            - request
+            - evidence
+            - limits
+        expected_controls:
+            - request_options
+            - inline_css_dropdown
+            - simple_radio
+            - number
+            - simple_checkbox
+            - textarea
+        used_by:
+            - scanning
+    assessment_custom_filters:
+        layout: compact_two_column_multi_row
+        columns: 2
+        required_control_groups:
+            - scope
+            - filters
+            - evidence
+        expected_controls:
+            - dynamic_options
+            - row_limit
+            - inline_css_dropdown
+            - simple_radio
+            - reset_button
+            - textarea
+        used_by:
+            - assessment
+
+custom_settings_preferences:
+    generic:
+        variant: generic_custom_options
+        aria_label: Custom settings
+        layout: compact_one_column
+        columns: 1
+        tabs:
+            - Details
+            - Options
+            - Output
+        text_placeholder: Custom setting value
+        textarea_placeholder: Notes, overrides, or output preferences
+        control_emphasis:
+            - text
+            - inline_css_dropdown
+            - simple_radio
+            - simple_checkbox
+        row_rule: multiple_compact_rows_allowed
+        mobile_rule: one_column_full_width
+    architecture:
+        variant: architecture_custom_topology
+        aria_label: Architecture custom configuration
+        layout: tabbed_two_column
+        columns: 2
+        tabs:
+            - Network layout
+            - Workload
+            - Services and controls
+        text_placeholder: 10.0.0.0/16
+        textarea_placeholder: Optional label or layout note
+        control_emphasis:
+            - tabbed_controls
+            - inline_css_dropdown
+            - text
+            - simple_radio
+            - simple_checkbox
+        row_rule: two_columns_when_space_allows
+        mobile_rule: one_column_full_width
+    calculate:
+        variant: calculate_custom_assumptions
+        aria_label: Calculate custom assumptions
+        layout: compact_two_column_multi_row
+        columns: 2
+        tabs:
+            - Components
+            - Assumptions
+            - Overrides
+        text_placeholder: Custom instance profile
+        textarea_placeholder: Manual rate note or override rationale
+        control_emphasis:
+            - service_cards
+            - numeric_inputs
+            - inline_css_dropdown
+            - simple_radio
+            - simple_checkbox
+            - compact_auto_fit_cards
+        row_rule: multiple_compact_rows_allowed
+        mobile_rule: one_column_full_width
+    shell:
+        variant: shell_custom_flags
+        aria_label: Shell custom command settings
+        layout: compact_two_column_multi_row
+        columns: 2
+        tabs:
+            - Flags
+            - Network
+            - Runtime
+        text_placeholder: Raw extras, for example --allow 10.0.0.0/8
+        textarea_placeholder: Optional command note or raw argument list
+        control_emphasis:
+            - inline_css_dropdown
+            - simple_radio
+            - text
+            - number
+            - simple_checkbox
+        row_rule: multiple_compact_rows_allowed
+        mobile_rule: one_column_full_width
+    scanning:
+        variant: scanning_custom_probes
+        aria_label: Scanner custom probe settings
+        layout: compact_one_column
+        columns: 1
+        tabs:
+            - Request
+            - Evidence
+            - Limits
+        text_placeholder: Custom user agent
+        textarea_placeholder: Optional evidence note
+        control_emphasis:
+            - request_options
+            - inline_css_dropdown
+            - simple_radio
+            - number
+            - simple_checkbox
+        row_rule: multiple_compact_rows_allowed
+        mobile_rule: one_column_full_width
+    assessment:
+        variant: assessment_custom_filters
+        aria_label: Assessment custom filters
+        layout: compact_two_column_multi_row
+        columns: 2
+        tabs:
+            - Scope
+            - Filters
+            - Evidence
+        text_placeholder: Control ID, package, service, or keyword
+        textarea_placeholder: Evidence filter or review note
+        control_emphasis:
+            - dynamic_options
+            - row_limit
+            - inline_css_dropdown
+            - simple_radio
+            - reset_button
+        row_rule: multiple_compact_rows_allowed
+        mobile_rule: one_column_full_width
+
+result_summary_selection:
+    source_section: 05_result-summary
+    canonical_source_only: true
+    runtime_contract: result_summary_runtime_contract
+    variant_source: result_summary_variants
+    preference_source: result_summary_preferences
+    compatibility_sections:
+        - 05_score-card
+        - 07_score-card
+    selection_order:
+        - explicit_user_family
+        - existing_tool_family_metadata
+        - dominant_behavior
+        - category_fallback
+        - generic_default
+    category_fallbacks:
+        cloud: architecture
+        security: scanning
+        cis: assessment
+        shell: shell
+    rule: Use the matching preference to fill header labels, tone, visual kind, summary chips, updated chip, metric labels, icons, and copy. Do not duplicate the base section for each family.
+
+result_summary_runtime_contract:
+    source_section: 05_result-summary
+    namespace: family._base.workspace.05_result-summary
+    contract_version: 1
+    storage_rule: Keep one flat source folder. Store variant rules in this manifest, not in variant subfolders.
+    compatibility_sections:
+        - 05_result-summary
+        - 05_score-card
+        - 07_score-card
+    required_source_files:
+        - README.md
+        - demo.html
+        - page.html.twig
+        - section.css
+        - section.js
+    required_markup:
+        root_classes:
+            - __PREFIX__-result-summary
+            - __PREFIX__-result-header
+            - __PREFIX__-result-hero-grid
+        state_hooks:
+            empty_state: __DOM_PREFIX__ResultEmpty
+            error_state: __DOM_PREFIX__ResultError
+            generated_summary: __DOM_PREFIX__ResultSummary
+            primary_visual: __DOM_PREFIX__ResultVisual
+        card_classes:
+            - __PREFIX__-result-card-primary
+            - __PREFIX__-result-card-summary
+            - __PREFIX__-result-metric-card
+        required_heading: Result Summary
+    required_final_runtime:
+        - final empty, error, and generated result IDs exist when JavaScript references them
+        - empty, error, and generated states are mutually exclusive
+        - final first view keeps generated summary hidden when the selected family requires hidden-first output
+        - generated values, chips, and metric cards come from normalized result state
+        - status and updated chips use real runtime labels and timestamps
+        - primary card and descriptive summary card stay aligned on desktop and stack on mobile
+        - metric values agree with JSON/export payload values when those surfaces exist
+        - result heading starts at the top of the result card without a blank band
+    allowed_adaptations:
+        - use ring, icon, SVG, metric, number, decimal, text, status, command, or pill as the primary visual
+        - preserve compatibility namespace markers `05_score-card` or `07_score-card` when existing stable packages require them
+        - preserve stable existing final-tool IDs when reapplying to an existing runtime package
+        - remove metric cards only when the family variant has no real generated metrics and no placeholder cards remain
+    forbidden_adaptations:
+        - duplicating the source section into family-specific folders for label, visual-kind, chip, or metric differences
+        - showing generated result values before user action in hidden-first families
+        - showing static placeholder metric cards that are not generated from state
+        - showing stale generated values inside empty or error states
+        - claiming certification, compliance, security, production readiness, billing accuracy, or validation unless separately proven
+        - using unresolved placeholders in final tool files
+
+result_summary_variants:
+    generic_result_overview:
+        layout: overview
+        visual_kind:
+            - status
+            - icon
+            - number
+            - text
+        required_state_groups:
+            - empty
+            - error
+            - generated
+            - status_chips
+            - metrics
+        hidden_first_default: true
+        used_by:
+            - generic
+            - generator
+    architecture_result_model:
+        layout: score_overview
+        visual_kind:
+            - ring
+            - svg
+            - metric
+        required_state_groups:
+            - generated_model
+            - advisory_score
+            - model_chips
+            - inventory_metrics
+        hidden_first_default: true
+        used_by:
+            - architecture
+    calculate_result_estimate:
+        layout: cost_overview
+        visual_kind:
+            - ring
+            - decimal
+            - number
+            - metric
+        required_state_groups:
+            - estimate_total
+            - run_rate
+            - assumption_chips
+            - driver_metrics
+        hidden_first_default: true
+        used_by:
+            - calculate
+    shell_result_command:
+        layout: command_overview
+        visual_kind:
+            - command
+            - text
+            - status
+            - pill
+        required_state_groups:
+            - generated_command
+            - command_mode
+            - warning_chips
+            - command_metrics
+        hidden_first_default: true
+        used_by:
+            - shell
+    scanning_result_findings:
+        layout: scan_overview
+        visual_kind:
+            - ring
+            - status
+            - number
+            - metric
+        required_state_groups:
+            - scan_target
+            - finding_counts
+            - evidence_chips
+            - severity_metrics
+        hidden_first_default: true
+        used_by:
+            - scanning
+    assessment_result_controls:
+        layout: assessment_overview
+        visual_kind:
+            - status
+            - number
+            - pill
+            - metric
+        required_state_groups:
+            - matched_controls
+            - selected_item
+            - scope_chips
+            - filter_metrics
+        hidden_first_default: false
+        used_by:
+            - assessment
+
+result_summary_preferences:
+    generic:
+        variant: generic_result_overview
+        tone: ready
+        layout: overview
+        visual_kind: status
+        header_title: Result Summary
+        header_copy: Overview of the current generated result and key metrics.
+        header_icon: bi-bar-chart-line
+        header_status_label: Ready
+        header_status_icon: bi-record-fill
+        header_updated_label: Updated just now
+        header_updated_icon: bi-calendar3
+        primary_kicker: Result summary
+        primary_title: Generated result
+        primary_copy: Review the generated output, assumptions, and supporting metrics before exporting.
+        summary_icon: bi-clipboard-data
+        status_label: Ready
+        status_icon: bi-check2-circle
+        secondary_label: Baseline
+        secondary_icon: bi-layers
+        tertiary_label: 0 warnings
+        tertiary_icon: bi-exclamation-triangle
+        quaternary_label: Scope placeholder
+        quaternary_icon: bi-folder2-open
+        quinary_label: Filter placeholder
+        quinary_icon: bi-funnel
+        updated_label: Updated just now
+        updated_icon: bi-clock
+        visual_kicker: Primary result
+        visual_icon: bi-check2-square
+        visual_unit: status
+        primary_visual_label: Primary visual
+        primary_visual_copy: Visual slot may render a ring, icon, SVG, metric, number, decimal, text, or pill.
+        primary_svg: ""
+        primary_chip_label: Primary placeholder
+        primary_chip_icon: bi-shield-check
+        metric_labels:
+            - Result
+            - Status
+            - Warnings
+            - Duration
+        metric_icons:
+            - bi-file-earmark-text
+            - bi-eye
+            - bi-layers
+            - bi-code-slash
+        chip_tones:
+            - ready
+            - baseline
+    architecture:
+        variant: architecture_result_model
+        tone: warning
+        layout: score_overview
+        visual_kind: ring
+        header_title: Result Summary
+        header_copy: Overview of the current generated architecture and key metrics.
+        header_icon: bi-diagram-3
+        header_status_label: Generated
+        header_status_icon: bi-record-fill
+        header_updated_label: Updated model
+        header_updated_icon: bi-calendar3
+        primary_kicker: Architecture score
+        primary_title: Advisory review
+        primary_copy: Summarize generated model quality, key gaps, and review boundaries without claiming validation.
+        summary_icon: bi-clipboard-data
+        status_label: Need work
+        status_icon: bi-exclamation-triangle
+        secondary_label: Baseline
+        secondary_icon: bi-diagram-3
+        tertiary_label: 2 AZ
+        tertiary_icon: bi-grid-3x3-gap
+        quaternary_label: Scope placeholder
+        quaternary_icon: bi-folder2-open
+        quinary_label: Risk placeholder
+        quinary_icon: bi-flag
+        updated_label: Updated model
+        updated_icon: bi-clock
+        visual_kicker: Model score
+        visual_icon: bi-speedometer2
+        visual_unit: /100
+        primary_visual_label: Architecture visual
+        primary_visual_copy: Score, diagram glyph, SVG, or primary metric from generated model state.
+        primary_svg: ""
+        primary_chip_label: Advisory result
+        primary_chip_icon: bi-shield-exclamation
+        metric_labels:
+            - Region
+            - Zones
+            - Controls
+            - Warnings
+        metric_icons:
+            - bi-geo-alt
+            - bi-grid-3x3-gap
+            - bi-shield-check
+            - bi-exclamation-triangle
+        chip_tones:
+            - need-work
+            - warning
+            - baseline
+    calculate:
+        variant: calculate_result_estimate
+        tone: ready
+        layout: cost_overview
+        visual_kind: ring
+        header_title: Result Summary
+        header_copy: Overview of the current estimate result and key metrics.
+        header_icon: bi-calculator
+        header_status_label: Estimated
+        header_status_icon: bi-record-fill
+        header_updated_label: Updated estimate
+        header_updated_icon: bi-calendar3
+        primary_kicker: Estimate summary
+        primary_title: Cost driver overview
+        primary_copy: Summarize run rate, top driver, service mix, and assumptions while avoiding billing accuracy claims.
+        summary_icon: bi-clipboard-data
+        status_label: Ready
+        status_icon: bi-calculator
+        secondary_label: Baseline
+        secondary_icon: bi-receipt
+        tertiary_label: 0 overrides
+        tertiary_icon: bi-sliders
+        quaternary_label: Scope placeholder
+        quaternary_icon: bi-folder2-open
+        quinary_label: Assumption placeholder
+        quinary_icon: bi-funnel
+        updated_label: Updated estimate
+        updated_icon: bi-clock
+        visual_kicker: Estimated run rate
+        visual_icon: bi-cash-coin
+        visual_unit: monthly
+        primary_visual_label: Estimate visual
+        primary_visual_copy: Run rate, decimal value, cost ring, or primary metric from estimate state.
+        primary_svg: ""
+        primary_chip_label: Estimate baseline
+        primary_chip_icon: bi-receipt
+        metric_labels:
+            - Annual
+            - Daily
+            - Hourly
+            - Egress
+        metric_icons:
+            - bi-file-earmark-text
+            - bi-eye
+            - bi-layers
+            - bi-code-slash
+        chip_tones:
+            - ready
+            - baseline
+            - warning
+    scanning:
+        variant: scanning_result_findings
+        tone: warning
+        layout: scan_overview
+        visual_kind: ring
+        header_title: Result Summary
+        header_copy: Overview of the current scan result and key metrics.
+        header_icon: bi-shield-check
+        header_status_label: Completed
+        header_status_icon: bi-record-fill
+        header_updated_label: Updated scan
+        header_updated_icon: bi-calendar3
+        primary_kicker: Scan summary
+        primary_title: Visible posture review
+        primary_copy: Summarize target status, findings, transport state, and evidence boundaries without claiming full coverage.
+        summary_icon: bi-clipboard-data
+        status_label: Need work
+        status_icon: bi-shield-exclamation
+        secondary_label: Baseline
+        secondary_icon: bi-globe2
+        tertiary_label: 0 fail
+        tertiary_icon: bi-x-circle
+        quaternary_label: Scope placeholder
+        quaternary_icon: bi-folder2-open
+        quinary_label: Finding placeholder
+        quinary_icon: bi-funnel
+        updated_label: Updated scan
+        updated_icon: bi-clock
+        visual_kicker: Hardening score
+        visual_icon: bi-shield-lock
+        visual_unit: /100
+        primary_visual_label: Scan visual
+        primary_visual_copy: Score ring, finding count, status icon, or primary scan metric.
+        primary_svg: ""
+        primary_chip_label: Scan baseline
+        primary_chip_icon: bi-shield-check
+        metric_labels:
+            - Findings
+            - Final status
+            - Duration
+            - Known files
+        metric_icons:
+            - bi-file-earmark-text
+            - bi-eye
+            - bi-layers
+            - bi-code-slash
+        chip_tones:
+            - success
+            - warning
+            - error
+            - baseline
+    shell:
+        variant: shell_result_command
+        tone: ready
+        layout: command_overview
+        visual_kind: command
+        header_title: Result Summary
+        header_copy: Overview of the current generated command and key metrics.
+        header_icon: bi-terminal
+        header_status_label: Generated
+        header_status_icon: bi-record-fill
+        header_updated_label: Updated command
+        header_updated_icon: bi-calendar3
+        primary_kicker: Command result
+        primary_title: Generated command
+        primary_copy: Summarize mode, target, warning count, and command boundary while preserving generated command order.
+        summary_icon: bi-clipboard-data
+        status_label: Ready
+        status_icon: bi-terminal
+        secondary_label: Baseline
+        secondary_icon: bi-filetype-sh
+        tertiary_label: 1 warning
+        tertiary_icon: bi-exclamation-triangle
+        quaternary_label: Scope placeholder
+        quaternary_icon: bi-folder2-open
+        quinary_label: Option placeholder
+        quinary_icon: bi-funnel
+        updated_label: Updated command
+        updated_icon: bi-clock
+        visual_kicker: Command mode
+        visual_icon: bi-code-square
+        visual_unit: mode
+        primary_visual_label: Command visual
+        primary_visual_copy: Mode, token count, status icon, or command boundary metric.
+        primary_svg: ""
+        primary_chip_label: Command baseline
+        primary_chip_icon: bi-terminal
+        metric_labels:
+            - Target
+            - Shell
+            - Triplets
+            - Warnings
+        metric_icons:
+            - bi-file-earmark-text
+            - bi-eye
+            - bi-layers
+            - bi-code-slash
+        chip_tones:
+            - ready
+            - baseline
+            - warning
+    assessment:
+        variant: assessment_result_controls
+        tone: ready
+        layout: assessment_overview
+        visual_kind: status
+        header_title: Result Summary
+        header_copy: Overview of the current assessment result and key metrics.
+        header_icon: bi-bar-chart-line
+        header_status_label: Completed
+        header_status_icon: bi-record-fill
+        header_updated_label: Updated assessment
+        header_updated_icon: bi-calendar3
+        primary_kicker: Assessment summary
+        primary_title: Filtered result set
+        primary_copy: Summarize matching controls, visible rows, selected item, and scope without claiming compliance.
+        summary_icon: bi-clipboard-data
+        status_label: Ready
+        status_icon: bi-search
+        secondary_label: Baseline
+        secondary_icon: bi-list-check
+        tertiary_label: Selected item
+        tertiary_icon: bi-ui-checks
+        quaternary_label: Scope placeholder
+        quaternary_icon: bi-folder2-open
+        quinary_label: Filter placeholder
+        quinary_icon: bi-funnel
+        updated_label: Updated filter
+        updated_icon: bi-clock
+        visual_kicker: Scope result
+        visual_icon: bi-card-checklist
+        visual_unit: rows
+        primary_visual_label: Assessment visual
+        primary_visual_copy: Visible rows, selected item, scope icon, or assessment metric.
+        primary_svg: ""
+        primary_chip_label: Assessment baseline
+        primary_chip_icon: bi-shield-check
+        metric_labels:
+            - Matched scripts
+            - Visible rows
+            - Sections
+            - Selected script
+        metric_icons:
+            - bi-file-earmark-text
+            - bi-eye
+            - bi-layers
+            - bi-code-slash
+        chip_tones:
+            - ready
+            - baseline
+    generator:
+        variant: generic_result_overview
+        tone: ready
+        layout: generated_output_overview
+        visual_kind: status
+        header_title: Result Summary
+        header_copy: Overview of the current generated artifact and key metrics.
+        header_icon: bi-file-earmark-code
+        header_status_label: Generated
+        header_status_icon: bi-record-fill
+        header_updated_label: Updated artifact
+        header_updated_icon: bi-calendar3
+        primary_kicker: Generated output
+        primary_title: Artifact result set
+        primary_copy: Summarize generated files, selected artifact, options, and review boundaries without claiming deployment readiness.
+        summary_icon: bi-clipboard-data
+        status_label: Ready
+        status_icon: bi-file-earmark-code
+        secondary_label: Baseline
+        secondary_icon: bi-layers
+        tertiary_label: Selected artifact
+        tertiary_icon: bi-code-square
+        quaternary_label: Scope placeholder
+        quaternary_icon: bi-folder2-open
+        quinary_label: Option placeholder
+        quinary_icon: bi-funnel
+        updated_label: Updated artifact
+        updated_icon: bi-clock
+        visual_kicker: Artifact result
+        visual_icon: bi-file-earmark-check
+        visual_unit: files
+        primary_visual_label: Generator visual
+        primary_visual_copy: Generated files, selected artifact, SVG preview, or primary metric.
+        primary_svg: ""
+        primary_chip_label: Generator baseline
+        primary_chip_icon: bi-shield-check
+        metric_labels:
+            - Generated files
+            - Visible rows
+            - Sections
+            - Selected artifact
+        metric_icons:
+            - bi-file-earmark-text
+            - bi-eye
+            - bi-layers
+            - bi-code-slash
+        chip_tones:
+            - ready
+            - baseline
+
+output_toolbar_selection:
+    source_section: 06_output-toolbar
+    canonical_source_only: true
+    compatibility_sections:
+        - 06_sort-card
+        - 07_table-export
+        - 08_sort-card
+    selection_order:
+        - explicit_user_family
+        - existing_tool_family_metadata
+        - dominant_behavior
+        - category_fallback
+        - generic_default
+    category_fallbacks:
+        cloud: architecture
+        security: scanning
+        cis: assessment
+        shell: shell
+    rule: Use the matching preference to fill sort options and five output actions. Do not duplicate the base section for each family.
+
+output_toolbar_preferences:
+    generic:
+        sort_options:
+            - value: id
+              label: ID
+            - value: alphabetical
+              label: A-Z
+            - value: type
+              label: Type
+            - value: status
+              label: Status
+            - value: updated
+              label: Updated
+        actions:
+            - id: __DOM_PREFIX__ExportFile
+              icon: bi-box-arrow-down
+              label: Export File
+            - id: __DOM_PREFIX__DownloadTable
+              icon: bi-download
+              label: Download Table
+            - id: __DOM_PREFIX__CopyJson
+              icon: bi-clipboard
+              label: Copy JSON
+            - id: __DOM_PREFIX__DownloadJson
+              icon: bi-download
+              label: Download JSON
+            - id: __DOM_PREFIX__ImportJsonButton
+              icon: bi-upload
+              label: Import JSON
+        layout_rule: five_icon_buttons_right_desktop
+        dropdown_rule: custom_css_same_width_as_summary_overflow_visible
+        default_sort:
+            value: id
+            label: ID
+    architecture:
+        sort_options:
+            - value: id
+              label: ID
+            - value: alphabetical
+              label: A-Z
+            - value: component
+              label: Component
+            - value: placement
+              label: Placement
+            - value: purpose
+              label: Purpose
+        actions:
+            - id: __DOM_PREFIX__ExportPng
+              icon: bi-image
+              label: Export PNG
+            - id: __DOM_PREFIX__DownloadSvg
+              icon: bi-download
+              label: Download SVG
+            - id: __DOM_PREFIX__CopyJson
+              icon: bi-clipboard
+              label: Copy JSON
+            - id: __DOM_PREFIX__DownloadJson
+              icon: bi-download
+              label: Download JSON
+            - id: __DOM_PREFIX__ImportJsonButton
+              icon: bi-upload
+              label: Import JSON
+        layout_rule: five_icon_buttons_right_desktop
+        dropdown_rule: custom_css_same_width_as_summary_overflow_visible
+        default_sort:
+            value: id
+            label: ID
+    calculate:
+        sort_options:
+            - value: id
+              label: ID
+            - value: cost-desc
+              label: Cost
+            - value: service
+              label: Service
+            - value: component
+              label: Component
+            - value: basis
+              label: Basis
+        actions:
+            - id: __DOM_PREFIX__ExportPdf
+              icon: bi-file-earmark-pdf
+              label: Export PDF
+            - id: __DOM_PREFIX__DownloadCsv
+              icon: bi-download
+              label: Download CSV
+            - id: __DOM_PREFIX__CopyJson
+              icon: bi-clipboard
+              label: Copy JSON
+            - id: __DOM_PREFIX__DownloadJson
+              icon: bi-download
+              label: Download JSON
+            - id: __DOM_PREFIX__ImportJsonButton
+              icon: bi-upload
+              label: Import JSON
+        layout_rule: five_icon_buttons_right_desktop
+        dropdown_rule: custom_css_same_width_as_summary_overflow_visible
+        default_sort:
+            value: id
+            label: ID
+    scanning:
+        sort_options:
+            - value: id
+              label: ID
+            - value: severity
+              label: Severity
+            - value: status
+              label: Status
+            - value: category
+              label: Category
+            - value: evidence
+              label: Evidence
+        actions:
+            - id: __DOM_PREFIX__ExportPdf
+              icon: bi-file-earmark-pdf
+              label: Export PDF
+            - id: __DOM_PREFIX__DownloadCsv
+              icon: bi-download
+              label: Download CSV
+            - id: __DOM_PREFIX__CopyJson
+              icon: bi-clipboard
+              label: Copy JSON
+            - id: __DOM_PREFIX__DownloadJson
+              icon: bi-download
+              label: Download JSON
+            - id: __DOM_PREFIX__ImportJsonButton
+              icon: bi-upload
+              label: Import JSON
+        layout_rule: five_icon_buttons_right_desktop
+        dropdown_rule: custom_css_same_width_as_summary_overflow_visible
+        default_sort:
+            value: id
+            label: ID
+    shell:
+        sort_options:
+            - value: id
+              label: ID
+            - value: alphabetical
+              label: A-Z
+            - value: field
+              label: Field
+            - value: value
+              label: Value
+            - value: length
+              label: Length
+        actions:
+            - id: __DOM_PREFIX__ExportPdf
+              icon: bi-file-earmark-pdf
+              label: Export PDF
+            - id: __DOM_PREFIX__DownloadCsv
+              icon: bi-download
+              label: Download CSV
+            - id: __DOM_PREFIX__CopyJson
+              icon: bi-clipboard
+              label: Copy JSON
+            - id: __DOM_PREFIX__DownloadJson
+              icon: bi-download
+              label: Download JSON
+            - id: __DOM_PREFIX__ImportJsonButton
+              icon: bi-upload
+              label: Import JSON
+        layout_rule: five_icon_buttons_right_desktop
+        dropdown_rule: custom_css_same_width_as_summary_overflow_visible
+        default_sort:
+            value: id
+            label: ID
+    assessment:
+        sort_options:
+            - value: id
+              label: ID
+            - value: title
+              label: A-Z
+            - value: section
+              label: Section
+            - value: criticality
+              label: Criticality
+            - value: script
+              label: Script
+        actions:
+            - id: __DOM_PREFIX__ExportPdf
+              icon: bi-file-earmark-pdf
+              label: Export PDF
+            - id: __DOM_PREFIX__DownloadCsv
+              icon: bi-download
+              label: Download CSV
+            - id: __DOM_PREFIX__CopyJson
+              icon: bi-clipboard
+              label: Copy JSON
+            - id: __DOM_PREFIX__DownloadJson
+              icon: bi-download
+              label: Download JSON
+            - id: __DOM_PREFIX__ImportJsonButton
+              icon: bi-upload
+              label: Import JSON
+        layout_rule: five_icon_buttons_right_desktop
+        dropdown_rule: custom_css_same_width_as_summary_overflow_visible
+        default_sort:
+            value: id
+            label: ID
+
+table_output_selection:
+    source_section: 07_table-output
+    canonical_source_only: true
+    compatibility_sections:
+        - 07_table
+        - 07_table-export
+        - 09_result-table
+        - 09_result_table
+    selection_order:
+        - explicit_user_family
+        - existing_tool_family_metadata
+        - dominant_behavior
+        - category_fallback
+        - generic_default
+    category_fallbacks:
+        cloud: architecture
+        security: scanning
+        cis: assessment
+        shell: shell
+    rule: Use the matching preference to fill tab labels, tab icons, section titles, compact column labels, empty states, and note copy. Do not duplicate the base section for each family.
+
+table_output_preferences:
+    generic:
+        aria_label: Generated output views
+        empty_text: Generate output to review table rows, supporting sections, and JSON.
+        tabs:
+            - label: Breakdown
+              icon: bi-list-check
+            - label: Details
+              icon: bi-grid-3x3-gap
+            - label: Assumptions
+              icon: bi-card-list
+            - label: Notes
+              icon: bi-card-text
+            - label: More
+              icon: bi-plus-circle
+            - label: JSON
+              icon: bi-braces
+        primary:
+            title: Primary Breakdown
+            columns:
+                - Item
+                - Type
+                - Summary
+            empty: Generated rows appear here.
+        secondary:
+            title: Detail Matrix
+            columns:
+                - Section
+                - Value
+                - Note
+            empty: Detail rows appear here.
+        tertiary:
+            title: Assumptions
+            columns:
+                - Assumption
+                - Value
+                - Source
+            empty: Assumption rows appear here.
+        extra:
+            title: More Output
+            columns:
+                - Section
+                - Value
+                - Note
+            empty: Extra output rows appear here when this section is needed.
+        notes:
+            title: Output Notes
+            items:
+                - title: Advantage
+                  copy: Use this section for concise generated strengths, advantages, or pros.
+                - title: Risk
+                  copy: Use this section for risks, warnings, disadvantages, or cons that should not become wide table columns.
+                - title: Next action
+                  copy: Use this section for prompt notes, command notes, recommendation text, or review guidance.
+        hard_rules:
+            - five_tabs_minimum
+            - first_tab_table
+            - last_tab_json
+            - rounded_tabs_with_icons
+            - centered_rownum_column
+            - centered_icon_only_action_column
+    architecture:
+        aria_label: Architecture output views
+        empty_text: Generate an architecture diagram to review technical inventory, prompt notes, pillar breakdown, risk level, and JSON.
+        tabs:
+            - label: Technical Inventory
+              icon: bi-list-check
+            - label: Prompt Notes
+              icon: bi-card-text
+            - label: Pillar Breakdown
+              icon: bi-bar-chart-line
+            - label: Risk Level
+              icon: bi-shield-check
+            - label: More
+              icon: bi-plus-circle
+            - label: JSON
+              icon: bi-braces
+        primary:
+            title: Technical Inventory
+            columns:
+                - Component
+                - Placement
+                - Purpose
+            empty: Generate a diagram to populate technical inventory rows.
+        secondary:
+            title: Prompt Notes
+            columns:
+                - Note
+                - Value
+                - Applied model
+            empty: Prompt notes appear after generation.
+        tertiary:
+            title: Pillar Breakdown
+            columns:
+                - Pillar
+                - Score
+                - Signal
+            empty: Pillar rows appear after generation.
+        extra:
+            title: Extra Architecture Output
+            columns:
+                - Section
+                - Signal
+                - Note
+            empty: Extra architecture rows appear here when needed.
+        notes:
+            title: Risk Level
+            items:
+                - title: Architecture pros
+                  copy: Summarize strengths from the generated model without claiming production readiness.
+                - title: Architecture cons
+                  copy: Summarize known gaps, missing controls, or review boundaries.
+                - title: Review note
+                  copy: Keep risk language advisory and tied to generated model state.
+        hard_rules:
+            - technical_inventory_first
+            - json_last
+            - prompt_notes_or_risk_section_required
+    calculate:
+        aria_label: Cost estimate output views
+        empty_text: Build an estimate to review line-item breakdown, service mix, assumptions, recommendations, and JSON.
+        tabs:
+            - label: Breakdown
+              icon: bi-list-check
+            - label: Service Mix
+              icon: bi-pie-chart
+            - label: Assumptions
+              icon: bi-card-list
+            - label: Recommendations
+              icon: bi-lightbulb
+            - label: More
+              icon: bi-plus-circle
+            - label: JSON
+              icon: bi-braces
+        primary:
+            title: Line-Item Breakdown
+            columns:
+                - Service
+                - Driver
+                - Cost signal
+            empty: Estimate rows appear after calculation.
+        secondary:
+            title: Service Mix
+            columns:
+                - Service
+                - Share
+                - Signal
+            empty: Service mix rows appear after calculation.
+        tertiary:
+            title: Assumptions
+            columns:
+                - Assumption
+                - Value
+                - Note
+            empty: Assumption rows appear after calculation.
+        extra:
+            title: Extra Estimate Output
+            columns:
+                - Section
+                - Value
+                - Note
+            empty: Extra estimate rows appear here when needed.
+        notes:
+            title: Recommendations
+            items:
+                - title: Top driver
+                  copy: Explain the largest modeled cost contributor.
+                - title: Optimization note
+                  copy: Explain one practical cost review path tied to the visible assumptions.
+                - title: Boundary
+                  copy: State missing services, rates, discounts, or billing caveats without claiming billing accuracy.
+        hard_rules:
+            - line_item_breakdown_first
+            - json_last
+            - assumptions_section_required
+    scanning:
+        aria_label: Scanner output views
+        empty_text: Run a scan to review findings, headers, surface evidence, notes, and JSON.
+        tabs:
+            - label: Findings
+              icon: bi-list-check
+            - label: Header Matrix
+              icon: bi-table
+            - label: Files And Cookies
+              icon: bi-shield-check
+            - label: Evidence Notes
+              icon: bi-card-text
+            - label: More
+              icon: bi-plus-circle
+            - label: JSON
+              icon: bi-braces
+        primary:
+            title: Findings
+            columns:
+                - Category
+                - Control
+                - Evidence
+            empty: Findings appear after the scan.
+        secondary:
+            title: Header Matrix
+            columns:
+                - Header
+                - Value
+                - Signal
+            empty: Header rows appear after the scan.
+        tertiary:
+            title: Surface Evidence
+            columns:
+                - Item
+                - Status
+                - Note
+            empty: Surface evidence appears after the scan.
+        extra:
+            title: Extra Evidence
+            columns:
+                - Section
+                - Status
+                - Note
+            empty: Extra scanner evidence appears here when needed.
+        notes:
+            title: Evidence Notes
+            items:
+                - title: Target boundary
+                  copy: Keep scan limits visible and tied to the requested target.
+                - title: Hardening gap
+                  copy: Summarize visible gaps without claiming full security coverage.
+                - title: Follow-up
+                  copy: Keep next steps concrete and evidence-backed.
+        hard_rules:
+            - findings_first
+            - json_last
+            - evidence_notes_required
+    shell:
+        aria_label: Shell command output views
+        empty_text: Generate a command to review operations, command notes, warnings, supporting tables, and JSON.
+        tabs:
+            - label: Operations
+              icon: bi-list-check
+            - label: Command Notes
+              icon: bi-terminal
+            - label: Warnings
+              icon: bi-exclamation-triangle
+            - label: Field Tables
+              icon: bi-table
+            - label: More
+              icon: bi-plus-circle
+            - label: JSON
+              icon: bi-braces
+        primary:
+            title: Operation Summary
+            columns:
+                - Operation
+                - Effect
+                - Result
+            empty: Operation rows appear after command generation.
+        secondary:
+            title: Command Notes
+            columns:
+                - Field
+                - Value
+                - Meaning
+            empty: Command notes appear after generation.
+        tertiary:
+            title: Field Tables
+            columns:
+                - Field
+                - Token
+                - Meaning
+            empty: Field rows appear after generation.
+        extra:
+            title: Extra Command Output
+            columns:
+                - Section
+                - Value
+                - Note
+            empty: Extra command rows appear here when needed.
+        notes:
+            title: Warnings
+            items:
+                - title: Warning
+                  copy: Show generated warnings from the command state.
+                - title: Error
+                  copy: Show validation errors without hiding generated context.
+                - title: Command boundary
+                  copy: Keep command notes concise and tied to the active target.
+        hard_rules:
+            - operations_table_first
+            - json_last
+            - command_notes_required
+    assessment:
+        aria_label: Assessment output views
+        empty_text: Explore controls to review matched rows, sections, selected script, scope notes, and JSON.
+        tabs:
+            - label: Controls
+              icon: bi-list-check
+            - label: Sections
+              icon: bi-diagram-3
+            - label: Selected Script
+              icon: bi-file-earmark-code
+            - label: Scope Notes
+              icon: bi-card-text
+            - label: More
+              icon: bi-plus-circle
+            - label: JSON
+              icon: bi-braces
+        primary:
+            title: Controls
+            columns:
+                - Control
+                - Section
+                - Criticality
+            empty: Matched controls appear after filtering.
+        secondary:
+            title: Sections
+            columns:
+                - Section path
+                - Controls
+                - Range
+            empty: Section rows appear after filtering.
+        tertiary:
+            title: Selected Script
+            columns:
+                - Field
+                - Value
+                - Note
+            empty: Select a control to review script details.
+        extra:
+            title: Extra Assessment Output
+            columns:
+                - Section
+                - Value
+                - Note
+            empty: Extra assessment rows appear here when needed.
+        notes:
+            title: Scope Notes
+            items:
+                - title: Filter scope
+                  copy: Summarize active filters and row limits.
+                - title: Coverage boundary
+                  copy: Keep assessment language descriptive without claiming compliance.
+                - title: Review note
+                  copy: Tie next actions to selected controls and visible scripts.
+        hard_rules:
+            - controls_first
+            - json_last
+            - selected_script_or_scope_section_required
+
+json_restore_selection:
+    source_section: 08_json-restore
+    canonical_source_only: true
+    compatibility_sections:
+        - 07_table
+        - 08_json-restore
+        - 09_result-table
+    selection_order:
+        - explicit_user_family
+        - existing_tool_family_metadata
+        - dominant_behavior
+        - category_fallback
+        - generic_default
+    category_fallbacks:
+        cloud: architecture
+        security: scanning
+        cis: assessment
+        shell: shell
+    rule: Use the matching preference to fill JSON labels, helper copy, empty text, and import accept type. Do not duplicate the base section for each family.
+
+json_restore_preferences:
+    generic:
+        aria_label: Generated JSON and restore state
+        title: JSON Output
+        helper: Exported state should match the generated output and restore path.
+        empty_text: Generate output before exporting JSON.
+        accept: application/json
+        hard_rules:
+            - framed_json_output
+            - scoped_import_input
+            - validate_before_restore
+    architecture:
+        aria_label: Architecture JSON model and restore state
+        title: JSON Output
+        helper: Exported model state should include diagram components, layout edits, selected items, and output data.
+        empty_text: Generate a diagram before exporting architecture JSON.
+        accept: application/json
+        hard_rules:
+            - model_state_required
+            - layout_overrides_preserved
+            - validate_before_restore
+    calculate:
+        aria_label: Estimate JSON output and restore state
+        title: JSON Output
+        helper: Exported estimate state should include inputs, assumptions, line items, totals, and generated output.
+        empty_text: Build an estimate before exporting JSON.
+        accept: application/json
+        hard_rules:
+            - assumptions_required
+            - totals_match_payload
+            - validate_before_restore
+    scanning:
+        aria_label: Scanner JSON evidence and restore state
+        title: JSON Output
+        helper: Exported scan state should include target, options, evidence, findings, and generated output.
+        empty_text: Run a scan before exporting JSON.
+        accept: application/json
+        hard_rules:
+            - target_required
+            - evidence_preserved
+            - validate_before_restore
+    shell:
+        aria_label: Command JSON output and restore state
+        title: JSON Output
+        helper: Exported command state should include target, options, generated command, warnings, and output rows.
+        empty_text: Generate a command before exporting JSON.
+        accept: application/json
+        hard_rules:
+            - command_state_required
+            - warnings_preserved
+            - validate_before_restore
+    assessment:
+        aria_label: Assessment JSON output and restore state
+        title: JSON Output
+        helper: Exported assessment state should include filters, selected control, visible rows, and generated output.
+        empty_text: Explore controls before exporting JSON.
+        accept: application/json
+        hard_rules:
+            - filters_required
+            - selected_control_preserved
+            - validate_before_restore

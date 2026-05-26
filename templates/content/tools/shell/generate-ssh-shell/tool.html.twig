@@ -1,815 +1,645 @@
 {# tool.html.twig #}
 
-<div class="generate-ssh-shell-tool" data-tool-slug="generate-ssh-shell" data-tool-category="Shell" data-tool-family-shell="base">
+<div class="generate-ssh-shell-tool tool-box mb-4" data-tool-slug="generate-ssh-shell" data-tool-category="Shell">
   {# ns:start family._base.workspace.00_shell #}
-  <div class="tool-box mb-4">
-    {# ns:start family._base.workspace.01_input-brief #}
-    <form class="generate-ssh-shell-form" id="generateSshShellForm" aria-label="SSH command preview builder">
-      <div class="generate-ssh-shell-input-card">
-        <div class="generate-ssh-shell-input-brief" data-input-layout="inline">
-          <div class="generate-ssh-shell-main-row generate-ssh-shell-input-row">
-            <div class="generate-ssh-shell-input-label-wrap">
-              <label for="generateSshShellInput" class="generate-ssh-shell-main-label generate-ssh-shell-input-label">SSH target:</label>
-              <span class="generate-ssh-shell-helper-chip" title="Enter the target host, short SSH intent, or review note for command planning" aria-label="Enter the target host, short SSH intent, or review note for command planning">i</span>
-            </div>
-
-            <div class="generate-ssh-shell-main-input-grid generate-ssh-shell-input-stack">
-              <input
-                type="text"
-                id="generateSshShellInput"
-                class="form-control generate-ssh-shell-input-control"
-                placeholder="host.example.com or connect to staging app through jump host"
-                autocomplete="off"
-              >
-              <div class="generate-ssh-shell-input-error d-none" id="generateSshShellInputError" role="alert"></div>
-            </div>
+  {# ns:start family._base.workspace.01_input-brief #}
+  <form class="generate-ssh-shell-form" id="generateSshShellForm" aria-label="SSH command builder">
+    <div class="generate-ssh-shell-input-card">
+      <div class="generate-ssh-shell-input-brief" data-input-layout="inline">
+        <div class="generate-ssh-shell-main-row generate-ssh-shell-input-row">
+          <div class="generate-ssh-shell-input-label-wrap">
+            <label for="generateSshShellInput" class="generate-ssh-shell-main-label generate-ssh-shell-input-label">SSH target:</label>
+            <span class="generate-ssh-shell-helper-chip" title="Enter a host, user@host, or ssh-style target before generating a command" aria-label="Enter a host, user@host, or ssh-style target before generating a command">i</span>
           </div>
 
-          <div class="generate-ssh-shell-main-actions generate-ssh-shell-input-actions">
-            <button
-              type="submit"
-              class="btn btn-primary generate-ssh-shell-submit-btn generate-ssh-shell-action-btn generate-ssh-shell-action-btn-primary"
-              id="generateSshShellPrimaryAction"
-              data-tool-share-generate
+          <div class="generate-ssh-shell-main-input-grid generate-ssh-shell-input-stack">
+            <input
+              type="text"
+              id="generateSshShellInput"
+              class="form-control generate-ssh-shell-input-control"
+              placeholder="deploy@server.example.com"
+              value="deploy@app01.example.com"
             >
-              <i class="bi bi-terminal" aria-hidden="true"></i>
-              <span>Generate</span>
-            </button>
-            <button
-              type="button"
-              class="generate-ssh-shell-secondary-btn generate-ssh-shell-secondary-btn-ghost generate-ssh-shell-reset-btn generate-ssh-shell-action-btn generate-ssh-shell-action-btn-secondary"
-              id="generateSshShellSecondaryAction"
-            >
-              <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
-              <span>Reset</span>
-            </button>
-          </div>
-
-          <div class="generate-ssh-shell-input-helper-card">
-            <span class="generate-ssh-shell-input-hint">Use a concrete target, user, port, and route before generating SSH command output.</span>
-            <span class="generate-ssh-shell-helper-chip generate-ssh-shell-helper-chip-inline" title="This workspace previews command text only and never opens an SSH session" aria-label="This workspace previews command text only and never opens an SSH session">i</span>
+            <div class="generate-ssh-shell-input-error d-none" id="generateSshShellInputError" role="alert"></div>
           </div>
         </div>
+
+        <div class="generate-ssh-shell-main-actions generate-ssh-shell-input-actions">
+          <button
+            type="submit"
+            class="btn btn-primary generate-ssh-shell-submit-btn generate-ssh-shell-action-btn generate-ssh-shell-action-btn-primary"
+            id="generateSshShellPrimaryAction"
+            data-tool-share-generate
+          >
+            <i class="bi bi-terminal" aria-hidden="true"></i>
+            <span>Generate</span>
+          </button>
+          <button
+            type="button"
+            class="generate-ssh-shell-secondary-btn generate-ssh-shell-secondary-btn-ghost generate-ssh-shell-reset-btn generate-ssh-shell-action-btn generate-ssh-shell-action-btn-secondary"
+            id="generateSshShellSecondaryAction"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        <div class="generate-ssh-shell-input-helper-card">
+          <span class="generate-ssh-shell-input-hint">Generate OpenSSH command text locally. This workspace does not connect to, scan, or validate the host.</span>
+          <span class="generate-ssh-shell-helper-chip generate-ssh-shell-helper-chip-inline" title="Review the command before using it in a terminal" aria-label="Review the command before using it in a terminal">i</span>
+        </div>
       </div>
+    </div>
+
     {# ns:end family._base.workspace.01_input-brief #}
-
     {# ns:start family._base.workspace.02_basic-settings #}
-      <div class="generate-ssh-shell-basic-panel">
-        <div class="generate-ssh-shell-inner-panel generate-ssh-shell-basic-card">
-          <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-            <label for="generateSshShellBasicPrimary" class="generate-ssh-shell-setting-label">
-              Command profile:
-              <span class="info-dot generate-ssh-shell-helper-chip" title="Pick the SSH route profile and shell quoting style for the preview command">i</span>
-            </label>
+    <div class="generate-ssh-shell-basic-panel">
+      <div class="generate-ssh-shell-inner-panel generate-ssh-shell-basic-card">
 
-            <div class="generate-ssh-shell-setting-field">
-              <div class="generate-ssh-shell-stacked-grid">
-	                <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
-	                  <input type="hidden" id="generateSshShellBasicPrimary" value="Direct SSH">
-	                  <details class="generate-ssh-shell-custom-dropdown generate-ssh-shell-css-dropdown" id="generateSshShellBasicPrimarySelect" data-dropdown-target="generateSshShellBasicPrimary" data-dropdown-summary="generateSshShellBasicPrimarySummary">
-	                    <summary class="generate-ssh-shell-custom-dropdown-summary">
-	                      <span id="generateSshShellBasicPrimarySummary">Direct SSH</span>
-	                      <span class="generate-ssh-shell-custom-arrow-slot" aria-hidden="true"></span>
-	                    </summary>
-	                    <div class="generate-ssh-shell-custom-dropdown-menu" role="listbox" aria-label="Command profile">
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option active" data-dropdown-value="Direct SSH" role="option" aria-selected="true">Direct SSH</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="Jump host" role="option" aria-selected="false">Jump host</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="Verbose debug" role="option" aria-selected="false">Verbose debug</button>
-	                    </div>
-	                  </details>
+        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
+          <label class="generate-ssh-shell-setting-label">
+            Target profile:
+            <span class="info-dot generate-ssh-shell-helper-chip" title="Profiles seed common OpenSSH option groups without locking later edits">i</span>
+          </label>
 
-	                  <input type="hidden" id="generateSshShellBasicOption" value="Bash / Zsh">
-	                  <details class="generate-ssh-shell-select generate-ssh-shell-css-dropdown" id="generateSshShellBasicSelect" data-dropdown-target="generateSshShellBasicOption" data-dropdown-summary="generateSshShellBasicSelectSummary">
-	                    <summary class="generate-ssh-shell-select-summary">
-	                      <span id="generateSshShellBasicSelectSummary">Bash / Zsh</span>
-	                      <span class="generate-ssh-shell-select-arrow-slot" aria-hidden="true"></span>
-	                    </summary>
-	                    <div class="generate-ssh-shell-select-body" id="generateSshShellBasicSelectMenu" role="listbox" aria-label="Shell quoting style">
-	                      <button type="button" class="generate-ssh-shell-select-option active" data-dropdown-value="Bash / Zsh" role="option" aria-selected="true">
-	                        <span class="generate-ssh-shell-select-option-title">Bash / Zsh</span>
-	                      </button>
-	                      <button type="button" class="generate-ssh-shell-select-option" data-dropdown-value="PowerShell" role="option" aria-selected="false">
-	                        <span class="generate-ssh-shell-select-option-title">PowerShell</span>
-	                      </button>
-	                      <button type="button" class="generate-ssh-shell-select-option" data-dropdown-value="POSIX sh" role="option" aria-selected="false">
-	                        <span class="generate-ssh-shell-select-option-title">POSIX sh</span>
-	                      </button>
-	                    </div>
-	                  </details>
+          <div class="generate-ssh-shell-setting-field">
+            <div class="generate-ssh-shell-stacked-grid">
+              <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
+                <div class="generate-ssh-shell-native-select-wrap">
+                  <select id="generateSshShellBasicPrimary" class="form-select generate-ssh-shell-native-select">
+                    <option value="interactive" selected>Interactive login</option>
+                    <option value="bastion">Bastion jump</option>
+                    <option value="port-forward">Port forward</option>
+                    <option value="batch">Batch automation</option>
+                  </select>
                 </div>
 
-                <div class="generate-ssh-shell-flag-hint">Direct SSH is active by default. Jump host and verbose debug stay in preview mode until this tool is promoted.</div>
+                <button type="button" class="generate-ssh-shell-secondary-btn" id="generateSshShellApplyPreset">Apply profile</button>
+              </div>
+
+              <div class="generate-ssh-shell-example-card">
+                <span class="generate-ssh-shell-example-label">Example</span>
+                <span class="generate-ssh-shell-example-value">ssh deploy@app01.example.com</span>
+                <span class="generate-ssh-shell-example-helper">Start with a target, then add port, identity, host-key, and forwarding controls.</span>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-            <label for="generateSshShellBasicText" class="generate-ssh-shell-setting-label">
-              Target route:
-              <span class="info-dot generate-ssh-shell-helper-chip" title="Set the visible user, host, and port tokens used by the command preview">i</span>
-            </label>
+        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
+          <label class="generate-ssh-shell-setting-label">
+            Command shape:
+            <span class="info-dot generate-ssh-shell-helper-chip" title="Shell style, login user, and jump host posture shape the generated command">i</span>
+          </label>
 
-            <div class="generate-ssh-shell-setting-field">
-              <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
-                <input
-                  type="text"
-                  id="generateSshShellCustomText"
-                  class="form-control generate-ssh-shell-text-field"
-                  placeholder="User"
-                  value="admin"
-                >
+          <div class="generate-ssh-shell-setting-field">
+            <div class="generate-ssh-shell-stacked-grid">
+              <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
+                <div class="generate-ssh-shell-native-select-wrap">
+                  <select id="generateSshShellShellStyle" class="form-select generate-ssh-shell-native-select">
+                    <option value="posix" selected>POSIX shell</option>
+                    <option value="bash">Bash script</option>
+                    <option value="powershell">PowerShell note</option>
+                  </select>
+                </div>
+
                 <input
                   type="text"
                   id="generateSshShellBasicText"
                   class="form-control generate-ssh-shell-text-field"
-                  placeholder="host.example.com"
-                  value="host.example.com"
-                >
-                <input
-                  type="number"
-                  id="generateSshShellCustomNumber"
-                  class="form-control generate-ssh-shell-text-field"
-                  min="1"
-                  max="65535"
-                  step="1"
-                  placeholder="Port"
-                  value="22"
+                  placeholder="Optional login user"
+                  value="deploy"
                 >
               </div>
+
+              <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
+                <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
+                  <input type="checkbox" id="generateSshShellBasicToggle">
+                  <span class="slider"></span>
+                  <span class="generate-ssh-shell-switch-label">Use ProxyJump (-J)</span>
+                </label>
+
+                <input
+                  type="text"
+                  id="generateSshShellProxyJump"
+                  class="form-control generate-ssh-shell-text-field"
+                  placeholder="bastion.example.com"
+                  value="bastion.example.com"
+                >
+              </div>
+
+              <div class="generate-ssh-shell-flag-hint">ProxyJump is only included when the toggle is enabled. The target host stays explicit in the generated command.</div>
             </div>
           </div>
+        </div>
 
-          <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-            <label for="generateSshShellBasicToggle" class="generate-ssh-shell-setting-label">
-              Safety defaults:
-              <span class="info-dot generate-ssh-shell-helper-chip" title="Keep common OpenSSH safety and keepalive options visible before custom tuning">i</span>
-            </label>
+        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
+          <label class="generate-ssh-shell-setting-label">
+            Command preview:
+            <span class="info-dot generate-ssh-shell-helper-chip" title="Shell, target, and route previews stay aligned with the generated SSH command">i</span>
+          </label>
 
-            <div class="generate-ssh-shell-setting-field">
-              <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
-                <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
-                  <input type="checkbox" id="generateSshShellBasicToggle" checked>
-                  <span class="slider"></span>
-                  <span class="generate-ssh-shell-switch-label">Keepalive</span>
-                </label>
+          <div class="generate-ssh-shell-setting-field">
+            <div class="generate-ssh-shell-preview-grid">
+              <div class="generate-ssh-shell-preview-card">
+                <span class="generate-ssh-shell-preview-label">Shell style</span>
+                <span class="generate-ssh-shell-preview-value" id="generateSshShellPreviewShell">POSIX</span>
+              </div>
 
-                <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
-                  <input type="checkbox" id="generateSshShellCustomToggle" checked>
-                  <span class="slider"></span>
-                  <span class="generate-ssh-shell-switch-label">Strict host key</span>
-                </label>
+              <div class="generate-ssh-shell-preview-card">
+                <span class="generate-ssh-shell-preview-label">Target</span>
+                <span class="generate-ssh-shell-preview-value generate-ssh-shell-preview-value-symbolic" id="generateSshShellPreviewTarget">deploy@app01.example.com</span>
+              </div>
 
-                <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
-                  <input type="checkbox" id="generateSshShellIdentitiesOnly">
-                  <span class="slider"></span>
-                  <span class="generate-ssh-shell-switch-label">IdentitiesOnly</span>
-                </label>
+              <div class="generate-ssh-shell-preview-card">
+                <span class="generate-ssh-shell-preview-label">Route</span>
+                <span class="generate-ssh-shell-preview-value generate-ssh-shell-preview-value-code" id="generateSshShellPreviewRoute">direct</span>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+
     {# ns:end family._base.workspace.02_basic-settings #}
-
     {# ns:start family._base.workspace.03_custom-settings #}
-      <details class="generate-ssh-shell-custom-settings generate-ssh-shell-advanced" id="generateSshShellCustomSettings" data-custom-layout="compact_two_column_multi_row">
-        <summary class="generate-ssh-shell-custom-summary generate-ssh-shell-advanced-summary">
-          <span>Custom</span>
-          <span class="generate-ssh-shell-custom-arrow-slot" aria-hidden="true"></span>
-        </summary>
+    <details class="generate-ssh-shell-custom-settings generate-ssh-shell-advanced" id="generateSshShellCustomSettings" data-custom-layout="compact_two_column_multi_row">
+      <summary class="generate-ssh-shell-custom-summary generate-ssh-shell-advanced-summary">
+        <span>Custom</span>
+        <span class="generate-ssh-shell-custom-arrow-slot" aria-hidden="true"></span>
+      </summary>
 
-        <div class="generate-ssh-shell-custom-body generate-ssh-shell-advanced-body">
-          <div class="generate-ssh-shell-inner-panel">
-            <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-              <label for="generateSshShellBinary" class="generate-ssh-shell-setting-label">
-                Output shape:
-                <span class="info-dot generate-ssh-shell-helper-chip" title="Control the SSH binary, optional config file, and command wrapping style">i</span>
-              </label>
+      <div class="generate-ssh-shell-advanced-body generate-ssh-shell-custom-body">
+        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card generate-ssh-shell-custom-card">
+          <label class="generate-ssh-shell-setting-label generate-ssh-shell-custom-label">
+            Command flags:
+            <span class="info-dot generate-ssh-shell-helper-chip" title="Optional OpenSSH flags that change command verbosity or address-family selection">i</span>
+          </label>
 
-              <div class="generate-ssh-shell-setting-field">
-                <div class="generate-ssh-shell-stacked-grid">
-                  <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
-                    <input
-                      type="text"
-                      id="generateSshShellBinary"
-                      class="form-control generate-ssh-shell-text-field"
-                      placeholder="ssh"
-                    >
+          <div class="generate-ssh-shell-setting-field">
+            <div class="generate-ssh-shell-stacked-grid">
+              <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
+                <label class="generate-ssh-shell-toggle-item">
+                  <span class="generate-ssh-shell-toggle-copy">Verbose output (-v)</span>
+                  <input type="checkbox" id="generateSshShellVerbose">
+                </label>
 
-                    <input
-                      type="text"
-                      id="generateSshShellConfigFile"
-                      class="form-control generate-ssh-shell-text-field"
-                      placeholder="Config file, for example ~/.ssh/config"
-                    >
-
-                    <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
-                      <input type="checkbox" id="generateSshShellMultiline" checked>
-                      <span class="slider"></span>
-                      <span class="generate-ssh-shell-switch-label">Multi-line command</span>
-                    </label>
-                  </div>
-
-                  <div class="generate-ssh-shell-flag-hint">Use the binary and config fields when the preview should show an alternate SSH client path or a named OpenSSH config file.</div>
-                </div>
+                <label class="generate-ssh-shell-toggle-item">
+                  <span class="generate-ssh-shell-toggle-copy">Quiet mode (-q)</span>
+                  <input type="checkbox" id="generateSshShellQuiet">
+                </label>
               </div>
-            </div>
 
-            <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-              <label for="generateSshShellProxyJump" class="generate-ssh-shell-setting-label">
-                Connection path:
-                <span class="info-dot generate-ssh-shell-helper-chip" title="Tune jump-host mode, connection mode, and keepalive count for the preview command">i</span>
-              </label>
+              <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
+                <label class="generate-ssh-shell-toggle-item">
+                  <span class="generate-ssh-shell-toggle-copy">IPv4 only (-4)</span>
+                  <input type="checkbox" id="generateSshShellIpv4">
+                </label>
 
-              <div class="generate-ssh-shell-setting-field">
-                <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
-                  <input
-                    type="text"
-                    id="generateSshShellProxyJump"
-                    class="form-control generate-ssh-shell-text-field"
-                    placeholder="jump.example.com"
-                  >
-
-	                  <input type="hidden" id="generateSshShellCustomSelectValueInput" value="Direct SSH">
-	                  <details id="generateSshShellCustomSelect" class="generate-ssh-shell-custom-dropdown generate-ssh-shell-css-dropdown" data-dropdown-target="generateSshShellCustomSelectValueInput" data-dropdown-summary="generateSshShellCustomSelectValue">
-	                    <summary class="generate-ssh-shell-custom-dropdown-summary">
-	                      <span id="generateSshShellCustomSelectValue">Direct SSH</span>
-	                      <span class="generate-ssh-shell-custom-arrow-slot" aria-hidden="true"></span>
-	                    </summary>
-	                    <div class="generate-ssh-shell-custom-dropdown-menu" role="listbox" aria-label="Connection mode">
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option active" data-dropdown-value="Direct SSH" role="option" aria-selected="true">Direct SSH</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="Jump host" role="option" aria-selected="false">Jump host</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="Verbose debug" role="option" aria-selected="false">Verbose debug</button>
-	                    </div>
-	                  </details>
-
-                  <input
-                    type="number"
-                    id="generateSshShellServerAliveCountMax"
-                    class="form-control generate-ssh-shell-text-field"
-                    min="1"
-                    step="1"
-                    placeholder="Alive count"
-                    value="3"
-                  >
-                </div>
+                <label class="generate-ssh-shell-toggle-item">
+                  <span class="generate-ssh-shell-toggle-copy">IPv6 only (-6)</span>
+                  <input type="checkbox" id="generateSshShellIpv6">
+                </label>
               </div>
-            </div>
 
-            <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-              <label for="generateSshShellConnectTimeout" class="generate-ssh-shell-setting-label">
-                Transport:
-                <span class="info-dot generate-ssh-shell-helper-chip" title="Tune connection timeout, retry count, address family, and compression options">i</span>
-              </label>
-
-              <div class="generate-ssh-shell-setting-field">
-                <div class="generate-ssh-shell-stacked-grid">
-                  <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
-                    <input
-                      type="number"
-                      id="generateSshShellConnectTimeout"
-                      class="form-control generate-ssh-shell-text-field"
-                      min="0"
-                      step="1"
-                      placeholder="Connect timeout (s)"
-                      value="10"
-                    >
-
-                    <input
-                      type="number"
-                      id="generateSshShellConnectionAttempts"
-                      class="form-control generate-ssh-shell-text-field"
-                      min="1"
-                      step="1"
-                      placeholder="Connection attempts"
-                      value="1"
-                    >
-
-	                    <input type="hidden" id="generateSshShellAddressFamily" value="auto">
-	                    <details class="generate-ssh-shell-custom-dropdown generate-ssh-shell-css-dropdown" data-dropdown-target="generateSshShellAddressFamily" data-dropdown-summary="generateSshShellAddressFamilySummary">
-	                      <summary class="generate-ssh-shell-custom-dropdown-summary">
-	                        <span id="generateSshShellAddressFamilySummary">Any address family</span>
-	                        <span class="generate-ssh-shell-custom-arrow-slot" aria-hidden="true"></span>
-	                      </summary>
-	                      <div class="generate-ssh-shell-custom-dropdown-menu" role="listbox" aria-label="Address family">
-	                        <button type="button" class="generate-ssh-shell-custom-dropdown-option active" data-dropdown-value="auto" role="option" aria-selected="true">Any address family</button>
-	                        <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="ipv4" role="option" aria-selected="false">Force IPv4 (-4)</button>
-	                        <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="ipv6" role="option" aria-selected="false">Force IPv6 (-6)</button>
-	                      </div>
-	                    </details>
-                  </div>
-
-                  <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
-                    <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
-                      <input type="checkbox" id="generateSshShellCompression">
-                      <span class="slider"></span>
-                      <span class="generate-ssh-shell-switch-label">Compression (-C)</span>
-                    </label>
-
-                    <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
-                      <input type="checkbox" id="generateSshShellExitOnForwardFailure" checked>
-                      <span class="slider"></span>
-                      <span class="generate-ssh-shell-switch-label">Exit on forward failure</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-              <label for="generateSshShellKnownHostsFile" class="generate-ssh-shell-setting-label">
-                Host-key review:
-                <span class="info-dot generate-ssh-shell-helper-chip" title="Tune known-hosts file, CheckHostIP, and SSH log verbosity for the preview">i</span>
-              </label>
-
-              <div class="generate-ssh-shell-setting-field">
-                <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
-                  <input
-                    type="text"
-                    id="generateSshShellKnownHostsFile"
-                    class="form-control generate-ssh-shell-text-field"
-                    placeholder="Known hosts file"
-                  >
-
-	                  <input type="hidden" id="generateSshShellLogLevel" value="INFO">
-	                  <details class="generate-ssh-shell-custom-dropdown generate-ssh-shell-css-dropdown" data-dropdown-target="generateSshShellLogLevel" data-dropdown-summary="generateSshShellLogLevelSummary">
-	                    <summary class="generate-ssh-shell-custom-dropdown-summary">
-	                      <span id="generateSshShellLogLevelSummary">LogLevel INFO</span>
-	                      <span class="generate-ssh-shell-custom-arrow-slot" aria-hidden="true"></span>
-	                    </summary>
-	                    <div class="generate-ssh-shell-custom-dropdown-menu" role="listbox" aria-label="SSH log level">
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option active" data-dropdown-value="INFO" role="option" aria-selected="true">LogLevel INFO</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="ERROR" role="option" aria-selected="false">LogLevel ERROR</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="QUIET" role="option" aria-selected="false">LogLevel QUIET</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="VERBOSE" role="option" aria-selected="false">LogLevel VERBOSE</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="DEBUG" role="option" aria-selected="false">LogLevel DEBUG</button>
-	                    </div>
-	                  </details>
-
-                  <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
-                    <input type="checkbox" id="generateSshShellCheckHostIp" checked>
-                    <span class="slider"></span>
-                    <span class="generate-ssh-shell-switch-label">CheckHostIP</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-              <span class="generate-ssh-shell-setting-label">
-                Identity policy:
-                <span class="info-dot generate-ssh-shell-helper-chip" title="Choose whether an identity file is optional or required in the preview output">i</span>
-              </span>
-
-              <div class="generate-ssh-shell-setting-field">
-	                <input type="hidden" id="generateSshShellIdentityPolicy" value="Optional">
-	                <details class="generate-ssh-shell-custom-dropdown generate-ssh-shell-css-dropdown" data-dropdown-target="generateSshShellIdentityPolicy" data-dropdown-summary="generateSshShellIdentityPolicySummary">
-	                  <summary class="generate-ssh-shell-custom-dropdown-summary">
-	                    <span id="generateSshShellIdentityPolicySummary">Optional</span>
-	                    <span class="generate-ssh-shell-custom-arrow-slot" aria-hidden="true"></span>
-	                  </summary>
-	                  <div class="generate-ssh-shell-custom-dropdown-menu" role="listbox" aria-label="Identity handling">
-	                    <button type="button" class="generate-ssh-shell-custom-dropdown-option active" data-dropdown-value="Optional" role="option" aria-selected="true">Optional</button>
-	                    <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="Required" role="option" aria-selected="false">Required</button>
-	                  </div>
-	                </details>
-              </div>
-            </div>
-
-            <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-              <label for="generateSshShellPreferredAuth" class="generate-ssh-shell-setting-label">
-                Authentication:
-                <span class="info-dot generate-ssh-shell-helper-chip" title="Tune preferred authentication methods, agent forwarding, and non-interactive BatchMode">i</span>
-              </label>
-
-              <div class="generate-ssh-shell-setting-field">
-                <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
-	                  <input type="hidden" id="generateSshShellPreferredAuth" value="default">
-	                  <details class="generate-ssh-shell-custom-dropdown generate-ssh-shell-css-dropdown" data-dropdown-target="generateSshShellPreferredAuth" data-dropdown-summary="generateSshShellPreferredAuthSummary">
-	                    <summary class="generate-ssh-shell-custom-dropdown-summary">
-	                      <span id="generateSshShellPreferredAuthSummary">Default auth order</span>
-	                      <span class="generate-ssh-shell-custom-arrow-slot" aria-hidden="true"></span>
-	                    </summary>
-	                    <div class="generate-ssh-shell-custom-dropdown-menu" role="listbox" aria-label="Preferred authentication">
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option active" data-dropdown-value="default" role="option" aria-selected="true">Default auth order</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="publickey" role="option" aria-selected="false">Public key only</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="publickey,password" role="option" aria-selected="false">Public key then password</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="password" role="option" aria-selected="false">Password only</button>
-	                      <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="keyboard-interactive" role="option" aria-selected="false">Keyboard interactive</button>
-	                    </div>
-	                  </details>
-
-                  <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
-                    <input type="checkbox" id="generateSshShellAgentForward">
-                    <span class="slider"></span>
-                    <span class="generate-ssh-shell-switch-label">Agent forwarding (-A)</span>
-                  </label>
-
-                  <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
-                    <input type="checkbox" id="generateSshShellBatchMode">
-                    <span class="slider"></span>
-                    <span class="generate-ssh-shell-switch-label">BatchMode</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-              <label for="generateSshShellCustomTextarea" class="generate-ssh-shell-setting-label">
-                Identity and forwarding:
-                <span class="info-dot generate-ssh-shell-helper-chip" title="Preview identity and forwarding tokens without opening a remote session">i</span>
-              </label>
-
-              <div class="generate-ssh-shell-setting-field">
-                <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
-                  <textarea
-                    id="generateSshShellCustomTextarea"
-                    class="form-control generate-ssh-shell-custom-textarea"
-                    rows="3"
-                    placeholder="~/.ssh/id_ed25519&#10;ServerAliveInterval=30"
-                  ></textarea>
-
-                  <textarea
-                    id="generateSshShellForwardTextarea"
-                    class="form-control generate-ssh-shell-custom-textarea"
-                    rows="3"
-                    placeholder="-L 127.0.0.1:8443:10.0.0.10:443&#10;-D 127.0.0.1:1080"
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-
-            <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-              <label for="generateSshShellRemoteCommand" class="generate-ssh-shell-setting-label">
-                Session behavior:
-                <span class="info-dot generate-ssh-shell-helper-chip" title="Tune TTY request mode, remote command, X11 forwarding, and environment sending">i</span>
-              </label>
-
-              <div class="generate-ssh-shell-setting-field">
-                <div class="generate-ssh-shell-stacked-grid">
-                  <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
-	                    <input type="hidden" id="generateSshShellTtyMode" value="default">
-	                    <details class="generate-ssh-shell-custom-dropdown generate-ssh-shell-css-dropdown" data-dropdown-target="generateSshShellTtyMode" data-dropdown-summary="generateSshShellTtyModeSummary">
-	                      <summary class="generate-ssh-shell-custom-dropdown-summary">
-	                        <span id="generateSshShellTtyModeSummary">Default TTY</span>
-	                        <span class="generate-ssh-shell-custom-arrow-slot" aria-hidden="true"></span>
-	                      </summary>
-	                      <div class="generate-ssh-shell-custom-dropdown-menu" role="listbox" aria-label="TTY mode">
-	                        <button type="button" class="generate-ssh-shell-custom-dropdown-option active" data-dropdown-value="default" role="option" aria-selected="true">Default TTY</button>
-	                        <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="force" role="option" aria-selected="false">Force TTY (-t)</button>
-	                        <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="disable" role="option" aria-selected="false">Disable TTY (-T)</button>
-	                      </div>
-	                    </details>
-
-                    <input
-                      type="text"
-                      id="generateSshShellRemoteCommand"
-                      class="form-control generate-ssh-shell-text-field"
-                      placeholder="Remote command, for example uptime"
-                    >
-
-                    <input
-                      type="text"
-                      id="generateSshShellSendEnv"
-                      class="form-control generate-ssh-shell-text-field"
-                      placeholder="SendEnv, for example LANG LC_*"
-                    >
-                  </div>
-
-                  <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
-                    <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
-                      <input type="checkbox" id="generateSshShellX11Forward">
-                      <span class="slider"></span>
-                      <span class="generate-ssh-shell-switch-label">X11 forwarding (-X)</span>
-                    </label>
-
-                    <label class="switch generate-ssh-shell-switch-wrap generate-ssh-shell-switch-card">
-                      <input type="checkbox" id="generateSshShellClearForwardings">
-                      <span class="slider"></span>
-                      <span class="generate-ssh-shell-switch-label">Clear all forwardings</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-              <label for="generateSshShellProxyCommand" class="generate-ssh-shell-setting-label">
-                Proxy and multiplex:
-                <span class="info-dot generate-ssh-shell-helper-chip" title="Plan ProxyCommand and ControlMaster settings without opening a connection">i</span>
-              </label>
-
-              <div class="generate-ssh-shell-setting-field">
-                <div class="generate-ssh-shell-stacked-grid">
-                  <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
-                    <input
-                      type="text"
-                      id="generateSshShellProxyCommand"
-                      class="form-control generate-ssh-shell-text-field"
-                      placeholder="ProxyCommand, for example nc -X connect -x proxy:8080 %h %p"
-                    >
-
-	                    <input type="hidden" id="generateSshShellControlMaster" value="no">
-	                    <details class="generate-ssh-shell-custom-dropdown generate-ssh-shell-css-dropdown" data-dropdown-target="generateSshShellControlMaster" data-dropdown-summary="generateSshShellControlMasterSummary">
-	                      <summary class="generate-ssh-shell-custom-dropdown-summary">
-	                        <span id="generateSshShellControlMasterSummary">No multiplex</span>
-	                        <span class="generate-ssh-shell-custom-arrow-slot" aria-hidden="true"></span>
-	                      </summary>
-	                      <div class="generate-ssh-shell-custom-dropdown-menu" role="listbox" aria-label="ControlMaster mode">
-	                        <button type="button" class="generate-ssh-shell-custom-dropdown-option active" data-dropdown-value="no" role="option" aria-selected="true">No multiplex</button>
-	                        <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="auto" role="option" aria-selected="false">ControlMaster auto</button>
-	                        <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-dropdown-value="yes" role="option" aria-selected="false">ControlMaster yes</button>
-	                      </div>
-	                    </details>
-
-                    <input
-                      type="text"
-                      id="generateSshShellControlPath"
-                      class="form-control generate-ssh-shell-text-field"
-                      placeholder="ControlPath, for example ~/.ssh/cm-%r@%h:%p"
-                    >
-                  </div>
-
-                  <div class="generate-ssh-shell-flag-hint">ProxyCommand and ControlMaster previews are command-text planning aids only; this workspace does not start a master connection.</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="generate-ssh-shell-custom-info" data-info-layout="auto">
-              <span>Preview only; SSH is never executed by this workspace.</span>
-              <span>Ready status must be changed in meta.yml before production deploy.</span>
+              <div class="generate-ssh-shell-flag-hint">Use address-family flags only when DNS or routing behavior needs to be constrained.</div>
             </div>
           </div>
         </div>
-      </details>
-    {# ns:end family._base.workspace.03_custom-settings #}
-    </form>
 
-    {# ns:start family._base.workspace.05_result-summary #}
-    {# ns:start family.shell.workspace.04_result-text #}
-    <div class="generate-ssh-shell-result-panel" id="generateSshShellOutputShell" aria-label="SSH command output">
-      <div class="tool-empty-state generate-ssh-shell-result-empty" id="generateSshShellResultEmpty">Generate an SSH command to inspect the final command line, option summary, warnings, and normalized JSON output.</div>
+        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card generate-ssh-shell-custom-card">
+          <label for="generateSshShellCustomNumber" class="generate-ssh-shell-setting-label generate-ssh-shell-custom-label">
+            Connection options:
+            <span class="info-dot generate-ssh-shell-helper-chip" title="Port, identity file, compression, and extra options are emitted as OpenSSH flags">i</span>
+          </label>
 
-      <div class="generate-ssh-shell-output-content generate-ssh-shell-result-content d-none" id="generateSshShellResultContent">
-	        <div class="generate-ssh-shell-output-inner generate-ssh-shell-result-shell">
-	    {# ns:end family.shell.workspace.04_result-text #}
-		          <div class="generate-ssh-shell-result-summary" id="generateSshShellResultSummary" data-result-tone="ready" data-result-layout="command" data-share-snapshot-source data-share-kind="shell-summary"></div>
-	    {# ns:end family._base.workspace.05_result-summary #}
-    {# ns:start family._base.workspace.06_output-toolbar #}
-          <div class="generate-ssh-shell-toolbar-shell">
-            <div class="generate-ssh-shell-toolbar tool-output-toolbar tool-result-toolbar">
-              <div class="generate-ssh-shell-toolbar-main">
-                <label for="generateSshShellSort" class="generate-ssh-shell-sort-label">Sort</label>
-                <div class="generate-ssh-shell-sort-wrap">
-	                  <details class="generate-ssh-shell-sort-select" id="generateSshShellSortSelect">
-	                    <summary class="generate-ssh-shell-sort-summary" aria-haspopup="listbox" aria-expanded="false" aria-controls="generateSshShellSortMenu">
-	                      <span id="generateSshShellSortSummary">ID</span>
-	                    </summary>
-	
-	                    <div class="generate-ssh-shell-sort-menu" id="generateSshShellSortMenu" role="listbox">
-	                      <div class="generate-ssh-shell-sort-grid">
-	                        <button type="button" class="generate-ssh-shell-sort-option is-active" data-sort-value="id" aria-pressed="true" role="option">ID</button>
-	                        <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false" role="option">A-Z</button>
-	                        <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="field" aria-pressed="false" role="option">Field</button>
-	                        <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="value" aria-pressed="false" role="option">Value</button>
-	                        <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="length" aria-pressed="false" role="option">Length</button>
-	                      </div>
-	                    </div>
-                  </details>
-                  <input type="hidden" id="generateSshShellSort" value="id">
+          <div class="generate-ssh-shell-setting-field">
+            <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
+              <input
+                type="number"
+                id="generateSshShellCustomNumber"
+                class="form-control generate-ssh-shell-custom-number-field"
+                min="1"
+                max="65535"
+                value="22"
+              >
+
+              <input
+                type="text"
+                id="generateSshShellCustomText"
+                class="form-control generate-ssh-shell-custom-text-field"
+                placeholder="~/.ssh/id_ed25519"
+                value="~/.ssh/id_ed25519"
+              >
+
+              <label class="generate-ssh-shell-toggle-item">
+                <span class="generate-ssh-shell-toggle-copy">Compression (-C)</span>
+                <input type="checkbox" id="generateSshShellCustomToggle">
+              </label>
+            </div>
+
+            <div class="generate-ssh-shell-custom-info">Port and identity values are quoted only when needed; the output is a command preview, not an SSH connection test.</div>
+          </div>
+        </div>
+
+        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card generate-ssh-shell-custom-card">
+          <label class="generate-ssh-shell-setting-label generate-ssh-shell-custom-label">
+            Host-key posture:
+            <span class="info-dot generate-ssh-shell-helper-chip" title="StrictHostKeyChecking posture is emitted as an OpenSSH -o option">i</span>
+          </label>
+
+          <div class="generate-ssh-shell-setting-field">
+            <details class="generate-ssh-shell-custom-dropdown" id="generateSshShellCustomSelect" data-custom-dropdown-for="generateSshShellStrictHostKey">
+              <summary class="generate-ssh-shell-custom-dropdown-summary">
+                <span id="generateSshShellCustomSelectValue" data-custom-dropdown-label>Strict accept-new</span>
+              </summary>
+              <div class="generate-ssh-shell-custom-dropdown-body">
+                <button type="button" class="generate-ssh-shell-custom-dropdown-option active" data-custom-dropdown-value="accept-new" aria-selected="true">Strict accept-new</button>
+                <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-custom-dropdown-value="yes" aria-selected="false">Strict yes</button>
+                <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-custom-dropdown-value="no" aria-selected="false">Strict no</button>
+              </div>
+            </details>
+            <input type="hidden" id="generateSshShellStrictHostKey" value="accept-new">
+
+            <div class="generate-ssh-shell-custom-info">Use relaxed host-key options only for controlled troubleshooting, and review the warning tab before copying the command.</div>
+          </div>
+        </div>
+
+        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card generate-ssh-shell-custom-card">
+          <label for="generateSshShellKnownHostsFile" class="generate-ssh-shell-setting-label generate-ssh-shell-custom-label">
+            Known hosts:
+            <span class="info-dot generate-ssh-shell-helper-chip" title="Known-hosts file and log level become OpenSSH -o options when present">i</span>
+          </label>
+
+          <div class="generate-ssh-shell-setting-field">
+            <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
+              <input
+                type="text"
+                id="generateSshShellKnownHostsFile"
+                class="form-control generate-ssh-shell-custom-text-field"
+                placeholder="~/.ssh/known_hosts"
+              >
+
+              <div class="generate-ssh-shell-native-select-wrap">
+                <select id="generateSshShellLogLevel" class="form-select generate-ssh-shell-native-select">
+                  <option value="" selected>Default log level</option>
+                  <option value="ERROR">ERROR</option>
+                  <option value="QUIET">QUIET</option>
+                  <option value="VERBOSE">VERBOSE</option>
+                  <option value="DEBUG">DEBUG</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="generate-ssh-shell-custom-info">Leave the known-hosts field empty to use the user's normal OpenSSH known_hosts search path.</div>
+          </div>
+        </div>
+
+        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card generate-ssh-shell-custom-card">
+          <label class="generate-ssh-shell-setting-label generate-ssh-shell-custom-label">
+            Session mode:
+            <span class="info-dot generate-ssh-shell-helper-chip" title="Session mode controls TTY and batch automation options">i</span>
+          </label>
+
+          <div class="generate-ssh-shell-setting-field">
+            <div class="generate-ssh-shell-custom-radio-grid" role="radiogroup" aria-label="SSH session mode">
+              <label class="generate-ssh-shell-custom-radio-card">
+                <input type="radio" name="generateSshShellSessionMode" id="generateSshShellCustomRadioStandard" value="interactive" checked>
+                <span>Interactive</span>
+              </label>
+              <label class="generate-ssh-shell-custom-radio-card">
+                <input type="radio" name="generateSshShellSessionMode" id="generateSshShellCustomRadioOverride" value="batch">
+                <span>Batch</span>
+              </label>
+            </div>
+
+            <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
+              <label class="generate-ssh-shell-toggle-item">
+                <span class="generate-ssh-shell-toggle-copy">Agent forwarding (-A)</span>
+                <input type="checkbox" id="generateSshShellAgentForward">
+              </label>
+
+              <label class="generate-ssh-shell-toggle-item">
+                <span class="generate-ssh-shell-toggle-copy">TTY allocation (-tt)</span>
+                <input type="checkbox" id="generateSshShellTty">
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-row-stacked generate-ssh-shell-setting-card generate-ssh-shell-custom-card">
+          <label for="generateSshShellConnectTimeout" class="generate-ssh-shell-setting-label generate-ssh-shell-custom-label">
+            Timeouts:
+            <span class="info-dot generate-ssh-shell-helper-chip" title="Connection timeout and keepalive controls are emitted as OpenSSH -o options">i</span>
+          </label>
+
+          <div class="generate-ssh-shell-setting-field">
+            <div class="generate-ssh-shell-stacked-grid">
+              <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
+                <div class="generate-ssh-shell-umask-input">
+                  <label class="generate-ssh-shell-field-label" for="generateSshShellConnectTimeout">ConnectTimeout</label>
+                  <input
+                    type="number"
+                    id="generateSshShellConnectTimeout"
+                    class="form-control generate-ssh-shell-custom-number-field"
+                    min="1"
+                    max="600"
+                    placeholder="10"
+                  >
+                </div>
+
+                <div class="generate-ssh-shell-umask-input">
+                  <label class="generate-ssh-shell-field-label" for="generateSshShellServerAliveInterval">ServerAliveInterval</label>
+                  <input
+                    type="number"
+                    id="generateSshShellServerAliveInterval"
+                    class="form-control generate-ssh-shell-custom-number-field"
+                    min="1"
+                    max="3600"
+                    placeholder="30"
+                  >
+                </div>
+
+                <div class="generate-ssh-shell-umask-input">
+                  <label class="generate-ssh-shell-field-label" for="generateSshShellServerAliveCountMax">ServerAliveCountMax</label>
+                  <input
+                    type="number"
+                    id="generateSshShellServerAliveCountMax"
+                    class="form-control generate-ssh-shell-custom-number-field"
+                    min="1"
+                    max="20"
+                    placeholder="3"
+                  >
                 </div>
               </div>
 
-	                <div class="tool-output-actions generate-ssh-shell-toolbar-actions">
-                <button type="button" class="tool-action-btn tool-action-btn-secondary generate-ssh-shell-action-btn" id="generateSshShellExportPdf">
-                  <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
-                  <span data-button-label>Export PDF</span>
-                </button>
-                <button type="button" class="tool-action-btn tool-action-btn-secondary generate-ssh-shell-action-btn" id="generateSshShellDownloadCsv">
-                  <i class="bi bi-download" aria-hidden="true"></i>
-                  <span data-button-label>Download CSV</span>
-                </button>
-                <button type="button" class="tool-action-btn tool-action-btn-secondary generate-ssh-shell-action-btn" id="generateSshShellCopyJson">
-                  <i class="bi bi-clipboard" aria-hidden="true"></i>
-                  <span data-button-label>Copy JSON</span>
-                </button>
-                <button type="button" class="tool-action-btn tool-action-btn-secondary generate-ssh-shell-action-btn" id="generateSshShellDownloadJson">
-                  <i class="bi bi-download" aria-hidden="true"></i>
-                  <span data-button-label>Download JSON</span>
-                </button>
-                <button type="button" class="tool-action-btn tool-action-btn-ghost generate-ssh-shell-action-btn" id="generateSshShellImportJsonButton">
-                  <i class="bi bi-upload" aria-hidden="true"></i>
-                  <span data-button-label>Import JSON</span>
-                </button>
+              <div class="generate-ssh-shell-flag-hint generate-ssh-shell-umask-note">
+                <span>Timeouts are optional review controls.</span>
+                <span>They are included only when a value is entered.</span>
+                <span>Use integers that match your operational policy.</span>
               </div>
             </div>
           </div>
-    {# ns:end family._base.workspace.06_output-toolbar #}
-    {# ns:start family._base.workspace.07_table-output #}
-          <div class="generate-ssh-shell-tabs-shell">
-            <div class="tool-tabs generate-ssh-shell-tabs" role="tablist" aria-label="SSH command output views">
-              <button type="button" class="tool-tab-btn generate-ssh-shell-tab-btn active" id="generateSshShellOptionsTab" data-tab-target="generateSshShellOptionsPanel" role="tab" aria-controls="generateSshShellOptionsPanel" aria-selected="true" tabindex="0">
-                <i class="bi bi-list-check" aria-hidden="true"></i>
-                <span>Operations</span>
-              </button>
-              <button type="button" class="tool-tab-btn generate-ssh-shell-tab-btn" id="generateSshShellCommandTab" data-tab-target="generateSshShellCommandPanel" role="tab" aria-controls="generateSshShellCommandPanel" aria-selected="false" tabindex="-1">
-                <i class="bi bi-terminal" aria-hidden="true"></i>
-                <span>Command</span>
-              </button>
-              <button type="button" class="tool-tab-btn generate-ssh-shell-tab-btn" id="generateSshShellDetailsTab" data-tab-target="generateSshShellDetailsPanel" role="tab" aria-controls="generateSshShellDetailsPanel" aria-selected="false" tabindex="-1">
-                <i class="bi bi-card-text" aria-hidden="true"></i>
-                <span>Details</span>
-              </button>
-              <button type="button" class="tool-tab-btn generate-ssh-shell-tab-btn" id="generateSshShellWarningsTab" data-tab-target="generateSshShellWarningsPanel" role="tab" aria-controls="generateSshShellWarningsPanel" aria-selected="false" tabindex="-1">
-                <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
-                <span>Warnings</span>
-              </button>
-              <button type="button" class="tool-tab-btn generate-ssh-shell-tab-btn" id="generateSshShellJsonTab" data-tab-target="generateSshShellJsonPanel" role="tab" aria-controls="generateSshShellJsonPanel" aria-selected="false" tabindex="-1">
-                <i class="bi bi-braces" aria-hidden="true"></i>
-                <span>JSON</span>
-              </button>
-            </div>
+        </div>
 
-            <div class="tool-tab-panel generate-ssh-shell-tab-panel active" id="generateSshShellOptionsPanel" data-tab-panel="generateSshShellOptionsPanel" role="tabpanel" aria-labelledby="generateSshShellOptionsTab">
-              <div class="generate-ssh-shell-inventory-panel" aria-labelledby="generateSshShellOptionsTitle">
-                <div class="generate-ssh-shell-table-card">
-                  <h3 class="generate-ssh-shell-result-section-title" id="generateSshShellOptionsTitle">Operation Summary</h3>
-                  <div class="generate-ssh-shell-table-wrap">
-                    <table class="table generate-ssh-shell-table generate-ssh-shell-options-table mb-0">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Field</th>
-                          <th scope="col">Value</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody id="generateSshShellOptionsTableBody"></tbody>
-                    </table>
+        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-row-stacked generate-ssh-shell-setting-card generate-ssh-shell-custom-card">
+          <label for="generateSshShellLocalForward" class="generate-ssh-shell-setting-label generate-ssh-shell-custom-label">
+            Forwarding:
+            <span class="info-dot generate-ssh-shell-helper-chip" title="Local, remote, and dynamic forwarding values become -L, -R, and -D options">i</span>
+          </label>
+
+          <div class="generate-ssh-shell-setting-field">
+            <div class="generate-ssh-shell-stacked-grid">
+              <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-three">
+                <input
+                  type="text"
+                  id="generateSshShellLocalForward"
+                  class="form-control generate-ssh-shell-custom-text-field"
+                  placeholder="15432:db.internal:5432"
+                >
+
+                <input
+                  type="text"
+                  id="generateSshShellRemoteForward"
+                  class="form-control generate-ssh-shell-custom-text-field"
+                  placeholder="8080:localhost:80"
+                >
+
+                <input
+                  type="text"
+                  id="generateSshShellDynamicForward"
+                  class="form-control generate-ssh-shell-custom-text-field"
+                  placeholder="1080"
+                >
+              </div>
+
+              <div class="generate-ssh-shell-flag-hint">Forwarding options are appended before the target. Review the final command before copying it into a terminal.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card generate-ssh-shell-custom-card">
+          <label for="generateSshShellCustomTextarea" class="generate-ssh-shell-setting-label generate-ssh-shell-custom-label">
+            Extra arguments:
+            <span class="info-dot generate-ssh-shell-helper-chip" title="Optional OpenSSH arguments appended before the target">i</span>
+          </label>
+
+          <div class="generate-ssh-shell-setting-field">
+            <textarea
+              id="generateSshShellCustomTextarea"
+              class="form-control generate-ssh-shell-custom-textarea"
+              rows="3"
+              placeholder="-L 15432:db.internal:5432"
+            ></textarea>
+            <div class="generate-ssh-shell-custom-info">One option group per line is easiest to review. Newlines are flattened into the final command preview.</div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </form>
+  {# ns:end family._base.workspace.03_custom-settings #}
+
+  {# ns:start family._base.workspace.05_result-summary #}
+  {# ns:start family.shell.workspace.04_result-text #}
+  <div class="generate-ssh-shell-result-panel" id="generateSshShellResultPanel" aria-label="Command output">
+    <div class="tool-empty-state generate-ssh-shell-result-empty" id="generateSshShellResultEmpty">Generate an SSH command to inspect command text, option rows, warnings, and normalized JSON payload.</div>
+
+    <div class="generate-ssh-shell-output-content generate-ssh-shell-result-content d-none" id="generateSshShellResultContent">
+      <div class="generate-ssh-shell-output-inner generate-ssh-shell-result-shell">
+  {# ns:end family.shell.workspace.04_result-text #}
+  {# ns:end family._base.workspace.05_result-summary #}
+        <div class="generate-ssh-shell-result-summary" id="generateSshShellResultSummary" data-share-snapshot-source data-share-kind="shell-summary"></div>
+        {# ns:start family.shell.workspace.04_visual-contract #}
+        {# ns:end family.shell.workspace.04_visual-contract #}
+
+        {# ns:start family._base.workspace.06_output-toolbar #}
+        <div class="generate-ssh-shell-toolbar-shell">
+          <div class="generate-ssh-shell-toolbar tool-output-toolbar tool-result-toolbar">
+            <div class="generate-ssh-shell-toolbar-main">
+              <label for="generateSshShellSort" class="generate-ssh-shell-sort-label">Sort</label>
+              <div class="generate-ssh-shell-sort-wrap">
+                <details class="generate-ssh-shell-sort-select" id="generateSshShellSortSelect">
+                  <summary class="generate-ssh-shell-sort-summary">
+                    <span id="generateSshShellSortSummary">ID</span>
+                  </summary>
+
+                  <div class="generate-ssh-shell-sort-menu">
+                    <div class="generate-ssh-shell-sort-grid">
+                      <button type="button" class="generate-ssh-shell-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
+                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
+                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="field" aria-pressed="false">Field</button>
+                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="value" aria-pressed="false">Value</button>
+                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="length" aria-pressed="false">Length</button>
+                    </div>
                   </div>
-                </div>
+                </details>
+                <input type="hidden" id="generateSshShellSort" value="id">
               </div>
             </div>
 
-            <div class="tool-tab-panel generate-ssh-shell-tab-panel" id="generateSshShellCommandPanel" data-tab-panel="generateSshShellCommandPanel" role="tabpanel" aria-labelledby="generateSshShellCommandTab" hidden>
-              <div class="generate-ssh-shell-command-wrap">
-                <div class="generate-ssh-shell-command-head">
-                  <h3 class="generate-ssh-shell-command-title">Generated SSH Command</h3>
-                  <div class="generate-ssh-shell-command-actions">
+            <div class="tool-output-actions generate-ssh-shell-toolbar-actions tool-result-toolbar-actions">
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-ssh-shell-action-btn tool-result-action-btn" id="generateSshShellExportPdf">
+                <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+                <span data-button-label>Export PDF</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-ssh-shell-action-btn tool-result-action-btn" id="generateSshShellDownloadCsv">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download CSV</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-ssh-shell-action-btn tool-result-action-btn" id="generateSshShellCopyJson">
+                <i class="bi bi-clipboard" aria-hidden="true"></i>
+                <span data-button-label>Copy JSON</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-secondary generate-ssh-shell-action-btn tool-result-action-btn" id="generateSshShellDownloadJson">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span data-button-label>Download JSON</span>
+              </button>
+              <button type="button" class="tool-action-btn tool-action-btn-ghost generate-ssh-shell-action-btn tool-result-action-btn" id="generateSshShellImportJsonButton">
+                <i class="bi bi-upload" aria-hidden="true"></i>
+                <span data-button-label>Import JSON</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        {# ns:end family._base.workspace.06_output-toolbar #}
+
+        {# ns:start family._base.workspace.07_table-output #}
+        <div class="generate-ssh-shell-tabs-shell">
+          <div class="tool-tabs generate-ssh-shell-tabs" role="tablist" aria-label="SSH command output views">
+            <button type="button" class="tool-tab-btn generate-ssh-shell-tab-btn active" id="generateSshShellOperationsTab" data-tab-target="generateSshShellOperationsPanel" role="tab" aria-controls="generateSshShellOperationsPanel" aria-selected="true" tabindex="0">
+              <i class="bi bi-list-check" aria-hidden="true"></i>
+              <span>Operations</span>
+            </button>
+            <button type="button" class="tool-tab-btn generate-ssh-shell-tab-btn" id="generateSshShellCommandTab" data-tab-target="generateSshShellCommandPanel" role="tab" aria-controls="generateSshShellCommandPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-terminal" aria-hidden="true"></i>
+              <span>Command</span>
+            </button>
+            <button type="button" class="tool-tab-btn generate-ssh-shell-tab-btn" id="generateSshShellDetailsTab" data-tab-target="generateSshShellDetailsPanel" role="tab" aria-controls="generateSshShellDetailsPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-card-text" aria-hidden="true"></i>
+              <span>Details</span>
+            </button>
+            <button type="button" class="tool-tab-btn generate-ssh-shell-tab-btn" id="generateSshShellWarningsTab" data-tab-target="generateSshShellWarningsPanel" role="tab" aria-controls="generateSshShellWarningsPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+              <span>Warnings</span>
+            </button>
+            <button type="button" class="tool-tab-btn generate-ssh-shell-tab-btn" id="generateSshShellJsonTab" data-tab-target="generateSshShellJsonPanel" role="tab" aria-controls="generateSshShellJsonPanel" aria-selected="false" tabindex="-1">
+              <i class="bi bi-braces" aria-hidden="true"></i>
+              <span>JSON</span>
+            </button>
+          </div>
+
+          <div class="tool-tab-panel generate-ssh-shell-tab-panel active" id="generateSshShellOperationsPanel" data-tab-panel="generateSshShellOperationsPanel" role="tabpanel" aria-labelledby="generateSshShellOperationsTab">
+            <div class="generate-ssh-shell-inventory-panel" aria-labelledby="generateSshShellOperationsTitle">
+              <div class="generate-ssh-shell-table-card">
+                <h3 class="generate-ssh-shell-result-section-title" id="generateSshShellOperationsTitle">Operation Summary</h3>
+                <div class="generate-ssh-shell-table-wrap tool-result-table-wrap">
+                  <table class="table generate-ssh-shell-table generate-ssh-shell-operations-table mb-0 tool-result-table tool-result-table--compact">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="tool-generated-rownum-head">#</th>
+                        <th scope="col">Field</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="generateSshShellOperationsTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-tab-panel generate-ssh-shell-tab-panel" id="generateSshShellCommandPanel" data-tab-panel="generateSshShellCommandPanel" role="tabpanel" aria-labelledby="generateSshShellCommandTab" hidden>
+            <div class="generate-ssh-shell-surface-stack tool-result-section-stack">
+              <section class="generate-ssh-shell-section-card tool-result-section-card">
+                <div class="generate-ssh-shell-section-head">
+                  <h3 class="generate-ssh-shell-section-title tool-result-section-title">Generated SSH Command</h3>
+                  <div class="generate-ssh-shell-section-actions">
                     <button type="button" class="generate-ssh-shell-action-btn" id="generateSshShellCopyCommand" aria-label="Copy generated SSH command" title="Copy generated SSH command">
                       <i class="bi bi-clipboard" aria-hidden="true"></i>
                       <span class="generate-ssh-shell-command-copy-label tool-sr-only">Copy</span>
                     </button>
                   </div>
                 </div>
-                <pre class="generate-ssh-shell-command-pre"><code id="generateSshShellCommand" data-share-snapshot-source data-share-kind="shell-command"></code></pre>
-              </div>
-            </div>
+                <pre class="generate-ssh-shell-code-pre"><code id="generateSshShellCommand" data-share-snapshot-source data-share-kind="shell-command"></code></pre>
+              </section>
 
-            <div class="tool-tab-panel generate-ssh-shell-tab-panel" id="generateSshShellDetailsPanel" data-tab-panel="generateSshShellDetailsPanel" role="tabpanel" aria-labelledby="generateSshShellDetailsTab" hidden>
               <section class="generate-ssh-shell-section-card tool-result-section-card">
-                <h3 class="generate-ssh-shell-section-title tool-result-section-title">Command Details</h3>
-                <div class="generate-ssh-shell-table-output-note-grid">
-                  <article class="generate-ssh-shell-table-output-note-card">
-                    <h4 class="generate-ssh-shell-table-output-note-title">Route Preview</h4>
-                    <p class="generate-ssh-shell-table-output-note-copy">Operation rows follow the selected target route, port, user, jump host, proxy, and remote-command settings.</p>
-                  </article>
-                  <article class="generate-ssh-shell-table-output-note-card">
-                    <h4 class="generate-ssh-shell-table-output-note-title">Run Boundary</h4>
-                    <p class="generate-ssh-shell-table-output-note-copy">This browser workspace never opens SSH; review the command before using it on systems you control.</p>
-                  </article>
-                  <article class="generate-ssh-shell-table-output-note-card">
-                    <h4 class="generate-ssh-shell-table-output-note-title">JSON Boundary</h4>
-                    <p class="generate-ssh-shell-table-output-note-copy">The JSON tab preserves target, options, generated command, warnings, errors, and operation rows.</p>
-                  </article>
+                <h3 class="generate-ssh-shell-section-title tool-result-section-title">Result Summary</h3>
+                <div class="generate-ssh-shell-table-wrap tool-result-table-wrap">
+                  <table class="table generate-ssh-shell-summary-table mb-0 tool-result-table tool-result-table--compact">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="tool-generated-rownum-head">#</th>
+                        <th scope="col">Field</th>
+                        <th scope="col">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody id="generateSshShellSummaryTableBody"></tbody>
+                  </table>
                 </div>
               </section>
+            </div>
+          </div>
 
-              {# ns:start family.shell.workspace.04_visual-contract #}
-              <section class="generate-ssh-shell-visual-contract" id="generateSshShellVisualContract" data-contract-family="shell" data-contract-tone="warning" aria-label="SSH command preview visual contract">
-                <header class="generate-ssh-shell-visual-contract-header">
-                  <div class="generate-ssh-shell-visual-contract-heading">
-                    <span class="generate-ssh-shell-visual-contract-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span>
-                    <div>
-                      <h2 class="generate-ssh-shell-visual-contract-title">SSH Command Preview</h2>
-                      <p class="generate-ssh-shell-visual-contract-copy">OpenSSH command preview for target, authentication, jump host, keepalive, and host-key posture.</p>
-                    </div>
-                  </div>
-
-                  <div class="generate-ssh-shell-visual-contract-status" aria-label="Command visual status">
-                    <span class="generate-ssh-shell-visual-contract-chip">
-                      <span aria-hidden="true"><i class="bi bi-pencil-square"></i></span>
-                      <span id="generateSshShellContractStatus">Preview only</span>
-                    </span>
-                    <span class="generate-ssh-shell-visual-contract-chip">
-                      <span aria-hidden="true"><i class="bi bi-terminal"></i></span>
-                      <span id="generateSshShellContractShell">Bash / Zsh</span>
-                    </span>
-                  </div>
-                </header>
-
-                <article class="generate-ssh-shell-visual-contract-command" id="generateSshShellCommandPreview" aria-label="Command preview">
-                  <span class="generate-ssh-shell-visual-contract-kicker">Generated command</span>
-                  <code id="generateSshShellContractCommand">ssh -p 22 admin@host.example.com</code>
-                  <p id="generateSshShellContractCommandCopy">Preview only; no SSH connection is opened.</p>
+          <div class="tool-tab-panel generate-ssh-shell-tab-panel" id="generateSshShellDetailsPanel" data-tab-panel="generateSshShellDetailsPanel" role="tabpanel" aria-labelledby="generateSshShellDetailsTab" hidden>
+            <section class="generate-ssh-shell-section-card tool-result-section-card">
+              <h3 class="generate-ssh-shell-section-title tool-result-section-title">Command Details</h3>
+              <div class="generate-ssh-shell-table-output-note-grid">
+                <article class="generate-ssh-shell-table-output-note-card">
+                  <h4 class="generate-ssh-shell-table-output-note-title">Local Preview</h4>
+                  <p class="generate-ssh-shell-table-output-note-copy">The generated command and option rows are assembled in the browser from the visible controls.</p>
                 </article>
-
-                <div class="generate-ssh-shell-visual-contract-grid">
-                  <article class="generate-ssh-shell-visual-contract-model" aria-label="Command token summary">
-                    <div class="generate-ssh-shell-visual-contract-model-head">
-                      <h3>Command Tokens</h3>
-                      <span id="generateSshShellModelLabel">OpenSSH client options</span>
-                    </div>
-
-                    <div class="generate-ssh-shell-visual-contract-tokens" id="generateSshShellCommandTokens">
-                      <span class="generate-ssh-shell-visual-contract-token">ssh</span>
-                      <span class="generate-ssh-shell-visual-contract-token">-p 22</span>
-                      <span class="generate-ssh-shell-visual-contract-token">admin</span>
-                      <span class="generate-ssh-shell-visual-contract-token">host.example.com</span>
-                    </div>
-                  </article>
-
-                  <article class="generate-ssh-shell-visual-contract-model" aria-label="Command option summary">
-                    <div class="generate-ssh-shell-visual-contract-model-head">
-                      <h3>Option Model</h3>
-                      <span>Preview posture</span>
-                    </div>
-
-                    <div class="generate-ssh-shell-visual-contract-metrics" id="generateSshShellCommandMetrics">
-                      <div class="generate-ssh-shell-visual-contract-metric">
-                        <span>Auth</span>
-                        <strong id="generateSshShellMetricAuth">Optional key</strong>
-                        <small>IdentityFile / agent posture</small>
-                      </div>
-                      <div class="generate-ssh-shell-visual-contract-metric">
-                        <span>Jump</span>
-                        <strong id="generateSshShellMetricJump">Direct</strong>
-                        <small>ProxyJump route state</small>
-                      </div>
-                      <div class="generate-ssh-shell-visual-contract-metric">
-                        <span>Keepalive</span>
-                        <strong id="generateSshShellMetricKeepalive">30 x 3</strong>
-                        <small>ServerAliveInterval and count</small>
-                      </div>
-                    </div>
-                  </article>
-                </div>
-
-                <div class="generate-ssh-shell-visual-contract-operations" id="generateSshShellCommandOperations" aria-label="Command operation rows">
-                  <div class="generate-ssh-shell-visual-contract-operation" data-operation-tone="success">
-                    <span>Target route</span>
-                    <code id="generateSshShellOperationOne">admin@host.example.com</code>
-                    <strong>Preview</strong>
-                  </div>
-                  <div class="generate-ssh-shell-visual-contract-operation" data-operation-tone="warning">
-                    <span>Host key posture</span>
-                    <code id="generateSshShellOperationTwo">StrictHostKeyChecking=yes</code>
-                    <strong>Review</strong>
-                  </div>
-                </div>
-              </section>
-              {# ns:end family.shell.workspace.04_visual-contract #}
-            </div>
-
-            <div class="tool-tab-panel generate-ssh-shell-tab-panel" id="generateSshShellWarningsPanel" data-tab-panel="generateSshShellWarningsPanel" data-share-snapshot-source data-share-kind="shell-warnings" role="tabpanel" aria-labelledby="generateSshShellWarningsTab" hidden>
-              <div class="generate-ssh-shell-warning-grid">
-                <div class="generate-ssh-shell-message-card">
-                  <h3 class="generate-ssh-shell-message-title">Warnings</h3>
-                  <ul class="generate-ssh-shell-message-list" id="generateSshShellWarningsList"></ul>
-                </div>
-
-                <div class="generate-ssh-shell-message-card">
-                  <h3 class="generate-ssh-shell-message-title">Errors</h3>
-                  <ul class="generate-ssh-shell-message-list" id="generateSshShellErrorsList"></ul>
-                </div>
+                <article class="generate-ssh-shell-table-output-note-card">
+                  <h4 class="generate-ssh-shell-table-output-note-title">Run Boundary</h4>
+                  <p class="generate-ssh-shell-table-output-note-copy">InfraStack does not connect to the SSH target, validate credentials, or verify host-key trust.</p>
+                </article>
+                <article class="generate-ssh-shell-table-output-note-card">
+                  <h4 class="generate-ssh-shell-table-output-note-title">JSON Boundary</h4>
+                  <p class="generate-ssh-shell-table-output-note-copy">The JSON tab preserves command options, generated command text, warnings, and output rows for restore.</p>
+                </article>
               </div>
-            </div>
+            </section>
+          </div>
 
-            <div class="tool-tab-panel generate-ssh-shell-tab-panel" id="generateSshShellJsonPanel" data-tab-panel="generateSshShellJsonPanel" role="tabpanel" aria-labelledby="generateSshShellJsonTab" hidden>
-    {# ns:start family._base.workspace.08_json-restore #}
-              <div class="generate-ssh-shell-json-restore-shell" id="generateSshShellJsonRestoreShell">
-                <section class="generate-ssh-shell-json-card tool-json-panel" aria-label="SSH command JSON output and restore state">
-                  <div class="generate-ssh-shell-json-head tool-json-head">
-                    <div class="generate-ssh-shell-json-title-wrap">
-                      <span class="generate-ssh-shell-json-title tool-json-title">JSON Output</span>
-                      <span class="generate-ssh-shell-json-helper">Exported command state includes target, options, generated command, warnings, and output rows.</span>
-                    </div>
-                    <span class="generate-ssh-shell-json-status is-hidden" id="generateSshShellJsonRestoreStatus" role="status" aria-live="polite"></span>
-                  </div>
-                  <div class="generate-ssh-shell-json-empty is-hidden" id="generateSshShellJsonRestoreEmpty">Generate a command before exporting JSON.</div>
-                  <pre class="generate-ssh-shell-json-output tool-json-output"><code id="generateSshShellJsonOutput"></code></pre>
-                </section>
+          <div class="tool-tab-panel generate-ssh-shell-tab-panel" id="generateSshShellWarningsPanel" data-tab-panel="generateSshShellWarningsPanel" data-share-snapshot-source data-share-kind="shell-warnings" role="tabpanel" aria-labelledby="generateSshShellWarningsTab" hidden>
+            <div class="generate-ssh-shell-warning-grid">
+              <div class="generate-ssh-shell-message-card">
+                <h3 class="generate-ssh-shell-message-title">Warnings</h3>
+                <ul class="generate-ssh-shell-message-list" id="generateSshShellWarningsList"></ul>
+              </div>
+
+              <div class="generate-ssh-shell-message-card">
+                <h3 class="generate-ssh-shell-message-title">Errors</h3>
+                <ul class="generate-ssh-shell-message-list" id="generateSshShellErrorsList"></ul>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="generate-ssh-shell-result-error d-none" id="generateSshShellResultError"></div>
+          <div class="tool-tab-panel generate-ssh-shell-tab-panel" id="generateSshShellJsonPanel" data-tab-panel="generateSshShellJsonPanel" role="tabpanel" aria-labelledby="generateSshShellJsonTab" hidden>
+            {# ns:start family._base.workspace.08_json-restore #}
+            <div class="generate-ssh-shell-json-restore-shell" id="generateSshShellJsonRestoreShell">
+              <section class="generate-ssh-shell-json-card tool-json-panel" aria-label="Command JSON output and restore state">
+                <div class="generate-ssh-shell-json-head tool-json-head">
+                  <div class="generate-ssh-shell-json-title-wrap">
+                    <span class="generate-ssh-shell-json-title tool-json-title">JSON Output</span>
+                    <span class="generate-ssh-shell-json-helper">Exported command state includes target, options, generated command, warnings, and output rows.</span>
+                  </div>
+                  <span class="generate-ssh-shell-json-status is-hidden" id="generateSshShellJsonRestoreStatus" role="status" aria-live="polite"></span>
+                </div>
+                <div class="generate-ssh-shell-json-empty is-hidden" id="generateSshShellJsonRestoreEmpty">Generate a command before exporting JSON.</div>
+                <pre class="generate-ssh-shell-json-output tool-json-output"><code id="generateSshShellJsonOutput"></code></pre>
+              </section>
+            </div>
+          </div>
+        </div>
       </div>
-      <input type="file" id="generateSshShellImportJson" class="generate-ssh-shell-import-input d-none" accept="application/json">
-    {# ns:end family._base.workspace.08_json-restore #}
-    {# ns:end family._base.workspace.07_table-output #}
     </div>
+
+    <div class="generate-ssh-shell-result-error d-none" id="generateSshShellResultError"></div>
+    <input type="file" id="generateSshShellImportJson" class="generate-ssh-shell-import-input d-none" accept="application/json">
+    {# ns:end family._base.workspace.08_json-restore #}
   </div>
+  {# ns:end family._base.workspace.07_table-output #}
   {# ns:end family._base.workspace.00_shell #}
 </div>

@@ -1,4 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kubernetes topology">
-  <circle cx="32" cy="32" r="26" fill="#ccfbf1"/>
-  <path fill="#0f766e" d="M30 12h4l2 7 7-3 3 3-3 7 7 2v4l-7 2 3 7-3 3-7-3-2 7h-4l-2-7-7 3-3-3 3-7-7-2v-4l7-2-3-7 3-3 7 3 2-7Zm2 13a7 7 0 1 0 0 14 7 7 0 0 0 0-14Z"/>
-</svg>

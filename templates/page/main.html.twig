@@ -1,6 +1,14 @@
+{# templates/page/main.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ page_title }}{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('lib/aos/aos.css') }}">
+  <link rel="stylesheet" href="{{ asset('lib/swiper/swiper-bundle.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('styles/page/main.css') }}">
+{% endblock %}
 
 {% block body %}
 
@@ -283,4 +291,11 @@
   </div>
 </section>
 
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('lib/aos/aos.js') }}"></script>
+  <script src="{{ asset('lib/swiper/swiper-bundle.min.js') }}"></script>
+  {{ parent() }}
+  <script type="module" src="{{ asset('js/page/main.js') }}"></script>
 {% endblock %}

@@ -27,9 +27,9 @@ related_links:
       links-url: https://infrastack.my/tools/shell/generate-chmod-shell
       links-embed: https://infrastack.my/embed/shell/generate-chmod-shell
       links-icon: bi-shield-lock
-    - links-title: Crontab Generator
-      links-label: Simplified Tools
-      links-description: Open the embeddable Simplified Tools Crontab Generator workspace.
-      links-url: https://www.simplified.tools/generate_crontab
-      links-embed: https://www.simplified.tools/embed/generate_crontab?share=embed
-      links-icon: bi-calendar4-week
+#     - links-title: Crontab Generator
+#       links-label: Simplified Tools
+#       links-description: Open the embeddable Simplified Tools Crontab Generator workspace.
+#       links-url: https://www.simplified.tools/generate_crontab
+#       links-embed: https://www.simplified.tools/embed/generate_crontab?share=embed
+#       links-icon: bi-calendar4-week

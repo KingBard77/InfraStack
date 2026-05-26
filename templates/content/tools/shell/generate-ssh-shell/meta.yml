@@ -27,9 +27,9 @@ related_links:
       links-url: https://infrastack.my/tools/shell/generate-netcat-shell
       links-embed: https://infrastack.my/embed/shell/generate-netcat-shell
       links-icon: bi-hdd-network
-    - links-title: SSH Config Snippet Generator
-      links-label: Simplified Tools
-      links-description: Open the embeddable Simplified Tools SSH Config Snippet Generator workspace.
-      links-url: https://www.simplified.tools/generate_ssh_config_snippet
-      links-embed: https://www.simplified.tools/embed/generate_ssh_config_snippet?share=embed
-      links-icon: bi-terminal
+#     - links-title: SSH Config Snippet Generator
+#       links-label: Simplified Tools
+#       links-description: Open the embeddable Simplified Tools SSH Config Snippet Generator workspace.
+#       links-url: https://www.simplified.tools/generate_ssh_config_snippet
+#       links-embed: https://www.simplified.tools/embed/generate_ssh_config_snippet?share=embed
+#       links-icon: bi-terminal

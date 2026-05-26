@@ -1,74 +1,57 @@
-{# post.html.twig #}
 {% set visualVariant = variant|default('card') %}
-{% set showPostDetail = show_detail is defined ? show_detail : visualVariant in ['hero', 'hero-small'] %}
-{% set showTitle = show_title is defined ? show_title : true %}
-{% set showMap = show_map is defined ? show_map : true %}
-{% set showFooter = show_footer is defined ? show_footer : true %}
-{% set defaultBackgroundIcons = [
-  'bi bi-terminal',
-  'bi bi-key',
-  'bi bi-hdd-network',
-  'bi bi-router',
-  'bi bi-shield-lock'
-] %}
-{% set defaultMapIcons = [
-  post.card_icon_class|default('bi bi-terminal'),
-  'bi bi-key',
-  'bi bi-hdd-network'
-] %}
-{% set backgroundIcons = post.card_background_icons|default(defaultBackgroundIcons) %}
-{% set mapIcons = post.card_map_icons|default(defaultMapIcons) %}
-{% set visualClass = post.card_visual_class|default((post.slug|default('tool')) ~ '-post-visual') %}
+{% set showPostDetail = visualVariant in ['hero', 'hero-small'] %}
+{% if visualVariant == 'style' %}
+<style>
+.generate-ssh-shell-post-visual {
+    --post-start: #0f766e;
+    --post-end: #14b8a6;
+    --post-accent: #ccfbf1;
+}
 
-{% if visualVariant != 'style' %}
+.generate-ssh-shell-post-visual .tool-post-node:nth-child(1),
+.generate-ssh-shell-post-visual .tool-post-node:nth-child(3),
+.generate-ssh-shell-post-visual .tool-post-node:nth-child(5) {
+    background: rgba(204, 251, 241, 0.24);
+}
+
+.generate-ssh-shell-post-visual .tool-post-icon {
+    background: rgba(15, 118, 110, 0.28);
+}
+</style>
+{% else %}
 <div
-  class="tool-post-visual tool-post-visual-shared {{ visualClass }} tool-post-visual-{{ visualVariant }}"
-  style="
-    --post-start: {{ post.card_gradient_start|default('#0F766E') }};
-    --post-end: {{ post.card_gradient_end|default('#14B8A6') }};
-    --post-ink: {{ post.card_text_color|default('#ffffff') }};
-  "
+  class="tool-post-visual generate-ssh-shell-post-visual tool-post-visual-{{ visualVariant }}"
+  style="--post-start: {{ post.card_gradient_start|default('#0f766e') }}; --post-end: {{ post.card_gradient_end|default('#14b8a6') }};"
 >
   <div class="tool-post-bg-icons" aria-hidden="true">
-    <i class="{{ backgroundIcons[0]|default(defaultBackgroundIcons[0]) }}"></i>
-    <i class="{{ backgroundIcons[1]|default(defaultBackgroundIcons[1]) }}"></i>
-    <i class="{{ backgroundIcons[2]|default(defaultBackgroundIcons[2]) }}"></i>
-    <i class="{{ backgroundIcons[3]|default(defaultBackgroundIcons[3]) }}"></i>
-    <i class="{{ backgroundIcons[4]|default(defaultBackgroundIcons[4]) }}"></i>
+    <i class="bi bi-terminal"></i>
+    <i class="bi bi-hdd-network"></i>
+    <i class="bi bi-shield-lock"></i>
+    <i class="bi bi-braces"></i>
+    <i class="bi bi-clipboard-check"></i>
   </div>
-
   <div class="tool-post-header">
     <span class="tool-post-kicker">{{ post.card_kicker|default(post.category|default('Shell')) }}</span>
     <span class="tool-post-icon"><i class="{{ post.card_icon_class|default('bi bi-terminal') }}"></i></span>
   </div>
-
-  {% if showTitle %}
-    <div class="tool-post-title">{{ post.card_image_title|default(post.title|default('Generate SSH Shell')) }}</div>
-  {% endif %}
-
-  {% if showMap %}
-    <div class="tool-post-map" aria-hidden="true">
-      <span class="tool-post-node"><i class="{{ mapIcons[0]|default(defaultMapIcons[0]) }}"></i></span>
-      <span class="tool-post-node"></span>
-      <span class="tool-post-node"><i class="{{ mapIcons[1]|default(defaultMapIcons[1]) }}"></i></span>
-      <span class="tool-post-node"></span>
-      <span class="tool-post-node"><i class="{{ mapIcons[2]|default(defaultMapIcons[2]) }}"></i></span>
-    </div>
-  {% endif %}
-
-  {% if showFooter %}
-    <div class="tool-post-footer">
-      <span>{{ post.reading_time|default('3 min read') }}</span>
-      <span>{{ post.category|default('Shell') }}</span>
-    </div>
-  {% endif %}
-
+  <div class="tool-post-title">{{ post.card_image_title|default(post.title|default('Generate SSH Shell')) }}</div>
+  <div class="tool-post-map" aria-hidden="true">
+    <span class="tool-post-node"><i class="bi bi-terminal"></i></span>
+    <span class="tool-post-node"></span>
+    <span class="tool-post-node"><i class="bi bi-hdd-network"></i></span>
+    <span class="tool-post-node"></span>
+    <span class="tool-post-node"><i class="bi bi-shield-check"></i></span>
+  </div>
+  <div class="tool-post-footer">
+    <span>{{ post.reading_time|default('5 min read') }}</span>
+    <span>{{ post.category|default('Shell') }}</span>
+  </div>
   {% if showPostDetail %}
     <div class="tool-post-detail">
       <div class="tool-post-meta">
         <span><i class="bi bi-calendar3"></i> {{ post.date_display|default(post.date|default('')) }}</span>
         <span><i class="bi bi-three-dots-vertical"></i> {{ post.category|default('Shell') }}</span>
-        <span><i class="bi bi-clock"></i> {{ post.reading_time|default('3 min read') }}</span>
+        <span><i class="bi bi-clock"></i> {{ post.reading_time|default('5 min read') }}</span>
       </div>
       <div class="tool-post-detail-title">{{ post.title|default('Generate SSH Shell') }}</div>
       <span class="tool-post-read-more">

@@ -1,0 +1,458 @@
+/* assets/styles/page/contact.css */
+
+.contact.section {
+    --accent-color: #2563eb;
+    --contact-accent: #2563eb;
+    --contact-accent-soft: #eff6ff;
+    --contact-secondary: #1d4ed8;
+    --contact-border: #e2e8f0;
+    --contact-muted: #64748b;
+    background:
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 100%),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.045), transparent 28%);
+}
+
+.contact .row.mb-5 {
+    margin-bottom: 2.5rem !important;
+}
+
+.contact .info-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-color);
+    padding: 30px;
+    text-align: center;
+    height: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--contact-border);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.05);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.contact .info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.12);
+}
+
+.contact .info-card .icon-box {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--contact-accent-soft);
+    border: 1px solid #bfdbfe;
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+}
+
+.contact .info-card .icon-box i {
+    font-size: 24px;
+    color: var(--contact-accent);
+}
+
+.contact .info-card h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.contact .info-card p {
+    margin: 0;
+    color: var(--contact-muted);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.contact .form-wrapper {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-color);
+    border: 1px solid var(--contact-border);
+    border-radius: 8px;
+    padding: clamp(1.5rem, 2.5vw, 2rem);
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+}
+
+.contact .form-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--contact-accent), var(--contact-secondary));
+}
+
+.contact .contact-form {
+    display: grid;
+    gap: 22px;
+}
+
+.contact .contact-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.contact .form-field-full {
+    grid-column: 1 / -1;
+}
+
+.contact .field-control {
+    display: flex;
+    min-height: 58px;
+    overflow: hidden;
+    background: var(--surface-color);
+    border: 1px solid var(--contact-border);
+    border-radius: 8px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact .field-control:focus-within {
+    border-color: var(--contact-accent);
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.14);
+}
+
+.contact .field-icon {
+    flex: 0 0 58px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--contact-accent);
+    background: var(--contact-accent-soft);
+    border-right: 1px solid var(--contact-border);
+}
+
+.contact .field-control .form-control {
+    min-width: 0;
+    width: 100%;
+    color: var(--default-color);
+    background-color: var(--surface-color);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 15px;
+    padding: 14px 18px;
+}
+
+.contact .field-control .form-control:focus {
+    box-shadow: none;
+}
+
+.contact .field-control .form-control::placeholder {
+    color: color-mix(in srgb, var(--default-color), transparent 70%);
+}
+
+.contact .field-control-select {
+    position: relative;
+}
+
+.contact .contact-select {
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m6 9 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 18px 18px;
+    padding-right: 52px;
+}
+
+.contact .contact-select:invalid {
+    color: color-mix(in srgb, var(--default-color), transparent 58%);
+}
+
+.contact .field-control-message {
+    min-height: 210px;
+}
+
+.contact .field-control-message .field-icon {
+    align-items: flex-start;
+    padding-top: 20px;
+}
+
+.contact .field-control-message textarea.form-control {
+    min-height: 210px;
+    resize: vertical;
+}
+
+.contact .form-status {
+    margin: 0;
+}
+
+.contact .form-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.contact .form-wrapper button {
+    background: linear-gradient(135deg, var(--contact-accent), var(--contact-secondary));
+    border: 0;
+    padding: 12px 40px;
+    color: var(--contrast-color);
+    border-radius: 999px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 16px;
+    font-weight: 800;
+    box-shadow: 0 16px 30px rgba(37, 99, 235, 0.2);
+}
+
+.contact .form-wrapper button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 36px rgba(29, 78, 216, 0.22);
+}
+
+@media (max-width: 767.98px) {
+    .contact .contact-form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/*--------------------------------------------------------------
+# Author-Style Typography Alignment
+--------------------------------------------------------------*/
+.home-platform-hero h1,
+.home-platform-hero h2,
+.home-platform-hero h3,
+.home-platform-hero h4,
+.home-platform-hero h5,
+.home-platform-hero h6,
+.home-platform-hero p,
+.home-platform-hero a,
+.home-platform-hero span,
+.home-platform-hero strong,
+.home-platform-hero em,
+.home-platform-hero small,
+.home-platform-hero input,
+.home-platform-hero button,
+.home-directory-section h1,
+.home-directory-section h2,
+.home-directory-section h3,
+.home-directory-section h4,
+.home-directory-section h5,
+.home-directory-section h6,
+.home-directory-section p,
+.home-directory-section a,
+.home-directory-section span,
+.home-directory-section strong,
+.home-directory-section em,
+.home-directory-section small,
+.home-directory-section button,
+.home-build-banner h1,
+.home-build-banner h2,
+.home-build-banner h3,
+.home-build-banner h4,
+.home-build-banner h5,
+.home-build-banner h6,
+.home-build-banner p,
+.home-build-banner a,
+.home-build-banner span,
+.home-build-banner strong,
+.home-build-banner em,
+.home-build-banner small,
+.author-profile h1,
+.author-profile h2,
+.author-profile h3,
+.author-profile h4,
+.author-profile h5,
+.author-profile h6,
+.author-profile p,
+.author-profile a,
+.author-profile span,
+.author-profile strong,
+.author-profile em,
+.author-profile small,
+.author-profile div,
+.privacy-policy h1,
+.privacy-policy h2,
+.privacy-policy h3,
+.privacy-policy h4,
+.privacy-policy h5,
+.privacy-policy h6,
+.privacy-policy p,
+.privacy-policy a,
+.privacy-policy span,
+.privacy-policy strong,
+.privacy-policy em,
+.privacy-policy small,
+.privacy-policy li,
+.contact h1,
+.contact h2,
+.contact h3,
+.contact h4,
+.contact h5,
+.contact h6,
+.contact p,
+.contact a,
+.contact span,
+.contact strong,
+.contact em,
+.contact small,
+.contact label,
+.contact input,
+.contact textarea,
+.contact select,
+.contact button {
+    font-family: var(--page-font);
+}
+
+.home-platform-hero,
+.home-directory-section,
+.home-build-banner,
+.author-profile,
+.privacy-policy,
+.contact {
+    --page-title-size: 2.25rem;
+    --page-section-title-size: 1.65rem;
+    --page-subheading-size: 1.25rem;
+    --page-body-size: 1rem;
+    --page-label-size: 0.92rem;
+    --page-small-size: 0.85rem;
+    --page-title-weight: 700;
+    --page-heading-weight: 700;
+    --page-subheading-weight: 600;
+    --page-body-weight: 400;
+    --page-label-weight: 600;
+}
+
+.home-platform-hero h1,
+.privacy-policy h1,
+.author-profile .author-card .author-info h2 {
+    font-family: var(--page-font);
+    font-size: var(--page-title-size);
+    font-weight: var(--page-title-weight);
+    letter-spacing: 0;
+    line-height: 1.15;
+}
+
+.home-section-head h2,
+.home-build-banner h2,
+.author-profile .author-content .content-header h3 {
+    font-family: var(--page-font);
+    font-size: var(--page-section-title-size);
+    font-weight: var(--page-heading-weight);
+    letter-spacing: 0;
+    line-height: 1.25;
+}
+
+.author-profile .author-content .content-body .expertise-areas h4,
+.author-profile .author-content .content-body .featured-articles h4,
+.author-profile .author-content .content-body .featured-articles .article-card .article-details h5,
+.privacy-policy .privacy-card h2,
+.contact .info-card h3,
+.home-tool-card h3,
+.home-category-catalog-card strong,
+.home-recent-card em,
+.home-build-banner h2 {
+    font-family: var(--page-font);
+    font-size: var(--page-subheading-size);
+    font-weight: var(--page-subheading-weight);
+    letter-spacing: 0;
+    line-height: 1.4;
+}
+
+.home-platform-hero p,
+.home-tool-card p,
+.home-build-banner p,
+.author-profile .author-card .author-info .designation,
+.author-profile .author-card .author-info .author-bio,
+.author-profile .author-content .content-body p,
+.author-profile .author-content .content-body .featured-articles .article-card .article-details .post-meta,
+.privacy-policy .privacy-hero p:not(.privacy-kicker),
+.privacy-policy .privacy-card p,
+.privacy-policy .privacy-card li,
+.contact .info-card p,
+.contact .field-control .form-control {
+    font-family: var(--page-font);
+    font-size: var(--page-body-size);
+    font-weight: var(--page-body-weight);
+    line-height: 1.7;
+}
+
+.author-profile .author-card .author-stats .stat-item h4,
+.home-platform-stat strong {
+    font-family: var(--page-font);
+    font-size: var(--page-section-title-size);
+    font-weight: var(--page-heading-weight);
+    line-height: 1;
+}
+
+.home-platform-badge,
+.home-platform-meta span,
+.home-platform-primary,
+.home-platform-secondary,
+.home-platform-search input,
+.home-platform-search button,
+.home-section-head span,
+.home-section-link,
+.home-tool-card-badge,
+.home-tool-card-tags span,
+.home-tool-card-foot,
+.home-tools-center-action a,
+.home-build-banner-actions a,
+.home-recent-card small,
+.privacy-policy .privacy-kicker,
+.privacy-policy .privacy-meta span,
+.contact .field-control .form-control,
+.contact .form-wrapper button {
+    font-family: var(--page-font);
+    letter-spacing: 0;
+}
+
+.home-platform-badge,
+.home-platform-meta span,
+.privacy-policy .privacy-kicker,
+.privacy-policy .privacy-meta span,
+.author-profile .author-content .content-body .expertise-areas .tags span,
+.author-profile .author-content .content-body .featured-articles .article-card .article-details .post-category {
+    font-size: var(--page-label-size);
+    font-weight: var(--page-label-weight);
+    line-height: 1.35;
+}
+
+.home-platform-primary,
+.home-platform-secondary,
+.home-platform-search button,
+.home-section-link,
+.home-tools-center-action a,
+.home-build-banner-actions a,
+.contact .form-wrapper button {
+    font-size: var(--page-label-size);
+    font-weight: var(--page-label-weight);
+}
+
+.home-tool-card-badge,
+.home-tool-card-tags span,
+.home-tool-card-foot,
+.home-recent-card small,
+.home-platform-stage-card strong {
+    font-size: var(--page-small-size);
+    font-weight: var(--page-label-weight);
+}
+
+.home-category-catalog-card small,
+.home-platform-stage-card small,
+.author-profile .author-card .author-stats .stat-item p {
+    font-size: var(--page-small-size);
+    font-weight: var(--page-body-weight);
+}
+
+@media (max-width: 767px) {
+    .home-platform-hero,
+    .home-directory-section,
+    .home-build-banner,
+    .author-profile,
+    .privacy-policy,
+    .contact {
+        --page-title-size: 2rem;
+        --page-section-title-size: 1.45rem;
+        --page-subheading-size: 1.15rem;
+        --page-body-size: 0.98rem;
+    }
+
+    .home-platform-hero h1,
+    .privacy-policy h1,
+    .author-profile .author-card .author-info h2 {
+        line-height: 1.18;
+    }
+}

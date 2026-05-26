@@ -27,9 +27,9 @@ related_links:
       links-url: https://infrastack.my/tools/security/check-headers-security
       links-embed: https://infrastack.my/embed/security/check-headers-security
       links-icon: bi-shield-check
-    - links-title: HTTP Header Checker
-      links-label: Simplified Tools
-      links-description: Open the embeddable Simplified Tools HTTP Header Checker workspace.
-      links-url: https://www.simplified.tools/check_http_header
-      links-embed: https://www.simplified.tools/embed/check_http_header?share=embed
-      links-icon: bi-shield-lock
+#     - links-title: HTTP Header Checker
+#       links-label: Simplified Tools
+#       links-description: Open the embeddable Simplified Tools HTTP Header Checker workspace.
+#       links-url: https://www.simplified.tools/check_http_header
+#       links-embed: https://www.simplified.tools/embed/check_http_header?share=embed
+#       links-icon: bi-shield-lock

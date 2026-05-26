@@ -27,9 +27,9 @@ related_links:
       links-url: https://infrastack.my/tools/gcp/architecture-vpc-gcp
       links-embed: https://infrastack.my/embed/gcp/architecture-vpc-gcp
       links-icon: bi-diagram-3
-    - links-title: Project Budget Burn Calculator
-      links-label: Simplified Tools
-      links-description: Open the embeddable Simplified Tools Project Budget Burn Calculator workspace.
-      links-url: https://www.simplified.tools/calculate_project_budget_burn
-      links-embed: https://www.simplified.tools/embed/calculate_project_budget_burn?share=embed
-      links-icon: bi-calculator
+#     - links-title: Project Budget Burn Calculator
+#       links-label: Simplified Tools
+#       links-description: Open the embeddable Simplified Tools Project Budget Burn Calculator workspace.
+#       links-url: https://www.simplified.tools/calculate_project_budget_burn
+#       links-embed: https://www.simplified.tools/embed/calculate_project_budget_burn?share=embed
+#       links-icon: bi-calculator

@@ -27,9 +27,9 @@ related_links:
       links-url: https://infrastack.my/tools/cisco/calculate-cost-cisco
       links-embed: https://infrastack.my/embed/cisco/calculate-cost-cisco
       links-icon: bi-calculator
-    - links-title: Cisco Interface Config Generator
-      links-label: Simplified Tools
-      links-description: Open the embeddable Simplified Tools Cisco Interface Config Generator workspace.
-      links-url: https://www.simplified.tools/generate_cisco_interface_config
-      links-embed: https://www.simplified.tools/embed/generate_cisco_interface_config?share=embed
-      links-icon: bi-hdd-network
+#     - links-title: Cisco Interface Config Generator
+#       links-label: Simplified Tools
+#       links-description: Open the embeddable Simplified Tools Cisco Interface Config Generator workspace.
+#       links-url: https://www.simplified.tools/generate_cisco_interface_config
+#       links-embed: https://www.simplified.tools/embed/generate_cisco_interface_config?share=embed
+#       links-icon: bi-hdd-network

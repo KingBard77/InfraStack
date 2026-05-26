@@ -27,9 +27,9 @@ related_links:
       links-url: https://infrastack.my/tools/shell/generate-ssh-shell
       links-embed: https://infrastack.my/embed/shell/generate-ssh-shell
       links-icon: bi-terminal
-    - links-title: chmod Calculator
-      links-label: Simplified Tools
-      links-description: Open the embeddable Simplified Tools chmod Calculator workspace.
-      links-url: https://www.simplified.tools/calculate_chmod
-      links-embed: https://www.simplified.tools/embed/calculate_chmod?share=embed
-      links-icon: bi-shield-lock
+#     - links-title: chmod Calculator
+#       links-label: Simplified Tools
+#       links-description: Open the embeddable Simplified Tools chmod Calculator workspace.
+#       links-url: https://www.simplified.tools/calculate_chmod
+#       links-embed: https://www.simplified.tools/embed/calculate_chmod?share=embed
+#       links-icon: bi-shield-lock

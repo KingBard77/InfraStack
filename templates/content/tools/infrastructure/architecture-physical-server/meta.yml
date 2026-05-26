@@ -27,9 +27,9 @@ related_links:
       links-url: https://infrastack.my/tools/infrastructure/architecture-topology-kubernetes
       links-embed: https://infrastack.my/embed/infrastructure/architecture-topology-kubernetes
       links-icon: bi-diagram-3
-    - links-title: Virtualization Host Capacity Calculator
-      links-label: Simplified Tools
-      links-description: Open the embeddable Simplified Tools Virtualization Host Capacity Calculator workspace.
-      links-url: https://www.simplified.tools/calculate_virtualization_host_capacity
-      links-embed: https://www.simplified.tools/embed/calculate_virtualization_host_capacity?share=embed
-      links-icon: bi-hdd-rack
+#     - links-title: Virtualization Host Capacity Calculator
+#       links-label: Simplified Tools
+#       links-description: Open the embeddable Simplified Tools Virtualization Host Capacity Calculator workspace.
+#       links-url: https://www.simplified.tools/calculate_virtualization_host_capacity
+#       links-embed: https://www.simplified.tools/embed/calculate_virtualization_host_capacity?share=embed
+#       links-icon: bi-hdd-rack

@@ -1,0 +1,549 @@
+/* assets/styles/page/author-profile.css */
+
+.author-profile.section {
+    --accent-color: #2563eb;
+    --profile-accent: #2563eb;
+    --profile-accent-soft: #eff6ff;
+    --profile-secondary: #1d4ed8;
+    --profile-secondary-soft: #dbeafe;
+    --profile-border: #e2e8f0;
+    --profile-muted: #64748b;
+    background: #ffffff;
+}
+
+.author-profile .author-profile-1 .row {
+    --bs-gutter-x: 1.75rem;
+}
+
+.author-profile .author-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-color);
+    border: 1px solid var(--profile-border);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+    height: 100%;
+}
+
+.author-profile .author-card::before,
+.author-profile .author-content::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--profile-accent), var(--profile-secondary));
+}
+
+.author-profile .author-card .author-image {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.author-profile .author-card .author-image .profile-photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 18px;
+    object-fit: cover;
+    border: 1px solid var(--profile-border);
+    background: #f8fafc;
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+}
+
+.author-profile .author-card .author-info {
+    text-align: center;
+}
+
+.author-profile .author-card .author-info h2 {
+    font-size: 1.65rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+.author-profile .author-card .author-info .designation {
+    color: var(--profile-accent);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.author-profile .author-card .author-info .author-bio {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: var(--profile-muted);
+}
+
+.author-profile .author-card .author-stats {
+    border-top: 1px solid var(--profile-border);
+    border-bottom: 1px solid var(--profile-border);
+    padding: 1rem 0;
+}
+
+.author-profile .author-card .author-stats .stat-item h4 {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+    color: var(--profile-secondary);
+}
+
+.author-profile .author-card .author-stats .stat-item p {
+    font-size: 0.85rem;
+    margin: 0;
+    color: var(--profile-muted);
+}
+
+.author-profile .author-card .social-links {
+    margin-top: 1.5rem;
+}
+
+.author-profile .author-card .social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: var(--profile-accent-soft);
+    color: var(--profile-accent);
+    border: 1px solid #bfdbfe;
+    border-radius: 50%;
+    margin: 0 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.author-profile .author-card .social-links a:hover {
+    background-color: var(--profile-accent);
+    color: var(--contrast-color);
+    transform: translateY(-3px);
+}
+
+.author-profile .author-card .social-links a i {
+    font-size: 1rem;
+}
+
+.author-profile .author-content {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-color);
+    border: 1px solid var(--profile-border);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+    height: 100%;
+}
+
+.author-profile .author-content .content-header {
+    margin-bottom: 1.5rem;
+}
+
+.author-profile .author-content .content-header h3 {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.75rem;
+    font-weight: 900;
+    margin-bottom: 0;
+}
+
+.author-profile .author-content .content-header h3::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    background: var(--profile-accent);
+    box-shadow: 0 0 0 5px var(--profile-accent-soft);
+}
+
+.author-profile .author-content .content-body p {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    color: var(--profile-muted);
+}
+
+.author-profile .author-content .content-body .expertise-areas h4 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    font-weight: 800;
+    color: var(--heading-color);
+}
+
+.author-profile .author-content .content-body .expertise-areas .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.author-profile .author-content .content-body .expertise-areas .tags span {
+    background: #f8fafc;
+    color: #334155;
+    border: 1px solid var(--profile-border);
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.author-profile .author-content .content-body .expertise-areas .tags span:hover {
+    background-color: var(--profile-accent);
+    color: var(--contrast-color);
+}
+
+.author-profile .author-content .content-body .featured-articles h4 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card {
+    background: var(--background-color);
+    border: 1px solid var(--profile-border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card .article-img {
+    height: 200px;
+    overflow: hidden;
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card .article-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card .article-img:hover img {
+    transform: scale(1.1);
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card .article-details {
+    padding: 1.25rem;
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card .article-details .post-category {
+    display: inline-block;
+    background: var(--profile-secondary-soft);
+    color: var(--profile-secondary);
+    border: 1px solid #bfdbfe;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card .article-details h5 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card .article-details h5 a {
+    color: var(--heading-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card .article-details h5 a:hover {
+    color: var(--profile-accent);
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card .article-details .post-meta {
+    font-size: 0.85rem;
+    color: color-mix(in srgb, var(--default-color), transparent 32%);
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card .article-details .post-meta span {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.author-profile .author-content .content-body .featured-articles .article-card .article-details .post-meta span i {
+    margin-right: 0.35rem;
+    font-size: 1rem;
+}
+
+.author-profile .author-content .website-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--profile-accent);
+    font-weight: 700;
+}
+
+.author-profile .author-content .website-link i {
+    font-size: 1rem;
+}
+
+@media (max-width: 991.98px) {
+    .author-profile .author-card {
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .author-profile .featured-articles .article-card {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/*--------------------------------------------------------------
+# Author-Style Typography Alignment
+--------------------------------------------------------------*/
+.home-platform-hero h1,
+.home-platform-hero h2,
+.home-platform-hero h3,
+.home-platform-hero h4,
+.home-platform-hero h5,
+.home-platform-hero h6,
+.home-platform-hero p,
+.home-platform-hero a,
+.home-platform-hero span,
+.home-platform-hero strong,
+.home-platform-hero em,
+.home-platform-hero small,
+.home-platform-hero input,
+.home-platform-hero button,
+.home-directory-section h1,
+.home-directory-section h2,
+.home-directory-section h3,
+.home-directory-section h4,
+.home-directory-section h5,
+.home-directory-section h6,
+.home-directory-section p,
+.home-directory-section a,
+.home-directory-section span,
+.home-directory-section strong,
+.home-directory-section em,
+.home-directory-section small,
+.home-directory-section button,
+.home-build-banner h1,
+.home-build-banner h2,
+.home-build-banner h3,
+.home-build-banner h4,
+.home-build-banner h5,
+.home-build-banner h6,
+.home-build-banner p,
+.home-build-banner a,
+.home-build-banner span,
+.home-build-banner strong,
+.home-build-banner em,
+.home-build-banner small,
+.author-profile h1,
+.author-profile h2,
+.author-profile h3,
+.author-profile h4,
+.author-profile h5,
+.author-profile h6,
+.author-profile p,
+.author-profile a,
+.author-profile span,
+.author-profile strong,
+.author-profile em,
+.author-profile small,
+.author-profile div,
+.privacy-policy h1,
+.privacy-policy h2,
+.privacy-policy h3,
+.privacy-policy h4,
+.privacy-policy h5,
+.privacy-policy h6,
+.privacy-policy p,
+.privacy-policy a,
+.privacy-policy span,
+.privacy-policy strong,
+.privacy-policy em,
+.privacy-policy small,
+.privacy-policy li,
+.contact h1,
+.contact h2,
+.contact h3,
+.contact h4,
+.contact h5,
+.contact h6,
+.contact p,
+.contact a,
+.contact span,
+.contact strong,
+.contact em,
+.contact small,
+.contact label,
+.contact input,
+.contact textarea,
+.contact select,
+.contact button {
+    font-family: var(--page-font);
+}
+
+.home-platform-hero,
+.home-directory-section,
+.home-build-banner,
+.author-profile,
+.privacy-policy,
+.contact {
+    --page-title-size: 2.25rem;
+    --page-section-title-size: 1.65rem;
+    --page-subheading-size: 1.25rem;
+    --page-body-size: 1rem;
+    --page-label-size: 0.92rem;
+    --page-small-size: 0.85rem;
+    --page-title-weight: 700;
+    --page-heading-weight: 700;
+    --page-subheading-weight: 600;
+    --page-body-weight: 400;
+    --page-label-weight: 600;
+}
+
+.home-platform-hero h1,
+.privacy-policy h1,
+.author-profile .author-card .author-info h2 {
+    font-family: var(--page-font);
+    font-size: var(--page-title-size);
+    font-weight: var(--page-title-weight);
+    letter-spacing: 0;
+    line-height: 1.15;
+}
+
+.home-section-head h2,
+.home-build-banner h2,
+.author-profile .author-content .content-header h3 {
+    font-family: var(--page-font);
+    font-size: var(--page-section-title-size);
+    font-weight: var(--page-heading-weight);
+    letter-spacing: 0;
+    line-height: 1.25;
+}
+
+.author-profile .author-content .content-body .expertise-areas h4,
+.author-profile .author-content .content-body .featured-articles h4,
+.author-profile .author-content .content-body .featured-articles .article-card .article-details h5,
+.privacy-policy .privacy-card h2,
+.contact .info-card h3,
+.home-tool-card h3,
+.home-category-catalog-card strong,
+.home-recent-card em,
+.home-build-banner h2 {
+    font-family: var(--page-font);
+    font-size: var(--page-subheading-size);
+    font-weight: var(--page-subheading-weight);
+    letter-spacing: 0;
+    line-height: 1.4;
+}
+
+.home-platform-hero p,
+.home-tool-card p,
+.home-build-banner p,
+.author-profile .author-card .author-info .designation,
+.author-profile .author-card .author-info .author-bio,
+.author-profile .author-content .content-body p,
+.author-profile .author-content .content-body .featured-articles .article-card .article-details .post-meta,
+.privacy-policy .privacy-hero p:not(.privacy-kicker),
+.privacy-policy .privacy-card p,
+.privacy-policy .privacy-card li,
+.contact .info-card p,
+.contact .field-control .form-control {
+    font-family: var(--page-font);
+    font-size: var(--page-body-size);
+    font-weight: var(--page-body-weight);
+    line-height: 1.7;
+}
+
+.author-profile .author-card .author-stats .stat-item h4,
+.home-platform-stat strong {
+    font-family: var(--page-font);
+    font-size: var(--page-section-title-size);
+    font-weight: var(--page-heading-weight);
+    line-height: 1;
+}
+
+.home-platform-badge,
+.home-platform-meta span,
+.home-platform-primary,
+.home-platform-secondary,
+.home-platform-search input,
+.home-platform-search button,
+.home-section-head span,
+.home-section-link,
+.home-tool-card-badge,
+.home-tool-card-tags span,
+.home-tool-card-foot,
+.home-tools-center-action a,
+.home-build-banner-actions a,
+.home-recent-card small,
+.privacy-policy .privacy-kicker,
+.privacy-policy .privacy-meta span,
+.contact .field-control .form-control,
+.contact .form-wrapper button {
+    font-family: var(--page-font);
+    letter-spacing: 0;
+}
+
+.home-platform-badge,
+.home-platform-meta span,
+.privacy-policy .privacy-kicker,
+.privacy-policy .privacy-meta span,
+.author-profile .author-content .content-body .expertise-areas .tags span,
+.author-profile .author-content .content-body .featured-articles .article-card .article-details .post-category {
+    font-size: var(--page-label-size);
+    font-weight: var(--page-label-weight);
+    line-height: 1.35;
+}
+
+.home-platform-primary,
+.home-platform-secondary,
+.home-platform-search button,
+.home-section-link,
+.home-tools-center-action a,
+.home-build-banner-actions a,
+.contact .form-wrapper button {
+    font-size: var(--page-label-size);
+    font-weight: var(--page-label-weight);
+}
+
+.home-tool-card-badge,
+.home-tool-card-tags span,
+.home-tool-card-foot,
+.home-recent-card small,
+.home-platform-stage-card strong {
+    font-size: var(--page-small-size);
+    font-weight: var(--page-label-weight);
+}
+
+.home-category-catalog-card small,
+.home-platform-stage-card small,
+.author-profile .author-card .author-stats .stat-item p {
+    font-size: var(--page-small-size);
+    font-weight: var(--page-body-weight);
+}
+
+@media (max-width: 767px) {
+    .home-platform-hero,
+    .home-directory-section,
+    .home-build-banner,
+    .author-profile,
+    .privacy-policy,
+    .contact {
+        --page-title-size: 2rem;
+        --page-section-title-size: 1.45rem;
+        --page-subheading-size: 1.15rem;
+        --page-body-size: 0.98rem;
+    }
+
+    .home-platform-hero h1,
+    .privacy-policy h1,
+    .author-profile .author-card .author-info h2 {
+        line-height: 1.18;
+    }
+}

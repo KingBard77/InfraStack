@@ -4,8 +4,10 @@ This file is the local map for `templates/content/` and the global color referen
 
 ## Directory Roles
 
-- `main/`: shared scaffold and reusable support-content section structure.
-- `family/`: reusable family baselines and family workspace grammar.
+- `factory/`: tool creation factory contracts, reusable family baselines, scaffold, and support-content section sources.
+- `factory/phase-1/_base/`: universal base contracts, manifests, markers, and shared workspace section rules.
+- `factory/phase-1/_family/`: reusable family baselines and family workspace grammar.
+- `factory/phase-2/_content/`: metadata, card, support-copy, typography, scaffold, and reusable support-content section rules.
 - `tools/`: final runtime tool packages.
 - `content.html.twig`: content entry template; do not use it as a family or tool package source.
 
@@ -14,7 +16,7 @@ This file is the local map for `templates/content/` and the global color referen
 1. Project root `AGENTS.md`.
 2. `codex/PROMPT.md` and `codex/DESIGN.md`.
 3. `templates/content/MAIN.md`.
-4. The nearest local role file: `main/MAIN.md`, `family/FAMILY.md`, `tools/TOOLS.md`, or `family/<family>/FAMILY.md`.
+4. The nearest local role file: `factory/phase-2/_content/MAIN.md`, `factory/phase-1/_family/FAMILY.md`, `tools/TOOLS.md`, or `factory/phase-1/_family/<family>/FAMILY.md`.
 5. Matching `manifest.yml` files when structured metadata matters.
 
 ## Manifest Rule
@@ -40,8 +42,9 @@ For namespace, baseline, or batch content changes, final reporting must say:
 
 - how many final tool packages were updated as `X / total`
 - which final tool packages were not updated and why
-- whether `templates/content/family/` sources changed
-- whether `templates/content/main/` sources changed
+- whether `templates/content/factory/phase-1/_base/` contracts changed
+- whether `templates/content/factory/phase-1/_family/` sources changed
+- whether `templates/content/factory/phase-2/_content/` sources changed
 - whether runtime package files under `templates/content/tools/` changed
 
 ---

@@ -53,13 +53,13 @@ tool.html.twig
 
 Do not create root-level `post.html.twig`.
 
-New packages can start from `templates/content/main/scaffold/assets/`, but final tools own the copied `assets/bin/`, `assets/icon/`, and `assets/img/` files. Do not reference `templates/content/main/tool-post-visual.html.twig`; it has been removed.
+New packages can start from `templates/content/factory/phase-2/_content/scaffold/assets/`, but final tools own the copied `assets/bin/`, `assets/icon/`, and `assets/img/` files. Do not recreate the removed root-level shared `tool-post-visual.html.twig` fallback.
 
 Do not omit required files unless the user explicitly asked for a partial scaffold.
 
 ## Content References
 
-Tool `content.md` references must follow `templates/content/main/MAIN.md`. Do not ship citation rows with hard `404`, retired, parked, or unrelated-redirect URLs. Every cited source must be official, primary, or source-of-truth for the exact cited claim, and the linked page must match the content around the citation.
+Tool `content.md` references must follow `templates/content/factory/phase-2/_content/MAIN.md`. Do not ship citation rows with hard `404`, retired, parked, or unrelated-redirect URLs. Every cited source must be official, primary, or source-of-truth for the exact cited claim, and the linked page must match the content around the citation.
 
 ## Tool Typography
 
@@ -115,15 +115,21 @@ When creating a new tool:
 1. Confirm the category against `templates/content/tools/manifest.yml`.
 2. Confirm the dominant family against `templates/content/tools/manifest.yml`.
 3. Confirm the group from `meta.yml` or the manifest category mapping.
-4. If marked `[MVP]`, keep the first build focused and complete.
-5. If not marked `[MVP]`, still follow the complete package structure unless the user requests a partial scaffold.
-6. Use category/provider color lineage and visual weight from `templates/content/MAIN.md`.
-7. Use the matching family template from `templates/content/family/<family>/` when available.
-8. Create the final runtime package under `templates/content/tools/<category>/<tool-slug>/`.
+4. Pick one target tool only. Use `batch-package.sh` only after the one-tool process is proven.
+5. Pick the same-family production reference package before writing runtime files.
+6. Copy the production reference package first, then convert slug, DOM prefix, title, metadata, and target domain labels.
+7. Use `_base` and family workspace manifests as contract checks for required hooks and behaviors, not as the final visual or runtime source.
+8. Adapt only tool-native labels, options, schemas, command or model logic, and Custom settings after the reference runtime is in place.
+9. Every Custom control must have a real handler and affect normalized state, visible output, operation rows or warnings when applicable, and JSON export/import restore when state exists.
+10. If marked `[MVP]`, keep the first build focused and complete.
+11. If not marked `[MVP]`, still follow the complete package structure unless the user requests a partial scaffold.
+12. Use category/provider color lineage and visual weight from `templates/content/MAIN.md`.
+13. Create the final runtime package under `templates/content/tools/<category>/<tool-slug>/`.
+14. Run `tool-package.sh validate`, `tool-package.sh parity ... --reference <production-reference>`, and Browser Use against `https://infrastack.my` before accepting the final UI/runtime.
 
 Do not assume every InfraStack tool is an architecture tool.
 
-Only use `templates/content/family/architecture/` when the dominant family is architecture.
+Only use `templates/content/factory/phase-1/_family/architecture/` when the dominant family is architecture.
 
 If the requested tool belongs to a family that does not yet have a baseline, use a tool-local pattern and state the family choice clearly.
 
@@ -165,7 +171,7 @@ The package path `templates/content/tools/<category>/<tool-slug>/` is a stable f
 
 `codex/bin/tool-package.sh` owns final tool package creation and validation. `codex/bin/batch-package.sh` owns family-grouped batch creation orchestration, parallel job status, and readable progress records. `codex/bin/base-package.sh` owns shared `_base` workspace checks. `codex/bin/family-package.sh` owns family and namespace audits. `codex/bin/tester-package.sh` owns smoke, functional, and family acceptance checks. `codex/bin/performance-package.sh` owns static performance budgets, optional Lighthouse checks, and release performance gates. Tool script profiles define validation gates, not category-specific workspace fields.
 
-For script, namespace, baseline, or batch package changes, final reporting must include how many tools were updated as `X / total`, which tools were not updated and why, whether family sources changed, whether shared main sources changed, whether runtime packages changed, and the evidence path for checks that ran. This count is part of the tool script contract, not optional polish.
+For script, namespace, baseline, or batch package changes, final reporting must include how many tools were updated as `X / total`, which tools were not updated and why, whether family sources changed, whether phase-2 content sources changed, whether runtime packages changed, and the evidence path for checks that ran. This count is part of the tool script contract, not optional polish.
 
 Examples:
 
@@ -204,10 +210,10 @@ For diagram, topology, flow, architecture, dependency, and visual workspace tool
 Current baseline:
 
 ```text
-templates/content/family/architecture/
+templates/content/factory/phase-1/_family/architecture/
 ```
 
-New architecture tools must read `templates/content/family/architecture/FAMILY.md` and the matching manifests before implementation.
+New architecture tools must read `templates/content/factory/phase-1/_family/architecture/FAMILY.md` and the matching manifests before implementation.
 
 Editable architecture visualizers should follow the family visualizer standard: selectable and movable stage objects, marquee selection when multiple objects can move, keyboard movement, undo for persisted stage edits, clear spacing between boxes and labels, connector lanes that avoid crossing cards or covering text, and outside-edge side anchors for mirrored left/right column flows when that keeps labels clear.
 
@@ -218,7 +224,7 @@ For tools that take a bounded target input, run scanner-style checks, and return
 Active baseline:
 
 ```text
-templates/content/family/scanning/
+templates/content/factory/phase-1/_family/scanning/
 ```
 
 Current working reference:
@@ -236,7 +242,7 @@ For tools that evaluate posture, readiness, compliance, risk, configuration qual
 Active baseline:
 
 ```text
-templates/content/family/assessment/
+templates/content/factory/phase-1/_family/assessment/
 ```
 
 Current working reference:
@@ -254,7 +260,7 @@ For tools that generate, explain, validate, or compose shell scripts and command
 Active baseline:
 
 ```text
-templates/content/family/shell/
+templates/content/factory/phase-1/_family/shell/
 ```
 
 Use the shell family source, not the historical Netcat runtime package, as the source of truth after baseline promotion. Reapplying the shell family to existing shell tools means Netcat-equivalent shell grammar from the family sections: input target, Basic, Custom, generated command, score cards, Sort toolbar, tabs, operation table, warnings, JSON, export rhythm, and restore import where implemented. Adapt only command-native labels, operands, warnings, schemas, and command logic.
@@ -268,7 +274,7 @@ For tools that calculate values, sizing, capacity, subnetting, cost estimates, p
 Active baseline:
 
 ```text
-templates/content/family/calculate/
+templates/content/factory/phase-1/_family/calculate/
 ```
 
 Current working references:
@@ -281,7 +287,7 @@ templates/content/tools/ibm/calculate-cost-ibm/
 
 Use the calculate family baseline for new calculators and mirror the current three-tool reference grammar for result summary, output toolbar, table tabs, JSON restore, aligned support tables, preset-aligned Example Prompts, provider-native service replacement, and category/provider token adaptation.
 
-When a calculate tool is marked as a baseline, full-copy its stabilized source into `templates/content/family/calculate/baseline/source/` for traceability, then extract reusable markup, CSS, and JavaScript into the matching calculate workspace section files instead of root workspace `custom.css`, `custom.js`, or `demo.html.twig` files.
+When a calculate tool is marked as a baseline, full-copy its stabilized source into `templates/content/factory/phase-1/_family/calculate/baseline/source/` for traceability, then extract reusable markup, CSS, and JavaScript into the matching calculate workspace section files instead of root workspace `custom.css`, `custom.js`, or `demo.html.twig` files.
 
 Calculate workspace section folders must use the architecture-style bundle shape: `README.md`, `demo.html`, `page.html.twig`, `section.css`, and `section.js`.
 
@@ -294,7 +300,7 @@ For tools that generate configuration files, YAML, scripts, templates, policies,
 Planned baseline:
 
 ```text
-templates/content/family/generator/
+templates/content/factory/phase-1/_family/generator/
 ```
 
 ### Analyzer
@@ -304,7 +310,7 @@ For tools that inspect input and return findings, warnings, recommendations, or 
 Planned baseline:
 
 ```text
-templates/content/family/analyzer/
+templates/content/factory/phase-1/_family/analyzer/
 ```
 
 ### Checklist
@@ -314,7 +320,7 @@ For tools that guide users through tasks, controls, hardening items, readiness i
 Planned baseline:
 
 ```text
-templates/content/family/checklist/
+templates/content/factory/phase-1/_family/checklist/
 ```
 
 ### Planner
@@ -324,7 +330,7 @@ For tools that help plan migration, maintenance, capacity, deployment, procureme
 Planned baseline:
 
 ```text
-templates/content/family/planner/
+templates/content/factory/phase-1/_family/planner/
 ```
 
 ### Table
@@ -334,7 +340,7 @@ For tools centered on structured inventory, matrix, register, or tabular plannin
 Planned baseline:
 
 ```text
-templates/content/family/table/
+templates/content/factory/phase-1/_family/table/
 ```
 
 ### Dashboard
@@ -344,7 +350,7 @@ For tools that summarize status, KPIs, health, risk, compliance, or operational 
 Planned baseline:
 
 ```text
-templates/content/family/dashboard/
+templates/content/factory/phase-1/_family/dashboard/
 ```
 
 If no family baseline exists yet, use a tool-local pattern and document the family choice.

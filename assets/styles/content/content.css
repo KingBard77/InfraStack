@@ -1,9 +1,5 @@
 /* assets/styles/content.css */
 
-/* =========================================================
-   CONTENT PAGE STYLES
-   ========================================================= */
-
 #blog-details.blog-details.section {
     padding-top: 24px;
     padding-bottom: 24px;
@@ -39,8 +35,99 @@
     margin-bottom: 0;
 }
 
+.blog-details .article-content {
+    padding: 0 1rem;
+}
+
+.blog-details .article-content .content-header {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.blog-details .article-content .content-header .title-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    color: color-mix(in srgb, var(--default-color), transparent 28%);
+    font-family: var(--page-font);
+    font-size: 0.98rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.blog-details .article-content .content-header .title-meta .category {
+    color: var(--accent-color);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.blog-details .article-content .content-header .title-meta .divider {
+    color: color-mix(in srgb, var(--default-color), transparent 40%);
+}
+
+.blog-details .article-content .content-header .title-meta .reading-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: color-mix(in srgb, var(--default-color), transparent 12%);
+}
+
 .blog-details .article-content .content-header .title {
+    max-width: 720px;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+    color: var(--heading-color);
     font-family: var(--content-title-font);
+    font-size: clamp(2.2rem, 4.6vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.14;
+    letter-spacing: 0;
+}
+
+.blog-details .article-content .content-header .author-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+.blog-details .article-content .content-header .author-info .author-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.blog-details .article-content .content-header .author-info .author-details .author-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.blog-details .article-content .content-header .author-info .author-details .info h4 {
+    margin: 0;
+    color: var(--heading-color);
+    font-size: 1.1rem;
+}
+
+.blog-details .article-content .content-header .author-info .author-details .info .role {
+    color: color-mix(in srgb, var(--default-color), transparent 30%);
+    font-size: 0.9rem;
+}
+
+.blog-details .article-content .content-header .author-info .post-meta {
+    color: color-mix(in srgb, var(--default-color), transparent 30%);
+    font-size: 0.95rem;
+}
+
+.blog-details .article-content .content-header .author-info .post-meta i {
+    margin-right: 0.3rem;
+}
+
+.blog-details .article-content .content-header .author-info .post-meta .divider {
+    margin: 0 0.75rem;
 }
 
 .tool-intro .tool-main-description {
@@ -67,6 +154,59 @@
 @media (max-width: 767.98px) {
     #blog-details.blog-details.section {
         padding-top: 16px;
+    }
+
+    .blog-details .article-content {
+        padding: 0;
+    }
+
+    .blog-details .article-content .content-header {
+        margin-bottom: 2rem;
+    }
+
+    .blog-details .article-content .content-header .title-meta {
+        font-size: 0.95rem;
+    }
+
+    .blog-details .article-content .content-header .title {
+        font-size: clamp(2rem, 9vw, 2.35rem);
+        line-height: 1.16;
+    }
+
+    .blog-details .article-content .content-header .author-info {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.25rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .blog-details .article-content .content-header .author-info .author-details {
+        gap: 0.9rem;
+    }
+
+    .blog-details .article-content .content-header .author-info .author-details .author-img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .blog-details .article-content .content-header .author-info .author-details .info h4 {
+        font-size: 1rem;
+    }
+
+    .blog-details .article-content .content-header .author-info .author-details .info .role,
+    .blog-details .article-content .content-header .author-info .post-meta {
+        font-size: 0.92rem;
+        line-height: 1.45;
+    }
+
+    .blog-details .article-content .content-header .author-info .post-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 0.75rem;
+    }
+
+    .blog-details .article-content .content-header .author-info .post-meta .divider {
+        margin: 0;
     }
 
     .tool-intro {

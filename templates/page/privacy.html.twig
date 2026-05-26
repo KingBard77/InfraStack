@@ -3,6 +3,12 @@
 
 {% block title %}{{ page_title }}{% endblock %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('lib/aos/aos.css') }}">
+  <link rel="stylesheet" href="{{ asset('styles/page/privacy.css') }}">
+{% endblock %}
+
 {% block body %}
 
 {{ include('layout/breadcrumbs.html.twig') }}
@@ -242,4 +248,9 @@
   </div>
 </section>
 
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('lib/aos/aos.js') }}"></script>
+  {{ parent() }}
 {% endblock %}

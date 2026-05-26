@@ -5,6 +5,7 @@
 
 {% block stylesheets %}
   {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('styles/content/content.css') }}">
 
   <style>
     {% include 'content/tools/' ~ category ~ '/' ~ slug ~ '/custom.css' ignore missing %}
@@ -121,6 +122,7 @@
         </section>
       </div>
 
+      {# sidebar.html.twig #}
       {{ include('layout/sidebar.html.twig') }}
 
     </div>

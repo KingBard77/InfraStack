@@ -27,9 +27,9 @@ related_links:
       links-url: https://infrastack.my/tools/cisco/architecture-campus-network-cisco
       links-embed: https://infrastack.my/embed/cisco/architecture-campus-network-cisco
       links-icon: bi-hdd-network
-    - links-title: PoE Budget Calculator
-      links-label: Simplified Tools
-      links-description: Open the embeddable Simplified Tools PoE Budget Calculator workspace.
-      links-url: https://www.simplified.tools/calculate_poe_budget
-      links-embed: https://www.simplified.tools/embed/calculate_poe_budget?share=embed
-      links-icon: bi-lightning-charge
+#     - links-title: PoE Budget Calculator
+#       links-label: Simplified Tools
+#       links-description: Open the embeddable Simplified Tools PoE Budget Calculator workspace.
+#       links-url: https://www.simplified.tools/calculate_poe_budget
+#       links-embed: https://www.simplified.tools/embed/calculate_poe_budget?share=embed
+#       links-icon: bi-lightning-charge

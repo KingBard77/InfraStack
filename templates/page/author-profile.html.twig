@@ -3,6 +3,12 @@
 
 {% block title %}{{ page_title }}{% endblock %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('lib/aos/aos.css') }}">
+  <link rel="stylesheet" href="{{ asset('styles/page/author-profile.css') }}">
+{% endblock %}
+
 {% block body %}
 
 {{ include('layout/breadcrumbs.html.twig') }}
@@ -133,4 +139,11 @@
 </section>
 <!-- /Author Profile Section -->
 
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('lib/aos/aos.js') }}"></script>
+  <script src="{{ asset('lib/purecounter/purecounter_vanilla.js') }}"></script>
+  {{ parent() }}
+  <script src="{{ asset('js/page/author-profile.js') }}"></script>
 {% endblock %}

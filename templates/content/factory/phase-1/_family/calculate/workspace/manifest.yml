@@ -1,0 +1,198 @@
+source: calculate-family-workspace
+family: calculate
+version: 1.6.0
+status: active
+description: Family-specific workspace grammar for InfraStack calculator tools composed from shared `_base` workspace structure plus calculate-owned visual contract and selected-item inspector slots.
+agent_map: templates/content/factory/phase-1/_family/calculate/FAMILY.md
+
+family_path: templates/content/factory/phase-1/_family/calculate/
+workspace_path: templates/content/factory/phase-1/_family/calculate/workspace/
+scaffold_path: templates/content/factory/phase-2/_content/scaffold/
+content_sections_path: templates/content/factory/phase-2/_content/sections/
+
+section_runtime_baseline:
+    source_tools:
+        - path: templates/content/tools/aws/calculate-cost-aws/
+          role: primary structural reference
+        - path: templates/content/tools/azure/calculate-cost-azure/
+          role: Azure provider-adaptation and category/provider token reference
+        - path: templates/content/tools/ibm/calculate-cost-ibm/
+          role: IBM Cloud provider-adaptation and category/provider token reference
+    source_snapshot: templates/content/factory/phase-1/_family/calculate/source/
+    role: The source snapshot is reference-only. Do not audit this as active source. Common workspace sections are sourced from `_base`; calculate workspace owns only calculate-specific visual/model and inspector slots.
+
+runtime_baseline:
+    source_tool: templates/content/tools/aws/calculate-cost-aws/
+    source_snapshot: templates/content/factory/phase-1/_family/calculate/source/
+    workspace_sections: templates/content/factory/phase-1/_family/calculate/workspace/
+    copy_mode: base_plus_family_contract
+    source_hashes:
+        tool_html_twig: bd204d9469580503ca6350a65c9f05eaecda415db972dbb6b19cea9999c179d8
+        custom_css: 1644c71c96b9c9bd0c519347cc1a474bb374ee3a80c3b91993e1b61ba756c200
+        custom_js: ab9dcdab32504d365194865e9c5f169e1adbbc3f4f2347619aa6b81197037db8
+    rule: Keep the full copied calculate source under source/ as a reference-only snapshot. Do not audit this as active source. Use `_base/workspace` for common section shape and calculate workspace only for calculate-specific visual/model contracts and inspector slots.
+
+reference_workspaces:
+    - title: AWS Cost Calculator
+      path: templates/content/tools/aws/calculate-cost-aws/
+      role: structural_reference
+      css_sha256: 1644c71c96b9c9bd0c519347cc1a474bb374ee3a80c3b91993e1b61ba756c200
+      js_sha256: ab9dcdab32504d365194865e9c5f169e1adbbc3f4f2347619aa6b81197037db8
+      aliases:
+          - AWS Cost Calculator
+          - AWS cost calculator
+          - aws-cost-calculator
+          - calculate-cost-aws
+    - title: Azure Cost Calculator
+      path: templates/content/tools/azure/calculate-cost-azure/
+      role: provider_adaptation_reference
+      css_sha256: e488d0c5dd5f7494e0b48cb4466c1d60fb12a513c94befe6106a519bf1c31528
+      js_sha256: 1fe8b262e7df70550b2045ce6af9c78439d0e68bb2ac45bc979c72a433cd47ca
+      aliases:
+          - Azure Cost Calculator
+          - Azure cost calculator
+          - calculate-cost-azure
+    - title: IBM Cloud Cost Calculator
+      path: templates/content/tools/ibm/calculate-cost-ibm/
+      role: provider_adaptation_reference
+      css_sha256: 86db19a3aed5d182365910cc0c1ad54483c153bfef306bf3a9da6305299e11c4
+      js_sha256: cbda4574ceadc30f335fbd00c84f16313103c06408f38847bbeae87374c633d9
+      aliases:
+          - IBM Cloud Cost Calculator
+          - IBM cost calculator
+          - calculate-cost-ibm
+
+selection_triggers:
+    - calculate
+    - calculator
+    - estimate
+    - estimator
+    - pricing
+    - cost
+    - sizing
+    - capacity
+    - budget
+    - run-rate
+
+workspace_flow:
+    - estimate_label_or_scenario
+    - preset_or_basic_settings
+    - service_or_component_cards
+    - advanced_assumptions_rates_overrides
+    - visual_contract_when_needed
+    - result_summary
+    - output_toolbar_sort_copy_export_import
+    - result_tabs_table_shell
+    - json_payload_output_restore
+
+workspace_namespaces:
+    - family._base.workspace.00_shell
+    - family._base.workspace.01_input-brief
+    - family._base.workspace.02_basic-settings
+    - family._base.workspace.03_custom-settings
+    - family.calculate.workspace.04_visual-contract
+    - family.calculate.workspace.04_selected-item
+    - family._base.workspace.05_result-summary
+    - family._base.workspace.06_output-toolbar
+    - family._base.workspace.07_table-output
+    - family._base.workspace.08_json-restore
+
+workspace_sections:
+    04_visual-contract: optional calculate visual and model contract for metric cards, driver cards, formula rows, rings, charts, and visual result primitives
+    04_selected-item: optional selected line item or component inspector; no-op unless a calculator supports selection
+    _base.00_shell: shared workspace frame, panel rhythm, section slots, and responsive shell
+    _base.01_input-brief: shared estimate label, scenario, or brief input frame
+    _base.02_basic-settings: shared preset and required setting frame
+    _base.03_custom-settings: shared optional Custom settings panel frame
+    _base.05_result-summary: shared result overview, primary card, metrics, chips, and top-driver frame
+    _base.06_output-toolbar: shared sort, export, copy, and optional import toolbar frame
+    _base.07_table-output: shared tabbed table, notes, assumptions, and JSON output shell
+    _base.08_json-restore: shared calculator JSON payload output and restore frame
+
+section_file_contract:
+    required_per_section:
+        - README.md
+        - demo.html
+        - page.html.twig
+        - section.css
+        - section.js
+    role: Calculate-owned workspace sections keep the architecture family bundle shape. Common sections are sourced from `_base/workspace`.
+    visual_contract_additional_files:
+        - manifest.yml
+        - model-core.js
+
+scaffold_content_adaptation:
+    01_overview: calculator purpose, input boundary, and output boundary
+    02_technical-details: normalized inputs, assumptions, rates, and formulas
+    03_example-prompts: preset-aligned Example Prompts with Copy prompt controls and centered title-case terminal titles; use Example Inputs only when no prompt or brief workflow exists
+    04_tips-prompts: input tips and assumption guidance
+    05_how-to-use: estimate workflow
+    06_export-notes: PDF, CSV, JSON, copy, and import restore boundaries
+    07_faq: calculator trust boundaries and pricing limitations
+    08_acronyms: optional abbreviation expansion table; domain, pricing, and estimate acronyms
+    11_glossary: optional broader terminology table; broader domain, command, workflow, platform, or estimate terminology
+    10_references: complete factual content delivery, valid source-backed citations, and References rows when final calculate content cites sources
+
+state_contract:
+    - label_or_scenario
+    - preset
+    - included_services_or_components
+    - quantities
+    - rates
+    - assumptions
+    - overrides
+    - totals
+    - result_summary
+    - output_toolbar
+    - tables
+    - exports
+    - json_output
+    - json_restore_when_implemented
+
+generation_rules:
+    - Select this workspace source for calculate-family tool requests.
+    - Compose calculate workspace output from `workspace_namespaces`, not from duplicated calculate copies of `_base` sections.
+    - Source common shell, input, settings, summary, toolbar, table, and JSON restore sections from `_base/workspace`.
+    - Use this workspace source only for calculate-specific visual/model and inspector sections.
+    - Keep each calculate-owned workspace section folder complete with README.md, demo.html, page.html.twig, section.css, and section.js.
+    - Use 04_visual-contract for calculate tools that need a reusable model or visual result contract beyond plain inputs and table output.
+    - Omit 04_visual-contract for pure form-and-table calculators only when the omission is recorded as accepted divergence.
+    - Keep selected item, details panel, and runtime editing behavior out of 04_visual-contract unless a dedicated inspector section is deliberately added.
+    - Keep full copied calculate source under source/ as a reference-only snapshot when refreshing this baseline. Do not audit this as active source.
+    - When a calculate tool is accepted as a baseline source, extract only calculate-specific visual/model or inspector behavior into calculate workspace files.
+    - Use phase-2 content sections for reusable content rhythm.
+    - Apply phase-2 content sections as a full contract: content.md markup, section.css visual behavior, and section.js helper behavior when present.
+    - Final tool custom.css and custom.js must preserve the applied section card frame, heading divider, typography, table, list, details, FAQ, copy, citation, prompt, or command behavior unless a documented shared include exists.
+    - Use 10_references for complete factual content delivery and when final content includes valid source-backed citations, with in-text citation links targeting matching References row IDs.
+    - Do not create a family-local sections/ directory.
+    - Do not copy AWS, Azure, IBM Cloud, or other provider pricing language into unrelated calculators.
+    - Use AWS Cost Calculator as the structural reference and Azure plus IBM Cloud as provider-adaptation references.
+    - Keep result summaries balanced across a primary answer card and supporting metric cards by adapting `_base/workspace/05_result-summary`.
+    - Keep output toolbar controls boxed, compact, and grouped by sort versus actions by adapting `_base/workspace/06_output-toolbar`.
+    - Default line-item sort to ID when stable row order exists by adapting `_base/workspace/07_table-output`.
+    - Keep support content tables aligned with fixed layout and wrapping.
+    - Use Example Prompts with paired Copy prompt buttons for preset-aligned estimate briefs.
+    - Show Import JSON only when restore rebuilds the normalized model and visible outputs.
+    - Preserve calculate-family input-to-result grammar while adapting labels, category/provider tokens, examples, formulas, and export behavior.
+    - Replace copied category/provider tokens across workspace CSS, markdown support CSS, and chart JavaScript before closing a provider variant.
+    - Generate final runtime files under templates/content/tools/<category>/<tool-slug>/.
+
+validation_rules:
+    - workspace/README.md exists.
+    - workspace/manifest.yml exists.
+    - workspace_namespaces lists `_base` common sections plus calculate-owned visual-contract and selected-item sections.
+    - reference workspace paths exist when used.
+    - source/tool.html.twig, source/custom.css, and source/custom.js exist.
+    - calculate-owned workspace section folders exist.
+    - workspace/custom.css, workspace/custom.js, and workspace/demo.html.twig do not exist.
+    - every calculate-owned workspace section folder contains README.md, demo.html, page.html.twig, section.css, and section.js.
+    - workspace/04_visual-contract contains manifest.yml and model-core.js.
+    - phase-2 content section source exists.
+    - Applied shared content sections are validated in the final tool package for namespace markers, unresolved placeholders, required custom.css selectors, and helper hooks when used.
+    - citation links and References rows are paired when 10_references is used.
+    - no family-local sections/ directory exists.
+    - final tool input controls, totals, tables, exports, and JSON use one normalized model.
+    - output toolbar, tabs shell, table shell, and JSON panel match implemented behavior.
+    - import restore is validated when shown.
+    - reusable workspace section examples are provider-neutral unless a section explicitly documents a provider-specific example.
+    - provider-adapted tools include copied-token scans for provider names and category/provider lineage tokens.

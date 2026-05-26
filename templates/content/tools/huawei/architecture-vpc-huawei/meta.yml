@@ -27,9 +27,9 @@ related_links:
       links-url: https://infrastack.my/tools/tmcloud/architecture-cloud-tmcloud
       links-embed: https://infrastack.my/embed/tmcloud/architecture-cloud-tmcloud
       links-icon: bi-cloud
-    - links-title: Subnet Planning Suite
-      links-label: Simplified Tools
-      links-description: Open the embeddable Simplified Tools Subnet Planning Suite workspace.
-      links-url: https://www.simplified.tools/calculate_subnet_planning_suite
-      links-embed: https://www.simplified.tools/embed/calculate_subnet_planning_suite?share=embed
-      links-icon: bi-diagram-3
+#     - links-title: Subnet Planning Suite
+#       links-label: Simplified Tools
+#       links-description: Open the embeddable Simplified Tools Subnet Planning Suite workspace.
+#       links-url: https://www.simplified.tools/calculate_subnet_planning_suite
+#       links-embed: https://www.simplified.tools/embed/calculate_subnet_planning_suite?share=embed
+#       links-icon: bi-diagram-3
