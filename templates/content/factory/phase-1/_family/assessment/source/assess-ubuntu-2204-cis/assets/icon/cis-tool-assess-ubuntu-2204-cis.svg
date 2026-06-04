@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="cisUbuntuIconTitle">
+  <title id="cisUbuntuIconTitle">__TOOL_TITLE__</title>
+  <defs>
+    <linearGradient id="cisUbuntuIconGradient" x1="16" y1="10" x2="80" y2="86" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#475569"/>
+      <stop offset="1" stop-color="#64748B"/>
+    </linearGradient>
+  </defs>
+  <path d="M48 8 78 20v23c0 19-12 35-30 45C30 78 18 62 18 43V20L48 8Z" fill="url(#cisUbuntuIconGradient)"/>
+  <path d="M35 47l8 8 20-22" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M31 70h34" fill="none" stroke="#CBD5E1" stroke-width="5" stroke-linecap="round"/>
+</svg>
