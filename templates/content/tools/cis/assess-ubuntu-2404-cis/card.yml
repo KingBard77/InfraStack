@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: CIS Ubuntu Benchmark 2404 turns the copied 24.04 script tree into searchable controls, section rollups, selected shell bodies, and exportable review snapshots.
+card_gradient_start: "#475569"
+card_gradient_end: "#64748B"
+card_text_color: "#FFFFFF"
+card_kicker: "CIS"
+card_image_title: "CIS Ubuntu Benchmark 2404"
+card_icon_class: "bi bi-shield-lock"
+card_icon_animation: "random"
+card_image: null
