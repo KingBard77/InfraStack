@@ -1,7 +1,7 @@
 {# tool.html.twig #}
 {# ns:start family._base.workspace.00_shell #}
 
-<div class="architecture-vpc-gcp-tool">
+<div class="architecture-vpc-gcp-tool" data-tool-slug="architecture-vpc-gcp">
   <div class="tool-box">
     {# ns:start family._base.workspace.01_input-brief #}
     <div class="tool-shell tool-prompt-shell architecture-vpc-gcp-input-card">
@@ -37,7 +37,7 @@
             id="architectureVpcGcpReset"
           >
             <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
-            <span>Load Default</span>
+            <span>Reset</span>
           </button>
         </div>
 
@@ -67,35 +67,41 @@
             <div class="architecture-vpc-gcp-basic-grid">
               <div class="architecture-vpc-gcp-control-stack architecture-vpc-gcp-setting-card">
                 <label class="tool-control-label architecture-vpc-gcp-setting-label" for="architectureVpcGcpPreset">Preset <span class="architecture-vpc-gcp-helper-chip" title="Choose a starting preset that updates the visible controls and generated output." aria-label="Choose a starting preset that updates the visible controls and generated output.">i</span></label>
-                <select id="architectureVpcGcpPreset" class="form-select architecture-vpc-gcp-native-select">
-                  <option value="three-tier-web" selected>3-Tier Web</option>
-                  <option value="ecs-fargate">Cloud Run</option>
-                  <option value="eks-platform">Private GKE</option>
-                  <option value="hybrid-shared">Hybrid Shared Services</option>
-                </select>
+                <div class="architecture-vpc-gcp-native-select-wrap" id="architectureVpcGcpPresetSelect">
+                  <select id="architectureVpcGcpPreset" class="form-select architecture-vpc-gcp-native-select">
+                    <option value="three-tier-web" selected>3-Tier Web</option>
+                    <option value="ecs-fargate">Cloud Run</option>
+                    <option value="eks-platform">Private GKE</option>
+                    <option value="hybrid-shared">Hybrid Shared Services</option>
+                  </select>
+                </div>
               </div>
 
               <div class="architecture-vpc-gcp-control-stack architecture-vpc-gcp-setting-card">
                 <label class="tool-control-label architecture-vpc-gcp-setting-label" for="architectureVpcGcpRegion">Region <span class="architecture-vpc-gcp-helper-chip" title="Choose the provider region used by the generated model and exported JSON." aria-label="Choose the provider region used by the generated model and exported JSON.">i</span></label>
-                <select id="architectureVpcGcpRegion" class="form-select architecture-vpc-gcp-native-select">
-                  <option value="us-central1">us-central1</option>
-                  <option value="us-east1">us-east1</option>
-                  <option value="us-east4">us-east4</option>
-                  <option value="us-west1">us-west1</option>
-                  <option value="us-west2">us-west2</option>
-                  <option value="europe-west1">europe-west1</option>
-                  <option value="asia-southeast1">asia-southeast1</option>
-                  <option value="australia-southeast1">australia-southeast1</option>
-                </select>
+                <div class="architecture-vpc-gcp-native-select-wrap" id="architectureVpcGcpRegionSelect">
+                  <select id="architectureVpcGcpRegion" class="form-select architecture-vpc-gcp-native-select">
+                    <option value="us-central1">us-central1</option>
+                    <option value="us-east1">us-east1</option>
+                    <option value="us-east4">us-east4</option>
+                    <option value="us-west1">us-west1</option>
+                    <option value="us-west2">us-west2</option>
+                    <option value="europe-west1">europe-west1</option>
+                    <option value="asia-southeast1">asia-southeast1</option>
+                    <option value="australia-southeast1">australia-southeast1</option>
+                  </select>
+                </div>
               </div>
 
               <div class="architecture-vpc-gcp-control-stack architecture-vpc-gcp-setting-card">
                 <label class="tool-control-label architecture-vpc-gcp-setting-label" for="architectureVpcGcpAzCount">Zones <span class="architecture-vpc-gcp-helper-chip" title="Choose the zone count used by placement and resilience assumptions." aria-label="Choose the zone count used by placement and resilience assumptions.">i</span></label>
-                <select id="architectureVpcGcpAzCount" class="form-select architecture-vpc-gcp-native-select">
-                  <option value="1">1 zone</option>
-                  <option value="2" selected>2 zone</option>
-                  <option value="3">3 zone</option>
-                </select>
+                <div class="architecture-vpc-gcp-native-select-wrap" id="architectureVpcGcpAzCountSelect">
+                  <select id="architectureVpcGcpAzCount" class="form-select architecture-vpc-gcp-native-select">
+                    <option value="1">1 zone</option>
+                    <option value="2" selected>2 zone</option>
+                    <option value="3">3 zone</option>
+                  </select>
+                </div>
               </div>
               <p class="tool-control-hint architecture-vpc-gcp-setting-hint" id="architectureVpcGcpPresetDescription">Public HTTP(S) LB, private managed instance groups, Cloud SQL, single Cloud NAT.</p>
             </div>
@@ -124,41 +130,13 @@
                   </div>
 
                   <div class="architecture-vpc-gcp-control-stack">
-                    <label class="tool-control-label" for="architectureVpcGcpNatMode">Cloud NAT mode <span class="architecture-vpc-gcp-helper-chip architecture-vpc-gcp-custom-helper-chip" title="Tune cloud nat mode before regenerating the diagram." aria-label="Tune cloud nat mode before regenerating the diagram.">i</span></label>
-                    <input type="hidden" id="architectureVpcGcpNatMode" value="single">
-
-                    <details class="architecture-vpc-gcp-custom-dropdown" data-custom-dropdown-for="architectureVpcGcpNatMode">
-                      <summary class="architecture-vpc-gcp-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>Single Cloud NAT</span>
-                          <span class="architecture-vpc-gcp-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="architecture-vpc-gcp-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                        <button
-                          type="button"
-                          class="architecture-vpc-gcp-custom-dropdown-option"
-                          data-custom-dropdown-value="none"
-                          role="option"
-                          aria-selected="false"
-                        >No Cloud NAT</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-gcp-custom-dropdown-option active"
-                          data-custom-dropdown-value="single"
-                          role="option"
-                          aria-selected="true"
-                        >Single Cloud NAT</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-gcp-custom-dropdown-option"
-                          data-custom-dropdown-value="per-az"
-                          role="option"
-                          aria-selected="false"
-                        >One per zone</button>
-                      </div>
-                    </details>
+                    <label class="tool-control-label" for="architectureVpcGcpNatMode">Cloud NAT mode <span class="architecture-vpc-gcp-helper-chip architecture-vpc-gcp-custom-helper-chip" title="Tune cloud nat mode before regenerating the diagram." aria-label="Tune cloud nat mode before regenerating the diagram.">i</span></label>                    <div class="architecture-vpc-gcp-native-select-wrap" id="architectureVpcGcpNatModeSelect">
+                      <select id="architectureVpcGcpNatMode" class="form-select architecture-vpc-gcp-native-select">
+                        <option value="none">No Cloud NAT</option>
+                        <option value="single" selected>Single Cloud NAT</option>
+                        <option value="per-az">One per zone</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -166,95 +144,25 @@
               <div class="tool-inspector-section architecture-vpc-gcp-config-panel" id="architectureVpcGcpWorkloadConfigPanel" data-config-panel role="tabpanel" aria-labelledby="architectureVpcGcpWorkloadConfigTab" hidden>
                 <div class="architecture-vpc-gcp-config-grid">
                   <div class="architecture-vpc-gcp-control-stack">
-                    <label class="tool-control-label" for="architectureVpcGcpAppTier">App tier <span class="architecture-vpc-gcp-helper-chip architecture-vpc-gcp-custom-helper-chip" title="Tune app tier before regenerating the diagram." aria-label="Tune app tier before regenerating the diagram.">i</span></label>
-                    <input type="hidden" id="architectureVpcGcpAppTier" value="ec2">
-
-                    <details class="architecture-vpc-gcp-custom-dropdown" data-custom-dropdown-for="architectureVpcGcpAppTier">
-                      <summary class="architecture-vpc-gcp-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>Managed Instance Groups</span>
-                          <span class="architecture-vpc-gcp-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="architecture-vpc-gcp-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                        <button
-                          type="button"
-                          class="architecture-vpc-gcp-custom-dropdown-option active"
-                          data-custom-dropdown-value="ec2"
-                          role="option"
-                          aria-selected="true"
-                        >Managed Instance Groups</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-gcp-custom-dropdown-option"
-                          data-custom-dropdown-value="ecs"
-                          role="option"
-                          aria-selected="false"
-                        >Cloud Run</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-gcp-custom-dropdown-option"
-                          data-custom-dropdown-value="eks"
-                          role="option"
-                          aria-selected="false"
-                        >GKE</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-gcp-custom-dropdown-option"
-                          data-custom-dropdown-value="lambda"
-                          role="option"
-                          aria-selected="false"
-                        >Cloud Functions with Serverless VPC Access</button>
-                      </div>
-                    </details>
+                    <label class="tool-control-label" for="architectureVpcGcpAppTier">App tier <span class="architecture-vpc-gcp-helper-chip architecture-vpc-gcp-custom-helper-chip" title="Tune app tier before regenerating the diagram." aria-label="Tune app tier before regenerating the diagram.">i</span></label>                    <div class="architecture-vpc-gcp-native-select-wrap" id="architectureVpcGcpAppTierSelect">
+                      <select id="architectureVpcGcpAppTier" class="form-select architecture-vpc-gcp-native-select">
+                        <option value="ec2" selected>Managed Instance Groups</option>
+                        <option value="ecs">Cloud Run</option>
+                        <option value="eks">GKE</option>
+                        <option value="lambda">Cloud Functions with Serverless VPC Access</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div class="architecture-vpc-gcp-control-stack">
-                    <label class="tool-control-label" for="architectureVpcGcpDatabase">Database tier <span class="architecture-vpc-gcp-helper-chip architecture-vpc-gcp-custom-helper-chip" title="Tune database tier before regenerating the diagram." aria-label="Tune database tier before regenerating the diagram.">i</span></label>
-                    <input type="hidden" id="architectureVpcGcpDatabase" value="rds">
-
-                    <details class="architecture-vpc-gcp-custom-dropdown" data-custom-dropdown-for="architectureVpcGcpDatabase">
-                      <summary class="architecture-vpc-gcp-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>Cloud SQL</span>
-                          <span class="architecture-vpc-gcp-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="architecture-vpc-gcp-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                        <button
-                          type="button"
-                          class="architecture-vpc-gcp-custom-dropdown-option"
-                          data-custom-dropdown-value="none"
-                          role="option"
-                          aria-selected="false"
-                        >No database tier</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-gcp-custom-dropdown-option active"
-                          data-custom-dropdown-value="rds"
-                          role="option"
-                          aria-selected="true"
-                        >Cloud SQL</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-gcp-custom-dropdown-option"
-                          data-custom-dropdown-value="aurora"
-                          role="option"
-                          aria-selected="false"
-                        >Cloud SQL for PostgreSQL</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-gcp-custom-dropdown-option"
-                          data-custom-dropdown-value="dynamodb"
-                          role="option"
-                          aria-selected="false"
-                        >Firestore</button>
-                      </div>
-                    </details>
+                    <label class="tool-control-label" for="architectureVpcGcpDatabase">Database tier <span class="architecture-vpc-gcp-helper-chip architecture-vpc-gcp-custom-helper-chip" title="Tune database tier before regenerating the diagram." aria-label="Tune database tier before regenerating the diagram.">i</span></label>                    <div class="architecture-vpc-gcp-native-select-wrap" id="architectureVpcGcpDatabaseSelect">
+                      <select id="architectureVpcGcpDatabase" class="form-select architecture-vpc-gcp-native-select">
+                        <option value="none">No database tier</option>
+                        <option value="rds" selected>Cloud SQL</option>
+                        <option value="aurora">Cloud SQL for PostgreSQL</option>
+                        <option value="dynamodb">Firestore</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -426,7 +334,7 @@
           <button type="button" class="architecture-vpc-gcp-icon-btn" id="architectureVpcGcpFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
             <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
           </button>
-          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-vpc-gcp-stage-toolbar-btn" id="architectureVpcGcpResetLayout" aria-label="Auto arrange layout" title="Auto arrange layout">Auto layout</button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-vpc-gcp-stage-toolbar-btn" id="architectureVpcGcpResetLayout" aria-label="Auto layout" title="Auto layout">Auto layout</button>
         </div>
       </div>
 
@@ -551,27 +459,32 @@
                 </header>
                 <div class="architecture-vpc-gcp-result-hero-grid" aria-live="polite">
                   <article class="architecture-vpc-gcp-result-card architecture-vpc-gcp-result-card-primary" data-result-visual="ring" aria-label="Primary result">
-                    <div class="architecture-vpc-gcp-result-primary-heading"><div class="architecture-vpc-gcp-result-kicker">Primary Result</div></div>
+                    <div class="architecture-vpc-gcp-result-primary-heading architecture-vpc-gcp-result-visual-copy architecture-vpc-gcp-result-visual-copy-top">
+                      <div class="architecture-vpc-gcp-result-kicker">Primary Result</div>
+                      <h3 class="architecture-vpc-gcp-result-title architecture-vpc-gcp-result-title-center">Visible result value</h3>
+                    </div>
                     <div class="architecture-vpc-gcp-result-primary-visual" id="architectureVpcGcpResultVisual" aria-label="Primary result visual">
                       <div class="architecture-vpc-gcp-result-ring" style="--architecture-vpc-gcp-result-progress: 0deg; --progress-angle: 0deg; --architecture-vpc-gcp-result-value-chars: 5;">
                         <div class="architecture-vpc-gcp-result-ring-center"><strong class="architecture-vpc-gcp-result-ring-value">Ready</strong><span class="architecture-vpc-gcp-result-ring-unit">/100</span></div>
                       </div>
                     </div>
-                    <div class="architecture-vpc-gcp-result-visual-copy"><h3 class="architecture-vpc-gcp-result-title architecture-vpc-gcp-result-title-center">Visible result value</h3><p class="architecture-vpc-gcp-result-copy architecture-vpc-gcp-result-copy-center">Generate a diagram to review the current architecture outcome.</p></div>
+                    <div class="architecture-vpc-gcp-result-visual-copy"><p class="architecture-vpc-gcp-result-copy architecture-vpc-gcp-result-copy-center">Generate a diagram to review the current architecture outcome.</p></div>
                     <span class="architecture-vpc-gcp-result-card-divider" aria-hidden="true"></span>
                     <div class="architecture-vpc-gcp-result-chip-row architecture-vpc-gcp-result-chip-row-center" aria-label="Primary result outcome"><span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-outcome architecture-vpc-gcp-result-chip-ready"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>Model ready</span></span></div>
                   </article>
                   <article class="architecture-vpc-gcp-result-card architecture-vpc-gcp-result-card-summary" aria-label="Result summary">
                     <div class="architecture-vpc-gcp-result-summary-intro">
                       <span class="architecture-vpc-gcp-result-card-icon architecture-vpc-gcp-result-card-icon-summary" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>
-                      <div class="architecture-vpc-gcp-result-summary-copy"><div class="architecture-vpc-gcp-result-kicker">Descriptive Summary</div><h3 class="architecture-vpc-gcp-result-title">Filtered output set</h3><p class="architecture-vpc-gcp-result-copy">The summary, table, JSON, and exports should all derive from the current normalized state.</p></div>
+                      <div class="architecture-vpc-gcp-result-summary-copy"><div class="architecture-vpc-gcp-result-kicker">Descriptive Summary</div><h3 class="architecture-vpc-gcp-result-title">Strong production baseline</h3><p class="architecture-vpc-gcp-result-copy">Private tiers, managed data services, and observability are in place for a polished delivery.</p></div>
                     </div>
                     <span class="architecture-vpc-gcp-result-card-divider" aria-hidden="true"></span>
-                    <div class="architecture-vpc-gcp-result-chip-grid" aria-label="Result summary state">
-                      <span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-ready"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-check2-circle"></i></span><span>Model source</span></span>
-                      <span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-baseline"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span>Architecture family</span></span>
-                      <span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-baseline"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-folder2-open"></i></span><span>Result summary</span></span>
-                      <span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-warning"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-filter"></i></span><span>Generated state</span></span>
+                    <div class="architecture-vpc-gcp-result-chip-grid" aria-label="Result summary chips">
+                      <span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-ready"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>Production Ready</span></span>
+                      <span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-baseline"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-globe2"></i></span><span>us-central1 region</span></span>
+                      <span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-baseline"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-grid-3x3-gap"></i></span><span>2 zones</span></span>
+                      <span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-baseline"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span><span>Single Cloud NAT</span></span>
+                      <span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-baseline"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-hdd-network"></i></span><span>Managed Instance Groups</span></span>
+                      <span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-baseline"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-database"></i></span><span>Cloud SQL</span></span>
                     </div>
                   </article>
                 </div>
@@ -674,7 +587,7 @@
                           <th>Component</th>
                           <th>Placement</th>
                           <th>Purpose</th>
-                          <th>Action</th>
+                          <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                         </tr>
                       </thead>
                       <tbody id="architectureVpcGcpInventoryTableBody"></tbody>

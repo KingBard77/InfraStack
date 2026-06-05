@@ -1,83 +1,6 @@
 // custom.js
 // ns:start family._base.workspace.00_shell
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
-
 // ns:start family._base.workspace.05_result-summary
 function installInfraStackResultSummaryNormalizer(prefix) {
     function formatUpdatedLabel() {
@@ -275,13 +198,13 @@ function installInfraStackResultSummaryNormalizer(prefix) {
         if (!chipGrid) {
             chipGrid = document.createElement('div');
             chipGrid.className = prefix + '-result-chip-grid';
-            chipGrid.setAttribute('aria-label', 'Result summary state');
+            chipGrid.setAttribute('aria-label', 'Result summary chips');
             summaryCard.appendChild(chipGrid);
         }
 
         chipGrid.classList.remove(prefix + '-result-chip-row');
         chipGrid.classList.add(prefix + '-result-chip-grid');
-        chipGrid.setAttribute('aria-label', 'Result summary state');
+        chipGrid.setAttribute('aria-label', 'Result summary chips');
 
         Array.from(chipGrid.querySelectorAll('.' + prefix + '-result-chip')).forEach(function (chip) {
             if (/^updated\b/i.test(chip.textContent.trim())) {
@@ -289,8 +212,20 @@ function installInfraStackResultSummaryNormalizer(prefix) {
             }
         });
 
-        while (chipGrid.querySelectorAll('.' + prefix + '-result-chip').length < 4) {
-            chipGrid.appendChild(createChip('Model ready', 'baseline', 'bi bi-check2-circle'));
+        const fallbackChips = [
+            { text: 'Production Ready', tone: 'ready', icon: 'bi bi-shield-check' },
+            { text: 'Region', tone: 'baseline', icon: 'bi bi-globe2' },
+            { text: 'Zones', tone: 'baseline', icon: 'bi bi-grid-3x3-gap' },
+            { text: 'Egress', tone: 'baseline', icon: 'bi bi-arrow-left-right' },
+            { text: 'App tier', tone: 'baseline', icon: 'bi bi-hdd-network' },
+            { text: 'Data tier', tone: 'baseline', icon: 'bi bi-database' }
+        ];
+
+        while (chipGrid.querySelectorAll('.' + prefix + '-result-chip').length < 6) {
+            const chipCount = chipGrid.querySelectorAll('.' + prefix + '-result-chip').length;
+            const fallback = fallbackChips[Math.min(chipCount, fallbackChips.length - 1)];
+
+            chipGrid.appendChild(createChip(fallback.text, fallback.tone, fallback.icon));
         }
     }
 
@@ -600,7 +535,7 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-gcp');
         "sourceBehaviours": [
             "normalizes the primary brief",
             "seeds the normalized model from prompt text",
-            "binds Generate and Load Default actions",
+            "binds Generate and Reset actions",
             "renders parser errors without unlocking generated output"
         ]
     };
@@ -669,27 +604,20 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-gcp');
             "architecture-vpc-gcp-basic-grid",
             "architecture-vpc-gcp-control-stack",
             "architecture-vpc-gcp-native-select",
-            "architecture-vpc-gcp-custom-select",
-            "architecture-vpc-gcp-custom-select-trigger",
-            "architecture-vpc-gcp-custom-select-menu"
         ],
         "sourceVariables": [
             "presetInput",
             "presetDescription",
             "regionInput",
             "azCountInput",
-            "customSelectControls"
         ],
         "sourceFunctions": [
-            "initializeCustomSelect",
-            "initializeCustomSelects",
             "populateRegionOptions",
             "updatePresetSelection",
             "syncControls",
             "applyPreset"
         ],
         "sourceBehaviours": [
-            "enhances native select fields with the baseline custom dropdown",
             "keeps the preset description synchronized",
             "populates region and zone choices",
             "applies preset defaults to the normalized model"
@@ -1590,31 +1518,31 @@ const architectureVpcGcpAllowedDatabases = ArchitectureVpcGcpModelCore.allowedDa
 const architectureVpcGcpEngineRuntime = window.InfraStackArchitectureEngineRuntime || null;
 
 const architectureVpcGcpIconSvgMap = {
-    architectureVpcGcp: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-VPC.svg')|json_encode|raw }},
-    route53: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-DNS.svg')|json_encode|raw }},
-    cloudFront: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-CDN.svg')|json_encode|raw }},
-    waf: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-Armor.svg')|json_encode|raw }},
-    internetGateway: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Internet-Edge.svg')|json_encode|raw }},
-    applicationLoadBalancer: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-External-HTTPS-Load-Balancer.svg')|json_encode|raw }},
-    vpcRouter: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-Router.svg')|json_encode|raw }},
-    natGateway: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-NAT.svg')|json_encode|raw }},
-    ec2: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Compute-Engine.svg')|json_encode|raw }},
-    ec2AutoScaling: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Managed-Instance-Groups.svg')|json_encode|raw }},
-    ecs: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-Run.svg')|json_encode|raw }},
-    eks: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-GKE.svg')|json_encode|raw }},
-    fargate: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-Run.svg')|json_encode|raw }},
-    lambda: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-Functions.svg')|json_encode|raw }},
-    rds: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-SQL.svg')|json_encode|raw }},
-    aurora: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-SQL-PostgreSQL.svg')|json_encode|raw }},
-    dynamodb: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Firestore.svg')|json_encode|raw }},
-    elasticache: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Memorystore.svg')|json_encode|raw }},
-    vpcEndpoints: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Private-Service-Connect.svg')|json_encode|raw }},
-    vpcFlowLogs: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-VPC-Flow-Logs.svg')|json_encode|raw }},
-    cloudWatch: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-Monitoring.svg')|json_encode|raw }},
-    systemsManager: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Secret-Manager.svg')|json_encode|raw }},
-    siteToSiteVpn: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Cloud-VPN.svg')|json_encode|raw }},
-    transitGateway: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Network-Connectivity-Center.svg')|json_encode|raw }},
-    bastion: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/GCP-Identity-Aware-Proxy.svg')|json_encode|raw }}
+    architectureVpcGcp: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-vpc.svg')|json_encode|raw }},
+    route53: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-dns.svg')|json_encode|raw }},
+    cloudFront: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-cdn.svg')|json_encode|raw }},
+    waf: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-armor.svg')|json_encode|raw }},
+    internetGateway: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-internet-edge.svg')|json_encode|raw }},
+    applicationLoadBalancer: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-external-https-load-balancer.svg')|json_encode|raw }},
+    vpcRouter: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-router.svg')|json_encode|raw }},
+    natGateway: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-nat.svg')|json_encode|raw }},
+    ec2: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-compute-engine.svg')|json_encode|raw }},
+    ec2AutoScaling: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-managed-instance-groups.svg')|json_encode|raw }},
+    ecs: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-run.svg')|json_encode|raw }},
+    eks: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-gke.svg')|json_encode|raw }},
+    fargate: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-run.svg')|json_encode|raw }},
+    lambda: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-functions.svg')|json_encode|raw }},
+    rds: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-sql.svg')|json_encode|raw }},
+    aurora: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-sql-postgresql.svg')|json_encode|raw }},
+    dynamodb: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-firestore.svg')|json_encode|raw }},
+    elasticache: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-memorystore.svg')|json_encode|raw }},
+    vpcEndpoints: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-private-service-connect.svg')|json_encode|raw }},
+    vpcFlowLogs: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-vpc-flow-logs.svg')|json_encode|raw }},
+    cloudWatch: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-monitoring.svg')|json_encode|raw }},
+    systemsManager: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-secret-manager.svg')|json_encode|raw }},
+    siteToSiteVpn: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-cloud-vpn.svg')|json_encode|raw }},
+    transitGateway: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-network-connectivity-center.svg')|json_encode|raw }},
+    bastion: {{ include('content/tools/gcp/architecture-vpc-gcp/assets/icon/gcp-arch-identity-aware-proxy.svg')|json_encode|raw }}
 };
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -1807,7 +1735,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let stageZoom = defaultStageZoom;
     let stageUiHidden = false;
     let stageDiagramHighlighted = false;
-    let customSelectControls = [];
     let connectorOverrideContext = {};
     let inventorySortMode = 'id';
     let pendingStageFocusCardId = '';
@@ -1833,7 +1760,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         selectors: {
             resizeHandle: '[data-engine-resize-handle], .diagram-resize-handle',
-            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"], .architecture-vpc-gcp-custom-select'
+            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"]'
         },
         classes: {
             selected: 'is-selected',
@@ -2065,9 +1992,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     event.stopPropagation();
                     marker.classList.toggle('is-open');
                 });
+                marker.addEventListener('keydown', function (event) {
+                    if (event.key !== 'Enter' && event.key !== ' ') {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    event.stopPropagation();
+                    marker.classList.toggle('is-open');
+                });
             }
 
             marker.dataset.info = infoText;
+            marker.setAttribute('role', 'button');
             marker.setAttribute('aria-label', 'More info: ' + infoText);
             popover.textContent = infoText;
         });
@@ -2242,191 +2179,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return ArchitectureVpcGcpModelCore.databaseLabel(value);
     }
 
-    function getSelectedNativeOption(selectElement) {
-        return Array.from(selectElement.options).find(function (option) {
-            return option.value === selectElement.value;
-        }) || selectElement.options[0] || null;
-    }
-
-    function closeCustomSelects(exceptControl) {
-        customSelectControls.forEach(function (control) {
-            if (exceptControl && control === exceptControl) {
-                return;
-            }
-
-            control.wrapper.classList.remove('open');
-            control.button.setAttribute('aria-expanded', 'false');
-        });
-    }
-
-    function syncCustomSelectControl(control) {
-        const selectedOption = getSelectedNativeOption(control.selectElement);
-        const selectedValue = selectedOption ? selectedOption.value : '';
-
-        control.valueElement.textContent = selectedOption ? selectedOption.textContent : '';
-        control.optionButtons.forEach(function (optionButton) {
-            const isSelected = optionButton.dataset.value === selectedValue;
-
-            optionButton.classList.toggle('selected', isSelected);
-            optionButton.setAttribute('aria-selected', isSelected ? 'true' : 'false');
-        });
-    }
-
-    function syncCustomSelects() {
-        customSelectControls.forEach(syncCustomSelectControl);
-    }
-
-    function focusSelectedCustomOption(control) {
-        const selectedButton = control.optionButtons.find(function (optionButton) {
-            return optionButton.classList.contains('selected');
-        }) || control.optionButtons[0];
-
-        if (selectedButton) {
-            selectedButton.focus();
-        }
-    }
-
-    function openCustomSelect(control) {
-        closeCustomSelects(control);
-        syncCustomSelectControl(control);
-        control.wrapper.classList.add('open');
-        control.button.setAttribute('aria-expanded', 'true');
-    }
-
-    function toggleCustomSelect(control) {
-        if (control.wrapper.classList.contains('open')) {
-            closeCustomSelects();
-            return;
-        }
-
-        openCustomSelect(control);
-    }
-
-    function selectCustomOption(control, value) {
-        if (control.selectElement.value === value) {
-            closeCustomSelects();
-            return;
-        }
-
-        control.selectElement.value = value;
-        syncCustomSelectControl(control);
-        control.selectElement.dispatchEvent(new Event('change', {
-            bubbles: true
-        }));
-        closeCustomSelects();
-    }
-
-    function initializeCustomSelect(selectElement) {
-        if (!selectElement || selectElement.tagName !== 'SELECT') {
-            return;
-        }
-
-        const wrapper = document.createElement('div');
-        const button = document.createElement('button');
-        const valueElement = document.createElement('span');
-        const icon = document.createElement('i');
-        const menu = document.createElement('div');
-
-        wrapper.className = 'architecture-vpc-gcp-custom-select';
-        button.type = 'button';
-        button.className = 'architecture-vpc-gcp-custom-select-trigger';
-        button.setAttribute('aria-haspopup', 'listbox');
-        button.setAttribute('aria-expanded', 'false');
-        valueElement.className = 'architecture-vpc-gcp-custom-select-value';
-        icon.className = 'bi bi-chevron-down';
-        icon.setAttribute('aria-hidden', 'true');
-        menu.className = 'architecture-vpc-gcp-custom-select-menu';
-        menu.setAttribute('role', 'listbox');
-
-        button.appendChild(valueElement);
-        button.appendChild(icon);
-        wrapper.appendChild(button);
-        wrapper.appendChild(menu);
-        selectElement.classList.add('architecture-vpc-gcp-native-select');
-        selectElement.setAttribute('aria-hidden', 'true');
-        selectElement.tabIndex = -1;
-        selectElement.insertAdjacentElement('afterend', wrapper);
-
-        const control = {
-            selectElement: selectElement,
-            wrapper: wrapper,
-            button: button,
-            valueElement: valueElement,
-            menu: menu,
-            optionButtons: []
-        };
-
-        Array.from(selectElement.options).forEach(function (option) {
-            const optionButton = document.createElement('button');
-
-            optionButton.type = 'button';
-            optionButton.className = 'architecture-vpc-gcp-custom-select-option';
-            optionButton.dataset.value = option.value;
-            optionButton.textContent = option.textContent;
-            optionButton.setAttribute('role', 'option');
-            optionButton.addEventListener('click', function () {
-                selectCustomOption(control, option.value);
-                button.focus();
-            });
-            optionButton.addEventListener('keydown', function (event) {
-                const currentIndex = control.optionButtons.indexOf(optionButton);
-
-                if (event.key === 'ArrowDown') {
-                    event.preventDefault();
-                    control.optionButtons[Math.min(control.optionButtons.length - 1, currentIndex + 1)].focus();
-                }
-
-                if (event.key === 'ArrowUp') {
-                    event.preventDefault();
-                    control.optionButtons[Math.max(0, currentIndex - 1)].focus();
-                }
-
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    selectCustomOption(control, option.value);
-                    button.focus();
-                }
-
-                if (event.key === 'Escape') {
-                    event.preventDefault();
-                    closeCustomSelects();
-                    button.focus();
-                }
-            });
-
-            menu.appendChild(optionButton);
-            control.optionButtons.push(optionButton);
-        });
-
-        button.addEventListener('click', function () {
-            toggleCustomSelect(control);
-        });
-        button.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown') {
-                event.preventDefault();
-                openCustomSelect(control);
-                focusSelectedCustomOption(control);
-            }
-
-            if (event.key === 'Escape') {
-                event.preventDefault();
-                closeCustomSelects();
-            }
-        });
-        selectElement.addEventListener('change', function () {
-            syncCustomSelectControl(control);
-        });
-
-        customSelectControls.push(control);
-        syncCustomSelectControl(control);
-    }
-
-    function initializeCustomSelects() {
-        customSelectElements.filter(function (element) {
-            return element && element.tagName === 'SELECT';
-        }).forEach(initializeCustomSelect);
-    }
-
     function findPresetById(presetId) {
         return architectureVpcGcpPresetCatalog.find(function (preset) {
             return preset.id === presetId;
@@ -2450,7 +2202,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         presetInput.value = selectedPreset.id;
         presetDescription.textContent = selectedPreset.description;
-        syncCustomSelects();
     }
 
     function activateTab(tabId) {
@@ -3142,7 +2893,6 @@ document.addEventListener('DOMContentLoaded', function () {
         siteToSiteVpnInput.checked = Boolean(spec.siteToSiteVpn);
         transitGatewayInput.checked = Boolean(spec.transitGateway);
         cacheInput.checked = Boolean(spec.cache);
-        syncCustomSelects();
     }
 
     function buildSpecFromControls(prompt, presetId, inheritedNotes) {
@@ -3363,7 +3113,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         inventory.push({
             component: appTierLabel(spec.appTier),
-            placement: spec.azCount + ' zone layout',
+            placement: spec.azCount + '-zone layout',
             purpose: 'Main application or platform workload'
         });
 
@@ -3441,7 +3191,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function buildModelSummary(spec) {
         const summary = [
             spec.region + ' region',
-            spec.azCount + ' zone',
+            String(spec.azCount) + ' zone' + (spec.azCount === 1 ? '' : 's'),
             natModeLabel(spec.natMode),
             appTierLabel(spec.appTier),
             databaseLabel(spec.database)
@@ -3660,7 +3410,7 @@ document.addEventListener('DOMContentLoaded', function () {
             detail: detail,
             tags: [
                 { icon: 'bi bi-globe2', label: spec.region + ' region', tone: 'region' },
-                { icon: 'bi bi-grid-3x3-gap', label: spec.azCount + ' zone', tone: 'az' },
+                { icon: 'bi bi-grid-3x3-gap', label: String(spec.azCount) + ' zone' + (spec.azCount === 1 ? '' : 's'), tone: 'az' },
                 { icon: 'bi bi-arrow-left-right', label: natModeLabel(spec.natMode), tone: 'network' },
                 { icon: 'bi bi-hdd-network', label: appTierLabel(spec.appTier), tone: 'compute' },
                 { icon: 'bi bi-database', label: databaseLabel(spec.database), tone: 'data' }
@@ -5455,7 +5205,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 '<td>' + escapeHtml(item.component) + '</td>',
                 '<td>' + escapeHtml(item.placement) + '</td>',
                 '<td>' + escapeHtml(item.purpose) + '</td>',
-                '<td class="architecture-vpc-gcp-table-action-cell">',
+                '<td class="architecture-vpc-gcp-table-action-cell tool-table-action-cell">',
                 '<button type="button" class="architecture-vpc-gcp-row-copy" data-inventory-copy-row="' + escapeHtml(index) + '" aria-label="Copy inventory row ' + escapeHtml(item.inventoryIndex || index + 1) + '" title="Copy inventory row">',
                 '<i class="bi bi-clipboard" aria-hidden="true"></i>',
                 '</button>',
@@ -5508,13 +5258,53 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function flashInventoryCopyButton(button) {
-        button.classList.add('copied');
-        button.setAttribute('title', 'Copied');
+        const icon = button.querySelector('i');
+        const originalIcon = button.dataset.defaultIcon || (icon ? icon.className : '');
+
+        if (icon && !button.dataset.defaultIcon) {
+            button.dataset.defaultIcon = originalIcon;
+        }
+
+        button.classList.add('copied', 'is-copied');
+        if (icon) {
+            icon.className = 'bi bi-check2';
+        }
 
         window.setTimeout(function () {
-            button.classList.remove('copied');
-            button.setAttribute('title', button.dataset.copyTitle || 'Copy row');
+            button.classList.remove('copied', 'is-copied', 'failed');
+            if (icon && button.dataset.defaultIcon) {
+                icon.className = button.dataset.defaultIcon;
+            }
         }, 1400);
+    }
+
+    function fallbackInventoryClipboardText(text) {
+        const textarea = document.createElement('textarea');
+
+        textarea.value = text;
+        textarea.setAttribute('readonly', 'readonly');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        document.execCommand('copy');
+
+        textarea.remove();
+    }
+
+    async function writeInventoryClipboardText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return;
+            } catch (error) {
+                fallbackInventoryClipboardText(text);
+                return;
+            }
+        }
+
+        fallbackInventoryClipboardText(text);
     }
 
     async function copyInventoryRow(rowIndex, button) {
@@ -5528,10 +5318,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (!navigator.clipboard || !navigator.clipboard.writeText) {
-            showError('Clipboard access is not available in this browser.');
-            return;
-        }
 
         const copyText = buildInventoryCopyText(normalizedRowIndex);
 
@@ -5540,7 +5326,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            await navigator.clipboard.writeText(copyText);
+            await writeInventoryClipboardText(copyText);
             flashInventoryCopyButton(button);
         } catch (error) {
             showError('Failed to copy the inventory row to the clipboard.');
@@ -5651,7 +5437,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
             return 'baseline';
         };
-        const tagChips = scorePayload.tags.map(function (item) {
+        const summaryChipItems = [
+            {
+                icon: scorePayload.badgeIcon,
+                label: scorePayload.badgeLabel,
+                tone: scorePayload.badgeTone
+            },
+            scorePayload.tags[0],
+            scorePayload.tags[1],
+            scorePayload.tags[2],
+            scorePayload.tags[3],
+            scorePayload.tags[4]
+        ].filter(Boolean);
+        const summaryChips = summaryChipItems.map(function (item) {
             return [
                 '<span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-' + chipTone(item.tone) + '">',
                 '<span class="architecture-vpc-gcp-result-chip-icon"><i class="' + escapeHtml(item.icon) + '" aria-hidden="true"></i></span>',
@@ -5664,35 +5462,63 @@ document.addEventListener('DOMContentLoaded', function () {
         outputStatus.dataset.resultTone = resultTone;
         outputStatus.dataset.resultLayout = 'architecture_score';
         outputStatus.innerHTML = [
-            '<div class="architecture-vpc-gcp-result-hero-grid" aria-live="polite">',
-            '<article class="architecture-vpc-gcp-result-card architecture-vpc-gcp-result-card-main">',
-            '<span class="architecture-vpc-gcp-result-kicker">Architecture score</span>',
-            '<h3 class="architecture-vpc-gcp-result-title">' + escapeHtml(scorePayload.band) + '</h3>',
-            '<p class="architecture-vpc-gcp-result-copy">' + escapeHtml(scorePayload.detail) + '</p>',
-            '<div class="architecture-vpc-gcp-result-chip-row" aria-label="Architecture score state">',
-            '<span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-' + chipTone(scorePayload.badgeTone) + '"><span class="architecture-vpc-gcp-result-chip-icon"><i class="' + escapeHtml(scorePayload.badgeIcon) + '" aria-hidden="true"></i></span>' + escapeHtml(scorePayload.badgeLabel) + '</span>',
-            tagChips,
+            '<header class="architecture-vpc-gcp-result-header" aria-label="Result summary header">',
+            '<div class="architecture-vpc-gcp-result-header-main">',
+            '<span class="architecture-vpc-gcp-result-header-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span>',
+            '<div class="architecture-vpc-gcp-result-header-copy">',
+            '<h2 class="architecture-vpc-gcp-result-header-title">Result Summary</h2>',
+            '<p>Overview of the current architecture result and key metrics.</p>',
             '</div>',
-            '</article>',
-            '<article class="architecture-vpc-gcp-result-card architecture-vpc-gcp-result-card-visual">',
-            '<div class="architecture-vpc-gcp-result-ring architecture-vpc-gcp-score-value" id="architectureVpcGcpScoreValue" style="--architecture-vpc-gcp-result-progress: ' + escapeHtml(String(ringProgressAngle)) + 'deg; --progress-angle: ' + escapeHtml(String(ringProgressAngle)) + 'deg;" aria-label="Architecture score ' + escapeHtml(String(scorePayload.score)) + ' out of 100">',
+            '</div>',
+            '<div class="architecture-vpc-gcp-result-header-meta" aria-label="Result summary status">',
+            '<span class="architecture-vpc-gcp-result-header-chip architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-ready"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span>',
+            '<span class="architecture-vpc-gcp-result-header-chip architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-updated"><span class="architecture-vpc-gcp-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>Ready</span></span>',
+            '</div>',
+            '</header>',
+            '<div class="architecture-vpc-gcp-result-hero-grid" aria-live="polite">',
+            '<article class="architecture-vpc-gcp-result-card architecture-vpc-gcp-result-card-primary" data-result-visual="ring" aria-label="Primary result">',
+            '<div class="architecture-vpc-gcp-result-primary-heading architecture-vpc-gcp-result-visual-copy architecture-vpc-gcp-result-visual-copy-top">',
+            '<div class="architecture-vpc-gcp-result-kicker">Primary Result</div>',
+            '<h3 class="architecture-vpc-gcp-result-title architecture-vpc-gcp-result-title-center">' + escapeHtml(scorePayload.ringLabel) + '</h3>',
+            '</div>',
+            '<div class="architecture-vpc-gcp-result-primary-visual" id="architectureVpcGcpResultVisual" aria-label="Primary result visual">',
+            '<span class="architecture-vpc-gcp-result-card-icon architecture-vpc-gcp-result-card-icon-primary" aria-hidden="true"><i class="bi bi-speedometer2"></i></span>',
+            '<div class="architecture-vpc-gcp-result-ring architecture-vpc-gcp-score-value" id="architectureVpcGcpScoreValue" style="--architecture-vpc-gcp-result-progress: ' + escapeHtml(String(ringProgressAngle)) + 'deg; --progress-angle: ' + escapeHtml(String(ringProgressAngle)) + 'deg; --architecture-vpc-gcp-result-value-chars: ' + escapeHtml(String(String(scorePayload.score).length)) + ';" aria-label="Architecture score ' + escapeHtml(String(scorePayload.score)) + ' out of 100">',
             '<div class="architecture-vpc-gcp-score-echart" id="architectureVpcGcpScoreEchart" aria-hidden="true"></div>',
             '<div class="architecture-vpc-gcp-result-ring-center architecture-vpc-gcp-score-center">',
             '<span class="architecture-vpc-gcp-result-ring-value architecture-vpc-gcp-score-value-number">' + escapeHtml(String(scorePayload.score)) + '</span>',
             '<span class="architecture-vpc-gcp-result-ring-unit architecture-vpc-gcp-score-caption">/100</span>',
             '</div>',
             '</div>',
+            '</div>',
             '<div class="architecture-vpc-gcp-result-visual-copy">',
-            '<span class="architecture-vpc-gcp-result-kicker">Primary result</span>',
-            '<h3 class="architecture-vpc-gcp-result-title architecture-vpc-gcp-result-title-center">' + escapeHtml(scorePayload.ringLabel) + '</h3>',
+            '<p class="architecture-vpc-gcp-result-copy architecture-vpc-gcp-result-copy-center">' + escapeHtml(scorePayload.detail) + '</p>',
+            '</div>',
+            '<span class="architecture-vpc-gcp-result-card-divider" aria-hidden="true"></span>',
+            '<div class="architecture-vpc-gcp-result-chip-row architecture-vpc-gcp-result-chip-row-center" aria-label="Primary result outcome">',
+            '<span class="architecture-vpc-gcp-result-chip architecture-vpc-gcp-result-chip-' + chipTone(scorePayload.badgeTone) + '"><span class="architecture-vpc-gcp-result-chip-icon"><i class="' + escapeHtml(scorePayload.badgeIcon) + '" aria-hidden="true"></i></span>' + escapeHtml(scorePayload.badgeLabel) + '</span>',
+            '</div>',
+            '</article>',
+            '<article class="architecture-vpc-gcp-result-card architecture-vpc-gcp-result-card-summary" aria-label="Result summary">',
+            '<div class="architecture-vpc-gcp-result-summary-intro">',
+            '<span class="architecture-vpc-gcp-result-card-icon architecture-vpc-gcp-result-card-icon-summary" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>',
+            '<div class="architecture-vpc-gcp-result-summary-copy">',
+            '<div class="architecture-vpc-gcp-result-kicker">Descriptive Summary</div>',
+            '<h3 class="architecture-vpc-gcp-result-title">' + escapeHtml(scorePayload.band) + '</h3>',
+            '<p class="architecture-vpc-gcp-result-copy">' + escapeHtml(scorePayload.detail) + '</p>',
+            '</div>',
+            '</div>',
+            '<span class="architecture-vpc-gcp-result-card-divider" aria-hidden="true"></span>',
+            '<div class="architecture-vpc-gcp-result-chip-grid" aria-label="Result summary chips">',
+            summaryChips,
             '</div>',
             '</article>',
             '</div>',
             '<div class="architecture-vpc-gcp-result-metric-grid" aria-label="Architecture metrics">',
-            '<article class="architecture-vpc-gcp-result-metric-card"><span class="architecture-vpc-gcp-result-metric-label">Region</span><strong class="architecture-vpc-gcp-result-metric-value">' + escapeHtml(spec.region) + '</strong><span class="architecture-vpc-gcp-result-metric-copy">Selected deployment geography.</span></article>',
-            '<article class="architecture-vpc-gcp-result-metric-card"><span class="architecture-vpc-gcp-result-metric-label">Zones</span><strong class="architecture-vpc-gcp-result-metric-value">' + escapeHtml(String(spec.azCount) + ' AZ') + '</strong><span class="architecture-vpc-gcp-result-metric-copy">Availability zone spread.</span></article>',
-            '<article class="architecture-vpc-gcp-result-metric-card"><span class="architecture-vpc-gcp-result-metric-label">Egress</span><strong class="architecture-vpc-gcp-result-metric-value">' + escapeHtml(natModeLabel(spec.natMode)) + '</strong><span class="architecture-vpc-gcp-result-metric-copy">Private tier outbound pattern.</span></article>',
-            '<article class="architecture-vpc-gcp-result-metric-card"><span class="architecture-vpc-gcp-result-metric-label">Data tier</span><strong class="architecture-vpc-gcp-result-metric-value">' + escapeHtml(databaseLabel(spec.database)) + '</strong><span class="architecture-vpc-gcp-result-metric-copy">Modeled persistence layer.</span></article>',
+            '<section class="architecture-vpc-gcp-result-metric-card architecture-vpc-gcp-result-metric-success"><span class="architecture-vpc-gcp-result-metric-icon" aria-hidden="true"><i class="bi bi-globe2"></i></span><span class="architecture-vpc-gcp-result-metric-label">Region</span><strong class="architecture-vpc-gcp-result-metric-value">' + escapeHtml(spec.region) + '</strong><span class="architecture-vpc-gcp-result-metric-copy">Selected deployment geography.</span><span class="architecture-vpc-gcp-result-metric-accent" aria-hidden="true"></span></section>',
+            '<section class="architecture-vpc-gcp-result-metric-card architecture-vpc-gcp-result-metric-info"><span class="architecture-vpc-gcp-result-metric-icon" aria-hidden="true"><i class="bi bi-grid-3x3-gap"></i></span><span class="architecture-vpc-gcp-result-metric-label">Zones</span><strong class="architecture-vpc-gcp-result-metric-value">' + escapeHtml(String(spec.azCount) + ' zone' + (spec.azCount === 1 ? '' : 's')) + '</strong><span class="architecture-vpc-gcp-result-metric-copy">Availability zone spread.</span><span class="architecture-vpc-gcp-result-metric-accent" aria-hidden="true"></span></section>',
+            '<section class="architecture-vpc-gcp-result-metric-card architecture-vpc-gcp-result-metric-accent-tone"><span class="architecture-vpc-gcp-result-metric-icon" aria-hidden="true"><i class="bi bi-signpost-split"></i></span><span class="architecture-vpc-gcp-result-metric-label">Egress</span><strong class="architecture-vpc-gcp-result-metric-value">' + escapeHtml(natModeLabel(spec.natMode)) + '</strong><span class="architecture-vpc-gcp-result-metric-copy">Private tier outbound pattern.</span><span class="architecture-vpc-gcp-result-metric-accent" aria-hidden="true"></span></section>',
+            '<section class="architecture-vpc-gcp-result-metric-card architecture-vpc-gcp-result-metric-warning"><span class="architecture-vpc-gcp-result-metric-icon" aria-hidden="true"><i class="bi bi-database"></i></span><span class="architecture-vpc-gcp-result-metric-label">Data tier</span><strong class="architecture-vpc-gcp-result-metric-value">' + escapeHtml(databaseLabel(spec.database)) + '</strong><span class="architecture-vpc-gcp-result-metric-copy">Modeled persistence layer.</span><span class="architecture-vpc-gcp-result-metric-accent" aria-hidden="true"></span></section>',
             '</div>'
         ].join('');
     }
@@ -5700,7 +5526,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderStageMeta(spec) {
         stageMeta.innerHTML = [
             createToneChip('bi bi-globe2', spec.region, 'region'),
-            createToneChip('bi bi-grid-3x3-gap', String(spec.azCount) + ' zone', 'az'),
+            createToneChip('bi bi-grid-3x3-gap', String(spec.azCount) + ' zone' + (spec.azCount === 1 ? '' : 's'), 'az'),
             createToneChip('bi bi-arrow-left-right', natModeLabel(spec.natMode), 'network'),
             createToneChip('bi bi-hdd-network', appTierLabel(spec.appTier), 'compute'),
             createToneChip('bi bi-database', databaseLabel(spec.database), 'data')
@@ -6492,7 +6318,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         }
 
-        return target.closest('input, textarea, select, button, summary, a[href], [contenteditable="true"], .architecture-vpc-gcp-custom-select') !== null;
+        return target.closest('input, textarea, select, button, summary, a[href], [contenteditable="true"]') !== null;
     }
 
     function handleSelectedCardDocumentKeydown(event) {
@@ -7425,7 +7251,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function resetToDefault() {
-        applyPreset(architectureVpcGcpPresetCatalog[0].id, true);
+        applyPreset(architectureVpcGcpPresetCatalog[0].id, false);
     }
 
     function resetStageLayout() {
@@ -7456,6 +7282,36 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function flashButton(button, label) {
+        if (!button) {
+            return;
+        }
+
+        const actionButton = button.closest ? button.closest('.tool-table-action-cell button') : null;
+
+        if (actionButton) {
+            const isCopied = label === 'Copied';
+            const icon = actionButton.querySelector('i');
+            const originalIcon = actionButton.dataset.defaultIcon || (icon ? icon.className : '');
+
+            if (icon && !actionButton.dataset.defaultIcon) {
+                actionButton.dataset.defaultIcon = originalIcon;
+            }
+
+            actionButton.classList.toggle('copied', isCopied);
+            actionButton.classList.toggle('is-copied', isCopied);
+            actionButton.classList.toggle('failed', !isCopied);
+            if (icon) {
+                icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+            }
+            window.setTimeout(function () {
+                actionButton.classList.remove('copied', 'is-copied', 'failed');
+                if (icon && actionButton.dataset.defaultIcon) {
+                    icon.className = actionButton.dataset.defaultIcon;
+                }
+            }, 1400);
+            return;
+        }
+
         const labelTarget = button.querySelector ? button.querySelector('[data-button-label]') || button : button;
         const originalLabel = labelTarget.dataset.originalLabel || labelTarget.textContent;
 
@@ -7614,7 +7470,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     populateRegionOptions();
     initMarkdownCopyButtons();
-    initializeCustomSelects();
     syncInventorySortSelect();
 
     presetInput.addEventListener('change', function () {
@@ -7762,13 +7617,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         inventorySortSelect.removeAttribute('open');
     });
-    document.addEventListener('click', function (event) {
-        if (event.target.closest('.architecture-vpc-gcp-custom-select')) {
-            return;
-        }
-
-        closeCustomSelects();
-    });
 
     [
         regionInput,
@@ -7810,7 +7658,6 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePresetSelection();
     applyPreset(architectureVpcGcpPresetCatalog[0].id, false);
     applyWorkspaceInfoMarkers();
-    initializeInfraStackCustomDropdowns(document);
 });
 /* table-output-standard:start */
 (function setupArchitectureVpcGcpTableOutputStandard() {
@@ -7907,7 +7754,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });
