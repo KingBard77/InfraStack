@@ -17,13 +17,5 @@ function check {
 }
 
 function fix {
-    echo "Manual"
-
-    for POLICY in INPUT FORWARD OUTPUT; do
-    	iptables -P "$POLICY"
-    done
-    
-    # iptables -P INPUT DROP
-    # iptables -P FORWARD DROP
-    # iptables -P OUTPUT DROP
+    echo 'Manual: iptables default-deny policy needs approved allow rules before enforcement.'
 }

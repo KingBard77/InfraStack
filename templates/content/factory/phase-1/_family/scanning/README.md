@@ -104,9 +104,9 @@ Before creating a new scanning tool, read:
 7. `templates/content/factory/phase-1/_family/FAMILY.md`
 8. `templates/content/factory/phase-1/_family/scanning/README.md`
 9. `templates/content/factory/phase-1/_family/scanning/manifest.yml`
-10. `templates/content/factory/phase-1/_family/scanning/workspace/README.md`
-11. `templates/content/factory/phase-1/_family/scanning/workspace/manifest.yml`
-12. relevant scanning workspace section folders under `templates/content/factory/phase-1/_family/scanning/workspace/`
+10. `templates/content/factory/phase-1/_family/scanning/source package demo.html`
+11. `templates/content/factory/phase-1/_family/scanning/family manifest source_namespaces`
+12. relevant scanning source namespace markers under `templates/content/factory/phase-1/_family/scanning/source/scan-web-security/`
 13. `templates/content/factory/phase-2/_content/scaffold/README.md`
 14. relevant phase-2 content section folders under `templates/content/factory/phase-2/_content/sections/`
 
@@ -114,13 +114,13 @@ Before creating a new scanning tool, read:
 
 ## Family Workspace Source
 
-The scanning family workspace source lives at:
+The scanning family source package lives at:
 
 ```text
-templates/content/factory/phase-1/_family/scanning/workspace/
+templates/content/factory/phase-1/_family/scanning/source/scan-web-security/
 ```
 
-Use that folder for scanner-specific workspace grammar: visual/model contracts, optional selected-item inspector behavior, reusable scanner model-core sources, request meaning, evidence meaning, result meaning, export meaning, and restore boundaries.
+Use that folder for scanner-specific source package grammar: visual/model contracts, optional selected-item inspector behavior, reusable scanner model-core sources, request meaning, evidence meaning, result meaning, export meaning, and restore boundaries.
 
 Common workspace shape comes from:
 
@@ -128,7 +128,7 @@ Common workspace shape comes from:
 templates/content/factory/phase-1/_base/workspace/
 ```
 
-The ordered composition is declared in `templates/content/factory/phase-1/_family/scanning/workspace/manifest.yml` through `workspace_namespaces`. That list may mix `_base` namespaces and scanning-owned namespaces.
+The ordered composition is declared in `templates/content/factory/phase-1/_family/scanning/family manifest source_namespaces` through `source_namespaces`. That list may mix `_base` namespaces and scanning-owned namespaces.
 
 The scanning workspace reference is:
 
@@ -140,7 +140,7 @@ The shared scaffold owns package skeleton files.
 `_base/workspace` owns common section shape.
 The scanning workspace owns scanning-only section contracts and adaptation rules.
 
-When a tool is declared the scanning baseline, keep the full copied source under `source/` for traceability only. Do not audit this as active source. Extract reusable scanner-specific behavior into scanning-owned workspace section files. Do not recreate duplicate scanning copies of `_base` sections and do not keep root workspace `custom.css`, `custom.js`, or `demo.html.twig` files.
+When a tool is declared the scanning baseline, keep the full copied source under `source/scan-web-security/` for traceability and freshness checks. It must compare cleanly against `templates/content/tools/security/scan-web-security/` before new scanning tools are created. Extract reusable scanner-specific behavior into scanning-owned workspace section files. Do not recreate duplicate scanning copies of `_base` sections and do not keep loose root source `custom.css`, `custom.js`, or `demo.html.twig` files.
 
 ---
 
@@ -182,7 +182,7 @@ Do not ship generic family copy as final content.
 
 ## Scanning Workspace Composition
 
-The scanning family composes common workspace sections from `_base`:
+The scanning family composes common source namespaces from `_base`:
 
 ```text
 family._base.workspace.00_shell
@@ -195,15 +195,15 @@ family._base.workspace.07_table-output
 family._base.workspace.08_json-restore
 ```
 
-The scanning family owns only scanner-specific workspace sections and model-core sources:
+The scanning family owns only scanner-specific source namespaces and model-core sources:
 
 ```text
-templates/content/factory/phase-1/_family/scanning/workspace/04_visual-contract/
-templates/content/factory/phase-1/_family/scanning/workspace/04_selected-item/
-templates/content/factory/phase-1/_family/scanning/workspace/assets/bin/model-core.js
+templates/content/factory/phase-1/_family/scanning/source/scan-web-security/04_visual-contract/
+templates/content/factory/phase-1/_family/scanning/source/scan-web-security/04_selected-item/
+templates/content/factory/phase-1/_family/scanning/source/scan-web-security/assets/bin/model-core.js
 ```
 
-Each scanning-owned workspace section folder follows the architecture family bundle shape:
+Each scanning-owned source namespace marker follows the architecture family bundle shape:
 
 ```text
 README.md
@@ -217,9 +217,9 @@ section.js
 
 Standalone `demo.html` files own demo chrome separately from extracted scanner section source. Keep the demo title icon placeholder local to the demo with any icon stylesheet it needs, `demo-title`, `demo-title-icon`, `demo-title-text`, and a scanning-family placeholder icon such as `bi bi-shield-check`.
 
-Use `workspace_namespaces` to choose scanner behavior and shape final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and optional `assets/bin/model-core.js`, translating target, check, finding, evidence, and export language into the final domain.
+Use `source_namespaces` to choose scanner behavior and shape final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and optional `assets/bin/model-core.js`, translating target, check, finding, evidence, and export language into the final domain.
 
-Do not create a family-local `sections/` directory for scanning. Shared content section folders belong to `templates/content/factory/phase-2/_content/sections/`; scanning workspace section folders belong here.
+Do not create a family-local `sections/` directory for scanning. Shared content section folders belong to `templates/content/factory/phase-2/_content/sections/`; scanning source namespace markers belong here.
 
 ---
 

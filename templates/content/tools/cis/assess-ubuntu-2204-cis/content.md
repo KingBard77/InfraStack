@@ -17,7 +17,7 @@ Use it when you need to:
 
 - Browse 297 copied CIS control scripts without walking the folder tree manually
 - Filter by family, section path, title, control ID, script filename, or criticality
-- Keep missing metadata visible instead of assuming every script is normalized
+- Review declared level 1 and level 2 criticality values without treating them as live risk proof
 - Review the exact selected shell body before copying it
 - Export filtered controls as CSV, JSON, or a printable result view
 
@@ -116,7 +116,7 @@ The script body is not embedded into the catalogue payload. When a script is sel
 
 <h3 class="assess-ubuntu-2204-cis-technical-step-heading">4. Metadata limits</h3>
 
-Some copied scripts declare <code>CRITICALITY</code>; others do not. The workspace labels missing values as unspecified so review gaps stay visible. It does not infer severity, remap controls, or certify benchmark coverage.
+The copied scripts declare <code>CRITICALITY</code> values that the workspace renders as review labels. The refreshed Ubuntu 22.04 inventory includes level 1 and level 2 controls. It does not infer severity, remap controls, or certify benchmark coverage.
 
 <h3 class="assess-ubuntu-2204-cis-technical-step-heading">5. How to read the catalogue</h3>
 
@@ -140,7 +140,7 @@ Script display is for reading, copying, and downloading. Treat copied shell as o
 
 This workspace does not replace a benchmark scanner, configuration management run, audit program, or compliance platform. It does not compare a live server against every CIS recommendation. It does not prove pass or fail status. It does not know which controls are out of scope for a workload, which exceptions are approved, or which compensating controls an organization accepts.
 
-Use it for preparation and review. A platform engineer can find relevant scripts, inspect shell bodies, and export a filtered list for a change. A security reviewer can identify missing metadata, unspecified criticality, or areas needing evidence. An operations team can use the section table to plan work by benchmark family. Those are useful tasks, but they are not the same as certification.
+Use it for preparation and review. A platform engineer can find relevant scripts, inspect shell bodies, and export a filtered list for a change. A security reviewer can compare declared metadata, criticality labels, or areas needing evidence. An operations team can use the section table to plan work by benchmark family. Those are useful tasks, but they are not the same as certification.
 
 <ul class="tool-technical-warning-list">
   <li>Catalogue rows do not prove that packages, services, files, users, groups, permissions, or kernel settings match a benchmark target.</li>
@@ -499,9 +499,9 @@ function fix {
 </details>
 
 <details class="faq-item">
-  <summary>Why do some controls show unspecified criticality?</summary>
+  <summary>What do the criticality labels mean?</summary>
   <div class="faq-answer">
-    Some copied shell files do not declare <code>CRITICALITY</code>. The workspace keeps that missing metadata visible instead of inventing a value.
+    They are copied script metadata from <code>CRITICALITY</code> declarations. The workspace renders those labels for review, but it does not turn them into live risk, compliance, or pass/fail evidence.
   </div>
 </details>
 
@@ -561,8 +561,8 @@ function fix {
     </tr>
     <tr>
       <td>CRITICALITY</td>
-      <td>An optional metadata variable declared by some copied shell scripts.</td>
-      <td>Use it as source metadata only; do not treat missing values as low risk.</td>
+      <td>A metadata variable declared by the copied shell scripts.</td>
+      <td>Use it as source metadata only; do not treat labels as live risk proof.</td>
     </tr>
     <tr>
       <td>CSV</td>

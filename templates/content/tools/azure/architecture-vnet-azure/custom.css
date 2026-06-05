@@ -292,7 +292,7 @@
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
-    display: none !important;
+    display: block;
 }
 
 .architecture-vnet-azure-tool .form-control::placeholder {
@@ -788,7 +788,7 @@
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
-    display: none !important;
+    display: block;
 }
 
 .architecture-vnet-azure-tool .form-control::placeholder {
@@ -904,7 +904,7 @@
 
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
-    display: none !important;
+    display: block;
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-select {
@@ -1373,7 +1373,7 @@
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
-    display: none !important;
+    display: block;
 }
 
 .architecture-vnet-azure-tool .form-control::placeholder {
@@ -2087,7 +2087,7 @@
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
-    display: none !important;
+    display: block;
 }
 
 .architecture-vnet-azure-tool .form-control::placeholder {
@@ -2634,7 +2634,7 @@
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
-    display: none !important;
+    display: block;
 }
 
 .architecture-vnet-azure-tool .form-control::placeholder {
@@ -3157,7 +3157,7 @@
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
-    display: none !important;
+    display: block;
 }
 
 .architecture-vnet-azure-tool .form-control::placeholder {
@@ -4286,7 +4286,7 @@ body.architecture-vnet-azure-stage-expanded-lock {
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
-    display: none !important;
+    display: block;
 }
 
 .architecture-vnet-azure-tool .form-control::placeholder {
@@ -5221,7 +5221,7 @@ body.architecture-vnet-azure-stage-expanded-lock {
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
-    display: none !important;
+    display: block;
 }
 
 .architecture-vnet-azure-tool .form-control::placeholder {
@@ -5836,7 +5836,7 @@ body.architecture-vnet-azure-stage-expanded-lock {
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
-    display: none !important;
+    display: block;
 }
 
 .architecture-vnet-azure-tool .form-control::placeholder {
@@ -6916,7 +6916,7 @@ body.architecture-vnet-azure-stage-expanded-lock {
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
-    display: none !important;
+    display: block;
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-select {
@@ -12164,14 +12164,14 @@ body.architecture-vnet-azure-stage-expanded-lock {
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-summary::-webkit-details-marker,
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-panel-summary::-webkit-details-marker,
 .architecture-vnet-azure-tool .architecture-vnet-azure-advanced-summary::-webkit-details-marker,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary::-webkit-details-marker {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary::-webkit-details-marker {
     display: none;
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-summary::marker,
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-panel-summary::marker,
 .architecture-vnet-azure-tool .architecture-vnet-azure-advanced-summary::marker,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary::marker {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary::marker {
     content: "";
     font-size: 0;
 }
@@ -12196,7 +12196,7 @@ body.architecture-vnet-azure-stage-expanded-lock {
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before,
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-panel-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before,
 .architecture-vnet-azure-tool .architecture-vnet-azure-advanced-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before {
     content: "";
     position: absolute;
     top: 50%;
@@ -12211,8 +12211,8 @@ body.architecture-vnet-azure-stage-expanded-lock {
     transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary > .architecture-vnet-azure-custom-arrow-slot,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary > .architecture-vnet-azure-custom-arrow-slot,
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before {
     right: 6px;
     width: 28px;
     height: 28px;
@@ -12223,7 +12223,7 @@ body.architecture-vnet-azure-stage-expanded-lock {
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::after,
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-panel-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::after,
 .architecture-vnet-azure-tool .architecture-vnet-azure-advanced-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::after,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::after {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -12243,8 +12243,8 @@ body.architecture-vnet-azure-stage-expanded-lock {
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-panel-summary:has(> .architecture-vnet-azure-custom-arrow-slot)::after,
 .architecture-vnet-azure-tool .architecture-vnet-azure-advanced-summary:has(> .architecture-vnet-azure-custom-arrow-slot)::before,
 .architecture-vnet-azure-tool .architecture-vnet-azure-advanced-summary:has(> .architecture-vnet-azure-custom-arrow-slot)::after,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:has(> .architecture-vnet-azure-custom-arrow-slot)::before,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:has(> .architecture-vnet-azure-custom-arrow-slot)::after {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:has(> .architecture-vnet-azure-custom-arrow-slot)::before,
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:has(> .architecture-vnet-azure-custom-arrow-slot)::after {
     content: none;
     display: none;
 }
@@ -12255,22 +12255,22 @@ body.architecture-vnet-azure-stage-expanded-lock {
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-panel-summary:focus-visible > .architecture-vnet-azure-custom-arrow-slot,
 .architecture-vnet-azure-tool .architecture-vnet-azure-advanced-summary:hover > .architecture-vnet-azure-custom-arrow-slot,
 .architecture-vnet-azure-tool .architecture-vnet-azure-advanced-summary:focus-visible > .architecture-vnet-azure-custom-arrow-slot,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:hover > .architecture-vnet-azure-custom-arrow-slot,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:focus-visible > .architecture-vnet-azure-custom-arrow-slot,
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:hover > .architecture-vnet-azure-custom-arrow-slot,
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:focus-visible > .architecture-vnet-azure-custom-arrow-slot,
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-summary:hover:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before,
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-summary:focus-visible:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before,
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-panel-summary:hover:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before,
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-panel-summary:focus-visible:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before,
 .architecture-vnet-azure-tool .architecture-vnet-azure-advanced-summary:hover:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before,
 .architecture-vnet-azure-tool .architecture-vnet-azure-advanced-summary:focus-visible:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:hover:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:focus-visible:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:hover:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before,
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:focus-visible:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::before {
     border-color: var(--architecture-vnet-azure-border-strong, var(--tool-border-strong, #cbd5e1));
     background: var(--architecture-vnet-azure-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
 }
 
 .architecture-vnet-azure-tool .architecture-vnet-azure-custom-summary-icon,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-icon {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-icon {
     display: none !important;
 }
 
@@ -12870,7 +12870,7 @@ body.architecture-vnet-azure-stage-expanded-lock {
     line-height: 1.45;
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu {
     position: relative;
     display: grid;
     width: 100%;
@@ -12878,11 +12878,11 @@ body.architecture-vnet-azure-stage-expanded-lock {
     overflow: visible;
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown[open] {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu[open] {
     z-index: 160;
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary {
     position: relative;
     display: flex;
     min-height: 40px;
@@ -12902,27 +12902,27 @@ body.architecture-vnet-azure-stage-expanded-lock {
     list-style-type: none;
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown[open] .architecture-vnet-azure-custom-dropdown-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::after {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu[open] .architecture-vnet-azure-retired-menu-summary:not(:has(> .architecture-vnet-azure-custom-arrow-slot))::after {
     transform: translate(-50%, -62%) rotate(45deg);
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown[open] .architecture-vnet-azure-custom-dropdown-summary > .architecture-vnet-azure-custom-arrow-slot::before {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu[open] .architecture-vnet-azure-retired-menu-summary > .architecture-vnet-azure-custom-arrow-slot::before {
     transform: translate(-50%, -62%) rotate(45deg);
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:hover,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:focus-visible {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:hover,
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:focus-visible {
     border-color: var(--architecture-vnet-azure-border-strong, var(--tool-border-strong, #cbd5e1));
     outline: none;
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-summary:focus-visible,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown[open] .architecture-vnet-azure-custom-dropdown-summary {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-summary:focus-visible,
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu[open] .architecture-vnet-azure-retired-menu-summary {
     border-color: var(--architecture-vnet-azure-accent, var(--tool-accent, #475569));
     box-shadow: 0 0 0 3px var(--architecture-vnet-azure-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-menu {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-menu {
     position: absolute;
     top: calc(100% + 6px);
     left: 0;
@@ -12939,11 +12939,11 @@ body.architecture-vnet-azure-stage-expanded-lock {
     z-index: 170;
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown:not([open]) .architecture-vnet-azure-custom-dropdown-menu {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu:not([open]) .architecture-vnet-azure-retired-menu-menu {
     display: none;
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-option {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-option {
     display: flex;
     width: 100%;
     min-height: 38px;
@@ -12961,14 +12961,14 @@ body.architecture-vnet-azure-stage-expanded-lock {
     text-align: left;
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-option:first-child {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-option:first-child {
     border-top: 0;
 }
 
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-option:hover,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-option:focus-visible,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-option.active,
-.architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown-option[aria-selected="true"] {
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-option:hover,
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-option:focus-visible,
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-option.active,
+.architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu-option[aria-selected="true"] {
     background: var(--architecture-vnet-azure-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
     color: var(--architecture-vnet-azure-text-strong, var(--tool-heading, #111827));
     outline: none;
@@ -13261,7 +13261,7 @@ body.architecture-vnet-azure-stage-expanded-lock {
 
     .architecture-vnet-azure-tool .architecture-vnet-azure-custom-tab,
     .architecture-vnet-azure-tool .architecture-vnet-azure-config-tab,
-    .architecture-vnet-azure-tool .architecture-vnet-azure-custom-dropdown,
+    .architecture-vnet-azure-tool .architecture-vnet-azure-retired-menu,
     .architecture-vnet-azure-tool .architecture-vnet-azure-custom-radio-group,
     .architecture-vnet-azure-tool .architecture-vnet-azure-radio-group,
     .architecture-vnet-azure-tool .architecture-vnet-azure-custom-checkbox-option,
@@ -14211,6 +14211,10 @@ body.architecture-vnet-azure-stage-expanded-lock {
 .architecture-vnet-azure-tool .tool-result-table:has(tbody td:last-child button) td:last-child,
 .architecture-vnet-azure-tool .architecture-vnet-azure-table:has(tbody td:last-child button) th:last-child,
 .architecture-vnet-azure-tool .architecture-vnet-azure-table:has(tbody td:last-child button) td:last-child,
+.architecture-vnet-azure-tool .tool-table-action-head,
+.architecture-vnet-azure-tool .tool-result-table:has(thead .tool-table-action-head-label) th:last-child,
+.architecture-vnet-azure-tool .architecture-vnet-azure-table:has(thead .tool-table-action-head-label) th:last-child,
+.architecture-vnet-azure-tool .tool-table-action-cell,
 .architecture-vnet-azure-tool .architecture-vnet-azure-table-action-cell,
 .architecture-vnet-azure-tool .architecture-vnet-azure-copy-cell,
 .architecture-vnet-azure-tool .architecture-vnet-azure-table-copy-cell {
@@ -14227,9 +14231,23 @@ body.architecture-vnet-azure-stage-expanded-lock {
 }
 
 .architecture-vnet-azure-tool .tool-result-table:has(tbody td:last-child button) th:last-child,
-.architecture-vnet-azure-tool .architecture-vnet-azure-table:has(tbody td:last-child button) th:last-child {
+.architecture-vnet-azure-tool .architecture-vnet-azure-table:has(tbody td:last-child button) th:last-child,
+.architecture-vnet-azure-tool .tool-table-action-head,
+.architecture-vnet-azure-tool .tool-result-table:has(thead .tool-table-action-head-label) th:last-child,
+.architecture-vnet-azure-tool .architecture-vnet-azure-table:has(thead .tool-table-action-head-label) th:last-child {
     z-index: 3;
     background: var(--tool-table-head-bg, var(--tool-surface-soft, #f8fafc));
+}
+
+.architecture-vnet-azure-tool .tool-table-action-head-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    color: inherit;
+    font: inherit;
+    letter-spacing: 0;
+    text-transform: none;
 }
 
 .architecture-vnet-azure-tool .tool-result-table tbody tr:hover td:last-child,
@@ -15020,3 +15038,164 @@ body.architecture-vnet-azure-stage-expanded-lock {
     }
 }
 /* result-summary-persistence-contract:end */
+
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-native-select {
+    padding: 10px 52px 10px 13px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: none;
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-native-select-wrap {
+    position: relative;
+    display: block;
+    min-width: 0;
+    overflow: visible;
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-native-select-wrap > .architecture-vnet-azure-native-select,
+.architecture-vnet-azure-tool .architecture-vnet-azure-native-select-wrap > .form-select {
+    padding-right: 52px !important;
+    background-image: none !important;
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-native-select-wrap::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--tool-border);
+    border-radius: 9px;
+    background: var(--tool-accent-pale);
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-native-select-wrap::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 20.5px;
+    z-index: 3;
+    width: 9px;
+    height: 9px;
+    border-right: 2.25px solid var(--tool-accent);
+    border-bottom: 2.25px solid var(--tool-accent);
+    border-radius: 1px;
+    pointer-events: none;
+    transform: translateY(-62%) rotate(45deg);
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-toolbar-shell {
+    --base-dropdown-arrow-size: 30px;
+    --base-dropdown-summary-height: 46px;
+    padding: 16px 18px;
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-toolbar {
+    grid-template-columns: minmax(var(--base-output-sort-column-width, 190px), 1fr) minmax(var(--base-output-actions-width, 470px), var(--base-output-actions-width, 470px));
+    align-items: start;
+    gap: 12px;
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-toolbar-main {
+    width: min(100%, calc(var(--base-output-control-width, 150px) + 52px));
+    grid-template-columns: auto var(--base-output-control-width, 150px);
+    gap: 12px;
+    align-items: center;
+    justify-content: start;
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-sort-wrap,
+.architecture-vnet-azure-tool .architecture-vnet-azure-sort-select {
+    width: min(100%, var(--base-output-control-width, 150px));
+    max-width: var(--base-output-control-width, 150px);
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-sort-summary {
+    position: relative;
+    width: 100%;
+    height: var(--base-dropdown-summary-height, var(--base-output-control-height, 46px));
+    min-height: var(--base-dropdown-summary-height, var(--base-output-control-height, 46px));
+    box-sizing: border-box;
+    padding: 12px calc(var(--base-dropdown-arrow-size, 30px) + 22px) 8px 14px;
+    border-radius: var(--base-output-control-radius, 10px);
+    font-size: var(--base-output-control-font-size, var(--tool-font-size-sm, 13px));
+    line-height: 1;
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-sort-summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    display: block;
+    width: var(--base-dropdown-arrow-size, 30px);
+    height: var(--base-dropdown-arrow-size, 30px);
+    border: 1px solid var(--tool-border, #d8e2ee);
+    border-radius: 9px;
+    background: #ffffff;
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-sort-summary::after {
+    position: absolute;
+    top: 50%;
+    right: 21px;
+    display: block;
+    width: 9px;
+    height: 9px;
+    border-right-width: 2.25px;
+    border-bottom-width: 2.25px;
+    pointer-events: none;
+    transform: translate(-18%, -62%) rotate(45deg);
+    transform-origin: center;
+}
+
+.architecture-vnet-azure-tool .architecture-vnet-azure-sort-select:not([open]) .architecture-vnet-azure-sort-summary::after {
+    transform: translate(-8%, -50%) rotate(-45deg);
+}
+
+.architecture-vnet-azure-tool .tool-output-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: var(--base-output-actions-width, 470px);
+    gap: 10px;
+}
+
+.architecture-vnet-azure-tool .tool-output-actions .tool-action-btn {
+    height: var(--base-output-control-height, 46px);
+    min-height: var(--base-output-control-height, 46px);
+    padding-right: 12px;
+    padding-left: 12px;
+}
+
+@media (max-width: 991.98px) {
+    .architecture-vnet-azure-tool .architecture-vnet-azure-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .architecture-vnet-azure-tool .tool-output-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-self: start;
+        margin-left: 0;
+        max-width: none;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .architecture-vnet-azure-tool .architecture-vnet-azure-toolbar-main,
+    .architecture-vnet-azure-tool .architecture-vnet-azure-sort-wrap,
+    .architecture-vnet-azure-tool .architecture-vnet-azure-sort-select {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .architecture-vnet-azure-tool .tool-output-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

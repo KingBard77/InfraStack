@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure GDM is removed"
 
 function check {

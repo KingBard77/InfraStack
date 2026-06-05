@@ -16,5 +16,5 @@ function check {
 }
 
 function fix {
-	echo "Manual"
+    echo 'Manual: This control identifies IPv6 status; remediation is a policy choice.'
 }

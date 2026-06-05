@@ -56,6 +56,12 @@
     <div class="generate-ssh-shell-basic-panel">
       <div class="generate-ssh-shell-inner-panel generate-ssh-shell-basic-card">
 
+        <div class="generate-ssh-shell-example-card">
+          <span class="generate-ssh-shell-example-label">Example</span>
+          <span class="generate-ssh-shell-example-value">ssh deploy@app01.example.com</span>
+          <span class="generate-ssh-shell-example-helper">Start with a target, then add port, identity, host-key, and forwarding controls.</span>
+        </div>
+
         <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
           <label class="generate-ssh-shell-setting-label">
             Target profile:
@@ -66,7 +72,7 @@
             <div class="generate-ssh-shell-stacked-grid">
               <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
                 <div class="generate-ssh-shell-native-select-wrap">
-                  <select id="generateSshShellBasicPrimary" class="form-select generate-ssh-shell-native-select">
+                  <select id="generateSshShellBasicPrimary" class="form-select generate-ssh-shell-native-select" aria-label="Target profile">
                     <option value="interactive" selected>Interactive login</option>
                     <option value="bastion">Bastion jump</option>
                     <option value="port-forward">Port forward</option>
@@ -77,11 +83,6 @@
                 <button type="button" class="generate-ssh-shell-secondary-btn" id="generateSshShellApplyPreset">Apply profile</button>
               </div>
 
-              <div class="generate-ssh-shell-example-card">
-                <span class="generate-ssh-shell-example-label">Example</span>
-                <span class="generate-ssh-shell-example-value">ssh deploy@app01.example.com</span>
-                <span class="generate-ssh-shell-example-helper">Start with a target, then add port, identity, host-key, and forwarding controls.</span>
-              </div>
             </div>
           </div>
         </div>
@@ -96,7 +97,7 @@
             <div class="generate-ssh-shell-stacked-grid">
               <div class="generate-ssh-shell-inline-grid generate-ssh-shell-inline-grid-two">
                 <div class="generate-ssh-shell-native-select-wrap">
-                  <select id="generateSshShellShellStyle" class="form-select generate-ssh-shell-native-select">
+                  <select id="generateSshShellShellStyle" class="form-select generate-ssh-shell-native-select" aria-label="Shell style">
                     <option value="posix" selected>POSIX shell</option>
                     <option value="bash">Bash script</option>
                     <option value="powershell">PowerShell note</option>
@@ -133,31 +134,6 @@
           </div>
         </div>
 
-        <div class="generate-ssh-shell-setting-row generate-ssh-shell-setting-card">
-          <label class="generate-ssh-shell-setting-label">
-            Command preview:
-            <span class="info-dot generate-ssh-shell-helper-chip" title="Shell, target, and route previews stay aligned with the generated SSH command">i</span>
-          </label>
-
-          <div class="generate-ssh-shell-setting-field">
-            <div class="generate-ssh-shell-preview-grid">
-              <div class="generate-ssh-shell-preview-card">
-                <span class="generate-ssh-shell-preview-label">Shell style</span>
-                <span class="generate-ssh-shell-preview-value" id="generateSshShellPreviewShell">POSIX</span>
-              </div>
-
-              <div class="generate-ssh-shell-preview-card">
-                <span class="generate-ssh-shell-preview-label">Target</span>
-                <span class="generate-ssh-shell-preview-value generate-ssh-shell-preview-value-symbolic" id="generateSshShellPreviewTarget">deploy@app01.example.com</span>
-              </div>
-
-              <div class="generate-ssh-shell-preview-card">
-                <span class="generate-ssh-shell-preview-label">Route</span>
-                <span class="generate-ssh-shell-preview-value generate-ssh-shell-preview-value-code" id="generateSshShellPreviewRoute">direct</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -249,17 +225,13 @@
           </label>
 
           <div class="generate-ssh-shell-setting-field">
-            <details class="generate-ssh-shell-custom-dropdown" id="generateSshShellCustomSelect" data-custom-dropdown-for="generateSshShellStrictHostKey">
-              <summary class="generate-ssh-shell-custom-dropdown-summary">
-                <span id="generateSshShellCustomSelectValue" data-custom-dropdown-label>Strict accept-new</span>
-              </summary>
-              <div class="generate-ssh-shell-custom-dropdown-body">
-                <button type="button" class="generate-ssh-shell-custom-dropdown-option active" data-custom-dropdown-value="accept-new" aria-selected="true">Strict accept-new</button>
-                <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-custom-dropdown-value="yes" aria-selected="false">Strict yes</button>
-                <button type="button" class="generate-ssh-shell-custom-dropdown-option" data-custom-dropdown-value="no" aria-selected="false">Strict no</button>
-              </div>
-            </details>
-            <input type="hidden" id="generateSshShellStrictHostKey" value="accept-new">
+            <div class="generate-ssh-shell-native-select-wrap" id="generateSshShellCustomSelect">
+              <select id="generateSshShellStrictHostKey" class="form-select generate-ssh-shell-native-select" aria-label="Host-key posture">
+                <option value="accept-new" selected>Strict accept-new</option>
+                <option value="yes">Strict yes</option>
+                <option value="no">Strict no</option>
+              </select>
+            </div>
 
             <div class="generate-ssh-shell-custom-info">Use relaxed host-key options only for controlled troubleshooting, and review the warning tab before copying the command.</div>
           </div>
@@ -281,7 +253,7 @@
               >
 
               <div class="generate-ssh-shell-native-select-wrap">
-                <select id="generateSshShellLogLevel" class="form-select generate-ssh-shell-native-select">
+                <select id="generateSshShellLogLevel" class="form-select generate-ssh-shell-native-select" aria-label="Log level">
                   <option value="" selected>Default log level</option>
                   <option value="ERROR">ERROR</option>
                   <option value="QUIET">QUIET</option>
@@ -459,17 +431,17 @@
               <label for="generateSshShellSort" class="generate-ssh-shell-sort-label">Sort</label>
               <div class="generate-ssh-shell-sort-wrap">
                 <details class="generate-ssh-shell-sort-select" id="generateSshShellSortSelect">
-                  <summary class="generate-ssh-shell-sort-summary">
+                  <summary class="generate-ssh-shell-sort-summary" aria-haspopup="listbox" aria-expanded="false" aria-controls="generateSshShellSortMenu">
                     <span id="generateSshShellSortSummary">ID</span>
                   </summary>
 
-                  <div class="generate-ssh-shell-sort-menu">
+                  <div class="generate-ssh-shell-sort-menu" id="generateSshShellSortMenu" role="listbox">
                     <div class="generate-ssh-shell-sort-grid">
-                      <button type="button" class="generate-ssh-shell-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
-                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
-                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="field" aria-pressed="false">Field</button>
-                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="value" aria-pressed="false">Value</button>
-                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="length" aria-pressed="false">Length</button>
+                      <button type="button" class="generate-ssh-shell-sort-option is-active" data-sort-value="id" aria-pressed="true" role="option">ID</button>
+                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false" role="option">A-Z</button>
+                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="field" aria-pressed="false" role="option">Field</button>
+                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="value" aria-pressed="false" role="option">Value</button>
+                      <button type="button" class="generate-ssh-shell-sort-option" data-sort-value="length" aria-pressed="false" role="option">Length</button>
                     </div>
                   </div>
                 </details>
@@ -539,7 +511,7 @@
                         <th scope="col" class="tool-generated-rownum-head">#</th>
                         <th scope="col">Field</th>
                         <th scope="col">Value</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                       </tr>
                     </thead>
                     <tbody id="generateSshShellOperationsTableBody"></tbody>
@@ -553,7 +525,7 @@
             <div class="generate-ssh-shell-surface-stack tool-result-section-stack">
               <section class="generate-ssh-shell-section-card tool-result-section-card">
                 <div class="generate-ssh-shell-section-head">
-                  <h3 class="generate-ssh-shell-section-title tool-result-section-title">Generated SSH Command</h3>
+                  <h3 class="generate-ssh-shell-section-title tool-result-section-title">SSH Command</h3>
                   <div class="generate-ssh-shell-section-actions">
                     <button type="button" class="generate-ssh-shell-action-btn" id="generateSshShellCopyCommand" aria-label="Copy generated SSH command" title="Copy generated SSH command">
                       <i class="bi bi-clipboard" aria-hidden="true"></i>

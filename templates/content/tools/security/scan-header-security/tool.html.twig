@@ -54,7 +54,7 @@
                   id="scanHeaderSecurityPrimaryAction"
                   data-tool-share-generate
                 >
-                  <i class="bi bi-shield-check" aria-hidden="true"></i>
+                  <i class="bi bi-search" aria-hidden="true"></i>
                   <span>Prepare Review</span>
                 </button>
                 <button
@@ -90,19 +90,13 @@
                 </label>
 
                 <div class="scan-header-security-setting-field">
-                  <details class="scan-header-security-custom-dropdown" data-custom-dropdown-for="scanHeaderSecurityBasicPrimary">
-                    <summary class="scan-header-security-custom-dropdown-summary">
-                      <span data-custom-dropdown-label>Balanced browser security</span>
-                      <span class="scan-header-security-custom-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="scan-header-security-custom-dropdown-menu" role="listbox" aria-label="Review baseline">
-                      <button type="button" class="scan-header-security-custom-dropdown-option active" data-custom-dropdown-value="balanced" role="option" aria-selected="true">Balanced browser security</button>
-                      <button type="button" class="scan-header-security-custom-dropdown-option" data-custom-dropdown-value="strict" role="option" aria-selected="false">Strict public web baseline</button>
-                      <button type="button" class="scan-header-security-custom-dropdown-option" data-custom-dropdown-value="api" role="option" aria-selected="false">API response baseline</button>
-                    </div>
-                  </details>
-                  <input type="hidden" id="scanHeaderSecurityBasicPrimary" class="scan-header-security-native-select" value="balanced">
+                                    <div class="scan-header-security-native-select-wrap" id="scanHeaderSecurityBasicPrimarySelect">
+                    <select id="scanHeaderSecurityBasicPrimary" class="form-select scan-header-security-native-select">
+                      <option value="balanced" selected>Balanced browser security</option>
+                      <option value="strict">Strict public web baseline</option>
+                      <option value="api">API response baseline</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
@@ -113,31 +107,12 @@
                 </label>
 
                 <div class="scan-header-security-setting-field">
-                  <details id="scanHeaderSecurityBasicSelect" class="scan-header-security-select scan-header-security-custom-dropdown" data-custom-dropdown-for="scanHeaderSecurityMethod">
-                    <summary class="scan-header-security-custom-dropdown-summary">
-                      <span id="scanHeaderSecurityBasicSelectSummary" data-custom-dropdown-label>HEAD</span>
-                      <span class="scan-header-security-custom-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="scan-header-security-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                      <button
-                        type="button"
-                        class="scan-header-security-custom-dropdown-option active"
-                        data-custom-dropdown-value="HEAD"
-                        role="option"
-                        aria-selected="true"
-                      >HEAD</button>
-
-                      <button
-                        type="button"
-                        class="scan-header-security-custom-dropdown-option"
-                        data-custom-dropdown-value="GET"
-                        role="option"
-                        aria-selected="false"
-                      >GET</button>
-                    </div>
-                  </details>
-                  <input type="hidden" id="scanHeaderSecurityMethod" value="HEAD">
+                                    <div class="scan-header-security-native-select-wrap" id="scanHeaderSecurityMethodSelect">
+                    <select id="scanHeaderSecurityMethod" class="form-select scan-header-security-native-select">
+                      <option value="HEAD" selected>HEAD</option>
+                      <option value="GET">GET</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
@@ -240,39 +215,13 @@
                   </label>
 
                   <div class="scan-header-security-setting-field">
-                    <details class="scan-header-security-custom-dropdown" data-custom-dropdown-for="scanHeaderSecurityUserAgent">
-                      <summary class="scan-header-security-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>Default client</span>
-                        <span class="scan-header-security-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="scan-header-security-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                        <button
-                          type="button"
-                          class="scan-header-security-custom-dropdown-option active"
-                          data-custom-dropdown-value="default"
-                          role="option"
-                          aria-selected="true"
-                        >Default client</button>
-
-                        <button
-                          type="button"
-                          class="scan-header-security-custom-dropdown-option"
-                          data-custom-dropdown-value="desktop"
-                          role="option"
-                          aria-selected="false"
-                        >Desktop browser</button>
-
-                        <button
-                          type="button"
-                          class="scan-header-security-custom-dropdown-option"
-                          data-custom-dropdown-value="mobile"
-                          role="option"
-                          aria-selected="false"
-                        >Mobile browser</button>
-                      </div>
-                    </details>
-                    <input type="hidden" id="scanHeaderSecurityUserAgent" value="default">
+                                        <div class="scan-header-security-native-select-wrap" id="scanHeaderSecurityUserAgentSelect">
+                      <select id="scanHeaderSecurityUserAgent" class="form-select scan-header-security-native-select">
+                        <option value="default" selected>Default client</option>
+                        <option value="desktop">Desktop browser</option>
+                        <option value="mobile">Mobile browser</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
@@ -283,19 +232,13 @@
                   </label>
 
                   <div class="scan-header-security-setting-field">
-                    <details class="scan-header-security-custom-dropdown" data-custom-dropdown-for="scanHeaderSecurityCspMode">
-                      <summary class="scan-header-security-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>Enforced policy</span>
-                        <span class="scan-header-security-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="scan-header-security-custom-dropdown-menu" role="listbox" aria-label="CSP mode">
-                        <button type="button" class="scan-header-security-custom-dropdown-option active" data-custom-dropdown-value="enforced" role="option" aria-selected="true">Enforced policy</button>
-                        <button type="button" class="scan-header-security-custom-dropdown-option" data-custom-dropdown-value="report-only" role="option" aria-selected="false">Report-only policy</button>
-                        <button type="button" class="scan-header-security-custom-dropdown-option" data-custom-dropdown-value="both" role="option" aria-selected="false">Enforce plus report-only</button>
-                      </div>
-                    </details>
-                    <input type="hidden" id="scanHeaderSecurityCspMode" value="enforced">
+                                        <div class="scan-header-security-native-select-wrap" id="scanHeaderSecurityCspModeSelect">
+                      <select id="scanHeaderSecurityCspMode" class="form-select scan-header-security-native-select">
+                        <option value="enforced" selected>Enforced policy</option>
+                        <option value="report-only">Report-only policy</option>
+                        <option value="both">Enforce plus report-only</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
@@ -326,19 +269,13 @@
                   </label>
 
                   <div class="scan-header-security-setting-field">
-                    <details class="scan-header-security-custom-dropdown" data-custom-dropdown-for="scanHeaderSecurityCookieMode">
-                      <summary class="scan-header-security-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>Include cookie flags</span>
-                        <span class="scan-header-security-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="scan-header-security-custom-dropdown-menu" role="listbox" aria-label="Cookie posture">
-                        <button type="button" class="scan-header-security-custom-dropdown-option active" data-custom-dropdown-value="include" role="option" aria-selected="true">Include cookie flags</button>
-                        <button type="button" class="scan-header-security-custom-dropdown-option" data-custom-dropdown-value="separate" role="option" aria-selected="false">Track separately</button>
-                        <button type="button" class="scan-header-security-custom-dropdown-option" data-custom-dropdown-value="skip" role="option" aria-selected="false">Skip for now</button>
-                      </div>
-                    </details>
-                    <input type="hidden" id="scanHeaderSecurityCookieMode" value="include">
+                                        <div class="scan-header-security-native-select-wrap" id="scanHeaderSecurityCookieModeSelect">
+                      <select id="scanHeaderSecurityCookieMode" class="form-select scan-header-security-native-select">
+                        <option value="include" selected>Include cookie flags</option>
+                        <option value="separate">Track separately</option>
+                        <option value="skip">Skip for now</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
@@ -502,7 +439,7 @@
                           <th>Status</th>
                           <th>Evidence</th>
                           <th>Recommendation</th>
-                          <th>Copy</th>
+                          <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                         </tr>
                       </thead>
                       <tbody id="scanHeaderSecurityFindingTableBody"></tbody>
@@ -522,7 +459,7 @@
                           <th>Category</th>
                           <th>Header</th>
                           <th>Value</th>
-                          <th>Copy</th>
+                          <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                         </tr>
                       </thead>
                       <tbody id="scanHeaderSecurityHeaderTableBody"></tbody>
@@ -541,7 +478,7 @@
                             <th class="tool-generated-rownum-head">#</th>
                             <th>Field</th>
                             <th>Value</th>
-                            <th>Copy</th>
+                            <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                           </tr>
                         </thead>
                         <tbody id="scanHeaderSecurityTransportTableBody"></tbody>
@@ -563,7 +500,7 @@
                             <th>Topic</th>
                             <th>Status</th>
                             <th>Note</th>
-                            <th>Copy</th>
+                            <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                           </tr>
                         </thead>
                         <tbody id="scanHeaderSecurityKnownFileTableBody"></tbody>
@@ -583,7 +520,7 @@
                             <th>HttpOnly</th>
                             <th>SameSite</th>
                             <th>Issues</th>
-                            <th>Copy</th>
+                            <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                           </tr>
                         </thead>
                         <tbody id="scanHeaderSecurityCookieTableBody"></tbody>

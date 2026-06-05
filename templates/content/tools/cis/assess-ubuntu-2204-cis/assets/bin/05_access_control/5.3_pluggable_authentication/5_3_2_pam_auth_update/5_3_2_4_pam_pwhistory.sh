@@ -25,7 +25,6 @@ Password-Type: Primary
 Password:
   requisite pam_pwhistory.so remember=24 enforce_for_root try_first_pass use_authtok
 EOF
-    fi
 
     # Update PAM configurations
     pam-auth-update --enable pwhistory

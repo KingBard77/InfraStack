@@ -18,5 +18,5 @@ function check {
 }
 
 function fix {
-    echo "Manual."
+    echo 'Manual: Duplicate UID cleanup requires selecting which account identity to change.'
 }

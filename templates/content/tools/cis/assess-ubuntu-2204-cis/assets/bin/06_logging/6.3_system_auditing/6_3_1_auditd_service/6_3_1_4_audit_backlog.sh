@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure audit_backlog_limit is sufficient"
 
 GRUB_CMDLINE_LINUX="audit_backlog_limit=8192"

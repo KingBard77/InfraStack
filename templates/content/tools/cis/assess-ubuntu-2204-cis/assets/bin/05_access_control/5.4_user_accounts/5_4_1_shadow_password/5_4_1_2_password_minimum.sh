@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure minimum password age is configured"
 
 PASS_MIN_DAYS="1"

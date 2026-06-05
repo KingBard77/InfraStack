@@ -17,13 +17,5 @@ function check {
 }
 
 function fix {
-    echo "Manual"
-
-    for POLICY in INPUT FORWARD OUTPUT; do
-        ip6tables -P "$POLICY"
-    done
-    
-    # ip6tables -P INPUT DROP
-    # ip6tables -P FORWARD DROP
-    # ip6tables -P OUTPUT DROP
+    echo 'Manual: ip6tables default-deny policy needs approved allow rules before enforcement.'
 }

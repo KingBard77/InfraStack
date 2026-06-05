@@ -19,6 +19,8 @@ It exists to reduce duplicate shell, input, panel, and responsive layout code ac
 08_json-restore/
 ```
 
+`manifest.yml` documents the shared dropdown visual contract used by `02_basic-settings`, `03_custom-settings`, and `06_output-toolbar`. Basic and Custom settings use native `<select>` popups with one 46px closed control and one 30px static down-arrow chip. Output toolbar sort uses the separate CSS popup contract with one popup menu style, plain option rows, selected/hover state, thin internal scrollbar, and z-index/overflow rule.
+
 ## Use Rule
 
 Use these sections as composition source for a family baseline.
@@ -39,7 +41,7 @@ Recommended family composition starts with:
 4. `03_custom-settings` for compact optional controls that should sit behind a visible `Custom` disclosure.
 5. `05_result-summary` for generated result cards, left primary result, right summary chips, metric cards, and optional ring/status visuals.
 6. `06_output-toolbar` for ID-first sorting and five icon-ready output actions.
-7. `07_table-output` for tabbed detail output, table-first sections, JSON-last sections, table frames, empty rows, and icon-only row actions.
+7. `07_table-output` for tabbed detail output, table-first sections, JSON-last sections, table frames, top-aligned section/action headers, empty rows, and icon-only row actions.
 8. `08_json-restore` for JSON output, import input, restore status, empty state, and readable code frame.
 9. Family-owned sections for inspector, visual/result surfaces, output contracts, export, and restore.
 

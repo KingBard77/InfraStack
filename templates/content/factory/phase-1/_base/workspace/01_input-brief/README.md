@@ -8,7 +8,7 @@ Families can adapt this into a prompt, estimate label, scenario, query, target, 
 
 ## When To Use
 
-Use when a family needs a first model input plus primary and secondary actions.
+Use when a family needs a first model input plus a primary action and a Reset action.
 
 Examples:
 
@@ -56,11 +56,34 @@ Examples:
 - `.__PREFIX__-input-hint`
 - `.__PREFIX__-input-error`
 
+## Reset Contract
+
+The visible secondary action is `Reset`.
+
+Every complete final tool should keep the Reset button visible with `bi-arrow-counterclockwise` unless an explicit exception is recorded.
+
+Reset must clear generated output state:
+
+- hide generated result content
+- show the empty output shell
+- clear result summary markup
+- clear validation, loading, import, or result errors
+- clear generated JSON/table/command content where applicable
+- clear share or URL query state when reset changes restored state
+
+Reset must return inputs to a valid first-view baseline:
+
+- preset-backed tools restore the selected default preset prompt and controls, then keep output empty
+- non-preset tools restore the authored valid baseline; use an empty value only when the tool can start safely from a placeholder
+- do not keep a preset selected while clearing the preset-owned prompt to empty
+
+Primary action icons and Reset icons must remain visible during loading states.
+
 ## Boundary
 
 This section owns the input card shell only.
 
-Parser behavior, formula updates, target probing, diagram generation, command generation, JSON restore, and final model state belong to the family or tool.
+Parser behavior, formula updates, target probing, diagram generation, command generation, JSON restore, output clearing implementation, and final model state belong to the family or tool.
 
 ## Layout Variants
 
@@ -72,7 +95,16 @@ In stacked prompt layouts, the dashed helper card should align with the input co
 
 In inline target layouts, the input stack must stay a single full-width control column so placeholder fields do not render as a half-width field beside an empty reserved slot.
 
-Button icons use Bootstrap Icon class placeholders by default. Family or runtime packages may replace them with another icon system if that package already uses one.
+Button icons use Bootstrap Icon class placeholders by default.
+
+Current action icon defaults are:
+
+- architecture/generate: `bi-stars`
+- calculate/estimate: `bi-calculator`
+- shell/generate: `bi-terminal`
+- scanning/scan: `bi-search`
+- assessment/explore: `bi-search`
+- reset: `bi-arrow-counterclockwise`
 
 ## Preference Selection
 
@@ -80,24 +112,24 @@ This section has one canonical source. Do not create separate source folders for
 
 Before applying the section, choose the matching preference from `../manifest.yml`:
 
-| Family | Preferred layout | Input role | Primary action |
-| --- | --- | --- | --- |
-| `architecture` | `stacked` | prompt | Generate Diagram |
-| `calculate` | `inline` | estimate label | Estimate |
-| `shell` | `inline` | target path | Generate |
-| `scanning` | `inline` | URL target | Scan |
-| `assessment` | `inline` | control filter | Explore |
-| fallback | `stacked` | primary input | Run |
-
-If a preference marks the secondary action as not required, remove the secondary button during adaptation unless the family or final tool implements a real reset/default action.
+| Family | Preferred layout | Input role | Primary action | Reset behavior |
+| --- | --- | --- | --- | --- |
+| `architecture` | `stacked` | prompt | Generate Diagram | restore default preset prompt and controls, keep output empty |
+| `calculate` | `inline` | estimate label | Estimate | restore default estimate baseline, keep output empty |
+| `shell` | `inline` | target path | Generate | restore default command baseline, keep output empty |
+| `scanning` | `inline` | URL target | Scan | restore safe target baseline, keep output empty |
+| `assessment` | `inline` | control filter | Explore | restore default filter scope, keep output empty |
+| fallback | `stacked` | primary input | Run | restore a valid first-view baseline, keep output empty |
 
 ## Validation Checklist
 
 - Input ID matches adapted JavaScript.
-- Primary and secondary action IDs match adapted JavaScript.
+- Primary and Reset action IDs match adapted JavaScript.
 - Error slot exists if JavaScript references it.
 - Helper text describes real behavior after adaptation.
 - Helper chip title describes the field without duplicating the visible label.
-- Primary and secondary button icons are available or deliberately removed during family adaptation.
+- Primary and Reset button icons are available and remain visible during loading states.
+- Reset clears generated output and returns the tool to a valid first-view baseline.
+- Preset-backed tools do not clear a preset-owned prompt while leaving the preset selected.
 - The applied preference is recorded in the family or task evidence when this section is used.
 - The section can become either a textarea or single-line input without changing the shell rhythm.

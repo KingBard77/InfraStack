@@ -60,7 +60,6 @@ Existing family or runtime namespace markers may keep `03_advanced-settings` or 
 - `__DOM_PREFIX__CustomPanelThree`
 - `__DOM_PREFIX__CustomText`
 - `__DOM_PREFIX__CustomSelect`
-- `__DOM_PREFIX__CustomSelectValue`
 - `__DOM_PREFIX__CustomRadioStandard`
 - `__DOM_PREFIX__CustomRadioOverride`
 - `__DOM_PREFIX__CustomNumber`
@@ -82,10 +81,9 @@ Families should rename or replace these IDs with the final runtime IDs during ad
 - `.__PREFIX__-custom-card`
 - `.__PREFIX__-custom-label-wrap`
 - `.__PREFIX__-custom-helper-chip`
+- `.__PREFIX__-native-select-wrap`
 - `.__PREFIX__-custom-dropdown`
-- `.__PREFIX__-custom-dropdown-summary`
-- `.__PREFIX__-custom-dropdown-menu`
-- `.__PREFIX__-custom-dropdown-option`
+- `.__PREFIX__-custom-native-select`
 - `.__PREFIX__-custom-radio-group`
 - `.__PREFIX__-custom-radio-card`
 - `.__PREFIX__-custom-radio-title`
@@ -101,6 +99,8 @@ Families should rename or replace these IDs with the final runtime IDs during ad
 - `.__PREFIX__-custom-textarea`
 - `.__PREFIX__-custom-info`
 - `.__PREFIX__-custom-hint`
+
+`.__PREFIX__-custom-dropdown` and `.__PREFIX__-custom-native-select` are source compatibility hooks. Final family and runtime packages should normalize short Custom dropdown markup to `.__PREFIX__-native-select-wrap` plus the adapted native select class unless a recorded compatibility reason requires otherwise.
 
 ## Preference Selection
 
@@ -120,20 +120,26 @@ Before applying the section, choose the matching preference from `../manifest.ym
 ## Hard Rules
 
 - The visible disclosure label is `Custom`, not `Advanced`.
-- The disclosure and dropdown indicators must use one right-aligned arrow slot with a small button surface; default state points right and open state points down.
+- The Custom disclosure indicator must use one right-aligned arrow slot with a small button surface; default state points right and open state points down.
+- Short Custom dropdowns must use native `<select>` popups inside `.__PREFIX__-native-select-wrap`, with the closed control following `../manifest.yml` `dropdown_visual_contract`: 46px minimum height, one 30px arrow chip, a centered always-down chevron, full-width control, and browser-owned popup behavior.
+- Long dynamic Custom lists may use the in-page searchable picker exception only when a native popup cannot provide deterministic direction or width. The picker must use a hidden canonical state input, trigger, search input, listbox option area, and normal document flow panel that opens below the trigger.
+- Long dynamic Custom pickers must be width-contained: the picker root, trigger, panel, search input, and options area use `width: 100%`, `max-width: 100%`, `min-width: 0`, and `box-sizing: border-box`; the trigger hides overflow; the visible label uses ellipsis; the arrow chip keeps a fixed `30px` slot.
+- Long dynamic Custom picker panels must not use absolute or fixed positioning, z-index layering, detached popovers, or hidden native `<select>` replacements. The panel sits inside the same setting card and may use an internal scroll area for options.
+- Custom native select arrow chips do not change color, background, or direction on hover/focus.
+- Custom native selects must remain visible and clickable. Do not ship any final family or runtime CSS that hides `.__PREFIX__-custom-native-select`, `.__PREFIX__-native-select`, or the adapted `<tool>-native-select` class with `display: none`, opacity, pointer-event blocking, clipping, or zero dimensions.
+- Converted Custom selects must not keep fake-dropdown or enhancement classes such as `.__PREFIX__-custom-dropdown`, `.__PREFIX__-custom-native-select`, `.__PREFIX__-select-control`, enhanced-select wrappers, or data attributes intended for custom option buttons in final family or runtime packages.
 - Suppress native `summary` markers and suppress fallback pseudo arrows whenever `custom-arrow-slot` exists, so the UI never shows two arrows.
-- Do not use an up arrow for open Custom disclosures or CSS dropdowns.
-- Do not add more than one arrow slot inside a Custom disclosure summary or CSS dropdown summary.
+- Do not use an up arrow for open Custom disclosures.
+- Do not add more than one arrow slot inside a Custom disclosure summary.
 - Scope tab-panel hiding to panel nodes such as `.custom-panel[data-custom-panel]`; never hide the outer Custom `<details>` with a broad `.custom-panel { display: none; }` rule.
-- Use CSS popup dropdowns by default; do not rely on browser-native select popups and do not let dropdown menus expand the card height.
-- CSS popup dropdown option rows must not draw internal divider lines; keep the popup border, but use `border-top: 0` on option rows.
+- Do not implement short Custom dropdowns with `<details>`, `role="listbox"`, button option rows, custom menu divs, custom option hover styles, custom scrollbar styling, or custom selected-row CSS.
 - Use the Basic settings radio-card design for Custom radio choices, with the visible radio dot drawn by CSS.
 - Use explicitly styled checkbox controls with CSS-drawn switch tracks, neutral off color, and strong accent on color, not native checkbox rendering or custom switch cards, inside Custom.
 - Simple settings may live in one compact card. Dense groups with many related controls should be divided into grouped cards.
 - Do not place another card around a single input, dropdown, unit, currency prefix, quantity value, or active placeholder.
 - If a Custom input needs prefix/suffix labels such as `$`, `%`, `GB`, or request units, render them as transparent inline addons with no internal borders, including disabled state.
 - When prefixed or suffixed input groups sit inside Custom, add a later scoped override for the real input control so broad Custom input selectors do not draw a second border or focus ring inside the group.
-- Every radio card, CSS popup dropdown, text input, textarea, number input, placeholder, CSS-drawn checkbox switch, helper chip, grouped card, and dashed info row must have explicit CSS in the final family or runtime package.
+- Every radio card, native select closed control, text input, textarea, number input, placeholder, CSS-drawn checkbox switch, helper chip, grouped card, and dashed info row must have explicit CSS in the final family or runtime package.
 - Custom radio and checkbox CSS must not depend on `accent-color` for the visible control state.
 - Example values belong in the actual control placeholders or defaults, not in a separate example card.
 - Placeholder examples must match the field type: CIDR/network fields use slash notation such as `10.0.0.0/16`, numeric fields use number examples, and quantity fields use quantity examples with units outside the input.
@@ -162,10 +168,13 @@ Before applying the section, choose the matching preference from `../manifest.ym
 - Hidden panels use `hidden` or equivalent state.
 - No fake controls remain.
 - Placeholder, focus, hover, disabled, selected, and mobile states are styled.
-- Dropdowns render as popups, use one chevron, and remain usable on narrow screens.
-- Dropdown option rows have no internal divider lines.
-- Custom disclosure and dropdown arrows point right by default and down when open.
-- Custom summaries and dropdown summaries do not show native markers or fallback pseudo arrows when `custom-arrow-slot` exists.
+- Short dropdowns use native `<select>` popups, use one closed-control arrow chip, and remain usable on narrow screens.
+- Long dynamic picker exceptions stay inside the card, open below, search/filter options, update the hidden state field, and keep the selected value through output generation, export, restore, and URL state where those surfaces exist.
+- Closed dropdown height, static centered down arrow chip, focus ring, width, and mobile sizing match `dropdown_visual_contract`.
+- Static scans confirm no Custom native select hide rule remains, no converted Custom native select carries fake-dropdown or enhanced-select classes, and any long dynamic picker has the required searchable in-page markup plus width-containment CSS.
+- Browser Use confirms affected Custom native selects are visible, enabled, non-zero sized, and can change value on the reported runtime route. For a long dynamic picker, Browser Use confirms the trigger stays inside its card, the panel opens below, search/select works, and the selected value survives the primary action.
+- Custom disclosure arrows point right by default and down when open.
+- Custom summaries do not show native markers or fallback pseudo arrows when `custom-arrow-slot` exists.
 - Tab-panel display CSS does not hide outer Custom disclosure panels.
 - Radio choices use the same card rhythm as Basic settings and do not expose native radio controls.
 - Checkbox controls have explicit neutral off, strong accent on, checked, and focus styling and do not expose native checkbox controls.

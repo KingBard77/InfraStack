@@ -107,7 +107,7 @@
   <div class="meta-bottom article-share-panel{% if meta.related_links is defined and meta.related_links|length > 0 %} article-share-panel-linked{% endif %}">
     {% if meta.tags is defined and meta.tags|length > 0 %}
       <div class="tags-section">
-        <h4>Related Topics</h4>
+        <h2 class="article-share-heading">Related Topics</h2>
         <div class="tags">
           {% for tag in meta.tags %}
             <a
@@ -124,7 +124,7 @@
     {% endif %}
 
     <div class="share-section">
-      <h4>Share Article</h4>
+      <h2 class="article-share-heading">Share Article</h2>
       <div class="share-actions" aria-label="Share article">
         <a
           href="https://twitter.com/intent/tweet?url={{ shareUrl|url_encode }}&text={{ shareTitle|url_encode }}"

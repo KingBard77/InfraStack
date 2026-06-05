@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.request.locale|default('en') }}">
     <head>
         {% set metaTitle = page_title|default('InfraStack') %}
         {% set metaDescription = page_description|default('Interactive infrastructure tools, diagrams, calculators, and operations workspaces.') %}

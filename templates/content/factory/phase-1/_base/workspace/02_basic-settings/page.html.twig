@@ -30,23 +30,13 @@
                 <span class="__PREFIX__-helper-chip" title="__BASIC_SELECT_HELPER__" aria-label="__BASIC_SELECT_HELPER__">i</span>
             </div>
 
-            <details class="__PREFIX__-select" id="__DOM_PREFIX__BasicSelect">
-                <summary class="__PREFIX__-select-summary">
-                    <span id="__DOM_PREFIX__BasicSelectSummary">Standard option</span>
-                    <span class="__PREFIX__-select-arrow-slot" aria-hidden="true"></span>
-                </summary>
-
-                <div class="__PREFIX__-select-body" id="__DOM_PREFIX__BasicSelectMenu">
-                    <label class="__PREFIX__-select-option">
-                        <input type="radio" name="__DOM_PREFIX__BasicOption" value="standard" checked>
-                        <span class="__PREFIX__-select-option-title">Standard option</span>
-                    </label>
-                    <label class="__PREFIX__-select-option">
-                        <input type="radio" name="__DOM_PREFIX__BasicOption" value="focused">
-                        <span class="__PREFIX__-select-option-title">Focused option</span>
-                    </label>
-                </div>
-            </details>
+            <div class="__PREFIX__-native-select-wrap __PREFIX__-select">
+                <select id="__DOM_PREFIX__BasicSelect" class="form-select __PREFIX__-native-select __PREFIX__-select-control">
+                    <option value="standard" selected>Standard option</option>
+                    <option value="focused">Focused option</option>
+                    <option value="blank">Blank option</option>
+                </select>
+            </div>
 
             <p class="__PREFIX__-setting-hint">__BASIC_SELECT_HELPER__</p>
         </div>

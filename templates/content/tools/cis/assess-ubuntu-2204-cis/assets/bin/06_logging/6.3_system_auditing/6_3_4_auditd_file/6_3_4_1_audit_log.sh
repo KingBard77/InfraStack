@@ -1,38 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 
-CRITICALITY=1
-TITLE="Ensure audit log files are mode 0640 or less permissive"
-
-function audit_log_directory {
-    LOG_FILE="$(awk -F= '/^[[:space:]]*log_file[[:space:]]*=/{gsub(/[[:space:]]/, "", $2); print $2; exit}' /etc/audit/auditd.conf)"
-
-    if [ -z "$LOG_FILE" ]; then
-        LOG_FILE="/var/log/audit/audit.log"
-    fi
-
-    dirname "$LOG_FILE"
+CRITICALITY=2
+TITLE="Ensure audit log files mode is configured"
+function audit_dir {
+    awk -F= '/^\s*log_file\s*=/{ gsub(/[[:space:]]/, "", $2); print $2 }' /etc/audit/auditd.conf 2>/dev/null | xargs dirname 2>/dev/null
 }
 
 function check {
+    AUDIT_DIR="$(audit_dir)"
+    AUDIT_DIR="${AUDIT_DIR:-/var/log/audit}"
     STATUS="Pass"
-    LOG_DIR="$(audit_log_directory)"
 
-    if [ ! -d "$LOG_DIR" ]; then
-        STATUS="Fail: Audit log directory does not exist"
-    elif find "$LOG_DIR" -type f -perm /0137 | grep . > /dev/null 2>&1; then
-        STATUS="Fail: Audit log files are too permissive"
+    if find "$AUDIT_DIR" -type f -perm /037 -print -quit 2>/dev/null | grep -q .; then
+        STATUS="Fail: audit log files are more permissive than 0640"
     fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-    LOG_DIR="$(audit_log_directory)"
-    mkdir -p "$LOG_DIR"
-
-    if ! find "$LOG_DIR" -type f | grep . > /dev/null 2>&1; then
-        touch "$LOG_DIR/audit.log"
-    fi
-
-    find "$LOG_DIR" -type f -exec chmod u=rw,g=r,o= {} +
+    AUDIT_DIR="$(audit_dir)"
+    AUDIT_DIR="${AUDIT_DIR:-/var/log/audit}"
+    find "$AUDIT_DIR" -type f -exec chmod u-x,g-wx,o-rwx {} \; 2>/dev/null
 }

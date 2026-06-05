@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure auditd service is enabled and active"
 
 function check {

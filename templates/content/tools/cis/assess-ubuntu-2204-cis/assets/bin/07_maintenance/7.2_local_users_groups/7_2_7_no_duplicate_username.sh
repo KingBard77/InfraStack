@@ -18,5 +18,5 @@ function check {
 }
 
 function fix {
-    echo "Manual."
+    echo 'Manual: Duplicate username cleanup requires selecting which account to rename.'
 }

@@ -10,8 +10,6 @@ function check {
     echo "Check status: $STATUS"
 }
 
-
 function fix {
-
-	echo "Manual."
+    echo 'Manual: GDM login banner text needs approved legal/security wording.'
 }

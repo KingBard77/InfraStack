@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure changes to system administration scope (sudoers) is collected"
 
 AUDIT_RULE_FILE="/etc/audit/rules.d/audit.rules"

@@ -94,15 +94,13 @@
 
         .base-demo-tool .base-demo-custom-summary::-webkit-details-marker,
         .base-demo-tool .base-demo-custom-panel-summary::-webkit-details-marker,
-        .base-demo-tool .base-demo-advanced-summary::-webkit-details-marker,
-        .base-demo-tool .base-demo-custom-dropdown-summary::-webkit-details-marker {
+        .base-demo-tool .base-demo-advanced-summary::-webkit-details-marker {
             display: none;
         }
 
         .base-demo-tool .base-demo-custom-summary::marker,
         .base-demo-tool .base-demo-custom-panel-summary::marker,
-        .base-demo-tool .base-demo-advanced-summary::marker,
-        .base-demo-tool .base-demo-custom-dropdown-summary::marker {
+        .base-demo-tool .base-demo-advanced-summary::marker {
             content: "";
             font-size: 0;
         }
@@ -126,8 +124,7 @@
 
         .base-demo-tool .base-demo-custom-summary:not(:has(> .base-demo-custom-arrow-slot))::before,
         .base-demo-tool .base-demo-custom-panel-summary:not(:has(> .base-demo-custom-arrow-slot))::before,
-        .base-demo-tool .base-demo-advanced-summary:not(:has(> .base-demo-custom-arrow-slot))::before,
-        .base-demo-tool .base-demo-custom-dropdown-summary:not(:has(> .base-demo-custom-arrow-slot))::before {
+        .base-demo-tool .base-demo-advanced-summary:not(:has(> .base-demo-custom-arrow-slot))::before {
             content: "";
             position: absolute;
             top: 50%;
@@ -142,19 +139,10 @@
             transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
         }
 
-        .base-demo-tool .base-demo-custom-dropdown-summary > .base-demo-custom-arrow-slot,
-        .base-demo-tool .base-demo-custom-dropdown-summary:not(:has(> .base-demo-custom-arrow-slot))::before {
-            right: 6px;
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-        }
-
         .base-demo-tool .base-demo-custom-arrow-slot::before,
         .base-demo-tool .base-demo-custom-summary:not(:has(> .base-demo-custom-arrow-slot))::after,
         .base-demo-tool .base-demo-custom-panel-summary:not(:has(> .base-demo-custom-arrow-slot))::after,
-        .base-demo-tool .base-demo-advanced-summary:not(:has(> .base-demo-custom-arrow-slot))::after,
-        .base-demo-tool .base-demo-custom-dropdown-summary:not(:has(> .base-demo-custom-arrow-slot))::after {
+        .base-demo-tool .base-demo-advanced-summary:not(:has(> .base-demo-custom-arrow-slot))::after {
             content: "";
             position: absolute;
             top: 50%;
@@ -173,9 +161,7 @@
         .base-demo-tool .base-demo-custom-panel-summary:has(> .base-demo-custom-arrow-slot)::before,
         .base-demo-tool .base-demo-custom-panel-summary:has(> .base-demo-custom-arrow-slot)::after,
         .base-demo-tool .base-demo-advanced-summary:has(> .base-demo-custom-arrow-slot)::before,
-        .base-demo-tool .base-demo-advanced-summary:has(> .base-demo-custom-arrow-slot)::after,
-        .base-demo-tool .base-demo-custom-dropdown-summary:has(> .base-demo-custom-arrow-slot)::before,
-        .base-demo-tool .base-demo-custom-dropdown-summary:has(> .base-demo-custom-arrow-slot)::after {
+        .base-demo-tool .base-demo-advanced-summary:has(> .base-demo-custom-arrow-slot)::after {
             content: none;
             display: none;
         }
@@ -186,22 +172,17 @@
         .base-demo-tool .base-demo-custom-panel-summary:focus-visible > .base-demo-custom-arrow-slot,
         .base-demo-tool .base-demo-advanced-summary:hover > .base-demo-custom-arrow-slot,
         .base-demo-tool .base-demo-advanced-summary:focus-visible > .base-demo-custom-arrow-slot,
-        .base-demo-tool .base-demo-custom-dropdown-summary:hover > .base-demo-custom-arrow-slot,
-        .base-demo-tool .base-demo-custom-dropdown-summary:focus-visible > .base-demo-custom-arrow-slot,
         .base-demo-tool .base-demo-custom-summary:hover:not(:has(> .base-demo-custom-arrow-slot))::before,
         .base-demo-tool .base-demo-custom-summary:focus-visible:not(:has(> .base-demo-custom-arrow-slot))::before,
         .base-demo-tool .base-demo-custom-panel-summary:hover:not(:has(> .base-demo-custom-arrow-slot))::before,
         .base-demo-tool .base-demo-custom-panel-summary:focus-visible:not(:has(> .base-demo-custom-arrow-slot))::before,
         .base-demo-tool .base-demo-advanced-summary:hover:not(:has(> .base-demo-custom-arrow-slot))::before,
-        .base-demo-tool .base-demo-advanced-summary:focus-visible:not(:has(> .base-demo-custom-arrow-slot))::before,
-        .base-demo-tool .base-demo-custom-dropdown-summary:hover:not(:has(> .base-demo-custom-arrow-slot))::before,
-        .base-demo-tool .base-demo-custom-dropdown-summary:focus-visible:not(:has(> .base-demo-custom-arrow-slot))::before {
+        .base-demo-tool .base-demo-advanced-summary:focus-visible:not(:has(> .base-demo-custom-arrow-slot))::before {
             border-color: var(--base-border-strong, #cbd5e1);
             background: var(--base-accent-soft, rgba(71, 85, 105, 0.1));
         }
 
-        .base-demo-tool .base-demo-custom-summary-icon,
-        .base-demo-tool .base-demo-custom-dropdown-icon {
+        .base-demo-tool .base-demo-custom-summary-icon {
             display: none !important;
         }
 
@@ -552,13 +533,18 @@
         }
 
         .base-demo-tool .base-demo-custom-card .form-control,
+        .base-demo-tool .base-demo-custom-card .form-select,
         .base-demo-tool .base-demo-custom-field .form-control,
+        .base-demo-tool .base-demo-custom-field .form-select,
         .base-demo-tool .base-demo-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+        .base-demo-tool .base-demo-custom-panel select,
         .base-demo-tool .base-demo-custom-panel textarea,
         .base-demo-tool .base-demo-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+        .base-demo-tool .base-demo-advanced select,
         .base-demo-tool .base-demo-advanced textarea,
         .base-demo-tool .base-demo-custom-text-field,
         .base-demo-tool .base-demo-custom-number-field,
+        .base-demo-tool .base-demo-custom-native-select,
         .base-demo-tool .base-demo-custom-textarea {
             width: 100%;
             min-height: 38px;
@@ -573,6 +559,17 @@
             line-height: 1.4;
             box-shadow: none;
             transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        .base-demo-tool .base-demo-custom-card .form-select,
+        .base-demo-tool .base-demo-custom-field .form-select,
+        .base-demo-tool .base-demo-custom-panel select,
+        .base-demo-tool .base-demo-advanced select,
+        .base-demo-tool .base-demo-custom-native-select {
+            padding-right: 52px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: none;
         }
 
         .base-demo-tool .base-demo-custom-textarea,
@@ -593,19 +590,27 @@
         }
 
         .base-demo-tool .base-demo-custom-card .form-control:hover,
+        .base-demo-tool .base-demo-custom-card .form-select:hover,
         .base-demo-tool .base-demo-custom-field .form-control:hover,
+        .base-demo-tool .base-demo-custom-field .form-select:hover,
         .base-demo-tool .base-demo-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):hover,
+        .base-demo-tool .base-demo-custom-panel select:hover,
         .base-demo-tool .base-demo-custom-panel textarea:hover,
         .base-demo-tool .base-demo-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):hover,
+        .base-demo-tool .base-demo-advanced select:hover,
         .base-demo-tool .base-demo-advanced textarea:hover {
             border-color: var(--base-border-strong, #cbd5e1);
         }
 
         .base-demo-tool .base-demo-custom-card .form-control:focus,
+        .base-demo-tool .base-demo-custom-card .form-select:focus,
         .base-demo-tool .base-demo-custom-field .form-control:focus,
+        .base-demo-tool .base-demo-custom-field .form-select:focus,
         .base-demo-tool .base-demo-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
+        .base-demo-tool .base-demo-custom-panel select:focus,
         .base-demo-tool .base-demo-custom-panel textarea:focus,
         .base-demo-tool .base-demo-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
+        .base-demo-tool .base-demo-advanced select:focus,
         .base-demo-tool .base-demo-advanced textarea:focus {
             border-color: var(--base-accent, #475569);
             box-shadow: 0 0 0 3px var(--base-focus-ring, rgba(71, 85, 105, 0.14));
@@ -817,106 +822,47 @@
 
         .base-demo-tool .base-demo-custom-dropdown {
             position: relative;
-            display: grid;
+            display: block;
             width: 100%;
             min-width: 0;
             overflow: visible;
         }
 
-        .base-demo-tool .base-demo-custom-dropdown[open] {
-            z-index: 160;
-        }
-
-        .base-demo-tool .base-demo-custom-dropdown-summary {
-            position: relative;
-            display: flex;
-            min-height: 40px;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            padding: 8px 42px 8px 10px;
-            border: 1px solid var(--base-border, #d8e2ee);
+        .base-demo-tool .base-demo-custom-dropdown > .base-demo-custom-native-select,
+        .base-demo-tool .base-demo-custom-dropdown > .form-select {
+            min-height: 46px;
+            padding-right: 52px;
             border-radius: 10px;
-            background: var(--base-surface, #ffffff);
-            color: var(--base-text, #334155);
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 700;
-            line-height: 1.35;
-            list-style: none;
-            list-style-type: none;
         }
 
-        .base-demo-tool .base-demo-custom-dropdown[open] .base-demo-custom-dropdown-summary:not(:has(> .base-demo-custom-arrow-slot))::after {
-            transform: translate(-50%, -62%) rotate(45deg);
-        }
-
-        .base-demo-tool .base-demo-custom-dropdown[open] .base-demo-custom-dropdown-summary > .base-demo-custom-arrow-slot::before {
-            transform: translate(-50%, -62%) rotate(45deg);
-        }
-
-        .base-demo-tool .base-demo-custom-dropdown-summary:hover,
-        .base-demo-tool .base-demo-custom-dropdown-summary:focus-visible {
-            border-color: var(--base-border-strong, #cbd5e1);
-            outline: none;
-        }
-
-        .base-demo-tool .base-demo-custom-dropdown-summary:focus-visible,
-        .base-demo-tool .base-demo-custom-dropdown[open] .base-demo-custom-dropdown-summary {
-            border-color: var(--base-accent, #475569);
-            box-shadow: 0 0 0 3px var(--base-focus-ring, rgba(71, 85, 105, 0.14));
-        }
-
-        .base-demo-tool .base-demo-custom-dropdown-menu {
+        .base-demo-tool .base-demo-custom-dropdown::before {
+            content: "";
             position: absolute;
-            top: calc(100% + 6px);
-            left: 0;
-            display: grid;
-            width: 100%;
-            min-width: 100%;
-            max-height: min(280px, 52vh);
-            border: 1px solid var(--base-accent, #475569);
-            border-radius: 10px;
-            background: var(--base-surface, #ffffff);
-            box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
-            overflow-x: hidden;
-            overflow-y: auto;
-            z-index: 170;
+            top: 50%;
+            right: 10px;
+            z-index: 2;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--base-border, #d8e2ee);
+            border-radius: 9px;
+            background: var(--base-surface-soft, #f8fafc);
+            pointer-events: none;
+            transform: translateY(-50%);
         }
 
-        .base-demo-tool .base-demo-custom-dropdown:not([open]) .base-demo-custom-dropdown-menu {
-            display: none;
-        }
-
-        .base-demo-tool .base-demo-custom-dropdown-option {
-            display: flex;
-            width: 100%;
-            min-height: 38px;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 8px 10px;
-            border: 0;
-            border-top: 0;
-            background: var(--base-surface, #ffffff);
-            color: var(--base-text, #334155);
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 700;
-            line-height: 1.35;
-            text-align: left;
-        }
-
-        .base-demo-tool .base-demo-custom-dropdown-option:first-child {
-            border-top: 0;
-        }
-
-        .base-demo-tool .base-demo-custom-dropdown-option:hover,
-        .base-demo-tool .base-demo-custom-dropdown-option:focus-visible,
-        .base-demo-tool .base-demo-custom-dropdown-option.active,
-        .base-demo-tool .base-demo-custom-dropdown-option[aria-selected="true"] {
-            background: var(--base-accent-soft, rgba(71, 85, 105, 0.1));
-            color: var(--base-heading, #111827);
-            outline: none;
+        .base-demo-tool .base-demo-custom-dropdown::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 20.5px;
+            z-index: 3;
+            width: 9px;
+            height: 9px;
+            border-right: 2.25px solid var(--base-accent, #475569);
+            border-bottom: 2.25px solid var(--base-accent, #475569);
+            border-radius: 1px;
+            pointer-events: none;
+            transform: translateY(-62%) rotate(45deg);
         }
 
         .base-demo-tool .base-demo-custom-checkbox-option {
@@ -1270,22 +1216,17 @@
 
                                     <div class="base-demo-custom-field">
                                         <div class="base-demo-custom-label-wrap">
-                                            <label class="base-demo-custom-label" for="baseDemoCustomSelect">CSS dropdown</label>
+                                            <label class="base-demo-custom-label" for="baseDemoCustomSelect">Native dropdown</label>
                                             <span class="base-demo-custom-helper-chip" title="Choose a compact custom option" aria-label="Choose a compact custom option">i</span>
                                         </div>
 
-                                        <details id="baseDemoCustomSelect" class="base-demo-custom-dropdown">
-                                            <summary class="base-demo-custom-dropdown-summary">
-                                                <span>HEAD</span>
-                                                <span class="base-demo-custom-arrow-slot" aria-hidden="true"></span>
-                                            </summary>
-
-                                            <div class="base-demo-custom-dropdown-menu" role="listbox" aria-label="CSS dropdown">
-                                                <button type="button" class="base-demo-custom-dropdown-option active" role="option" aria-selected="true">HEAD</button>
-                                                <button type="button" class="base-demo-custom-dropdown-option" role="option" aria-selected="false">GET</button>
-                                                <button type="button" class="base-demo-custom-dropdown-option" role="option" aria-selected="false">POST</button>
-                                            </div>
-                                        </details>
+                                        <div class="base-demo-custom-dropdown">
+                                            <select id="baseDemoCustomSelect" class="form-select base-demo-custom-native-select">
+                                                <option selected>HEAD</option>
+                                                <option>GET</option>
+                                                <option>POST</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </section>

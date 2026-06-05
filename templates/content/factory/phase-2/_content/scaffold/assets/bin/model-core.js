@@ -48,7 +48,26 @@ const InfraStackScaffoldModelCore = (function () {
         };
     }
 
+    /**
+     * Builds normalized state from an imported scaffold JSON payload.
+     *
+     * @param {Record<string, unknown>} payload Imported JSON payload.
+     * @returns {Record<string, unknown>} Normalized restorable state.
+     */
+    function buildImportedPayloadState(payload) {
+        if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+            return {};
+        }
+
+        if (payload.state && typeof payload.state === 'object' && !Array.isArray(payload.state)) {
+            return normalizeState(payload.state);
+        }
+
+        return normalizeState(payload);
+    }
+
     return {
+        buildImportedPayloadState,
         exportState,
         getToolId,
         getToolVersion,

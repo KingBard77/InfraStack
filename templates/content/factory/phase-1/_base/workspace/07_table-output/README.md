@@ -100,7 +100,13 @@ Families should rename or replace these IDs with final runtime IDs during adapta
 - `.__PREFIX__-table-tab-icon`
 - `.__PREFIX__-table-panel`
 - `.__PREFIX__-section-card`
+- `.__PREFIX__-section-head`
 - `.__PREFIX__-section-title`
+- `.__PREFIX__-section-actions`
+- `.__PREFIX__-command-wrap`
+- `.__PREFIX__-command-head`
+- `.__PREFIX__-command-title`
+- `.__PREFIX__-command-actions`
 - `.__PREFIX__-table-wrap`
 - `.__PREFIX__-output-table`
 - `.__PREFIX__-table-cell-text`
@@ -149,14 +155,20 @@ Before applying the section, choose the matching preference from `../manifest.ym
 - Use the fifth tab/panel as an optional extra placeholder section when a family needs one more output section before JSON.
 - The last tab must be JSON.
 - Every section must have a visible title inside the section card, with output under that title.
+- When a section title shares a row with copy or action buttons, use a two-column top-aligned header grid: title in `minmax(0, 1fr)`, actions in `auto`, `align-items: flex-start`, and `12px` gap.
+- Command sections adapted from this base must use the same card padding, title typography, and top offset as table sections; copy buttons must not center or wrap the title lower than the table title.
 - Tables should use a small number of meaningful columns; avoid wide, boring spreadsheet layouts.
 - The first table column must be `#` and centered.
 - Middle table columns must use logical start alignment, not centered alignment.
 - Status-like label columns such as `Status`, `Signal`, `Severity`, `Criticality`, `Health`, `State`, `Result`, or `Level` must center the matching `th` and `td` cells.
 - The final table column must be the row action column and centered.
+- The row action header must visibly render text-only `Action`; do not place a clipboard icon inside the `th`, and do not transform it to `ACTION`.
 - The final row action column must be sticky when a table has multiple columns and scrolls horizontally.
 - The sticky action column must stay flat without side shadow.
-- Row copy actions must be icon-only buttons with accessible labels, not visible `Copy` text.
+- Row copy actions must be icon-only `34px` by `34px` buttons with accessible labels, not visible `Copy` or `Copied` text.
+- Row copy icons must use a fixed `15px` by `15px` icon box.
+- Row copy feedback must keep the button size stable and swap the clipboard icon to a same-size tick icon on successful copy.
+- Tool-local or family-local copy button selectors must not override the table row action contract. Local rules such as `.<prefix>-table-wrap .<prefix>-copy-btn` or `.<prefix>-action-btn .bi` must either inherit this base rule or explicitly match the same `34px` button, `15px` icon, and non-green copied-state values.
 - Generated row text should be wrapped in `.__PREFIX__-table-cell-text` or `.__PREFIX__-cell-clamp` and clamped to 2-3 lines.
 - Empty states must stay inside the table/output frame.
 - Mobile layout must keep tabs on one horizontally scrollable line, tables horizontally scrollable when needed, and JSON readable.
@@ -169,11 +181,17 @@ Before applying the section, choose the matching preference from `../manifest.ym
 - Tab buttons stay on a single horizontal line and scroll inside the tab section when needed.
 - Tab buttons and sticky action columns do not use box shadows or lift transforms.
 - Each panel has one visible title before the output.
+- Section or command headers that include copy/action buttons use a top-aligned two-column grid, not a center-aligned flex row.
+- Section and command titles share the same top offset inside the card as table titles when rendered.
 - Primary table first column is `#` and centered.
 - Middle table columns use logical start alignment.
 - Status-like label columns have centered headers and cells.
-- Row action cells are centered and use icon-only copy buttons.
+- Row action headers visibly render text-only `Action` without a clipboard icon or uppercase transform.
+- Row action cells are centered and use icon-only `34px` by `34px` copy buttons with `15px` by `15px` icons.
+- Row action button CSS is hard-locked with `width`, `min-width`, `max-width`, `height`, `min-height`, `max-height`, `flex: 0 0 34px`, `padding: 0`, and `box-sizing: border-box`.
+- Row action icon CSS is hard-locked with `width`, `min-width`, `max-width`, `height`, `min-height`, `max-height`, `flex: 0 0 15px`, and `font-size: 15px`.
 - Row action cells remain sticky when the table has multiple columns and scrolls horizontally.
+- Tool-local table copy selectors do not shrink row actions or reintroduce green copied-state styling.
 - Row text is clamped to 2-3 lines.
 - Empty rows do not break table layout.
 - JSON payload matches export/restore state where applicable.
@@ -185,3 +203,6 @@ Before applying the section, choose the matching preference from `../manifest.ym
 - When this base is reapplied to final tools, the runtime CSS must override older tool-local active tab rules such as `.tool-tab-btn.active` or `.<slug>-tab-btn.active` if they set `box-shadow` or `transform`.
 - Active output tab state should remain visible through border, background, and text color only.
 - Sticky action cells should remain visually separated by the table border/background, not by a shadow.
+- When this base is reapplied to final tools, scan local selectors, table-wrap copy selectors, row action button classes, and action-button icon selectors for higher-specificity overrides before claiming family or runtime parity.
+- Browser validation should measure the rendered row action button and icon for any reported tool and at least one affected family reference: `34px` button width/height, `15px` icon width/height/font size, text-only `Action` header, sticky final column, and clipboard-to-tick copied feedback.
+- Browser validation for sections with header actions should also compare title top offset between the first table section and the command/action section; both should resolve to the same rendered offset inside their cards.

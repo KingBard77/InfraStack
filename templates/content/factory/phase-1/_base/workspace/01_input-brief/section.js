@@ -29,22 +29,30 @@
             '__PREFIX__-action-btn-secondary'
         ],
         sourcePlaceholders: [
+            '__INPUT_LABEL__',
             '__INPUT_LAYOUT__',
             '__INPUT_ROWS__',
+            '__INPUT_PLACEHOLDER__',
+            '__INPUT_DEFAULT__',
             '__HELPER_CHIP_TEXT__',
+            '__HELPER_TEXT__',
+            '__PRIMARY_ACTION_LABEL__',
             '__PRIMARY_ACTION_ICON__',
+            '__SECONDARY_ACTION_LABEL__',
             '__SECONDARY_ACTION_ICON__'
         ],
         sourceBehaviours: [
             'provides a neutral primary input card',
             'supports stacked prompt and inline row layouts',
             'provides helper chip hooks for label and helper copy',
-            'provides primary and secondary action hooks',
-            'provides icon-ready primary and secondary action buttons',
+            'provides primary action and Reset action hooks',
+            'provides icon-ready primary and Reset action buttons',
             'provides an inline error slot',
             'aligns stacked helper cards with the input control column',
             'keeps inline input stacks as one full-width control column',
-            'does not define parser, formula, scanner, diagram, command, export, or restore behavior'
+            'expects Reset to clear generated output and restore a valid first-view baseline in final runtime packages',
+            'expects primary and Reset icons to remain visible during loading states',
+            'keeps reset implementation, parser, formula, scanner, diagram, command, export, or restore behavior in the family or tool'
         ]
     };
 

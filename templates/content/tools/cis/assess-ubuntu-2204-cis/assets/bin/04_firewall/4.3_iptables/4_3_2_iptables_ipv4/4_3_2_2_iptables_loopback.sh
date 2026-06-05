@@ -22,9 +22,12 @@ function check {
 }
 
 function fix {
-	echo "Manual"
+    if ! command -v iptables > /dev/null 2>&1; then
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install -y iptables
+    fi
 
-	#iptables -A INPUT -i lo -j ACCEPT
-	#iptables -A OUTPUT -o lo -j ACCEPT
-	#iptables -A INPUT -s 127.0.0.0/8 -j DROP
+    iptables -C INPUT -i lo -j ACCEPT 2>/dev/null || iptables -A INPUT -i lo -j ACCEPT
+    iptables -C OUTPUT -o lo -j ACCEPT 2>/dev/null || iptables -A OUTPUT -o lo -j ACCEPT
+    iptables -C INPUT -s 127.0.0.0/8 -j DROP 2>/dev/null || iptables -A INPUT -s 127.0.0.0/8 -j DROP
 }

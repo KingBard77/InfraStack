@@ -21,10 +21,5 @@ function check {
 }
 
 function fix {
-    echo "Manual"
-
-    policy=("input" "forward" "output")
-    for proto in "${policy[@]}"; do
-        nft chain inet filter "$policy" { policy drop \; }
-    done
+    echo 'Manual: nftables default-deny policy needs approved allow rules before enforcement.'
 }

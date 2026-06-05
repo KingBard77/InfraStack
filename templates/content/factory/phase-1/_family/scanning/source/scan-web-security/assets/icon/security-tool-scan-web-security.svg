@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="__DOM_ID_PREFIX__IconTitle">
+  <title id="__DOM_ID_PREFIX__IconTitle">__TOOL_TITLE__</title>
+  <defs>
+    <linearGradient id="__DOM_ID_PREFIX__Shield" x1="18" y1="12" x2="78" y2="84" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#16A34A"/>
+      <stop offset="1" stop-color="#166534"/>
+    </linearGradient>
+  </defs>
+  <path d="M48 8 78 19v23c0 19-12 35-30 46C30 77 18 61 18 42V19L48 8Z" fill="url(#__DOM_ID_PREFIX__Shield)"/>
+  <path d="M48 16 70 24v18c0 14-8 27-22 36-14-9-22-22-22-36V24l22-8Z" fill="#ecfdf5" opacity=".18"/>
+  <circle cx="43" cy="43" r="15" fill="#ffffff"/>
+  <path d="m54 54 12 12" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="43" cy="43" r="9" fill="#16A34A"/>
+  <path d="M38 43h10M43 38v10" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+</svg>

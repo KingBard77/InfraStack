@@ -1,83 +1,6 @@
 // custom.js
 // ns:start family._base.workspace.00_shell
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
-
 // ns:start family._base.workspace.05_result-summary
 function installInfraStackResultSummaryNormalizer(prefix) {
     function formatUpdatedLabel() {
@@ -641,32 +564,32 @@ const architectureVpcAwsAllowedAppTiers = ArchitectureVpcAwsModelCore.allowedApp
 const architectureVpcAwsAllowedDatabases = ArchitectureVpcAwsModelCore.allowedDatabases;
 const architectureVpcAwsEngineRuntime = window.InfraStackArchitectureEngineRuntime || null;
 
-const architectureVpcAwsIconSvgMap = {
-    amazonVpc: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-Virtual-Private-Cloud_48.svg')|json_encode|raw }},
-    route53: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-Route-53_48.svg')|json_encode|raw }},
-    cloudFront: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-CloudFront_48.svg')|json_encode|raw }},
-    waf: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_AWS-WAF_48.svg')|json_encode|raw }},
-    internetGateway: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Res_Amazon-VPC_Internet-Gateway_48_Light.svg')|json_encode|raw }},
-    applicationLoadBalancer: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Res_Elastic-Load-Balancing_Application-Load-Balancer_48_Light.svg')|json_encode|raw }},
-    vpcRouter: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Res_Amazon-VPC_Router_48_Light.svg')|json_encode|raw }},
-    natGateway: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Res_Amazon-VPC_NAT-Gateway_48_Light.svg')|json_encode|raw }},
-    ec2: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-EC2_48.svg')|json_encode|raw }},
-    ec2AutoScaling: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-EC2-Auto-Scaling_48.svg')|json_encode|raw }},
-    ecs: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-Elastic-Container-Service_48.svg')|json_encode|raw }},
-    eks: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-Elastic-Kubernetes-Service_48.svg')|json_encode|raw }},
-    fargate: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_AWS-Fargate_48.svg')|json_encode|raw }},
-    lambda: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_AWS-Lambda_48.svg')|json_encode|raw }},
-    rds: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-RDS_48.svg')|json_encode|raw }},
-    aurora: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-Aurora_48.svg')|json_encode|raw }},
-    dynamodb: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-DynamoDB_48.svg')|json_encode|raw }},
-    elasticache: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-ElastiCache_48.svg')|json_encode|raw }},
-    vpcEndpoints: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Res_Amazon-VPC_Endpoints_48_Light.svg')|json_encode|raw }},
-    vpcFlowLogs: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Res_Amazon-VPC_Flow-Logs_48_Light.svg')|json_encode|raw }},
-    cloudWatch: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-CloudWatch_48.svg')|json_encode|raw }},
-    systemsManager: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_AWS-Systems-Manager_48.svg')|json_encode|raw }},
-    siteToSiteVpn: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_AWS-Site-to-Site-VPN_48.svg')|json_encode|raw }},
-    transitGateway: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_AWS-Transit-Gateway_48.svg')|json_encode|raw }},
-    bastion: {{ include('content/tools/aws/architecture-vpc-aws/assets/icon/Arch_Amazon-EC2_48.svg')|json_encode|raw }}
+const architectureVpcAwsIconUrlMap = {
+    amazonVpc: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'amazon-vpc' })|json_encode|raw }},
+    route53: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'route-53' })|json_encode|raw }},
+    cloudFront: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'cloud-front' })|json_encode|raw }},
+    waf: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'waf' })|json_encode|raw }},
+    internetGateway: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'internet-gateway' })|json_encode|raw }},
+    applicationLoadBalancer: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'application-load-balancer' })|json_encode|raw }},
+    vpcRouter: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'vpc-router' })|json_encode|raw }},
+    natGateway: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'nat-gateway' })|json_encode|raw }},
+    ec2: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'ec2' })|json_encode|raw }},
+    ec2AutoScaling: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'ec2-auto-scaling' })|json_encode|raw }},
+    ecs: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'ecs' })|json_encode|raw }},
+    eks: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'eks' })|json_encode|raw }},
+    fargate: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'fargate' })|json_encode|raw }},
+    lambda: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'lambda' })|json_encode|raw }},
+    rds: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'rds' })|json_encode|raw }},
+    aurora: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'aurora' })|json_encode|raw }},
+    dynamodb: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'dynamodb' })|json_encode|raw }},
+    elasticache: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'elasticache' })|json_encode|raw }},
+    vpcEndpoints: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'vpc-endpoints' })|json_encode|raw }},
+    vpcFlowLogs: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'vpc-flow-logs' })|json_encode|raw }},
+    cloudWatch: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'cloud-watch' })|json_encode|raw }},
+    systemsManager: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'systems-manager' })|json_encode|raw }},
+    siteToSiteVpn: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'site-to-site-vpn' })|json_encode|raw }},
+    transitGateway: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'transit-gateway' })|json_encode|raw }},
+    bastion: {{ path('app_aws_architecture_vpc_aws_icon', { iconKey: 'bastion' })|json_encode|raw }}
 };
 
 function initArchitectureVpcAwsTool() {
@@ -720,20 +643,16 @@ function initArchitectureVpcAwsTool() {
 // ns:start family._base.workspace.05_result-summary
     const outputStatus = document.getElementById('architectureVpcAwsOutputStatus');
 // ns:end family._base.workspace.05_result-summary
-// ns:start family._base.workspace.07_table-output
     const pillarBreakdownOutput = document.getElementById('architectureVpcAwsPillarBreakdown');
     const riskLevelOutput = document.getElementById('architectureVpcAwsRiskLevel');
     const inventoryTableBody = document.getElementById('architectureVpcAwsInventoryTableBody');
-// ns:end family._base.workspace.07_table-output
 // ns:start family._base.workspace.06_output-toolbar
     const inventorySortInput = document.getElementById('architectureVpcAwsInventorySort');
     const inventorySortSelect = document.getElementById('architectureVpcAwsInventorySortSelect');
     const inventorySortSummary = document.getElementById('architectureVpcAwsInventorySortSummary');
     const inventorySortOptions = Array.from(document.querySelectorAll('.architecture-vpc-aws-sort-option'));
 // ns:end family._base.workspace.06_output-toolbar
-// ns:start family._base.workspace.07_table-output
     const jsonOutput = document.getElementById('architectureVpcAwsJsonOutput');
-// ns:end family._base.workspace.07_table-output
 // ns:start family.architecture.workspace.04_visual-contract
     const promptSummary = document.getElementById('architectureVpcAwsPromptSummary');
     const keywordList = document.getElementById('architectureVpcAwsKeywordList');
@@ -901,7 +820,6 @@ function initArchitectureVpcAwsTool() {
     let stageZoom = defaultStageZoom;
     let stageUiHidden = false;
     let stageDiagramHighlighted = false;
-    let customSelectControls = [];
     let connectorOverrideContext = {};
     let inventorySortMode = 'id';
     let pendingStageFocusCardId = '';
@@ -928,7 +846,7 @@ function initArchitectureVpcAwsTool() {
         },
         selectors: {
             resizeHandle: '[data-engine-resize-handle], .diagram-resize-handle',
-            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"], .architecture-vpc-aws-custom-select'
+            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"]'
         },
         classes: {
             selected: 'is-selected',
@@ -1167,9 +1085,19 @@ function initArchitectureVpcAwsTool() {
                     event.stopPropagation();
                     marker.classList.toggle('is-open');
                 });
+                marker.addEventListener('keydown', function (event) {
+                    if (event.key !== 'Enter' && event.key !== ' ') {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    event.stopPropagation();
+                    marker.classList.toggle('is-open');
+                });
             }
 
             marker.dataset.info = infoText;
+            marker.setAttribute('role', 'button');
             marker.setAttribute('aria-label', 'More info: ' + infoText);
             popover.textContent = infoText;
         });
@@ -1347,192 +1275,6 @@ function initArchitectureVpcAwsTool() {
     }
 
 // ns:start family._base.workspace.02_basic-settings
-    function getSelectedNativeOption(selectElement) {
-        return Array.from(selectElement.options).find(function (option) {
-            return option.value === selectElement.value;
-        }) || selectElement.options[0] || null;
-    }
-
-    function closeCustomSelects(exceptControl) {
-        customSelectControls.forEach(function (control) {
-            if (exceptControl && control === exceptControl) {
-                return;
-            }
-
-            control.wrapper.classList.remove('open');
-            control.button.setAttribute('aria-expanded', 'false');
-        });
-    }
-
-    function syncCustomSelectControl(control) {
-        const selectedOption = getSelectedNativeOption(control.selectElement);
-        const selectedValue = selectedOption ? selectedOption.value : '';
-
-        control.valueElement.textContent = selectedOption ? selectedOption.textContent : '';
-        control.optionButtons.forEach(function (optionButton) {
-            const isSelected = optionButton.dataset.value === selectedValue;
-
-            optionButton.classList.toggle('selected', isSelected);
-            optionButton.setAttribute('aria-selected', isSelected ? 'true' : 'false');
-        });
-    }
-
-    function syncCustomSelects() {
-        customSelectControls.forEach(syncCustomSelectControl);
-    }
-
-    function focusSelectedCustomOption(control) {
-        const selectedButton = control.optionButtons.find(function (optionButton) {
-            return optionButton.classList.contains('selected');
-        }) || control.optionButtons[0];
-
-        if (selectedButton) {
-            selectedButton.focus();
-        }
-    }
-
-    function openCustomSelect(control) {
-        closeCustomSelects(control);
-        syncCustomSelectControl(control);
-        control.wrapper.classList.add('open');
-        control.button.setAttribute('aria-expanded', 'true');
-    }
-
-    function toggleCustomSelect(control) {
-        if (control.wrapper.classList.contains('open')) {
-            closeCustomSelects();
-            return;
-        }
-
-        openCustomSelect(control);
-    }
-
-    function selectCustomOption(control, value) {
-        if (control.selectElement.value === value) {
-            closeCustomSelects();
-            return;
-        }
-
-        control.selectElement.value = value;
-        syncCustomSelectControl(control);
-        control.selectElement.dispatchEvent(new Event('change', {
-            bubbles: true
-        }));
-        closeCustomSelects();
-    }
-
-    function initializeCustomSelect(selectElement) {
-        if (!selectElement || selectElement.tagName !== 'SELECT') {
-            return;
-        }
-
-        const wrapper = document.createElement('div');
-        const button = document.createElement('button');
-        const valueElement = document.createElement('span');
-        const icon = document.createElement('i');
-        const menu = document.createElement('div');
-
-        wrapper.className = 'architecture-vpc-aws-custom-select';
-        button.type = 'button';
-        button.className = 'architecture-vpc-aws-custom-select-trigger';
-        button.setAttribute('aria-haspopup', 'listbox');
-        button.setAttribute('aria-expanded', 'false');
-        valueElement.className = 'architecture-vpc-aws-custom-select-value';
-        icon.className = 'bi bi-chevron-down';
-        icon.setAttribute('aria-hidden', 'true');
-        menu.className = 'architecture-vpc-aws-custom-select-menu';
-        menu.setAttribute('role', 'listbox');
-
-        button.appendChild(valueElement);
-        button.appendChild(icon);
-        wrapper.appendChild(button);
-        wrapper.appendChild(menu);
-        selectElement.classList.add('architecture-vpc-aws-native-select');
-        selectElement.setAttribute('aria-hidden', 'true');
-        selectElement.tabIndex = -1;
-        selectElement.insertAdjacentElement('afterend', wrapper);
-
-        const control = {
-            selectElement: selectElement,
-            wrapper: wrapper,
-            button: button,
-            valueElement: valueElement,
-            menu: menu,
-            optionButtons: []
-        };
-
-        Array.from(selectElement.options).forEach(function (option) {
-            const optionButton = document.createElement('button');
-
-            optionButton.type = 'button';
-            optionButton.className = 'architecture-vpc-aws-custom-select-option';
-            optionButton.dataset.value = option.value;
-            optionButton.textContent = option.textContent;
-            optionButton.setAttribute('role', 'option');
-            optionButton.addEventListener('click', function () {
-                selectCustomOption(control, option.value);
-                button.focus();
-            });
-            optionButton.addEventListener('keydown', function (event) {
-                const currentIndex = control.optionButtons.indexOf(optionButton);
-
-                if (event.key === 'ArrowDown') {
-                    event.preventDefault();
-                    control.optionButtons[Math.min(control.optionButtons.length - 1, currentIndex + 1)].focus();
-                }
-
-                if (event.key === 'ArrowUp') {
-                    event.preventDefault();
-                    control.optionButtons[Math.max(0, currentIndex - 1)].focus();
-                }
-
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    selectCustomOption(control, option.value);
-                    button.focus();
-                }
-
-                if (event.key === 'Escape') {
-                    event.preventDefault();
-                    closeCustomSelects();
-                    button.focus();
-                }
-            });
-
-            menu.appendChild(optionButton);
-            control.optionButtons.push(optionButton);
-        });
-
-        button.addEventListener('click', function () {
-            toggleCustomSelect(control);
-        });
-        button.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown') {
-                event.preventDefault();
-                openCustomSelect(control);
-                focusSelectedCustomOption(control);
-            }
-
-            if (event.key === 'Escape') {
-                event.preventDefault();
-                closeCustomSelects();
-            }
-        });
-        selectElement.addEventListener('change', function () {
-            syncCustomSelectControl(control);
-        });
-
-        customSelectControls.push(control);
-        syncCustomSelectControl(control);
-    }
-
-    function initializeCustomSelects() {
-// ns:end family._base.workspace.02_basic-settings
-        customSelectElements.filter(function (element) {
-            return element && element.tagName === 'SELECT';
-        }).forEach(initializeCustomSelect);
-    }
-
 // ns:start family._base.workspace.02_basic-settings
     function findPresetById(presetId) {
         return architectureVpcAwsPresetCatalog.find(function (preset) {
@@ -1557,7 +1299,6 @@ function initArchitectureVpcAwsTool() {
 
         presetInput.value = selectedPreset.id;
         presetDescription.textContent = selectedPreset.description;
-        syncCustomSelects();
     }
 
     function activateTab(tabId) {
@@ -2259,7 +2000,6 @@ function initArchitectureVpcAwsTool() {
         siteToSiteVpnInput.checked = Boolean(spec.siteToSiteVpn);
         transitGatewayInput.checked = Boolean(spec.transitGateway);
         cacheInput.checked = Boolean(spec.cache);
-        syncCustomSelects();
 // ns:end family._base.workspace.02_basic-settings
     }
 
@@ -3021,20 +2761,18 @@ function initArchitectureVpcAwsTool() {
         return '<text x="' + x + '" y="' + y + '" class="' + className + '">' + textMarkup + '</text>';
     }
 
-    function buildSvgDataUri(svgString) {
-        if (typeof svgString !== 'string' || svgString.trim() === '') {
+    function resolveCardIconHref(card, options) {
+        const renderOptions = options || {};
+
+        if (renderOptions.loadIcons === false) {
             return '';
         }
 
-        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
-    }
-
-    function resolveCardIconHref(card) {
-        if (!card.iconKey || !Object.prototype.hasOwnProperty.call(architectureVpcAwsIconSvgMap, card.iconKey)) {
+        if (!card.iconKey || !Object.prototype.hasOwnProperty.call(architectureVpcAwsIconUrlMap, card.iconKey)) {
             return '';
         }
 
-        return buildSvgDataUri(architectureVpcAwsIconSvgMap[card.iconKey]);
+        return architectureVpcAwsIconUrlMap[card.iconKey];
     }
 
     function resolveAppTierIconKey(appTier) {
@@ -3637,9 +3375,9 @@ function initArchitectureVpcAwsTool() {
         return labelParts.join('. ');
     }
 
-    function renderSvgCard(card) {
+    function renderSvgCard(card, options) {
         const draggable = card.draggable === true;
-        const iconHref = resolveCardIconHref(card);
+        const iconHref = resolveCardIconHref(card, options);
         const iconTileX = card.x + 12;
         const iconTileY = card.y + 12;
         const iconImageX = card.x + 18;
@@ -3748,11 +3486,12 @@ function initArchitectureVpcAwsTool() {
         ].join('');
     }
 
-    function renderVpcShell(shell) {
-        const iconHref = resolveCardIconHref(shell);
+    function renderVpcShell(shell, options) {
+        const iconHref = resolveCardIconHref(shell, options);
         const iconImage = iconHref !== ''
             ? '<image href="' + iconHref + '" x="' + (shell.x + 18) + '" y="' + (shell.y + 18) + '" width="24" height="24" preserveAspectRatio="xMidYMid meet"></image>'
             : '';
+        const shortText = iconHref === '' ? buildMultilineText(shell.x + 30, shell.y + 38, ['VPC'], 'diagram-pill-text', 14) : '';
 
         return [
             '<g class="diagram-card-group diagram-card-group-draggable" data-card-id="' + shell.id + '" data-card-x="' + shell.x + '" data-card-y="' + shell.y + '" data-card-width="' + shell.width + '" data-card-height="' + shell.height + '" data-draggable="true" tabindex="0" focusable="true" role="button" aria-label="' + escapeHtml('AWS VPC. ' + shell.meta + '. Press Enter to select. Use arrow keys to move. Use Alt plus arrow keys to resize.') + '">',
@@ -3760,6 +3499,7 @@ function initArchitectureVpcAwsTool() {
             '<rect x="' + shell.x + '" y="' + shell.y + '" width="' + shell.width + '" height="' + shell.height + '" rx="20" class="diagram-vpc"></rect>',
             '<rect x="' + (shell.x + 12) + '" y="' + (shell.y + 12) + '" width="36" height="36" rx="12" class="diagram-pill diagram-pill-service"></rect>',
             iconImage,
+            shortText,
             buildMultilineText(shell.x + 60, shell.y + 34, ['AWS VPC'], 'diagram-vpc-title', 16),
             buildMultilineText(shell.x + 60, shell.y + 58, [shell.meta], 'diagram-vpc-meta', 16),
             '<rect x="' + shell.x + '" y="' + shell.y + '" width="' + shell.width + '" height="' + shell.height + '" rx="20" class="diagram-card-hitbox"></rect>',
@@ -3806,7 +3546,8 @@ function initArchitectureVpcAwsTool() {
         return '<rect x="' + (minX - padding) + '" y="' + (minY - padding) + '" width="' + ((maxX - minX) + (padding * 2)) + '" height="' + ((maxY - minY) + (padding * 2)) + '" rx="34" class="diagram-content-highlight"></rect>';
     }
 
-    function buildSvgMarkup(spec, layoutOverrides, connectorOverrides) {
+    function buildSvgMarkup(spec, layoutOverrides, connectorOverrides, options) {
+        const renderOptions = options || {};
         const geometry = computeStageGeometry(spec);
         const safeLayoutOverrides = cloneLayoutOverrides(layoutOverrides);
         const safeConnectorOverrides = cloneConnectorOverrides(connectorOverrides);
@@ -4340,10 +4081,14 @@ function initArchitectureVpcAwsTool() {
         });
 
         const layeredCards = splitCardsByLayer(cards);
-        const svgBackgroundCards = layeredCards.backgroundCards.map(renderSvgCard).join('');
-        const svgForegroundCards = layeredCards.foregroundCards.map(renderSvgCard).join('');
+        const svgBackgroundCards = layeredCards.backgroundCards.map(function (card) {
+            return renderSvgCard(card, renderOptions);
+        }).join('');
+        const svgForegroundCards = layeredCards.foregroundCards.map(function (card) {
+            return renderSvgCard(card, renderOptions);
+        }).join('');
         const svgConnectors = connectors.join('');
-        const vpcShellMarkup = renderVpcShell(vpcShell);
+        const vpcShellMarkup = renderVpcShell(vpcShell, renderOptions);
         const svgContentHighlight = renderDiagramContentHighlight(cards, vpcShell);
         const svgBounds = computeSvgBounds(geometry, cards, vpcShell);
 
@@ -4429,7 +4174,6 @@ function initArchitectureVpcAwsTool() {
                 x: vpcShell.x,
                 y: vpcShell.y,
                 width: vpcShell.width,
-// ns:start family._base.workspace.07_table-output
                 height: vpcShell.height
             }])
         };
@@ -4505,7 +4249,6 @@ function initArchitectureVpcAwsTool() {
 
             lastIndex = tokenPattern.lastIndex;
             matchResult = tokenPattern.exec(json);
-// ns:end family._base.workspace.07_table-output
         }
 
 // ns:start family._base.workspace.06_output-toolbar
@@ -4592,7 +4335,7 @@ function initArchitectureVpcAwsTool() {
                 '<td>' + escapeHtml(item.component) + '</td>',
                 '<td>' + escapeHtml(item.placement) + '</td>',
                 '<td>' + escapeHtml(item.purpose) + '</td>',
-                '<td class="architecture-vpc-aws-table-action-cell">',
+                '<td class="architecture-vpc-aws-table-action-cell tool-table-action-cell">',
                 '<button type="button" class="architecture-vpc-aws-row-copy" data-inventory-copy-row="' + escapeHtml(index) + '" aria-label="Copy inventory row ' + escapeHtml(item.inventoryIndex || index + 1) + '" title="Copy inventory row">',
                 '<i class="bi bi-clipboard" aria-hidden="true"></i>',
                 '</button>',
@@ -4645,13 +4388,53 @@ function initArchitectureVpcAwsTool() {
     }
 
     function flashInventoryCopyButton(button) {
-        button.classList.add('copied');
-        button.setAttribute('title', 'Copied');
+        const icon = button.querySelector('i');
+        const originalIcon = button.dataset.defaultIcon || (icon ? icon.className : '');
+
+        if (icon && !button.dataset.defaultIcon) {
+            button.dataset.defaultIcon = originalIcon;
+        }
+
+        button.classList.add('copied', 'is-copied');
+        if (icon) {
+            icon.className = 'bi bi-check2';
+        }
 
         window.setTimeout(function () {
-            button.classList.remove('copied');
-            button.setAttribute('title', button.dataset.copyTitle || 'Copy row');
+            button.classList.remove('copied', 'is-copied', 'failed');
+            if (icon && button.dataset.defaultIcon) {
+                icon.className = button.dataset.defaultIcon;
+            }
         }, 1400);
+    }
+
+    function fallbackInventoryClipboardText(text) {
+        const textarea = document.createElement('textarea');
+
+        textarea.value = text;
+        textarea.setAttribute('readonly', 'readonly');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        document.execCommand('copy');
+
+        textarea.remove();
+    }
+
+    async function writeInventoryClipboardText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return;
+            } catch (error) {
+                fallbackInventoryClipboardText(text);
+                return;
+            }
+        }
+
+        fallbackInventoryClipboardText(text);
     }
 
     async function copyInventoryRow(rowIndex, button) {
@@ -4665,10 +4448,6 @@ function initArchitectureVpcAwsTool() {
             return;
         }
 
-        if (!navigator.clipboard || !navigator.clipboard.writeText) {
-            showError('Clipboard access is not available in this browser.');
-            return;
-        }
 
         const copyText = buildInventoryCopyText(normalizedRowIndex);
 
@@ -4677,7 +4456,7 @@ function initArchitectureVpcAwsTool() {
         }
 
         try {
-            await navigator.clipboard.writeText(copyText);
+            await writeInventoryClipboardText(copyText);
             flashInventoryCopyButton(button);
 // ns:end family._base.workspace.07_table-output
 // ns:start family.architecture.workspace.04_visual-contract
@@ -4861,7 +4640,6 @@ function initArchitectureVpcAwsTool() {
                 }
             };
 // ns:end family._base.workspace.05_result-summary
-// ns:start family._base.workspace.07_table-output
             window.addEventListener('resize', scoreRingResizeHandler);
         });
     }
@@ -4911,7 +4689,6 @@ function initArchitectureVpcAwsTool() {
             '</div>',
             '<div>',
             '<span>Next review</span>',
-// ns:end family._base.workspace.07_table-output
             '<strong><i class="bi bi-calendar3" aria-hidden="true"></i>' + escapeHtml(formatAssessmentDate(risk.nextReviewAt)) + '</strong>',
 // ns:start family._base.workspace.05_result-summary
             '</div>',
@@ -5801,7 +5578,7 @@ function initArchitectureVpcAwsTool() {
             return false;
         }
 
-        return target.closest('input, textarea, select, button, summary, a[href], [contenteditable="true"], .architecture-vpc-aws-custom-select') !== null;
+        return target.closest('input, textarea, select, button, summary, a[href], [contenteditable="true"]') !== null;
     }
 
     function handleSelectedCardDocumentKeydown(event) {
@@ -6642,7 +6419,9 @@ function initArchitectureVpcAwsTool() {
             return;
         }
 
-        const renderedStage = buildSvgMarkup(previewSpec, {}, {});
+        const renderedStage = buildSvgMarkup(previewSpec, {}, {}, {
+            loadIcons: false
+        });
 
         if (previewOptions.resetZoom === true) {
             stageZoom = defaultStageZoom;
@@ -6756,7 +6535,7 @@ function initArchitectureVpcAwsTool() {
     }
 
     function resetToDefault() {
-        applyPreset(architectureVpcAwsPresetCatalog[0].id, true);
+        applyPreset(architectureVpcAwsPresetCatalog[0].id, false);
 // ns:end family._base.workspace.02_basic-settings
 // ns:start family._base.workspace.01_input-brief
     }
@@ -6793,6 +6572,36 @@ function initArchitectureVpcAwsTool() {
     }
 
     function flashButton(button, label) {
+        if (!button) {
+            return;
+        }
+
+        const actionButton = button.closest ? button.closest('.tool-table-action-cell button') : null;
+
+        if (actionButton) {
+            const isCopied = label === 'Copied';
+            const icon = actionButton.querySelector('i');
+            const originalIcon = actionButton.dataset.defaultIcon || (icon ? icon.className : '');
+
+            if (icon && !actionButton.dataset.defaultIcon) {
+                actionButton.dataset.defaultIcon = originalIcon;
+            }
+
+            actionButton.classList.toggle('copied', isCopied);
+            actionButton.classList.toggle('is-copied', isCopied);
+            actionButton.classList.toggle('failed', !isCopied);
+            if (icon) {
+                icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+            }
+            window.setTimeout(function () {
+                actionButton.classList.remove('copied', 'is-copied', 'failed');
+                if (icon && actionButton.dataset.defaultIcon) {
+                    icon.className = actionButton.dataset.defaultIcon;
+                }
+            }, 1400);
+            return;
+        }
+
         const labelTarget = button.querySelector ? button.querySelector('[data-button-label]') || button : button;
         const originalLabel = labelTarget.dataset.originalLabel || labelTarget.textContent;
 
@@ -6968,7 +6777,6 @@ function initArchitectureVpcAwsTool() {
     function restoreFromImportedPayload(payload) {
         const importedState = buildImportedPayloadState(payload);
 // ns:end family._base.workspace.06_output-toolbar
-// ns:start family._base.workspace.07_table-output
 
         if (importedState.error) {
             showError(importedState.error);
@@ -7031,13 +6839,11 @@ function initArchitectureVpcAwsTool() {
             importJsonInput.value = '';
         };
 
-// ns:end family._base.workspace.07_table-output
         reader.readAsText(file);
     }
 
     populateRegionOptions();
     initMarkdownCopyButtons();
-    initializeCustomSelects();
 // ns:start family._base.workspace.01_input-brief
     syncInventorySortSelect();
 
@@ -7050,14 +6856,12 @@ function initArchitectureVpcAwsTool() {
     tabButtons.forEach(function (button) {
         button.addEventListener('click', function () {
 // ns:end family._base.workspace.02_basic-settings
-// ns:start family._base.workspace.07_table-output
             activateTab(String(button.dataset.tabTarget || 'architectureVpcAwsInventoryPanel'));
         });
     });
     bindTabKeyboardNavigation(tabButtons, 'tabTarget', activateTab);
 
     configTabButtons.forEach(function (button) {
-// ns:end family._base.workspace.07_table-output
         button.addEventListener('click', function () {
 // ns:start family._base.workspace.03_custom-settings
             activateConfigTab(String(button.dataset.configTabTarget || 'architectureVpcAwsNetworkConfigPanel'));
@@ -7112,7 +6916,6 @@ function initArchitectureVpcAwsTool() {
     inventoryTableBody.addEventListener('click', function (event) {
         const button = event.target.closest('.architecture-vpc-aws-row-copy');
 // ns:end family._base.workspace.06_output-toolbar
-// ns:start family._base.workspace.07_table-output
 
         if (!button || !inventoryTableBody.contains(button)) {
             return;
@@ -7127,7 +6930,6 @@ function initArchitectureVpcAwsTool() {
     inventorySortSelect.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
             inventorySortSelect.removeAttribute('open');
-// ns:end family._base.workspace.07_table-output
         }
     });
     importJsonButton.addEventListener('click', function () {
@@ -7207,13 +7009,6 @@ function initArchitectureVpcAwsTool() {
 
         inventorySortSelect.removeAttribute('open');
     });
-    document.addEventListener('click', function (event) {
-        if (event.target.closest('.architecture-vpc-aws-custom-select')) {
-            return;
-        }
-
-        closeCustomSelects();
-    });
 
     [
         regionInput,
@@ -7253,7 +7048,6 @@ function initArchitectureVpcAwsTool() {
     activateConfigTab('architectureVpcAwsNetworkConfigPanel');
     updateFullscreenButton();
 // ns:end family._base.workspace.03_custom-settings
-    initializeInfraStackCustomDropdowns(document);
     applyStageZoom();
     updatePresetSelection();
     applyPreset(architectureVpcAwsPresetCatalog[0].id, false);
@@ -7360,7 +7154,12 @@ if (document.readyState === 'loading') {
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });

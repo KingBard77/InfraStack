@@ -9,6 +9,9 @@
 {# ns:start family.scanning.workspace.04_selected-item #}
 {# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
 {# ns:end family.scanning.workspace.04_selected-item #}
+{# ns:start family.scanning.workspace.04_visual-contract #}
+{# Web scan coverage score, findings, evidence rows, notes, and JSON output adapt the scanning visual contract. #}
+{# ns:end family.scanning.workspace.04_visual-contract #}
 {# ns:start family._base.workspace.05_result-summary #}
 {# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
 {# ns:end family._base.workspace.05_result-summary #}
@@ -38,7 +41,7 @@
                     id="scanWebSecurityUrl"
                     class="form-control scan-web-security-input-control scan-web-security-text-field"
                     placeholder="https://example.com"
-                    value="https://example.com"
+                    value="http://example.com/"
                   >
                   <div class="scan-web-security-input-error d-none" id="scanWebSecurityInputError" role="alert"></div>
                 </div>
@@ -51,8 +54,16 @@
                   id="scanWebSecuritySubmit"
                   data-tool-share-generate
                 >
-                  <i class="bi bi-shield-check" aria-hidden="true"></i>
+                  <i class="bi bi-search" aria-hidden="true"></i>
                   <span>Scan</span>
+                </button>
+                <button
+                  type="button"
+                  class="scan-web-security-action-btn scan-web-security-action-btn-secondary"
+                  id="scanWebSecurityReset"
+                >
+                  <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+                  <span>Reset</span>
                 </button>
               </div>
 
@@ -79,31 +90,12 @@
                 </label>
 
                 <div class="scan-web-security-setting-field">
-                  <details class="scan-web-security-custom-dropdown" data-custom-dropdown-for="scanWebSecurityMethod">
-                    <summary class="scan-web-security-custom-dropdown-summary">
-                      <span data-custom-dropdown-label>HEAD</span>
-                      <span class="scan-web-security-custom-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="scan-web-security-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                      <button
-                        type="button"
-                        class="scan-web-security-custom-dropdown-option active"
-                        data-custom-dropdown-value="HEAD"
-                        role="option"
-                        aria-selected="true"
-                      >HEAD</button>
-
-                      <button
-                        type="button"
-                        class="scan-web-security-custom-dropdown-option"
-                        data-custom-dropdown-value="GET"
-                        role="option"
-                        aria-selected="false"
-                      >GET</button>
-                    </div>
-                  </details>
-                  <input type="hidden" id="scanWebSecurityMethod" value="HEAD">
+                                    <div class="scan-web-security-native-select-wrap" id="scanWebSecurityMethodSelect">
+                    <select id="scanWebSecurityMethod" class="form-select scan-web-security-native-select">
+                      <option value="HEAD" selected>HEAD</option>
+                      <option value="GET">GET</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
@@ -189,39 +181,13 @@
                   </label>
 
                   <div class="scan-web-security-setting-field">
-                    <details class="scan-web-security-custom-dropdown" data-custom-dropdown-for="scanWebSecurityUserAgent">
-                      <summary class="scan-web-security-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>Default client</span>
-                        <span class="scan-web-security-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="scan-web-security-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                        <button
-                          type="button"
-                          class="scan-web-security-custom-dropdown-option active"
-                          data-custom-dropdown-value="default"
-                          role="option"
-                          aria-selected="true"
-                        >Default client</button>
-
-                        <button
-                          type="button"
-                          class="scan-web-security-custom-dropdown-option"
-                          data-custom-dropdown-value="desktop"
-                          role="option"
-                          aria-selected="false"
-                        >Desktop browser</button>
-
-                        <button
-                          type="button"
-                          class="scan-web-security-custom-dropdown-option"
-                          data-custom-dropdown-value="mobile"
-                          role="option"
-                          aria-selected="false"
-                        >Mobile browser</button>
-                      </div>
-                    </details>
-                    <input type="hidden" id="scanWebSecurityUserAgent" value="default">
+                                        <div class="scan-web-security-native-select-wrap" id="scanWebSecurityUserAgentSelect">
+                      <select id="scanWebSecurityUserAgent" class="form-select scan-web-security-native-select">
+                        <option value="default" selected>Default client</option>
+                        <option value="desktop">Desktop browser</option>
+                        <option value="mobile">Mobile browser</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
@@ -353,7 +319,7 @@
                           <th>Status</th>
                           <th>Evidence</th>
                           <th>Recommendation</th>
-                          <th>Copy</th>
+                          <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                         </tr>
                       </thead>
                       <tbody id="scanWebSecurityFindingTableBody"></tbody>
@@ -373,7 +339,7 @@
                           <th>Category</th>
                           <th>Header</th>
                           <th>Value</th>
-                          <th>Copy</th>
+                          <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                         </tr>
                       </thead>
                       <tbody id="scanWebSecurityHeaderTableBody"></tbody>
@@ -392,7 +358,7 @@
                             <th class="tool-generated-rownum-head">#</th>
                             <th>Field</th>
                             <th>Value</th>
-                            <th>Copy</th>
+                            <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                           </tr>
                         </thead>
                         <tbody id="scanWebSecurityTransportTableBody"></tbody>
@@ -414,7 +380,7 @@
                             <th>Path</th>
                             <th>Status</th>
                             <th>Note</th>
-                            <th>Copy</th>
+                            <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                           </tr>
                         </thead>
                         <tbody id="scanWebSecurityKnownFileTableBody"></tbody>
@@ -434,7 +400,7 @@
                             <th>HttpOnly</th>
                             <th>SameSite</th>
                             <th>Issues</th>
-                            <th>Copy</th>
+                            <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                           </tr>
                         </thead>
                         <tbody id="scanWebSecurityCookieTableBody"></tbody>

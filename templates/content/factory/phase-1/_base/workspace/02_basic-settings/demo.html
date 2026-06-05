@@ -190,7 +190,50 @@
         }
 
         .base-demo-tool .base-demo-native-select {
-            padding: 10px 38px 10px 13px;
+            padding: 10px 52px 10px 13px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: none;
+        }
+
+        .base-demo-tool .base-demo-native-select-wrap,
+        .base-demo-tool .base-demo-select {
+            position: relative;
+            display: block;
+            min-width: 0;
+            overflow: visible;
+        }
+
+        .base-demo-tool .base-demo-native-select-wrap::before,
+        .base-demo-tool .base-demo-select::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            z-index: 2;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--base-border);
+            border-radius: 9px;
+            background: #f8fafc;
+            pointer-events: none;
+            transform: translateY(-50%);
+        }
+
+        .base-demo-tool .base-demo-native-select-wrap::after,
+        .base-demo-tool .base-demo-select::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 20.5px;
+            z-index: 3;
+            width: 9px;
+            height: 9px;
+            border-right: 2.25px solid var(--base-accent);
+            border-bottom: 2.25px solid var(--base-accent);
+            border-radius: 1px;
+            pointer-events: none;
+            transform: translateY(-62%) rotate(45deg);
         }
 
         .base-demo-tool .base-demo-text-field::placeholder {
@@ -203,135 +246,6 @@
             border-color: var(--base-accent);
             box-shadow: 0 0 0 3px var(--base-focus-ring);
             outline: none;
-        }
-
-        .base-demo-tool .base-demo-select {
-            position: relative;
-            min-width: 0;
-            border: 1px solid var(--base-border);
-            border-radius: var(--base-radius-sm);
-            background: #ffffff;
-            overflow: visible;
-        }
-
-        .base-demo-tool .base-demo-select[open] {
-            z-index: 90;
-        }
-
-        .base-demo-tool .base-demo-select-summary {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            min-height: 46px;
-            padding: 10px 52px 10px 13px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 1.35;
-            list-style: none;
-            user-select: none;
-        }
-
-        .base-demo-tool .base-demo-select-summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .base-demo-tool .base-demo-select-arrow-slot {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            display: inline-flex;
-            width: 30px;
-            height: 30px;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--base-border);
-            border-radius: 9px;
-            background: #f8fafc;
-            pointer-events: none;
-            transform: translateY(-50%);
-        }
-
-        .base-demo-tool .base-demo-select-arrow-slot::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 9px;
-            height: 9px;
-            border-right: 2.25px solid var(--base-accent);
-            border-bottom: 2.25px solid var(--base-accent);
-            border-radius: 1px;
-            transform: translate(-58%, -50%) rotate(-45deg);
-        }
-
-        .base-demo-tool .base-demo-select[open] .base-demo-select-arrow-slot::before {
-            transform: translate(-50%, -62%) rotate(45deg);
-        }
-
-        .base-demo-tool .base-demo-select-body {
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            z-index: 100;
-            display: grid;
-            gap: 2px;
-            width: 100%;
-            min-width: 100%;
-            max-width: min(100vw - 32px, 360px);
-            max-height: min(340px, 65vh);
-            box-sizing: border-box;
-            padding: 6px;
-            border: 1px solid var(--base-border);
-            border-radius: var(--base-radius-sm);
-            background: #ffffff;
-            box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-
-        .base-demo-tool .base-demo-select-option {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
-            gap: 0;
-            align-items: center;
-            padding: 10px 12px;
-            border: 0;
-            border-radius: 8px;
-            background: transparent;
-            box-shadow: none;
-            cursor: pointer;
-        }
-
-        .base-demo-tool .base-demo-select-option:hover,
-        .base-demo-tool .base-demo-select-option:focus-within,
-        .base-demo-tool .base-demo-select-option:has(input:checked) {
-            background: var(--base-accent-soft);
-            box-shadow: none;
-        }
-
-        .base-demo-tool .base-demo-select-option input {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            margin: 0;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .base-demo-tool .base-demo-select-option-title {
-            display: block;
-            color: var(--base-heading);
-            font-size: 14px;
-            font-weight: 800;
-        }
-
-        .base-demo-tool .base-demo-select-option:hover .base-demo-select-option-title,
-        .base-demo-tool .base-demo-select-option:focus-within .base-demo-select-option-title,
-        .base-demo-tool .base-demo-select-option:has(input:checked) .base-demo-select-option-title {
-            color: var(--base-accent);
         }
 
         .base-demo-tool .base-demo-switch-card {
@@ -531,7 +445,6 @@
 
             .base-demo-tool .base-demo-native-select,
             .base-demo-tool .base-demo-text-field,
-            .base-demo-tool .base-demo-select-summary,
             .base-demo-tool .base-demo-switch-card {
                 min-height: 48px;
             }
@@ -568,11 +481,13 @@
                             <label class="base-demo-setting-label" for="baseDemoPreset">Primary selector</label>
                             <span class="base-demo-helper-chip" title="Select the primary preset or scope" aria-label="Select the primary preset or scope">i</span>
                         </div>
-                        <select id="baseDemoPreset" class="base-demo-native-select">
-                            <option selected>Default preset</option>
-                            <option>Focused preset</option>
-                            <option>Blank settings</option>
-                        </select>
+                        <div class="base-demo-native-select-wrap">
+                            <select id="baseDemoPreset" class="base-demo-native-select">
+                                <option selected>Default preset</option>
+                                <option>Focused preset</option>
+                                <option>Blank settings</option>
+                            </select>
+                        </div>
                         <p class="base-demo-setting-hint">Native dropdowns keep the same height, focus ring, and mobile width.</p>
                     </div>
 
@@ -581,23 +496,14 @@
                             <span class="base-demo-setting-label">Dropdown option</span>
                             <span class="base-demo-helper-chip" title="Choose a structured option" aria-label="Choose a structured option">i</span>
                         </div>
-                        <details class="base-demo-select">
-                            <summary class="base-demo-select-summary">
-                                <span>Standard option</span>
-                                <span class="base-demo-select-arrow-slot" aria-hidden="true"></span>
-                            </summary>
-                            <div class="base-demo-select-body">
-                                <label class="base-demo-select-option">
-                                    <input type="radio" name="baseDemoOption" checked>
-                                    <span class="base-demo-select-option-title">Standard option</span>
-                                </label>
-                                <label class="base-demo-select-option">
-                                    <input type="radio" name="baseDemoOption">
-                                    <span class="base-demo-select-option-title">Focused option</span>
-                                </label>
-                            </div>
-                        </details>
-                        <p class="base-demo-setting-hint">Dropdown options open as a popup list and keep state inputs visually hidden.</p>
+                        <div class="base-demo-select">
+                            <select class="base-demo-native-select" aria-label="Dropdown option">
+                                <option selected>Standard option</option>
+                                <option>Focused option</option>
+                                <option>Blank option</option>
+                            </select>
+                        </div>
+                        <p class="base-demo-setting-hint">Dropdown choices use the browser-native popup while the closed control keeps the Base arrow chip.</p>
                     </div>
 
                     <div class="base-demo-setting-card">

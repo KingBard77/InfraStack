@@ -1,4 +1,7 @@
 {# tool.html.twig #}
+{# ns:start family.calculate.workspace.04_visual-contract #}
+{# Accepted divergence: calculate visual contract remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.04_visual-contract #}
 {# ns:start family.calculate.workspace.04_selected-item #}
 {# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
 {# ns:end family.calculate.workspace.04_selected-item #}
@@ -74,37 +77,14 @@
 
           <div class="calculate-cost-ibm-setting-field">
             <div class="calculate-cost-ibm-inline-grid calculate-cost-ibm-inline-grid-preset">
-              <details class="calculate-cost-ibm-select" id="calculateCostIbmPresetSelect">
-                <summary class="calculate-cost-ibm-select-summary">
-                  <span id="calculateCostIbmPresetSummary">Lean web platform</span>
-                  <span class="calculate-cost-ibm-select-arrow-slot" aria-hidden="true"></span>
-                </summary>
-
-                <div class="calculate-cost-ibm-select-body">
-                  <div class="calculate-cost-ibm-select-grid calculate-cost-ibm-select-grid-list">
-                    <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                      <input type="radio" name="calculateCostIbmPresetOption" value="lean-web" checked>
-                      <span class="calculate-cost-ibm-select-title">Lean web platform</span>
-                    </label>
-
-                    <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                      <input type="radio" name="calculateCostIbmPresetOption" value="serverless-api">
-                      <span class="calculate-cost-ibm-select-title">Serverless API</span>
-                    </label>
-
-                    <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                      <input type="radio" name="calculateCostIbmPresetOption" value="steady-platform">
-                      <span class="calculate-cost-ibm-select-title">Steady application platform</span>
-                    </label>
-
-                    <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                      <input type="radio" name="calculateCostIbmPresetOption" value="blank">
-                      <span class="calculate-cost-ibm-select-title">Blank estimate</span>
-                    </label>
-                  </div>
-                </div>
-              </details>
-              <input type="hidden" id="calculateCostIbmPreset" value="lean-web">
+              <div class="calculate-cost-ibm-native-select-wrap" id="calculateCostIbmPresetSelect">
+                <select id="calculateCostIbmPreset" class="form-select calculate-cost-ibm-native-select">
+                  <option value="lean-web" selected>Lean web platform</option>
+                  <option value="serverless-api">Serverless API</option>
+                  <option value="steady-platform">Steady application platform</option>
+                  <option value="blank">Blank estimate</option>
+                </select>
+              </div>
 
               <button type="button" class="calculate-cost-ibm-secondary-btn" id="calculateCostIbmApplyPreset">Apply preset</button>
             </div>
@@ -153,92 +133,30 @@
               <div class="calculate-cost-ibm-card-grid calculate-cost-ibm-card-grid-two">
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmComputeInstance" class="calculate-cost-ibm-field-label">VSI profile</label>
-                  <details class="calculate-cost-ibm-select" id="calculateCostIbmComputeInstanceSelect">
-                    <summary class="calculate-cost-ibm-select-summary">
-                      <span id="calculateCostIbmComputeInstanceSummary">bx2-2x8 - 2 vCPU - 8 GiB</span>
-                      <span class="calculate-cost-ibm-select-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="calculate-cost-ibm-select-body">
-                      <div class="calculate-cost-ibm-select-grid calculate-cost-ibm-select-grid-list">
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputeInstanceOption" value="bx2-2x8" checked>
-                          <span class="calculate-cost-ibm-select-title">bx2-2x8 - 2 vCPU - 8 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputeInstanceOption" value="bx2-4x16">
-                          <span class="calculate-cost-ibm-select-title">bx2-4x16 - 4 vCPU - 16 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputeInstanceOption" value="cx2-4x8">
-                          <span class="calculate-cost-ibm-select-title">cx2-4x8 - 4 vCPU - 8 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputeInstanceOption" value="mx2-4x32">
-                          <span class="calculate-cost-ibm-select-title">mx2-4x32 - 4 vCPU - 32 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputeInstanceOption" value="bx3d-4x20">
-                          <span class="calculate-cost-ibm-select-title">bx3d-4x20 - 4 vCPU - 20 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputeInstanceOption" value="custom">
-                          <span class="calculate-cost-ibm-select-title" id="calculateCostIbmComputeCustomOptionLabel">Custom size - user defined</span>
-                        </label>
-                      </div>
-                    </div>
-                  </details>
-                  <input type="hidden" id="calculateCostIbmComputeInstance" value="bx2-2x8">
+                  <div class="calculate-cost-ibm-native-select-wrap" id="calculateCostIbmComputeInstanceSelect">
+                    <select id="calculateCostIbmComputeInstance" class="form-select calculate-cost-ibm-native-select">
+                      <option value="bx2-2x8" selected>bx2-2x8 - 2 vCPU - 8 GiB</option>
+                      <option value="bx2-4x16">bx2-4x16 - 4 vCPU - 16 GiB</option>
+                      <option value="cx2-4x8">cx2-4x8 - 4 vCPU - 8 GiB</option>
+                      <option value="mx2-4x32">mx2-4x32 - 4 vCPU - 32 GiB</option>
+                      <option value="bx3d-4x20">bx3d-4x20 - 4 vCPU - 20 GiB</option>
+                      <option id="calculateCostIbmComputeCustomOptionLabel" value="custom">Custom size - user defined</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmComputePurchase" class="calculate-cost-ibm-field-label">Purchase model</label>
-                  <details class="calculate-cost-ibm-select" id="calculateCostIbmComputePurchaseSelect">
-                    <summary class="calculate-cost-ibm-select-summary">
-                      <span id="calculateCostIbmComputePurchaseSummary">Hourly</span>
-                      <span class="calculate-cost-ibm-select-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="calculate-cost-ibm-select-body">
-                      <div class="calculate-cost-ibm-select-grid calculate-cost-ibm-select-grid-two">
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputePurchaseOption" value="onDemand" checked>
-                          <span class="calculate-cost-ibm-select-title">Hourly</span>
-                        </label>
-
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputePurchaseOption" value="spot">
-                          <span class="calculate-cost-ibm-select-title">Spot</span>
-                        </label>
-
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputePurchaseOption" value="savings1">
-                          <span class="calculate-cost-ibm-select-title">Commitment 1yr</span>
-                        </label>
-
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputePurchaseOption" value="savings3">
-                          <span class="calculate-cost-ibm-select-title">Commitment 3yr</span>
-                        </label>
-
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputePurchaseOption" value="reserved1">
-                          <span class="calculate-cost-ibm-select-title">Reserved 1yr</span>
-                        </label>
-
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmComputePurchaseOption" value="reserved3">
-                          <span class="calculate-cost-ibm-select-title">Reserved 3yr</span>
-                        </label>
-                      </div>
-                    </div>
-                  </details>
-                  <input type="hidden" id="calculateCostIbmComputePurchase" value="onDemand">
+                  <div class="calculate-cost-ibm-native-select-wrap" id="calculateCostIbmComputePurchaseSelect">
+                    <select id="calculateCostIbmComputePurchase" class="form-select calculate-cost-ibm-native-select">
+                      <option value="onDemand" selected>Hourly</option>
+                      <option value="spot">Spot</option>
+                      <option value="savings1">Commitment 1yr</option>
+                      <option value="savings3">Commitment 3yr</option>
+                      <option value="reserved1">Reserved 1yr</option>
+                      <option value="reserved3">Reserved 3yr</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="calculate-cost-ibm-custom-instance-grid calculate-cost-ibm-card-span-two d-none" id="calculateCostIbmComputeCustomFields">
@@ -418,27 +336,12 @@
               <div class="calculate-cost-ibm-card-grid calculate-cost-ibm-card-grid-two">
                 <div class="calculate-cost-ibm-field-stack">
                   <label for="calculateCostIbmApiType" class="calculate-cost-ibm-field-label">API type</label>
-                  <details class="calculate-cost-ibm-select" id="calculateCostIbmApiTypeSelect">
-                    <summary class="calculate-cost-ibm-select-summary">
-                      <span id="calculateCostIbmApiTypeSummary">Essentials gateway</span>
-                      <span class="calculate-cost-ibm-select-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="calculate-cost-ibm-select-body">
-                      <div class="calculate-cost-ibm-select-grid calculate-cost-ibm-select-grid-two">
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmApiTypeOption" value="http" checked>
-                          <span class="calculate-cost-ibm-select-title">Essentials gateway</span>
-                        </label>
-
-                        <label class="calculate-cost-ibm-select-card calculate-cost-ibm-radio-card">
-                          <input type="radio" name="calculateCostIbmApiTypeOption" value="rest">
-                          <span class="calculate-cost-ibm-select-title">Standard gateway</span>
-                        </label>
-                      </div>
-                    </div>
-                  </details>
-                  <input type="hidden" id="calculateCostIbmApiType" value="http">
+                  <div class="calculate-cost-ibm-native-select-wrap" id="calculateCostIbmApiTypeSelect">
+                    <select id="calculateCostIbmApiType" class="form-select calculate-cost-ibm-native-select">
+                      <option value="http" selected>Essentials gateway</option>
+                      <option value="rest">Standard gateway</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="calculate-cost-ibm-field-stack">
@@ -771,7 +674,7 @@
                     <th>Unit basis</th>
                     <th>Monthly</th>
                     <th>Annual</th>
-                    <th>Copy</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                   </tr>
                 </thead>
                 <tbody id="calculateCostIbmBreakdownTableBody"></tbody>
@@ -793,7 +696,7 @@
                     <th>Annual</th>
                     <th>Share</th>
                     <th>Signal</th>
-                    <th>Copy</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                   </tr>
                 </thead>
                 <tbody id="calculateCostIbmServiceTableBody"></tbody>
@@ -813,7 +716,7 @@
                     <th>Assumption</th>
                     <th>Value</th>
                     <th>Note</th>
-                    <th>Copy</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                   </tr>
                 </thead>
                 <tbody id="calculateCostIbmAssumptionTableBody"></tbody>

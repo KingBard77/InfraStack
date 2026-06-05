@@ -1,13 +1,13 @@
 family: architecture
-version: 1.4.1
+version: 1.4.2
 status: active
 description: Baseline template for InfraStack prompt-driven architecture tools.
-baseline_snapshot: "2026-05-18"
+baseline_snapshot: "2026-06-04"
 agent_map: templates/content/factory/phase-1/_family/architecture/FAMILY.md
 
 baseline_path: templates/content/factory/phase-1/_family/architecture/
 preferred_baseline_path: templates/content/factory/phase-1/_family/architecture/
-workspace_path: templates/content/factory/phase-1/_family/architecture/workspace/
+source_path: templates/content/factory/phase-1/_family/architecture/source/architecture-vpc-aws/
 scaffold_path: templates/content/factory/phase-2/_content/scaffold/
 content_sections_path: templates/content/factory/phase-2/_content/sections/
 
@@ -22,10 +22,10 @@ reference_tool:
 
 runtime_baseline:
     source_tool: templates/content/tools/aws/architecture-vpc-aws/
-    source_snapshot: templates/content/factory/phase-1/_family/architecture/source/
-    workspace_sections: templates/content/factory/phase-1/_family/architecture/workspace/
-    model_core: templates/content/factory/phase-1/_family/architecture/workspace/04_visual-contract/model-core.js
-    engine_runtime: templates/content/factory/phase-1/_family/architecture/workspace/04_visual-contract/engine-runtime.js
+    source_snapshot: templates/content/factory/phase-1/_family/architecture/source/architecture-vpc-aws/
+    source_package: templates/content/factory/phase-1/_family/architecture/source/architecture-vpc-aws/
+    model_core: templates/content/factory/phase-1/_family/architecture/source/architecture-vpc-aws/assets/bin/model-core.js
+    engine_runtime: templates/content/factory/phase-1/_family/architecture/source/architecture-vpc-aws/assets/bin/engine-runtime.js
     copy_mode: base_plus_family_contract
     css_js_mode: base_plus_family_extracted
     root_runtime_snapshots: false
@@ -42,16 +42,16 @@ runtime_baseline:
             section_specific: workspace section.css owns only the CSS needed by its section
             forbidden: full custom.css copies inside section folders
         js:
-            engine_runtime: 04_visual-contract/engine-runtime.js owns reusable stage interaction behavior for per-tool adapters
+            engine_runtime: assets/bin/engine-runtime.js owns reusable stage interaction behavior for per-tool adapters
             source_ownership_maps: workspace section.js records section-specific custom.js line ranges, DOM IDs, classes, variables, functions, and behaviors
             forbidden: full custom.js runtime strings inside section folders
-    model_core_sha256: cf9110167b5ab4e2bd108f2bfdcc6b7939bbc99d941ab891ebb59cd658242bb2
+    model_core_sha256: ce168657008982deafc34f9eab655384c0cf73ed6ee55eee6c17a6d5052e6ef2
     source_hashes:
-        tool_html_twig: 117931f15ad2a68656043077b4e807f0975d9ce30783a9e55e62993bb6677b86
-        custom_css: ce4b668b97a948fe9f3e3e23d63b6bb1c33f1356188f00a12a3a8d8d22eb6f0a
-        custom_js: 87e65e2126432eade9dab0e02d9bfb26e3f1a7961e7e25f05cbb99b30edcd966
-        model_core: cf9110167b5ab4e2bd108f2bfdcc6b7939bbc99d941ab891ebb59cd658242bb2
-    rule: Keep the full copied architecture source under source/ as a reference-only snapshot. Do not audit this as active source. Use `_base/workspace` for common section shape and architecture workspace only for visual-contract and selected-item sources.
+        tool_html_twig: 70746996771efd3822151c80940cce53fdd23f24dd7ecb21d1366501123b996f
+        custom_css: a7124612a1d0998477ec33a8d4d59bff58bf9d92f4f72b6e6f87677435051f80
+        custom_js: 81521f8c992fbb6b796d45687ea3e7acf0586beaa5ed37aba63e5b97ac5ea2b6
+        model_core: ce168657008982deafc34f9eab655384c0cf73ed6ee55eee6c17a6d5052e6ef2
+    rule: Keep the full copied architecture source under source/architecture-vpc-aws/ as a reference-only full package snapshot. Audit it for freshness against production before using it as a seed. Use `_base/workspace` for common section shape and architecture workspace only for visual-contract and selected-item sources.
 
 runtime_parity:
     default_profile: editable_architecture
@@ -77,6 +77,14 @@ runtime_parity:
                 - hidden_first
                 - normalized_state
                 - editable_stage
+                - preview_fit_to_stage
+                - generated_fit_to_stage
+                - dynamic_diagram_bounds
+                - readable_card_text_bounds
+                - connector_anchor_and_bend_routing
+                - viewport_state_persistence
+                - layout_override_persistence
+                - connector_override_persistence
                 - selected_item_editor
                 - sort_state_sync
                 - tab_state_sync
@@ -270,13 +278,13 @@ workspace_flow:
     - sort_and_export_toolbar
     - inventory_assessment_notes_export_json_restore_state
 
-workspace_namespaces:
+source_namespaces:
     - family._base.workspace.00_shell
     - family._base.workspace.01_input-brief
     - family._base.workspace.02_basic-settings
     - family._base.workspace.03_custom-settings
-    - family.architecture.workspace.04_visual-contract
     - family.architecture.workspace.04_selected-item
+    - family.architecture.workspace.04_visual-contract
     - family._base.workspace.05_result-summary
     - family._base.workspace.06_output-toolbar
     - family._base.workspace.07_table-output
@@ -300,7 +308,12 @@ baseline_standard:
             - edge_or_ingress_lane_above_main_boundary
             - symmetrical_repeated_zone_or_az_columns
             - equal_container_subnet_and_section_gaps
+            - model_reported_svg_width_and_height
+            - rendered_svg_bounds_match_model_bounds
+            - png_export_uses_model_bounds
             - rendered_bounds_auto_fit_on_initial_generated_view
+            - rendered_bounds_auto_fit_on_initial_preview_view
+            - compact_card_text_remains_inside_card_bounds
         connectors:
             - persistent_svg_paths
             - straight_orthogonal_90_degree_routing
@@ -308,6 +321,8 @@ baseline_standard:
             - fixed_arrowhead_sizing
             - invisible_wide_hit_targets
             - connector_click_selection
+            - explicit_source_and_target_ratios_where_needed
+            - explicit_bend_points_or_equivalent_routing_where_needed
             - connector_anchor_and_bend_handles_when_editable
             - connector_override_state_in_json_restore
             - redraw_paths_when_connected_boxes_move
@@ -320,10 +335,15 @@ baseline_standard:
             - click_any_diagram_box_to_select
             - cursor_drag_moves_movable_boxes
             - cursor_state_feedback_on_draggable_items
+            - shared_engine_runtime_or_equivalent_stage_adapter
+            - first_refresh_preview_uses_fit_to_stage
+            - generated_stage_uses_fit_to_stage
+            - imported_viewport_is_not_overwritten_by_auto_fit
             - selected_border_ring_or_handle_without_layout_shift
             - selected_item_updates_inspector
             - highlight_preserves_grid_content_and_connector_visibility
             - dragged_positions_update_normalized_layout_state
+            - boundary_frames_render_behind_editable_cards_unless_editable
             - auto_layout_button_keeps_reset_layout_dom_id
             - reset_layout_returns_boxes_and_connectors_to_generated_placement
             - cursor_marquee_renders_as_stage_canvas_overlay_not_svg_rect
@@ -363,8 +383,8 @@ baseline_standard:
         - placement
         - purpose
     basic_dropdown_control_height: 46px
-    basic_dropdown_implementation: custom_select_enhancement
-    basic_dropdown_menu_width: trigger
+    basic_dropdown_implementation: native_select
+    basic_dropdown_menu_width: browser_owned
     basic_placeholder_chip: false
     sort_control_min_height: 46px
     sort_dropdown_menu_width: trigger
@@ -373,13 +393,13 @@ baseline_standard:
     result_table_demo: templates/content/factory/phase-1/_base/workspace/07_table-output/demo.html
     result_table_demo_requirement: Demo shows two-row one-column before/after states and includes generated dummy inventory rows, copy-row action buttons, secondary table rows, pillar rows, risk copy, JSON output, and restore boundary.
     before_after_demo_sections:
-        - templates/content/factory/phase-1/_family/architecture/workspace/04_selected-item/demo.html
-        - templates/content/factory/phase-1/_family/architecture/workspace/04_visual-contract/demo.html
+        - templates/content/factory/phase-1/_family/architecture/source/architecture-vpc-aws/demo.html
         - templates/content/factory/phase-1/_base/workspace/07_table-output/demo.html
     visible_language_rule: Adapt provider and domain wording in final tools; AWS reference wording is allowed only for AWS tools or baseline demos.
 
 visualizer_interaction:
     - initial_blurred_preset_preview_before_generation
+    - preview_render_uses_same_fit_to_stage_path_as_generated_render
     - generated_output_state_locked_until_preset_or_generate
     - selectable_stage_objects
     - selected_object_updates_inspector
@@ -394,12 +414,18 @@ visualizer_interaction:
     - keyboard_movement_for_selected_objects
     - undo_shortcuts_for_persisted_stage_edits
     - selectable_connectors_with_wide_hit_targets
+    - connector_ratios_or_bends_defined_for_generated_connector_families
     - connector_anchor_and_bend_handles_when_editable
     - connector_redraw_on_box_movement
+    - viewport_state_in_json_restore
     - layout_and_connector_overrides_in_json_restore
 
 visual_layout:
     - minimal_modern_architecture_infographic_style
+    - model_reported_dynamic_svg_bounds
+    - rendered_svg_viewbox_matches_model_bounds
+    - initial_preview_and_generated_stage_auto_fit
+    - compact_card_text_stays_inside_card_bounds
     - centered_main_traffic_path
     - aligned_top_level_flow_boxes
     - equal_container_subnet_and_section_gaps
@@ -429,13 +455,19 @@ generation_rules:
     - Generate the final runtime package under templates/content/tools/<category>/<tool-slug>/.
     - Do not use the family directory as the final runtime package.
     - Do not omit tool-local files because the family source exists.
-    - Keep full copied architecture source under source/ as a reference-only snapshot when refreshing this baseline. Do not audit this as active source.
-    - Compose architecture workspace output from `workspace_namespaces`, not from duplicated architecture copies of `_base` sections.
+    - Keep the full copied architecture source under source/architecture-vpc-aws/ as the approved production package snapshot.
+    - Audit the source snapshot for freshness against templates/content/tools/aws/architecture-vpc-aws/ before using it as a seed.
+    - Compose architecture output from `source_namespaces`, not from duplicated architecture copies of `_base` sections.
     - Source common shell, input, settings, summary, toolbar, table, and JSON restore sections from `_base/workspace`.
-    - Use section-owned architecture CSS and JavaScript sources only for 04_visual-contract and 04_selected-item.
-    - Do not create root workspace/custom.css, workspace/custom.js, or workspace/demo.html.twig snapshot files.
-    - Use workspace/04_visual-contract/engine-runtime.js as the reusable stage interaction engine when final tools opt into the shared architecture engine.
-    - Use workspace/04_visual-contract/model-core.js only as a reusable model-core reference when final tools need it.
+    - Use namespace-marked source package runtime files for 04_visual-contract and 04_selected-item.
+    - Do not create loose root-level source/custom.css, source/custom.js, or source/tool.html.twig files.
+    - Use source package assets/bin/engine-runtime.js as the reusable stage interaction engine when final tools opt into the shared architecture engine.
+    - Use source package assets/bin/model-core.js only as a reusable model-core reference when final tools need it.
+    - Wire final architecture adapters so preview and generated renders both call the fit-to-stage path unless restoring an imported viewport.
+    - Require final architecture models or adapters to expose dynamic diagram width and height for SVG viewBox, rendered SVG size, zoom-to-fit, and PNG export.
+    - Require generated node and card dimensions to keep icon tiles, titles, subtitles, badges, handles, and connector paths inside readable bounds.
+    - Require generated connectors to declare source ratios, target ratios, bends, or equivalent routing for connector families that need reserved gaps.
+    - Require editable architecture tools to export and restore viewport, selection, layout override, and connector override state.
     - Use AWS VPC Architecture only as a reference implementation.
     - Do not copy provider-specific language into unrelated tools.
     - Keep architecture support examples on 03_example-prompts unless literal command examples are implemented.
@@ -443,7 +475,7 @@ generation_rules:
     - Apply category/provider token lineage, restrained visual weight, and tool-specific namespace.
     - Keep CSS and JavaScript scoped to the final tool.
     - Keep content domain-native and aligned with actual behavior.
-    - Use family workspace source from templates/content/factory/phase-1/_family/architecture/workspace/.
+    - Use the tokenized family source package from templates/content/factory/phase-1/_family/architecture/source/architecture-vpc-aws/.
     - Use shared content section source from templates/content/factory/phase-2/_content/sections/.
     - Apply phase-2 content sections as a full contract: content.md markup, section.css visual behavior, and section.js helper behavior when present.
     - Final tool custom.css and custom.js must preserve the applied section card frame, heading divider, typography, table, list, details, FAQ, copy, citation, prompt, or command behavior unless a documented shared include exists.
@@ -453,7 +485,7 @@ generation_rules:
     - Keep the pre-generate output notice exact.
     - Keep the generated output tabs as Technical Inventory, Prompt Notes, Pillar Breakdown, Risk Level, and JSON unless a domain-specific label change is documented.
     - Treat Pillar Breakdown and Risk Level as advisory model summaries, not compliance, certification, security, reliability, or production proof.
-    - Keep Basic tab dropdowns on the baseline select wrapper, custom styled menu, trigger-width dropdown menu, focus ring, 46px control height, and no placeholder-chip overlay.
+    - Keep Basic tab dropdowns on the baseline native select wrapper with visible browser-owned popup, centered arrow chip, focus ring, 46px control height, and no placeholder-chip overlay.
     - Keep the inventory Sort default as ID.
     - Keep the Sort dropdown aligned to the Basic select control height: 46px trigger, trigger-width menu, selected sort label only, and no placeholder chip.
     - Use secondary output table cards for routing, control, or domain summary rows when the generated model includes those rows.
@@ -475,16 +507,16 @@ generation_rules:
 validation_rules:
     - README.md exists.
     - manifest.yml exists.
-    - workspace/README.md exists.
-    - workspace/manifest.yml exists.
-    - source/tool.html.twig, source/custom.css, source/custom.js, and source/assets/bin/model-core.js exist.
-    - source/tool.html.twig, source/custom.css, and source/custom.js contain namespace markers for composed `_base` and architecture-owned workspace sections.
-    - source files do not use legacy source:start or source:end markers for architecture workspace extraction.
-    - No root workspace/custom.css, workspace/custom.js, or workspace/demo.html.twig snapshot files exist.
+    - source package folder exists.
+    - source demo.html exists.
+    - source/ contains only source/architecture-vpc-aws/.
+    - source/architecture-vpc-aws/card.yml, content.md, custom.css, custom.js, demo.html, meta.yml, tool.html.twig, assets/bin/, assets/icon/, and assets/img/post.html.twig exist.
+    - source/architecture-vpc-aws/ matches templates/content/tools/aws/architecture-vpc-aws/ file-for-file, except local Finder artifacts.
+    - No loose root-level source/custom.css, source/custom.js, or source/tool.html.twig files exist.
     - Shared phase-2 content section folders exist under templates/content/factory/phase-2/_content/sections/.
     - Citation links and References rows are paired when 10_references is used.
-    - Architecture-owned workspace section folders exist under templates/content/factory/phase-1/_family/architecture/workspace/.
-    - Only architecture-owned workspace section folders remain beside optional assets.
+    - Architecture source namespace markers exist inside the source package runtime files.
+    - Only the approved source package remains under templates/content/factory/phase-1/_family/architecture/source/.
     - All required output files are created in the final tool package.
     - Required first-line markers are present.
     - No root-level post.html.twig is created.
@@ -497,7 +529,14 @@ validation_rules:
     - JSON restore validates tool ID and version.
     - Content does not leak stale provider terms.
     - First refresh shows the blurred preset preview and keeps output/export state empty.
+    - First refresh preview uses fit-to-stage when the stage size is known.
     - Preset selection or the primary generate action replaces the preview with the real generated stage.
+    - Generated stage uses fit-to-stage when no imported viewport is being restored.
+    - Imported JSON viewport is restored instead of overwritten by auto-fit.
+    - Model or adapter exposes diagram width and height from generated content bounds.
+    - SVG viewBox, rendered SVG dimensions, zoom-to-fit, and PNG export use model-reported diagram bounds.
+    - Compact node/card titles and subtitles remain inside card bounds.
+    - Boundary frames render behind editable cards and connector paths unless the final tool documents them as editable.
     - Sort dropdown renders the selected sort label only and keeps the Basic 46px trigger height with a trigger-width menu.
     - Secondary output table sections render from normalized model data or are omitted.
     - Pillar Breakdown and Risk Level tabs render from the normalized model after generation.
@@ -506,7 +545,9 @@ validation_rules:
     - Diagram box selection updates the inspector and keeps grid, box content, and connector paths visible.
     - Connector paths have a fixed visual stroke, fixed arrowhead sizing, and invisible wide hit targets when editable.
     - Connector selection exposes anchor or bend handles when connector editing exists.
+    - Connector source ratios, target ratios, bend points, or equivalent routing are present for generated connector families that need reserved gaps.
     - Moving a box redraws affected connector paths when connectors are editable.
+    - JSON export and restore preserve viewport, selection, layout overrides, and connector overrides when the stage is editable.
     - Connector routes avoid boxes, labels, and unintended boundary crossings.
     - Default diagram spacing leaves clear lanes and readable labels.
     - Default generated diagrams keep equal gaps, aligned top-level flow boxes, centered traffic paths, and symmetrical repeated zones where applicable.

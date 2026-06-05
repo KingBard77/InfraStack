@@ -37,6 +37,14 @@
             <i class="bi bi-search" aria-hidden="true"></i>
             <span>Explore</span>
           </button>
+          <button
+            type="button"
+            class="assess-ubuntu-2204-cis-action-btn assess-ubuntu-2204-cis-action-btn-secondary"
+            id="assessUbuntu2204CisReset"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            <span>Reset</span>
+          </button>
         </div>
 
         <div class="assess-ubuntu-2204-cis-input-helper-card">
@@ -64,18 +72,10 @@
           </label>
 
           <div class="assess-ubuntu-2204-cis-setting-field">
-            <details class="assess-ubuntu-2204-cis-select" id="assessUbuntu2204CisFamilySelect">
-              <summary class="assess-ubuntu-2204-cis-select-summary">
-                <span id="assessUbuntu2204CisFamilySummary">All sections</span>
-                <span class="assess-ubuntu-2204-cis-select-arrow-slot" aria-hidden="true"></span>
-              </summary>
-
-              <div class="assess-ubuntu-2204-cis-select-body">
-                <div class="assess-ubuntu-2204-cis-select-grid" id="assessUbuntu2204CisFamilyOptions"></div>
+            <div class="assess-ubuntu-2204-cis-native-select-wrap">
+                <select id="assessUbuntu2204CisFamily" class="form-select assess-ubuntu-2204-cis-native-select">
+                </select>
               </div>
-            </details>
-
-            <input type="hidden" id="assessUbuntu2204CisFamily" value="all">
           </div>
         </div>
 
@@ -86,18 +86,10 @@
           </label>
 
           <div class="assess-ubuntu-2204-cis-setting-field">
-            <details class="assess-ubuntu-2204-cis-select" id="assessUbuntu2204CisSectionSelect">
-              <summary class="assess-ubuntu-2204-cis-select-summary">
-                <span id="assessUbuntu2204CisSectionSummary">All paths</span>
-                <span class="assess-ubuntu-2204-cis-select-arrow-slot" aria-hidden="true"></span>
-              </summary>
-
-              <div class="assess-ubuntu-2204-cis-select-body assess-ubuntu-2204-cis-select-body-scroll">
-                <div class="assess-ubuntu-2204-cis-select-grid" id="assessUbuntu2204CisSectionOptions"></div>
+            <div class="assess-ubuntu-2204-cis-native-select-wrap">
+                <select id="assessUbuntu2204CisSectionPath" class="form-select assess-ubuntu-2204-cis-native-select">
+                </select>
               </div>
-            </details>
-
-            <input type="hidden" id="assessUbuntu2204CisSectionPath" value="all">
           </div>
         </div>
 
@@ -108,18 +100,10 @@
           </label>
 
           <div class="assess-ubuntu-2204-cis-setting-field">
-            <details class="assess-ubuntu-2204-cis-select" id="assessUbuntu2204CisCriticalitySelect">
-              <summary class="assess-ubuntu-2204-cis-select-summary">
-                <span id="assessUbuntu2204CisCriticalitySummary">All criticality</span>
-                <span class="assess-ubuntu-2204-cis-select-arrow-slot" aria-hidden="true"></span>
-              </summary>
-
-              <div class="assess-ubuntu-2204-cis-select-body">
-                <div class="assess-ubuntu-2204-cis-select-grid" id="assessUbuntu2204CisCriticalityOptions"></div>
+            <div class="assess-ubuntu-2204-cis-native-select-wrap">
+                <select id="assessUbuntu2204CisCriticality" class="form-select assess-ubuntu-2204-cis-native-select">
+                </select>
               </div>
-            </details>
-
-            <input type="hidden" id="assessUbuntu2204CisCriticality" value="all">
           </div>
         </div>
 
@@ -143,48 +127,14 @@
             </label>
 
             <div class="assess-ubuntu-2204-cis-setting-field">
-              <details class="assess-ubuntu-2204-cis-custom-dropdown" data-custom-dropdown-for="assessUbuntu2204CisRowLimit">
-                <summary class="assess-ubuntu-2204-cis-custom-dropdown-summary">
-                  <span data-custom-dropdown-label>50 rows</span>
-                    <span class="assess-ubuntu-2204-cis-custom-arrow-slot" aria-hidden="true"></span>
-                </summary>
-
-                <div class="assess-ubuntu-2204-cis-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                  <button
-                    type="button"
-                    class="assess-ubuntu-2204-cis-custom-dropdown-option"
-                    data-custom-dropdown-value="25"
-                    role="option"
-                    aria-selected="false"
-                  >25 rows</button>
-
-                  <button
-                    type="button"
-                    class="assess-ubuntu-2204-cis-custom-dropdown-option active"
-                    data-custom-dropdown-value="50"
-                    role="option"
-                    aria-selected="true"
-                  >50 rows</button>
-
-                  <button
-                    type="button"
-                    class="assess-ubuntu-2204-cis-custom-dropdown-option"
-                    data-custom-dropdown-value="100"
-                    role="option"
-                    aria-selected="false"
-                  >100 rows</button>
-
-                  <button
-                    type="button"
-                    class="assess-ubuntu-2204-cis-custom-dropdown-option"
-                    data-custom-dropdown-value="all"
-                    role="option"
-                    aria-selected="false"
-                  >All rows</button>
-                </div>
-              </details>
-
-              <input type="hidden" id="assessUbuntu2204CisRowLimit" value="50">
+              <div class="assess-ubuntu-2204-cis-native-select-wrap">
+                <select id="assessUbuntu2204CisRowLimit" class="form-select assess-ubuntu-2204-cis-native-select">
+                  <option value="25">25 rows</option>
+                  <option value="50" selected>50 rows</option>
+                  <option value="100">100 rows</option>
+                  <option value="all">All rows</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -195,18 +145,17 @@
             </label>
 
             <div class="assess-ubuntu-2204-cis-setting-field">
-              <details class="assess-ubuntu-2204-cis-select" id="assessUbuntu2204CisControlSelect">
-                <summary class="assess-ubuntu-2204-cis-select-summary">
-                  <span id="assessUbuntu2204CisControlSummary">First matched script</span>
-                  <span class="assess-ubuntu-2204-cis-select-arrow-slot" aria-hidden="true"></span>
-                </summary>
-
-                <div class="assess-ubuntu-2204-cis-select-body assess-ubuntu-2204-cis-select-body-scroll">
-                  <div class="assess-ubuntu-2204-cis-select-grid" id="assessUbuntu2204CisControlOptions"></div>
+              <div class="assess-ubuntu-2204-cis-control-picker" data-control-picker>
+                <input type="hidden" id="assessUbuntu2204CisSelectedControl" value="">
+                <button type="button" id="assessUbuntu2204CisSelectedControlTrigger" class="assess-ubuntu-2204-cis-control-picker-trigger" aria-expanded="false" aria-controls="assessUbuntu2204CisControlPickerPanel">
+                  <span id="assessUbuntu2204CisSelectedControlLabel" class="assess-ubuntu-2204-cis-control-picker-label">No script selected</span>
+                  <span class="assess-ubuntu-2204-cis-control-picker-arrow" aria-hidden="true"></span>
+                </button>
+                <div id="assessUbuntu2204CisControlPickerPanel" class="assess-ubuntu-2204-cis-control-picker-panel" hidden>
+                  <input id="assessUbuntu2204CisControlPickerSearch" class="form-control assess-ubuntu-2204-cis-control-picker-search" type="search" autocomplete="off" aria-label="Search script source" placeholder="Search script source">
+                  <div id="assessUbuntu2204CisControlPickerOptions" class="assess-ubuntu-2204-cis-control-picker-options" role="listbox" aria-label="Script source options"></div>
                 </div>
-              </details>
-
-              <input type="hidden" id="assessUbuntu2204CisSelectedControl" value="">
+              </div>
             </div>
           </div>
 
@@ -333,7 +282,7 @@
                         <th scope="col" class="assess-ubuntu-2204-cis-col-section">Section</th>
                         <th scope="col" class="assess-ubuntu-2204-cis-col-criticality">Criticality</th>
                         <th scope="col" class="assess-ubuntu-2204-cis-col-script">Script</th>
-                        <th scope="col" class="assess-ubuntu-2204-cis-col-copy">Copy</th>
+                        <th scope="col" class="assess-ubuntu-2204-cis-col-copy tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                       </tr>
                     </thead>
                     <tbody id="assessUbuntu2204CisControlsTableBody"></tbody>
@@ -378,6 +327,10 @@
                   <button type="button" class="assess-ubuntu-2204-cis-action-btn tool-action-btn tool-action-btn-secondary" id="assessUbuntu2204CisDownloadScript" disabled>
                     <i class="bi bi-download" aria-hidden="true"></i>
                     <span data-button-label>Download script</span>
+                  </button>
+                  <button type="button" class="assess-ubuntu-2204-cis-action-btn tool-action-btn tool-action-btn-secondary" id="assessUbuntu2204CisFullScript" disabled>
+                    <i class="bi bi-collection" aria-hidden="true"></i>
+                    <span data-button-label>Full script</span>
                   </button>
                 </div>
 
@@ -428,6 +381,70 @@
       </div>
 {# ns:end family._base.workspace.07_table-output #}
     </div>
+  </div>
+
+  <div class="assess-ubuntu-2204-cis-bundle-modal" id="assessUbuntu2204CisBundleModal" hidden>
+    <div class="assess-ubuntu-2204-cis-bundle-backdrop" data-bundle-dismiss></div>
+    <section class="assess-ubuntu-2204-cis-bundle-dialog" id="assessUbuntu2204CisBundleDialog" role="dialog" aria-modal="true" aria-labelledby="assessUbuntu2204CisBundleTitle" aria-describedby="assessUbuntu2204CisBundleIntro">
+      <div class="assess-ubuntu-2204-cis-bundle-header">
+        <div>
+          <p class="assess-ubuntu-2204-cis-bundle-intro" id="assessUbuntu2204CisBundleIntro">Preview the full script request scope before sending it out.</p>
+        </div>
+        <button type="button" class="assess-ubuntu-2204-cis-bundle-close" id="assessUbuntu2204CisBundleClose" aria-label="Close full script request">
+          <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="assess-ubuntu-2204-cis-bundle-preview-shell">
+        <div class="assess-ubuntu-2204-cis-bundle-preview-frame">
+          <div class="assess-ubuntu-2204-cis-bundle-preview-card">
+            <div class="assess-ubuntu-2204-cis-bundle-preview-head">
+              <p class="assess-ubuntu-2204-cis-bundle-kicker">Request bundle</p>
+              <h3 class="assess-ubuntu-2204-cis-bundle-title" id="assessUbuntu2204CisBundleTitle">Full benchmark script bundle</h3>
+              <p>The full script bundle is available by request for the current benchmark scope.</p>
+            </div>
+
+            <div class="assess-ubuntu-2204-cis-bundle-disclaimer" role="note" aria-labelledby="assessUbuntu2204CisBundleDisclaimerTitle">
+              <div class="assess-ubuntu-2204-cis-bundle-disclaimer-head">
+                <span class="assess-ubuntu-2204-cis-bundle-disclaimer-icon" aria-hidden="true">
+                  <i class="bi bi-exclamation-triangle"></i>
+                </span>
+                <div>
+                  <strong id="assessUbuntu2204CisBundleDisclaimerTitle">Important disclaimer</strong>
+                  <span class="assess-ubuntu-2204-cis-bundle-disclaimer-subtitle">Review and approve before any operational use.</span>
+                </div>
+              </div>
+              <p>These scripts are for review, planning, and controlled internal use only. They are not a scanner, certification result, production-ready remediation bundle, or approval to make changes. Validate scope, environment, change approval, backups, and rollback before running anything.</p>
+            </div>
+
+            <dl class="assess-ubuntu-2204-cis-bundle-details" id="assessUbuntu2204CisBundleDetails"></dl>
+
+            <div class="assess-ubuntu-2204-cis-bundle-request">
+              <span class="assess-ubuntu-2204-cis-bundle-request-label">Request details</span>
+              <pre class="assess-ubuntu-2204-cis-bundle-request-text"><code id="assessUbuntu2204CisBundleRequestText"></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="assess-ubuntu-2204-cis-bundle-actions">
+        <div class="assess-ubuntu-2204-cis-bundle-status" role="status" data-bundle-status="ready">
+          Ready. Request details will use this benchmark scope.
+        </div>
+        <a class="assess-ubuntu-2204-cis-action-btn assess-ubuntu-2204-cis-action-btn-primary" id="assessUbuntu2204CisBundleEmail" href="mailto:hello@infrastack.my">
+          <i class="bi bi-envelope" aria-hidden="true"></i>
+          <span>Email request</span>
+        </a>
+        <button type="button" class="assess-ubuntu-2204-cis-action-btn assess-ubuntu-2204-cis-action-btn-secondary" id="assessUbuntu2204CisBundleCopy">
+          <i class="bi bi-clipboard" aria-hidden="true"></i>
+          <span data-button-label>Copy request</span>
+        </button>
+        <button type="button" class="assess-ubuntu-2204-cis-action-btn assess-ubuntu-2204-cis-action-btn-secondary" id="assessUbuntu2204CisBundleCancel">
+          <i class="bi bi-x-lg" aria-hidden="true"></i>
+          <span>Close</span>
+        </button>
+      </div>
+    </section>
   </div>
 </div>
 </div>

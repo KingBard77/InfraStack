@@ -1,27 +1,21 @@
-#!/bin/sh
+#!/bin/bash
 
 CRITICALITY=1
-TITLE="Ensure journald log file rotation is configured"
+TITLE='Ensure journald log file rotation is configured'
 
 function check {
-    STATUS="Fail"
+    STATUS="Pass"
+    CONFIG="/etc/systemd/journal-upload.conf"
 
-    if grep -E "^URL=" /etc/systemd/journal-upload.conf > /dev/null 2>&1; then
-        if grep -E "^ServerKeyFile=" /etc/systemd/journal-upload.conf > /dev/null 2>&1; then
-            if grep -E "^ServerCertificateFile=" /etc/systemd/journal-upload.conf > /dev/null 2>&1; then
-                if grep -E "^TrustedCertificateFile=" /etc/systemd/journal-upload.conf > /dev/null 2>&1; then
-                fi
-            fi
-        fi
-    fi
-
-    if [ "$STATUS" != "Pass" ]; then
-        echo "Failed: One or more parameters are not set or incorrectly set"
+    if [[ ! -f "$CONFIG" ]]; then
+        STATUS="Fail: systemd-journal-upload configuration file is missing"
+    elif ! grep -Eq '^[[:space:]]*(URL|ServerKeyFile|ServerCertificateFile|TrustedCertificateFile)=' "$CONFIG"; then
+        STATUS="Fail: journal upload authentication settings are not configured"
     fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-	echo "Manual"
+    echo 'Manual: Journal upload URL, key, certificate, and trust anchor are site-specific.'
 }

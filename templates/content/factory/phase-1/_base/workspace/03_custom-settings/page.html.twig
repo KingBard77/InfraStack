@@ -36,18 +36,13 @@
                         <span class="__PREFIX__-custom-helper-chip" title="__CUSTOM_SELECT_HELPER__" aria-label="__CUSTOM_SELECT_HELPER__">i</span>
                     </div>
 
-                    <details id="__DOM_PREFIX__CustomSelect" class="__PREFIX__-custom-dropdown">
-                        <summary class="__PREFIX__-custom-dropdown-summary">
-                            <span id="__DOM_PREFIX__CustomSelectValue">Standard option</span>
-                            <span class="__PREFIX__-custom-arrow-slot" aria-hidden="true"></span>
-                        </summary>
-
-                        <div class="__PREFIX__-custom-dropdown-menu" role="listbox" aria-label="__CUSTOM_SELECT_LABEL__">
-                            <button type="button" class="__PREFIX__-custom-dropdown-option active" data-custom-dropdown-value="standard" role="option" aria-selected="true">Standard option</button>
-                            <button type="button" class="__PREFIX__-custom-dropdown-option" data-custom-dropdown-value="override" role="option" aria-selected="false">Override option</button>
-                            <button type="button" class="__PREFIX__-custom-dropdown-option" data-custom-dropdown-value="custom" role="option" aria-selected="false">Custom option</button>
-                        </div>
-                    </details>
+                    <div class="__PREFIX__-native-select-wrap __PREFIX__-custom-dropdown">
+                        <select id="__DOM_PREFIX__CustomSelect" class="form-select __PREFIX__-custom-native-select">
+                            <option value="standard" selected>Standard option</option>
+                            <option value="override">Override option</option>
+                            <option value="custom">Custom option</option>
+                        </select>
+                    </div>
 
                     <p class="__PREFIX__-custom-hint">__CUSTOM_SELECT_HELPER__</p>
                 </div>

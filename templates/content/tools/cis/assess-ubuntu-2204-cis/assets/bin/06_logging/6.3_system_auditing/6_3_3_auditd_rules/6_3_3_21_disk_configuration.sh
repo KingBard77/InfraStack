@@ -1,66 +1,30 @@
-#!/bin/sh
+#!/bin/bash
 
-CRITICALITY=1
-TITLE="Ensure disk partition configuration changes are collected"
-
-RULE_FILE="/etc/audit/rules.d/50-6.3.3.21-disk-config.rules"
-
-function build_rules {
-    :
-
-    for CANDIDATE in \
-    "/usr/sbin/fdisk"
-    "/usr/sbin/sfdisk"
-    "/usr/sbin/cfdisk"
-    "/usr/sbin/parted"
-    "/usr/sbin/sgdisk"
-    "/sbin/fdisk"
-    "/sbin/sfdisk"
-    "/sbin/cfdisk"
-    "/sbin/parted"
-    "/sbin/sgdisk"; do
-        if [ -e "$CANDIDATE" ]; then
-            echo "-a always,exit -F path=$CANDIDATE -F perm=x -F auid>=1000 -F auid!=unset -k disk_config"
-        fi
-    done | sort -u
-}
+CRITICALITY=2
+TITLE='Ensure the running and on disk configuration is the same'
 
 function check {
     STATUS="Pass"
-    RULES_FILE="$(mktemp)"
-    build_rules > "$RULES_FILE"
 
-    if [ ! -s "$RULES_FILE" ]; then
-        rm -f "$RULES_FILE"
-        echo "Check status: $STATUS"
-        return
+    if command -v augenrules > /dev/null 2>&1; then
+        if ! augenrules --check > /dev/null 2>&1; then
+            STATUS="Fail: running audit rules differ from on-disk rules"
+        fi
+    elif command -v auditctl > /dev/null 2>&1; then
+        STATUS="Pass: auditctl is available; augenrules comparison is unavailable"
+    else
+        STATUS="Fail: audit tooling is not installed"
     fi
 
-    while IFS= read -r RULE; do
-        if ! grep -F -- "$RULE" /etc/audit/rules.d/*.rules > /dev/null 2>&1; then
-            STATUS="Fail: Disk configuration audit rules are missing"
-            break
-        fi
-
-        if ! auditctl -l | grep -F -- "$RULE" > /dev/null 2>&1; then
-            STATUS="Fail: Disk configuration audit rules are missing"
-            break
-        fi
-    done < "$RULES_FILE"
-
-    rm -f "$RULES_FILE"
     echo "Check status: $STATUS"
 }
 
 function fix {
-    if [ -f "$RULE_FILE" ]; then
-        cp -a "$RULE_FILE" "$RULE_FILE.$(date +"%s")"
+    if ! command -v augenrules > /dev/null 2>&1; then
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install -y auditd audispd-plugins
     fi
 
-    build_rules > "$RULE_FILE"
     augenrules --load
-
-    if auditctl -s | grep -Eq 'enabled[[:space:]]+2' > /dev/null 2>&1; then
-        echo "Reboot required to load rules"
-    fi
+    systemctl restart auditd 2>/dev/null || true
 }

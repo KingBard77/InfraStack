@@ -1,0 +1,11 @@
+# card.yml
+
+card_summary: Generate logical application architecture diagrams from plain-English prompts, then refine actors, services, data, integrations, and exports with live controls.
+card_gradient_start: "#06B6D4"
+card_gradient_end: "#10B981"
+card_text_color: "#FFFFFF"
+card_kicker: "Infrastructure"
+card_image_title: "Logical Application Architecture"
+card_icon_class: "bi bi-diagram-3"
+card_icon_animation: "random"
+card_image: null

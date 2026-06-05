@@ -1,36 +1,27 @@
-#!/bin/sh
+#!/bin/bash
 
 CRITICALITY=1
-TITLE="Ensure pam_pwhistory uses use_authtok"
-
-CONFIG_FILE="/usr/share/pam-configs/pwhistory"
-TARGET_FILE="/etc/pam.d/common-password"
-
+TITLE="Ensure pam_pwhistory includes use_authtok"
 function check {
+    MODULE="pam_pwhistory.so"
+    REQUIRED="use_authtok"
     STATUS="Fail"
 
-    if { [ -f "$CONFIG_FILE" ] && grep -Eq 'pam_pwhistory\.so.*use_authtok' "$CONFIG_FILE" > /dev/null 2>&1; } || { [ -f "$TARGET_FILE" ] && grep -Eq 'pam_pwhistory\.so.*use_authtok' "$TARGET_FILE" > /dev/null 2>&1; }; then
+    LINE="$(grep -E "^\s*password\s+.*$MODULE" /etc/pam.d/common-password 2>/dev/null | head -n 1)"
+    if [[ -n "$LINE" ]] && echo "$LINE" | grep -Eq "(^|[[:space:]])$REQUIRED([[:space:]]|$)"; then
         STATUS="Pass"
     else
-        STATUS="Fail: pam_pwhistory does not use use_authtok"
+        STATUS="Fail: $MODULE does not include $REQUIRED"
     fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-    if [ -f "$CONFIG_FILE" ]; then
-        cp -a "$CONFIG_FILE" "$CONFIG_FILE.$(date +"%s")"
+    cp -a /etc/pam.d/common-password /etc/pam.d/common-password.$(date +"%s")
+    if grep -Eq '^\s*password\s+.*pam_pwhistory\.so' /etc/pam.d/common-password; then
+        sed -i -E '/pam_pwhistory\.so/ { /(^|[[:space:]])use_authtok([[:space:]]|$)/! s/$/ use_authtok/ }' /etc/pam.d/common-password
+    else
+        echo 'password requisite pam_pwhistory.so use_authtok' | tee -a /etc/pam.d/common-password > /dev/null
     fi
-
-    cat <<'EOF' > "$CONFIG_FILE"
-Name: pwhistory password history checking
-Default: yes
-Priority: 1024
-Password-Type: Primary
-Password:
-  requisite pam_pwhistory.so remember=24 enforce_for_root use_authtok
-EOF
-
-    pam-auth-update --enable pwhistory
 }

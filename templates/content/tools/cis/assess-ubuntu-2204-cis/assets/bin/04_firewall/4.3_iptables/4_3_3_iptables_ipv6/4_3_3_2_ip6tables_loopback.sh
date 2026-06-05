@@ -20,9 +20,12 @@ function check {
 }
 
 function fix {
-	echo "Manual"
+    if ! command -v ip6tables > /dev/null 2>&1; then
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install -y iptables
+    fi
 
-	#ip6tables -A INPUT -i lo -j ACCEPT
-	#ip6tables -A OUTPUT -o lo -j ACCEPT
-	#ip6tables -A INPUT -s 127.0.0.0/8 -j DROP
+    ip6tables -C INPUT -i lo -j ACCEPT 2>/dev/null || ip6tables -A INPUT -i lo -j ACCEPT
+    ip6tables -C OUTPUT -o lo -j ACCEPT 2>/dev/null || ip6tables -A OUTPUT -o lo -j ACCEPT
+    ip6tables -C INPUT -s ::1 -j DROP 2>/dev/null || ip6tables -A INPUT -s ::1 -j DROP
 }

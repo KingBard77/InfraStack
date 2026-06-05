@@ -1,6 +1,6 @@
 # meta.yml
 
-title: Generate SSH Shell
+title: SSH Command Generator
 author: Badrul Amin
 author_role: Infrastructure & DevOps Specialist
 author_image: "images/author/author-bg-white.png"
@@ -10,7 +10,7 @@ publication_status: draft
 category_label: Shell
 group: shell
 family: shell
-reading_time: 5 min read
+reading_time: 11 min read
 summary: Build SSH command previews for targets, jump paths, host-key posture, forwarding options, summary rows, and JSON restore.
 intro: >-
     Collect SSH target intent, login fields, port, shell quoting preference, and optional connection settings in a browser-owned workspace.

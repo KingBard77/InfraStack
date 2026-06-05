@@ -1,83 +1,6 @@
 // custom.js
 // ns:start family._base.workspace.00_shell
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
-
 // ns:start family._base.workspace.05_result-summary
 function installInfraStackResultSummaryNormalizer(prefix) {
     function formatUpdatedLabel() {
@@ -600,7 +523,7 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
         "sourceBehaviours": [
             "normalizes the primary brief",
             "seeds the normalized model from prompt text",
-            "binds Generate and Load Default actions",
+            "binds Generate and Reset actions",
             "renders parser errors without unlocking generated output"
         ]
     };
@@ -669,27 +592,20 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
             "architecture-vpc-huawei-basic-grid",
             "architecture-vpc-huawei-control-stack",
             "architecture-vpc-huawei-native-select",
-            "architecture-vpc-huawei-custom-select",
-            "architecture-vpc-huawei-custom-select-trigger",
-            "architecture-vpc-huawei-custom-select-menu"
         ],
         "sourceVariables": [
             "presetInput",
             "presetDescription",
             "regionInput",
             "azCountInput",
-            "customSelectControls"
         ],
         "sourceFunctions": [
-            "initializeCustomSelect",
-            "initializeCustomSelects",
             "populateRegionOptions",
             "updatePresetSelection",
             "syncControls",
             "applyPreset"
         ],
         "sourceBehaviours": [
-            "enhances native select fields with the baseline custom dropdown",
             "keeps the preset description synchronized",
             "populates region and zone choices",
             "applies preset defaults to the normalized model"
@@ -1483,16 +1399,16 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
     const core = ArchitectureVpcHuaweiModelCore;
     const engineRuntime = globalScope.InfraStackArchitectureEngineRuntime || null;
     const iconSvgMap = {
-        users: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/users.svg')|json_encode|raw }},
-        vpc: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/vpc.svg')|json_encode|raw }},
-        subnet: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/subnet.svg')|json_encode|raw }},
-        vsi: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/vsi.svg')|json_encode|raw }},
-        kubernetes: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/kubernetes.svg')|json_encode|raw }},
-        cis: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/waf-dns.svg')|json_encode|raw }},
-        security: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/security.svg')|json_encode|raw }},
-        transitGateway: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/enterprise-router.svg')|json_encode|raw }},
-        objectStorage: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/cloud-object-storage.svg')|json_encode|raw }},
-        monitoring: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/monitoring.svg')|json_encode|raw }}
+        users: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/huawei-arch-users.svg')|json_encode|raw }},
+        vpc: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/huawei-arch-vpc.svg')|json_encode|raw }},
+        subnet: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/huawei-arch-subnet.svg')|json_encode|raw }},
+        vsi: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/huawei-arch-vsi.svg')|json_encode|raw }},
+        kubernetes: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/huawei-arch-kubernetes.svg')|json_encode|raw }},
+        cis: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/huawei-arch-waf-dns.svg')|json_encode|raw }},
+        security: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/huawei-arch-security.svg')|json_encode|raw }},
+        transitGateway: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/huawei-arch-enterprise-router.svg')|json_encode|raw }},
+        objectStorage: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/huawei-arch-cloud-object-storage.svg')|json_encode|raw }},
+        monitoring: {{ include('content/tools/huawei/architecture-vpc-huawei/assets/icon/huawei-arch-monitoring.svg')|json_encode|raw }}
     };
 
     let currentSpec = null;
@@ -1534,7 +1450,7 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
         },
         selectors: {
             resizeHandle: '[data-engine-resize-handle], .diagram-resize-handle, .architecture-vpc-huawei-resize-handle',
-            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"], .architecture-vpc-huawei-custom-select'
+            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"]'
         },
         classes: {
             selected: 'is-selected',
@@ -1549,7 +1465,6 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
             hidden: 'd-none'
         }
     };
-    const customSelectControls = [];
     const customSelectIds = [
         'architectureVpcHuaweiPreset',
         'architectureVpcHuaweiSize',
@@ -1652,7 +1567,6 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
 
         if (element) {
             element.value = value;
-            syncCustomSelectByElement(element);
         }
     }
 
@@ -2042,9 +1956,19 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
                     event.stopPropagation();
                     marker.classList.toggle('is-open');
                 });
+                marker.addEventListener('keydown', function (event) {
+                    if (event.key !== 'Enter' && event.key !== ' ') {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    event.stopPropagation();
+                    marker.classList.toggle('is-open');
+                });
             }
 
             marker.dataset.info = infoText;
+            marker.setAttribute('role', 'button');
             marker.setAttribute('aria-label', 'More info: ' + infoText);
             popover.textContent = infoText;
         });
@@ -2057,210 +1981,6 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
             '<span>' + escapeHtml(label) + '</span>',
             '</span>'
         ].join('');
-    }
-
-    function getSelectedNativeOption(selectElement) {
-        return Array.from(selectElement.options).find(function (option) {
-            return option.value === selectElement.value;
-        }) || selectElement.options[0] || null;
-    }
-
-    function closeCustomSelects(exceptControl) {
-        customSelectControls.forEach(function (control) {
-            if (exceptControl && control === exceptControl) {
-                return;
-            }
-
-            control.wrapper.classList.remove('open');
-            control.button.setAttribute('aria-expanded', 'false');
-        });
-    }
-
-    function syncCustomSelectControl(control) {
-        const selectedOption = getSelectedNativeOption(control.selectElement);
-        const selectedValue = selectedOption ? selectedOption.value : '';
-
-        control.valueElement.textContent = selectedOption ? selectedOption.textContent : '';
-        control.optionButtons.forEach(function (optionButton) {
-            const isSelected = optionButton.dataset.value === selectedValue;
-
-            optionButton.classList.toggle('selected', isSelected);
-            optionButton.setAttribute('aria-selected', isSelected ? 'true' : 'false');
-        });
-    }
-
-    function syncCustomSelectByElement(selectElement) {
-        const control = customSelectControls.find(function (candidate) {
-            return candidate.selectElement === selectElement;
-        });
-
-        if (control) {
-            syncCustomSelectControl(control);
-        }
-    }
-
-    function syncCustomSelects() {
-        customSelectControls.forEach(syncCustomSelectControl);
-    }
-
-    function focusSelectedCustomOption(control) {
-        const selectedButton = control.optionButtons.find(function (optionButton) {
-            return optionButton.classList.contains('selected');
-        }) || control.optionButtons[0];
-
-        if (selectedButton) {
-            selectedButton.focus();
-        }
-    }
-
-    function openCustomSelect(control) {
-        closeCustomSelects(control);
-        syncCustomSelectControl(control);
-        control.wrapper.classList.add('open');
-        control.button.setAttribute('aria-expanded', 'true');
-    }
-
-    function toggleCustomSelect(control) {
-        if (control.wrapper.classList.contains('open')) {
-            closeCustomSelects();
-            return;
-        }
-
-        openCustomSelect(control);
-    }
-
-    function selectCustomOption(control, value) {
-        if (control.selectElement.value === value) {
-            closeCustomSelects();
-            return;
-        }
-
-        control.selectElement.value = value;
-        syncCustomSelectControl(control);
-        control.selectElement.dispatchEvent(new Event('change', {
-            bubbles: true
-        }));
-        closeCustomSelects();
-    }
-
-    function initializeCustomSelect(selectElement) {
-        if (!selectElement || selectElement.tagName !== 'SELECT') {
-            return;
-        }
-
-        const wrapper = document.createElement('div');
-        const button = document.createElement('button');
-        const valueElement = document.createElement('span');
-        const icon = document.createElement('i');
-        const menu = document.createElement('div');
-
-        if (!selectElement || selectElement.dataset.architectureVpcHuaweiEnhancedSelect === 'true') {
-            return;
-        }
-
-        wrapper.className = 'architecture-vpc-huawei-custom-select';
-        button.type = 'button';
-        button.className = 'architecture-vpc-huawei-custom-select-trigger';
-        button.setAttribute('aria-haspopup', 'listbox');
-        button.setAttribute('aria-expanded', 'false');
-        valueElement.className = 'architecture-vpc-huawei-custom-select-value';
-        icon.className = 'bi bi-chevron-down';
-        icon.setAttribute('aria-hidden', 'true');
-        menu.className = 'architecture-vpc-huawei-custom-select-menu';
-        menu.setAttribute('role', 'listbox');
-
-        button.appendChild(valueElement);
-        button.appendChild(icon);
-        wrapper.appendChild(button);
-        wrapper.appendChild(menu);
-        selectElement.classList.add('architecture-vpc-huawei-native-select');
-        selectElement.dataset.architectureVpcHuaweiEnhancedSelect = 'true';
-        selectElement.setAttribute('aria-hidden', 'true');
-        selectElement.tabIndex = -1;
-        selectElement.insertAdjacentElement('afterend', wrapper);
-
-        const control = {
-            selectElement: selectElement,
-            wrapper: wrapper,
-            button: button,
-            valueElement: valueElement,
-            menu: menu,
-            optionButtons: []
-        };
-
-        Array.from(selectElement.options).forEach(function (option) {
-            const optionButton = document.createElement('button');
-
-            optionButton.type = 'button';
-            optionButton.className = 'architecture-vpc-huawei-custom-select-option';
-            optionButton.dataset.value = option.value;
-            optionButton.textContent = option.textContent;
-            optionButton.setAttribute('role', 'option');
-            optionButton.addEventListener('click', function () {
-                selectCustomOption(control, option.value);
-                button.focus();
-            });
-            optionButton.addEventListener('keydown', function (event) {
-                const currentIndex = control.optionButtons.indexOf(optionButton);
-
-                event.stopPropagation();
-
-                if (event.key === 'ArrowDown') {
-                    event.preventDefault();
-                    control.optionButtons[Math.min(control.optionButtons.length - 1, currentIndex + 1)].focus();
-                }
-
-                if (event.key === 'ArrowUp') {
-                    event.preventDefault();
-                    control.optionButtons[Math.max(0, currentIndex - 1)].focus();
-                }
-
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    selectCustomOption(control, option.value);
-                    button.focus();
-                }
-
-                if (event.key === 'Escape') {
-                    event.preventDefault();
-                    closeCustomSelects();
-                    button.focus();
-                }
-            });
-
-            menu.appendChild(optionButton);
-            control.optionButtons.push(optionButton);
-        });
-
-        button.addEventListener('click', function () {
-            toggleCustomSelect(control);
-        });
-        button.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown') {
-                event.preventDefault();
-                event.stopPropagation();
-                openCustomSelect(control);
-                focusSelectedCustomOption(control);
-            }
-
-            if (event.key === 'Escape') {
-                event.preventDefault();
-                event.stopPropagation();
-                closeCustomSelects();
-            }
-        });
-        selectElement.addEventListener('change', function () {
-            syncCustomSelectControl(control);
-        });
-
-        customSelectControls.push(control);
-        syncCustomSelectControl(control);
-    }
-
-    function initializeCustomSelects() {
-        customSelectIds.forEach(function (id) {
-            initializeCustomSelect(byId(id));
-        });
     }
 
     function showError(message) {
@@ -3339,7 +3059,7 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
                 '<td>' + escapeHtml(row.component) + '</td>',
                 '<td>' + escapeHtml(row.placement) + '</td>',
                 '<td>' + escapeHtml(row.purpose) + '</td>',
-                '<td><button type="button" class="architecture-vpc-huawei-row-copy" data-copy-row="' + escapeHtml(copyText) + '" aria-label="Copy inventory row for ' + escapeHtml(row.component) + '"><i class="bi bi-clipboard" aria-hidden="true"></i><span class="architecture-vpc-huawei-visually-hidden">Copy</span></button></td>',
+                '<td class="tool-table-action-cell"><button type="button" class="architecture-vpc-huawei-row-copy" data-copy-row="' + escapeHtml(copyText) + '" aria-label="Copy inventory row for ' + escapeHtml(row.component) + '"><i class="bi bi-clipboard" aria-hidden="true"></i><span class="architecture-vpc-huawei-visually-hidden">Copy</span></button></td>',
                 '</tr>'
             ].join('');
         }).join('');
@@ -3432,10 +3152,18 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
 
     function scoreBand(tone) {
         return {
-            ready: 'Production-ready cloud architecture',
-            solid: 'Delivery architecture draft',
+            ready: 'Strong production baseline',
+            solid: 'Solid production-ready baseline',
             review: 'Needs architecture review'
         }[tone] || 'Cloud architecture draft';
+    }
+
+    function scoreDetail(tone) {
+        return {
+            ready: 'Private tiers, managed services, and observability are in place for a polished delivery.',
+            solid: 'The architecture is delivery-ready with a few remaining resilience or routing trade-offs.',
+            review: 'Review zone spread, ingress controls, and operational visibility before handoff.'
+        }[tone] || 'The architecture baseline is ready for review.';
     }
 
     function buildScoreTags(spec, tone) {
@@ -3487,7 +3215,6 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
         const tone = scoreTone(score.score);
         const ringProgressAngle = Math.round(Math.max(0, Math.min(100, score.score)) * 3.6);
         const tags = buildScoreTags(currentSpec || spec, tone);
-        const labelIcon = scoreStatusIcon(tone);
         const resultTone = {
             ready: 'success',
             solid: 'ready',
@@ -3508,20 +3235,60 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
 
             return 'baseline';
         };
-        const tagChips = tags.map(function (tag) {
+        const renderTagChip = function (tag) {
             return [
                 '<span class="architecture-vpc-huawei-result-chip architecture-vpc-huawei-result-chip-' + chipTone(tag.tone) + '">',
                 '<span class="architecture-vpc-huawei-result-chip-icon"><i class="' + escapeHtml(tag.icon) + '" aria-hidden="true"></i></span>',
                 escapeHtml(tag.label),
                 '</span>'
             ].join('');
-        }).join('');
-        const metricCards = tags.slice(1, 5).map(function (tag) {
+        };
+        const detail = scoreDetail(tone);
+        const primaryChip = tags.slice(0, 1).map(renderTagChip).join('');
+        const summaryChips = tags.slice(0, 6).map(renderTagChip).join('');
+        const serviceLabels = [
+            spec.firewall ? 'WAF' : '',
+            spec.etherChannel ? 'Elastic Load Balance' : '',
+            spec.monitoring ? 'Cloud Eye' : '',
+            spec.dhcpDns ? 'DNS' : ''
+        ].filter(Boolean);
+        const metricCards = [
+            {
+                label: 'Scale',
+                value: core.cloudSizeLabel(spec.cloudSize),
+                copy: 'Selected cloud deployment size.',
+                icon: 'bi bi-building',
+                tone: 'success'
+            },
+            {
+                label: 'Zones',
+                value: core.zoneCountLabel(spec.accessBlocks),
+                copy: 'Availability spread in the model.',
+                icon: 'bi bi-grid-3x3-gap',
+                tone: 'info'
+            },
+            {
+                label: 'Routing',
+                value: core.routingLabel(spec.routingMode),
+                copy: 'Traffic control approach.',
+                icon: 'bi bi-arrow-left-right',
+                tone: 'accent-tone'
+            },
+            {
+                label: 'Services',
+                value: String(serviceLabels.length),
+                copy: serviceLabels.length ? serviceLabels.join(', ') : 'No optional services selected.',
+                icon: 'bi bi-hdd-network',
+                tone: 'warning'
+            }
+        ].map(function (metric) {
             return [
-                '<article class="architecture-vpc-huawei-result-metric-card">',
-                '<span class="architecture-vpc-huawei-result-metric-label">Signal</span>',
-                '<strong class="architecture-vpc-huawei-result-metric-value">' + escapeHtml(tag.label) + '</strong>',
-                '<span class="architecture-vpc-huawei-result-metric-copy">' + escapeHtml(tag.tone.replace(/-/g, ' ')) + '</span>',
+                '<article class="architecture-vpc-huawei-result-metric-card architecture-vpc-huawei-result-metric-' + escapeHtml(metric.tone) + '">',
+                '<span class="architecture-vpc-huawei-result-metric-icon" aria-hidden="true"><i class="' + escapeHtml(metric.icon) + '"></i></span>',
+                '<span class="architecture-vpc-huawei-result-metric-label">' + escapeHtml(metric.label) + '</span>',
+                '<strong class="architecture-vpc-huawei-result-metric-value">' + escapeHtml(metric.value) + '</strong>',
+                '<span class="architecture-vpc-huawei-result-metric-copy">' + escapeHtml(metric.copy) + '</span>',
+                '<span class="architecture-vpc-huawei-result-metric-accent" aria-hidden="true"></span>',
                 '</article>'
             ].join('');
         }).join('');
@@ -3534,16 +3301,26 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
         status.dataset.resultTone = resultTone;
         status.dataset.resultLayout = 'architecture_score';
         status.innerHTML = [
-            '<div class="architecture-vpc-huawei-result-hero-grid" aria-live="polite">',
-            '<article class="architecture-vpc-huawei-result-card architecture-vpc-huawei-result-card-main">',
-            '<span class="architecture-vpc-huawei-result-kicker">Architecture score</span>',
-            '<h3 class="architecture-vpc-huawei-result-title">' + escapeHtml(scoreBand(tone)) + '</h3>',
-            '<p class="architecture-vpc-huawei-result-copy">' + escapeHtml(score.summary) + '</p>',
-            '<div class="architecture-vpc-huawei-result-chip-row" aria-label="Architecture score state">',
-            tagChips,
+            '<header class="architecture-vpc-huawei-result-header" aria-label="Result summary header">',
+            '<div class="architecture-vpc-huawei-result-header-main">',
+            '<span class="architecture-vpc-huawei-result-header-icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span>',
+            '<div class="architecture-vpc-huawei-result-header-copy">',
+            '<h2 class="architecture-vpc-huawei-result-header-title">Result Summary</h2>',
+            '<p>Overview of the current architecture result and key metrics.</p>',
             '</div>',
-            '</article>',
-            '<article class="architecture-vpc-huawei-result-card architecture-vpc-huawei-result-card-visual">',
+            '</div>',
+            '<div class="architecture-vpc-huawei-result-header-meta" aria-label="Result summary status">',
+            '<span class="architecture-vpc-huawei-result-header-chip architecture-vpc-huawei-result-chip architecture-vpc-huawei-result-chip-ready"><span class="architecture-vpc-huawei-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>Generated</span></span>',
+            '<span class="architecture-vpc-huawei-result-header-chip architecture-vpc-huawei-result-chip architecture-vpc-huawei-result-chip-updated"><span class="architecture-vpc-huawei-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>Ready</span></span>',
+            '</div>',
+            '</header>',
+            '<div class="architecture-vpc-huawei-result-hero-grid" aria-live="polite">',
+            '<article class="architecture-vpc-huawei-result-card architecture-vpc-huawei-result-card-primary" data-result-visual="ring" aria-label="Primary result">',
+            '<div class="architecture-vpc-huawei-result-primary-heading architecture-vpc-huawei-result-visual-copy architecture-vpc-huawei-result-visual-copy-top">',
+            '<div class="architecture-vpc-huawei-result-kicker">Primary Result</div>',
+            '<h3 class="architecture-vpc-huawei-result-title architecture-vpc-huawei-result-title-center">' + escapeHtml(score.label) + '</h3>',
+            '</div>',
+            '<div class="architecture-vpc-huawei-result-primary-visual" id="architectureVpcHuaweiResultVisual" aria-label="Primary result visual">',
             '<div class="architecture-vpc-huawei-result-ring architecture-vpc-huawei-score-value" id="architectureVpcHuaweiScoreValue" style="--architecture-vpc-huawei-result-progress: ' + escapeHtml(String(ringProgressAngle)) + 'deg; --progress-angle: ' + escapeHtml(String(ringProgressAngle)) + 'deg;" aria-label="Architecture score ' + escapeHtml(String(score.score)) + ' out of 100">',
             '<div class="architecture-vpc-huawei-score-echart" id="architectureVpcHuaweiScoreEchart" aria-hidden="true"></div>',
             '<div class="architecture-vpc-huawei-result-ring-center architecture-vpc-huawei-score-center">',
@@ -3552,8 +3329,25 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
             '</div>',
             '</div>',
             '<div class="architecture-vpc-huawei-result-visual-copy">',
-            '<span class="architecture-vpc-huawei-result-kicker">Primary result</span>',
-            '<h3 class="architecture-vpc-huawei-result-title architecture-vpc-huawei-result-title-center">' + escapeHtml(score.label) + '</h3>',
+            '<p class="architecture-vpc-huawei-result-copy architecture-vpc-huawei-result-copy-center">' + escapeHtml(detail) + '</p>',
+            '</div>',
+            '<span class="architecture-vpc-huawei-result-card-divider" aria-hidden="true"></span>',
+            '<div class="architecture-vpc-huawei-result-chip-row architecture-vpc-huawei-result-chip-row-center" aria-label="Primary result outcome">',
+            primaryChip,
+            '</div>',
+            '</article>',
+            '<article class="architecture-vpc-huawei-result-card architecture-vpc-huawei-result-card-summary" aria-label="Result summary">',
+            '<div class="architecture-vpc-huawei-result-summary-intro">',
+            '<span class="architecture-vpc-huawei-result-card-icon architecture-vpc-huawei-result-card-icon-summary" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>',
+            '<div class="architecture-vpc-huawei-result-summary-copy">',
+            '<div class="architecture-vpc-huawei-result-kicker">Descriptive Summary</div>',
+            '<h3 class="architecture-vpc-huawei-result-title">' + escapeHtml(scoreBand(tone)) + '</h3>',
+            '<p class="architecture-vpc-huawei-result-copy">' + escapeHtml(detail) + '</p>',
+            '</div>',
+            '</div>',
+            '<span class="architecture-vpc-huawei-result-card-divider" aria-hidden="true"></span>',
+            '<div class="architecture-vpc-huawei-result-chip-grid" aria-label="Result summary chips">',
+            summaryChips,
             '</div>',
             '</article>',
             '</div>',
@@ -4814,7 +4608,7 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
             return false;
         }
 
-        return target.closest('input, textarea, select, button, summary, a[href], [contenteditable="true"], .architecture-vpc-huawei-custom-select') !== null;
+        return target.closest('input, textarea, select, button, summary, a[href], [contenteditable="true"]') !== null;
     }
 
     function isUndoKeyboardShortcut(event) {
@@ -4936,6 +4730,32 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
 
     function flashButton(button, label) {
         if (!button) {
+            return;
+        }
+
+        const actionButton = button.closest ? button.closest('.tool-table-action-cell button') : null;
+
+        if (actionButton) {
+            const isCopied = label === 'Copied';
+            const icon = actionButton.querySelector('i');
+            const originalIcon = actionButton.dataset.defaultIcon || (icon ? icon.className : '');
+
+            if (icon && !actionButton.dataset.defaultIcon) {
+                actionButton.dataset.defaultIcon = originalIcon;
+            }
+
+            actionButton.classList.toggle('copied', isCopied);
+            actionButton.classList.toggle('is-copied', isCopied);
+            actionButton.classList.toggle('failed', !isCopied);
+            if (icon) {
+                icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+            }
+            globalScope.setTimeout(function () {
+                actionButton.classList.remove('copied', 'is-copied', 'failed');
+                if (icon && actionButton.dataset.defaultIcon) {
+                    icon.className = actionButton.dataset.defaultIcon;
+                }
+            }, 1400);
             return;
         }
 
@@ -5315,7 +5135,7 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
     function bindEvents(root) {
         bindClick('architectureVpcHuaweiGenerate', generateFromControls);
         bindClick('architectureVpcHuaweiReset', function () {
-            applyPreset(valueOf('architectureVpcHuaweiPreset'), true);
+            applyPreset(valueOf('architectureVpcHuaweiPreset'), false);
         });
         byId('architectureVpcHuaweiPreset').addEventListener('change', function () {
             applyPreset(valueOf('architectureVpcHuaweiPreset'), true);
@@ -5432,13 +5252,6 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
         document.addEventListener('wheel', handleWheelZoom, {
             passive: false
         });
-        document.addEventListener('click', function (event) {
-            if (event.target.closest('.architecture-vpc-huawei-custom-select')) {
-                return;
-            }
-
-            closeCustomSelects();
-        });
         bindTabs();
     }
 
@@ -5448,9 +5261,6 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
         if (!validateRequiredElements(root)) {
             return;
         }
-
-        initializeCustomSelects();
-        initializeInfraStackCustomDropdowns(document);
         bindEvents(root);
         initMarkdownCopyButtons();
         syncPresetDescription();
@@ -5567,7 +5377,12 @@ installInfraStackResultSummaryNormalizer('architecture-vpc-huawei');
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });

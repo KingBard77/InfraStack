@@ -1,32 +1,26 @@
-#!/bin/sh
+#!/bin/bash
 
 CRITICALITY=1
 TITLE="Ensure nodev option set on /var/tmp partition"
 
 function check {
-	STATUS="Fail"
-	
-    if mount | grep '/var/tmp' | grep "nodev"  > /dev/null ; then
-        STATUS="Pass"
+    MOUNTPOINT="/var/tmp"
+    STATUS="Fail"
+
+    if findmnt -n "$MOUNTPOINT" > /dev/null 2>&1; then
+        OPTIONS="$(findmnt -n -o OPTIONS "$MOUNTPOINT" 2>/dev/null)"
+        if echo ",$OPTIONS," | grep -F ",nodev," > /dev/null 2>&1; then
+            STATUS="Pass"
+        else
+            STATUS="Fail: nodev option is not set on /var/tmp"
+        fi
     else
-        STATUS="No options set nodev is set on /var/tmp partition"
+        STATUS="Fail: /var/tmp is not a separate partition"
     fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-    if grep '/var/tmp' /etc/fstab | grep "nodev" > /dev/null; then
-        echo "Options nodev on /var/tmp is already configured correctly."
-    else
-        sudo cp /etc/fstab /etc/fstab.backup.$(date +%s) 
-
-        if grep -q '/var/tmp' /etc/fstab; then
-            sudo sed -i "/ \/var\/tmp /c\<actual_device> /var/tmp <actual_fstype> defaults,rw,nosuid,nodev,noexec,relatime 0 0" /etc/fstab
-        else
-            echo "Manual"
-        fi
-
-    	mount -o remount /var/tmp
-    fi
+    echo 'Automated remediation requires planned storage changes for /var/tmp.'
 }

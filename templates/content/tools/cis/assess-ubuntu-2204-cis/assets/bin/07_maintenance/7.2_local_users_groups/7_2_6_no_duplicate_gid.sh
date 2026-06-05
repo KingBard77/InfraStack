@@ -18,5 +18,5 @@ function check {
 }
 
 function fix {
-    echo "Manual."
+    echo 'Manual: Duplicate GID cleanup requires selecting which group identity to change.'
 }

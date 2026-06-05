@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure autofs services are not in use"
 
 function check {

@@ -8,11 +8,11 @@ Baseline source: `templates/content/tools/cis/assess-ubuntu-2204-cis/`.
 
 - `README.md`: family explanation and final package expectations.
 - `manifest.yml`: structured baseline metadata and validation rules.
-- `source/`: full copied CIS assessment source snapshot for traceability only. Do not audit this as active source.
-- `workspace/README.md`: workspace grammar.
-- `workspace/manifest.yml`: structured workspace section metadata.
+- `source/assess-ubuntu-2204-cis/`: full copied CIS assessment source snapshot for traceability and freshness checks.
+- `source package demo.html`: source package grammar.
+- `family manifest source_namespaces`: structured workspace section metadata.
 - `templates/content/factory/phase-1/_base/workspace/`: common shell, input, settings, summary, toolbar, table, and JSON restore section sources.
-- `workspace/04_selected-item/`: reusable selected script, rule, finding, requirement, evidence, or source body review source.
+- `family.<family>.workspace.04_selected-item`: reusable selected script, rule, finding, requirement, evidence, or source body review source.
 - `templates/content/factory/phase-2/_content/sections/10_references/`: shared source-backed citation and References section source when final content cites sources.
 
 ## Reference
@@ -31,6 +31,8 @@ Do not copy CIS, Ubuntu, benchmark, shell, or compliance wording into unrelated 
 
 - A primary filter starts the assessment workspace.
 - Scope controls narrow the dataset by family, section, criticality, selected item, and row count.
+- Basic and Custom Settings dropdowns use real visible native `<select>` controls inside the `_base` native select wrapper; their popup is browser-owned.
+- Do not hide native selects or replace Basic/Custom dropdowns with enhanced-select controls, custom dropdown/details menus, listbox buttons, hidden option rows, or custom option scrollbars.
 - Results stay hidden until the user runs the primary action unless a URL or restore state intentionally asks for a result.
 - Result summary cards explain scope, matched items, selected artifact, and metadata gaps.
 - Output toolbar contains `Sort` on the left and compact copy/download/export actions on the right.
@@ -48,11 +50,11 @@ Reference snapshot:
 
 ```text
 source: templates/content/tools/cis/assess-ubuntu-2204-cis/
-snapshot: templates/content/factory/phase-1/_family/assessment/source/
-workspace: templates/content/factory/phase-1/_family/assessment/workspace/
+snapshot: templates/content/factory/phase-1/_family/assessment/source/assess-ubuntu-2204-cis/
+source: templates/content/factory/phase-1/_family/assessment/source/assess-ubuntu-2204-cis/
 ```
 
-The full copied source snapshot is reference-only. Do not audit this as active source. Common workspace behavior is composed from `_base/workspace`; reusable assessment-specific behavior lives in assessment-owned workspace folders.
+The full copied source snapshot is reference-only and must compare cleanly against `templates/content/tools/cis/assess-ubuntu-2204-cis/` before new assessment tools are created. Common runtime behavior is composed from `_base/workspace`; reusable assessment-specific behavior lives in the assessment source package namespace markers.
 
 The source tool does not ship `assets/bin/model-core.js`. Its runtime JavaScript embeds `assets/custom.json.twig` and calls a tool-local Symfony script-read endpoint. Record those dependencies in `manifest.yml` and adapt them deliberately for any final assessment tool.
 
@@ -65,3 +67,5 @@ The family baseline is not a runtime package.
 Copy or adapt the source snapshot and section patterns into final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and optional backend/data files.
 
 Keep final assessment tools independently understandable, namespaced, exportable, honest about trust boundaries, and domain-native.
+
+Final assessment validation must fail stale Basic/Custom dropdown regressions: native-select `display: none`, `custom-dropdown`, `custom-native-select`, `select-control` on converted native selects, `enhanced-select`, or JavaScript that builds custom option menus for Basic/Custom settings.

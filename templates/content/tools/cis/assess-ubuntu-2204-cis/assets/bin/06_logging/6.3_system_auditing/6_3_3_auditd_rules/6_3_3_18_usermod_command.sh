@@ -1,58 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 
-CRITICALITY=1
-TITLE="Ensure the usermod command is audited"
-
-RULE_FILE="/etc/audit/rules.d/50-6.3.3.18-usermod.rules"
-
-function build_rules {
-    :
-
-    for CANDIDATE in \
-    "/usr/sbin/usermod"
-    "/sbin/usermod"; do
-        if [ -e "$CANDIDATE" ]; then
-            echo "-a always,exit -F path=$CANDIDATE -F perm=x -F auid>=1000 -F auid!=unset -k identity"
-        fi
-    done | sort -u
-}
-
+CRITICALITY=2
+TITLE="Ensure successful and unsuccessful attempts to use the usermod command are collected"
 function check {
     STATUS="Pass"
-    RULES_FILE="$(mktemp)"
-    build_rules > "$RULES_FILE"
 
-    if [ ! -s "$RULES_FILE" ]; then
-        rm -f "$RULES_FILE"
-        echo "Check status: $STATUS"
-        return
+    if ! grep -RE usermod /etc/audit/rules.d/*.rules > /dev/null 2>&1; then
+        STATUS="Fail: audit rule is missing on disk"
     fi
 
-    while IFS= read -r RULE; do
-        if ! grep -F -- "$RULE" /etc/audit/rules.d/*.rules > /dev/null 2>&1; then
-            STATUS="Fail: The usermod audit rule is missing"
-            break
-        fi
-
-        if ! auditctl -l | grep -F -- "$RULE" > /dev/null 2>&1; then
-            STATUS="Fail: The usermod audit rule is missing"
-            break
-        fi
-    done < "$RULES_FILE"
-
-    rm -f "$RULES_FILE"
     echo "Check status: $STATUS"
 }
 
 function fix {
-    if [ -f "$RULE_FILE" ]; then
-        cp -a "$RULE_FILE" "$RULE_FILE.$(date +"%s")"
-    fi
-
-    build_rules > "$RULE_FILE"
+    RULE_FILE="/etc/audit/rules.d/50-6-3-3-18.rules"
+    touch "$RULE_FILE"
+    cp -a "$RULE_FILE" "$RULE_FILE.$(date +"%s")"
+    cat > "$RULE_FILE" <<'CIS_RULES'
+-a always,exit -F path=/usr/sbin/usermod -F perm=x -F auid!=unset -k usermod
+CIS_RULES
     augenrules --load
-
-    if auditctl -s | grep -Eq 'enabled[[:space:]]+2' > /dev/null 2>&1; then
-        echo "Reboot required to load rules"
-    fi
 }

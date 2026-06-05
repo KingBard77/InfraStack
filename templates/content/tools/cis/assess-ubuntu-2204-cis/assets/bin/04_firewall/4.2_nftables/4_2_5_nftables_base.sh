@@ -20,6 +20,14 @@ function check {
 }
 
 function fix {
-    echo "Manual"
-    echo "nft create chain inet <table_name> <base_chain_name> { type filter hook <input|forward|output> priority 0 \; }"
+    if ! command -v nft > /dev/null 2>&1; then
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install -y nftables
+    fi
+
+    systemctl enable --now nftables 2>/dev/null || true
+    nft list table inet filter > /dev/null 2>&1 || nft add table inet filter
+    nft list chain inet filter input > /dev/null 2>&1 || nft add chain inet filter input '{ type filter hook input priority 0 ; policy accept ; }'
+    nft list chain inet filter forward > /dev/null 2>&1 || nft add chain inet filter forward '{ type filter hook forward priority 0 ; policy accept ; }'
+    nft list chain inet filter output > /dev/null 2>&1 || nft add chain inet filter output '{ type filter hook output priority 0 ; policy accept ; }'
 }

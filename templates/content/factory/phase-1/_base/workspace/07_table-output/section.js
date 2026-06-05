@@ -1,6 +1,7 @@
 // section.js
 (function attachBaseTableOutputSourceSection(global) {
     const registry = global.InfraStackBaseWorkspaceSections || {};
+    const copyFeedbackTimers = new WeakMap();
     const source = {
         section: '07_table-output',
         title: 'table output',
@@ -119,11 +120,16 @@
             'keeps middle table columns aligned to logical start',
             'keeps status, signal, severity, criticality, health, state, result, and label columns centered when present',
             'keeps final table column as centered row action',
+            'renders the row action header as text-only title-case Action without a clipboard icon',
             'keeps the final action column sticky on horizontally scrolling tables',
             'keeps the sticky action column flat with no side shadow',
             'requires generated row text wrappers to clamp to two or three lines',
             'provides one optional extra tab and table panel before JSON for families that need another section',
-            'uses icon-only row copy buttons with accessible labels',
+            'uses icon-only row copy buttons locked to 34px by 34px with accessible labels',
+            'locks row copy icons to a 15px by 15px icon box',
+            'keeps row copy feedback icon-only by swapping to a same-size tick icon on successful copy',
+            'requires local copy-button and action-button icon selectors to preserve the 34px button, 15px icon, and non-green copied-state contract',
+            'requires rendered browser measurement when a final tool reports action-column mismatch',
             'keeps empty states inside the table or output frame',
             'uses compact table columns instead of wide spreadsheet layouts',
             'keeps tabs as intrinsic-width pills on one scrollable mobile row',
@@ -179,8 +185,129 @@
         return true;
     }
 
+    function getBaseTableOutputCopyText(button) {
+        const explicitCopy = button.getAttribute('data-copy-row');
+
+        if (explicitCopy) {
+            return explicitCopy.trim();
+        }
+
+        const tableRow = button.closest('tr');
+
+        if (tableRow) {
+            return Array.from(tableRow.cells)
+                .filter(function filterActionCell(cell) {
+                    return !cell.classList.contains('tool-table-action-cell')
+                        && !cell.className.includes('-action-cell');
+                })
+                .map(function mapCell(cell) {
+                    return cell.textContent.trim();
+                })
+                .filter(Boolean)
+                .join(' | ');
+        }
+
+        const noteCard = button.closest('[class*="-note-card"]');
+
+        if (noteCard) {
+            return noteCard.textContent.trim().replace(/\s+/g, ' ');
+        }
+
+        return '';
+    }
+
+    function copyBaseTableOutputText(text) {
+        if (!text) {
+            return Promise.reject(new Error('No copy text available.'));
+        }
+
+        if (global.navigator && global.navigator.clipboard && typeof global.navigator.clipboard.writeText === 'function') {
+            return global.navigator.clipboard.writeText(text);
+        }
+
+        const textarea = global.document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', 'readonly');
+        textarea.style.position = 'fixed';
+        textarea.style.inset = '0 auto auto -9999px';
+        global.document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            const copied = global.document.execCommand('copy');
+
+            if (!copied) {
+                throw new Error('Copy command failed.');
+            }
+
+            return Promise.resolve();
+        } catch (error) {
+            return Promise.reject(error);
+        } finally {
+            textarea.remove();
+        }
+    }
+
+    function showBaseTableOutputCopyFeedback(button) {
+        const icon = button.querySelector('i');
+
+        if (icon) {
+            if (!button.dataset.baseTableOriginalIcon) {
+                button.dataset.baseTableOriginalIcon = icon.className || 'bi bi-clipboard';
+            }
+
+            icon.className = 'bi bi-check2';
+        }
+
+        button.classList.add('is-copied');
+
+        if (copyFeedbackTimers.has(button)) {
+            global.clearTimeout(copyFeedbackTimers.get(button));
+        }
+
+        copyFeedbackTimers.set(button, global.setTimeout(function resetCopyFeedback() {
+            if (icon) {
+                icon.className = button.dataset.baseTableOriginalIcon || 'bi bi-clipboard';
+            }
+
+            button.classList.remove('is-copied');
+            copyFeedbackTimers.delete(button);
+        }, 1400));
+    }
+
+    /**
+     * Binds icon-only row copy feedback inside a base table output root.
+     *
+     * @param {ParentNode} root Table output root or document.
+     * @returns {number} Count of newly-bound copy buttons.
+     */
+    function bindBaseTableOutputCopyButtons(root) {
+        const scope = root || global.document;
+        const buttons = Array.from(scope.querySelectorAll('.tool-table-row-copy, .tool-table-action-cell > button, .__PREFIX__-row-copy-btn'));
+
+        return buttons.reduce(function bindButton(count, button) {
+            if (button.dataset.baseTableCopyBound === 'true') {
+                return count;
+            }
+
+            button.dataset.baseTableCopyBound = 'true';
+            button.addEventListener('click', function onBaseTableCopyClick() {
+                const copyText = getBaseTableOutputCopyText(button);
+
+                copyBaseTableOutputText(copyText).then(function onCopySuccess() {
+                    showBaseTableOutputCopyFeedback(button);
+                }).catch(function onCopyFailure() {
+                    button.classList.remove('is-copied');
+                });
+            });
+
+            return count + 1;
+        }, 0);
+    }
+
     registry.baseTableOutputSourceSection = baseTableOutputSourceSection;
     registry.tableOutput = baseTableOutputSourceSection;
     registry.activateBaseTableOutputPanel = activateBaseTableOutputPanel;
+    registry.bindBaseTableOutputCopyButtons = bindBaseTableOutputCopyButtons;
     global.InfraStackBaseWorkspaceSections = registry;
 }(window));

@@ -19,18 +19,20 @@ function check {
 }
 
 function fix {
-    echo "Manual"
+    if ! command -v nft > /dev/null 2>&1; then
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install -y nftables
+    fi
 
-    protocols=("tcp" "udp" "icmp")
-    for proto in "${protocols[@]}"; do
-        nft add rule inet filter input ip protocol "$proto" ct state established accept
-        nft add rule inet filter output ip protocol "$proto" ct state new,related,established accept
+    systemctl enable --now nftables 2>/dev/null || true
+    nft list table inet filter > /dev/null 2>&1 || nft add table inet filter
+    nft list chain inet filter input > /dev/null 2>&1 || nft add chain inet filter input '{ type filter hook input priority 0 ; policy accept ; }'
+    nft list chain inet filter forward > /dev/null 2>&1 || nft add chain inet filter forward '{ type filter hook forward priority 0 ; policy accept ; }'
+    nft list chain inet filter output > /dev/null 2>&1 || nft add chain inet filter output '{ type filter hook output priority 0 ; policy accept ; }'
+    PROTOCOLS=(tcp udp icmp)
+
+    for PROTO in "${PROTOCOLS[@]}"; do
+        nft list chain inet filter input | grep -Eiq "ip protocol $PROTO ct state established accept" || nft add rule inet filter input ip protocol "$PROTO" ct state established accept
+        nft list chain inet filter output | grep -Eiq "ip protocol $PROTO ct state new,related,established accept" || nft add rule inet filter output ip protocol "$PROTO" ct state new,related,established accept
     done
-
-    # nft add rule inet filter input ip protocol tcp ct state established accept 
-    # nft add rule inet filter input ip protocol udp ct state established accept
-    # nft add rule inet filter input ip protocol icmp ct state established accept
-    # nft add rule inet filter output ip protocol tcp ct state new,related,established accept
-    # nft add rule inet filter output ip protocol udp ct state new,related,established accept
-    # nft add rule inet filter output ip protocol icmp ct state new,related,established accept
 }

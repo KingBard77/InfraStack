@@ -120,17 +120,17 @@
 }
 
 .blog-details .article-content .embed-share-panel-button-customize {
-    --embed-share-panel-button: #16a34a;
+    --embed-share-panel-button: #166534;
     --embed-share-panel-button-soft: rgba(22, 163, 74, 0.1);
 }
 
 .blog-details .article-content .embed-share-panel-button-disclaimer {
-    --embed-share-panel-button: #f97316;
+    --embed-share-panel-button: #c2410c;
     --embed-share-panel-button-soft: rgba(249, 115, 22, 0.11);
 }
 
 .blog-details .article-content .embed-share-panel-button-advanced {
-    --embed-share-panel-button: #2563eb;
+    --embed-share-panel-button: #1d4ed8;
     --embed-share-panel-button-soft: rgba(37, 99, 235, 0.1);
 }
 

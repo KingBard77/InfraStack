@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure sshd GSSAPIAuthentication is disabled"
 
 function check {

@@ -2,7 +2,7 @@
 
 source: base-workspace-contract
 family: _base
-version: 0.7.11
+version: 0.7.15
 status: draft
 description: Shared Phase 1 workspace contract for family baselines. Provides neutral shell, input, settings, custom settings, result summary, output toolbar, table output, and JSON restore sections.
 
@@ -15,6 +15,127 @@ section_file_contract:
         - page.html.twig
         - section.css
         - section.js
+
+dropdown_visual_contract:
+    source: manifest_and_section_css
+    applies_to:
+        02_basic-settings:
+            role: Basic settings short native select dropdowns
+            selector_family:
+                - .__PREFIX__-native-select-wrap
+                - .__PREFIX__-select
+                - .__PREFIX__-select-control
+        03_custom-settings:
+            role: Custom settings short native select dropdowns
+            selector_family:
+                - .__PREFIX__-native-select-wrap
+                - .__PREFIX__-custom-dropdown
+                - .__PREFIX__-custom-native-select
+                - .__PREFIX__-control-picker
+        06_output-toolbar:
+            role: Output toolbar sort dropdowns
+            selector_family:
+                - .__PREFIX__-sort-select
+                - .__PREFIX__-sort-summary
+                - .__PREFIX__-sort-menu
+                - .__PREFIX__-sort-option
+    summary_shape:
+        min_height: 46px
+        width: match parent control column
+        text_alignment: left
+        padding_rule: reserve right space for one arrow chip
+    arrow_chip:
+        size: 30px
+        placement: right aligned inside the summary
+        closed_state: visually centered down-facing chevron for native Basic and Custom selects; right-facing remains only for disclosures or CSS popup controls with observable open state
+        open_state: down-facing chevron where open state is observable
+        hover_state: no arrow-chip or chevron mutation for native Basic and Custom selects
+        forbidden:
+            - native summary marker
+            - duplicate pseudo chevrons
+            - up-arrow open state
+    native_select_popup:
+        applies_to:
+            - 02_basic-settings
+            - 03_custom-settings
+        required_element: select
+        popup_owner: browser
+        allowed_styling:
+            - closed control height
+            - closed control border
+            - closed control padding
+            - closed control font
+            - closed control focus ring
+            - arrow chip wrapper
+            - static centered down chevron
+        forbidden_markup:
+            - details based dropdowns
+            - role listbox menus
+            - role option buttons
+            - hidden radio option rows
+            - custom menu divs
+        forbidden_css:
+            - custom popup menu styling
+            - custom option row styling
+            - custom selected option styling
+            - custom dropdown scrollbar styling
+    long_dynamic_picker:
+        applies_to:
+            - 02_basic-settings
+            - 03_custom-settings
+        allowed_when:
+            - option list is long, dynamic, or searchable
+            - native popup direction or width cannot be made deterministic
+        required_markup:
+            - hidden canonical state input
+            - trigger button with one fixed arrow chip
+            - search input
+            - in-page panel rendered directly below the trigger
+            - listbox option area
+        required_css:
+            - picker root, trigger, panel, search input, and options area use `width: 100%`
+            - picker root, trigger, panel, search input, and options area use `max-width: 100%`
+            - picker root, trigger, panel, search input, and options area use `min-width: 0`
+            - picker root, trigger, panel, search input, and options area use `box-sizing: border-box`
+            - trigger uses `overflow: hidden`
+            - label uses ellipsis for long selected values
+            - arrow chip keeps a fixed 30px slot
+            - options area uses bounded internal vertical scrolling when needed
+        forbidden_css:
+            - absolute or fixed panel positioning
+            - z-index layering for the picker panel
+            - detached popover placement
+        runtime_rule: Keep the hidden state input synchronized with selected label, primary action output, URL/query state, export, and restore where those surfaces exist.
+    popup_menu:
+        applies_to:
+            - 06_output-toolbar
+        top_offset: 8px
+        width: match closed summary width
+        max_height: 280px
+        overflow: internal vertical scroll
+        z_index: 160
+        parent_open_z_index: 140
+        ancestor_rule: dropdown ancestors must keep overflow visible
+    option_rows:
+        applies_to:
+            - 06_output-toolbar
+        min_height: 42px
+        row_shape: plain rows
+        selected_state: soft accent background with accent text
+        hover_state: same as selected state
+        forbidden:
+            - visible radio controls
+            - nested option cards
+            - row borders
+            - row divider lines
+            - row shadows
+    scrollbar:
+        applies_to:
+            - 06_output-toolbar
+        width: thin
+        track: transparent
+        thumb: subtle family or provider accent
+    validation_rule: Short Basic and Custom dropdowns must be native selects with only closed-control styling. Long dynamic Basic or Custom lists may use the in-page searchable picker exception. Output toolbar sort may keep the shared CSS popup contract.
 
 workspace_sections:
     00_shell:
@@ -37,7 +158,7 @@ workspace_sections:
             - input card frame
             - input field frame
             - label and helper chip rhythm
-            - primary and secondary action row
+            - primary action and Reset action row
             - icon-ready action buttons
             - stacked and inline input layouts
             - inline error slot
@@ -51,7 +172,7 @@ workspace_sections:
             - diagram generation
             - final state schema
         runtime_contract:
-            contract_version: 1
+            contract_version: 2
             source_section: 01_input-brief
             variant_storage: manifest_only
             no_variant_subfolders: true
@@ -76,7 +197,7 @@ workspace_sections:
                     required_classes:
                         - __PREFIX__-action-btn
                         - __PREFIX__-action-btn-secondary
-                    runtime_rule: Reset, load defaults, or perform another real implemented action when rendered.
+                    runtime_rule: Reset to a valid first-view baseline, clear generated output, and keep the Reset icon visible.
                 error_slot:
                     source_id: __DOM_PREFIX__InputError
                     required_classes:
@@ -94,14 +215,20 @@ workspace_sections:
                 - inline
             required_runtime_behaviors:
                 - primary action has an addEventListener handler in the final runtime package
-                - visible secondary action has an addEventListener handler in the final runtime package
+                - visible Reset action has an addEventListener handler in the final runtime package
                 - input value is validated before mutating generated output state
                 - input error slot is hidden on valid input and shown with actionable copy on invalid input
                 - helper text, label, placeholder, and action labels are family-native after adaptation
                 - final runtime package preserves stable input, action, and error IDs after placeholder replacement
+                - Reset clears generated output, result summary markup, errors, and generated JSON/table/command content
+                - Reset returns inputs to a valid first-view baseline
+                - preset-backed tools restore default preset prompt and controls instead of clearing preset-owned prompt text
+                - primary and Reset icons remain visible during loading states
             forbidden_shortcuts:
                 - creating family-specific input brief section folders only for label, icon, helper, or layout changes
-                - showing a secondary button without implemented behavior
+                - showing a Reset button without implemented behavior
+                - using Reset as a visible Load Default or unrelated secondary action
+                - clearing a preset-owned prompt while leaving that preset selected
                 - auto-running generated output on first view through the input section
                 - shipping unresolved `__INPUT_*__`, `__PREFIX__`, or `__DOM_PREFIX__` placeholders
             family_owned_behaviors:
@@ -117,8 +244,9 @@ workspace_sections:
             - setting card frame
             - helper chip rhythm
             - example input card
-            - custom dropdown popup menus with hidden state inputs, plain option rows, and soft hover or selected states
-            - explicit CSS hooks for native selects, custom dropdowns, dropdown option rows, hidden state inputs, text inputs, number inputs, textareas, placeholders, switches, and buttons
+            - short native select dropdowns with browser-owned popup menus and shared arrow-chip closed controls
+            - optional long dynamic in-page searchable pickers when a native popup cannot meet direction or width requirements
+            - explicit CSS hooks for native selects, text inputs, number inputs, textareas, placeholders, switches, and buttons
             - mobile one-column stacking
             - viewport-safe dropdown surface
         does_not_own:
@@ -146,21 +274,14 @@ workspace_sections:
                 custom_select:
                     source_id: __DOM_PREFIX__BasicSelect
                     allowed_elements:
-                        - details
-                        - div
+                        - select
                     required_classes:
+                        - __PREFIX__-native-select
+                        - __PREFIX__-select-control
+                    required_wrapper_classes:
+                        - __PREFIX__-native-select-wrap
                         - __PREFIX__-select
-                    runtime_rule: Provide a custom popup dropdown or equivalent control with real option state.
-                custom_select_summary:
-                    source_id: __DOM_PREFIX__BasicSelectSummary
-                    required_parent_classes:
-                        - __PREFIX__-select-summary
-                    runtime_rule: Reflect the selected value shown to the user.
-                custom_select_menu:
-                    source_id: __DOM_PREFIX__BasicSelectMenu
-                    required_classes:
-                        - __PREFIX__-select-body
-                    runtime_rule: Open as a popup surface without changing card height.
+                    runtime_rule: Use a browser-owned native select popup; bind selected value to normalized state.
                 text_control:
                     source_id: __DOM_PREFIX__BasicText
                     allowed_elements:
@@ -187,15 +308,15 @@ workspace_sections:
             required_runtime_behaviors:
                 - every visible basic setting control updates normalized family or tool state
                 - every visible basic setting control is read by the primary action or output renderer
-                - custom dropdown options are selectable through implemented JavaScript or native details/radio behavior with final state synchronization
-                - custom dropdown summary updates when the selected option changes
+                - short native select dropdown values update normalized family or tool state
+                - long dynamic picker values update normalized family or tool state when rendered
                 - text, number, URL, and textarea controls validate family-specific bounds before generated output state mutates
                 - toggle controls keep checkbox semantics and synchronized visible state
-                - mobile layout keeps controls full width and dropdown menus viewport-safe
+                - mobile layout keeps controls full width and leaves dropdown popup behavior browser-owned
             forbidden_shortcuts:
                 - creating family-specific basic settings section folders only for control labels or order
                 - showing dropdowns, toggles, text fields, or mode buttons without state binding
-                - rendering custom dropdown options as nested cards, bordered rows, or visible radio controls
+                - implementing short Basic dropdowns with `details`, `role="listbox"`, button option rows, hidden radio option rows, custom menu divs, custom option hover styles, custom scrollbar styling, or custom selected-row CSS
                 - showing a basic setting that is not consumed by generated output, export, or restore payloads
                 - shipping unresolved `__BASIC_*__`, `__PREFIX__`, or `__DOM_PREFIX__` placeholders
             family_owned_behaviors:
@@ -215,7 +336,8 @@ workspace_sections:
             - card-contained custom controls
             - helper chip rhythm
             - example placeholders inside control cards
-            - inline CSS dropdowns without browser-native popups or nested card menus
+            - short native select dropdowns with browser-owned popup menus and shared arrow-chip closed controls
+            - optional long dynamic in-page searchable pickers when a native popup cannot meet direction or width requirements
             - simple radio controls without radio cards
             - simple checkbox controls with switch-style visual rendering, neutral off color, and strong accent on color while preserving checkbox state semantics
             - dashed information rows for long helper details
@@ -280,14 +402,14 @@ workspace_sections:
                     runtime_rule: Persist typed custom text state when rendered.
                 dropdown:
                     source_id: __DOM_PREFIX__CustomSelect
+                    allowed_elements:
+                        - select
                     required_classes:
+                        - __PREFIX__-custom-native-select
+                    required_wrapper_classes:
+                        - __PREFIX__-native-select-wrap
                         - __PREFIX__-custom-dropdown
-                    runtime_rule: Open as a CSS popup dropdown, not a browser-native select or inline height-expanding card.
-                dropdown_value:
-                    source_id: __DOM_PREFIX__CustomSelectValue
-                    required_parent_classes:
-                        - __PREFIX__-custom-dropdown-summary
-                    runtime_rule: Reflect the selected dropdown value after state changes.
+                    runtime_rule: Use a browser-owned native select popup; bind selected value to normalized custom state.
                 radio_controls:
                     source_ids:
                         - __DOM_PREFIX__CustomRadioStandard
@@ -316,13 +438,14 @@ workspace_sections:
                     runtime_rule: Use dashed helper rows for long information that would crowd compact controls.
             required_runtime_behaviors:
                 - visible disclosure label remains `Custom`
-                - disclosure and dropdown arrows have one arrow slot, point right by default, and point down when open
+                - disclosure arrows have one arrow slot, point right by default, and point down when open
                 - rendered tab buttons activate real panels and synchronize selected, hidden, tabindex, and aria state
                 - visible dropdown, radio, checkbox, text, number, and textarea controls update normalized family or tool state
                 - generated output, export payloads, and restore payloads read the same normalized custom state
-                - custom dropdown option rows are selectable through implemented JavaScript or details/button behavior with final state synchronization
+                - short custom dropdown choices use native select popups with final state synchronization
+                - long dynamic custom picker choices update normalized state and survive the primary action when rendered
                 - custom number inputs validate bounds and hide browser-native spinner boxes
-                - mobile layout keeps controls full width and dropdown menus viewport-safe
+                - mobile layout keeps controls full width and leaves dropdown popup behavior browser-owned
             forbidden_shortcuts:
                 - creating family-specific custom settings section folders only for control labels, tabs, or layout
                 - showing `Advanced` as the visible disclosure label
@@ -330,6 +453,7 @@ workspace_sections:
                 - showing a custom control that is not consumed by generated output, export, restore, filtering, validation, or command/model generation
                 - using broad panel CSS that can hide the outer Custom disclosure
                 - showing duplicate arrows, native disclosure markers, or up arrows for open state
+                - implementing short Custom dropdowns with `details`, `role="listbox"`, button option rows, custom menu divs, custom option hover styles, custom scrollbar styling, or custom selected-row CSS
                 - shipping unresolved `__CUSTOM_*__`, `__PREFIX__`, or `__DOM_PREFIX__` placeholders
             family_owned_behaviors:
                 - topology override behavior
@@ -475,6 +599,7 @@ workspace_sections:
             - last tab as JSON output
             - rounded icon-bearing tab buttons
             - section cards with visible titles before output
+            - top-aligned section and command header rows when titles share a row with copy or action buttons
             - primary, secondary, and tertiary table frame shape
             - empty row and empty output state shape
             - centered `#` first column convention
@@ -715,6 +840,7 @@ generation_rules:
     - Keep one canonical `01_input-brief` source section; preferences fill placeholders and may remove unsupported actions.
     - Keep section CSS neutral enough to inherit family category/provider tokens after adaptation.
     - Keep section JavaScript as metadata or optional neutral helpers; final behavior belongs to family or tool JavaScript.
+    - Treat `dropdown_visual_contract` as mandatory for every Basic, Custom, or Output toolbar dropdown; short Basic and Custom lists use native select popups, long dynamic Basic and Custom lists may use the in-page searchable picker exception, and Output toolbar sort may keep the shared CSS popup shape.
     - Select the basic settings preference from `basic_settings_preferences` before creating family-specific variants.
     - Treat `basic_settings_runtime_contract` as mandatory when applying `02_basic-settings`; visual and control differences must come from `basic_settings_variants` and `basic_settings_preferences`.
     - Do not create `02_basic-settings/variants/` folders. Keep variants as manifest data until generator code needs separate source files.
@@ -724,6 +850,8 @@ generation_rules:
     - Do not add outlined pill chips when they only duplicate the selected dropdown summary or placeholder.
     - When an outlined reset, default, or scope pill chip provides a distinct action, keep it in the left label column; the right column should hold the active control, selected value, placeholder, hidden field, or dropdown surface only.
     - Every applied basic setting field must be inside a card and have CSS for placeholder, focus, disabled, hover, mobile, and selected states where relevant.
+    - Short Basic dropdowns must be native `<select>` controls inside the standard arrow-chip wrapper. Do not add custom popup menus, listbox buttons, hidden radio option rows, custom option styling, or dropdown scrollbar CSS for short lists.
+    - Repeated peer-card editors inside Basic settings must span the full setting width with the group label above the grid, not reserve a left label rail beside nested cards.
     - Select the custom settings preference from `custom_settings_preferences` before creating family-specific variants.
     - Treat `custom_settings_runtime_contract` as mandatory when applying `03_custom-settings`; visual and control differences must come from `custom_settings_variants` and `custom_settings_preferences`.
     - Do not create `03_custom-settings/variants/` folders. Keep variants as manifest data until generator code needs separate source files.
@@ -731,7 +859,8 @@ generation_rules:
     - Use visible `Custom` copy for the disclosure label even when preserving existing `03_advanced-settings` or `03_advanced-setting` namespace markers.
     - Skip `03_custom-settings` for tools that do not have real optional/custom controls.
     - Every applied custom setting field must be inside a card and have CSS for placeholder, focus, disabled, hover, mobile, and selected states where relevant.
-    - Use inline CSS dropdowns for Custom by default; do not rely on browser-native select popups and do not nest option cards inside dropdown menus.
+    - Short Custom dropdowns must be native `<select>` controls inside the standard arrow-chip wrapper. Do not add custom popup menus, listbox buttons, custom option styling, or dropdown scrollbar CSS for short lists.
+    - Long dynamic Basic or Custom pickers must stay inside the setting card, open below the trigger, provide search, keep the selected value synchronized with hidden state, and pass the width-containment gate.
     - Use simple radio inputs for Custom; do not adapt Custom radio choices as card buttons unless a tool-specific behavior explicitly requires it.
     - Use simple checkbox inputs for Custom; render them with neutral-off and strong-accent-on switch-style CSS without converting them to switch-card markup.
     - Keep each Custom setting to one outer card. Do not put another card around the active input, unit, currency prefix, quantity value, or placeholder.
@@ -758,6 +887,7 @@ generation_rules:
     - Do not put validation, certification, billing accuracy, compliance, security, or production-readiness claims in this section unless those outcomes are actually validated.
     - Select the output toolbar preference from `output_toolbar_preferences` before creating family-specific variants.
     - Keep one canonical `06_output-toolbar` source section; preferences fill sort options, action labels, action icons, and action IDs.
+    - Output toolbar sort dropdown summaries, arrow chips, popup menus, option rows, selected states, scrollbars, and z-index values must match `dropdown_visual_contract`.
     - Use output toolbar as the shared visual rhythm for existing family slots such as `06_sort-card`, `07_table-export`, and `08_sort-card` when a sortable output action bar is needed.
     - Keep `ID` as the first visible sort option and `id` as the hidden default sort value.
     - Keep the custom sort dropdown menu the same width as the closed sort summary.
@@ -775,6 +905,7 @@ generation_rules:
     - Keep the final top-level output tab as JSON.
     - Every output tab button must be rounded and include an icon.
     - Every output panel must include a visible section title inside the section card before generated output.
+    - Section or command titles that share a row with copy/action buttons must use a two-column top-aligned header grid.
     - Keep generated tables compact and meaningful. Do not add columns only because data exists in state.
     - The first table column must be a centered `#` column.
     - Middle table columns must use logical start alignment.
@@ -819,7 +950,7 @@ input_brief_selection:
 input_brief_runtime_contract:
     source_section: 01_input-brief
     namespace: family._base.workspace.01_input-brief
-    contract_version: 1
+    contract_version: 2
     storage_rule: Keep one flat source folder. Store variant rules in this manifest, not in variant subfolders.
     required_source_files:
         - README.md
@@ -841,20 +972,29 @@ input_brief_runtime_contract:
     required_final_runtime:
         - final input ID exists and is referenced by JavaScript
         - final primary action ID exists and has a real click handler
-        - final secondary action ID exists and has a real click handler when the button is visible
+        - final Reset action ID exists and has a real click handler
         - final error slot exists when JavaScript can reject or restore input
         - final input value is persisted in normalized family or tool state
         - final primary action validates input before rendering generated output
         - final first view does not auto-render generated output when the selected family requires hidden-first results
+        - final Reset action clears generated output state and returns the result area to the empty shell
+        - final Reset action clears validation, loading, import, and result errors
+        - final Reset action clears generated result summary markup and generated JSON/table/command content
+        - final Reset action clears share or URL query state when reset changes restored state
+        - preset-backed final tools restore default preset prompt and controls on Reset while keeping generated output hidden
+        - non-preset final tools restore an authored valid baseline and may clear the input only when placeholder-first input is valid
+        - primary and Reset icons remain visible during loading states
     allowed_adaptations:
         - replace textarea with input for inline text, URL, label, target, or filter variants
-        - remove the secondary action only when the selected preference marks it not required and the runtime has no reset/default behavior
         - change icons, labels, helper text, placeholders, and row count to family-native copy
         - preserve stable existing final-tool IDs when reapplying to an existing runtime package
     forbidden_adaptations:
         - duplicating the source section into family-specific folders for layout-only differences
         - rendering native browser popups or cards inside the input brief action row
         - leaving a visible action button without an implemented handler
+        - removing the visible Reset action from a complete final tool without an explicit recorded exception
+        - labeling the Reset action as Load Default or another unrelated secondary command
+        - clearing preset-owned prompt text while leaving the preset selected
         - using unresolved placeholders in final tool files
 
 input_brief_variants:
@@ -947,7 +1087,7 @@ input_brief_preferences:
             icon: bi-stars
         secondary_action:
             required: true
-            label: Load Default
+            label: Reset
             icon: bi-arrow-counterclockwise
     calculate:
         variant: inline_label
@@ -988,13 +1128,14 @@ input_brief_preferences:
         rows: 1
         label: URL target
         placeholder: https://example.com
+        default: http://example.com/
         helper_chip: Enter the target URL or bounded scan target.
         helper_text: Use a valid target and review evidence before treating scan output as actionable.
         primary_action:
             label: Scan
-            icon: bi-shield-check
+            icon: bi-search
         secondary_action:
-            required: false
+            required: true
             label: Reset
             icon: bi-arrow-counterclockwise
     assessment:
@@ -1010,7 +1151,7 @@ input_brief_preferences:
             label: Explore
             icon: bi-search
         secondary_action:
-            required: false
+            required: true
             label: Reset
             icon: bi-arrow-counterclockwise
 
@@ -1054,21 +1195,17 @@ basic_settings_runtime_contract:
         hooks:
             primary_control: __DOM_PREFIX__BasicPrimary
             custom_select: __DOM_PREFIX__BasicSelect
-            custom_select_summary: __DOM_PREFIX__BasicSelectSummary
-            custom_select_menu: __DOM_PREFIX__BasicSelectMenu
             text_control: __DOM_PREFIX__BasicText
             toggle_control: __DOM_PREFIX__BasicToggle
     required_final_runtime:
         - final basic setting IDs exist and are referenced by JavaScript when the controls are visible
         - visible dropdown, select, text, number, URL, textarea, toggle, and mode controls have real state-binding handlers
-        - selected dropdown summaries update when state changes
+        - selected native select values update normalized state
         - generated output, export payloads, and restore payloads read the same normalized state
-        - custom dropdown menus open without changing card height or clipping behind nearby cards
-        - dropdown options render as plain option rows without visible radio controls
         - every visible basic setting affects generated output, export, restore, filtering, or validation
     allowed_adaptations:
-        - replace native select with a custom dropdown when the family requires option descriptions
         - replace text input with number, URL, textarea, segmented buttons, or equivalent control when state binding is preserved
+        - place repeated peer-card editors in a full-width setting card when the repeated grid is the actual control surface
         - remove a source control only when the final tool has no real matching setting and the remaining controls still satisfy the family variant
         - preserve stable existing final-tool IDs when reapplying to an existing runtime package
     forbidden_adaptations:
@@ -1288,7 +1425,6 @@ custom_settings_runtime_contract:
             panel_three: __DOM_PREFIX__CustomPanelThree
             text_control: __DOM_PREFIX__CustomText
             dropdown: __DOM_PREFIX__CustomSelect
-            dropdown_value: __DOM_PREFIX__CustomSelectValue
             radio_standard: __DOM_PREFIX__CustomRadioStandard
             radio_override: __DOM_PREFIX__CustomRadioOverride
             number_control: __DOM_PREFIX__CustomNumber
@@ -1299,8 +1435,8 @@ custom_settings_runtime_contract:
         - visible disclosure label is `Custom`, even when compatibility namespace markers use advanced wording
         - visible tab IDs and panel IDs exist and are referenced by JavaScript when tabs are rendered
         - visible dropdown, radio, checkbox, text, number, and textarea controls have real state-binding handlers
-        - disclosure and dropdown arrows use one arrow slot, point right by default, and point down when open
-        - dropdown summaries update when state changes
+        - disclosure arrows use one arrow slot, point right by default, and point down when open
+        - native select dropdown values update normalized custom state
         - generated output, export payloads, and restore payloads read the same normalized custom state
         - fake Custom controls are removed instead of shown
     allowed_adaptations:

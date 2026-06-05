@@ -1,5 +1,8 @@
 /* custom.css */
 
+/* ns:start family.calculate.workspace.04_visual-contract */
+/* Accepted divergence: calculate visual contract remains tool-local until section-safe extraction is applied. */
+/* ns:end family.calculate.workspace.04_visual-contract */
 /* ns:start family.calculate.workspace.04_selected-item */
 /* Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. */
 /* ns:end family.calculate.workspace.04_selected-item */
@@ -3767,8 +3770,6 @@
 }
 
 
-
-
 .calculate-cost-cisco-tool .calculate-cost-cisco-example-card {
     display: grid;
     gap: 5px;
@@ -3881,6 +3882,56 @@
     background-color: #f8fafc;
     color: #94a3b8;
     cursor: not-allowed;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-native-select {
+    padding: 10px 52px 10px 13px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: none;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-native-select-wrap {
+    position: relative;
+    display: block;
+    min-width: 0;
+    overflow: visible;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-native-select-wrap > .calculate-cost-cisco-native-select,
+.calculate-cost-cisco-tool .calculate-cost-cisco-native-select-wrap > .form-select {
+    padding-right: 52px !important;
+    background-image: none !important;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-native-select-wrap::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--calculate-cost-cisco-border, var(--tool-border, #d8e2ee));
+    border-radius: 9px;
+    background: var(--calculate-cost-cisco-bg-soft, var(--tool-surface-soft, #f8fafc));
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-native-select-wrap::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 20.5px;
+    z-index: 3;
+    width: 9px;
+    height: 9px;
+    border-right: 2.25px solid var(--calculate-cost-cisco-accent, var(--tool-accent, #475569));
+    border-bottom: 2.25px solid var(--calculate-cost-cisco-accent, var(--tool-accent, #475569));
+    border-radius: 1px;
+    pointer-events: none;
+    transform: translateY(-62%) rotate(45deg);
 }
 
 .calculate-cost-cisco-tool .calculate-cost-cisco-basic-card .calculate-cost-cisco-select {
@@ -4195,15 +4246,13 @@
 
 .calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary::-webkit-details-marker,
 .calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel-summary::-webkit-details-marker,
-.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary::-webkit-details-marker,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary::-webkit-details-marker {
+.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary::-webkit-details-marker{
     display: none;
 }
 
 .calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary::marker,
 .calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel-summary::marker,
-.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary::marker,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary::marker {
+.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary::marker{
     content: "";
     font-size: 0;
 }
@@ -4225,37 +4274,7 @@
     transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--calculate-cost-cisco-border-strong, var(--tool-border-strong, #22D3EE));
-    border-radius: 9px;
-    background: var(--calculate-cost-cisco-bg-panel, var(--tool-surface, #ffffff));
-    pointer-events: none;
-    transform: translateY(-50%);
-    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary > .calculate-cost-cisco-custom-arrow-slot,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before {
-    right: 6px;
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-arrow-slot::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::after,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::after,
-.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::after,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::after {
+.calculate-cost-cisco-tool .calculate-cost-cisco-custom-arrow-slot::before {
     content: "";
     position: absolute;
     top: 50%;
@@ -4269,40 +4288,17 @@
     transition: transform 0.18s ease;
 }
 
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary:has(> .calculate-cost-cisco-custom-arrow-slot)::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary:has(> .calculate-cost-cisco-custom-arrow-slot)::after,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel-summary:has(> .calculate-cost-cisco-custom-arrow-slot)::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel-summary:has(> .calculate-cost-cisco-custom-arrow-slot)::after,
-.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary:has(> .calculate-cost-cisco-custom-arrow-slot)::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary:has(> .calculate-cost-cisco-custom-arrow-slot)::after,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:has(> .calculate-cost-cisco-custom-arrow-slot)::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:has(> .calculate-cost-cisco-custom-arrow-slot)::after {
-    content: none;
-    display: none;
-}
-
 .calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary:hover > .calculate-cost-cisco-custom-arrow-slot,
 .calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary:focus-visible > .calculate-cost-cisco-custom-arrow-slot,
 .calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel-summary:hover > .calculate-cost-cisco-custom-arrow-slot,
 .calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel-summary:focus-visible > .calculate-cost-cisco-custom-arrow-slot,
 .calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary:hover > .calculate-cost-cisco-custom-arrow-slot,
-.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary:focus-visible > .calculate-cost-cisco-custom-arrow-slot,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:hover > .calculate-cost-cisco-custom-arrow-slot,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:focus-visible > .calculate-cost-cisco-custom-arrow-slot,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary:hover:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary:focus-visible:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel-summary:hover:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel-summary:focus-visible:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary:hover:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary:focus-visible:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:hover:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:focus-visible:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::before {
+.calculate-cost-cisco-tool .calculate-cost-cisco-advanced-summary:focus-visible > .calculate-cost-cisco-custom-arrow-slot {
     border-color: var(--calculate-cost-cisco-border-strong, var(--tool-border-strong, #cbd5e1));
     background: var(--calculate-cost-cisco-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
 }
 
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary-icon,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-icon {
+.calculate-cost-cisco-tool .calculate-cost-cisco-custom-summary-icon{
     display: none !important;
 }
 
@@ -4310,12 +4306,6 @@
 .calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel[open] > .calculate-cost-cisco-custom-panel-summary,
 .calculate-cost-cisco-tool .calculate-cost-cisco-advanced[open] > .calculate-cost-cisco-advanced-summary {
     border-radius: 13px 13px 0 0;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-settings[open] > .calculate-cost-cisco-custom-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::after,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-panel[open] > .calculate-cost-cisco-custom-panel-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::after,
-.calculate-cost-cisco-tool .calculate-cost-cisco-advanced[open] > .calculate-cost-cisco-advanced-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::after {
-    transform: translate(-50%, -62%) rotate(45deg);
 }
 
 .calculate-cost-cisco-tool .calculate-cost-cisco-custom-settings[open] > .calculate-cost-cisco-custom-summary > .calculate-cost-cisco-custom-arrow-slot::before,
@@ -4916,110 +4906,6 @@
     line-height: 1.45;
 }
 
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown {
-    position: relative;
-    display: grid;
-    width: 100%;
-    min-width: 0;
-    overflow: visible;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown[open] {
-    z-index: 160;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary {
-    position: relative;
-    display: flex;
-    min-height: 40px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 42px 8px 10px;
-    border: 1px solid var(--calculate-cost-cisco-border, var(--tool-border, #d8e2ee));
-    border-radius: 10px;
-    background: var(--calculate-cost-cisco-bg-panel, var(--tool-surface, #ffffff));
-    color: var(--calculate-cost-cisco-text, var(--tool-text, #334155));
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.35;
-    list-style: none;
-    list-style-type: none;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown[open] .calculate-cost-cisco-custom-dropdown-summary:not(:has(> .calculate-cost-cisco-custom-arrow-slot))::after {
-    transform: translate(-50%, -62%) rotate(45deg);
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown[open] .calculate-cost-cisco-custom-dropdown-summary > .calculate-cost-cisco-custom-arrow-slot::before {
-    transform: translate(-50%, -62%) rotate(45deg);
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:hover,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:focus-visible {
-    border-color: var(--calculate-cost-cisco-border-strong, var(--tool-border-strong, #cbd5e1));
-    outline: none;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-summary:focus-visible,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown[open] .calculate-cost-cisco-custom-dropdown-summary {
-    border-color: var(--calculate-cost-cisco-accent, var(--tool-accent, #475569));
-    box-shadow: 0 0 0 3px var(--calculate-cost-cisco-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-menu {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    display: grid;
-    width: 100%;
-    min-width: 100%;
-    max-height: min(280px, 52vh);
-    border: 1px solid var(--calculate-cost-cisco-accent, var(--tool-accent, #475569));
-    border-radius: 10px;
-    background: var(--calculate-cost-cisco-bg-panel, var(--tool-surface, #ffffff));
-    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
-    overflow-x: hidden;
-    overflow-y: auto;
-    z-index: 170;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown:not([open]) .calculate-cost-cisco-custom-dropdown-menu {
-    display: none;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-option {
-    display: flex;
-    width: 100%;
-    min-height: 38px;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 8px 10px;
-    border: 0;
-    border-top: 0;
-    background: var(--calculate-cost-cisco-bg-panel, var(--tool-surface, #ffffff));
-    color: var(--calculate-cost-cisco-text, var(--tool-text, #334155));
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.35;
-    text-align: left;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-option:first-child {
-    border-top: 0;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-option:hover,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-option:focus-visible,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-option.active,
-.calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown-option[aria-selected="true"] {
-    background: var(--calculate-cost-cisco-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
-    color: var(--calculate-cost-cisco-text-strong, var(--tool-heading, #111827));
-    outline: none;
-}
-
 .calculate-cost-cisco-tool .calculate-cost-cisco-custom-checkbox-option {
     position: relative;
     display: inline-grid;
@@ -5310,7 +5196,6 @@
 
     .calculate-cost-cisco-tool .calculate-cost-cisco-custom-tab,
     .calculate-cost-cisco-tool .calculate-cost-cisco-config-tab,
-    .calculate-cost-cisco-tool .calculate-cost-cisco-custom-dropdown,
     .calculate-cost-cisco-tool .calculate-cost-cisco-custom-radio-group,
     .calculate-cost-cisco-tool .calculate-cost-cisco-radio-group,
     .calculate-cost-cisco-tool .calculate-cost-cisco-custom-checkbox-option,
@@ -6188,6 +6073,15 @@
 
 /* ns:start family._base.workspace.06_output-toolbar */
 /* output-toolbar-standard:start */
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
@@ -6201,49 +6095,53 @@
     overflow: visible;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell {
+    container-type: inline-size;
     position: relative;
     z-index: 20;
     overflow: visible;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell:has(.calculate-cost-cisco-sort-select[open]),
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell:has(.calculate-cost-cisco-sort-select[open]) {
     z-index: 120;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar {
     display: grid;
-    grid-template-columns: minmax(280px, 1fr) minmax(390px, 450px);
+    width: 100%;
+    grid-template-columns: minmax(220px, 1fr) minmax(var(--tool-output-actions-width, 470px), var(--tool-output-actions-width, 470px));
     align-items: start;
     gap: 12px;
     overflow: visible;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
 .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell {
     display: grid;
-    grid-template-columns: auto minmax(0, 240px);
+    width: min(100%, calc(var(--tool-output-control-width, 150px) + 52px));
+    grid-template-columns: auto var(--tool-output-control-width, 150px);
     align-items: center;
     justify-content: start;
     gap: 12px;
     overflow: visible;
 }
 
-.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left {
-    display: grid;
-    grid-template-columns: auto minmax(0, 240px);
-    align-items: center;
-    justify-content: start;
-    gap: 12px;
-    overflow: visible;
-}
-
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap,
 .calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap {
-    width: min(100%, 240px);
-    max-width: 240px;
+    width: min(100%, var(--tool-output-control-width, 150px));
+    min-width: 0;
+    max-width: var(--tool-output-control-width, 150px);
     overflow: visible;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select,
 .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select {
     position: relative;
     z-index: 30;
@@ -6254,107 +6152,46 @@
     overflow: visible;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select[open],
 .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select[open] {
     z-index: 140;
 }
 
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary {
-    display: flex;
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select > summary,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-summary,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select > summary,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-summary {
     width: 100%;
-    min-height: 46px;
-    align-items: center;
-    justify-content: space-between;
+    height: var(--tool-output-control-height, 46px);
+    min-height: var(--tool-output-control-height, 46px);
     box-sizing: border-box;
-    padding: 10px 14px;
-    border: 1px solid var(--tool-border, #cbd5e1);
-    border-radius: 12px;
-    background: var(--tool-surface, #ffffff);
-    color: var(--tool-text, #243044);
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 800;
-    line-height: 1.25;
-    list-style: none;
-    user-select: none;
+    padding-right: 12px;
+    padding-left: 12px;
+    border-radius: var(--tool-output-control-radius, 10px);
+    font-size: var(--tool-output-control-font-size, 13px);
+    line-height: 1;
 }
 
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary::-webkit-details-marker {
-    display: none;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary::after {
-    content: "";
-    width: 9px;
-    height: 9px;
-    border-right: 2px solid var(--tool-muted, #64748b);
-    border-bottom: 2px solid var(--tool-muted, #64748b);
-    transform: rotate(45deg);
-    transition: transform 0.2s ease;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select:not([open]) .calculate-cost-cisco-sort-summary::after {
-    transform: rotate(-45deg);
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-menu,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-body,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-menu,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-body {
     z-index: 160;
     width: 100%;
     min-width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    padding: 8px;
-    border: 1px solid var(--tool-border, #cbd5e1);
-    border-radius: 12px;
-    background: #ffffff;
-    box-shadow: 0 22px 46px rgba(15, 23, 42, 0.16);
 }
 
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-grid {
-    display: grid;
-    gap: 8px;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-option {
-    display: block;
-    width: 100%;
-    min-height: 42px;
-    box-sizing: border-box;
-    padding: 10px 12px;
-    border: 1px solid transparent;
-    border-radius: 9px;
-    background: #ffffff;
-    color: var(--tool-text, #243044);
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 800;
-    line-height: 1.25;
-    text-align: left;
-    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-option:hover,
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-option:focus {
-    border-color: var(--tool-accent-soft, #eff6ff);
-    background: var(--tool-accent-soft, #eff6ff);
-    color: var(--tool-accent, #2563eb);
-    outline: none;
-}
-
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-option.is-active {
-    border-color: var(--tool-accent-soft, #eff6ff);
-    background: var(--tool-accent-soft, #eff6ff);
-    color: var(--tool-accent, #2563eb);
-    box-shadow: 0 0 0 3px var(--tool-focus-ring, rgba(37, 99, 235, 0.16));
-}
-
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions,
 .calculate-cost-cisco-tool .tool-output-actions,
 .calculate-cost-cisco-tool .tool-result-toolbar-actions {
     display: grid;
     width: 100%;
-    max-width: 450px;
+    max-width: var(--tool-output-actions-width, 470px);
     grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: center;
     justify-content: end;
@@ -6363,6 +6200,11 @@
     margin-left: auto;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn,
 .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn,
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn,
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn,
@@ -6370,24 +6212,37 @@
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn {
     display: inline-flex;
     width: 100%;
-    min-height: 38px;
+    min-width: 0;
+    height: var(--tool-output-control-height, 46px);
+    min-height: var(--tool-output-control-height, 46px);
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     box-sizing: border-box;
     padding: 0 12px;
     border: 1px solid var(--tool-border, #cbd5e1);
+    border-radius: var(--tool-output-control-radius, 10px);
     background: var(--tool-surface, #ffffff);
-    border-radius: 10px;
-    cursor: pointer;
     color: var(--tool-text, #243044);
-    font-size: 13px;
+    cursor: pointer;
+    font-size: var(--tool-output-control-font-size, 13px);
     font-weight: 800;
     line-height: 1;
+    overflow: visible;
     white-space: nowrap;
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:hover,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:focus,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:hover,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:focus,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:hover,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:focus,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn:hover,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn:focus,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn:hover,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn:focus,
 .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:hover,
 .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:focus,
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:hover,
@@ -6404,19 +6259,29 @@
     outline: none;
 }
 
-
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
 .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(4),
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
     grid-column: 2;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5),
 .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(5),
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
     grid-column: 3;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn i,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn i,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn i,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn i,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn i,
 .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn i,
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn i,
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn i,
@@ -6428,47 +6293,111 @@
     line-height: 1;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn [data-button-label],
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn [data-button-label],
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn [data-button-label],
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn [data-button-label],
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn [data-button-label],
+.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn [data-button-label],
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn [data-button-label],
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn [data-button-label],
+.calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn [data-button-label],
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn [data-button-label] {
+    display: inline-block;
+    min-width: 0;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
 @media (max-width: 991.98px) {
-    .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar {
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar {
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .calculate-cost-cisco-tool .tool-output-actions,
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions {
+    .blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions,
+.calculate-cost-cisco-tool .tool-output-actions,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         justify-self: start;
         margin-left: 0;
         max-width: none;
     }
 
-    .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(4),
-    .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(5),
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+    .blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5),
+.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
         grid-column: auto;
     }
 }
 
 @media (max-width: 767.98px) {
-    .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
-    .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
-    .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell {
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell {
+        width: 100%;
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap,
-    .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select,
-    .calculate-cost-cisco-tool .tool-output-actions,
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions {
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select,
+.calculate-cost-cisco-tool .tool-output-actions,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions {
         width: 100%;
         max-width: none;
     }
 
-    .calculate-cost-cisco-tool .tool-output-actions,
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions {
+    .blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions,
+.calculate-cost-cisco-tool .tool-output-actions,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions {
         grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@container (max-width: 720px) {
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main {
+        width: 100%;
+    }
+
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell {
+        width: min(100%, calc(var(--tool-output-control-width, 150px) + 52px));
+    }
+
+    .blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions,
+.calculate-cost-cisco-tool .tool-output-actions,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions {
+        justify-self: start;
+        margin-left: 0;
+        max-width: var(--tool-output-actions-width, 470px);
     }
 }
 /* output-toolbar-standard:end */
@@ -6842,55 +6771,75 @@
 /* ns:end family._base.workspace.07_table-output */
 
 /* output-toolbar-persistence-contract:start */
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell,
 .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap,
 .calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select,
 .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions,
 .calculate-cost-cisco-tool .tool-output-actions,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions,
 .calculate-cost-cisco-tool .tool-result-toolbar-actions {
     min-width: 0;
     overflow: visible;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell {
+    container-type: inline-size;
     position: relative;
     z-index: 20;
     overflow: visible;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell:has(.calculate-cost-cisco-sort-select[open]),
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-shell:has(.calculate-cost-cisco-sort-select[open]) {
     z-index: 120;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar {
     display: grid;
     width: 100%;
-    grid-template-columns: minmax(0, 1fr) minmax(390px, 450px);
+    grid-template-columns: minmax(var(--tool-output-sort-column-width, 190px), 1fr) minmax(var(--tool-output-actions-width, 470px), var(--tool-output-actions-width, 470px));
     align-items: start;
     gap: 12px;
     overflow: visible;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
 .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell,
 .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell {
     display: grid;
-    grid-template-columns: auto minmax(0, 240px);
+    width: min(100%, calc(var(--tool-output-control-width, 150px) + 52px));
+    grid-template-columns: auto var(--tool-output-control-width, 150px);
     align-items: center;
     justify-content: start;
     gap: 12px;
     overflow: visible;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap,
 .calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap {
-    width: min(100%, 240px);
-    max-width: 240px;
+    width: min(100%, var(--tool-output-control-width, 150px));
+    min-width: 0;
+    max-width: var(--tool-output-control-width, 150px);
     overflow: visible;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select,
 .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select {
     position: relative;
     z-index: 30;
@@ -6901,28 +6850,145 @@
     overflow: visible;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select[open],
 .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select[open] {
     z-index: 140;
 }
 
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary {
-    min-height: 46px;
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select > summary,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select > summary,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-summary,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-summary {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: var(--tool-output-control-height, 46px);
+    min-height: var(--tool-output-control-height, 46px);
+    align-items: center;
+    justify-content: space-between;
     box-sizing: border-box;
+    padding: 0 34px 0 12px;
+    border: 1px solid var(--tool-border, #cbd5e1);
+    border-radius: var(--tool-output-control-radius, 10px);
+    background: var(--tool-surface, #ffffff);
+    color: var(--tool-text, #243044);
+    cursor: pointer;
+    font-size: var(--tool-output-control-font-size, 13px);
+    font-weight: 800;
+    line-height: 1;
+    list-style: none;
+    user-select: none;
 }
 
-.calculate-cost-cisco-tool .calculate-cost-cisco-sort-menu {
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary::-webkit-details-marker,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary::-webkit-details-marker,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select > summary::-webkit-details-marker,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select > summary::-webkit-details-marker,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-summary::-webkit-details-marker,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-summary::-webkit-details-marker {
+    display: none;
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary::after,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-summary::after,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select > summary::after,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select > summary::after,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-summary::after,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-summary::after {
+    content: "";
+    position: absolute;
+    top: calc(50% - 1px);
+    right: 14px;
+    display: block;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--tool-muted, #64748b);
+    border-bottom: 2px solid var(--tool-muted, #64748b);
+    transform: translateY(-50%) rotate(45deg);
+    transform-origin: center;
+    transition: transform 0.2s ease;
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select:not([open]) .calculate-cost-cisco-sort-summary::after,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select:not([open]) .calculate-cost-cisco-sort-summary::after,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select:not([open]) > summary::after,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select:not([open]) > summary::after,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select:not([open]) .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-summary::after,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select:not([open]) .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-summary::after {
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-menu,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-menu,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-body,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select .calculate-cost-cisco-select-body {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
     z-index: 160;
     width: 100%;
     min-width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid var(--tool-border, #cbd5e1);
+    border-radius: var(--tool-output-control-radius, 12px);
+    background: var(--tool-surface, #ffffff);
+    box-shadow: 0 22px 46px rgba(15, 23, 42, 0.16);
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-grid,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-grid {
+    display: grid;
+    gap: 8px;
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-option,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-option {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: var(--tool-output-option-radius, 9px);
+    background: var(--tool-surface, #ffffff);
+    color: var(--tool-text, #243044);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: left;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-option:hover,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-option:hover,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-option:focus,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-option:focus {
+    border-color: var(--tool-accent, #2563eb);
+    background: var(--tool-accent-soft, #eff6ff);
+    color: var(--tool-accent, #2563eb);
+    outline: none;
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-option.is-active,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-option.is-active {
+    border-color: var(--tool-accent, #2563eb);
+    background: var(--tool-accent-soft, #eff6ff);
+    color: var(--tool-accent, #2563eb);
+    box-shadow: 0 0 0 3px var(--tool-accent-ring, rgba(37, 99, 235, 0.12));
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions,
 .calculate-cost-cisco-tool .tool-output-actions,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions,
 .calculate-cost-cisco-tool .tool-result-toolbar-actions {
     display: grid;
     width: 100%;
-    max-width: 450px;
+    max-width: var(--tool-output-actions-width, 470px);
     grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: center;
     justify-content: end;
@@ -6931,28 +6997,107 @@
     margin-left: auto;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn,
 .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn,
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn,
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn,
 .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn,
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn {
+    display: inline-flex;
     width: 100%;
     min-width: 0;
-    min-height: 38px;
-    gap: 6px;
-    padding-right: 10px;
-    padding-left: 10px;
-    border-radius: 10px;
-    font-size: 12px;
+    height: var(--tool-output-control-height, 46px);
+    min-height: var(--tool-output-control-height, 46px);
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+    padding: 0 34px 0 12px;
+    border: 1px solid var(--tool-border, #cbd5e1);
+    border-radius: var(--tool-output-control-radius, 10px);
+    background: var(--tool-surface, #ffffff);
+    color: var(--tool-text, #243044);
+    cursor: pointer;
+    font-size: var(--tool-output-control-font-size, 13px);
+    font-weight: 800;
     line-height: 1;
     overflow: visible;
     white-space: nowrap;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:hover,
+.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:hover,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:focus,
+.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:focus,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:hover,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:hover,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:focus,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:focus,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:hover,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:hover,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:focus,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:focus,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn:hover,
+.calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn:hover,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn:focus,
+.calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn:focus,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn:hover,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn:hover,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn:focus,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn:focus {
+    border-color: var(--tool-accent, #2563eb);
+    background: var(--tool-accent-soft, #eff6ff);
+    color: var(--tool-accent, #2563eb);
+    outline: none;
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
+    grid-column: 2;
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+    grid-column: 3;
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn i,
+.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn i,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn i,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn i,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn i,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn i,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn i,
+.calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn i,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn i,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn i {
+    color: currentColor;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn [data-button-label],
 .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn [data-button-label],
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn [data-button-label],
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn [data-button-label],
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn [data-button-label],
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn [data-button-label],
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn [data-button-label],
 .calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn [data-button-label],
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn [data-button-label],
 .calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn [data-button-label] {
     display: inline-block;
     min-width: 0;
@@ -6961,69 +7106,87 @@
     white-space: nowrap;
 }
 
-.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(4),
-.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
-.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
-    grid-column: 2;
-}
-
-.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(5),
-.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
-.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
-    grid-column: 3;
-}
-
-.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn i,
-.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn i,
-.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn i,
-.calculate-cost-cisco-tool .tool-output-actions .calculate-cost-cisco-action-btn i,
-.calculate-cost-cisco-tool .tool-result-toolbar-actions .calculate-cost-cisco-action-btn i {
-    flex: 0 0 auto;
-    font-size: 15px;
-    line-height: 1;
-}
-
-@media (max-width: 991.98px) {
-    .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar {
+@container (max-width: 672px) {
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar {
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .calculate-cost-cisco-tool .tool-output-actions,
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        justify-self: start;
-        margin-left: 0;
-        max-width: none;
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main {
+        width: 100%;
     }
 
-    .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(4),
-    .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(5),
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
-        grid-column: auto;
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell {
+        width: min(100%, calc(var(--tool-output-control-width, 150px) + 52px));
+    }
+
+    .blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions,
+.calculate-cost-cisco-tool .tool-output-actions,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        justify-self: start;
+        width: calc(100% - var(--tool-output-sort-offset, 37px));
+        margin-left: var(--tool-output-sort-offset, 37px);
+        max-width: var(--tool-output-actions-width, 470px);
     }
 }
 
 @media (max-width: 767.98px) {
-    .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
-    .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
-    .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell {
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar {
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap,
-    .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select,
-    .calculate-cost-cisco-tool .tool-output-actions,
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions {
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-main,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.calculate-cost-cisco-tool .calculate-cost-cisco-toolbar-left,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-shell {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-wrap,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-sort-select,
+.calculate-cost-cisco-tool .calculate-cost-cisco-sort-select,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions,
+.calculate-cost-cisco-tool .tool-output-actions,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions {
         width: 100%;
         max-width: none;
     }
 
-    .calculate-cost-cisco-tool .tool-output-actions,
-    .calculate-cost-cisco-tool .tool-result-toolbar-actions {
+    .blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions,
+.calculate-cost-cisco-tool .tool-output-actions,
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions,
+.calculate-cost-cisco-tool .tool-result-toolbar-actions {
+        width: 100%;
         grid-template-columns: minmax(0, 1fr);
+        margin-left: 0;
+        max-width: none;
+    }
+
+    .blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(4),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.calculate-cost-cisco-tool .tool-output-actions .tool-action-btn:nth-child(5),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+.blog-details .article-content .content .calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5),
+.calculate-cost-cisco-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
     }
 }
 /* output-toolbar-persistence-contract:end */
@@ -7071,3 +7234,575 @@
     }
 }
 /* result-summary-persistence-contract:end */
+
+/* result-summary-architecture-grid-contract:start */
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-summary {
+    gap: 12px;
+    padding: 14px;
+    background: var(--calculate-cost-cisco-result-surface, #ffffff);
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    overflow: visible;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 0;
+    min-height: 32px;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-header-main {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-header-icon {
+    display: none;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-header-copy {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-header-title {
+    display: flex;
+    min-height: 32px;
+    align-items: center;
+    margin: 0;
+    padding-top: 0;
+    color: var(--calculate-cost-cisco-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-header-copy p {
+    display: none;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-header-meta {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-header-chip {
+    min-height: 32px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(210px, 0.82fr) minmax(0, 1.28fr);
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+    margin-top: 0;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-primary,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-visual,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-command,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-summary,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-main {
+    min-height: 0;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card {
+    gap: 10px;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-primary,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-visual,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-command {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-summary,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-main {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-summary {
+    border-color: var(--calculate-cost-cisco-result-border-strong, var(--calculate-cost-cisco-result-border, #bfdbfe));
+    background:
+        radial-gradient(circle at 16% 16%, color-mix(in srgb, var(--calculate-cost-cisco-result-info-soft, rgba(37, 99, 235, 0.1)) 42%, transparent) 0 96px, transparent 180px),
+        var(--calculate-cost-cisco-result-surface, #ffffff);
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-summary-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    align-items: start;
+    min-width: 0;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-summary-copy {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-icon-summary {
+    display: none;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-divider,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-primary > .calculate-cost-cisco-result-card-divider,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-visual > .calculate-cost-cisco-result-card-divider,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-command > .calculate-cost-cisco-result-card-divider,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-summary > .calculate-cost-cisco-result-card-divider,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-main > .calculate-cost-cisco-result-card-divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    flex: 0 0 auto;
+    margin: 0;
+    margin-top: 12px;
+    background: var(--calculate-cost-cisco-result-border, #dbe4f0);
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-chip-row,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-chip-grid {
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-primary > .calculate-cost-cisco-result-chip-row,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-visual > .calculate-cost-cisco-result-chip-row,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-command > .calculate-cost-cisco-result-chip-row,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-summary > .calculate-cost-cisco-result-chip-grid,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-main > .calculate-cost-cisco-result-chip-row {
+    min-height: 0;
+    align-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 0;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-primary .calculate-cost-cisco-result-card-icon-primary,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-visual .calculate-cost-cisco-result-card-icon-primary {
+    display: none;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-primary[data-result-visual="ring"],
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-visual[data-result-visual="ring"] {
+    justify-content: flex-start;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-primary[data-result-visual="ring"] .calculate-cost-cisco-result-visual-copy-top,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-visual[data-result-visual="ring"] .calculate-cost-cisco-result-visual-copy-top {
+    order: 0;
+    margin: 0 0 10px;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-primary[data-result-visual="ring"] .calculate-cost-cisco-result-visual-copy-top .calculate-cost-cisco-result-title,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-visual[data-result-visual="ring"] .calculate-cost-cisco-result-visual-copy-top .calculate-cost-cisco-result-title {
+    color: var(--calculate-cost-cisco-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.15;
+    text-align: center;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-primary[data-result-visual="ring"] .calculate-cost-cisco-result-primary-visual,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-visual[data-result-visual="ring"] .calculate-cost-cisco-result-primary-visual {
+    display: grid;
+    justify-items: center;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-primary[data-result-visual="ring"] .calculate-cost-cisco-result-ring,
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-card-visual[data-result-visual="ring"] .calculate-cost-cisco-result-ring {
+    margin: 0 auto 10px;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-ring-value {
+    max-width: min(86px, 82%);
+    font-size: clamp(18px, calc(168px / var(--calculate-cost-cisco-result-value-chars, 3)), 32px);
+    line-height: 0.95;
+    overflow-wrap: normal;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-card {
+    --calculate-cost-cisco-result-metric-color: var(--calculate-cost-cisco-result-accent, var(--tool-accent, #2563eb));
+    --calculate-cost-cisco-result-metric-soft: var(--calculate-cost-cisco-result-accent-soft, rgba(37, 99, 235, 0.1));
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    align-content: stretch;
+    gap: 7px;
+    min-height: 128px;
+    padding: 14px;
+    border: 1px solid var(--calculate-cost-cisco-result-border, var(--tool-border, #dbe4f0));
+    border-radius: 14px;
+    background: var(--calculate-cost-cisco-result-surface, #ffffff);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    overflow: hidden;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-success {
+    --calculate-cost-cisco-result-metric-color: var(--calculate-cost-cisco-result-success, #059669);
+    --calculate-cost-cisco-result-metric-soft: var(--calculate-cost-cisco-result-success-soft, rgba(16, 185, 129, 0.12));
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-info {
+    --calculate-cost-cisco-result-metric-color: var(--calculate-cost-cisco-result-info, #2563eb);
+    --calculate-cost-cisco-result-metric-soft: var(--calculate-cost-cisco-result-info-soft, rgba(37, 99, 235, 0.1));
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-accent-tone {
+    --calculate-cost-cisco-result-metric-color: var(--calculate-cost-cisco-result-accent, var(--tool-accent, #2563eb));
+    --calculate-cost-cisco-result-metric-soft: var(--calculate-cost-cisco-result-accent-soft, rgba(37, 99, 235, 0.1));
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-warning {
+    --calculate-cost-cisco-result-metric-color: var(--calculate-cost-cisco-result-warning, #d97706);
+    --calculate-cost-cisco-result-metric-soft: var(--calculate-cost-cisco-result-warning-soft, rgba(245, 158, 11, 0.14));
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-icon {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--calculate-cost-cisco-result-metric-soft) 82%, var(--calculate-cost-cisco-result-surface, #ffffff));
+    color: var(--calculate-cost-cisco-result-metric-color);
+    font-size: 16px;
+    line-height: 1;
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--calculate-cost-cisco-result-metric-color) 13%, transparent);
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-label {
+    color: var(--calculate-cost-cisco-result-metric-color);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-value {
+    color: var(--calculate-cost-cisco-result-heading, var(--tool-heading, #111827));
+    font-size: clamp(14px, 1vw, 16px);
+    font-weight: 800;
+    line-height: 1.18;
+    overflow-wrap: anywhere;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-copy {
+    align-self: start;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-accent {
+    display: block;
+    width: min(80px, 48%);
+    height: 3px;
+    align-self: end;
+    margin-top: 0;
+    border-radius: 999px;
+    background: var(--calculate-cost-cisco-result-metric-color);
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-result-header-title {
+    display: flex;
+    min-height: 32px;
+    align-items: center;
+    margin: 0;
+    color: var(--calculate-cost-cisco-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-result-title {
+    margin: 0;
+    color: var(--calculate-cost-cisco-result-heading, var(--tool-heading, #111827));
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-result-copy,
+.blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-copy {
+    margin: 0;
+    color: var(--calculate-cost-cisco-result-muted, var(--tool-text-muted, #64748b));
+    font-size: 13px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 960px) {
+    .calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .calculate-cost-cisco-tool .calculate-cost-cisco-result-hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .calculate-cost-cisco-tool .calculate-cost-cisco-result-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .calculate-cost-cisco-tool .calculate-cost-cisco-result-header-meta {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-card {
+        min-height: 118px;
+        padding: 13px;
+    }
+
+    .calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-value {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 560px) {
+    .calculate-cost-cisco-tool .calculate-cost-cisco-result-metric-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-result-header-title,
+    .blog-details .article-content .content .calculate-cost-cisco-tool .calculate-cost-cisco-result-title {
+        font-size: 19px;
+    }
+}
+/* result-summary-architecture-grid-contract:end */
+
+/* all-tool-control-sizing-contract:start */
+.calculate-cost-cisco-tool :is([class*="-basic-card"], [class*="-custom-panel"], [class*="-custom-settings"], [class*="-advanced"], [class*="-config-panel"]) :is([class*="-inline-grid"], [class*="-card-grid"], [class*="-basis-grid"], [class*="-service-grid"], [class*="-toggle-grid"], [class*="-radio-group"], [class*="-custom-radio-grid"], [class*="-custom-radio-group"]) {
+    align-items: stretch;
+    min-width: 0;
+}
+
+.calculate-cost-cisco-tool :is([class*="-basic-card"], [class*="-custom-panel"], [class*="-custom-settings"], [class*="-advanced"], [class*="-config-panel"]) :is([class*="-inline-grid-two"], [class*="-inline-grid-preset"], [class*="-card-grid-two"], [class*="-basis-grid"], [class*="-service-grid"]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.calculate-cost-cisco-tool :is([class*="-basic-card"], [class*="-custom-panel"], [class*="-custom-settings"], [class*="-advanced"], [class*="-config-panel"]) :is([class*="-inline-grid-three"], [class*="-card-grid-three"]) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.calculate-cost-cisco-tool :is([class*="-basic-card"], [class*="-custom-panel"], [class*="-custom-settings"], [class*="-advanced"], [class*="-config-panel"]) [class*="-inline-grid-four"] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.calculate-cost-cisco-tool :is([class*="-custom-summary"], [class*="-custom-panel-summary"], [class*="-advanced-summary"]) {
+    min-height: 44px;
+    box-sizing: border-box;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.25;
+}
+
+.calculate-cost-cisco-tool [class*="-basic-card"] :is(.form-control, .form-select, [class*="-native-select"], [class*="-text-field"], [class*="-number-field"], [class*="-select-summary"], [class*="-custom-select-trigger"], [class*="-secondary-btn"], [class*="-apply-btn"], [class*="-switch-card"], [class*="-radio-card"], [class*="-toggle-item"]) {
+    min-height: 46px;
+    box-sizing: border-box;
+}
+
+.calculate-cost-cisco-tool :is([class*="-custom-panel"], [class*="-custom-settings"], [class*="-advanced"], [class*="-config-panel"]) :is(.form-control, .form-select, [class*="-native-select"], [class*="-text-field"], [class*="-number-field"], [class*="-custom-text-field"], [class*="-custom-number-field"], [class*="-select-summary"], [class*="-custom-select-trigger"], [class*="-secondary-btn"]) {
+    min-height: 40px;
+    box-sizing: border-box;
+}
+
+.calculate-cost-cisco-tool :is([class*="-basic-card"], [class*="-custom-panel"], [class*="-custom-settings"], [class*="-advanced"], [class*="-config-panel"]) :is([class*="-inline-grid"], [class*="-card-grid"], [class*="-basis-grid"], [class*="-service-grid"], [class*="-toggle-grid"], [class*="-radio-group"], [class*="-custom-radio-grid"], [class*="-custom-radio-group"]) > :is(.form-control, .form-select, button, label, details, [class*="-native-select-wrap"], [class*="-custom-select"], [class*="-switch-card"], [class*="-radio-card"], [class*="-custom-radio-card"], [class*="-custom-radio-option"], [class*="-toggle-item"], [class*="-special-toggle"]) {
+    height: 100%;
+}
+
+.calculate-cost-cisco-tool :is([class*="-custom-panel"], [class*="-custom-settings"], [class*="-advanced"], [class*="-config-panel"]) :is([class*="-custom-checkbox-option"], [class*="-toggle-item"], [class*="-radio-card"], [class*="-custom-radio-card"], [class*="-custom-radio-option"], [class*="-special-toggle"], [class*="-switch-card"]) {
+    min-height: 40px;
+    box-sizing: border-box;
+}
+
+.calculate-cost-cisco-tool :is([class*="-custom-panel"], [class*="-custom-settings"], [class*="-advanced"], [class*="-config-panel"]) :is([class*="-field-hint"], [class*="-flag-hint"], [class*="-inline-note"], [class*="-custom-info"]) {
+    display: block;
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    margin: 2px 0 0;
+    padding: 11px 12px;
+    line-height: 1.45;
+    text-align: left;
+    word-spacing: normal;
+    overflow-wrap: anywhere;
+}
+
+.calculate-cost-cisco-tool :is([class*="-custom-panel"], [class*="-custom-settings"], [class*="-advanced"], [class*="-config-panel"]) :is([class*="-field-hint"], [class*="-flag-hint"], [class*="-inline-note"], [class*="-custom-info"]) > * {
+    display: block;
+    min-width: 0;
+}
+
+@media (max-width: 900px) {
+    .calculate-cost-cisco-tool :is([class*="-basic-card"], [class*="-custom-panel"], [class*="-custom-settings"], [class*="-advanced"], [class*="-config-panel"]) :is([class*="-inline-grid-two"], [class*="-inline-grid-three"], [class*="-inline-grid-four"], [class*="-inline-grid-preset"], [class*="-card-grid-two"], [class*="-card-grid-three"], [class*="-basis-grid"], [class*="-service-grid"]) {
+        grid-template-columns: 1fr;
+    }
+}
+/* all-tool-control-sizing-contract:end */
+
+.calculate-cost-cisco-tool .tool-table-action-head,
+.calculate-cost-cisco-tool .tool-result-table:has(thead .tool-table-action-head-label) th:last-child,
+.calculate-cost-cisco-tool .calculate-cost-cisco-table:has(thead .tool-table-action-head-label) th:last-child {
+    position: sticky;
+    right: 0;
+    inset-inline-end: 0;
+    z-index: 3;
+    width: 74px;
+    min-width: 74px;
+    text-align: center;
+    white-space: nowrap;
+    background: var(--tool-table-head-bg, var(--tool-surface-soft, #f8fafc));
+    box-shadow: none;
+}
+
+.calculate-cost-cisco-tool .tool-table-action-cell,
+.calculate-cost-cisco-tool .tool-result-table:has(thead .tool-table-action-head-label) td:last-child:has(button),
+.calculate-cost-cisco-tool .calculate-cost-cisco-table:has(thead .tool-table-action-head-label) td:last-child:has(button) {
+    position: sticky;
+    right: 0;
+    inset-inline-end: 0;
+    z-index: 2;
+    width: 74px;
+    min-width: 74px;
+    text-align: center;
+    white-space: nowrap;
+    background: var(--tool-surface, #ffffff);
+    box-shadow: none;
+}
+
+.calculate-cost-cisco-tool .tool-result-table:has(thead .tool-table-action-head-label) tbody tr:hover td:last-child:has(button),
+.calculate-cost-cisco-tool .calculate-cost-cisco-table:has(thead .tool-table-action-head-label) tbody tr:hover td:last-child:has(button) {
+    background: var(--tool-table-row-hover, var(--tool-surface, #ffffff));
+}
+
+/* tool-table-action-button-standard:start */
+.calculate-cost-cisco-tool .tool-table-row-copy,
+.calculate-cost-cisco-tool .tool-table-action-cell > button {
+    display: inline-flex;
+    width: 34px;
+    min-width: 34px;
+    max-width: 34px;
+    height: 34px;
+    min-height: 34px;
+    max-height: 34px;
+    flex: 0 0 34px;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: 1px solid var(--tool-border-strong, #c4b5fd);
+    border-radius: var(--tool-radius-xs, 9px);
+    background: var(--tool-surface, #ffffff);
+    color: var(--tool-accent, #7c3aed);
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    box-shadow: none;
+    transform: none;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.calculate-cost-cisco-tool .tool-table-row-copy:hover,
+.calculate-cost-cisco-tool .tool-table-row-copy:focus,
+.calculate-cost-cisco-tool .tool-table-action-cell > button:hover,
+.calculate-cost-cisco-tool .tool-table-action-cell > button:focus {
+    border-color: var(--tool-accent, #7c3aed);
+    background: var(--tool-accent-pale, rgba(124, 58, 237, 0.08));
+    color: var(--tool-accent-strong, #6d28d9);
+    outline: none;
+    box-shadow: none;
+    transform: none;
+}
+
+.calculate-cost-cisco-tool .tool-table-row-copy.is-copied,
+.calculate-cost-cisco-tool .tool-table-row-copy.copied,
+.calculate-cost-cisco-tool .tool-table-action-cell > button.is-copied,
+.calculate-cost-cisco-tool .tool-table-action-cell > button.copied {
+    border-color: var(--tool-border-strong, #c4b5fd);
+    background: var(--tool-surface, #ffffff);
+    color: var(--tool-accent, #7c3aed);
+}
+
+.calculate-cost-cisco-tool .tool-table-row-copy i,
+.calculate-cost-cisco-tool .tool-table-action-cell > button i,
+.calculate-cost-cisco-tool .tool-table-action-cell > button > i.bi {
+    display: inline-flex;
+    width: 15px;
+    min-width: 15px;
+    max-width: 15px;
+    height: 15px;
+    min-height: 15px;
+    max-height: 15px;
+    flex: 0 0 15px;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 15px;
+    line-height: 1;
+}
+/* tool-table-action-button-standard:end */
+/* tool-table-action-label-standard:start */
+.calculate-cost-cisco-tool .tool-table-action-head-label {
+    text-transform: none;
+}
+/* tool-table-action-label-standard:end */

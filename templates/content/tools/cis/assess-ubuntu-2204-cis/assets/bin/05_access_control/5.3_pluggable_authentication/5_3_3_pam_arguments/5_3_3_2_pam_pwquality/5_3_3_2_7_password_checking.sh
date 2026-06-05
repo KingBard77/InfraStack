@@ -1,32 +1,27 @@
-#!/bin/sh
+#!/bin/bash
 
 CRITICALITY=1
-TITLE="Ensure pwquality checks the GECOS fields"
-
-SETTING_FILE="/etc/security/pwquality.conf"
-
+TITLE="Ensure password quality checking is enforced"
 function check {
+    MODULE="pam_pwquality.so"
+    REQUIRED="retry=3"
     STATUS="Fail"
 
-    if [ -f "$SETTING_FILE" ] && grep -Eq '^[[:space:]]*gecoscheck[[:space:]]*=[[:space:]]*1([[:space:]]*(#.*)?)?$' "$SETTING_FILE" > /dev/null 2>&1; then
+    LINE="$(grep -E "^\s*password\s+.*$MODULE" /etc/pam.d/common-password 2>/dev/null | head -n 1)"
+    if [[ -n "$LINE" ]] && echo "$LINE" | grep -Eq "(^|[[:space:]])$REQUIRED([[:space:]]|$)"; then
         STATUS="Pass"
     else
-        STATUS="Fail: gecoscheck is not set to 1"
+        STATUS="Fail: $MODULE does not include $REQUIRED"
     fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-    if [ -f "$SETTING_FILE" ]; then
-        cp -a "$SETTING_FILE" "$SETTING_FILE.$(date +"%s")"
+    cp -a /etc/pam.d/common-password /etc/pam.d/common-password.$(date +"%s")
+    if grep -Eq '^\s*password\s+.*pam_pwquality\.so' /etc/pam.d/common-password; then
+        sed -i -E '/pam_pwquality\.so/ { /(^|[[:space:]])retry=3([[:space:]]|$)/! s/$/ retry=3/ }' /etc/pam.d/common-password
     else
-        touch "$SETTING_FILE"
-    fi
-
-    if grep -Eq '^[[:space:]]*gecoscheck[[:space:]]*=' "$SETTING_FILE" > /dev/null 2>&1; then
-        sed -i 's/^[[:space:]]*gecoscheck[[:space:]]*=.*/gecoscheck = 1/' "$SETTING_FILE"
-    else
-        echo "gecoscheck = 1" | tee -a "$SETTING_FILE" > /dev/null
+        echo 'password requisite pam_pwquality.so retry=3' | tee -a /etc/pam.d/common-password > /dev/null
     fi
 }

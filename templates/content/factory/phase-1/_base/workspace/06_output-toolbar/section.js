@@ -65,6 +65,7 @@
         ],
         sourceBehaviours: [
             'keeps Sort as the left-side control and output actions on the right on desktop',
+            'keeps the Sort trigger and each action button the same desktop width and height',
             'requires exactly five action buttons when this section is applied',
             'requires a Bootstrap Icon inside every action button',
             'uses square-like action button corners instead of pill corners',
@@ -73,6 +74,7 @@
             'keeps ID as the first custom dropdown option',
             'uses a custom CSS dropdown instead of a native select popup',
             'keeps the dropdown menu the same width as the closed sort summary',
+            'keeps the sort chevron optically centered in the trigger',
             'keeps toolbar and dropdown wrappers overflow-visible',
             'raises the open dropdown above nearby cards',
             'collapses to full-width sort and action controls on mobile',

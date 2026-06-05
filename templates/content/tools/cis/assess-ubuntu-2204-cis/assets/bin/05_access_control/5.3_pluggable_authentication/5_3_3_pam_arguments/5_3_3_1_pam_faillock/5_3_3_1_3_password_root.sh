@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure password failed attempts lockout includes root account"
 
 even_deny_root="1"

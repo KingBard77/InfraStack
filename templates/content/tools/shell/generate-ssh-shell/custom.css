@@ -428,111 +428,7 @@
 }
 
 .generate-ssh-shell-native-select {
-    display: none !important;
-}
-
-.generate-ssh-shell-enhanced-select {
-    position: relative;
-    width: 100%;
-}
-
-.generate-ssh-shell-enhanced-select-toggle {
-    width: 100%;
-    min-height: 46px;
-    border: 1px solid #cfd9e4;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #334155;
-    box-shadow: none;
-    padding: 10px 42px 10px 14px;
-    font-size: 14px;
-    line-height: 1.45;
-    text-align: left;
-    position: relative;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-}
-
-.generate-ssh-shell-enhanced-select-toggle::after {
-    content: "";
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    width: 9px;
-    height: 9px;
-    border-right: 2px solid #64748b;
-    border-bottom: 2px solid #64748b;
-    transform: translateY(-65%) rotate(45deg);
-    transition: transform 0.2s ease;
-}
-
-.generate-ssh-shell-enhanced-select:hover .generate-ssh-shell-enhanced-select-toggle {
-    border-color: #b8cadb;
-}
-
-.generate-ssh-shell-enhanced-select.is-open .generate-ssh-shell-enhanced-select-toggle,
-.generate-ssh-shell-enhanced-select-toggle:focus,
-.generate-ssh-shell-enhanced-select-toggle:focus-visible {
-    border-color: #0f766e;
-    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.08);
-    outline: none;
-}
-
-.generate-ssh-shell-enhanced-select.is-open .generate-ssh-shell-enhanced-select-toggle::after {
-    transform: translateY(-35%) rotate(-135deg);
-}
-
-.generate-ssh-shell-enhanced-select.is-disabled .generate-ssh-shell-enhanced-select-toggle {
-    background: #f1f5f9;
-    color: #64748b;
-    border-color: #d7e2ee;
-    cursor: not-allowed;
-}
-
-.generate-ssh-shell-enhanced-select-menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    right: 0;
-    z-index: 25;
-    display: none;
-    max-height: 260px;
-    overflow-y: auto;
-    padding: 8px;
-    border: 1px solid #cfd9e4;
-    border-radius: 12px;
-    background: #ffffff;
-    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
-}
-
-.generate-ssh-shell-enhanced-select.is-open .generate-ssh-shell-enhanced-select-menu {
-    display: grid;
-    gap: 6px;
-}
-
-.generate-ssh-shell-enhanced-select-option {
-    width: 100%;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #334155;
-    padding: 10px 12px;
-    font-size: 14px;
-    line-height: 1.45;
-    text-align: left;
-    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
-}
-
-.generate-ssh-shell-enhanced-select-option:hover {
-    border-color: #cfe2f6;
-    background: #f8fbff;
-    color: #0f766e;
-}
-
-.generate-ssh-shell-enhanced-select-option.is-active {
-    border-color: #b9e7df;
-    background: #e8fbf7;
-    color: #0f766e;
-    font-weight: 700;
+    display: block !important;
 }
 
 .generate-ssh-shell-inline-grid {
@@ -1706,31 +1602,6 @@
     line-height: 1.5;
 }
 
-.generate-ssh-shell-form .form-control,
-.generate-ssh-shell-form .form-select,
-.generate-ssh-shell-enhanced-select-toggle {
-    border: 1px solid var(--generate-ssh-shell-border);
-    border-radius: 12px;
-    background: var(--generate-ssh-shell-bg-panel);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
-}
-
-.generate-ssh-shell-form .form-control:hover,
-.generate-ssh-shell-form .form-select:hover,
-.generate-ssh-shell-enhanced-select:hover .generate-ssh-shell-enhanced-select-toggle {
-    border-color: #b8d8d0;
-}
-
-.generate-ssh-shell-form .form-control:focus,
-.generate-ssh-shell-form .form-select:focus,
-.generate-ssh-shell-enhanced-select.is-open .generate-ssh-shell-enhanced-select-toggle,
-.generate-ssh-shell-enhanced-select-toggle:focus,
-.generate-ssh-shell-enhanced-select-toggle:focus-visible {
-    border-color: var(--generate-ssh-shell-accent);
-    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.08);
-    outline: none;
-}
-
 .generate-ssh-shell-submit-btn,
 .generate-ssh-shell-submit-btn.btn,
 .generate-ssh-shell-submit-btn.btn-primary {
@@ -1861,32 +1732,6 @@
     background: #d9fffa;
     color: var(--generate-ssh-shell-accent-strong);
     outline: none;
-}
-
-.generate-ssh-shell-enhanced-select {
-    min-width: 0;
-}
-
-.generate-ssh-shell-enhanced-select-toggle::after {
-    border-right-color: var(--generate-ssh-shell-text);
-    border-bottom-color: var(--generate-ssh-shell-text);
-}
-
-.generate-ssh-shell-enhanced-select-menu {
-    border: 1px solid var(--generate-ssh-shell-border);
-    background: var(--generate-ssh-shell-bg-panel);
-}
-
-.generate-ssh-shell-enhanced-select-option:hover {
-    border-color: #b8d8d0;
-    background: #eefcf8;
-    color: var(--generate-ssh-shell-accent);
-}
-
-.generate-ssh-shell-enhanced-select-option.is-active {
-    border-color: var(--generate-ssh-shell-border-strong);
-    background: #e6fffb;
-    color: var(--generate-ssh-shell-accent);
 }
 
 .generate-ssh-shell-flag-hint {
@@ -2722,7 +2567,6 @@
     min-width: 0;
 }
 
-
 .markdown-content > .generate-ssh-shell-markdown-card-command-tips .tool-guidance-answer,
 .markdown-content > .generate-ssh-shell-markdown-card-how-to .tool-guidance-answer,
 .markdown-content > .generate-ssh-shell-markdown-card-export .tool-export-answer {
@@ -3313,11 +3157,6 @@
     font-size: var(--tool-font-size-md);
     line-height: 1.68;
 }
-
-
-
-
-
 
 /* ns:netcat-parity generate-ssh-shell */
 .generate-ssh-shell-tool .generate-ssh-shell-advanced {
@@ -3941,9 +3780,6 @@
     background: transparent;
 }
 
-
-
-
 .generate-ssh-shell-tool .generate-ssh-shell-example-card {
     display: grid;
     gap: 5px;
@@ -4299,33 +4135,6 @@
     user-select: none;
 }
 
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary::-webkit-details-marker,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary::-webkit-details-marker,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary::-webkit-details-marker,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary::-webkit-details-marker {
-    display: none;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary::marker,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary::marker,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary::marker,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary::marker {
-    content: "";
-    font-size: 0;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary::after,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary::after,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary::before,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary::after,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary::after {
-    content: none !important;
-    display: none !important;
-}
-
 .generate-ssh-shell-tool .generate-ssh-shell-custom-arrow-slot {
     position: absolute;
     top: 50%;
@@ -4343,37 +4152,7 @@
     transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--generate-ssh-shell-border, var(--tool-border, #d8e2ee));
-    border-radius: 9px;
-    background: var(--generate-ssh-shell-bg-soft, var(--tool-surface-soft, #f8fafc));
-    pointer-events: none;
-    transform: translateY(-50%);
-    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary > .generate-ssh-shell-custom-arrow-slot,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before {
-    right: 6px;
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-arrow-slot::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::after,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::after,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::after,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::after {
+.generate-ssh-shell-tool .generate-ssh-shell-custom-arrow-slot::before {
     content: "";
     position: absolute;
     top: 50%;
@@ -4387,41 +4166,11 @@
     transition: transform 0.18s ease;
 }
 
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary:has(> .generate-ssh-shell-custom-arrow-slot)::before,
 .generate-ssh-shell-tool .generate-ssh-shell-custom-summary:has(> .generate-ssh-shell-custom-arrow-slot)::after,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary:has(> .generate-ssh-shell-custom-arrow-slot)::before,
 .generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary:has(> .generate-ssh-shell-custom-arrow-slot)::after,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary:has(> .generate-ssh-shell-custom-arrow-slot)::before,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary:has(> .generate-ssh-shell-custom-arrow-slot)::after,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:has(> .generate-ssh-shell-custom-arrow-slot)::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:has(> .generate-ssh-shell-custom-arrow-slot)::after {
+.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary:has(> .generate-ssh-shell-custom-arrow-slot)::after {
     content: none;
     display: none;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary:hover > .generate-ssh-shell-custom-arrow-slot,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary:focus-visible > .generate-ssh-shell-custom-arrow-slot,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary:hover > .generate-ssh-shell-custom-arrow-slot,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary:focus-visible > .generate-ssh-shell-custom-arrow-slot,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary:hover > .generate-ssh-shell-custom-arrow-slot,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary:focus-visible > .generate-ssh-shell-custom-arrow-slot,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:hover > .generate-ssh-shell-custom-arrow-slot,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:focus-visible > .generate-ssh-shell-custom-arrow-slot,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary:hover:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary:focus-visible:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary:hover:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-panel-summary:focus-visible:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary:hover:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before,
-.generate-ssh-shell-tool .generate-ssh-shell-advanced-summary:focus-visible:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:hover:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:focus-visible:not(:has(> .generate-ssh-shell-custom-arrow-slot))::before {
-    border-color: var(--generate-ssh-shell-border-strong, var(--tool-border-strong, #cbd5e1));
-    background: var(--generate-ssh-shell-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-summary-icon,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-icon {
-    display: none !important;
 }
 
 .generate-ssh-shell-tool .generate-ssh-shell-custom-settings[open] > .generate-ssh-shell-custom-summary,
@@ -4434,12 +4183,14 @@
 .generate-ssh-shell-tool .generate-ssh-shell-custom-panel[open] > .generate-ssh-shell-custom-panel-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::after,
 .generate-ssh-shell-tool .generate-ssh-shell-advanced[open] > .generate-ssh-shell-advanced-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::after {
     transform: translate(-50%, -62%) rotate(45deg);
+    transition: transform 0.18s ease;
 }
 
 .generate-ssh-shell-tool .generate-ssh-shell-custom-settings[open] > .generate-ssh-shell-custom-summary > .generate-ssh-shell-custom-arrow-slot::before,
 .generate-ssh-shell-tool .generate-ssh-shell-custom-panel[open] > .generate-ssh-shell-custom-panel-summary > .generate-ssh-shell-custom-arrow-slot::before,
 .generate-ssh-shell-tool .generate-ssh-shell-advanced[open] > .generate-ssh-shell-advanced-summary > .generate-ssh-shell-custom-arrow-slot::before {
     transform: translate(-50%, -62%) rotate(45deg);
+    transition: transform 0.18s ease;
 }
 
 .generate-ssh-shell-tool .generate-ssh-shell-custom-summary:hover,
@@ -4882,7 +4633,6 @@
     background: transparent;
 }
 
-
 .generate-ssh-shell-tool .generate-ssh-shell-custom-number-field,
 .generate-ssh-shell-tool .generate-ssh-shell-custom-panel input[type="number"],
 .generate-ssh-shell-tool .generate-ssh-shell-advanced input[type="number"] {
@@ -5054,110 +4804,6 @@
     font-size: 12px;
     font-weight: 600;
     line-height: 1.45;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown {
-    position: relative;
-    display: grid;
-    width: 100%;
-    min-width: 0;
-    overflow: visible;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown[open] {
-    z-index: 160;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary {
-    position: relative;
-    display: flex;
-    min-height: 40px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 42px 8px 10px;
-    border: 1px solid var(--generate-ssh-shell-border, var(--tool-border, #d8e2ee));
-    border-radius: 10px;
-    background: var(--generate-ssh-shell-bg-panel, var(--tool-surface, #ffffff));
-    color: var(--generate-ssh-shell-text, var(--tool-text, #334155));
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.35;
-    list-style: none;
-    list-style-type: none;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown[open] .generate-ssh-shell-custom-dropdown-summary:not(:has(> .generate-ssh-shell-custom-arrow-slot))::after {
-    transform: translate(-50%, -62%) rotate(45deg);
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown[open] .generate-ssh-shell-custom-dropdown-summary > .generate-ssh-shell-custom-arrow-slot::before {
-    transform: translate(-50%, -62%) rotate(45deg);
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:hover,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:focus-visible {
-    border-color: var(--generate-ssh-shell-border-strong, var(--tool-border-strong, #cbd5e1));
-    outline: none;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-summary:focus-visible,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown[open] .generate-ssh-shell-custom-dropdown-summary {
-    border-color: var(--generate-ssh-shell-accent, var(--tool-accent, #475569));
-    box-shadow: 0 0 0 3px var(--generate-ssh-shell-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-menu {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    display: grid;
-    width: 100%;
-    min-width: 100%;
-    max-height: min(280px, 52vh);
-    border: 1px solid var(--generate-ssh-shell-accent, var(--tool-accent, #475569));
-    border-radius: 10px;
-    background: var(--generate-ssh-shell-bg-panel, var(--tool-surface, #ffffff));
-    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
-    overflow-x: hidden;
-    overflow-y: auto;
-    z-index: 170;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown:not([open]) .generate-ssh-shell-custom-dropdown-menu {
-    display: none;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-option {
-    display: flex;
-    width: 100%;
-    min-height: 38px;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 8px 10px;
-    border: 0;
-    border-top: 0;
-    background: var(--generate-ssh-shell-bg-panel, var(--tool-surface, #ffffff));
-    color: var(--generate-ssh-shell-text, var(--tool-text, #334155));
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.35;
-    text-align: left;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-option:first-child {
-    border-top: 0;
-}
-
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-option:hover,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-option:focus-visible,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-option.active,
-.generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown-option[aria-selected="true"] {
-    background: var(--generate-ssh-shell-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
-    color: var(--generate-ssh-shell-text-strong, var(--tool-heading, #111827));
-    outline: none;
 }
 
 .generate-ssh-shell-tool .generate-ssh-shell-custom-checkbox-option {
@@ -5362,7 +5008,6 @@
     box-shadow: 0 0 0 3px var(--generate-ssh-shell-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
 }
 
-
 .generate-ssh-shell-tool .generate-ssh-shell-custom-hint,
 .generate-ssh-shell-tool .generate-ssh-shell-custom-info,
 .generate-ssh-shell-tool .generate-ssh-shell-custom-panel .generate-ssh-shell-field-hint,
@@ -5443,19 +5088,6 @@
     .generate-ssh-shell-tool .generate-ssh-shell-custom-panel-body,
     .generate-ssh-shell-tool .generate-ssh-shell-advanced-body {
         padding: 10px;
-    }
-
-    .generate-ssh-shell-tool .generate-ssh-shell-custom-tab,
-    .generate-ssh-shell-tool .generate-ssh-shell-config-tab,
-    .generate-ssh-shell-tool .generate-ssh-shell-custom-dropdown,
-    .generate-ssh-shell-tool .generate-ssh-shell-custom-radio-group,
-    .generate-ssh-shell-tool .generate-ssh-shell-radio-group,
-    .generate-ssh-shell-tool .generate-ssh-shell-custom-checkbox-option,
-    .generate-ssh-shell-tool .generate-ssh-shell-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
-    .generate-ssh-shell-tool .generate-ssh-shell-custom-panel textarea,
-    .generate-ssh-shell-tool .generate-ssh-shell-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
-    .generate-ssh-shell-tool .generate-ssh-shell-advanced textarea {
-        width: 100%;
     }
 
     .generate-ssh-shell-tool .generate-ssh-shell-custom-group[data-span="2"],
@@ -6482,7 +6114,6 @@
     outline: none;
 }
 
-
 .generate-ssh-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
 .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
 .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
@@ -6552,7 +6183,6 @@
 /* ns:end family._base.workspace.06_output-toolbar */
 
 /* ns:start family._base.workspace.08_json-restore */
-
 
 .generate-ssh-shell-tool .generate-ssh-shell-json-restore-shell,
 .generate-ssh-shell-tool .generate-ssh-shell-json-card,
@@ -6721,7 +6351,6 @@
     .generate-ssh-shell-tool .generate-ssh-shell-json-head.tool-json-head {
         display: grid;
     }
-
 
     .generate-ssh-shell-tool .generate-ssh-shell-json-output.tool-json-output {
         min-height: 180px;
@@ -6931,19 +6560,20 @@
 }
 
 .generate-ssh-shell-tool .generate-ssh-shell-toolbar-shell {
+    container-type: inline-size;
     position: relative;
     z-index: 20;
     overflow: visible;
 }
 
 .generate-ssh-shell-tool .generate-ssh-shell-toolbar-shell:has(.generate-ssh-shell-sort-select[open]) {
-    z-index: 120;
+    z-index: var(--base-dropdown-open-z, 140);
 }
 
 .generate-ssh-shell-tool .generate-ssh-shell-toolbar {
     display: grid;
     width: 100%;
-    grid-template-columns: minmax(0, 1fr) minmax(390px, 450px);
+    grid-template-columns: minmax(var(--base-output-sort-column-width, 190px), 1fr) minmax(var(--base-output-actions-width, 470px), var(--base-output-actions-width, 470px));
     align-items: start;
     gap: 12px;
     overflow: visible;
@@ -6953,7 +6583,8 @@
 .generate-ssh-shell-tool .generate-ssh-shell-toolbar-left,
 .generate-ssh-shell-tool .generate-ssh-shell-sort-shell {
     display: grid;
-    grid-template-columns: auto minmax(0, 240px);
+    width: min(100%, calc(var(--base-output-control-width, 150px) + 52px));
+    grid-template-columns: auto var(--base-output-control-width, 150px);
     align-items: center;
     justify-content: start;
     gap: 12px;
@@ -6961,8 +6592,9 @@
 }
 
 .generate-ssh-shell-tool .generate-ssh-shell-sort-wrap {
-    width: min(100%, 240px);
-    max-width: 240px;
+    width: min(100%, var(--base-output-control-width, 150px));
+    min-width: 0;
+    max-width: var(--base-output-control-width, 150px);
     overflow: visible;
 }
 
@@ -6977,27 +6609,93 @@
 }
 
 .generate-ssh-shell-tool .generate-ssh-shell-sort-select[open] {
-    z-index: 140;
+    z-index: var(--base-dropdown-open-z, 140);
 }
 
 .generate-ssh-shell-tool .generate-ssh-shell-sort-summary {
-    min-height: 46px;
+    position: relative;
+    width: 100%;
+    height: var(--base-dropdown-summary-height, var(--base-output-control-height, 46px));
+    min-height: var(--base-dropdown-summary-height, var(--base-output-control-height, 46px));
     box-sizing: border-box;
+    padding-right: calc(var(--base-dropdown-arrow-size, 30px) + 22px);
 }
 
 .generate-ssh-shell-tool .generate-ssh-shell-sort-menu {
-    z-index: 160;
+    z-index: var(--base-dropdown-menu-z, 160);
     width: 100%;
     min-width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    max-height: min(280px, 65vh);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-sort-summary::before {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    display: block;
+    width: var(--base-dropdown-arrow-size, 30px);
+    height: var(--base-dropdown-arrow-size, 30px);
+    transform: translateY(-50%);
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-sort-summary::after {
+    position: absolute;
+    top: 50%;
+    right: 21px;
+    display: block;
+    transform: translate(-18%, -62%) rotate(45deg);
+    transform-origin: center;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-sort-select:not([open]) .generate-ssh-shell-sort-summary::after {
+    transform: translate(-8%, -50%) rotate(-45deg);
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-sort-grid {
+    display: grid;
+    gap: 4px;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-sort-option {
+    display: block;
+    width: 100%;
+    min-height: var(--base-dropdown-option-height, 42px);
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: var(--base-dropdown-option-radius, var(--base-output-option-radius, 9px));
+    background: transparent;
+    color: var(--base-output-text, #1f1733);
+    cursor: pointer;
+    font-size: var(--base-output-font-sm, 13px);
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: left;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-sort-option:hover,
+.generate-ssh-shell-tool .generate-ssh-shell-sort-option:focus {
+    background: var(--base-output-accent-soft, #fff7ed);
+    color: var(--base-output-accent, #ea580c);
+    outline: none;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-sort-option.is-active {
+    background: var(--base-output-accent-soft, #fff7ed);
+    color: var(--base-output-accent, #ea580c);
+    box-shadow: none;
 }
 
 .generate-ssh-shell-tool .tool-output-actions,
 .generate-ssh-shell-tool .tool-result-toolbar-actions {
     display: grid;
     width: 100%;
-    max-width: 450px;
+    max-width: var(--base-output-actions-width, 470px);
     grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: center;
     justify-content: end;
@@ -7013,12 +6711,13 @@
 .generate-ssh-shell-tool .tool-result-toolbar-actions .generate-ssh-shell-action-btn {
     width: 100%;
     min-width: 0;
-    min-height: 38px;
-    gap: 6px;
-    padding-right: 10px;
-    padding-left: 10px;
-    border-radius: 10px;
-    font-size: 12px;
+    height: var(--base-output-control-height, 46px);
+    min-height: var(--base-output-control-height, 46px);
+    gap: 8px;
+    padding-right: 12px;
+    padding-left: 12px;
+    border-radius: var(--base-output-control-radius, 10px);
+    font-size: var(--base-output-control-font-size, var(--base-output-font-sm, 13px));
     line-height: 1;
     overflow: visible;
     white-space: nowrap;
@@ -7058,29 +6757,6 @@
     line-height: 1;
 }
 
-@media (max-width: 991.98px) {
-    .generate-ssh-shell-tool .generate-ssh-shell-toolbar {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .generate-ssh-shell-tool .tool-output-actions,
-    .generate-ssh-shell-tool .tool-result-toolbar-actions {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        justify-self: start;
-        margin-left: 0;
-        max-width: none;
-    }
-
-    .generate-ssh-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
-    .generate-ssh-shell-tool .tool-output-actions .tool-action-btn:nth-child(5),
-    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
-    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
-    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
-    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
-        grid-column: auto;
-    }
-}
-
 @media (max-width: 767.98px) {
     .generate-ssh-shell-tool .generate-ssh-shell-toolbar-main,
     .generate-ssh-shell-tool .generate-ssh-shell-toolbar-left,
@@ -7098,10 +6774,115 @@
 
     .generate-ssh-shell-tool .tool-output-actions,
     .generate-ssh-shell-tool .tool-result-toolbar-actions {
+        width: 100%;
         grid-template-columns: minmax(0, 1fr);
+        margin-left: 0;
+    }
+
+    .generate-ssh-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
+    .generate-ssh-shell-tool .tool-output-actions .tool-action-btn:nth-child(5),
+    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+}
+
+@container (max-width: 672px) {
+    .generate-ssh-shell-tool .generate-ssh-shell-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-ssh-shell-tool .generate-ssh-shell-toolbar-left {
+        width: 100%;
+    }
+
+    .generate-ssh-shell-tool .generate-ssh-shell-sort-shell {
+        width: min(100%, calc(var(--base-output-control-width, 150px) + 52px));
+    }
+
+    .generate-ssh-shell-tool .tool-output-actions,
+    .generate-ssh-shell-tool .tool-result-toolbar-actions {
+        justify-self: start;
+        width: calc(100% - var(--base-output-sort-offset, 37px));
+        margin-left: var(--base-output-sort-offset, 37px);
+        max-width: var(--base-output-actions-width, 470px);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .generate-ssh-shell-tool .tool-output-actions,
+    .generate-ssh-shell-tool .tool-result-toolbar-actions {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
+        margin-left: 0;
+        max-width: none;
+    }
+
+    .generate-ssh-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
+    .generate-ssh-shell-tool .tool-output-actions .tool-action-btn:nth-child(5),
+    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+    .generate-ssh-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
     }
 }
 /* output-toolbar-persistence-contract:end */
+
+/* shell-output-toolbar-architecture-sort-size-contract:start */
+.blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-toolbar-main,
+.generate-ssh-shell-tool .generate-ssh-shell-toolbar-main,
+.blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-toolbar-left,
+.generate-ssh-shell-tool .generate-ssh-shell-toolbar-left,
+.blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-sort-shell,
+.generate-ssh-shell-tool .generate-ssh-shell-sort-shell {
+    width: min(100%, calc(150px + 52px));
+    grid-template-columns: auto 150px;
+}
+
+.blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-sort-wrap,
+.generate-ssh-shell-tool .generate-ssh-shell-sort-wrap,
+.blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-sort-select,
+.generate-ssh-shell-tool .generate-ssh-shell-sort-select {
+    width: min(100%, 150px);
+    max-width: 150px;
+    flex: initial;
+}
+
+@container (max-width: 672px) {
+    .blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-toolbar-main,
+    .generate-ssh-shell-tool .generate-ssh-shell-toolbar-main,
+    .blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-toolbar-left,
+    .generate-ssh-shell-tool .generate-ssh-shell-toolbar-left,
+    .blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-sort-shell,
+    .generate-ssh-shell-tool .generate-ssh-shell-sort-shell {
+        width: min(100%, calc(150px + 52px));
+        grid-template-columns: auto 150px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-toolbar-main,
+    .generate-ssh-shell-tool .generate-ssh-shell-toolbar-main,
+    .blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-toolbar-left,
+    .generate-ssh-shell-tool .generate-ssh-shell-toolbar-left,
+    .blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-sort-shell,
+    .generate-ssh-shell-tool .generate-ssh-shell-sort-shell {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-sort-wrap,
+    .generate-ssh-shell-tool .generate-ssh-shell-sort-wrap,
+    .blog-details .article-content .content .generate-ssh-shell-tool .generate-ssh-shell-sort-select,
+    .generate-ssh-shell-tool .generate-ssh-shell-sort-select {
+        width: 100%;
+        max-width: none;
+    }
+}
+/* shell-output-toolbar-architecture-sort-size-contract:end */
 
 /* result-summary-persistence-contract:start */
 .generate-ssh-shell-tool .generate-ssh-shell-result-metric-card {
@@ -7146,6 +6927,171 @@
     }
 }
 /* result-summary-persistence-contract:end */
+
+/* shell-result-summary-architecture-size-contract:start */
+.generate-ssh-shell-tool .generate-ssh-shell-result-summary {
+    gap: 12px;
+    padding: 14px;
+    overflow: visible;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-header,
+.generate-ssh-shell-tool .generate-ssh-shell-result-header-main,
+.generate-ssh-shell-tool .generate-ssh-shell-result-header-copy,
+.generate-ssh-shell-tool .generate-ssh-shell-result-header-title {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-hero-grid {
+    grid-template-columns: minmax(210px, 0.82fr) minmax(0, 1.28fr);
+    grid-auto-rows: auto;
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+    margin-top: 0;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-card,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-primary,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-visual,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-command,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-summary,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-main {
+    min-height: 0;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-card {
+    gap: 10px;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-primary,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-visual,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-command {
+    justify-content: flex-start;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-summary,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-main {
+    align-content: stretch;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-divider,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-primary > .generate-ssh-shell-result-card-divider,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-visual > .generate-ssh-shell-result-card-divider,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-command > .generate-ssh-shell-result-card-divider,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-summary > .generate-ssh-shell-result-card-divider,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-main > .generate-ssh-shell-result-card-divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    flex: 0 0 auto;
+    margin: 0;
+    margin-top: 12px;
+    background: var(--generate-ssh-shell-result-border, #dbe4f0);
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-chip-row,
+.generate-ssh-shell-tool .generate-ssh-shell-result-chip-grid {
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-primary > .generate-ssh-shell-result-chip-row,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-visual > .generate-ssh-shell-result-chip-row,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-command > .generate-ssh-shell-result-chip-row,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-summary > .generate-ssh-shell-result-chip-grid,
+.generate-ssh-shell-tool .generate-ssh-shell-result-card-main > .generate-ssh-shell-result-chip-row {
+    min-height: 0;
+    align-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 0;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-metric-card {
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    align-content: stretch;
+    gap: 7px;
+    min-height: 128px;
+    padding: 14px;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-metric-icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-metric-label {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-metric-value {
+    font-size: clamp(14px, 1vw, 16px);
+    line-height: 1.18;
+}
+
+.generate-ssh-shell-tool .generate-ssh-shell-result-metric-copy {
+    align-self: start;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+@media (max-width: 960px) {
+    .generate-ssh-shell-tool .generate-ssh-shell-result-metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .generate-ssh-shell-tool .generate-ssh-shell-result-hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-ssh-shell-tool .generate-ssh-shell-result-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .generate-ssh-shell-tool .generate-ssh-shell-result-header-meta {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .generate-ssh-shell-tool .generate-ssh-shell-result-metric-card {
+        min-height: 118px;
+        padding: 13px;
+    }
+
+    .generate-ssh-shell-tool .generate-ssh-shell-result-metric-value {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 560px) {
+    .generate-ssh-shell-tool .generate-ssh-shell-result-metric-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-ssh-shell-tool .generate-ssh-shell-result-header-title,
+    .generate-ssh-shell-tool .generate-ssh-shell-result-title {
+        font-size: 19px;
+    }
+}
+/* shell-result-summary-architecture-size-contract:end */
 
 /* table-output-persistence-contract:start */
 .generate-ssh-shell-tool .tool-sr-only,

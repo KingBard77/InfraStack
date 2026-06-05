@@ -5,7 +5,7 @@ card_gradient_start: "#16A34A"
 card_gradient_end: "#166534"
 card_text_color: "#FFFFFF"
 card_kicker: "Security"
-card_image_title: "Scan Header Security"
+card_image_title: "Header Security Scanner"
 card_icon_class: "bi bi-shield-check"
 card_icon_animation: "random"
 card_image: null

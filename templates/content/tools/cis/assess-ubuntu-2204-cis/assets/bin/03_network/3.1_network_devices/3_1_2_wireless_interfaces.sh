@@ -1,34 +1,25 @@
 #!/bin/bash
 
 CRITICALITY=1
-TITLE="Ensure wireless interfaces are disabled"
-
+TITLE="Ensure wireless interfaces are not available"
 function check {
-    STATUS="Pass"
+    STATUS="Fail"
 
-    WIRELESS_INTERFACES=$(find /sys/class/net/*/ -type d -name wireless)
-    
-    if [ -n "$WIRELESS_INTERFACES" ]; then
-        for driverdir in $(echo "$WIRELESS_INTERFACES" | xargs -0 dirname); do
-            module_name=$(basename "$(readlink -f "$driverdir"/device/driver/module)")
-            
-            if lsmod | grep -q "$module_name"; then
-                STATUS="Fail: $module_name is loaded"
-                echo " - $module_name module is loaded"
-            elif ! modprobe -n -v "$module_name" | grep -Pq '^\s*install\s+/bin/(true|false)'; then
-                STATUS="Fail: $module_name is loadable"
-                echo " - $module_name module is loadable"
-            elif ! modprobe --showconfig | grep -Pq "^\s*blacklist\s+$module_name\b"; then
-                STATUS="Fail: $module_name is not deny listed"
-                echo " - $module_name module is not deny listed"
-            fi
-        done
+    if ! find /sys/class/net -mindepth 1 -maxdepth 2 -type d -name wireless -print -quit 2>/dev/null | grep -q .; then
+        STATUS="Pass"
+    elif command -v nmcli > /dev/null 2>&1 && nmcli radio wifi 2>/dev/null | grep -Eiq 'disabled|off'; then
+        STATUS="Pass"
     else
-		echo "Check status: $STATUS"
+        STATUS="Fail: wireless interfaces are available"
     fi
 
+    echo "Check status: $STATUS"
 }
 
 function fix {
-	echo "Manual"
+    if command -v nmcli > /dev/null 2>&1; then
+        nmcli radio wifi off
+    else
+        echo 'nmcli is not installed; disable wireless interfaces using the host network manager'
+    fi
 }

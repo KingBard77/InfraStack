@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure avahi services are not in use"
 
 function check {

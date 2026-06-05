@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure ufw outbound connections are configured"
 
 function check {

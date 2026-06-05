@@ -1,83 +1,6 @@
 // custom.js
 // ns:start family._base.workspace.00_shell
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
-
 // ns:start family._base.workspace.05_result-summary
 function installInfraStackResultSummaryNormalizer(prefix) {
     function formatUpdatedLabel() {
@@ -600,7 +523,7 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
         "sourceBehaviours": [
             "normalizes the primary brief",
             "seeds the normalized model from prompt text",
-            "binds Generate and Load Default actions",
+            "binds Generate and Reset actions",
             "renders parser errors without unlocking generated output"
         ]
     };
@@ -669,27 +592,20 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
             "architecture-campus-network-cisco-basic-grid",
             "architecture-campus-network-cisco-control-stack",
             "architecture-campus-network-cisco-native-select",
-            "architecture-campus-network-cisco-custom-select",
-            "architecture-campus-network-cisco-custom-select-trigger",
-            "architecture-campus-network-cisco-custom-select-menu"
         ],
         "sourceVariables": [
             "presetInput",
             "presetDescription",
             "regionInput",
             "azCountInput",
-            "customSelectControls"
         ],
         "sourceFunctions": [
-            "initializeCustomSelect",
-            "initializeCustomSelects",
             "populateRegionOptions",
             "updatePresetSelection",
             "syncControls",
             "applyPreset"
         ],
         "sourceBehaviours": [
-            "enhances native select fields with the baseline custom dropdown",
             "keeps the preset description synchronized",
             "populates region and zone choices",
             "applies preset defaults to the normalized model"
@@ -1487,16 +1403,16 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
     const core = ArchitectureCampusNetworkCiscoModelCore;
     const engineRuntime = globalScope.InfraStackArchitectureEngineRuntime || null;
     const iconSvgMap = {
-        users: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/users.svg')|json_encode|raw }},
-        coreSwitch: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/core-switch.svg')|json_encode|raw }},
-        distributionSwitch: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/distribution-switch.svg')|json_encode|raw }},
-        accessSwitch: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/access-switch.svg')|json_encode|raw }},
-        router: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/router.svg')|json_encode|raw }},
-        firewall: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/firewall.svg')|json_encode|raw }},
-        wirelessController: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/wireless-controller.svg')|json_encode|raw }},
-        accessPoint: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/access-point.svg')|json_encode|raw }},
-        services: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/services.svg')|json_encode|raw }},
-        monitoring: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/monitoring.svg')|json_encode|raw }}
+        users: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/cisco-arch-users.svg')|json_encode|raw }},
+        coreSwitch: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/cisco-arch-core-switch.svg')|json_encode|raw }},
+        distributionSwitch: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/cisco-arch-distribution-switch.svg')|json_encode|raw }},
+        accessSwitch: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/cisco-arch-access-switch.svg')|json_encode|raw }},
+        router: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/cisco-arch-router.svg')|json_encode|raw }},
+        firewall: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/cisco-arch-firewall.svg')|json_encode|raw }},
+        wirelessController: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/cisco-arch-wireless-controller.svg')|json_encode|raw }},
+        accessPoint: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/cisco-arch-access-point.svg')|json_encode|raw }},
+        services: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/cisco-arch-services.svg')|json_encode|raw }},
+        monitoring: {{ include('content/tools/cisco/architecture-campus-network-cisco/assets/icon/cisco-arch-monitoring.svg')|json_encode|raw }}
     };
 
     let currentSpec = null;
@@ -1540,7 +1456,7 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
         },
         selectors: {
             resizeHandle: '[data-engine-resize-handle], .diagram-resize-handle, .architecture-campus-network-cisco-resize-handle',
-            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"], .architecture-campus-network-cisco-custom-select'
+            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"]'
         },
         classes: {
             selected: 'is-selected',
@@ -1555,7 +1471,6 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
             hidden: 'd-none'
         }
     };
-    const customSelectControls = [];
     const customSelectIds = [
         'architectureCampusNetworkCiscoPreset',
         'architectureCampusNetworkCiscoSize',
@@ -1658,7 +1573,6 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
 
         if (element) {
             element.value = value;
-            syncCustomSelectByElement(element);
         }
     }
 
@@ -2061,9 +1975,19 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
                     event.stopPropagation();
                     marker.classList.toggle('is-open');
                 });
+                marker.addEventListener('keydown', function (event) {
+                    if (event.key !== 'Enter' && event.key !== ' ') {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    event.stopPropagation();
+                    marker.classList.toggle('is-open');
+                });
             }
 
             marker.dataset.info = infoText;
+            marker.setAttribute('role', 'button');
             marker.setAttribute('aria-label', 'More info: ' + infoText);
             popover.textContent = infoText;
         });
@@ -2117,210 +2041,6 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
             scoreChartInstance.destroy();
             scoreChartInstance = null;
         }
-    }
-
-    function getSelectedNativeOption(selectElement) {
-        return Array.from(selectElement.options).find(function (option) {
-            return option.value === selectElement.value;
-        }) || selectElement.options[0] || null;
-    }
-
-    function closeCustomSelects(exceptControl) {
-        customSelectControls.forEach(function (control) {
-            if (exceptControl && control === exceptControl) {
-                return;
-            }
-
-            control.wrapper.classList.remove('open');
-            control.button.setAttribute('aria-expanded', 'false');
-        });
-    }
-
-    function syncCustomSelectControl(control) {
-        const selectedOption = getSelectedNativeOption(control.selectElement);
-        const selectedValue = selectedOption ? selectedOption.value : '';
-
-        control.valueElement.textContent = selectedOption ? selectedOption.textContent : '';
-        control.optionButtons.forEach(function (optionButton) {
-            const isSelected = optionButton.dataset.value === selectedValue;
-
-            optionButton.classList.toggle('selected', isSelected);
-            optionButton.setAttribute('aria-selected', isSelected ? 'true' : 'false');
-        });
-    }
-
-    function syncCustomSelectByElement(selectElement) {
-        const control = customSelectControls.find(function (candidate) {
-            return candidate.selectElement === selectElement;
-        });
-
-        if (control) {
-            syncCustomSelectControl(control);
-        }
-    }
-
-    function syncCustomSelects() {
-        customSelectControls.forEach(syncCustomSelectControl);
-    }
-
-    function focusSelectedCustomOption(control) {
-        const selectedButton = control.optionButtons.find(function (optionButton) {
-            return optionButton.classList.contains('selected');
-        }) || control.optionButtons[0];
-
-        if (selectedButton) {
-            selectedButton.focus();
-        }
-    }
-
-    function openCustomSelect(control) {
-        closeCustomSelects(control);
-        syncCustomSelectControl(control);
-        control.wrapper.classList.add('open');
-        control.button.setAttribute('aria-expanded', 'true');
-    }
-
-    function toggleCustomSelect(control) {
-        if (control.wrapper.classList.contains('open')) {
-            closeCustomSelects();
-            return;
-        }
-
-        openCustomSelect(control);
-    }
-
-    function selectCustomOption(control, value) {
-        if (control.selectElement.value === value) {
-            closeCustomSelects();
-            return;
-        }
-
-        control.selectElement.value = value;
-        syncCustomSelectControl(control);
-        control.selectElement.dispatchEvent(new Event('change', {
-            bubbles: true
-        }));
-        closeCustomSelects();
-    }
-
-    function initializeCustomSelect(selectElement) {
-        if (!selectElement || selectElement.tagName !== 'SELECT') {
-            return;
-        }
-
-        const wrapper = document.createElement('div');
-        const button = document.createElement('button');
-        const valueElement = document.createElement('span');
-        const icon = document.createElement('i');
-        const menu = document.createElement('div');
-
-        if (!selectElement || selectElement.dataset.architectureCampusNetworkCiscoEnhancedSelect === 'true') {
-            return;
-        }
-
-        wrapper.className = 'architecture-campus-network-cisco-custom-select';
-        button.type = 'button';
-        button.className = 'architecture-campus-network-cisco-custom-select-trigger';
-        button.setAttribute('aria-haspopup', 'listbox');
-        button.setAttribute('aria-expanded', 'false');
-        valueElement.className = 'architecture-campus-network-cisco-custom-select-value';
-        icon.className = 'bi bi-chevron-down';
-        icon.setAttribute('aria-hidden', 'true');
-        menu.className = 'architecture-campus-network-cisco-custom-select-menu';
-        menu.setAttribute('role', 'listbox');
-
-        button.appendChild(valueElement);
-        button.appendChild(icon);
-        wrapper.appendChild(button);
-        wrapper.appendChild(menu);
-        selectElement.classList.add('architecture-campus-network-cisco-native-select');
-        selectElement.dataset.architectureCampusNetworkCiscoEnhancedSelect = 'true';
-        selectElement.setAttribute('aria-hidden', 'true');
-        selectElement.tabIndex = -1;
-        selectElement.insertAdjacentElement('afterend', wrapper);
-
-        const control = {
-            selectElement: selectElement,
-            wrapper: wrapper,
-            button: button,
-            valueElement: valueElement,
-            menu: menu,
-            optionButtons: []
-        };
-
-        Array.from(selectElement.options).forEach(function (option) {
-            const optionButton = document.createElement('button');
-
-            optionButton.type = 'button';
-            optionButton.className = 'architecture-campus-network-cisco-custom-select-option';
-            optionButton.dataset.value = option.value;
-            optionButton.textContent = option.textContent;
-            optionButton.setAttribute('role', 'option');
-            optionButton.addEventListener('click', function () {
-                selectCustomOption(control, option.value);
-                button.focus();
-            });
-            optionButton.addEventListener('keydown', function (event) {
-                const currentIndex = control.optionButtons.indexOf(optionButton);
-
-                event.stopPropagation();
-
-                if (event.key === 'ArrowDown') {
-                    event.preventDefault();
-                    control.optionButtons[Math.min(control.optionButtons.length - 1, currentIndex + 1)].focus();
-                }
-
-                if (event.key === 'ArrowUp') {
-                    event.preventDefault();
-                    control.optionButtons[Math.max(0, currentIndex - 1)].focus();
-                }
-
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    selectCustomOption(control, option.value);
-                    button.focus();
-                }
-
-                if (event.key === 'Escape') {
-                    event.preventDefault();
-                    closeCustomSelects();
-                    button.focus();
-                }
-            });
-
-            menu.appendChild(optionButton);
-            control.optionButtons.push(optionButton);
-        });
-
-        button.addEventListener('click', function () {
-            toggleCustomSelect(control);
-        });
-        button.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown') {
-                event.preventDefault();
-                event.stopPropagation();
-                openCustomSelect(control);
-                focusSelectedCustomOption(control);
-            }
-
-            if (event.key === 'Escape') {
-                event.preventDefault();
-                event.stopPropagation();
-                closeCustomSelects();
-            }
-        });
-        selectElement.addEventListener('change', function () {
-            syncCustomSelectControl(control);
-        });
-
-        customSelectControls.push(control);
-        syncCustomSelectControl(control);
-    }
-
-    function initializeCustomSelects() {
-        customSelectIds.forEach(function (id) {
-            initializeCustomSelect(byId(id));
-        });
     }
 
     function showError(message) {
@@ -3335,7 +3055,7 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
                 '<td>' + escapeHtml(row.component) + '</td>',
                 '<td>' + escapeHtml(row.placement) + '</td>',
                 '<td>' + escapeHtml(row.purpose) + '</td>',
-                '<td><button type="button" class="architecture-campus-network-cisco-row-copy" data-copy-row="' + escapeHtml(copyText) + '" aria-label="Copy inventory row for ' + escapeHtml(row.component) + '"><i class="bi bi-clipboard" aria-hidden="true"></i><span class="architecture-campus-network-cisco-visually-hidden">Copy</span></button></td>',
+                '<td class="tool-table-action-cell"><button type="button" class="architecture-campus-network-cisco-row-copy" data-copy-row="' + escapeHtml(copyText) + '" aria-label="Copy inventory row for ' + escapeHtml(row.component) + '"><i class="bi bi-clipboard" aria-hidden="true"></i><span class="architecture-campus-network-cisco-visually-hidden">Copy</span></button></td>',
                 '</tr>'
             ].join('');
         }).join('');
@@ -4945,7 +4665,7 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
             return false;
         }
 
-        return target.closest('input, textarea, select, button, summary, a[href], [contenteditable="true"], .architecture-campus-network-cisco-custom-select') !== null;
+        return target.closest('input, textarea, select, button, summary, a[href], [contenteditable="true"]') !== null;
     }
 
     function isUndoKeyboardShortcut(event) {
@@ -5067,6 +4787,32 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
 
     function flashButton(button, label) {
         if (!button) {
+            return;
+        }
+
+        const actionButton = button.closest ? button.closest('.tool-table-action-cell button') : null;
+
+        if (actionButton) {
+            const isCopied = label === 'Copied';
+            const icon = actionButton.querySelector('i');
+            const originalIcon = actionButton.dataset.defaultIcon || (icon ? icon.className : '');
+
+            if (icon && !actionButton.dataset.defaultIcon) {
+                actionButton.dataset.defaultIcon = originalIcon;
+            }
+
+            actionButton.classList.toggle('copied', isCopied);
+            actionButton.classList.toggle('is-copied', isCopied);
+            actionButton.classList.toggle('failed', !isCopied);
+            if (icon) {
+                icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+            }
+            globalScope.setTimeout(function () {
+                actionButton.classList.remove('copied', 'is-copied', 'failed');
+                if (icon && actionButton.dataset.defaultIcon) {
+                    icon.className = actionButton.dataset.defaultIcon;
+                }
+            }, 1400);
             return;
         }
 
@@ -5452,7 +5198,7 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
     function bindEvents(root) {
         bindClick('architectureCampusNetworkCiscoGenerate', generateFromControls);
         bindClick('architectureCampusNetworkCiscoReset', function () {
-            applyPreset(valueOf('architectureCampusNetworkCiscoPreset'), true);
+            applyPreset(valueOf('architectureCampusNetworkCiscoPreset'), false);
         });
         byId('architectureCampusNetworkCiscoPreset').addEventListener('change', function () {
             applyPreset(valueOf('architectureCampusNetworkCiscoPreset'), true);
@@ -5568,13 +5314,6 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
         document.addEventListener('wheel', handleWheelZoom, {
             passive: false
         });
-        document.addEventListener('click', function (event) {
-            if (event.target.closest('.architecture-campus-network-cisco-custom-select')) {
-                return;
-            }
-
-            closeCustomSelects();
-        });
         bindTabs();
     }
 
@@ -5584,9 +5323,6 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
         if (!validateRequiredElements(root)) {
             return;
         }
-
-        initializeCustomSelects();
-        initializeInfraStackCustomDropdowns(document);
         bindEvents(root);
         initMarkdownCopyButtons();
         syncPresetDescription();
@@ -5703,7 +5439,12 @@ installInfraStackResultSummaryNormalizer('architecture-campus-network-cisco');
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });

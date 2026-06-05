@@ -1,6 +1,6 @@
 # meta.yml
 
-title: Scan Header Security
+title: Header Security Scanner
 author: Badrul Amin
 author_role: Infrastructure & DevOps Specialist
 author_image: "images/author/author-bg-white.png"
@@ -10,7 +10,7 @@ publication_status: draft
 category_label: Security
 group: security
 family: scanning
-reading_time: 3 min read
+reading_time: 11 min read
 summary: Build a local security-header review model with CSP, HSTS, cookie posture, evidence rows, exports, and JSON restore.
 intro: >-
     Prepare a security-header review for a target URL or route without sending a request.

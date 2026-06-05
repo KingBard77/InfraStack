@@ -1,8 +1,8 @@
 # card.yml
 
 card_summary: Estimate blended AWS monthly spend across compute, storage, serverless, and egress with visible assumptions and exportable results.
-card_gradient_start: "#F97316"
-card_gradient_end: "#7C3AED"
+card_gradient_start: "#7C3AED"
+card_gradient_end: "#F97316"
 card_text_color: "#FFFFFF"
 card_kicker: "AWS"
 card_image_title: "AWS Cost Calculator"

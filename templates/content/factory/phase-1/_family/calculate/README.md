@@ -104,9 +104,9 @@ Before creating a new calculate tool, read:
 7. `templates/content/factory/phase-1/_family/FAMILY.md`
 8. `templates/content/factory/phase-1/_family/calculate/README.md`
 9. `templates/content/factory/phase-1/_family/calculate/manifest.yml`
-10. `templates/content/factory/phase-1/_family/calculate/workspace/README.md`
-11. `templates/content/factory/phase-1/_family/calculate/workspace/manifest.yml`
-12. relevant calculate workspace section folders under `templates/content/factory/phase-1/_family/calculate/workspace/`
+10. `templates/content/factory/phase-1/_family/calculate/source package demo.html`
+11. `templates/content/factory/phase-1/_family/calculate/family manifest source_namespaces`
+12. relevant calculate source namespace markers under `templates/content/factory/phase-1/_family/calculate/source/calculate-cost-aws/`
 13. `templates/content/factory/phase-2/_content/scaffold/README.md`
 14. relevant phase-2 content section folders under `templates/content/factory/phase-2/_content/sections/`
 
@@ -114,13 +114,13 @@ Before creating a new calculate tool, read:
 
 ## Family Workspace Source
 
-The calculate family workspace source lives at:
+The calculate family source package lives at:
 
 ```text
-templates/content/factory/phase-1/_family/calculate/workspace/
+templates/content/factory/phase-1/_family/calculate/source/calculate-cost-aws/
 ```
 
-Use that folder for calculate-specific workspace grammar: visual/model contracts, optional selected-item inspector behavior, state behavior, result meaning, export meaning, and baseline reference selection.
+Use that folder for calculate-specific source package grammar: visual/model contracts, optional selected-item inspector behavior, state behavior, result meaning, export meaning, and baseline reference selection.
 
 Common workspace shape comes from:
 
@@ -128,7 +128,7 @@ Common workspace shape comes from:
 templates/content/factory/phase-1/_base/workspace/
 ```
 
-The ordered composition is declared in `templates/content/factory/phase-1/_family/calculate/workspace/manifest.yml` through `workspace_namespaces`. That list may mix `_base` namespaces and calculate-owned namespaces.
+The ordered composition is declared in `templates/content/factory/phase-1/_family/calculate/family manifest source_namespaces` through `source_namespaces`. That list may mix `_base` namespaces and calculate-owned namespaces.
 
 The calculate workspace reference set is:
 
@@ -142,7 +142,7 @@ The shared scaffold owns package skeleton files.
 `_base/workspace` owns common section shape.
 The calculate workspace owns calculate-only section contracts and adaptation rules.
 
-When a tool is declared the calculate baseline, keep the full copied source under `source/` for traceability only. Do not audit this as active source. Extract reusable calculate-specific markup, CSS, JavaScript, and model contracts into the matching calculate-owned workspace section files. Do not recreate duplicate calculate copies of `_base` sections and do not keep root workspace `custom.css`, `custom.js`, or `demo.html.twig` files.
+When a tool is declared the calculate baseline, keep the full copied source under `source/calculate-cost-aws/` for traceability and freshness checks. It must compare cleanly against `templates/content/tools/aws/calculate-cost-aws/` before new calculate tools are created. Extract reusable calculate-specific markup, CSS, JavaScript, and model contracts into the matching calculate-owned workspace section files. Do not recreate duplicate calculate copies of `_base` sections and do not keep loose root source `custom.css`, `custom.js`, or `demo.html.twig` files.
 
 ---
 
@@ -186,7 +186,7 @@ Do not ship generic family copy as final content.
 
 ## Calculate Workspace Composition
 
-The calculate family composes common workspace sections from `_base`:
+The calculate family composes common source namespaces from `_base`:
 
 ```text
 family._base.workspace.00_shell
@@ -199,14 +199,14 @@ family._base.workspace.07_table-output
 family._base.workspace.08_json-restore
 ```
 
-The calculate family owns only calculate-specific workspace sections:
+The calculate family owns only calculate-specific source namespaces:
 
 ```text
-templates/content/factory/phase-1/_family/calculate/workspace/04_visual-contract/
-templates/content/factory/phase-1/_family/calculate/workspace/04_selected-item/
+templates/content/factory/phase-1/_family/calculate/source/calculate-cost-aws/04_visual-contract/
+templates/content/factory/phase-1/_family/calculate/source/calculate-cost-aws/04_selected-item/
 ```
 
-Each calculate-owned workspace section folder follows the architecture family bundle shape:
+Each calculate-owned source namespace marker follows the architecture family bundle shape:
 
 ```text
 README.md
@@ -220,9 +220,9 @@ section.js
 
 `04_visual-contract` also includes `manifest.yml` and `model-core.js`. It owns the calculate-specific visual and model agreement for metrics, driver cards, formula rows, rings, charts, and visual result tones. It should be used when a calculator has reusable visual output beyond plain inputs and tables. Pure form-and-table calculators may omit it during final assembly and record that omission as accepted divergence.
 
-Use `workspace_namespaces` to choose calculator behavior and shape final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and optional `assets/bin/model-core.js`, translating prompt, stage, score, and table language into estimate, inputs, result summary, and export language.
+Use `source_namespaces` to choose calculator behavior and shape final tool-local `tool.html.twig`, `custom.css`, `custom.js`, and optional `assets/bin/model-core.js`, translating prompt, stage, score, and table language into estimate, inputs, result summary, and export language.
 
-Do not create a family-local `sections/` directory for calculate. Shared content section folders belong to `templates/content/factory/phase-2/_content/sections/`; calculate workspace section folders belong here.
+Do not create a family-local `sections/` directory for calculate. Shared content section folders belong to `templates/content/factory/phase-2/_content/sections/`; calculate source namespace markers belong here.
 
 ---
 

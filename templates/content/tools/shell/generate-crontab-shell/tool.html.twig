@@ -104,6 +104,12 @@
     <div class="generate-crontab-shell-basic-panel">
       <div class="generate-crontab-shell-inner-panel generate-crontab-shell-basic-card">
 
+        <div class="generate-crontab-shell-example-card">
+          <span class="generate-crontab-shell-example-label">Example</span>
+          <span class="generate-crontab-shell-example-value">0 0 * * * /usr/bin/rotate-logs --quiet</span>
+          <span class="generate-crontab-shell-example-helper" id="generateCrontabShellMacroNote">Field expression mode is active. The generated schedule uses the five timing fields below.</span>
+        </div>
+
         <div class="generate-crontab-shell-setting-row generate-crontab-shell-setting-card">
           <label class="generate-crontab-shell-setting-label">
             Schedule profile:
@@ -114,7 +120,7 @@
             <div class="generate-crontab-shell-stacked-grid">
               <div class="generate-crontab-shell-inline-grid generate-crontab-shell-inline-grid-two">
                 <div class="generate-crontab-shell-native-select-wrap">
-                  <select id="generateCrontabShellPreset" class="form-select generate-crontab-shell-native-select">
+                  <select id="generateCrontabShellPreset" class="form-select generate-crontab-shell-native-select" aria-label="Schedule preset">
                     <option value="daily-midnight" selected>Daily at midnight</option>
                     <option value="every-five-minutes">Every 5 minutes</option>
                     <option value="every-fifteen-minutes">Every 15 minutes</option>
@@ -133,7 +139,7 @@
               </div>
 
               <div class="generate-crontab-shell-native-select-wrap">
-                <select id="generateCrontabShellMacro" class="form-select generate-crontab-shell-native-select">
+                <select id="generateCrontabShellMacro" class="form-select generate-crontab-shell-native-select" aria-label="Schedule macro">
                   <option value="none" selected>Field expression</option>
                   <option value="@reboot">@reboot</option>
                   <option value="@hourly">@hourly</option>
@@ -146,12 +152,11 @@
                 </select>
               </div>
 
-              <div class="generate-crontab-shell-flag-hint" id="generateCrontabShellMacroNote">Field expression mode is active. The generated schedule uses the five timing fields below.</div>
             </div>
           </div>
         </div>
 
-        <div class="generate-crontab-shell-setting-row generate-crontab-shell-setting-card">
+        <div class="generate-crontab-shell-setting-row generate-crontab-shell-setting-card generate-crontab-shell-setting-card-wide generate-crontab-shell-expression-fields-setting">
           <label class="generate-crontab-shell-setting-label">
             Expression fields:
             <span class="info-dot generate-crontab-shell-helper-chip" title="Edit the five cron timing fields. Raw tokens remain available inside each field card.">i</span>
@@ -187,7 +192,7 @@
                 <div class="generate-crontab-shell-field-panel" data-field-panel="simple">
                   <div class="generate-crontab-shell-inline-grid generate-crontab-shell-inline-grid-three">
                     <div class="generate-crontab-shell-native-select-wrap">
-                      <select id="generateCrontabShell{{ field.id_suffix }}Kind" class="form-select generate-crontab-shell-field-kind generate-crontab-shell-native-select">
+                      <select id="generateCrontabShell{{ field.id_suffix }}Kind" class="form-select generate-crontab-shell-field-kind generate-crontab-shell-native-select" aria-label="{{ field.label }} expression kind">
                         <option value="every" selected>Every</option>
                         <option value="value">Value</option>
                         <option value="every_n">Every n</option>
@@ -348,17 +353,17 @@
               <label for="generateCrontabShellSort" class="generate-crontab-shell-sort-label">Sort</label>
               <div class="generate-crontab-shell-sort-wrap">
                 <details class="generate-crontab-shell-sort-select" id="generateCrontabShellSortSelect">
-                  <summary class="generate-crontab-shell-sort-summary">
+                  <summary class="generate-crontab-shell-sort-summary" aria-haspopup="listbox" aria-expanded="false" aria-controls="generateCrontabShellSortMenu">
                     <span id="generateCrontabShellSortSummary">ID</span>
                   </summary>
 
-                  <div class="generate-crontab-shell-sort-menu">
+                  <div class="generate-crontab-shell-sort-menu" id="generateCrontabShellSortMenu" role="listbox">
                     <div class="generate-crontab-shell-sort-grid">
-                      <button type="button" class="generate-crontab-shell-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
-                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
-                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="field" aria-pressed="false">Field</button>
-                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="value" aria-pressed="false">Value</button>
-                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="length" aria-pressed="false">Length</button>
+                      <button type="button" class="generate-crontab-shell-sort-option is-active" data-sort-value="id" aria-pressed="true" role="option">ID</button>
+                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false" role="option">A-Z</button>
+                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="field" aria-pressed="false" role="option">Field</button>
+                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="value" aria-pressed="false" role="option">Value</button>
+                      <button type="button" class="generate-crontab-shell-sort-option" data-sort-value="length" aria-pressed="false" role="option">Length</button>
                     </div>
                   </div>
                 </details>
@@ -422,7 +427,7 @@
             <div class="generate-crontab-shell-surface-stack tool-result-section-stack">
               <section class="generate-crontab-shell-section-card tool-result-section-card">
                 <div class="generate-crontab-shell-section-head">
-                  <h3 class="generate-crontab-shell-section-title tool-result-section-title">Generated Expression</h3>
+                  <h3 class="generate-crontab-shell-section-title tool-result-section-title">Crontab Expression</h3>
                   <div class="generate-crontab-shell-section-actions">
                     <button type="button" class="generate-crontab-shell-action-btn" id="generateCrontabShellCopyExpression" aria-label="Copy generated crontab expression" title="Copy generated crontab expression">
                       <i class="bi bi-clipboard" aria-hidden="true"></i>
@@ -494,7 +499,7 @@
                         <th scope="col">Token</th>
                         <th scope="col">Source</th>
                         <th scope="col">Meaning</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                       </tr>
                     </thead>
                     <tbody id="generateCrontabShellFieldsTableBody"></tbody>

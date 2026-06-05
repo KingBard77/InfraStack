@@ -1,6 +1,14 @@
 /* section.css */
 
 .__TOOL_CLASS__ .__PREFIX__-basic-card {
+    --base-dropdown-arrow-size: 30px;
+    --base-dropdown-menu-z: 160;
+    --base-dropdown-open-z: 140;
+    --base-dropdown-option-height: 42px;
+    --base-dropdown-option-radius: 9px;
+    --base-dropdown-popup-offset: 8px;
+    --base-dropdown-scroll-thumb: rgba(100, 116, 139, 0.42);
+    --base-dropdown-summary-height: 46px;
     display: grid;
     gap: 16px;
     min-width: 0;
@@ -48,7 +56,27 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
+    align-items: stretch;
     min-width: 0;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-inline-grid {
+    display: grid;
+    gap: 10px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-inline-grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.__TOOL_CLASS__ .__PREFIX__-inline-grid-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.__TOOL_CLASS__ .__PREFIX__-inline-grid-four {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .__TOOL_CLASS__ .__PREFIX__-setting-card {
@@ -97,11 +125,13 @@
 }
 
 .__TOOL_CLASS__ .__PREFIX__-native-select,
+.__TOOL_CLASS__ .__PREFIX__-select-control,
 .__TOOL_CLASS__ .__PREFIX__-text-field,
 .__TOOL_CLASS__ .__PREFIX__-setting-card .form-control,
 .__TOOL_CLASS__ .__PREFIX__-setting-card .form-select {
     width: 100%;
     min-height: 46px;
+    box-sizing: border-box;
     border: 1px solid var(--base-border, var(--tool-border, #dbe4ef));
     border-radius: var(--base-radius-sm, 12px);
     background: #ffffff;
@@ -116,25 +146,26 @@
 }
 
 .__TOOL_CLASS__ .__PREFIX__-native-select,
+.__TOOL_CLASS__ .__PREFIX__-select-control,
 .__TOOL_CLASS__ .__PREFIX__-setting-card .form-select {
-    padding: 10px 42px 10px 13px;
+    padding: 10px calc(var(--base-dropdown-arrow-size, 30px) + 22px) 10px 13px;
     appearance: none;
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6 4l4 4-4 4' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-position: right 14px center;
-    background-repeat: no-repeat;
-    background-size: 16px 16px;
+    background-image: none;
 }
 
-.__TOOL_CLASS__ .__PREFIX__-native-select-wrap {
+.__TOOL_CLASS__ .__PREFIX__-native-select-wrap,
+.__TOOL_CLASS__ .__PREFIX__-select {
     position: relative;
     display: block;
     min-width: 0;
+    overflow: visible;
 }
 
 .__TOOL_CLASS__ .__PREFIX__-native-select-wrap > .__PREFIX__-native-select,
+.__TOOL_CLASS__ .__PREFIX__-native-select-wrap > .__PREFIX__-select-control,
 .__TOOL_CLASS__ .__PREFIX__-native-select-wrap > .form-select {
-    padding-right: 52px;
+    padding-right: calc(var(--base-dropdown-arrow-size, 30px) + 22px);
     background-image: none !important;
 }
 
@@ -144,21 +175,20 @@
     top: 50%;
     right: 10px;
     z-index: 2;
-    width: 30px;
-    height: 30px;
+    width: var(--base-dropdown-arrow-size, 30px);
+    height: var(--base-dropdown-arrow-size, 30px);
     border: 1px solid var(--base-border, #d8e2ee);
     border-radius: 9px;
     background: var(--base-surface-soft, #f8fafc);
     pointer-events: none;
     transform: translateY(-50%);
-    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
 .__TOOL_CLASS__ .__PREFIX__-native-select-wrap::after {
     content: "";
     position: absolute;
     top: 50%;
-    right: 21px;
+    right: 20.5px;
     z-index: 3;
     width: 9px;
     height: 9px;
@@ -166,19 +196,7 @@
     border-bottom: 2.25px solid var(--base-accent, #475569);
     border-radius: 1px;
     pointer-events: none;
-    transform: translate(-8%, -50%) rotate(-45deg);
-    transition: transform 0.18s ease;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-native-select-wrap:hover::before,
-.__TOOL_CLASS__ .__PREFIX__-native-select-wrap:focus-within::before {
-    border-color: var(--base-border-strong, #cbd5e1);
-    background: var(--base-accent-soft, rgba(71, 85, 105, 0.1));
-}
-
-.__TOOL_CLASS__ .__PREFIX__-native-select-wrap:focus-within::after,
-.__TOOL_CLASS__ .__PREFIX__-native-select-wrap:active::after {
-    transform: translate(-18%, -62%) rotate(45deg);
+    transform: translateY(-62%) rotate(45deg);
 }
 
 .__TOOL_CLASS__ .__PREFIX__-text-field::placeholder,
@@ -189,6 +207,7 @@
 }
 
 .__TOOL_CLASS__ .__PREFIX__-native-select:hover,
+.__TOOL_CLASS__ .__PREFIX__-select-control:hover,
 .__TOOL_CLASS__ .__PREFIX__-text-field:hover,
 .__TOOL_CLASS__ .__PREFIX__-setting-card .form-control:hover,
 .__TOOL_CLASS__ .__PREFIX__-setting-card .form-select:hover {
@@ -196,6 +215,7 @@
 }
 
 .__TOOL_CLASS__ .__PREFIX__-native-select:focus,
+.__TOOL_CLASS__ .__PREFIX__-select-control:focus,
 .__TOOL_CLASS__ .__PREFIX__-text-field:focus,
 .__TOOL_CLASS__ .__PREFIX__-setting-card .form-control:focus,
 .__TOOL_CLASS__ .__PREFIX__-setting-card .form-select:focus {
@@ -204,14 +224,8 @@
     outline: none;
 }
 
-.__TOOL_CLASS__ .__PREFIX__-native-select:focus,
-.__TOOL_CLASS__ .__PREFIX__-native-select:active,
-.__TOOL_CLASS__ .__PREFIX__-setting-card .form-select:focus,
-.__TOOL_CLASS__ .__PREFIX__-setting-card .form-select:active {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
-
 .__TOOL_CLASS__ .__PREFIX__-native-select:disabled,
+.__TOOL_CLASS__ .__PREFIX__-select-control:disabled,
 .__TOOL_CLASS__ .__PREFIX__-text-field:disabled,
 .__TOOL_CLASS__ .__PREFIX__-setting-card .form-control:disabled,
 .__TOOL_CLASS__ .__PREFIX__-setting-card .form-select:disabled {
@@ -219,183 +233,21 @@
     color: #94a3b8;
 }
 
-.__TOOL_CLASS__ .__PREFIX__-select {
-    position: relative;
-    min-width: 0;
-    border: 1px solid var(--base-border, var(--tool-border, #dbe4ef));
-    border-radius: var(--base-radius-sm, 12px);
-    background: #ffffff;
-    overflow: visible;
+.__TOOL_CLASS__ .__PREFIX__-inline-grid > :is(.form-control, .form-select, button, label, .__PREFIX__-native-select-wrap, .__PREFIX__-select, .__PREFIX__-switch-card) {
+    height: 100%;
 }
 
-.__TOOL_CLASS__ .__PREFIX__-select[open] {
-    z-index: 90;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-summary {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+.__TOOL_CLASS__ .__PREFIX__-native-select-wrap > :is(.__PREFIX__-native-select, .form-select),
+.__TOOL_CLASS__ :is(.__PREFIX__-select-control, .__PREFIX__-switch-card),
+.__TOOL_CLASS__ .__PREFIX__-setting-card button {
     min-height: 46px;
-    padding: 10px 52px 10px 13px;
-    color: var(--base-text, var(--tool-text, #1f2937));
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.35;
-    list-style: none;
-    user-select: none;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-summary::-webkit-details-marker {
-    display: none;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-summary::before,
-.__TOOL_CLASS__ .__PREFIX__-select-summary::after {
-    content: none !important;
-    display: none !important;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-summary:not(:has(> .__PREFIX__-select-arrow-slot))::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    display: block !important;
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--base-border, #d8e2ee);
-    border-radius: 9px;
-    background: var(--base-surface-soft, #f8fafc);
-    pointer-events: none;
-    transform: translateY(-50%);
-    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-arrow-slot {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    display: inline-flex;
-    width: 30px;
-    height: 30px;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--base-border, #d8e2ee);
-    border-radius: 9px;
-    background: var(--base-surface-soft, #f8fafc);
-    pointer-events: none;
-    transform: translateY(-50%);
-    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-arrow-slot::before,
-.__TOOL_CLASS__ .__PREFIX__-select-summary:not(:has(> .__PREFIX__-select-arrow-slot))::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    display: block !important;
-    width: 9px;
-    height: 9px;
-    border-right: 2.25px solid var(--base-accent, #475569);
-    border-bottom: 2.25px solid var(--base-accent, #475569);
-    border-radius: 1px;
-    transform: translate(-58%, -50%) rotate(-45deg);
-    transition: transform 0.18s ease;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-summary:hover > .__PREFIX__-select-arrow-slot,
-.__TOOL_CLASS__ .__PREFIX__-select-summary:focus-visible > .__PREFIX__-select-arrow-slot,
-.__TOOL_CLASS__ .__PREFIX__-select-summary:hover:not(:has(> .__PREFIX__-select-arrow-slot))::before,
-.__TOOL_CLASS__ .__PREFIX__-select-summary:focus-visible:not(:has(> .__PREFIX__-select-arrow-slot))::before {
-    border-color: var(--base-border-strong, #cbd5e1);
-    background: var(--base-accent-soft, rgba(71, 85, 105, 0.1));
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select[open] .__PREFIX__-select-summary:not(:has(> .__PREFIX__-select-arrow-slot))::after {
-    transform: translate(-50%, -62%) rotate(45deg);
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select[open] .__PREFIX__-select-summary > .__PREFIX__-select-arrow-slot::before {
-    transform: translate(-50%, -62%) rotate(45deg);
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-body {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    z-index: 100;
-    display: grid;
-    gap: 2px;
-    width: 100%;
-    min-width: 100%;
-    max-width: min(100vw - 32px, 360px);
-    max-height: min(340px, 65vh);
     box-sizing: border-box;
-    padding: 6px;
-    border: 1px solid var(--base-border, var(--tool-border, #dbe4ef));
-    border-radius: var(--base-radius-sm, 12px);
-    background: #ffffff;
-    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 
-.__TOOL_CLASS__ .__PREFIX__-select-option {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-    align-items: center;
-    min-width: 0;
-    padding: 10px 12px;
-    border: 0;
-    border-radius: 8px;
-    background: transparent;
-    box-shadow: none;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-option:hover,
-.__TOOL_CLASS__ .__PREFIX__-select-option:focus-within {
-    background: var(--base-accent-soft, rgba(37, 99, 235, 0.1));
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-option:has(input:checked) {
-    background: var(--base-accent-soft, rgba(37, 99, 235, 0.1));
-    box-shadow: none;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-option input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: 0;
-    opacity: 0;
-    pointer-events: none;
-    accent-color: var(--base-accent, var(--tool-accent, #2563eb));
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-option-title {
-    display: block;
-    min-width: 0;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-option-title {
-    color: var(--base-heading, var(--tool-heading, #111827));
-    font-size: 14px;
-    font-weight: 800;
-    line-height: 1.35;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-select-option:hover .__PREFIX__-select-option-title,
-.__TOOL_CLASS__ .__PREFIX__-select-option:focus-within .__PREFIX__-select-option-title,
-.__TOOL_CLASS__ .__PREFIX__-select-option:has(input:checked) .__PREFIX__-select-option-title {
-    color: var(--base-accent, var(--tool-accent, #2563eb));
+.__TOOL_CLASS__ .__PREFIX__-native-select-wrap > :is(.__PREFIX__-native-select, .form-select),
+.__TOOL_CLASS__ :is(.__PREFIX__-select-control, .__PREFIX__-switch-card),
+.__TOOL_CLASS__ .__PREFIX__-inline-grid > button {
+    height: 100%;
 }
 
 .__TOOL_CLASS__ .__PREFIX__-switch-card {
@@ -473,6 +325,10 @@
     gap: 12px;
     align-items: stretch;
     min-width: 0;
+}
+
+.__TOOL_CLASS__ .__PREFIX__-setting-card-wide .__PREFIX__-repeat-setting-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
 }
 
 .__TOOL_CLASS__ .__PREFIX__-repeat-setting-card {
@@ -635,7 +491,10 @@
 }
 
 @media (max-width: 900px) {
-    .__TOOL_CLASS__ .__PREFIX__-basic-grid {
+    .__TOOL_CLASS__ .__PREFIX__-basic-grid,
+    .__TOOL_CLASS__ .__PREFIX__-inline-grid-two,
+    .__TOOL_CLASS__ .__PREFIX__-inline-grid-three,
+    .__TOOL_CLASS__ .__PREFIX__-inline-grid-four {
         grid-template-columns: 1fr;
     }
 }
@@ -654,19 +513,15 @@
         padding: 12px;
     }
 
-    .__TOOL_CLASS__ .__PREFIX__-select-body {
-        max-height: 58vh;
-    }
-
     .__TOOL_CLASS__ .__PREFIX__-repeat-setting-grid {
         grid-template-columns: 1fr;
     }
 
     .__TOOL_CLASS__ .__PREFIX__-native-select,
+    .__TOOL_CLASS__ .__PREFIX__-select-control,
     .__TOOL_CLASS__ .__PREFIX__-text-field,
     .__TOOL_CLASS__ .__PREFIX__-setting-card .form-control,
     .__TOOL_CLASS__ .__PREFIX__-setting-card .form-select,
-    .__TOOL_CLASS__ .__PREFIX__-select-summary,
     .__TOOL_CLASS__ .__PREFIX__-switch-card {
         min-height: 48px;
     }

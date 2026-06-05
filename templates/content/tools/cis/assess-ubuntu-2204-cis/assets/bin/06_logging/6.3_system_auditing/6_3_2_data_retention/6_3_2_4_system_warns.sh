@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure system warns when audit logs are low on space"
 
 space_left_action="email|exec|single|halt"

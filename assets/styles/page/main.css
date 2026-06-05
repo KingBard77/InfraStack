@@ -796,7 +796,7 @@ h6 {
 }
 
 .page-title .breadcrumbs .breadcrumb .breadcrumb-item.active {
-    color: var(--accent-color);
+    color: #c2410c;
 }
 
 .page-title .breadcrumbs .breadcrumb .breadcrumb-item a {
@@ -3402,7 +3402,7 @@ section,
 }
 
 .blog-details .article-content .content-header .title-meta .category {
-    color: var(--accent-color);
+    color: #c2410c;
     font-weight: 700;
     text-decoration: none;
 }
@@ -3459,10 +3459,13 @@ section,
     object-fit: cover;
 }
 
-.blog-details .article-content .content-header .author-info .author-details .info h4 {
+.blog-details .article-content .content-header .author-info .author-details .info h4,
+.blog-details .article-content .content-header .author-info .author-details .info .author-name {
     margin: 0;
     font-size: 1.1rem;
     color: var(--heading-color);
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 .blog-details .article-content .content-header .author-info .author-details .info .role {
@@ -3512,7 +3515,8 @@ section,
         height: 44px;
     }
 
-    .blog-details .article-content .content-header .author-info .author-details .info h4 {
+    .blog-details .article-content .content-header .author-info .author-details .info h4,
+    .blog-details .article-content .content-header .author-info .author-details .info .author-name {
         font-size: 1rem;
     }
 
@@ -3715,9 +3719,12 @@ section,
     gap: 1.5rem;
 }
 
-.blog-details .article-content .meta-bottom h4 {
+.blog-details .article-content .meta-bottom h4,
+.blog-details .article-content .meta-bottom .article-share-heading {
     color: var(--heading-color);
     font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.2;
     margin-bottom: 1rem;
 }
 
@@ -3729,7 +3736,7 @@ section,
 
 .blog-details .article-content .meta-bottom .tags .tag {
     background: color-mix(in srgb, var(--accent-color), transparent 90%);
-    color: var(--accent-color);
+    color: #c2410c;
     padding: 0.5rem 1rem;
     border-radius: 30px;
     font-size: 0.9rem;
@@ -3738,8 +3745,8 @@ section,
 }
 
 .blog-details .article-content .meta-bottom .tags .tag:hover {
-    background: var(--accent-color);
-    color: var(--contrast-color);
+    background: #c2410c;
+    color: #ffffff;
 }
 
 /*--------------------------------------------------------------

@@ -1,84 +1,11 @@
 // custom.js
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
+// ns:start family.calculate.workspace.04_visual-contract
+// Accepted divergence: calculate visual contract remains tool-local until section-safe extraction is applied.
+// ns:end family.calculate.workspace.04_visual-contract
 // ns:start family.calculate.workspace.04_selected-item
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family.calculate.workspace.04_selected-item
@@ -177,9 +104,6 @@ document.addEventListener('DOMContentLoaded', function () {
 // ns:end family._base.workspace.01_input-brief
 // ns:start family._base.workspace.02_basic-settings
     const presetInput = document.getElementById('calculateCostCiscoPreset');
-    const presetSummary = document.getElementById('calculateCostCiscoPresetSummary');
-    const presetOptionInputs = Array.from(document.querySelectorAll('input[name="calculateCostCiscoPresetOption"]'));
-    const presetSelect = document.getElementById('calculateCostCiscoPresetSelect');
     const applyPresetButton = document.getElementById('calculateCostCiscoApplyPreset');
 // ns:end family._base.workspace.02_basic-settings
     const submitButton = document.getElementById('calculateCostCiscoSubmit');
@@ -193,14 +117,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const includeApiInput = document.getElementById('calculateCostCiscoIncludeApi');
 
     const computeInstanceInput = document.getElementById('calculateCostCiscoComputeInstance');
-    const computeInstanceSummary = document.getElementById('calculateCostCiscoComputeInstanceSummary');
-    const computeInstanceOptionInputs = Array.from(document.querySelectorAll('input[name="calculateCostCiscoComputeInstanceOption"]'));
-    const computeInstanceSelect = document.getElementById('calculateCostCiscoComputeInstanceSelect');
     const computeCustomOptionLabel = document.getElementById('calculateCostCiscoComputeCustomOptionLabel');
     const computePurchaseInput = document.getElementById('calculateCostCiscoComputePurchase');
-    const computePurchaseSummary = document.getElementById('calculateCostCiscoComputePurchaseSummary');
-    const computePurchaseOptionInputs = Array.from(document.querySelectorAll('input[name="calculateCostCiscoComputePurchaseOption"]'));
-    const computePurchaseSelect = document.getElementById('calculateCostCiscoComputePurchaseSelect');
     const computeCustomFields = document.getElementById('calculateCostCiscoComputeCustomFields');
     const computeCustomHint = document.getElementById('calculateCostCiscoComputeCustomHint');
     const computeCustomLabelInput = document.getElementById('calculateCostCiscoComputeCustomLabel');
@@ -223,9 +141,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const functionsMemoryMbInput = document.getElementById('calculateCostCiscoFunctionsMemoryMb');
 
     const apiTypeInput = document.getElementById('calculateCostCiscoApiType');
-    const apiTypeSummary = document.getElementById('calculateCostCiscoApiTypeSummary');
-    const apiTypeOptionInputs = Array.from(document.querySelectorAll('input[name="calculateCostCiscoApiTypeOption"]'));
-    const apiTypeSelect = document.getElementById('calculateCostCiscoApiTypeSelect');
     const apiRequestsMillionInput = document.getElementById('calculateCostCiscoApiRequestsMillion');
     const apiResponseKbInput = document.getElementById('calculateCostCiscoApiResponseKb');
 
@@ -277,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const importJsonInput = document.getElementById('calculateCostCiscoImportJson');
     const tabButtons = Array.from(document.querySelectorAll('.calculate-cost-cisco-tab-btn'));
     const tabPanels = Array.from(document.querySelectorAll('.calculate-cost-cisco-tab-panel'));
-    const dropdownSelects = Array.from(document.querySelectorAll('.calculate-cost-cisco-select'));
 
     const serviceRefs = {
         compute: {
@@ -313,9 +227,6 @@ document.addEventListener('DOMContentLoaded', function () {
         !form ||
         !labelInput ||
         !presetInput ||
-        !presetSummary ||
-        presetOptionInputs.length === 0 ||
-        !presetSelect ||
         !applyPresetButton ||
         !submitButton ||
         !resetButton ||
@@ -325,14 +236,8 @@ document.addEventListener('DOMContentLoaded', function () {
         !includeFunctionsInput ||
         !includeApiInput ||
         !computeInstanceInput ||
-        !computeInstanceSummary ||
-        computeInstanceOptionInputs.length === 0 ||
-        !computeInstanceSelect ||
         !computeCustomOptionLabel ||
         !computePurchaseInput ||
-        !computePurchaseSummary ||
-        computePurchaseOptionInputs.length === 0 ||
-        !computePurchaseSelect ||
         !computeCustomFields ||
         !computeCustomHint ||
         !computeCustomLabelInput ||
@@ -351,9 +256,6 @@ document.addEventListener('DOMContentLoaded', function () {
         !functionsDurationMsInput ||
         !functionsMemoryMbInput ||
         !apiTypeInput ||
-        !apiTypeSummary ||
-        apiTypeOptionInputs.length === 0 ||
-        !apiTypeSelect ||
         !apiRequestsMillionInput ||
         !apiResponseKbInput ||
         !sharedEgressGbInput ||
@@ -403,31 +305,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    const singleSelectConfigs = [
-        {
-            inputs: presetOptionInputs,
-            hiddenInput: presetInput,
-            summaryElement: presetSummary,
-            detailsElement: presetSelect
-        },
-        {
-            inputs: computeInstanceOptionInputs,
-            hiddenInput: computeInstanceInput,
-            summaryElement: computeInstanceSummary,
-            detailsElement: computeInstanceSelect
-        },
-        {
-            inputs: computePurchaseOptionInputs,
-            hiddenInput: computePurchaseInput,
-            summaryElement: computePurchaseSummary,
-            detailsElement: computePurchaseSelect
-        },
-        {
-            inputs: apiTypeOptionInputs,
-            hiddenInput: apiTypeInput,
-            summaryElement: apiTypeSummary,
-            detailsElement: apiTypeSelect
-        }
+    const nativeSelectInputs = [
+        presetInput,
+        computeInstanceInput,
+        computePurchaseInput,
+        apiTypeInput
     ];
 
     const PURCHASE_MODE_LABELS = {
@@ -1004,17 +886,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function flashCopyButton(button, state) {
         const isCopied = state === 'copied';
-        const originalHtml = button.dataset.defaultHtml || button.innerHTML;
-        button.dataset.defaultHtml = originalHtml;
+        const icon = button.querySelector('i');
+        const originalIcon = button.dataset.defaultIcon || (icon ? icon.className : '');
+
+        if (icon && !button.dataset.defaultIcon) {
+            button.dataset.defaultIcon = originalIcon;
+        }
+
         button.classList.toggle('copied', isCopied);
+        button.classList.toggle('is-copied', isCopied);
         button.classList.toggle('failed', !isCopied);
-        button.innerHTML = isCopied
-            ? '<i class="bi bi-check2" aria-hidden="true"></i>'
-            : '<i class="bi bi-x-lg" aria-hidden="true"></i>';
+        if (icon) {
+            icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+        }
 
         window.setTimeout(() => {
-            button.classList.remove('copied', 'failed');
-            button.innerHTML = originalHtml;
+            button.classList.remove('copied', 'is-copied', 'failed');
+            if (icon && button.dataset.defaultIcon) {
+                icon.className = button.dataset.defaultIcon;
+            }
         }, 1400);
     }
 
@@ -1068,12 +958,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.appendChild(textarea);
         textarea.select();
 
-        const didCopy = document.execCommand('copy');
+        document.execCommand('copy');
         textarea.remove();
-
-        if (!didCopy) {
-            throw new Error('Clipboard copy failed.');
-        }
     }
 
     async function writeClipboardText(text) {
@@ -1194,69 +1080,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function getSelectedSingleValue(inputs, fallbackValue) {
-        const selectedInput = inputs.find((input) => input.checked);
+    function setNativeSelectValue(selectElement, value, fallbackValue) {
+        const requestedValue = String(value || '');
+        const fallback = typeof fallbackValue === 'undefined' ? selectElement.value : String(fallbackValue || '');
+        const options = Array.from(selectElement.options);
+        const hasRequestedValue = options.some((option) => option.value === requestedValue);
+        const hasFallbackValue = options.some((option) => option.value === fallback);
 
-        return selectedInput ? selectedInput.value : fallbackValue;
+        selectElement.value = hasRequestedValue
+            ? requestedValue
+            : hasFallbackValue
+                ? fallback
+                : options.length
+                    ? options[0].value
+                    : '';
     }
 
-    function setSelectedSingleValue(inputs, value) {
-        inputs.forEach((input) => {
-            input.checked = input.value === value;
-        });
-    }
+    function getNativeSelectLabel(selectElement, fallbackLabel) {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
 
-    function getSelectSpaceContainer(selectElement) {
-        return selectElement.closest('.calculate-cost-cisco-field-stack, .calculate-cost-cisco-toolbar-left, .calculate-cost-cisco-setting-field') || selectElement.parentElement;
-    }
-
-    function getDropdownBoundaryRect(element) {
-        const boundaryElement = element
-            ? element.closest('.calculate-cost-cisco-service-card, .calculate-cost-cisco-inner-panel, .calculate-cost-cisco-section-card, .tool-box')
-            : null;
-
-        if (boundaryElement) {
-            return boundaryElement.getBoundingClientRect();
-        }
-
-        return {
-            top: 0,
-            bottom: window.innerHeight
-        };
-    }
-
-    function clearSelectSpace(selectElement) {
-        return;
-    }
-
-    function applySelectSpace(selectElement) {
-        return;
-    }
-
-    function getSelectedSingleLabel(inputs, fallbackLabel) {
-        const selectedInput = inputs.find((input) => input.checked);
-
-        if (!selectedInput) {
-            return fallbackLabel;
-        }
-
-        const labelElement = selectedInput.closest('.calculate-cost-cisco-select-card').querySelector('.calculate-cost-cisco-select-title');
-
-        return labelElement ? labelElement.textContent.trim() : fallbackLabel;
-    }
-
-    function updateSingleSelectState(inputs, hiddenInput, summaryElement, detailsElement) {
-        const selectedInput = inputs.find((input) => input.checked);
-
-        if (selectedInput) {
-            hiddenInput.value = selectedInput.value;
-            summaryElement.textContent = getSelectedSingleLabel(inputs, summaryElement.textContent.trim());
-        }
-
-        if (detailsElement) {
-            detailsElement.removeAttribute('open');
-            clearSelectSpace(detailsElement);
-        }
+        return selectedOption ? selectedOption.textContent.trim() : fallbackLabel;
     }
 
     function setSortOption(value, shouldRender) {
@@ -1314,15 +1157,19 @@ document.addEventListener('DOMContentLoaded', function () {
         resultContent.classList.remove('d-none');
     }
 
+    function setSubmitButtonLabel(label) {
+        submitButton.innerHTML = `<i class="bi bi-calculator" aria-hidden="true"></i><span>${escapeHtml(label)}</span>`;
+    }
+
     function toggleSubmitState(isLoading) {
         if (isLoading) {
             submitButton.disabled = true;
-            submitButton.textContent = 'Estimating...';
+            setSubmitButtonLabel('Estimating...');
             return;
         }
 
         submitButton.disabled = false;
-        submitButton.textContent = 'Estimate';
+        setSubmitButtonLabel('Estimate');
     }
 
     function buildQuery() {
@@ -1463,12 +1310,6 @@ document.addEventListener('DOMContentLoaded', function () {
         input.value = Number.isFinite(parsedValue) && parsedValue >= 0 ? String(parsedValue) : '';
     }
 
-    function setImportedSingleSelect(inputs, hiddenInput, summaryElement, value) {
-        hiddenInput.value = value;
-        setSelectedSingleValue(inputs, value);
-        updateSingleSelectState(inputs, hiddenInput, summaryElement, null);
-    }
-
     function resetResultSort() {
         setSortOption('id', false);
     }
@@ -1492,7 +1333,7 @@ document.addEventListener('DOMContentLoaded', function () {
         applyPreset(presetKey);
 
         labelInput.value = String(importedQuery.label || preset.label || 'Cisco network estimate').trim() || 'Cisco network estimate';
-        setImportedSingleSelect(presetOptionInputs, presetInput, presetSummary, presetKey);
+        setNativeSelectValue(presetInput, presetKey, 'lean-web');
 
         includeComputeInput.checked = getBooleanValue(importedQuery.includeCompute, preset.includeCompute);
         includeDiskInput.checked = getBooleanValue(importedQuery.includeDisk, preset.includeDisk);
@@ -1503,8 +1344,8 @@ document.addEventListener('DOMContentLoaded', function () {
         computeCustomLabelInput.value = String(importedQuery.computeCustomLabel || '').trim();
         setNumberInputValue(computeCustomVcpuInput, importedQuery.computeCustomVcpu, 4);
         setNumberInputValue(computeCustomMemoryGiBInput, importedQuery.computeCustomMemoryGiB, 16);
-        setImportedSingleSelect(computeInstanceOptionInputs, computeInstanceInput, computeInstanceSummary, computeInstance);
-        setImportedSingleSelect(computePurchaseOptionInputs, computePurchaseInput, computePurchaseSummary, computePurchase);
+        setNativeSelectValue(computeInstanceInput, computeInstance, preset.computeInstance);
+        setNativeSelectValue(computePurchaseInput, computePurchase, preset.computePurchase);
         setNumberInputValue(computeCountInput, importedQuery.computeCount, preset.computeCount);
         setNumberInputValue(computeHoursInput, importedQuery.computeHours, preset.computeHours);
 
@@ -1521,7 +1362,7 @@ document.addEventListener('DOMContentLoaded', function () {
         setNumberInputValue(functionsDurationMsInput, importedQuery.functionsDurationMs, preset.functionsDurationMs);
         setNumberInputValue(functionsMemoryMbInput, importedQuery.functionsMemoryMb, preset.functionsMemoryMb);
 
-        setImportedSingleSelect(apiTypeOptionInputs, apiTypeInput, apiTypeSummary, apiType);
+        setNativeSelectValue(apiTypeInput, apiType, preset.apiType);
         setNumberInputValue(apiRequestsMillionInput, importedQuery.apiRequestsMillion, preset.apiRequestsMillion);
         setNumberInputValue(apiResponseKbInput, importedQuery.apiResponseKb, preset.apiResponseKb);
 
@@ -1571,9 +1412,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const preset = PRESETS[presetKey] || PRESETS['lean-web'];
 
         labelInput.value = preset.label;
-        presetInput.value = presetKey;
-        setSelectedSingleValue(presetOptionInputs, presetKey);
-        updateSingleSelectState(presetOptionInputs, presetInput, presetSummary, presetSelect);
+        setNativeSelectValue(presetInput, presetKey, 'lean-web');
 
         includeComputeInput.checked = preset.includeCompute;
         includeDiskInput.checked = preset.includeDisk;
@@ -1581,16 +1420,12 @@ document.addEventListener('DOMContentLoaded', function () {
         includeFunctionsInput.checked = preset.includeFunctions;
         includeApiInput.checked = preset.includeApi;
 
-        computeInstanceInput.value = preset.computeInstance;
+        setNativeSelectValue(computeInstanceInput, preset.computeInstance, 'custom');
         computeCustomLabelInput.value = '';
         computeCustomVcpuInput.value = 4;
         computeCustomMemoryGiBInput.value = 16;
-        computePurchaseInput.value = preset.computePurchase;
-        setSelectedSingleValue(computeInstanceOptionInputs, preset.computeInstance);
-        setSelectedSingleValue(computePurchaseOptionInputs, preset.computePurchase);
+        setNativeSelectValue(computePurchaseInput, preset.computePurchase, 'onDemand');
         updateCustomInstanceLabel();
-        updateSingleSelectState(computeInstanceOptionInputs, computeInstanceInput, computeInstanceSummary, computeInstanceSelect);
-        updateSingleSelectState(computePurchaseOptionInputs, computePurchaseInput, computePurchaseSummary, computePurchaseSelect);
         computeCountInput.value = preset.computeCount;
         computeHoursInput.value = preset.computeHours;
 
@@ -1607,9 +1442,7 @@ document.addEventListener('DOMContentLoaded', function () {
         functionsDurationMsInput.value = preset.functionsDurationMs;
         functionsMemoryMbInput.value = preset.functionsMemoryMb;
 
-        apiTypeInput.value = preset.apiType;
-        setSelectedSingleValue(apiTypeOptionInputs, preset.apiType);
-        updateSingleSelectState(apiTypeOptionInputs, apiTypeInput, apiTypeSummary, apiTypeSelect);
+        setNativeSelectValue(apiTypeInput, preset.apiType, 'http');
         apiRequestsMillionInput.value = preset.apiRequestsMillion;
         apiResponseKbInput.value = preset.apiResponseKb;
 
@@ -2193,7 +2026,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             {
                 name: 'Preset',
-                value: getSelectedSingleLabel(presetOptionInputs, presetSummary.textContent.trim()),
+                value: getNativeSelectLabel(presetInput, 'Selected preset'),
                 note: 'Presets accelerate setup, then yield to your current inputs.'
             },
             {
@@ -2422,7 +2255,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function buildSummaryHtml(result) {
-        const presetLabel = getSelectedSingleLabel(presetOptionInputs, presetSummary.textContent.trim());
+        const presetLabel = getNativeSelectLabel(presetInput, 'Selected preset');
         const generatedAt = new Date(result.generatedAt);
         const generatedAtText = Number.isNaN(generatedAt.getTime()) ? 'Just now' : generatedAt.toLocaleString();
         const overrideCount = getOverrideCount(result.query);
@@ -2538,7 +2371,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${escapeHtml(item.unitBasis)}</td>
                 <td class="calculate-cost-cisco-currency">${escapeHtml(formatCurrency(item.monthly))}</td>
                 <td class="calculate-cost-cisco-currency">${escapeHtml(formatCurrency(item.annual))}</td>
-                <td class="calculate-cost-cisco-copy-cell">
+                <td class="calculate-cost-cisco-copy-cell tool-table-action-cell">
                     <button type="button" class="calculate-cost-cisco-copy-btn" data-copy="${escapeHtml(item.copyValue)}" aria-label="Copy breakdown row ${index + 1}" title="Copy row">
                         <i class="bi bi-clipboard" aria-hidden="true"></i>
                     </button>
@@ -2556,7 +2389,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td class="calculate-cost-cisco-currency">${escapeHtml(formatCurrency(row.annual))}</td>
                 <td>${escapeHtml(formatPercent(row.sharePct))}</td>
                 <td><span class="calculate-cost-cisco-signal ${escapeHtml(row.signalClass)}">${escapeHtml(row.signal)}</span></td>
-                <td class="calculate-cost-cisco-copy-cell">
+                <td class="calculate-cost-cisco-copy-cell tool-table-action-cell">
                     <button type="button" class="calculate-cost-cisco-copy-btn" data-copy="${escapeHtml(row.copyValue)}" aria-label="Copy service mix row ${index + 1}" title="Copy row">
                         <i class="bi bi-clipboard" aria-hidden="true"></i>
                     </button>
@@ -2572,7 +2405,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${escapeHtml(row.name)}</td>
                 <td>${escapeHtml(row.value)}</td>
                 <td>${escapeHtml(row.note)}</td>
-                <td class="calculate-cost-cisco-copy-cell">
+                <td class="calculate-cost-cisco-copy-cell tool-table-action-cell">
                     <button type="button" class="calculate-cost-cisco-copy-btn" data-copy="${escapeHtml(`${row.name}: ${row.value}`)}" aria-label="Copy assumption row ${index + 1}" title="Copy row">
                         <i class="bi bi-clipboard" aria-hidden="true"></i>
                     </button>
@@ -2701,28 +2534,11 @@ document.addEventListener('DOMContentLoaded', function () {
     initNumericInputGroups();
     initMarkdownCopyButtons();
 
-    dropdownSelects.forEach((selectElement) => {
-        selectElement.addEventListener('toggle', function () {
-            if (selectElement.open) {
-                applySelectSpace(selectElement);
-                return;
+    nativeSelectInputs.forEach((selectElement) => {
+        selectElement.addEventListener('change', function () {
+            if (selectElement === computeInstanceInput) {
+                syncCustomInstanceState();
             }
-
-            clearSelectSpace(selectElement);
-        });
-    });
-
-    singleSelectConfigs.forEach((config) => {
-        updateSingleSelectState(config.inputs, config.hiddenInput, config.summaryElement, null);
-
-        config.inputs.forEach((input) => {
-            input.addEventListener('change', function () {
-                updateSingleSelectState(config.inputs, config.hiddenInput, config.summaryElement, config.detailsElement);
-
-                if (config.hiddenInput === computeInstanceInput) {
-                    syncCustomInstanceState();
-                }
-            });
         });
     });
 
@@ -2739,26 +2555,6 @@ document.addEventListener('DOMContentLoaded', function () {
     updateCustomInstanceLabel();
     syncCustomInstanceState();
 
-    document.addEventListener('click', function (event) {
-        dropdownSelects.forEach((selectElement) => {
-            if (!selectElement.contains(event.target)) {
-                selectElement.removeAttribute('open');
-                clearSelectSpace(selectElement);
-            }
-        });
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key !== 'Escape') {
-            return;
-        }
-
-        dropdownSelects.forEach((selectElement) => {
-            selectElement.removeAttribute('open');
-            clearSelectSpace(selectElement);
-        });
-    });
-
     Object.values(serviceRefs).forEach((serviceRef) => {
         serviceRef.checkbox.addEventListener('change', syncServiceState);
     });
@@ -2768,7 +2564,7 @@ document.addEventListener('DOMContentLoaded', function () {
             updateCustomInstanceLabel();
 
             if (computeInstanceInput.value === 'custom') {
-                updateSingleSelectState(computeInstanceOptionInputs, computeInstanceInput, computeInstanceSummary, null);
+                syncCustomInstanceState();
             }
         });
     });
@@ -2806,7 +2602,7 @@ document.addEventListener('DOMContentLoaded', function () {
     resetButton.addEventListener('click', function () {
         applyPreset('lean-web');
         latestResult = null;
-    setLoadingState('Build an estimate to review line-item cost drivers, service mix, and exportable JSON.');
+        setLoadingState('Build an estimate to review line-item cost drivers, service mix, and exportable JSON.');
         toggleSubmitState(false);
     });
 
@@ -2904,8 +2700,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 // ns:end family._base.workspace.08_json-restore
-    setLoadingState('Build an estimate to review line-item cost drivers, service mix, and exportable JSON.');
-    initializeInfraStackCustomDropdowns(document);
+        setLoadingState('Build an estimate to review line-item cost drivers, service mix, and exportable JSON.');
 });
 // ns:end family._base.workspace.00_shell
 // ns:start family._base.workspace.07_table-output
@@ -3004,7 +2799,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });

@@ -18,8 +18,103 @@
   <div class="container-xl" data-aos="fade-up" data-aos-delay="100">
     <div class="row g-4 align-items-start">
       <div class="col-lg-8">
+        {% set currentViewMode = view_mode|default('grid') %}
+        {% set currentSort = sort|default('newest') %}
+        {% set currentPerPage = per_page|default(6) %}
+        {% set listingParams = {
+          group: group_filter|default(''),
+          category: category_filter|default(''),
+          family: family_filter|default(''),
+          tag: tag_filter|default(''),
+          q: search_query|default(''),
+          sort: currentSort,
+          view: currentViewMode,
+          per_page: currentPerPage
+        } %}
+        {% set sortOptions = [
+          { value: 'newest', label: 'Newest' },
+          { value: 'oldest', label: 'Oldest' },
+          { value: 'title_asc', label: 'Title A-Z' },
+          { value: 'title_desc', label: 'Title Z-A' },
+          { value: 'category_asc', label: 'Category A-Z' },
+          { value: 'category_desc', label: 'Category Z-A' }
+        ] %}
+
+        <div class="tools-results-toolbar" aria-label="Tools listing controls">
+          <div class="tools-results-left">
+            <form method="get" action="{{ path('app_category') }}" class="tools-sort-form">
+              <input type="hidden" name="group" value="{{ group_filter|default('') }}">
+              <input type="hidden" name="category" value="{{ category_filter|default('') }}">
+              <input type="hidden" name="family" value="{{ family_filter|default('') }}">
+              <input type="hidden" name="tag" value="{{ tag_filter|default('') }}">
+              <input type="hidden" name="q" value="{{ search_query|default('') }}">
+              <input type="hidden" name="view" value="{{ currentViewMode }}">
+
+              <div class="tools-select-group">
+                <label for="tools-sort-select">Sort</label>
+                <select id="tools-sort-select" name="sort">
+                  {% for option in sortOptions %}
+                    <option value="{{ option.value }}" {{ currentSort == option.value ? 'selected' : '' }}>
+                      {{ option.label }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="tools-select-group">
+                <label for="tools-per-page-select">Show</label>
+                <select id="tools-per-page-select" name="per_page">
+                  {% for option in per_page_options|default([6, 12, 24, 48]) %}
+                    <option value="{{ option }}" {{ currentPerPage == option ? 'selected' : '' }}>
+                      {{ option }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              {% if current_page > 1 %}
+                <input type="hidden" name="page" value="1">
+              {% endif %}
+
+              <button type="submit" class="tools-sort-submit" title="Apply listing controls">
+                <i class="bi bi-arrow-repeat" aria-hidden="true"></i>
+                <span class="visually-hidden">Apply listing controls</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="tools-results-status">
+            <span class="tools-results-count">
+              {{ total_tools }} {{ total_tools == 1 ? 'tool' : 'tools' }}
+            </span>
+            {% if total_pages|default(1) > 1 %}
+              <span class="tools-results-page">
+                Page {{ current_page }} of {{ total_pages }}
+              </span>
+            {% endif %}
+          </div>
+
+          <div class="tools-results-right">
+            <div class="tools-view-switch" role="group" aria-label="View mode">
+              {% for mode in view_modes|default([]) %}
+                {% set isActiveView = currentViewMode == mode.value %}
+                <a
+                  href="{{ path('app_category', listingParams|merge({ page: 1, view: mode.value })) }}"
+                  class="tools-view-button {{ isActiveView ? 'active' : '' }}"
+                  role="button"
+                  aria-pressed="{{ isActiveView ? 'true' : 'false' }}"
+                  title="{{ mode.label }} view"
+                >
+                  <i class="{{ mode.icon }}" aria-hidden="true"></i>
+                  <span class="visually-hidden">{{ mode.label }} view</span>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
         {% if family_groups|default([])|length > 0 %}
-          <div class="tool-family-list">
+          <div class="tool-family-list tool-family-list-{{ currentViewMode }}">
             {% for family in family_groups|default([]) %}
               <section
                 class="tool-family-section"
@@ -38,7 +133,7 @@
                   </div>
                 {% endif %}
 
-                <div class="tool-card-grid">
+                <div class="tool-card-grid tool-card-grid-{{ currentViewMode }}">
                   {% for tool in family.tools|default([]) %}
                     {% set toolDisplayTitle = tool.display_title|default(tool.title) %}
                     {% set toolDisplayCardTitle = tool.display_card_image_title|default(tool.card_image_title|default(toolDisplayTitle)) %}
@@ -76,6 +171,8 @@
                         {% endif %}
 
                         <div class="tool-card-body">
+                          <h3 class="tool-card-title">{{ toolDisplayTitle }}</h3>
+
                           {% if tool.card_summary is defined and tool.card_summary %}
                             <p class="tool-card-summary">{{ tool.card_summary }}</p>
                           {% else %}
@@ -138,15 +235,7 @@
               <ul>
                 <li>
                   {% if current_page > 1 %}
-                    <a href="{{ path('app_category', {
-                      page: current_page - 1,
-                      group: group_filter|default(''),
-                      category: category_filter|default(''),
-                      family: family_filter|default(''),
-                      tag: tag_filter|default(''),
-                      q: search_query|default(''),
-                      sort: sort|default('newest')
-                    }) }}">
+                    <a href="{{ path('app_category', listingParams|merge({ page: current_page - 1 })) }}">
                       <i class="bi bi-chevron-left"></i>
                     </a>
                   {% else %}
@@ -157,15 +246,7 @@
                 {% for i in 1..total_pages %}
                   <li>
                     <a
-                      href="{{ path('app_category', {
-                      page: i,
-                      group: group_filter|default(''),
-                      category: category_filter|default(''),
-                      family: family_filter|default(''),
-                      tag: tag_filter|default(''),
-                        q: search_query|default(''),
-                        sort: sort|default('newest')
-                      }) }}"
+                      href="{{ path('app_category', listingParams|merge({ page: i })) }}"
                       class="{{ current_page == i ? 'active' : '' }}"
                     >
                       {{ i }}
@@ -175,15 +256,7 @@
 
                 <li>
                   {% if current_page < total_pages %}
-                    <a href="{{ path('app_category', {
-                      page: current_page + 1,
-                      group: group_filter|default(''),
-                      category: category_filter|default(''),
-                      family: family_filter|default(''),
-                      tag: tag_filter|default(''),
-                      q: search_query|default(''),
-                      sort: sort|default('newest')
-                    }) }}">
+                    <a href="{{ path('app_category', listingParams|merge({ page: current_page + 1 })) }}">
                       <i class="bi bi-chevron-right"></i>
                     </a>
                   {% else %}

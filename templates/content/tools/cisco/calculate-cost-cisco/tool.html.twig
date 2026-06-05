@@ -1,4 +1,7 @@
 {# tool.html.twig #}
+{# ns:start family.calculate.workspace.04_visual-contract #}
+{# Accepted divergence: calculate visual contract remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.04_visual-contract #}
 {# ns:start family.calculate.workspace.04_selected-item #}
 {# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
 {# ns:end family.calculate.workspace.04_selected-item #}
@@ -74,37 +77,14 @@
 
           <div class="calculate-cost-cisco-setting-field">
             <div class="calculate-cost-cisco-inline-grid calculate-cost-cisco-inline-grid-preset">
-              <details class="calculate-cost-cisco-select" id="calculateCostCiscoPresetSelect">
-                <summary class="calculate-cost-cisco-select-summary">
-                  <span id="calculateCostCiscoPresetSummary">Lean web platform</span>
-                  <span class="calculate-cost-cisco-select-arrow-slot" aria-hidden="true"></span>
-                </summary>
-
-                <div class="calculate-cost-cisco-select-body">
-                  <div class="calculate-cost-cisco-select-grid calculate-cost-cisco-select-grid-list">
-                    <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                      <input type="radio" name="calculateCostCiscoPresetOption" value="lean-web" checked>
-                      <span class="calculate-cost-cisco-select-title">Branch access bundle</span>
-                    </label>
-
-                    <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                      <input type="radio" name="calculateCostCiscoPresetOption" value="serverless-api">
-                      <span class="calculate-cost-cisco-select-title">Wireless refresh</span>
-                    </label>
-
-                    <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                      <input type="radio" name="calculateCostCiscoPresetOption" value="steady-platform">
-                      <span class="calculate-cost-cisco-select-title">Campus core refresh</span>
-                    </label>
-
-                    <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                      <input type="radio" name="calculateCostCiscoPresetOption" value="blank">
-                      <span class="calculate-cost-cisco-select-title">Blank estimate</span>
-                    </label>
-                  </div>
-                </div>
-              </details>
-              <input type="hidden" id="calculateCostCiscoPreset" value="lean-web">
+              <div class="calculate-cost-cisco-native-select-wrap" id="calculateCostCiscoPresetSelect">
+                <select id="calculateCostCiscoPreset" class="form-select calculate-cost-cisco-native-select">
+                  <option value="lean-web" selected>Branch access bundle</option>
+                  <option value="serverless-api">Wireless refresh</option>
+                  <option value="steady-platform">Campus core refresh</option>
+                  <option value="blank">Blank estimate</option>
+                </select>
+              </div>
 
               <button type="button" class="calculate-cost-cisco-secondary-btn" id="calculateCostCiscoApplyPreset">Apply preset</button>
             </div>
@@ -153,102 +133,32 @@
               <div class="calculate-cost-cisco-card-grid calculate-cost-cisco-card-grid-two">
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoComputeInstance" class="calculate-cost-cisco-field-label">Switch platform</label>
-                  <details class="calculate-cost-cisco-select" id="calculateCostCiscoComputeInstanceSelect">
-                    <summary class="calculate-cost-cisco-select-summary">
-                      <span id="calculateCostCiscoComputeInstanceSummary">Catalyst 9200 access switch</span>
-                      <span class="calculate-cost-cisco-select-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="calculate-cost-cisco-select-body">
-                      <div class="calculate-cost-cisco-select-grid calculate-cost-cisco-select-grid-list">
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="b2s">
-                          <span class="calculate-cost-cisco-select-title">Cisco Business switch</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="b2ms">
-                          <span class="calculate-cost-cisco-select-title">Catalyst 9200 access switch</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="d2s-v5" checked>
-                          <span class="calculate-cost-cisco-select-title">Catalyst 9200 access switch</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="d4s-v5">
-                          <span class="calculate-cost-cisco-select-title">Catalyst 9300 access switch</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="d8s-v5">
-                          <span class="calculate-cost-cisco-select-title">Catalyst 9500 distribution switch</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="f4s-v2">
-                          <span class="calculate-cost-cisco-select-title">Meraki MS access switch</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="e4s-v5">
-                          <span class="calculate-cost-cisco-select-title">Catalyst 9600 core allocation</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputeInstanceOption" value="custom">
-                          <span class="calculate-cost-cisco-select-title" id="calculateCostCiscoComputeCustomOptionLabel">Custom size - user defined</span>
-                        </label>
-                      </div>
-                    </div>
-                  </details>
-                  <input type="hidden" id="calculateCostCiscoComputeInstance" value="d2s-v5">
+                  <div class="calculate-cost-cisco-native-select-wrap" id="calculateCostCiscoComputeInstanceSelect">
+                    <select id="calculateCostCiscoComputeInstance" class="form-select calculate-cost-cisco-native-select">
+                      <option value="b2s">Cisco Business switch</option>
+                      <option value="b2ms">Catalyst 9200 access switch</option>
+                      <option value="d2s-v5" selected>Catalyst 9200 access switch</option>
+                      <option value="d4s-v5">Catalyst 9300 access switch</option>
+                      <option value="d8s-v5">Catalyst 9500 distribution switch</option>
+                      <option value="f4s-v2">Meraki MS access switch</option>
+                      <option value="e4s-v5">Catalyst 9600 core allocation</option>
+                      <option id="calculateCostCiscoComputeCustomOptionLabel" value="custom">Custom size - user defined</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoComputePurchase" class="calculate-cost-cisco-field-label">Purchase model</label>
-                  <details class="calculate-cost-cisco-select" id="calculateCostCiscoComputePurchaseSelect">
-                    <summary class="calculate-cost-cisco-select-summary">
-                      <span id="calculateCostCiscoComputePurchaseSummary">Monthly allocation</span>
-                      <span class="calculate-cost-cisco-select-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="calculate-cost-cisco-select-body">
-                      <div class="calculate-cost-cisco-select-grid calculate-cost-cisco-select-grid-two">
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="onDemand" checked>
-                          <span class="calculate-cost-cisco-select-title">Monthly allocation</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="spot">
-                          <span class="calculate-cost-cisco-select-title">Lab or spare allocation</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="savings1">
-                          <span class="calculate-cost-cisco-select-title">EA 1yr</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="savings3">
-                          <span class="calculate-cost-cisco-select-title">EA 3yr</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="reserved1">
-                          <span class="calculate-cost-cisco-select-title">Smart Net 1yr</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoComputePurchaseOption" value="reserved3">
-                          <span class="calculate-cost-cisco-select-title">Smart Net 3yr</span>
-                        </label>
-                      </div>
-                    </div>
-                  </details>
-                  <input type="hidden" id="calculateCostCiscoComputePurchase" value="onDemand">
+                  <div class="calculate-cost-cisco-native-select-wrap" id="calculateCostCiscoComputePurchaseSelect">
+                    <select id="calculateCostCiscoComputePurchase" class="form-select calculate-cost-cisco-native-select">
+                      <option value="onDemand" selected>Monthly allocation</option>
+                      <option value="spot">Lab or spare allocation</option>
+                      <option value="savings1">EA 1yr</option>
+                      <option value="savings3">EA 3yr</option>
+                      <option value="reserved1">Smart Net 1yr</option>
+                      <option value="reserved3">Smart Net 3yr</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="calculate-cost-cisco-custom-instance-grid calculate-cost-cisco-card-span-two d-none" id="calculateCostCiscoComputeCustomFields">
@@ -428,27 +338,12 @@
               <div class="calculate-cost-cisco-card-grid calculate-cost-cisco-card-grid-two">
                 <div class="calculate-cost-cisco-field-stack">
                   <label for="calculateCostCiscoApiType" class="calculate-cost-cisco-field-label">API type</label>
-                  <details class="calculate-cost-cisco-select" id="calculateCostCiscoApiTypeSelect">
-                    <summary class="calculate-cost-cisco-select-summary">
-                      <span id="calculateCostCiscoApiTypeSummary">Essentials management</span>
-                      <span class="calculate-cost-cisco-select-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="calculate-cost-cisco-select-body">
-                      <div class="calculate-cost-cisco-select-grid calculate-cost-cisco-select-grid-two">
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoApiTypeOption" value="http" checked>
-                          <span class="calculate-cost-cisco-select-title">Essentials management</span>
-                        </label>
-
-                        <label class="calculate-cost-cisco-select-card calculate-cost-cisco-radio-card">
-                          <input type="radio" name="calculateCostCiscoApiTypeOption" value="rest">
-                          <span class="calculate-cost-cisco-select-title">Advantage management</span>
-                        </label>
-                      </div>
-                    </div>
-                  </details>
-                  <input type="hidden" id="calculateCostCiscoApiType" value="http">
+                  <div class="calculate-cost-cisco-native-select-wrap" id="calculateCostCiscoApiTypeSelect">
+                    <select id="calculateCostCiscoApiType" class="form-select calculate-cost-cisco-native-select">
+                      <option value="http" selected>Essentials management</option>
+                      <option value="rest">Advantage management</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="calculate-cost-cisco-field-stack">
@@ -781,7 +676,7 @@
                     <th>Unit basis</th>
                     <th>Monthly</th>
                     <th>Annual</th>
-                    <th>Copy</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                   </tr>
                 </thead>
                 <tbody id="calculateCostCiscoBreakdownTableBody"></tbody>
@@ -803,7 +698,7 @@
                     <th>Annual</th>
                     <th>Share</th>
                     <th>Signal</th>
-                    <th>Copy</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                   </tr>
                 </thead>
                 <tbody id="calculateCostCiscoServiceTableBody"></tbody>
@@ -823,7 +718,7 @@
                     <th>Assumption</th>
                     <th>Value</th>
                     <th>Note</th>
-                    <th>Copy</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                   </tr>
                 </thead>
                 <tbody id="calculateCostCiscoAssumptionTableBody"></tbody>

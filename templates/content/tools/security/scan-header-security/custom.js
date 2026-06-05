@@ -1,81 +1,5 @@
 // custom.js
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
 // ns:start family._base.workspace.00_shell
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family._base.workspace.00_shell
@@ -471,15 +395,26 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function flashButton(button, text) {
-        if (button.dataset.iconOnly === 'true') {
-            const originalTitle = button.dataset.defaultTitle || button.title;
-            button.dataset.defaultTitle = originalTitle;
-            button.title = text;
-            button.classList.add('is-copied');
+        if (button.dataset.iconOnly === 'true' || (button.closest && button.closest('.tool-table-action-cell'))) {
+            const isCopied = text === 'Copied';
+            const icon = button.querySelector('i');
+            const originalIcon = button.dataset.defaultIcon || (icon ? icon.className : '');
 
+            if (icon && !button.dataset.defaultIcon) {
+                button.dataset.defaultIcon = originalIcon;
+            }
+
+            button.classList.toggle('copied', isCopied);
+            button.classList.toggle('is-copied', isCopied);
+            button.classList.toggle('failed', !isCopied);
+            if (icon) {
+                icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+            }
             window.setTimeout(() => {
-                button.title = originalTitle;
-                button.classList.remove('is-copied');
+                button.classList.remove('copied', 'is-copied', 'failed');
+                if (icon && button.dataset.defaultIcon) {
+                    icon.className = button.dataset.defaultIcon;
+                }
             }, 1400);
             return;
         }
@@ -515,12 +450,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.appendChild(textarea);
         textarea.select();
 
-        const didCopy = document.execCommand('copy');
+        document.execCommand('copy');
         textarea.remove();
-
-        if (!didCopy) {
-            throw new Error('Clipboard copy failed.');
-        }
     }
 
     async function writeClipboardText(text) {
@@ -900,16 +831,20 @@ document.addEventListener('DOMContentLoaded', function () {
         resultContent.classList.remove('d-none');
     }
 
+    function setSubmitButtonLabel(label) {
+        submitButton.innerHTML = `<i class="bi bi-search" aria-hidden="true"></i><span>${escapeHtml(label)}</span>`;
+    }
+
     function toggleSubmitState(isLoading) {
         if (isLoading) {
             submitButton.disabled = true;
-            submitButton.textContent = 'Preparing...';
+            setSubmitButtonLabel('Preparing...');
 
             return;
         }
 
         submitButton.disabled = false;
-        submitButton.innerHTML = '<i class="bi bi-shield-check" aria-hidden="true"></i><span>Prepare Review</span>';
+        setSubmitButtonLabel('Prepare Review');
     }
 
     async function scanTarget(query) {
@@ -1326,6 +1261,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const schemeTone = schemeLabel === 'HTTPS' ? 'success' : 'error';
         const failTone = Number(summary.failCount || 0) > 0 ? 'error' : 'success';
         const warnTone = Number(summary.warnCount || 0) > 0 ? 'warning' : 'success';
+        const resultStatusTone = Number(summary.failCount || 0) > 0 ? 'error' : Number(summary.warnCount || 0) > 0 ? 'warning' : 'success';
+        const resultStatusLabel = Number(summary.failCount || 0) > 0 ? 'Needs review' : Number(summary.warnCount || 0) > 0 ? 'Warnings found' : 'Reviewed';
+        const scoreChars = Math.max(3, String(score).length);
         const stateTone = function (state) {
             if (state === 'pass') {
                 return 'success';
@@ -1343,68 +1281,96 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         return `
-            <div class="scan-header-security-result-hero-grid" aria-live="polite">
-                <article class="scan-header-security-result-card scan-header-security-result-card-main">
-                    <span class="scan-header-security-result-kicker">Header review summary</span>
-                    <h3 class="scan-header-security-result-title">Visible header posture review</h3>
-                    <p class="scan-header-security-result-copy">Final target: ${escapeHtml(summary.finalUrl || result.query.url || '')}. Treat the score as local evidence organization, not a security guarantee.</p>
-                    <div class="scan-header-security-result-chip-row" aria-label="Header review state">
-                        <span class="scan-header-security-result-chip scan-header-security-result-chip-${schemeTone}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-shield-lock" aria-hidden="true"></i></span>${escapeHtml(schemeLabel)} target</span>
-                        <span class="scan-header-security-result-chip scan-header-security-result-chip-${failTone}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-x-circle" aria-hidden="true"></i></span>${escapeHtml(summary.failCount || 0)} fail</span>
-                        <span class="scan-header-security-result-chip scan-header-security-result-chip-${warnTone}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>${escapeHtml(summary.warnCount || 0)} warn</span>
-                        <span class="scan-header-security-result-chip scan-header-security-result-chip-${stateTone(summary.httpUpgradeState || 'info')}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-arrow-up-right-circle" aria-hidden="true"></i></span>${escapeHtml(summary.httpUpgradeLabel || 'HTTP upgrade not probed')}</span>
-                        <span class="scan-header-security-result-chip scan-header-security-result-chip-${stateTone(summary.hstsState || 'info')}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-lock" aria-hidden="true"></i></span>${escapeHtml(summary.hstsLabel || 'HSTS unknown')}</span>
-                        <span class="scan-header-security-result-chip scan-header-security-result-chip-baseline"><span class="scan-header-security-result-chip-icon"><i class="bi bi-clock-history" aria-hidden="true"></i></span>Last run: ${escapeHtml(lastRunText)}</span>
+            <header class="scan-header-security-result-header" aria-label="Result summary header">
+                <div class="scan-header-security-result-header-main">
+                    <span class="scan-header-security-result-header-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span>
+                    <div class="scan-header-security-result-header-copy">
+                        <h2 class="scan-header-security-result-header-title">Result Summary</h2>
+                        <p>Overview of the local header review result and key metrics.</p>
                     </div>
-                </article>
+                </div>
+                <div class="scan-header-security-result-header-meta" aria-label="Result summary status">
+                    <span class="scan-header-security-result-header-chip scan-header-security-result-chip-${resultStatusTone}"><span class="scan-header-security-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>${escapeHtml(resultStatusLabel)}</span></span>
+                    <span class="scan-header-security-result-header-chip scan-header-security-result-chip-updated"><span class="scan-header-security-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>${escapeHtml(lastRunText)}</span></span>
+                </div>
+            </header>
 
-                <article class="scan-header-security-result-card scan-header-security-result-card-visual">
+            <div class="scan-header-security-result-hero-grid" aria-live="polite">
+                <article class="scan-header-security-result-card scan-header-security-result-card-primary" data-result-visual="ring" aria-label="Primary header review result">
                     <div class="scan-header-security-result-visual-copy scan-header-security-result-visual-copy-top">
                         <span class="scan-header-security-result-kicker">Primary Result</span>
                         <h3 class="scan-header-security-result-title scan-header-security-result-title-center">Grade ${escapeHtml(grade)}</h3>
                     </div>
-                    <div class="scan-header-security-result-ring scan-header-security-score-ring" id="scanHeaderSecurityScoreRing" style="--scan-header-security-result-progress: ${escapeHtml(progressAngle.toFixed(1))}deg; --scan-header-security-progress: ${escapeHtml(progressAngle.toFixed(1))}deg; --scan-header-security-ring-color: ${tone.ringColor};" aria-label="Hardening score ${escapeHtml(score)} out of 100">
+                    <div class="scan-header-security-result-primary-visual" id="scanHeaderSecurityResultVisual" aria-label="Primary header review result">
+                    <div class="scan-header-security-result-ring scan-header-security-score-ring" id="scanHeaderSecurityScoreRing" style="--scan-header-security-result-progress: ${escapeHtml(progressAngle.toFixed(1))}deg; --scan-header-security-progress: ${escapeHtml(progressAngle.toFixed(1))}deg; --scan-header-security-ring-color: ${tone.ringColor}; --scan-header-security-result-value-chars: ${escapeHtml(String(scoreChars))};" aria-label="Hardening score ${escapeHtml(score)} out of 100">
                         <div class="scan-header-security-score-echart" id="scanHeaderSecurityScoreChart" aria-hidden="true"></div>
                         <div class="scan-header-security-result-ring-center scan-header-security-score-center">
                             <div class="scan-header-security-result-ring-value scan-header-security-score-value">${escapeHtml(score)}</div>
                             <div class="scan-header-security-result-ring-unit scan-header-security-score-denominator">/100</div>
                         </div>
                     </div>
+                    </div>
                     <div class="scan-header-security-result-visual-copy">
                         <p class="scan-header-security-result-copy">${escapeHtml(summary.scoreNote || 'Visible header posture only')}</p>
+                    </div>
+                    <span class="scan-header-security-result-card-divider" aria-hidden="true"></span>
+                    <div class="scan-header-security-result-chip-row scan-header-security-result-chip-row-center" aria-label="Primary result outcome">
+                        <span class="scan-header-security-result-chip scan-header-security-result-chip-outcome scan-header-security-result-chip-${schemeTone}"><span class="scan-header-security-result-chip-icon" aria-hidden="true"><i class="bi bi-shield-lock"></i></span><span>${escapeHtml(schemeLabel)} target</span></span>
+                    </div>
+                </article>
+
+                <article class="scan-header-security-result-card scan-header-security-result-card-summary" aria-label="Header review summary">
+                    <div class="scan-header-security-result-summary-intro">
+                        <span class="scan-header-security-result-card-icon scan-header-security-result-card-icon-summary" aria-hidden="true"><i class="bi bi-shield-lock"></i></span>
+                        <div class="scan-header-security-result-summary-copy">
+                            <div class="scan-header-security-result-kicker">Descriptive Summary</div>
+                            <h3 class="scan-header-security-result-title">Visible header posture review</h3>
+                            <p class="scan-header-security-result-copy">Final target: ${escapeHtml(summary.finalUrl || result.query.url || '')}. Treat the score as local evidence organization, not a security guarantee.</p>
+                        </div>
+                    </div>
+                    <span class="scan-header-security-result-card-divider" aria-hidden="true"></span>
+                    <div class="scan-header-security-result-chip-grid" aria-label="Header review state">
+                        <span class="scan-header-security-result-chip scan-header-security-result-chip-${schemeTone}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-shield-lock" aria-hidden="true"></i></span>${escapeHtml(schemeLabel)} target</span>
+                        <span class="scan-header-security-result-chip scan-header-security-result-chip-${failTone}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-x-circle" aria-hidden="true"></i></span>${escapeHtml(summary.failCount || 0)} fail</span>
+                        <span class="scan-header-security-result-chip scan-header-security-result-chip-${warnTone}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>${escapeHtml(summary.warnCount || 0)} warn</span>
+                        <span class="scan-header-security-result-chip scan-header-security-result-chip-${stateTone(summary.httpUpgradeState || 'info')}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-arrow-up-right-circle" aria-hidden="true"></i></span>${escapeHtml(summary.httpUpgradeLabel || 'HTTP upgrade not probed')}</span>
+                        <span class="scan-header-security-result-chip scan-header-security-result-chip-${stateTone(summary.hstsState || 'info')}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-lock" aria-hidden="true"></i></span>${escapeHtml(summary.hstsLabel || 'HSTS unknown')}</span>
+                        <span class="scan-header-security-result-chip scan-header-security-result-chip-baseline"><span class="scan-header-security-result-chip-icon"><i class="bi bi-terminal" aria-hidden="true"></i></span>Method ${escapeHtml(summary.methodUsed || result.query.method || 'HEAD')}</span>
                     </div>
                 </article>
             </div>
 
             <div class="scan-header-security-result-metric-grid" aria-label="Header review metrics">
-                <article class="scan-header-security-result-metric-card">
+                <article class="scan-header-security-result-metric-card scan-header-security-result-metric-success">
+                    <span class="scan-header-security-result-metric-icon" aria-hidden="true"><i class="bi bi-card-checklist"></i></span>
                     <span class="scan-header-security-result-metric-label">Findings</span>
                     <strong class="scan-header-security-result-metric-value">${escapeHtml(summary.findingCount || 0)}</strong>
                     <span class="scan-header-security-result-metric-copy">Rows in the evidence table.</span>
+                    <span class="scan-header-security-result-metric-accent" aria-hidden="true"></span>
                 </article>
-                <article class="scan-header-security-result-metric-card">
+                <article class="scan-header-security-result-metric-card scan-header-security-result-metric-info">
+                    <span class="scan-header-security-result-metric-icon" aria-hidden="true"><i class="bi bi-activity"></i></span>
                     <span class="scan-header-security-result-metric-label">Final status</span>
                     <strong class="scan-header-security-result-metric-value">${escapeHtml(statusText || '0')}</strong>
                     <span class="scan-header-security-result-metric-copy">Review model status.</span>
+                    <span class="scan-header-security-result-metric-accent" aria-hidden="true"></span>
                 </article>
-                <article class="scan-header-security-result-metric-card">
+                <article class="scan-header-security-result-metric-card scan-header-security-result-metric-accent-tone">
+                    <span class="scan-header-security-result-metric-icon" aria-hidden="true"><i class="bi bi-clock-history"></i></span>
                     <span class="scan-header-security-result-metric-label">Runtime</span>
                     <strong class="scan-header-security-result-metric-value">${escapeHtml(summary.durationMs || 0)} ms</strong>
                     <span class="scan-header-security-result-metric-copy">Browser render timing.</span>
+                    <span class="scan-header-security-result-metric-accent" aria-hidden="true"></span>
                 </article>
-                <article class="scan-header-security-result-metric-card">
+                <article class="scan-header-security-result-metric-card scan-header-security-result-metric-warning">
+                    <span class="scan-header-security-result-metric-icon" aria-hidden="true"><i class="bi bi-file-earmark-check"></i></span>
                     <span class="scan-header-security-result-metric-label">Notes</span>
                     <strong class="scan-header-security-result-metric-value">${escapeHtml(summary.knownFilePresentCount || 0)}/${escapeHtml(summary.knownFileCount || 0)}</strong>
                     <span class="scan-header-security-result-metric-copy">Optional evidence notes.</span>
+                    <span class="scan-header-security-result-metric-accent" aria-hidden="true"></span>
                 </article>
             </div>
 
-            <div class="scan-header-security-result-chip-row" aria-label="Header review options">
-                <span class="scan-header-security-result-chip scan-header-security-result-chip-baseline"><span class="scan-header-security-result-chip-icon"><i class="bi bi-terminal" aria-hidden="true"></i></span>Method ${escapeHtml(summary.methodUsed || result.query.method || 'HEAD')}</span>
-                <span class="scan-header-security-result-chip scan-header-security-result-chip-${result.query.followRedirects ? 'ready' : 'baseline'}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-signpost-split" aria-hidden="true"></i></span>Redirects ${result.query.followRedirects ? 'followed' : 'not followed'}</span>
-                <span class="scan-header-security-result-chip scan-header-security-result-chip-${result.query.validateTls ? 'ready' : 'warning'}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-patch-check" aria-hidden="true"></i></span>TLS validation ${result.query.validateTls ? 'on' : 'off'}</span>
-                <span class="scan-header-security-result-chip scan-header-security-result-chip-${result.query.checkWellKnownFiles ? 'ready' : 'baseline'}"><span class="scan-header-security-result-chip-icon"><i class="bi bi-file-earmark-check" aria-hidden="true"></i></span>Evidence notes ${result.query.checkWellKnownFiles ? 'included' : 'skipped'}</span>
-            </div>
         `;
     }
 
@@ -1422,7 +1388,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td><span class="scan-header-security-status-pill ${getStatusPillClass(row.status)}">${escapeHtml(row.status)}</span></td>
                 <td>${escapeHtml(row.evidence)}</td>
                 <td>${escapeHtml(row.recommendation)}</td>
-                <td class="scan-header-security-copy-cell">${buildCopyButton(copyValue, `Copy finding row ${index + 1}`)}</td>
+                <td class="scan-header-security-copy-cell tool-table-action-cell">${buildCopyButton(copyValue, `Copy finding row ${index + 1}`)}</td>
             </tr>
         `;
     }
@@ -1436,7 +1402,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${escapeHtml(row.category)}</td>
                 <td><strong>${escapeHtml(row.name)}</strong></td>
                 <td class="scan-header-security-value-cell">${escapeHtml(row.value)}</td>
-                <td class="scan-header-security-copy-cell">${buildCopyButton(copyValue, `Copy header row ${index + 1}`)}</td>
+                <td class="scan-header-security-copy-cell tool-table-action-cell">${buildCopyButton(copyValue, `Copy header row ${index + 1}`)}</td>
             </tr>
         `;
     }
@@ -1449,7 +1415,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td class="tool-generated-rownum-cell">${index + 1}</td>
                 <td><strong>${escapeHtml(row.label)}</strong></td>
                 <td class="scan-header-security-value-cell">${escapeHtml(row.value)}</td>
-                <td class="scan-header-security-copy-cell">${buildCopyButton(copyValue, `Copy transport row ${index + 1}`)}</td>
+                <td class="scan-header-security-copy-cell tool-table-action-cell">${buildCopyButton(copyValue, `Copy transport row ${index + 1}`)}</td>
             </tr>
         `;
     }
@@ -1463,7 +1429,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td><strong>${escapeHtml(row.path)}</strong></td>
                 <td><span class="scan-header-security-status-pill ${getStatusPillClass(row.present ? 'pass' : 'info')}">${escapeHtml(row.statusLabel || `${row.status} ${row.statusText}`)}</span></td>
                 <td class="scan-header-security-value-cell">${escapeHtml(row.note)}</td>
-                <td class="scan-header-security-copy-cell">${buildCopyButton(copyValue, `Copy well-known file row ${index + 1}`)}</td>
+                <td class="scan-header-security-copy-cell tool-table-action-cell">${buildCopyButton(copyValue, `Copy well-known file row ${index + 1}`)}</td>
             </tr>
         `;
     }
@@ -1479,7 +1445,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${escapeHtml(row.httpOnly)}</td>
                 <td>${escapeHtml(row.sameSite)}</td>
                 <td class="scan-header-security-issues-cell">${escapeHtml(row.issues)}</td>
-                <td class="scan-header-security-copy-cell">${buildCopyButton(copyValue, `Copy cookie row ${index + 1}`)}</td>
+                <td class="scan-header-security-copy-cell tool-table-action-cell">${buildCopyButton(copyValue, `Copy cookie row ${index + 1}`)}</td>
             </tr>
         `;
     }
@@ -1558,7 +1524,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function normalizeImportedResult(payload) {
         if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
-            throw new Error('Import a JSON object exported from Scan Header Security.');
+            throw new Error('Import a JSON object exported from Header Security Scanner.');
         }
 
         const summary = payload.summary && typeof payload.summary === 'object' ? payload.summary : {};
@@ -1591,6 +1557,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return result;
     }
 
+    function buildImportedPayloadState(payload) {
+        return normalizeImportedResult(payload);
+    }
+
     function syncFormFromQuery(query) {
         urlInput.value = query.url || '';
         targetContextInput.value = query.targetContext || 'Web application';
@@ -1608,7 +1578,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setInlineDropdownValue(userAgentInput, query.userAgentProfile || 'default', 'default', ['default', 'desktop', 'mobile']);
         setInlineDropdownValue(cspModeInput, query.cspMode || 'enforced', 'enforced', ['enforced', 'report-only', 'both']);
         setInlineDropdownValue(cookieModeInput, query.cookieMode || 'include', 'include', ['include', 'separate', 'skip']);
-        initializeInfraStackCustomDropdowns(root);
     }
 
     function toCsv(rows) {
@@ -1786,7 +1755,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setInlineDropdownValue(cspModeInput, 'enforced', 'enforced', ['enforced', 'report-only', 'both']);
         setInlineDropdownValue(cookieModeInput, 'include', 'include', ['include', 'separate', 'skip']);
         setSortMode('id', false);
-        initializeInfraStackCustomDropdowns(root);
         destroyScoreRingChart();
         resultEmpty.textContent = 'Prepare a header review to inspect findings, evidence rows, surface notes, policy notes, and JSON restore data.';
         resultEmpty.classList.remove('d-none');
@@ -1991,7 +1959,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             const payload = JSON.parse(await readFileAsText(file));
-            latestResult = normalizeImportedResult(payload);
+            latestResult = buildImportedPayloadState(payload);
             syncFormFromQuery(latestResult.query);
             syncQueryState(latestResult.query);
             renderLatestResult();
@@ -2051,7 +2019,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     restoreStateFromQuery();
-    initializeInfraStackCustomDropdowns(document);
 });
 // ns:start family._base.workspace.07_table-output
 (function setupScanHeaderSecurityTableOutputStandard() {
@@ -2148,7 +2115,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });

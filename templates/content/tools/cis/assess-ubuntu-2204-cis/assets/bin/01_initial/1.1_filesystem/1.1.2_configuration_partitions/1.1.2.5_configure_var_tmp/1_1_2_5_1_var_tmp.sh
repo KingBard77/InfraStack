@@ -1,18 +1,21 @@
-#!/bin/sh
+#!/bin/bash
 
-CRITICALITY=1
-TITLE="Ensure /var/tmp is a separate partition or mounted with other fstype"
+CRITICALITY=2
+TITLE="Ensure separate partition exists for /var/tmp"
 
 function check {
+    MOUNTPOINT="/var/tmp"
     STATUS="Fail"
 
-    if mount | grep -E "/var/tmp" > /dev/null; then
+    if findmnt -n "$MOUNTPOINT" > /dev/null 2>&1; then
         STATUS="Pass"
+    else
+        STATUS="Fail: /var/tmp is not a separate partition"
     fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-    echo "Manual"
+    echo 'Automated remediation requires planned storage changes for /var/tmp.'
 }

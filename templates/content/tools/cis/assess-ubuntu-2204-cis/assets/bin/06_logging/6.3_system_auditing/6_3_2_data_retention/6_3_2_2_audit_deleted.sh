@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure audit logs are not automatically deleted"
 
 max_log_file_action="keep_logs"

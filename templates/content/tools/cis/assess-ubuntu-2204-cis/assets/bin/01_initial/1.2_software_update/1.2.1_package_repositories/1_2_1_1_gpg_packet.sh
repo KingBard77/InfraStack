@@ -17,7 +17,6 @@ function check {
     echo "Check status: $STATUS"
 }
 
-
 function fix {
-    echo "Manual"
+    echo 'Manual: APT signing keys need approved repository key material.'
 }

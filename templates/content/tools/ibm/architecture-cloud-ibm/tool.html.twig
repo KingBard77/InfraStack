@@ -37,7 +37,7 @@
             id="architectureCloudIbmReset"
           >
             <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
-            <span data-button-label>Load Default</span>
+            <span data-button-label>Reset</span>
           </button>
         </div>
 
@@ -66,30 +66,36 @@
           <div class="architecture-cloud-ibm-basic-grid">
             <div class="architecture-cloud-ibm-control-stack architecture-cloud-ibm-setting-card">
               <label class="tool-control-label architecture-cloud-ibm-setting-label" for="architectureCloudIbmPreset">Preset <span class="architecture-cloud-ibm-helper-chip" title="Choose a starting preset that updates the visible controls and generated output." aria-label="Choose a starting preset that updates the visible controls and generated output.">i</span></label>
-              <select id="architectureCloudIbmPreset" class="form-select architecture-cloud-ibm-native-select">
-                <option value="secure-vpc-app" selected>Secure VPC App</option>
-                <option value="openshift-platform">OpenShift Platform</option>
-                <option value="data-services">Data Services</option>
-                <option value="hybrid-connectivity">Hybrid Connectivity</option>
-              </select>
+              <div class="architecture-cloud-ibm-native-select-wrap" id="architectureCloudIbmPresetSelect">
+                <select id="architectureCloudIbmPreset" class="form-select architecture-cloud-ibm-native-select">
+                  <option value="secure-vpc-app" selected>Secure VPC App</option>
+                  <option value="openshift-platform">OpenShift Platform</option>
+                  <option value="data-services">Data Services</option>
+                  <option value="hybrid-connectivity">Hybrid Connectivity</option>
+                </select>
+              </div>
             </div>
 
             <div class="architecture-cloud-ibm-control-stack architecture-cloud-ibm-setting-card">
               <label class="tool-control-label architecture-cloud-ibm-setting-label" for="architectureCloudIbmSize">Workload scale <span class="architecture-cloud-ibm-helper-chip" title="Choose the workload scale used by generated capacity assumptions." aria-label="Choose the workload scale used by generated capacity assumptions.">i</span></label>
-              <select id="architectureCloudIbmSize" class="form-select architecture-cloud-ibm-native-select">
-                <option value="small">Small</option>
-                <option value="medium" selected>Medium</option>
-                <option value="large">Large</option>
-              </select>
+              <div class="architecture-cloud-ibm-native-select-wrap" id="architectureCloudIbmSizeSelect">
+                <select id="architectureCloudIbmSize" class="form-select architecture-cloud-ibm-native-select">
+                  <option value="small">Small</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="large">Large</option>
+                </select>
+              </div>
             </div>
 
             <div class="architecture-cloud-ibm-control-stack architecture-cloud-ibm-setting-card">
               <label class="tool-control-label architecture-cloud-ibm-setting-label" for="architectureCloudIbmAccessBlocks">Availability zones <span class="architecture-cloud-ibm-helper-chip" title="Choose the zone count used by placement and resilience assumptions." aria-label="Choose the zone count used by placement and resilience assumptions.">i</span></label>
-              <select id="architectureCloudIbmAccessBlocks" class="form-select architecture-cloud-ibm-native-select">
-                <option value="1">1 zone</option>
-                <option value="2">2 zones</option>
-                <option value="3" selected>3 zones</option>
-              </select>
+              <div class="architecture-cloud-ibm-native-select-wrap" id="architectureCloudIbmAccessBlocksSelect">
+                <select id="architectureCloudIbmAccessBlocks" class="form-select architecture-cloud-ibm-native-select">
+                  <option value="1">1 zone</option>
+                  <option value="2">2 zones</option>
+                  <option value="3" selected>3 zones</option>
+                </select>
+              </div>
             </div>
             <p class="tool-control-hint architecture-cloud-ibm-setting-hint" id="architectureCloudIbmPresetDescription">Cloud Internet Services, public ingress, private app/data subnets, security groups, flow logs, and monitored operations.</p>
           </div>
@@ -113,49 +119,14 @@
             <div class="tool-inspector-section architecture-cloud-ibm-config-panel active" id="architectureCloudIbmNetworkPanel" data-config-panel role="tabpanel" aria-labelledby="architectureCloudIbmNetworkTab">
               <div class="architecture-cloud-ibm-config-grid">
                 <div class="architecture-cloud-ibm-control-stack">
-                  <label class="tool-control-label" for="architectureCloudIbmRouting">Connectivity pattern <span class="architecture-cloud-ibm-helper-chip architecture-cloud-ibm-custom-helper-chip" title="Tune connectivity pattern before regenerating the diagram." aria-label="Tune connectivity pattern before regenerating the diagram.">i</span></label>
-                  <input type="hidden" id="architectureCloudIbmRouting" value="edge-protected">
-
-                  <details class="architecture-cloud-ibm-custom-dropdown" data-custom-dropdown-for="architectureCloudIbmRouting">
-                    <summary class="architecture-cloud-ibm-custom-dropdown-summary">
-                      <span data-custom-dropdown-label>Edge protected ingress</span>
-                        <span class="architecture-cloud-ibm-custom-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="architecture-cloud-ibm-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                      <button
-                        type="button"
-                        class="architecture-cloud-ibm-custom-dropdown-option"
-                        data-custom-dropdown-value="public-private"
-                        role="option"
-                        aria-selected="false"
-                      >Public/private tiers</button>
-
-                      <button
-                        type="button"
-                        class="architecture-cloud-ibm-custom-dropdown-option"
-                        data-custom-dropdown-value="private-only"
-                        role="option"
-                        aria-selected="false"
-                      >Private endpoint only</button>
-
-                      <button
-                        type="button"
-                        class="architecture-cloud-ibm-custom-dropdown-option"
-                        data-custom-dropdown-value="hybrid"
-                        role="option"
-                        aria-selected="false"
-                      >Hybrid connectivity</button>
-
-                      <button
-                        type="button"
-                        class="architecture-cloud-ibm-custom-dropdown-option active"
-                        data-custom-dropdown-value="edge-protected"
-                        role="option"
-                        aria-selected="true"
-                      >Edge protected ingress</button>
-                    </div>
-                  </details>
+                  <label class="tool-control-label" for="architectureCloudIbmRouting">Connectivity pattern <span class="architecture-cloud-ibm-helper-chip architecture-cloud-ibm-custom-helper-chip" title="Tune connectivity pattern before regenerating the diagram." aria-label="Tune connectivity pattern before regenerating the diagram.">i</span></label>                  <div class="architecture-cloud-ibm-native-select-wrap" id="architectureCloudIbmRoutingSelect">
+                    <select id="architectureCloudIbmRouting" class="form-select architecture-cloud-ibm-native-select">
+                      <option value="public-private">Public/private tiers</option>
+                      <option value="private-only">Private endpoint only</option>
+                      <option value="hybrid">Hybrid connectivity</option>
+                      <option value="edge-protected" selected>Edge protected ingress</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="architecture-cloud-ibm-control-stack architecture-cloud-ibm-vlan-stack">
@@ -368,7 +339,7 @@ Private data subnet 10.80.20.0/24</textarea>
           <button type="button" class="architecture-cloud-ibm-icon-btn" id="architectureCloudIbmFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
             <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
           </button>
-          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-cloud-ibm-stage-toolbar-btn" id="architectureCloudIbmResetLayout" aria-label="Auto arrange layout" title="Auto arrange layout">Auto layout</button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-cloud-ibm-stage-toolbar-btn" id="architectureCloudIbmResetLayout" aria-label="Auto layout" title="Auto layout">Auto layout</button>
         </div>
       </div>
 
@@ -618,7 +589,7 @@ Private data subnet 10.80.20.0/24</textarea>
                         <th scope="col">Component</th>
                         <th scope="col">Placement</th>
                         <th scope="col">Purpose</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                       </tr>
                     </thead>
                     <tbody id="architectureCloudIbmInventoryTableBody"></tbody>

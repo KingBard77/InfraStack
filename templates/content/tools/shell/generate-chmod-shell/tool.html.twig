@@ -56,6 +56,12 @@
     <div class="generate-chmod-shell-basic-panel">
       <div class="generate-chmod-shell-inner-panel generate-chmod-shell-basic-card">
 
+        <div class="generate-chmod-shell-example-card">
+          <span class="generate-chmod-shell-example-label">Example</span>
+          <span class="generate-chmod-shell-example-value">chmod 0755 ./deploy.sh</span>
+          <span class="generate-chmod-shell-example-helper">Directory mode affects the leading character in the preview and lets symbolic <code>X</code> add execute where directory semantics make sense.</span>
+        </div>
+
         <div class="generate-chmod-shell-setting-row generate-chmod-shell-setting-card">
           <label class="generate-chmod-shell-setting-label">
             Target profile:
@@ -66,7 +72,7 @@
             <div class="generate-chmod-shell-stacked-grid">
               <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-two">
                 <div class="generate-chmod-shell-native-select-wrap">
-                  <select id="generateChmodShellPreset" class="form-select generate-chmod-shell-native-select">
+                  <select id="generateChmodShellPreset" class="form-select generate-chmod-shell-native-select" aria-label="Target preset">
                     <option value="deploy-script" selected>Deploy script (0755)</option>
                     <option value="private-config">Private config (0640)</option>
                     <option value="web-file">Web file (0644)</option>
@@ -82,7 +88,7 @@
 
               <div class="generate-chmod-shell-inline-grid generate-chmod-shell-inline-grid-two">
                 <div class="generate-chmod-shell-native-select-wrap">
-                  <select id="generateChmodShellTargetType" class="form-select generate-chmod-shell-native-select">
+                  <select id="generateChmodShellTargetType" class="form-select generate-chmod-shell-native-select" aria-label="Target type">
                     <option value="file" selected>File</option>
                     <option value="directory">Directory</option>
                   </select>
@@ -95,33 +101,6 @@
                 </label>
               </div>
 
-              <div class="generate-chmod-shell-flag-hint">Directory mode affects the leading character in the preview and lets symbolic <code>X</code> add execute where directory semantics make sense.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="generate-chmod-shell-setting-row generate-chmod-shell-setting-card">
-          <label class="generate-chmod-shell-setting-label">
-            Current mode:
-            <span class="info-dot generate-chmod-shell-helper-chip" title="The numeric, symbolic, and ls-style views stay aligned with the current permission state">i</span>
-          </label>
-
-          <div class="generate-chmod-shell-setting-field">
-            <div class="generate-chmod-shell-preview-grid">
-              <div class="generate-chmod-shell-preview-card">
-                <span class="generate-chmod-shell-preview-label">Numeric</span>
-                <span class="generate-chmod-shell-preview-value" id="generateChmodShellPreviewNumeric">0755</span>
-              </div>
-
-              <div class="generate-chmod-shell-preview-card">
-                <span class="generate-chmod-shell-preview-label">Symbolic</span>
-                <span class="generate-chmod-shell-preview-value generate-chmod-shell-preview-value-symbolic" id="generateChmodShellPreviewSymbolic">u=rwx,g=rx,o=rx</span>
-              </div>
-
-              <div class="generate-chmod-shell-preview-card">
-                <span class="generate-chmod-shell-preview-label">ls -l preview</span>
-                <span class="generate-chmod-shell-preview-value generate-chmod-shell-preview-value-code" id="generateChmodShellPreviewLs">-rwxr-xr-x</span>
-              </div>
             </div>
           </div>
         </div>
@@ -446,17 +425,17 @@
               <label for="generateChmodShellSort" class="generate-chmod-shell-sort-label">Sort</label>
               <div class="generate-chmod-shell-sort-wrap">
                 <details class="generate-chmod-shell-sort-select" id="generateChmodShellSortSelect">
-                  <summary class="generate-chmod-shell-sort-summary">
+                  <summary class="generate-chmod-shell-sort-summary" aria-haspopup="listbox" aria-expanded="false" aria-controls="generateChmodShellSortMenu">
                     <span id="generateChmodShellSortSummary">ID</span>
                   </summary>
 
-                  <div class="generate-chmod-shell-sort-menu">
+                  <div class="generate-chmod-shell-sort-menu" id="generateChmodShellSortMenu" role="listbox">
                     <div class="generate-chmod-shell-sort-grid">
-                      <button type="button" class="generate-chmod-shell-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
-                      <button type="button" class="generate-chmod-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
-                      <button type="button" class="generate-chmod-shell-sort-option" data-sort-value="field" aria-pressed="false">Field</button>
-                      <button type="button" class="generate-chmod-shell-sort-option" data-sort-value="value" aria-pressed="false">Value</button>
-                      <button type="button" class="generate-chmod-shell-sort-option" data-sort-value="length" aria-pressed="false">Length</button>
+                      <button type="button" class="generate-chmod-shell-sort-option is-active" data-sort-value="id" aria-pressed="true" role="option">ID</button>
+                      <button type="button" class="generate-chmod-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false" role="option">A-Z</button>
+                      <button type="button" class="generate-chmod-shell-sort-option" data-sort-value="field" aria-pressed="false" role="option">Field</button>
+                      <button type="button" class="generate-chmod-shell-sort-option" data-sort-value="value" aria-pressed="false" role="option">Value</button>
+                      <button type="button" class="generate-chmod-shell-sort-option" data-sort-value="length" aria-pressed="false" role="option">Length</button>
                     </div>
                   </div>
                 </details>
@@ -520,7 +499,7 @@
             <div class="generate-chmod-shell-surface-stack tool-result-section-stack">
               <section class="generate-chmod-shell-section-card tool-result-section-card">
                 <div class="generate-chmod-shell-section-head">
-                  <h3 class="generate-chmod-shell-section-title tool-result-section-title">Generated chmod Command</h3>
+                  <h3 class="generate-chmod-shell-section-title tool-result-section-title">Chmod Command</h3>
                   <div class="generate-chmod-shell-section-actions">
                     <button type="button" class="generate-chmod-shell-action-btn" id="generateChmodShellCopyCommand" aria-label="Copy generated chmod command" title="Copy generated chmod command">
                       <i class="bi bi-clipboard" aria-hidden="true"></i>
@@ -604,7 +583,7 @@
                         <th scope="col">Operation</th>
                         <th scope="col">Effect</th>
                         <th scope="col">Result</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                       </tr>
                     </thead>
                     <tbody id="generateChmodShellOperationsTableBody"></tbody>

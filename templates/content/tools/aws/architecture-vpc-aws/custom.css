@@ -416,131 +416,70 @@
 
 /* ns:start family._base.workspace.01_input-brief */
 .architecture-vpc-aws-tool .architecture-vpc-aws-native-select {
-    display: none !important;
+    display: block !important;
+    width: 100%;
+    min-height: 46px;
+    box-sizing: border-box;
+    padding: 10px calc(var(--base-dropdown-arrow-size, 30px) + 22px) 10px 13px;
+    border: 1px solid var(--architecture-vpc-aws-border, var(--tool-border, #dbe4ef));
+    border-radius: var(--architecture-vpc-aws-radius-sm, var(--tool-radius-sm, 12px));
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #ffffff;
+    background-image: none;
+    color: var(--architecture-vpc-aws-text-body, var(--tool-text, #1f2937));
+    box-shadow: none;
 }
 /* ns:end family._base.workspace.01_input-brief */
 
 /* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select {
+.architecture-vpc-aws-tool .architecture-vpc-aws-native-select-wrap {
     position: relative;
-    width: 100%;
-}
-/* ns:end family._base.workspace.02_basic-settings */
-
-/* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select.open {
-    z-index: 90;
-}
-/* ns:end family._base.workspace.02_basic-settings */
-
-/* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select-trigger {
-    width: 100%;
-    min-height: 46px;
-    border: 1px solid var(--tool-border);
-    border-radius: var(--tool-radius-sm);
-    background: #ffffff;
-    color: var(--tool-text);
-    box-shadow: none;
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    font-size: var(--tool-font-size-base);
-    line-height: 1.5;
-    text-align: left;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-}
-/* ns:end family._base.workspace.02_basic-settings */
-
-/* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select-trigger:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select-trigger:focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select.open .architecture-vpc-aws-custom-select-trigger {
-    border-color: var(--tool-accent);
-    box-shadow: 0 0 0 4px var(--tool-focus-ring);
-    outline: none;
-}
-/* ns:end family._base.workspace.02_basic-settings */
-
-/* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select-value {
+    display: block;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow: visible;
 }
 /* ns:end family._base.workspace.02_basic-settings */
 
 /* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select-trigger i {
-    color: var(--tool-text-muted);
-    font-size: var(--tool-font-size-xs);
-    transition: transform 0.2s ease;
+.architecture-vpc-aws-tool .architecture-vpc-aws-native-select-wrap > .architecture-vpc-aws-native-select,
+.architecture-vpc-aws-tool .architecture-vpc-aws-native-select-wrap > .form-select {
+    padding-right: calc(var(--base-dropdown-arrow-size, 30px) + 22px);
+    background-image: none !important;
 }
 /* ns:end family._base.workspace.02_basic-settings */
 
 /* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select.open .architecture-vpc-aws-custom-select-trigger i {
-    transform: rotate(180deg);
-}
-/* ns:end family._base.workspace.02_basic-settings */
-
-/* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select-menu {
+.architecture-vpc-aws-tool .architecture-vpc-aws-native-select-wrap::before {
+    content: "";
     position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    right: 0;
-    z-index: 80;
-    max-height: 238px;
-    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.72);
-    border-radius: var(--tool-radius-sm);
-    background: #ffffff;
-    box-shadow: 0 18px 32px rgba(var(--tool-popover-shadow-rgb), 0.16);
-    padding: 6px;
-    display: none;
-    overflow-y: auto;
+    top: 50%;
+    right: 10px;
+    z-index: 2;
+    width: var(--base-dropdown-arrow-size, 30px);
+    height: var(--base-dropdown-arrow-size, 30px);
+    border: 1px solid var(--architecture-vpc-aws-border, var(--tool-border, #d8e2ee));
+    border-radius: 9px;
+    background: var(--architecture-vpc-aws-bg-soft, var(--tool-bg-soft, #f8fafc));
+    pointer-events: none;
+    transform: translateY(-50%);
 }
 /* ns:end family._base.workspace.02_basic-settings */
 
 /* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select.open .architecture-vpc-aws-custom-select-menu {
-    display: grid;
-    gap: 4px;
-}
-/* ns:end family._base.workspace.02_basic-settings */
-
-/* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select-option {
-    width: 100%;
-    min-height: 34px;
-    border: 0;
-    border-radius: 8px;
-    background: transparent;
-    color: var(--tool-text);
-    padding: 0 10px;
-    text-align: left;
-    font-size: var(--tool-font-size-sm);
-    font-weight: 700;
-    line-height: 1.35;
-}
-/* ns:end family._base.workspace.02_basic-settings */
-
-/* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select-option:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select-option:focus {
-    background: rgba(var(--tool-accent-rgb), 0.09);
-    color: var(--tool-heading);
-    outline: none;
-}
-/* ns:end family._base.workspace.02_basic-settings */
-
-/* ns:start family._base.workspace.02_basic-settings */
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-select-option.selected {
-    background: var(--tool-active-gradient);
-    color: var(--tool-secondary-strong);
+.architecture-vpc-aws-tool .architecture-vpc-aws-native-select-wrap::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 20.5px;
+    z-index: 3;
+    width: 9px;
+    height: 9px;
+    border-right: 2.25px solid var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
+    border-bottom: 2.25px solid var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
+    border-radius: 1px;
+    pointer-events: none;
+    transform: translateY(-62%) rotate(45deg);
 }
 /* ns:end family._base.workspace.02_basic-settings */
 
@@ -2173,555 +2112,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 /* ns:end family._base.workspace.05_result-summary */
 
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-card {
-    display: grid;
-    grid-template-columns: minmax(240px, 0.68fr) minmax(0, 1.32fr);
-    align-items: stretch;
-    gap: 16px;
-    min-width: 0;
-    width: 100%;
-    text-align: center;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card {
-    --architecture-vpc-aws-score-color: var(--tool-score-ring);
-    --architecture-vpc-aws-score-glow: rgba(var(--tool-score-ring-rgb), 0.1);
-    --architecture-vpc-aws-score-label-bg: rgba(255, 247, 237, 0.96);
-    --architecture-vpc-aws-score-label-border: rgba(249, 115, 22, 0.28);
-    --architecture-vpc-aws-score-label-color: #9a3412;
-    --architecture-vpc-aws-score-label-orb-start: #FDBA74;
-    --architecture-vpc-aws-score-label-orb-mid: #F97316;
-    --architecture-vpc-aws-score-label-orb-end: #C2410C;
-    --architecture-vpc-aws-score-label-glow: rgba(249, 115, 22, 0.12);
-    --architecture-vpc-aws-score-label-halo: rgba(255, 247, 237, 0.56);
-    --architecture-vpc-aws-score-size: 184px;
-    position: relative;
-    min-width: 0;
-    min-height: 100%;
-    border: 1px solid rgba(var(--tool-secondary-rgb), 0.42);
-    border-radius: var(--tool-radius-md);
-    background:
-        radial-gradient(circle at 74% 18%, rgba(var(--tool-secondary-rgb), 0.1), transparent 30%),
-        radial-gradient(circle at 18% 90%, rgba(255, 237, 213, 0.58), transparent 38%),
-        linear-gradient(180deg, #fffdf9 0%, #fff8ef 100%);
-    display: grid;
-    grid-template-rows: auto auto;
-    justify-items: center;
-    align-items: center;
-    align-content: center;
-    gap: 16px;
-    padding: 22px 18px;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.82),
-        0 10px 24px rgba(154, 52, 18, 0.06);
-    outline: none;
-    overflow: hidden;
-    transition: transform 0.2s ease;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card::before {
-    content: none;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-production {
-    --architecture-vpc-aws-score-label-bg: rgba(236, 253, 245, 0.96);
-    --architecture-vpc-aws-score-label-border: rgba(20, 184, 166, 0.3);
-    --architecture-vpc-aws-score-label-color: #0f766e;
-    --architecture-vpc-aws-score-label-orb-start: #34d399;
-    --architecture-vpc-aws-score-label-orb-mid: #14b8a6;
-    --architecture-vpc-aws-score-label-orb-end: #0284c7;
-    --architecture-vpc-aws-score-label-glow: transparent;
-    --architecture-vpc-aws-score-label-halo: transparent;
-    border-color: rgba(var(--tool-secondary-rgb), 0.42);
-    background:
-        radial-gradient(circle at 74% 18%, rgba(var(--tool-secondary-rgb), 0.1), transparent 30%),
-        radial-gradient(circle at 18% 90%, rgba(var(--tool-accent-rgb), 0.06), transparent 38%),
-        linear-gradient(180deg, #fffdf9 0%, #fff8ef 100%);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.88),
-        0 10px 22px rgba(var(--tool-popover-shadow-rgb), 0.05);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-ready {
-    --architecture-vpc-aws-score-label-bg: rgba(240, 249, 255, 0.96);
-    --architecture-vpc-aws-score-label-border: rgba(124, 58, 237, 0.24);
-    --architecture-vpc-aws-score-label-color: #075985;
-    --architecture-vpc-aws-score-label-orb-start: #38bdf8;
-    --architecture-vpc-aws-score-label-orb-mid: #0ea5e9;
-    --architecture-vpc-aws-score-label-orb-end: #075985;
-    --architecture-vpc-aws-score-label-glow: rgba(14, 165, 233, 0.13);
-    --architecture-vpc-aws-score-label-halo: rgba(240, 249, 255, 0.58);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-balanced {
-    --architecture-vpc-aws-score-label-bg: rgba(var(--tool-accent-pale-rgb), 0.96);
-    --architecture-vpc-aws-score-label-border: rgba(var(--tool-accent-rgb), 0.24);
-    --architecture-vpc-aws-score-label-color: var(--tool-accent-deep);
-    --architecture-vpc-aws-score-label-orb-start: #a78bfa;
-    --architecture-vpc-aws-score-label-orb-mid: #7c3aed;
-    --architecture-vpc-aws-score-label-orb-end: #5b21b6;
-    --architecture-vpc-aws-score-label-glow: rgba(var(--tool-accent-rgb), 0.13);
-    --architecture-vpc-aws-score-label-halo: rgba(var(--tool-accent-pale-rgb), 0.58);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-review {
-    --architecture-vpc-aws-score-label-bg: rgba(254, 242, 242, 0.96);
-    --architecture-vpc-aws-score-label-border: rgba(239, 68, 68, 0.22);
-    --architecture-vpc-aws-score-label-color: #b91c1c;
-    --architecture-vpc-aws-score-label-orb-start: #fca5a5;
-    --architecture-vpc-aws-score-label-orb-mid: #ef4444;
-    --architecture-vpc-aws-score-label-orb-end: #b91c1c;
-    --architecture-vpc-aws-score-label-glow: rgba(239, 68, 68, 0.13);
-    --architecture-vpc-aws-score-label-halo: rgba(254, 242, 242, 0.58);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:focus-within {
-    transform: translateY(-1px);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:hover::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:focus::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:focus-within::before {
-    content: none;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value {
-    width: var(--architecture-vpc-aws-score-size);
-    height: var(--architecture-vpc-aws-score-size);
-    position: relative;
-    border-radius: 50%;
-    color: var(--tool-heading);
-    display: grid;
-    place-items: center;
-    text-align: center;
-    background:
-        conic-gradient(from 0deg, var(--architecture-vpc-aws-score-color) 0deg var(--progress-angle), rgba(226, 232, 240, 0.86) var(--progress-angle) 360deg),
-        linear-gradient(145deg, #ffffff, #f8fafc);
-    box-shadow:
-        0 14px 26px rgba(var(--tool-secondary-rgb), 0.08),
-        inset 0 0 0 1px rgba(var(--tool-secondary-rgb), 0.12);
-    isolation: isolate;
-    z-index: 1;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value[data-chart-ready="true"] {
-    background:
-        radial-gradient(circle at 50% 50%, #ffffff 0 56%, rgba(226, 232, 240, 0.62) 57% 71%, #ffffff 72% 100%),
-        linear-gradient(145deg, #ffffff, #f8fafc);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value::before {
-    content: "";
-    width: calc(var(--architecture-vpc-aws-score-size) - 50px);
-    height: calc(var(--architecture-vpc-aws-score-size) - 50px);
-    grid-area: 1 / 1;
-    border-radius: 999px;
-    background:
-        radial-gradient(circle at 50% 22%, #ffffff 0%, #f8fafc 48%, #f1f5f9 100%);
-    box-shadow:
-        inset 0 0 0 1px rgba(var(--tool-secondary-rgb), 0.14),
-        0 8px 18px rgba(15, 23, 42, 0.06);
-    z-index: 1;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value::after {
-    content: "";
-    position: absolute;
-    inset: 8px;
-    border-radius: inherit;
-    border: 1px solid rgba(255, 255, 255, 0.66);
-    pointer-events: none;
-    z-index: 2;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value[data-chart-ready="true"] .architecture-vpc-aws-score-ring {
-    opacity: 0;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-echart {
-    position: absolute;
-    inset: 3px;
-    overflow: visible;
-    pointer-events: none;
-    z-index: 0;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    z-index: 0;
-    opacity: 0;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-track,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-glow,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-fill {
-    fill: none;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-track {
-    stroke: rgba(226, 232, 240, 0.86);
-    stroke-linecap: round;
-    stroke-width: 10;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-glow {
-    stroke: var(--architecture-vpc-aws-score-color);
-    stroke-linecap: round;
-    stroke-width: 17;
-    opacity: 0.08;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-fill {
-    stroke: var(--architecture-vpc-aws-score-color);
-    stroke-linecap: round;
-    stroke-width: 10;
-    filter:
-        drop-shadow(0 3px 5px rgba(var(--tool-secondary-rgb), 0.1))
-        drop-shadow(0 0 10px var(--architecture-vpc-aws-score-glow));
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-center {
-    position: relative;
-    z-index: 3;
-    grid-area: 1 / 1;
-    width: calc(var(--architecture-vpc-aws-score-size) - 72px);
-    min-width: 0;
-    display: grid;
-    justify-items: center;
-    align-content: center;
-    gap: 2px;
-    text-align: center;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-label {
-    position: relative;
-    z-index: 1;
-    max-width: 100%;
-    min-height: 34px;
-    border-radius: 999px;
-    border: 1px solid var(--architecture-vpc-aws-score-label-border);
-    background:
-        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.98), transparent 34%),
-        var(--architecture-vpc-aws-score-label-bg);
-    color: var(--architecture-vpc-aws-score-label-color);
-    padding: 4px 12px 4px 5px;
-    font-size: var(--tool-font-size-xs-plus);
-    font-weight: 800;
-    line-height: 1.2;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-label-orb {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background:
-        linear-gradient(
-            135deg,
-            var(--architecture-vpc-aws-score-label-orb-start) 0%,
-            var(--architecture-vpc-aws-score-label-orb-mid) 58%,
-            var(--architecture-vpc-aws-score-label-orb-end) 100%
-        );
-    color: #ffffff;
-    display: grid;
-    place-items: center;
-    flex: 0 0 auto;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-label-orb i {
-    font-size: 13px;
-    line-height: 1;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-label-text {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value-number {
-    color: var(--tool-heading);
-    font-size: 46px;
-    font-weight: 900;
-    line-height: 0.9;
-    font-variant-numeric: tabular-nums;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-caption {
-    color: var(--tool-text-muted);
-    font-size: var(--tool-font-size-lg);
-    font-weight: 800;
-    line-height: 1;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:hover .architecture-vpc-aws-score-value,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:focus .architecture-vpc-aws-score-value,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:focus-within .architecture-vpc-aws-score-value {
-    transform: none;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:hover .architecture-vpc-aws-score-value::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:focus .architecture-vpc-aws-score-value::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:focus-within .architecture-vpc-aws-score-value::after {
-    border-color: rgba(255, 255, 255, 0.78);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-@media (prefers-reduced-motion: reduce) {
-    .architecture-vpc-aws-tool .architecture-vpc-aws-score-value {
-        transition: none;
-    }
-
-    .architecture-vpc-aws-tool .architecture-vpc-aws-score-value::before {
-        opacity: 1;
-    }
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-copy {
-    min-width: 0;
-    min-height: 100%;
-    border: 1px solid rgba(var(--tool-secondary-rgb), 0.42);
-    border-radius: var(--tool-radius-md);
-    background:
-        radial-gradient(circle at 94% 12%, rgba(var(--tool-accent-pale-rgb), 0.58), transparent 26%),
-        linear-gradient(180deg, #ffffff 0%, #fffaf5 100%);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.84),
-        0 10px 24px rgba(154, 52, 18, 0.05);
-    padding: 18px;
-    display: grid;
-    justify-items: center;
-    align-content: center;
-    gap: 14px;
-    text-align: center;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-kicker {
-    color: var(--tool-text-muted);
-    font-size: var(--tool-font-size-xs);
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    line-height: 1.2;
-    text-transform: uppercase;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-summary {
-    color: var(--tool-secondary-strong);
-    font-size: 28px;
-    font-weight: 900;
-    line-height: 1.12;
-    letter-spacing: 0;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-detail {
-    color: var(--tool-text-muted);
-    font-size: var(--tool-font-size-sm);
-    font-weight: 600;
-    line-height: 1.55;
-    max-width: 640px;
-    margin: 0 auto;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tags {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    width: 100%;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag {
-    min-height: 34px;
-    border-radius: 999px;
-    border: 1px solid rgba(var(--tool-accent-rgb), 0.22);
-    background: rgba(var(--tool-accent-pale-rgb), 0.9);
-    color: var(--tool-accent-text);
-    padding: 6px 12px;
-    font-size: var(--tool-font-size-xs);
-    font-weight: 800;
-    line-height: 1.2;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    white-space: nowrap;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag i {
-    font-size: var(--tool-font-size-sm);
-    line-height: 1;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-production {
-    border-color: rgba(16, 185, 129, 0.22);
-    background: rgba(236, 253, 245, 0.88);
-    color: #047857;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-ready {
-    border-color: rgba(124, 58, 237, 0.22);
-    background: rgba(240, 249, 255, 0.92);
-    color: #075985;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-balanced {
-    border-color: rgba(var(--tool-accent-rgb), 0.24);
-    background: rgba(var(--tool-accent-pale-rgb), 0.94);
-    color: var(--tool-accent-deep);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-review {
-    border-color: rgba(239, 68, 68, 0.2);
-    background: rgba(254, 242, 242, 0.94);
-    color: #b91c1c;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-region {
-    border-color: rgba(var(--tool-secondary-rgb), 0.22);
-    background: rgba(var(--tool-secondary-surface-rgb), 0.9);
-    color: var(--tool-secondary-strong);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-az {
-    border-color: rgba(124, 58, 237, 0.22);
-    background: rgba(240, 249, 255, 0.9);
-    color: #075985;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-network {
-    border-color: rgba(var(--tool-accent-rgb), 0.28);
-    background: rgba(var(--tool-accent-pale-rgb), 0.96);
-    color: var(--tool-accent-deep);
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-compute {
-    border-color: rgba(245, 158, 11, 0.26);
-    background: rgba(255, 251, 235, 0.96);
-    color: #92400e;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-data {
-    border-color: rgba(16, 185, 129, 0.22);
-    background: rgba(236, 253, 245, 0.88);
-    color: #047857;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
-/* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-insights {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 430px), 1fr));
-    gap: 16px;
-    width: 100%;
-    min-width: 0;
-}
-/* ns:end family._base.workspace.05_result-summary */
-
 /* ns:start family._base.workspace.07_table-output */
 .architecture-vpc-aws-tool .architecture-vpc-aws-assessment-card {
     min-width: 0;
@@ -3045,50 +2435,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
     color: var(--tool-text-muted);
 }
 /* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.06_output-toolbar */
-.architecture-vpc-aws-tool .tool-output-actions {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: center;
-    justify-content: end;
-    justify-self: end;
-    gap: 10px;
-    margin-left: auto;
-    max-width: 416px;
-    min-width: 0;
-    width: 100%;
-}
-/* ns:end family._base.workspace.06_output-toolbar */
-
-/* ns:start family._base.workspace.06_output-toolbar */
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn {
-    width: 100%;
-    min-height: 38px;
-    padding: 0 10px;
-    font-size: var(--tool-font-size-sm);
-    white-space: nowrap;
-}
-/* ns:end family._base.workspace.06_output-toolbar */
-
-/* ns:start family._base.workspace.06_output-toolbar */
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(4) {
-    grid-column: 2;
-}
-/* ns:end family._base.workspace.06_output-toolbar */
-
-/* ns:start family._base.workspace.06_output-toolbar */
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(5) {
-    grid-column: 3;
-}
-/* ns:end family._base.workspace.06_output-toolbar */
-
-/* ns:start family._base.workspace.06_output-toolbar */
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn i {
-    font-size: var(--tool-font-size-md);
-    line-height: 1;
-}
-/* ns:end family._base.workspace.06_output-toolbar */
 
 /* ns:start family._base.workspace.06_output-toolbar */
 .architecture-vpc-aws-tool .architecture-vpc-aws-sort-label {
@@ -3440,103 +2786,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
 /* ns:start family._base.workspace.07_table-output */
 .architecture-vpc-aws-tool .architecture-vpc-aws-table tbody tr:last-child td {
     border-bottom: none;
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .tool-json-shell {
-    border: 1px solid rgba(var(--tool-border-strong-rgb), 0.56);
-    border-radius: var(--tool-radius-sm);
-    overflow: hidden;
-    background: #ffffff;
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .architecture-vpc-aws-json-header {
-    padding: 12px 14px;
-    border-bottom: 1px solid rgba(var(--tool-border-strong-rgb), 0.48);
-    background: var(--tool-surface-strong);
-    color: var(--tool-heading);
-    font-size: var(--tool-font-size-sm);
-    font-weight: 800;
-    letter-spacing: 0.02em;
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .architecture-vpc-aws-json-code {
-    margin: 0;
-    padding: 18px;
-    background: #f9fafb;
-    color: #1f2937;
-    font-size: var(--tool-font-size-sm);
-    line-height: 1.75;
-    overflow: auto;
-    white-space: pre-wrap;
-    word-break: break-word;
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .architecture-vpc-aws-json-code .json-key {
-    color: #1d4ed8;
-    font-weight: 700;
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .architecture-vpc-aws-json-code .json-string {
-    color: #047857;
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .architecture-vpc-aws-json-code .json-number {
-    color: #b45309;
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .architecture-vpc-aws-json-code .json-boolean {
-    color: var(--tool-secondary);
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .architecture-vpc-aws-json-code .json-null {
-    color: #dc2626;
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .tool-json-shell .json-key {
-    color: #1d4ed8;
-    font-weight: 700;
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .tool-json-shell .json-string {
-    color: #047857;
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .tool-json-shell .json-number {
-    color: #b45309;
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .tool-json-shell .json-boolean {
-    color: var(--tool-secondary);
-}
-/* ns:end family._base.workspace.07_table-output */
-
-/* ns:start family._base.workspace.07_table-output */
-.architecture-vpc-aws-tool .tool-json-shell .json-null {
-    color: #dc2626;
 }
 /* ns:end family._base.workspace.07_table-output */
 
@@ -4402,13 +3651,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
         height: var(--architecture-vpc-aws-score-size);
     }
 
-    .architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card {
-        --architecture-vpc-aws-score-size: 156px;
-        width: 100%;
-        min-height: 236px;
-        padding: 18px 14px;
-    }
-
     .architecture-vpc-aws-tool .architecture-vpc-aws-score-center {
         width: 70px;
         gap: 2px;
@@ -4420,20 +3662,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
 
     .architecture-vpc-aws-tool .architecture-vpc-aws-score-caption {
         font-size: var(--tool-font-size-xs);
-    }
-
-    .architecture-vpc-aws-tool .architecture-vpc-aws-score-copy {
-        justify-items: center;
-        width: 100%;
-        text-align: center;
-    }
-
-    .architecture-vpc-aws-tool .architecture-vpc-aws-score-tags {
-        justify-content: center;
-    }
-
-    .architecture-vpc-aws-tool .architecture-vpc-aws-score-detail {
-        text-align: center;
     }
 
     .architecture-vpc-aws-tool .tool-tabs {
@@ -4600,452 +3828,8 @@ body.architecture-vpc-aws-stage-expanded-lock {
     }
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card {
-    border-color: rgba(255, 255, 255, 0.24);
-    background:
-        radial-gradient(circle at 72% 16%, rgba(255, 255, 255, 0.22), transparent 30%),
-        radial-gradient(circle at 18% 90%, rgba(255, 255, 255, 0.14), transparent 38%),
-        var(--tool-primary-gradient);
-    color: #ffffff;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.24),
-        0 18px 30px rgba(var(--tool-shadow-rgb), 0.14);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:focus-within {
-    border-color: rgba(255, 255, 255, 0.32);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.26),
-        0 18px 30px rgba(var(--tool-shadow-rgb), 0.16);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value[data-chart-ready="true"] {
-    background: transparent;
-    box-shadow: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value::after {
-    content: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-echart {
-    display: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value[data-chart-ready="true"] .architecture-vpc-aws-score-ring {
-    z-index: 1;
-    opacity: 1;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-track {
-    stroke: rgba(255, 255, 255, 0.3);
-    stroke-width: 14;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-glow {
-    stroke: rgba(255, 255, 255, 0.74);
-    stroke-width: 18;
-    opacity: 0.16;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-fill {
-    stroke: #ffffff;
-    stroke-width: 14;
-    filter: drop-shadow(0 4px 8px rgba(15, 23, 42, 0.18));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-center {
-    z-index: 2;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value-number {
-    color: #ffffff;
-    text-shadow: 0 2px 10px rgba(15, 23, 42, 0.26);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-caption {
-    color: rgba(255, 255, 255, 0.82);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-label {
-    border-color: rgba(255, 255, 255, 0.28);
-    background: rgba(255, 255, 255, 0.16);
-    color: #ffffff;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-label-orb {
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.42),
-        0 0 0 1px rgba(255, 255, 255, 0.16);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-copy {
-    border-color: rgba(255, 255, 255, 0.24);
-    background:
-        radial-gradient(circle at 92% 12%, rgba(255, 255, 255, 0.2), transparent 28%),
-        radial-gradient(circle at 8% 92%, rgba(255, 255, 255, 0.12), transparent 36%),
-        var(--tool-primary-gradient);
-    color: #ffffff;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.24),
-        0 18px 30px rgba(var(--tool-shadow-rgb), 0.14);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-kicker,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-detail {
-    color: rgba(255, 255, 255, 0.82);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-summary {
-    color: #ffffff;
-    text-shadow: 0 2px 10px rgba(15, 23, 42, 0.24);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-production,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-ready,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-balanced,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-review,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-region,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-az,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-network,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-compute,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-data {
-    border-color: rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.16);
-    color: #ffffff;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-copy {
-    border-color: rgba(255, 255, 255, 0.18);
-    background:
-        linear-gradient(135deg, rgba(15, 23, 42, 0.22) 0%, rgba(15, 23, 42, 0.14) 100%),
-        radial-gradient(circle at 72% 16%, rgba(255, 255, 255, 0.1), transparent 30%),
-        radial-gradient(circle at 18% 90%, rgba(15, 23, 42, 0.12), transparent 38%),
-        linear-gradient(135deg, rgba(var(--tool-accent-rgb), 0.76) 0%, rgba(var(--tool-secondary-rgb), 0.72) 100%);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.14),
-        0 14px 24px rgba(var(--tool-shadow-rgb), 0.1);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-copy:hover {
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.16),
-        0 14px 24px rgba(var(--tool-shadow-rgb), 0.12);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-glow {
-    stroke: rgba(255, 255, 255, 0.55);
-    stroke-width: 17;
-    opacity: 0.1;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-fill {
-    stroke: #f8fafc;
-    filter: drop-shadow(0 3px 6px rgba(15, 23, 42, 0.14));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value-number,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-summary {
-    color: rgba(255, 255, 255, 0.94);
-    text-shadow: 0 2px 8px rgba(15, 23, 42, 0.22);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-caption,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-kicker,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-detail {
-    color: rgba(255, 255, 255, 0.74);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-label,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.22);
-    color: rgba(255, 255, 255, 0.93);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-copy {
-    border-color: rgba(var(--tool-accent-rgb), 0.26);
-    background: rgba(var(--tool-accent-panel-rgb), 0.96);
-    color: var(--tool-text);
-    box-shadow: 0 10px 22px rgba(var(--tool-shadow-rgb), 0.06);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-copy:hover {
-    border-color: rgba(var(--tool-score-ring-rgb), 0.34);
-    box-shadow: 0 12px 24px rgba(var(--tool-shadow-rgb), 0.08);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-track {
-    stroke: rgba(var(--tool-score-ring-rgb), 0.16);
-    stroke-width: 14;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-glow {
-    stroke: var(--tool-score-ring);
-    stroke-width: 14;
-    opacity: 0;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-fill {
-    stroke: var(--tool-score-ring);
-    stroke-width: 14;
-    filter: drop-shadow(0 3px 6px rgba(var(--tool-score-ring-rgb), 0.16));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-value-number {
-    color: var(--tool-score-ring);
-    text-shadow: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-summary {
-    color: var(--tool-heading);
-    text-shadow: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-caption,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-detail {
-    color: var(--tool-text-muted);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-kicker {
-    color: var(--tool-score-ring);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-label,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag {
-    background: rgba(var(--tool-accent-pale-rgb), 0.92);
-    border-color: rgba(var(--tool-accent-rgb), 0.24);
-    color: var(--tool-accent-text);
-    box-shadow: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-production {
-    --tool-score-ring: #16a34a;
-    --tool-score-ring-rgb: 22, 163, 74;
-    --architecture-vpc-aws-score-label-orb-start: #86efac;
-    --architecture-vpc-aws-score-label-orb-mid: #22c55e;
-    --architecture-vpc-aws-score-label-orb-end: #16a34a;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-warning,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-ready {
-    --tool-score-ring: #f59e0b;
-    --tool-score-ring-rgb: 245, 158, 11;
-    --architecture-vpc-aws-score-label-orb-start: #fde68a;
-    --architecture-vpc-aws-score-label-orb-mid: #f59e0b;
-    --architecture-vpc-aws-score-label-orb-end: #d97706;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-review {
-    --tool-score-ring: #dc2626;
-    --tool-score-ring-rgb: 220, 38, 38;
-    --architecture-vpc-aws-score-label-orb-start: #fca5a5;
-    --architecture-vpc-aws-score-label-orb-mid: #ef4444;
-    --architecture-vpc-aws-score-label-orb-end: #dc2626;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-production .architecture-vpc-aws-score-label,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-production {
-    background: rgba(240, 253, 244, 0.96);
-    border-color: rgba(22, 163, 74, 0.3);
-    color: #166534;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-warning .architecture-vpc-aws-score-label,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-ready .architecture-vpc-aws-score-label,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-warning,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-ready,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-network {
-    background: rgba(255, 251, 235, 0.96);
-    border-color: rgba(245, 158, 11, 0.34);
-    color: #92400e;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-ring-card-review .architecture-vpc-aws-score-label,
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-status-review {
-    background: rgba(254, 242, 242, 0.96);
-    border-color: rgba(220, 38, 38, 0.3);
-    color: #991b1b;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-region {
-    background: rgba(var(--tool-secondary-surface-rgb), 0.96);
-    border-color: rgba(var(--tool-secondary-rgb), 0.3);
-    color: var(--tool-secondary-strong);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-az {
-    background: rgba(239, 246, 255, 0.96);
-    border-color: rgba(37, 99, 235, 0.28);
-    color: #1d4ed8;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-compute {
-    background: rgba(var(--tool-accent-pale-rgb), 0.96);
-    border-color: rgba(var(--tool-accent-rgb), 0.28);
-    color: var(--tool-accent-deep);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-score-tag-data {
-    background: rgba(240, 253, 244, 0.96);
-    border-color: rgba(22, 163, 74, 0.3);
-    color: #166534;
-}
 
 /* ns:start main.content.06_export-notes */
-.markdown-content > .architecture-vpc-aws-markdown-card-export {
-    margin: 0 0 28px;
-    padding: 22px 24px;
-    border: 1px solid var(--architecture-vpc-aws-border-strong, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.52));
-    border-radius: 20px;
-    background: linear-gradient(180deg, var(--architecture-vpc-aws-bg-panel, #ffffff) 0%, var(--architecture-vpc-aws-bg-muted, var(--tool-accent-panel, #faf7ff)) 100%);
-    box-shadow: 0 14px 28px rgba(var(--tool-shadow-rgb, 76, 29, 149), 0.06);
-    color: var(--architecture-vpc-aws-text-body, var(--architecture-vpc-aws-text, var(--tool-text, #2f2542)));
-    font-family: var(--default-font);
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .architecture-vpc-aws-section-heading {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0 0 18px;
-    color: var(--architecture-vpc-aws-text-strong, var(--tool-heading, #1f1433));
-    font-family: var(--default-font);
-    font-size: var(--tool-font-size-3xl, 20px);
-    font-weight: 800;
-    line-height: 1.2;
-    letter-spacing: 0;
-    text-transform: none;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .architecture-vpc-aws-section-heading > span {
-    min-width: 0;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .architecture-vpc-aws-section-heading-icon {
-    display: inline-flex;
-    width: 32px;
-    height: 32px;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-tint, #ede9fe));
-    color: var(--architecture-vpc-aws-accent-strong, var(--tool-accent-strong, #6d28d9));
-    font-size: var(--tool-font-size-base, 14px);
-    line-height: 1;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export > p {
-    margin: 0 0 18px;
-    color: var(--architecture-vpc-aws-text-body, var(--architecture-vpc-aws-text, var(--tool-text, #2f2542)));
-    font-family: var(--default-font);
-    font-size: var(--tool-font-size-md, 15px);
-    font-weight: 400;
-    line-height: 1.68;
-    letter-spacing: 0;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .tool-export-item {
-    margin: 0;
-    border: 1px solid var(--architecture-vpc-aws-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
-    border-radius: 14px;
-    background: #ffffff;
-    overflow: hidden;
-    box-shadow: 0 10px 22px rgba(var(--tool-shadow-rgb, 76, 29, 149), 0.055);
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .tool-export-item + .tool-export-item {
-    margin-top: 12px;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .tool-export-item summary {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 58px;
-    padding: 15px 56px 15px 16px;
-    list-style: none;
-    cursor: pointer;
-    background: linear-gradient(135deg, #ffffff 0%, var(--architecture-vpc-aws-bg-soft, var(--tool-accent-pale, #f5f3ff)) 100%);
-    color: var(--architecture-vpc-aws-text-strong, var(--tool-heading, #1f1433));
-    font-family: var(--default-font);
-    font-size: var(--tool-font-size-base, 14px);
-    font-weight: 800;
-    line-height: 1.45;
-    letter-spacing: 0;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .tool-export-item summary::-webkit-details-marker {
-    display: none;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .tool-export-item summary::after {
-    content: "+";
-    position: absolute;
-    top: 50%;
-    right: 18px;
-    display: inline-flex;
-    width: 24px;
-    height: 24px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    background: #ffffff;
-    color: var(--architecture-vpc-aws-accent-strong, var(--tool-accent-strong, #6d28d9));
-    box-shadow: inset 0 0 0 1px var(--architecture-vpc-aws-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
-    font-size: var(--tool-font-size-md, 15px);
-    font-weight: 900;
-    line-height: 1;
-    transform: translateY(-50%);
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .tool-export-item[open] summary::after {
-    content: "-";
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .tool-export-item summary > span {
-    min-width: 0;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .tool-export-icon {
-    display: inline-flex;
-    width: 32px;
-    height: 32px;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-tint, #ede9fe));
-    color: var(--architecture-vpc-aws-accent-strong, var(--tool-accent-strong, #6d28d9));
-    font-size: var(--tool-font-size-base, 14px);
-    line-height: 1;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-export .tool-export-answer {
-    border-top: 1px solid var(--architecture-vpc-aws-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
-    background: linear-gradient(180deg, var(--architecture-vpc-aws-bg-panel, #ffffff) 0%, var(--architecture-vpc-aws-bg-muted, var(--tool-accent-panel, #faf7ff)) 100%);
-    color: var(--architecture-vpc-aws-text-body, var(--architecture-vpc-aws-text, var(--tool-text, #2f2542)));
-    font-family: var(--default-font);
-    padding: 15px 18px 17px;
-    font-size: var(--tool-font-size-md, 15px);
-    line-height: 1.68;
-}
-
 .markdown-content > .architecture-vpc-aws-markdown-card-export .tool-export-answer p {
     margin: 0 0 14px;
     color: var(--architecture-vpc-aws-text-body, var(--architecture-vpc-aws-text, var(--tool-text, #2f2542)));
@@ -5077,20 +3861,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
     margin-bottom: 0;
 }
 
-.markdown-content > .architecture-vpc-aws-markdown-card-export code:not(pre code) {
-    display: inline;
-    border: 1px solid var(--architecture-vpc-aws-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
-    border-radius: 8px;
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-pale, #f5f3ff));
-    color: var(--architecture-vpc-aws-accent-strong, var(--tool-accent-strong, #6d28d9));
-    padding: 0.08em 0.42em;
-    font-size: var(--tool-font-size-inline-code, 0.875em);
-    font-weight: 600;
-    line-height: inherit;
-    vertical-align: 0.02em;
-}
-
-
 @media (max-width: 640px) {
     .markdown-content > .architecture-vpc-aws-markdown-card-export {
         padding: 18px;
@@ -5105,49 +3875,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
 /* ns:end main.content.06_export-notes */
 
 /* ns:start main.content.05_how-to-use */
-.markdown-content > .architecture-vpc-aws-markdown-card-how-to {
-    margin: 0 0 28px;
-    padding: 22px 24px;
-    border: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.52);
-    border-radius: 20px;
-    background: var(--tool-panel-gradient-soft, var(--tool-surface, #ffffff));
-    box-shadow: 0 14px 28px rgba(var(--tool-shadow-rgb, 76, 29, 149), 0.06);
-    color: var(--tool-text, #2f2542);
-    font-family: var(--default-font, inherit);
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-how-to > h2:first-child {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0 0 18px;
-    color: var(--tool-heading, #1f1433);
-    font-family: var(--default-font, inherit);
-    font-size: var(--tool-font-size-3xl, 20px);
-    font-weight: 800;
-    line-height: 1.2;
-    letter-spacing: 0;
-    text-transform: none;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-how-to .architecture-vpc-aws-section-heading > span {
-    min-width: 0;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-how-to .architecture-vpc-aws-section-heading-icon {
-    display: inline-flex;
-    width: 32px;
-    height: 32px;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    background: var(--tool-accent-tint, rgba(124, 58, 237, 0.12));
-    color: var(--tool-accent-strong, var(--tool-accent, #7c3aed));
-    font-size: var(--tool-font-size-base, 14px);
-    line-height: 1;
-}
-
 .markdown-content > .architecture-vpc-aws-markdown-card-how-to .tool-guidance-item {
     overflow: hidden;
     border: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.58);
@@ -5155,16 +3882,8 @@ body.architecture-vpc-aws-stage-expanded-lock {
     background: rgba(255, 255, 255, 0.72);
 }
 
-.markdown-content > .architecture-vpc-aws-markdown-card-how-to .tool-guidance-item + .tool-guidance-item {
-    margin-top: 12px;
-}
-
 .markdown-content > .architecture-vpc-aws-markdown-card-how-to .tool-guidance-item summary {
     position: relative;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 12px;
     min-height: 58px;
     padding: 14px 52px 14px 16px;
     color: var(--tool-heading, #1f1433);
@@ -5175,10 +3894,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
     letter-spacing: 0;
     cursor: pointer;
     list-style: none;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-how-to .tool-guidance-item summary::-webkit-details-marker {
-    display: none;
 }
 
 .markdown-content > .architecture-vpc-aws-markdown-card-how-to .tool-guidance-item summary::after {
@@ -5205,23 +3920,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
     content: "-";
 }
 
-.markdown-content > .architecture-vpc-aws-markdown-card-how-to .tool-guidance-item summary > span {
-    min-width: 0;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-how-to .tool-guidance-icon {
-    display: inline-flex;
-    width: 32px;
-    height: 32px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    background: var(--tool-accent-tint, rgba(124, 58, 237, 0.12));
-    color: var(--tool-accent-strong, var(--tool-accent, #7c3aed));
-    font-size: var(--tool-font-size-base, 14px);
-    line-height: 1;
-}
-
 .markdown-content > .architecture-vpc-aws-markdown-card-how-to .tool-guidance-answer {
     border-top: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.36);
     padding: 14px 18px 18px;
@@ -5239,13 +3937,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
     text-align: left;
     text-justify: auto;
     word-spacing: normal;
-}
-
-.markdown-content > .architecture-vpc-aws-markdown-card-how-to .tool-guidance-answer code {
-    font-size: var(--tool-font-size-inline-code, 0.875em);
-    line-height: inherit;
-    padding: 0 6px;
-    border-radius: 6px;
 }
 
 @media (max-width: 640px) {
@@ -5842,82 +4533,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
     cursor: not-allowed;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select {
-    max-width: 100%;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select-summary {
-    min-height: 46px;
-    border-radius: 12px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select-summary:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select-summary:focus-visible {
-    border-color: var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
-    box-shadow: 0 0 0 3px var(--architecture-vpc-aws-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
-    outline: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select[open] .architecture-vpc-aws-select-summary {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #2563eb));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select-body {
-    max-height: min(340px, 65vh);
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-radio-card,
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select-option {
-    border: 1px solid var(--architecture-vpc-aws-border, var(--tool-border, #dbe4ef));
-    border-radius: 10px;
-    background: #ffffff;
-    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-radio-card:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-radio-card:focus-within,
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select-option:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select-option:focus-visible {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #2563eb));
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-pale, rgba(37, 99, 235, 0.08)));
-    box-shadow: 0 0 0 3px var(--architecture-vpc-aws-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
-    outline: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-radio-card:has(input:checked),
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select-option.is-active {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #2563eb));
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-pale, rgba(37, 99, 235, 0.08)));
-    box-shadow: inset 0 0 0 1px var(--architecture-vpc-aws-accent, var(--tool-accent, #2563eb));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-radio-card:has(input:disabled),
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select-option:disabled {
-    opacity: 0.62;
-    cursor: not-allowed;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-switch-card {
-    border-color: var(--architecture-vpc-aws-border, var(--tool-border, #dbe4ef));
-    border-radius: 12px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-switch-card:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-switch-card:focus-within {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #2563eb));
-    box-shadow: 0 0 0 3px var(--architecture-vpc-aws-focus-ring, var(--tool-focus-ring, rgba(37, 99, 235, 0.16)));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-switch-card input:disabled + .slider,
-.architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-switch-card input:disabled + .architecture-vpc-aws-switch-track {
-    opacity: 0.58;
-    cursor: not-allowed;
-}
-
 .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-setting-hint,
 .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .tool-control-hint,
 .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-flag-hint {
@@ -5942,16 +4557,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 
 @media (max-width: 900px) {
-    .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-basic-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-setting-row,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-inline-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-inline-grid-two,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-inline-grid-three,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-inline-grid-four,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-basis-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-card-grid-two,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-card-grid-three,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-select-grid-two {
+    .architecture-vpc-aws-tool .architecture-vpc-aws-basic-card .architecture-vpc-aws-basic-grid {
         grid-template-columns: minmax(0, 1fr) !important;
     }
 }
@@ -5973,11 +4579,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
 /* ns:end family._base.workspace.02_basic-settings */
 
 /* ns:start family._base.workspace.03_custom-settings */
-/* section.css */
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-settings,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel {
     display: grid;
     gap: 0;
     min-width: 0;
@@ -5987,9 +4589,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
     overflow: visible;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary {
     position: relative;
     display: flex;
     min-height: 48px;
@@ -6005,21 +4605,14 @@ body.architecture-vpc-aws-stage-expanded-lock {
     line-height: 1.2;
     appearance: none;
     list-style: none;
-    list-style-type: none;
     user-select: none;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary::-webkit-details-marker,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary::-webkit-details-marker,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary::-webkit-details-marker,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary::-webkit-details-marker {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary::-webkit-details-marker {
     display: none;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary::marker,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary::marker,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary::marker,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary::marker {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary::marker {
     content: "";
     font-size: 0;
 }
@@ -6041,37 +4634,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
     transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--architecture-vpc-aws-border, var(--tool-border, #d8e2ee));
-    border-radius: 9px;
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-surface-soft, #f8fafc));
-    pointer-events: none;
-    transform: translateY(-50%);
-    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary > .architecture-vpc-aws-custom-arrow-slot,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before {
-    right: 6px;
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-arrow-slot::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::after {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-arrow-slot::before {
     content: "";
     position: absolute;
     top: 50%;
@@ -6085,80 +4648,31 @@ body.architecture-vpc-aws-stage-expanded-lock {
     transition: transform 0.18s ease;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary:has(> .architecture-vpc-aws-custom-arrow-slot)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary:has(> .architecture-vpc-aws-custom-arrow-slot)::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:has(> .architecture-vpc-aws-custom-arrow-slot)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:has(> .architecture-vpc-aws-custom-arrow-slot)::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary:has(> .architecture-vpc-aws-custom-arrow-slot)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary:has(> .architecture-vpc-aws-custom-arrow-slot)::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:has(> .architecture-vpc-aws-custom-arrow-slot)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:has(> .architecture-vpc-aws-custom-arrow-slot)::after {
-    content: none;
-    display: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary:hover > .architecture-vpc-aws-custom-arrow-slot,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary:focus-visible > .architecture-vpc-aws-custom-arrow-slot,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:hover > .architecture-vpc-aws-custom-arrow-slot,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:focus-visible > .architecture-vpc-aws-custom-arrow-slot,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary:hover > .architecture-vpc-aws-custom-arrow-slot,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary:focus-visible > .architecture-vpc-aws-custom-arrow-slot,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:hover > .architecture-vpc-aws-custom-arrow-slot,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:focus-visible > .architecture-vpc-aws-custom-arrow-slot,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary:hover:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary:focus-visible:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:hover:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:focus-visible:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary:hover:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary:focus-visible:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:hover:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:focus-visible:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::before {
-    border-color: var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary-icon,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-icon {
-    display: none !important;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-settings[open] > .architecture-vpc-aws-custom-summary,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel[open] > .architecture-vpc-aws-custom-panel-summary,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced[open] > .architecture-vpc-aws-advanced-summary {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel[open] > .architecture-vpc-aws-custom-panel-summary {
     border-radius: 13px 13px 0 0;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-settings[open] > .architecture-vpc-aws-custom-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel[open] > .architecture-vpc-aws-custom-panel-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced[open] > .architecture-vpc-aws-advanced-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::after {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel[open] > .architecture-vpc-aws-custom-panel-summary > .architecture-vpc-aws-custom-arrow-slot::before {
     transform: translate(-50%, -62%) rotate(45deg);
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-settings[open] > .architecture-vpc-aws-custom-summary > .architecture-vpc-aws-custom-arrow-slot::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel[open] > .architecture-vpc-aws-custom-panel-summary > .architecture-vpc-aws-custom-arrow-slot::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced[open] > .architecture-vpc-aws-advanced-summary > .architecture-vpc-aws-custom-arrow-slot::before {
-    transform: translate(-50%, -62%) rotate(45deg);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary:focus-visible,
 .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:focus-visible,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary:focus-visible {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:focus-visible {
     background: var(--architecture-vpc-aws-bg-soft, var(--tool-surface-soft, #f8fafc));
     outline: none;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary:focus-visible,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:focus-visible,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary:focus-visible {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:hover > .architecture-vpc-aws-custom-arrow-slot,
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:focus-visible > .architecture-vpc-aws-custom-arrow-slot {
+    border-color: var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
+    background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
+}
+
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary:focus-visible {
     box-shadow: inset 0 0 0 3px var(--architecture-vpc-aws-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-body,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-body,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-body {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-body {
     display: grid;
     gap: 14px;
     min-width: 0;
@@ -6168,19 +4682,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
     overflow: visible;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-body > .architecture-vpc-aws-inner-panel,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-body > .architecture-vpc-aws-inner-panel {
-    display: grid;
-    gap: 12px;
-    min-width: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    overflow: visible;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-tabs,
 .architecture-vpc-aws-tool .architecture-vpc-aws-config-tabs {
     display: flex;
     flex-wrap: wrap;
@@ -6191,7 +4692,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
     border: 0;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-tab,
 .architecture-vpc-aws-tool .architecture-vpc-aws-config-tab {
     min-height: 36px;
     min-width: 0;
@@ -6206,38 +4706,23 @@ body.architecture-vpc-aws-stage-expanded-lock {
     white-space: nowrap;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-tab:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-tab:focus-visible,
 .architecture-vpc-aws-tool .architecture-vpc-aws-config-tab:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-config-tab:focus-visible {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    color: var(--architecture-vpc-aws-text-strong, var(--tool-heading, #111827));
-    outline: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-tab.active,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-tab[aria-selected="true"],
+.architecture-vpc-aws-tool .architecture-vpc-aws-config-tab:focus-visible,
 .architecture-vpc-aws-tool .architecture-vpc-aws-config-tab.active,
 .architecture-vpc-aws-tool .architecture-vpc-aws-config-tab[aria-selected="true"] {
     border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
     background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
     color: var(--architecture-vpc-aws-text-strong, var(--tool-heading, #111827));
+    outline: none;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel[data-custom-panel] {
+.architecture-vpc-aws-tool .architecture-vpc-aws-config-panel[hidden],
+.architecture-vpc-aws-tool .architecture-vpc-aws-config-panel:not(.active) {
     display: none;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel[data-custom-panel].active {
-    display: block;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-grid,
 .architecture-vpc-aws-tool .architecture-vpc-aws-config-grid,
-.architecture-vpc-aws-tool .architecture-vpc-aws-toggle-grid,
-.architecture-vpc-aws-tool .architecture-vpc-aws-override-grid,
-.architecture-vpc-aws-tool .architecture-vpc-aws-inline-grid,
-.architecture-vpc-aws-tool .architecture-vpc-aws-stacked-grid {
+.architecture-vpc-aws-tool .architecture-vpc-aws-toggle-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
     gap: 10px;
@@ -6245,33 +4730,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
     min-width: 0;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-grid[data-custom-columns="1"],
-.architecture-vpc-aws-tool .architecture-vpc-aws-stacked-grid {
-    grid-template-columns: minmax(0, 1fr);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-settings[data-custom-layout="tabbed_two_column"] .architecture-vpc-aws-custom-grid,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-settings[data-custom-layout="compact_two_column_multi_row"] .architecture-vpc-aws-custom-grid,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-grid[data-custom-columns="2"] {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-inline-grid-two,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-inline-grid-two {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-inline-grid-three,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-inline-grid-three {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-card,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-field,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-control-stack,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-setting-row,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced-body > .architecture-vpc-aws-inner-panel > .architecture-vpc-aws-setting-row,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-setting-card {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-control-stack {
     display: grid;
     align-content: start;
     gap: 8px;
@@ -6285,133 +4744,8 @@ body.architecture-vpc-aws-stage-expanded-lock {
     overflow: visible;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-field {
-    padding: 0;
-    border: 0;
-    background: transparent;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-setting-row {
-    grid-template-columns: minmax(150px, 0.34fr) minmax(0, 1fr);
-    align-items: start;
-    gap: 12px;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-setting-row-stacked {
-    grid-template-columns: minmax(0, 1fr);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-group,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group {
-    display: grid;
-    gap: 10px;
-    min-width: 0;
-    align-self: start;
-    padding: 12px;
-    border: 1px solid var(--architecture-vpc-aws-border, var(--tool-border, #d8e2ee));
-    border-radius: 12px;
-    background: var(--architecture-vpc-aws-bg-panel, var(--tool-surface, #ffffff));
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
-    overflow: visible;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-group[data-span="2"],
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-card[data-span="2"],
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-info[data-span="2"],
-.architecture-vpc-aws-tool .architecture-vpc-aws-card-span-two {
-    grid-column: 1 / -1;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-group-head,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    min-width: 0;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-group-title,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group-title {
-    margin: 0;
-    color: var(--architecture-vpc-aws-text-strong, var(--tool-heading, #111827));
-    font-size: 13px;
-    font-weight: 900;
-    letter-spacing: 0.04em;
-    line-height: 1.3;
-    text-transform: uppercase;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-group-body,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group-body {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
-    gap: 10px;
-    min-width: 0;
-    align-content: start;
-    align-items: start;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group--single .architecture-vpc-aws-override-group-body {
-    grid-template-columns: minmax(0, 1fr);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
-    gap: 10px;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group {
-    grid-template-columns: minmax(0, 1fr);
-    align-items: start;
-    gap: 10px;
-    padding: 12px;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group-head {
-    justify-content: flex-start;
-    padding-top: 0;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group-body {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group--single .architecture-vpc-aws-override-group-body {
-    grid-template-columns: minmax(0, 1fr);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group-body .architecture-vpc-aws-field-stack {
-    display: grid;
-    grid-template-columns: minmax(86px, 0.42fr) minmax(0, 1fr);
-    gap: 8px;
-    align-items: center;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group-body .architecture-vpc-aws-field-label {
-    min-height: auto;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group-body .form-control,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group-body .architecture-vpc-aws-input-group {
-    justify-self: end;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-label-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 0;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-label,
 .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .tool-control-label,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-setting-label,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-field-label,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-setting-label,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-field-label {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-setting-label {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -6421,425 +4755,28 @@ body.architecture-vpc-aws-stage-expanded-lock {
     font-size: 13px;
     font-weight: 800;
     line-height: 1.35;
-    white-space: normal;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-helper-chip,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-helper-chip,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-helper-chip {
-    display: inline-flex;
-    width: 20px;
-    height: 20px;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
-    border-radius: 999px;
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-surface-soft, #f8fafc));
-    color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    font-size: 12px;
-    font-weight: 900;
-    line-height: 1;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-helper-chip:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-helper-chip:focus-visible,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-helper-chip:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-helper-chip:focus-visible,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-helper-chip:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-helper-chip:focus-visible {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
-    outline: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-card .form-control,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-field .form-control,
 .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel textarea,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced textarea,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-text-field,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-number-field,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-textarea {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel textarea {
     width: 100%;
-    min-height: 38px;
-    min-width: 0;
-    padding: 8px 10px;
-    border: 1px solid var(--architecture-vpc-aws-border, var(--tool-border, #d8e2ee));
-    border-radius: 10px;
-    background: var(--architecture-vpc-aws-bg-panel, var(--tool-surface, #ffffff));
-    color: var(--architecture-vpc-aws-text, var(--tool-text, #334155));
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.4;
-    box-shadow: none;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-textarea,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel textarea,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced textarea {
-    min-height: 84px;
-    resize: vertical;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-text-field::placeholder,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-textarea::placeholder,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input::placeholder,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel textarea::placeholder,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced input::placeholder,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced textarea::placeholder {
-    color: var(--architecture-vpc-aws-placeholder, var(--tool-placeholder, #94a3b8));
-    opacity: 1;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-card .form-control:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-field .form-control:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel textarea:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced textarea:hover {
-    border-color: var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-card .form-control:focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-field .form-control:focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel textarea:focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced textarea:focus {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    box-shadow: 0 0 0 3px var(--architecture-vpc-aws-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
-    outline: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-input-group > .form-control.architecture-vpc-aws-input-group-control,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-input-group > .form-control.architecture-vpc-aws-input-group-control {
-    width: 100%;
-    min-width: 0;
     min-height: 44px;
-    flex: 1 1 auto;
-    padding: 10px 14px;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-input-group > .form-control.architecture-vpc-aws-input-group-control:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-input-group > .form-control.architecture-vpc-aws-input-group-control:focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-input-group > .form-control.architecture-vpc-aws-input-group-control:focus-visible,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-input-group > .form-control.architecture-vpc-aws-input-group-control:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-input-group > .form-control.architecture-vpc-aws-input-group-control:focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-input-group > .form-control.architecture-vpc-aws-input-group-control:focus-visible {
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    outline: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-input-group > .form-control.architecture-vpc-aws-input-group-control:disabled,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-input-group > .form-control.architecture-vpc-aws-input-group-control:disabled {
-    background: transparent;
-}
-
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-number-field,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input[type="number"],
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced input[type="number"] {
-    -moz-appearance: textfield;
-    appearance: textfield;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-number-field::-webkit-inner-spin-button,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-number-field::-webkit-outer-spin-button,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input[type="number"]::-webkit-inner-spin-button,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input[type="number"]::-webkit-outer-spin-button,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced input[type="number"]::-webkit-inner-spin-button,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced input[type="number"]::-webkit-outer-spin-button {
-    margin: 0;
-    -webkit-appearance: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-card .form-control:disabled,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-field .form-control:disabled,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input:disabled,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel textarea:disabled,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced input:disabled,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced textarea:disabled {
-    background: var(--architecture-vpc-aws-disabled-bg, #f1f5f9);
-    color: var(--architecture-vpc-aws-disabled-text, #94a3b8);
-    cursor: not-allowed;
-    opacity: 1;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-group,
-.architecture-vpc-aws-tool .architecture-vpc-aws-radio-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
-    gap: 10px;
-    min-width: 0;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-card,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-option,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-radio-card,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-radio-card {
-    position: relative;
-    display: grid;
-    grid-template-columns: 18px minmax(0, 1fr);
-    gap: 10px;
-    align-items: start;
-    min-width: 0;
-    padding: 12px;
-    border: 1px solid var(--architecture-vpc-aws-border, var(--tool-border, #d8e2ee));
+    border-color: var(--architecture-vpc-aws-border, var(--tool-border, #d8e2ee));
     border-radius: 10px;
     background: var(--architecture-vpc-aws-bg-panel, var(--tool-surface, #ffffff));
-    color: var(--architecture-vpc-aws-text, var(--tool-text, #334155));
-    cursor: pointer;
+    color: var(--architecture-vpc-aws-text-body, var(--tool-text, #334155));
     font-size: 13px;
     font-weight: 700;
-    line-height: 1.35;
-    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-card::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-option::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-radio-card::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-radio-card::before {
-    content: "";
-    grid-column: 1;
-    grid-row: 1;
-    width: 18px;
-    height: 18px;
-    margin-top: 1px;
-    border: 1px solid var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
-    border-radius: 999px;
-    background: var(--architecture-vpc-aws-bg-panel, var(--tool-surface, #ffffff));
-    box-shadow: inset 0 0 0 2px var(--architecture-vpc-aws-bg-panel, var(--tool-surface, #ffffff));
-    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-card::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-option::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-radio-card::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-radio-card::after {
-    content: "";
-    grid-column: 1;
-    grid-row: 1;
-    width: 8px;
-    height: 8px;
-    margin: 6px 0 0 5px;
-    border-radius: 999px;
-    background: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    opacity: 0;
-    transition: opacity 0.18s ease;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-card:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-option:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-radio-card:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-radio-card:hover {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-card:has(input:checked),
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-option:has(input:checked),
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-radio-card:has(input:checked),
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-radio-card:has(input:checked) {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
-    box-shadow: inset 0 0 0 1px var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-card:has(input:checked)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-option:has(input:checked)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-radio-card:has(input:checked)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-radio-card:has(input:checked)::before {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    background: var(--architecture-vpc-aws-bg-panel, var(--tool-surface, #ffffff));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-card:has(input:checked)::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-option:has(input:checked)::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-radio-card:has(input:checked)::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-radio-card:has(input:checked)::after {
-    opacity: 1;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-card:has(input:focus-visible)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-option:has(input:focus-visible)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-radio-card:has(input:focus-visible)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-radio-card:has(input:focus-visible)::before {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel textarea:focus {
     border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
     box-shadow: 0 0 0 3px var(--architecture-vpc-aws-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-card:has(input:disabled),
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-option:has(input:disabled),
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-radio-card:has(input:disabled),
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-radio-card:has(input:disabled) {
-    cursor: not-allowed;
-    opacity: 0.68;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-card input,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-option input,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input[type="radio"],
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced input[type="radio"] {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: 0;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-title,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-copy {
-    display: block;
-    min-width: 0;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-title {
-    color: var(--architecture-vpc-aws-text-strong, var(--tool-heading, #111827));
-    font-size: 13px;
-    font-weight: 800;
-    line-height: 1.35;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-copy {
-    margin-top: 3px;
-    color: var(--architecture-vpc-aws-text-muted, var(--tool-text-muted, #64748b));
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1.45;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown {
-    position: relative;
-    display: grid;
-    width: 100%;
-    min-width: 0;
-    overflow: visible;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown[open] {
-    z-index: 160;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary {
-    position: relative;
-    display: flex;
-    min-height: 40px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 42px 8px 10px;
-    border: 1px solid var(--architecture-vpc-aws-border, var(--tool-border, #d8e2ee));
-    border-radius: 10px;
-    background: var(--architecture-vpc-aws-bg-panel, var(--tool-surface, #ffffff));
-    color: var(--architecture-vpc-aws-text, var(--tool-text, #334155));
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.35;
-    list-style: none;
-    list-style-type: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown[open] .architecture-vpc-aws-custom-dropdown-summary:not(:has(> .architecture-vpc-aws-custom-arrow-slot))::after {
-    transform: translate(-50%, -62%) rotate(45deg);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown[open] .architecture-vpc-aws-custom-dropdown-summary > .architecture-vpc-aws-custom-arrow-slot::before {
-    transform: translate(-50%, -62%) rotate(45deg);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:focus-visible {
-    border-color: var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
     outline: none;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-summary:focus-visible,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown[open] .architecture-vpc-aws-custom-dropdown-summary {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    box-shadow: 0 0 0 3px var(--architecture-vpc-aws-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-menu {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    display: grid;
-    width: 100%;
-    min-width: 100%;
-    max-height: min(280px, 52vh);
-    border: 1px solid var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    border-radius: 10px;
-    background: var(--architecture-vpc-aws-bg-panel, var(--tool-surface, #ffffff));
-    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
-    overflow-x: hidden;
-    overflow-y: auto;
-    z-index: 170;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown:not([open]) .architecture-vpc-aws-custom-dropdown-menu {
-    display: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-option {
-    display: flex;
-    width: 100%;
-    min-height: 38px;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 8px 10px;
-    border: 0;
-    border-top: 0;
-    background: var(--architecture-vpc-aws-bg-panel, var(--tool-surface, #ffffff));
-    color: var(--architecture-vpc-aws-text, var(--tool-text, #334155));
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.35;
-    text-align: left;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-option:first-child {
-    border-top: 0;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-option:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-option:focus-visible,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-option.active,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown-option[aria-selected="true"] {
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
-    color: var(--architecture-vpc-aws-text-strong, var(--tool-heading, #111827));
-    outline: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option {
-    position: relative;
-    display: inline-grid;
-    grid-template-columns: 18px minmax(0, 1fr);
-    align-items: center;
-    gap: 8px;
-    width: fit-content;
-    max-width: 100%;
-    min-height: 32px;
-    color: var(--architecture-vpc-aws-text-strong, var(--tool-heading, #111827));
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 800;
-    line-height: 1.3;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item {
     position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 18px;
@@ -6859,10 +4796,9 @@ body.architecture-vpc-aws-stage-expanded-lock {
     transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item::before {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item::before {
     content: "";
+    grid-column: 2;
     grid-row: 1;
     width: 18px;
     height: 18px;
@@ -6872,20 +4808,11 @@ body.architecture-vpc-aws-stage-expanded-lock {
     transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option::before {
-    grid-column: 1;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item::before {
-    grid-column: 2;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item::after {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item::after {
     content: "";
+    grid-column: 2;
     grid-row: 1;
+    justify-self: center;
     width: 5px;
     height: 9px;
     border: solid #ffffff;
@@ -6895,77 +4822,37 @@ body.architecture-vpc-aws-stage-expanded-lock {
     transition: opacity 0.18s ease;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option::after {
-    grid-column: 1;
-    justify-self: center;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item::after {
-    grid-column: 2;
-    justify-self: center;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option:hover::before,
 .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:hover::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item:hover::before {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:has(input:focus-visible)::before {
     border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option:has(input:checked)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:has(input:checked)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item:has(input:checked)::before {
-    border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    background: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:has(input:focus-visible)::before {
+    box-shadow: 0 0 0 3px var(--architecture-vpc-aws-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option:has(input:checked)::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:has(input:checked)::after,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item:has(input:checked)::after {
-    opacity: 1;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option:has(input:checked),
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:has(input:checked),
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item:has(input:checked) {
-    color: var(--architecture-vpc-aws-text-strong, var(--tool-heading, #111827));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:has(input:checked),
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item:has(input:checked) {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:has(input:checked) {
     border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
     background: var(--architecture-vpc-aws-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
     box-shadow: inset 0 0 0 1px var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option:has(input:focus-visible)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:has(input:focus-visible)::before,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item:has(input:focus-visible)::before {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:has(input:checked)::before {
     border-color: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    box-shadow: 0 0 0 3px var(--architecture-vpc-aws-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
+    background: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option:has(input:disabled),
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:has(input:disabled),
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item:has(input:disabled) {
-    cursor: not-allowed;
-    opacity: 0.68;
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item:has(input:checked)::after {
+    opacity: 1;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option > span {
-    min-width: 0;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item > .architecture-vpc-aws-toggle-copy,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-item > .architecture-vpc-aws-toggle-copy {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-item > .architecture-vpc-aws-toggle-copy {
     min-width: 0;
     grid-column: 1;
     grid-row: 1;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option input,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input[type="checkbox"],
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced input[type="checkbox"] {
+.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input[type="checkbox"] {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -6974,119 +4861,12 @@ body.architecture-vpc-aws-stage-expanded-lock {
     pointer-events: none;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option {
-    grid-template-columns: 48px minmax(0, 1fr);
-    gap: 10px;
-    min-height: 32px;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option::before {
-    width: 48px;
-    height: 28px;
-    border-color: var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
-    border-radius: 999px;
-    background: var(--architecture-vpc-aws-toggle-off, var(--tool-toggle-off, #e7e5e4));
-    box-shadow: inset 0 0 0 1px var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option::after {
-    width: 20px;
-    height: 20px;
-    margin-left: 4px;
-    grid-column: 1;
-    justify-self: start;
-    align-self: center;
-    border: 0;
-    border-radius: 999px;
-    background: #ffffff;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
-    opacity: 1;
-    transform: none;
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option:hover::before {
-    border-color: var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option:has(input:checked)::before {
-    border-color: transparent;
-    background: var(--architecture-vpc-aws-accent, var(--tool-accent, #475569));
-    box-shadow: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option:has(input:checked)::after {
-    opacity: 1;
-    transform: translateX(20px);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option:has(input:focus-visible)::before {
-    box-shadow: 0 0 0 3px var(--architecture-vpc-aws-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
-}
-
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-hint,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-info,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-field-hint,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-flag-hint,
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-inline-note,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-field-hint,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-flag-hint,
-.architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-inline-note {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
-    gap: 8px 12px;
-    min-width: 0;
-    margin: 0;
-    padding: 9px 10px;
-    border: 1px dashed var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
-    border-radius: 12px;
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-surface-soft, #f8fafc));
-    color: var(--architecture-vpc-aws-text-muted, var(--tool-text-muted, #64748b));
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1.35;
-    overflow-wrap: anywhere;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-hint {
-    display: block;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-hint[data-span="2"],
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-info[data-span="2"] {
-    grid-column: 1 / -1;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-custom-info span {
-    min-width: 0;
-    overflow-wrap: anywhere;
-}
-
 @media (max-width: 900px) {
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-settings[data-custom-layout],
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-grid[data-custom-columns],
     .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-config-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-custom-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-config-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-toggle-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-inline-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-stacked-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-custom-grid,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-setting-row {
-        grid-template-columns: minmax(0, 1fr) !important;
-    }
-
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group-body .architecture-vpc-aws-field-stack,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced .architecture-vpc-aws-override-group--single .architecture-vpc-aws-override-group-body {
+    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel .architecture-vpc-aws-toggle-grid {
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-tabs,
     .architecture-vpc-aws-tool .architecture-vpc-aws-config-tabs {
         display: grid;
         grid-template-columns: minmax(0, 1fr);
@@ -7094,44 +4874,24 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 
 @media (max-width: 640px) {
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-summary,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced-summary {
+    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-summary {
         min-height: 44px;
         padding: 10px 40px 10px 12px;
     }
 
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-body,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-body,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced-body {
+    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel-body {
         padding: 10px;
     }
 
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-tab,
     .architecture-vpc-aws-tool .architecture-vpc-aws-config-tab,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-dropdown,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-radio-group,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-radio-group,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-checkbox-option,
     .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel textarea,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
-    .architecture-vpc-aws-tool .architecture-vpc-aws-advanced textarea {
+    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-panel textarea {
         width: 100%;
-    }
-
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-group[data-span="2"],
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-card[data-span="2"],
-    .architecture-vpc-aws-tool .architecture-vpc-aws-custom-info[data-span="2"],
-    .architecture-vpc-aws-tool .architecture-vpc-aws-card-span-two {
-        grid-column: auto;
     }
 }
 /* ns:end family._base.workspace.03_custom-settings */
 
 /* ns:start family._base.workspace.05_result-summary */
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-empty,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-error,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-summary,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-metric-card,
@@ -7146,28 +4906,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
     border: 0;
     background: transparent;
     box-shadow: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-empty,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-error {
-    padding: 16px 18px;
-    border-radius: 14px;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.65;
-    overflow-wrap: anywhere;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-empty {
-    border: 1px dashed var(--architecture-vpc-aws-border-strong, var(--tool-border-strong, #cbd5e1));
-    background: var(--architecture-vpc-aws-bg-soft, var(--tool-surface-soft, #f8fafc));
-    color: var(--architecture-vpc-aws-text-muted, var(--tool-text-muted, #64748b));
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-error {
-    border: 1px solid var(--architecture-vpc-aws-danger, var(--tool-danger, #dc2626));
-    background: var(--architecture-vpc-aws-danger-soft, rgba(220, 38, 38, 0.1));
-    color: var(--architecture-vpc-aws-danger-strong, var(--tool-danger-strong, #991b1b));
 }
 
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-summary,
@@ -7258,8 +4996,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-command {
+.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual {
     align-content: center;
     justify-items: center;
     text-align: center;
@@ -7433,79 +5170,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
     text-transform: uppercase;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-primary-text {
-    display: none;
-    min-width: 0;
-    max-width: 100%;
-    padding: 18px 20px;
-    border: 1px dashed var(--architecture-vpc-aws-result-border);
-    border-radius: 14px;
-    background: var(--architecture-vpc-aws-result-surface-soft);
-    color: var(--architecture-vpc-aws-result-heading);
-    overflow-wrap: anywhere;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-primary-text-value {
-    display: block;
-    color: var(--architecture-vpc-aws-result-heading);
-    font-size: 24px;
-    font-weight: 900;
-    line-height: 1.18;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-primary-text-unit {
-    display: block;
-    margin-top: 6px;
-    color: var(--architecture-vpc-aws-result-muted);
-    font-size: 12px;
-    font-weight: 900;
-    letter-spacing: 0.06em;
-    line-height: 1.2;
-    text-transform: uppercase;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-command-output {
-    display: grid;
-    min-width: 0;
-    max-width: 100%;
-    justify-items: center;
-    padding: 16px 18px;
-    border: 1px dashed var(--architecture-vpc-aws-result-border);
-    border-radius: 14px;
-    background: var(--architecture-vpc-aws-result-surface-soft);
-    color: var(--architecture-vpc-aws-result-heading);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-command-value {
-    max-width: 100%;
-    color: var(--architecture-vpc-aws-result-heading);
-    font-family: inherit;
-    font-size: 22px;
-    font-weight: 900;
-    letter-spacing: 0;
-    line-height: 1.2;
-    overflow-wrap: anywhere;
-    white-space: normal;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary[data-result-visual="command"] .architecture-vpc-aws-result-ring,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary[data-result-visual="text"] .architecture-vpc-aws-result-ring,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary[data-result-visual="status"] .architecture-vpc-aws-result-ring,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual[data-result-visual="command"] .architecture-vpc-aws-result-ring,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual[data-result-visual="text"] .architecture-vpc-aws-result-ring,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual[data-result-visual="status"] .architecture-vpc-aws-result-ring {
-    display: none;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary[data-result-visual="command"] .architecture-vpc-aws-result-primary-text,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary[data-result-visual="text"] .architecture-vpc-aws-result-primary-text,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary[data-result-visual="status"] .architecture-vpc-aws-result-primary-text,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual[data-result-visual="command"] .architecture-vpc-aws-result-primary-text,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual[data-result-visual="text"] .architecture-vpc-aws-result-primary-text,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual[data-result-visual="status"] .architecture-vpc-aws-result-primary-text {
-    display: block;
-}
-
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-visual-copy {
     display: grid;
     gap: 8px;
@@ -7583,12 +5247,9 @@ body.architecture-vpc-aws-stage-expanded-lock {
 .architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-shell,
 .architecture-vpc-aws-tool .architecture-vpc-aws-toolbar,
 .architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-main,
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-left,
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-shell,
 .architecture-vpc-aws-tool .architecture-vpc-aws-sort-wrap,
 .architecture-vpc-aws-tool .architecture-vpc-aws-sort-select,
-.architecture-vpc-aws-tool .tool-output-actions,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions {
+.architecture-vpc-aws-tool .tool-output-actions {
     min-width: 0;
     overflow: visible;
 }
@@ -7603,66 +5264,17 @@ body.architecture-vpc-aws-stage-expanded-lock {
     z-index: 120;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar {
-    display: grid;
-    grid-template-columns: minmax(280px, 1fr) minmax(390px, 450px);
-    align-items: start;
-    gap: 12px;
-    overflow: visible;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-main {
-    display: grid;
-    grid-template-columns: auto minmax(0, 240px);
-    align-items: center;
-    justify-content: start;
-    gap: 12px;
-    overflow: visible;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-left {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    overflow: visible;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-shell {
-    display: grid;
-    grid-template-columns: auto minmax(0, 240px);
-    align-items: center;
-    gap: 12px;
-    overflow: visible;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-wrap {
-    width: min(100%, 240px);
-    max-width: 240px;
-    overflow: visible;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-select {
-    position: relative;
-    z-index: 30;
-    width: 100%;
-    max-width: 100%;
-    overflow: visible;
-}
-
 .architecture-vpc-aws-tool .architecture-vpc-aws-sort-select[open] {
     z-index: 140;
 }
 
 .architecture-vpc-aws-tool .architecture-vpc-aws-sort-summary,
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-select > summary,
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-select .architecture-vpc-aws-select-summary {
+.architecture-vpc-aws-tool .architecture-vpc-aws-sort-select > summary {
     min-height: 46px;
     box-sizing: border-box;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-menu,
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-select .architecture-vpc-aws-select-body {
+.architecture-vpc-aws-tool .architecture-vpc-aws-sort-menu {
     z-index: 160;
     width: 100%;
     min-width: 100%;
@@ -7670,24 +5282,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
     box-sizing: border-box;
 }
 
-.architecture-vpc-aws-tool .tool-output-actions,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions {
-    display: grid;
-    width: 100%;
-    max-width: 450px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: center;
-    justify-content: end;
-    justify-self: end;
-    gap: 10px;
-    margin-left: auto;
-}
-
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn,
-.architecture-vpc-aws-tool .tool-output-actions .architecture-vpc-aws-action-btn,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .architecture-vpc-aws-action-btn {
+.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn {
     display: inline-flex;
     width: 100%;
     min-height: 38px;
@@ -7709,15 +5304,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 
 .architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:hover,
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:focus,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn:hover,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn:focus,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn:hover,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn:focus,
-.architecture-vpc-aws-tool .tool-output-actions .architecture-vpc-aws-action-btn:hover,
-.architecture-vpc-aws-tool .tool-output-actions .architecture-vpc-aws-action-btn:focus,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .architecture-vpc-aws-action-btn:hover,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .architecture-vpc-aws-action-btn:focus {
+.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:focus {
     border-color: var(--tool-accent, #2563eb);
     background: var(--tool-accent-soft, #eff6ff);
     color: var(--tool-accent, #2563eb);
@@ -7725,72 +5312,21 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 
 
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(4),
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
+.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(4) {
     grid-column: 2;
 }
 
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(5),
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(5) {
     grid-column: 3;
 }
 
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn i,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn i,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn i,
-.architecture-vpc-aws-tool .tool-output-actions .architecture-vpc-aws-action-btn i,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .architecture-vpc-aws-action-btn i {
+.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn i {
     flex: 0 0 auto;
     color: currentColor;
     font-size: 16px;
     line-height: 1;
 }
 
-@media (max-width: 991.98px) {
-    .architecture-vpc-aws-tool .architecture-vpc-aws-toolbar {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .architecture-vpc-aws-tool .tool-output-actions,
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        justify-self: start;
-        margin-left: 0;
-        max-width: none;
-    }
-
-    .architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(4),
-    .architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(5),
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
-        grid-column: auto;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-main,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-sort-shell {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-left,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-sort-wrap,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-sort-select,
-    .architecture-vpc-aws-tool .tool-output-actions,
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions {
-        width: 100%;
-        max-width: none;
-    }
-
-    .architecture-vpc-aws-tool .tool-output-actions,
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions {
-        grid-template-columns: minmax(0, 1fr);
-    }
-}
 /* output-toolbar-standard:end */
 
 
@@ -7973,8 +5509,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
 /* ns:end family._base.workspace.08_json-restore */
 /* table-output-standard:start */
 .architecture-vpc-aws-tool .tool-tabs,
-.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"],
-.architecture-vpc-aws-tool .architecture-vpc-aws-tab-list[role="tablist"] {
+.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"] {
     max-width: 100%;
     flex-wrap: nowrap !important;
     justify-content: flex-end;
@@ -7996,20 +5531,15 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 
 .architecture-vpc-aws-tool .tool-tabs .tool-tab-btn,
-.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"] .architecture-vpc-aws-tab-btn,
-.architecture-vpc-aws-tool .architecture-vpc-aws-tab-list[role="tablist"] .architecture-vpc-aws-tab-btn,
+.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"] .architecture-vpc-aws-tab-btn .architecture-vpc-aws-tab-btn,
 .architecture-vpc-aws-tool .tool-tabs .tool-tab-btn:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"] .architecture-vpc-aws-tab-btn:hover,
-.architecture-vpc-aws-tool .architecture-vpc-aws-tab-list[role="tablist"] .architecture-vpc-aws-tab-btn:hover,
+.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"] .architecture-vpc-aws-tab-btn:hover .architecture-vpc-aws-tab-btn:hover,
 .architecture-vpc-aws-tool .tool-tabs .tool-tab-btn:focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"] .architecture-vpc-aws-tab-btn:focus,
-.architecture-vpc-aws-tool .architecture-vpc-aws-tab-list[role="tablist"] .architecture-vpc-aws-tab-btn:focus,
+.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"] .architecture-vpc-aws-tab-btn:focus .architecture-vpc-aws-tab-btn:focus,
 .architecture-vpc-aws-tool .tool-tabs .tool-tab-btn.active,
-.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"] .architecture-vpc-aws-tab-btn.active,
-.architecture-vpc-aws-tool .architecture-vpc-aws-tab-list[role="tablist"] .architecture-vpc-aws-tab-btn.active,
+.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"] .architecture-vpc-aws-tab-btn.active .architecture-vpc-aws-tab-btn.active,
 .architecture-vpc-aws-tool .tool-tabs .tool-tab-btn[aria-selected="true"],
-.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"] .architecture-vpc-aws-tab-btn[aria-selected="true"],
-.architecture-vpc-aws-tool .architecture-vpc-aws-tab-list[role="tablist"] .architecture-vpc-aws-tab-btn[aria-selected="true"] {
+.architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"] .architecture-vpc-aws-tab-btn[aria-selected="true"] .architecture-vpc-aws-tab-btn[aria-selected="true"] {
     box-shadow: none !important;
     transform: none !important;
 }
@@ -8028,40 +5558,30 @@ body.architecture-vpc-aws-stage-expanded-lock {
     line-height: 1;
 }
 
-.architecture-vpc-aws-tool .tool-result-table-wrap,
 .architecture-vpc-aws-tool .architecture-vpc-aws-table-wrap {
     position: relative;
     overflow-x: auto;
 }
 
-.architecture-vpc-aws-tool .tool-result-table,
 .architecture-vpc-aws-tool .architecture-vpc-aws-table {
     min-width: 680px;
     table-layout: fixed;
 }
 
-.architecture-vpc-aws-tool .tool-result-table th:first-child,
-.architecture-vpc-aws-tool .tool-result-table td:first-child,
 .architecture-vpc-aws-tool .architecture-vpc-aws-table th:first-child,
 .architecture-vpc-aws-tool .architecture-vpc-aws-table td:first-child {
     width: 58px;
     text-align: center;
 }
 
-.architecture-vpc-aws-tool .tool-result-table th:not(:first-child):not(:last-child),
-.architecture-vpc-aws-tool .tool-result-table td:not(:first-child):not(:last-child),
 .architecture-vpc-aws-tool .architecture-vpc-aws-table th:not(:first-child):not(:last-child),
 .architecture-vpc-aws-tool .architecture-vpc-aws-table td:not(:first-child):not(:last-child) {
     text-align: start;
 }
 
-.architecture-vpc-aws-tool .tool-result-table:has(tbody td:last-child button) th:last-child,
-.architecture-vpc-aws-tool .tool-result-table:has(tbody td:last-child button) td:last-child,
 .architecture-vpc-aws-tool .architecture-vpc-aws-table:has(tbody td:last-child button) th:last-child,
 .architecture-vpc-aws-tool .architecture-vpc-aws-table:has(tbody td:last-child button) td:last-child,
-.architecture-vpc-aws-tool .architecture-vpc-aws-table-action-cell,
-.architecture-vpc-aws-tool .architecture-vpc-aws-copy-cell,
-.architecture-vpc-aws-tool .architecture-vpc-aws-table-copy-cell {
+.architecture-vpc-aws-tool .architecture-vpc-aws-table-action-cell {
     position: sticky;
     right: 0;
     inset-inline-end: 0;
@@ -8074,13 +5594,11 @@ body.architecture-vpc-aws-stage-expanded-lock {
     box-shadow: none;
 }
 
-.architecture-vpc-aws-tool .tool-result-table:has(tbody td:last-child button) th:last-child,
 .architecture-vpc-aws-tool .architecture-vpc-aws-table:has(tbody td:last-child button) th:last-child {
     z-index: 3;
     background: var(--tool-table-head-bg, var(--tool-surface-soft, #f8fafc));
 }
 
-.architecture-vpc-aws-tool .tool-result-table tbody tr:hover td:last-child,
 .architecture-vpc-aws-tool .architecture-vpc-aws-table tbody tr:hover td:last-child {
     background: var(--tool-table-row-hover, var(--tool-surface, #ffffff));
 }
@@ -8106,47 +5624,9 @@ body.architecture-vpc-aws-stage-expanded-lock {
     text-align: center;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-table-output-note-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-table-output-note-card {
-    display: grid;
-    gap: 8px;
-    padding: 14px;
-    border: 1px solid var(--tool-border, #dbe4ef);
-    border-radius: 12px;
-    background: var(--tool-surface, #ffffff);
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-table-output-note-title,
-.architecture-vpc-aws-tool .architecture-vpc-aws-table-output-note-copy {
-    margin: 0;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-table-output-note-title {
-    color: var(--tool-heading, #111827);
-    font-size: 0.92rem;
-    font-weight: 850;
-    line-height: 1.25;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-table-output-note-copy {
-    color: var(--tool-muted, #475569);
-    font-size: 0.9rem;
-    line-height: 1.45;
-}
-
 @media (max-width: 767.98px) {
     .architecture-vpc-aws-tool .tool-tabs,
     .architecture-vpc-aws-tool .architecture-vpc-aws-tabs[role="tablist"],
-    .architecture-vpc-aws-tool .architecture-vpc-aws-tab-list[role="tablist"] {
-        flex-wrap: nowrap !important;
-        justify-content: flex-start;
-        overflow-x: auto;
-    }
 
     .architecture-vpc-aws-tool .tool-tab-btn,
     .architecture-vpc-aws-tool .architecture-vpc-aws-tab-btn {
@@ -8232,8 +5712,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-command {
+.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual {
     min-height: 0;
 }
 
@@ -8277,12 +5756,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
     min-width: 0;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-summary .architecture-vpc-aws-result-chip-row,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-main .architecture-vpc-aws-result-chip-row {
-    align-self: initial;
-    margin-top: 0;
-}
-
 @media (max-width: 640px) {
     .architecture-vpc-aws-tool .architecture-vpc-aws-result-header {
         align-items: flex-start;
@@ -8296,14 +5769,12 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-command,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-summary {
     min-height: 0;
 }
 
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-command {
+.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual {
     align-content: stretch;
     align-items: center;
     display: flex;
@@ -8324,8 +5795,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary > .architecture-vpc-aws-result-chip-row,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual > .architecture-vpc-aws-result-chip-row,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-command > .architecture-vpc-aws-result-chip-row,
+.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual > .architecture-vpc-aws-result-chip-row > .architecture-vpc-aws-result-chip-row,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-summary > .architecture-vpc-aws-result-chip-grid {
     min-height: 0;
     align-content: flex-start;
@@ -8343,8 +5813,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
 
 /* architecture-result-summary-metric-contract:start */
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary > .architecture-vpc-aws-result-chip-row,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual > .architecture-vpc-aws-result-chip-row,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-command > .architecture-vpc-aws-result-chip-row,
+.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual > .architecture-vpc-aws-result-chip-row > .architecture-vpc-aws-result-chip-row,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-summary > .architecture-vpc-aws-result-chip-grid,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-main > .architecture-vpc-aws-result-chip-row {
     min-height: 0;
@@ -8454,7 +5923,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
 /* architecture-result-summary-divider-contract:start */
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-command,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-summary,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-main {
     display: flex;
@@ -8463,8 +5931,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
 
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-divider,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary > .architecture-vpc-aws-result-card-divider,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual > .architecture-vpc-aws-result-card-divider,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-command > .architecture-vpc-aws-result-card-divider,
+.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual > .architecture-vpc-aws-result-card-divider > .architecture-vpc-aws-result-card-divider,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-summary > .architecture-vpc-aws-result-card-divider,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-main > .architecture-vpc-aws-result-card-divider {
     flex: 0 0 auto;
@@ -8473,8 +5940,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary > .architecture-vpc-aws-result-chip-row,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual > .architecture-vpc-aws-result-chip-row,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-command > .architecture-vpc-aws-result-chip-row,
+.architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual > .architecture-vpc-aws-result-chip-row > .architecture-vpc-aws-result-chip-row,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-summary > .architecture-vpc-aws-result-chip-grid,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-main > .architecture-vpc-aws-result-chip-row {
     min-height: var(--architecture-vpc-aws-result-chip-zone-min, 112px);
@@ -8570,9 +6036,6 @@ body.architecture-vpc-aws-stage-expanded-lock {
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary .architecture-vpc-aws-result-card-icon-primary,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual .architecture-vpc-aws-result-card-icon-primary,
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-primary-number,
-.architecture-vpc-aws-tool .architecture-vpc-aws-result-primary-text {
-    display: none !important;
-}
 
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-primary[data-result-visual="ring"],
 .architecture-vpc-aws-tool .architecture-vpc-aws-result-card-visual[data-result-visual="ring"] {
@@ -8639,43 +6102,19 @@ body.architecture-vpc-aws-stage-expanded-lock {
 /* architecture-result-summary-primary-ring-contract:end */
 
 /* output-toolbar-persistence-contract:start */
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-shell,
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar,
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-main,
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-left,
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-shell,
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-wrap,
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-select,
-.architecture-vpc-aws-tool .tool-output-actions,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions {
-    min-width: 0;
-    overflow: visible;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-shell {
-    position: relative;
-    z-index: 20;
-    overflow: visible;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-shell:has(.architecture-vpc-aws-sort-select[open]) {
-    z-index: 120;
-}
-
 .architecture-vpc-aws-tool .architecture-vpc-aws-toolbar {
     display: grid;
     width: 100%;
-    grid-template-columns: minmax(0, 1fr) minmax(390px, 450px);
+    grid-template-columns: minmax(var(--base-output-sort-column-width, 190px), 1fr) minmax(var(--base-output-actions-width, 470px), var(--base-output-actions-width, 470px));
     align-items: start;
     gap: 12px;
     overflow: visible;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-main,
-.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-left,
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-shell {
+.architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-main {
     display: grid;
-    grid-template-columns: auto minmax(0, 240px);
+    width: min(100%, calc(var(--base-output-control-width, 150px) + 52px));
+    grid-template-columns: auto var(--base-output-control-width, 150px);
     align-items: center;
     justify-content: start;
     gap: 12px;
@@ -8683,8 +6122,8 @@ body.architecture-vpc-aws-stage-expanded-lock {
 }
 
 .architecture-vpc-aws-tool .architecture-vpc-aws-sort-wrap {
-    width: min(100%, 240px);
-    max-width: 240px;
+    width: min(100%, var(--base-output-control-width, 150px));
+    max-width: var(--base-output-control-width, 150px);
     overflow: visible;
 }
 
@@ -8698,28 +6137,48 @@ body.architecture-vpc-aws-stage-expanded-lock {
     overflow: visible;
 }
 
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-select[open] {
-    z-index: 140;
-}
-
 .architecture-vpc-aws-tool .architecture-vpc-aws-sort-summary {
-    min-height: 46px;
-    box-sizing: border-box;
-}
-
-.architecture-vpc-aws-tool .architecture-vpc-aws-sort-menu {
-    z-index: 160;
+    position: relative;
     width: 100%;
-    min-width: 100%;
-    max-width: 100%;
+    height: var(--base-dropdown-summary-height, var(--base-output-control-height, 46px));
+    min-height: var(--base-dropdown-summary-height, var(--base-output-control-height, 46px));
     box-sizing: border-box;
+    padding-right: calc(var(--base-dropdown-arrow-size, 30px) + 22px);
 }
 
-.architecture-vpc-aws-tool .tool-output-actions,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions {
+.architecture-vpc-aws-tool .architecture-vpc-aws-sort-summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    display: block;
+    width: var(--base-dropdown-arrow-size, 30px);
+    height: var(--base-dropdown-arrow-size, 30px);
+    border: 1px solid var(--architecture-vpc-aws-border, var(--tool-border, #d8e2ee));
+    border-radius: 9px;
+    background: var(--architecture-vpc-aws-bg-soft, var(--tool-bg-soft, #f8fafc));
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.architecture-vpc-aws-tool .architecture-vpc-aws-sort-summary::after {
+    position: absolute;
+    top: 50%;
+    right: 21px;
+    display: block;
+    pointer-events: none;
+    transform: translate(-18%, -62%) rotate(45deg);
+    transform-origin: center;
+}
+
+.architecture-vpc-aws-tool .architecture-vpc-aws-sort-select:not([open]) .architecture-vpc-aws-sort-summary::after {
+    transform: translate(-8%, -50%) rotate(-45deg);
+}
+
+.architecture-vpc-aws-tool .tool-output-actions {
     display: grid;
     width: 100%;
-    max-width: 450px;
+    max-width: var(--base-output-actions-width, 470px);
     grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: center;
     justify-content: end;
@@ -8728,29 +6187,22 @@ body.architecture-vpc-aws-stage-expanded-lock {
     margin-left: auto;
 }
 
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn,
-.architecture-vpc-aws-tool .tool-output-actions .architecture-vpc-aws-action-btn,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .architecture-vpc-aws-action-btn {
+.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn {
     width: 100%;
     min-width: 0;
-    min-height: 38px;
-    gap: 6px;
-    padding-right: 10px;
-    padding-left: 10px;
-    border-radius: 10px;
-    font-size: 12px;
+    height: var(--base-output-control-height, 46px);
+    min-height: var(--base-output-control-height, 46px);
+    gap: 8px;
+    padding-right: 12px;
+    padding-left: 12px;
+    border-radius: var(--base-output-control-radius, 10px);
+    font-size: var(--base-output-control-font-size, var(--base-output-font-sm, 13px));
     line-height: 1;
     overflow: visible;
     white-space: nowrap;
 }
 
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn [data-button-label],
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn [data-button-label],
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn [data-button-label],
-.architecture-vpc-aws-tool .tool-output-actions .architecture-vpc-aws-action-btn [data-button-label],
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .architecture-vpc-aws-action-btn [data-button-label] {
+.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn [data-button-label] {
     display: inline-block;
     min-width: 0;
     overflow: visible;
@@ -8758,23 +6210,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
     white-space: nowrap;
 }
 
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(4),
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
-    grid-column: 2;
-}
-
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(5),
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
-    grid-column: 3;
-}
-
-.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn i,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn i,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn i,
-.architecture-vpc-aws-tool .tool-output-actions .architecture-vpc-aws-action-btn i,
-.architecture-vpc-aws-tool .tool-result-toolbar-actions .architecture-vpc-aws-action-btn i {
+.architecture-vpc-aws-tool .tool-output-actions .tool-action-btn i {
     flex: 0 0 auto;
     font-size: 15px;
     line-height: 1;
@@ -8785,8 +6221,7 @@ body.architecture-vpc-aws-stage-expanded-lock {
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .architecture-vpc-aws-tool .tool-output-actions,
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions {
+    .architecture-vpc-aws-tool .tool-output-actions {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         justify-self: start;
         margin-left: 0;
@@ -8794,32 +6229,22 @@ body.architecture-vpc-aws-stage-expanded-lock {
     }
 
     .architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(4),
-    .architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(5),
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+    .architecture-vpc-aws-tool .tool-output-actions .tool-action-btn:nth-child(5) {
         grid-column: auto;
     }
 }
 
 @media (max-width: 767.98px) {
     .architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-main,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-toolbar-left,
-    .architecture-vpc-aws-tool .architecture-vpc-aws-sort-shell {
-        grid-template-columns: minmax(0, 1fr);
-    }
 
     .architecture-vpc-aws-tool .architecture-vpc-aws-sort-wrap,
     .architecture-vpc-aws-tool .architecture-vpc-aws-sort-select,
-    .architecture-vpc-aws-tool .tool-output-actions,
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions {
+    .architecture-vpc-aws-tool .tool-output-actions {
         width: 100%;
         max-width: none;
     }
 
-    .architecture-vpc-aws-tool .tool-output-actions,
-    .architecture-vpc-aws-tool .tool-result-toolbar-actions {
+    .architecture-vpc-aws-tool .tool-output-actions {
         grid-template-columns: minmax(0, 1fr);
     }
 }

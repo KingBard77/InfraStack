@@ -17,6 +17,12 @@
 .assess-ubuntu-2204-cis-post-visual .tool-post-icon {
     background: rgba(22, 163, 74, 0.26);
 }
+
+.assess-ubuntu-2204-cis-post-visual .tool-post-icon svg {
+    width: 1.75rem;
+    height: 1.75rem;
+    display: block;
+}
 </style>
 {% else %}
 <div
@@ -32,7 +38,7 @@
   </div>
   <div class="tool-post-header">
     <span class="tool-post-kicker">{{ post.card_kicker|default(post.category|default('CIS')) }}</span>
-    <span class="tool-post-icon"><i class="{{ post.card_icon_class|default('bi bi-shield-lock') }}"></i></span>
+    <span class="tool-post-icon">{{ include('content/tools/cis/assess-ubuntu-2204-cis/assets/icon/cis-tool-assess-ubuntu-2204-cis.svg')|raw }}</span>
   </div>
   <div class="tool-post-title">{{ post.card_image_title|default(post.title|default('CIS Ubuntu Benchmark 2204')) }}</div>
   <div class="tool-post-map" aria-hidden="true">

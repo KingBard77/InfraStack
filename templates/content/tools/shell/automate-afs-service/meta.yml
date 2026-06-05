@@ -1,0 +1,29 @@
+# meta.yml
+
+title: AFS Service Automation
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-white.png"
+date: "Jun. 3rd, 2026"
+comments: Interactive tool
+publication_status: draft
+category_label: Shell
+group: shell
+family: shell
+reading_time: 9 min read
+summary: Generate reviewed service-afs.sh commands for installing, checking, removing, or deleting the IaS NFS export service setup.
+intro: >-
+    Compose a shell-safe command for the existing IaS service-afs.sh script, including action flag, execution mode, export path, exports file, subnet, NFS options, debug level, and guarded delete confirmation.
+    Review the generated command, export line, environment payload, operation preview, warnings, CSV output, JSON output, and JSON restore state before using the script on a real service host.
+tags:
+    - Shell
+    - AFS
+    - NFS
+    - Service Automation
+related_links:
+    - links-title: SSH Command Generator
+      links-label: InfraStack tool
+      links-description: Open the related InfraStack SSH Command Generator workspace.
+      links-url: https://infrastack.my/tools/shell/generate-ssh-shell
+      links-embed: https://infrastack.my/embed/shell/generate-ssh-shell
+      links-icon: bi-terminal

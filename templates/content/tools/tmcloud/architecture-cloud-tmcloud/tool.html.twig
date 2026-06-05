@@ -37,7 +37,7 @@
             id="architectureCloudTmcloudReset"
           >
             <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
-            <span data-button-label>Load Default</span>
+            <span data-button-label>Reset</span>
           </button>
         </div>
 
@@ -66,30 +66,36 @@
           <div class="architecture-cloud-tmcloud-basic-grid">
             <div class="architecture-cloud-tmcloud-control-stack architecture-cloud-tmcloud-setting-card">
               <label class="tool-control-label architecture-cloud-tmcloud-setting-label" for="architectureCloudTmcloudPreset">Preset <span class="architecture-cloud-tmcloud-helper-chip" title="Choose a starting preset that updates the visible controls and generated output." aria-label="Choose a starting preset that updates the visible controls and generated output.">i</span></label>
-              <select id="architectureCloudTmcloudPreset" class="form-select architecture-cloud-tmcloud-native-select">
-                <option value="secure-vpc-app" selected>Secure VPC App</option>
-                <option value="container-platform">Container Platform</option>
-                <option value="data-services">Data Services</option>
-                <option value="hybrid-connectivity">Hybrid Connectivity</option>
-              </select>
+              <div class="architecture-cloud-tmcloud-native-select-wrap" id="architectureCloudTmcloudPresetSelect">
+                <select id="architectureCloudTmcloudPreset" class="form-select architecture-cloud-tmcloud-native-select">
+                  <option value="secure-vpc-app" selected>Secure VPC App</option>
+                  <option value="container-platform">Container Platform</option>
+                  <option value="data-services">Data Services</option>
+                  <option value="hybrid-connectivity">Hybrid Connectivity</option>
+                </select>
+              </div>
             </div>
 
             <div class="architecture-cloud-tmcloud-control-stack architecture-cloud-tmcloud-setting-card">
               <label class="tool-control-label architecture-cloud-tmcloud-setting-label" for="architectureCloudTmcloudSize">Workload scale <span class="architecture-cloud-tmcloud-helper-chip" title="Choose the workload scale used by generated capacity assumptions." aria-label="Choose the workload scale used by generated capacity assumptions.">i</span></label>
-              <select id="architectureCloudTmcloudSize" class="form-select architecture-cloud-tmcloud-native-select">
-                <option value="small">Small</option>
-                <option value="medium" selected>Medium</option>
-                <option value="large">Large</option>
-              </select>
+              <div class="architecture-cloud-tmcloud-native-select-wrap" id="architectureCloudTmcloudSizeSelect">
+                <select id="architectureCloudTmcloudSize" class="form-select architecture-cloud-tmcloud-native-select">
+                  <option value="small">Small</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="large">Large</option>
+                </select>
+              </div>
             </div>
 
             <div class="architecture-cloud-tmcloud-control-stack architecture-cloud-tmcloud-setting-card">
               <label class="tool-control-label architecture-cloud-tmcloud-setting-label" for="architectureCloudTmcloudAccessBlocks">Availability zones <span class="architecture-cloud-tmcloud-helper-chip" title="Choose the zone count used by placement and resilience assumptions." aria-label="Choose the zone count used by placement and resilience assumptions.">i</span></label>
-              <select id="architectureCloudTmcloudAccessBlocks" class="form-select architecture-cloud-tmcloud-native-select">
-                <option value="1">1 zone</option>
-                <option value="2">2 zones</option>
-                <option value="3" selected>3 zones</option>
-              </select>
+              <div class="architecture-cloud-tmcloud-native-select-wrap" id="architectureCloudTmcloudAccessBlocksSelect">
+                <select id="architectureCloudTmcloudAccessBlocks" class="form-select architecture-cloud-tmcloud-native-select">
+                  <option value="1">1 zone</option>
+                  <option value="2">2 zones</option>
+                  <option value="3" selected>3 zones</option>
+                </select>
+              </div>
             </div>
             <p class="tool-control-hint architecture-cloud-tmcloud-setting-hint" id="architectureCloudTmcloudPresetDescription">Cloud Alpha Edge, public ingress, private app/data subnets, security groups, flow logs, and monitored operations.</p>
           </div>
@@ -113,49 +119,14 @@
             <div class="tool-inspector-section architecture-cloud-tmcloud-config-panel active" id="architectureCloudTmcloudNetworkPanel" data-config-panel role="tabpanel" aria-labelledby="architectureCloudTmcloudNetworkTab">
               <div class="architecture-cloud-tmcloud-config-grid">
                 <div class="architecture-cloud-tmcloud-control-stack">
-                  <label class="tool-control-label" for="architectureCloudTmcloudRouting">Connectivity pattern <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-custom-helper-chip" title="Tune connectivity pattern before regenerating the diagram." aria-label="Tune connectivity pattern before regenerating the diagram.">i</span></label>
-                  <input type="hidden" id="architectureCloudTmcloudRouting" value="edge-protected">
-
-                  <details class="architecture-cloud-tmcloud-custom-dropdown" data-custom-dropdown-for="architectureCloudTmcloudRouting">
-                    <summary class="architecture-cloud-tmcloud-custom-dropdown-summary">
-                      <span data-custom-dropdown-label>Edge protected ingress</span>
-                        <span class="architecture-cloud-tmcloud-custom-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="architecture-cloud-tmcloud-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                      <button
-                        type="button"
-                        class="architecture-cloud-tmcloud-custom-dropdown-option"
-                        data-custom-dropdown-value="public-private"
-                        role="option"
-                        aria-selected="false"
-                      >Public/private tiers</button>
-
-                      <button
-                        type="button"
-                        class="architecture-cloud-tmcloud-custom-dropdown-option"
-                        data-custom-dropdown-value="private-only"
-                        role="option"
-                        aria-selected="false"
-                      >Private endpoint only</button>
-
-                      <button
-                        type="button"
-                        class="architecture-cloud-tmcloud-custom-dropdown-option"
-                        data-custom-dropdown-value="hybrid"
-                        role="option"
-                        aria-selected="false"
-                      >Hybrid connectivity</button>
-
-                      <button
-                        type="button"
-                        class="architecture-cloud-tmcloud-custom-dropdown-option active"
-                        data-custom-dropdown-value="edge-protected"
-                        role="option"
-                        aria-selected="true"
-                      >Edge protected ingress</button>
-                    </div>
-                  </details>
+                  <label class="tool-control-label" for="architectureCloudTmcloudRouting">Connectivity pattern <span class="architecture-cloud-tmcloud-helper-chip architecture-cloud-tmcloud-custom-helper-chip" title="Tune connectivity pattern before regenerating the diagram." aria-label="Tune connectivity pattern before regenerating the diagram.">i</span></label>                  <div class="architecture-cloud-tmcloud-native-select-wrap" id="architectureCloudTmcloudRoutingSelect">
+                    <select id="architectureCloudTmcloudRouting" class="form-select architecture-cloud-tmcloud-native-select">
+                      <option value="public-private">Public/private tiers</option>
+                      <option value="private-only">Private endpoint only</option>
+                      <option value="hybrid">Hybrid connectivity</option>
+                      <option value="edge-protected" selected>Edge protected ingress</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="architecture-cloud-tmcloud-control-stack architecture-cloud-tmcloud-vlan-stack">
@@ -368,7 +339,7 @@ Private data subnet 10.80.20.0/24</textarea>
           <button type="button" class="architecture-cloud-tmcloud-icon-btn" id="architectureCloudTmcloudFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
             <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
           </button>
-          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-cloud-tmcloud-stage-toolbar-btn" id="architectureCloudTmcloudResetLayout" aria-label="Auto arrange layout" title="Auto arrange layout">Auto layout</button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-cloud-tmcloud-stage-toolbar-btn" id="architectureCloudTmcloudResetLayout" aria-label="Auto layout" title="Auto layout">Auto layout</button>
         </div>
       </div>
 
@@ -618,7 +589,7 @@ Private data subnet 10.80.20.0/24</textarea>
                         <th scope="col">Component</th>
                         <th scope="col">Placement</th>
                         <th scope="col">Purpose</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                       </tr>
                     </thead>
                     <tbody id="architectureCloudTmcloudInventoryTableBody"></tbody>

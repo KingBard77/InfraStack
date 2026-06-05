@@ -38,5 +38,5 @@ function check {
 }
 
 function fix {
-    echo "Manual."
+    echo 'Manual: Approved listening services need an approved service baseline.'
 }

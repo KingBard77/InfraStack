@@ -6,8 +6,8 @@
 
     {{ include('layout/discussion.html.twig') }}
     
-    <div class="tags-widget widget-item professional-tags-widget">
-      <h3 class="widget-title">Popular Tags</h3>
+    <div class="tags-widget professional-tags-widget sidebar-fixed-slot popular-tags-slot">
+      <h3 class="visually-hidden">Popular Tags</h3>
       <ul>
         {% for tag in popular_tags|default([]) %}
           <li>
@@ -16,6 +16,8 @@
                 tag: tag.name,
                 q: search_query|default(''),
                 sort: sort|default('newest'),
+                view: view_mode|default('grid'),
+                per_page: per_page|default(6),
                 group: group_filter|default(''),
                 category: category_filter|default(''),
                 family: family_filter|default('')

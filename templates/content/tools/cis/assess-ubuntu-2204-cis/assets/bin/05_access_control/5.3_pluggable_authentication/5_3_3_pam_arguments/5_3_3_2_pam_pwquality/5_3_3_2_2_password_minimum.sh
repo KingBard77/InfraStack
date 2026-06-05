@@ -1,32 +1,24 @@
-#!/bin/sh
+#!/bin/bash
 
 CRITICALITY=1
-TITLE="Ensure pwquality enforces a minimum password length"
-
-SETTING_FILE="/etc/security/pwquality.conf"
-
+TITLE="Ensure minimum password length is configured"
 function check {
+    KEY="minlen"
     STATUS="Fail"
 
-    if [ -f "$SETTING_FILE" ] && grep -Eq '^[[:space:]]*minlen[[:space:]]*=[[:space:]]*14([[:space:]]*(#.*)?)?$' "$SETTING_FILE" > /dev/null 2>&1; then
+    VALUE="$(awk -F= -v key="$KEY" '$1 ~ "^[[:space:]]*" key "[[:space:]]*$" { gsub(/[[:space:]]/, "", $2); print $2 }' /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf 2>/dev/null | tail -n 1)"
+    if [[ "$VALUE" =~ ^[0-9]+$ && "$VALUE" -ge 14 ]]; then
         STATUS="Pass"
     else
-        STATUS="Fail: minlen is not set to 14"
+        STATUS="Fail: $KEY is not configured to 14"
     fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-    if [ -f "$SETTING_FILE" ]; then
-        cp -a "$SETTING_FILE" "$SETTING_FILE.$(date +"%s")"
-    else
-        touch "$SETTING_FILE"
-    fi
-
-    if grep -Eq '^[[:space:]]*minlen[[:space:]]*=' "$SETTING_FILE" > /dev/null 2>&1; then
-        sed -i 's/^[[:space:]]*minlen[[:space:]]*=.*/minlen = 14/' "$SETTING_FILE"
-    else
-        echo "minlen = 14" | tee -a "$SETTING_FILE" > /dev/null
-    fi
+    touch /etc/security/pwquality.conf
+    cp -a /etc/security/pwquality.conf /etc/security/pwquality.conf.$(date +"%s")
+    sed -i "/^\s*$KEY\s*=/d" /etc/security/pwquality.conf
+    echo "$KEY = 14" | tee -a /etc/security/pwquality.conf > /dev/null
 }

@@ -1,6 +1,6 @@
 # card.yml
 
-card_summary: Scan a public URL for visible hardening signals, header posture, cookie flags, CORS exposure, and exportable findings.
+card_summary: Scan a public URL for security hardening signals, header posture, cookie flags, CORS exposure, and exportable findings.
 card_gradient_start: "#16A34A"
 card_gradient_end: "#166534"
 card_text_color: "#FFFFFF"

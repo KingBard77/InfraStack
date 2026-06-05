@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure system is disabled when audit logs are full"
 
 disk_full_action="halt|single"

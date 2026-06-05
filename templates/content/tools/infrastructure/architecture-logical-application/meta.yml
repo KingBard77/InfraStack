@@ -1,0 +1,29 @@
+# meta.yml
+
+title: Logical Application Architecture
+author: Badrul Amin
+author_role: Infrastructure & DevOps Specialist
+author_image: "images/author/author-bg-white.png"
+date: "Jun. 3rd, 2026"
+comments: Interactive tool
+publication_status: draft
+category_label: Infrastructure
+group: infrastructure
+family: architecture
+reading_time: 5 min read
+summary: Generate logical application architecture diagrams from presets, custom fields, editable stage controls, and restorable JSON state.
+intro: >-
+    Turn a logical application brief into an editable workspace for actors, frontend channels, backend services, data stores, integrations, identity, notifications, observability, and business flow.
+    Start from web, mobile, microservices, enterprise, government, AI/ML, event-driven, data pipeline, IAM, or dependency-map presets, then tune the custom fields directly.
+    Inspect inventory, routing summaries, review notes, advisory model signals, and JSON state before exporting the diagram for application design handoff.
+tags:
+    - Infrastructure
+    - Application
+    - Architecture
+related_links:
+    - links-title: Kubernetes Topology Architecture
+      links-label: InfraStack tool
+      links-description: Open the related InfraStack Kubernetes Topology Architecture workspace.
+      links-url: https://infrastack.my/tools/infrastructure/architecture-topology-kubernetes
+      links-embed: https://infrastack.my/embed/infrastructure/architecture-topology-kubernetes
+      links-icon: bi-diagram-3

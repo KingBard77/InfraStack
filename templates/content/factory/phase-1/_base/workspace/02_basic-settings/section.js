@@ -8,8 +8,6 @@
         sourceDomIds: [
             '__DOM_PREFIX__BasicPrimary',
             '__DOM_PREFIX__BasicSelect',
-            '__DOM_PREFIX__BasicSelectSummary',
-            '__DOM_PREFIX__BasicSelectMenu',
             '__DOM_PREFIX__BasicText',
             '__DOM_PREFIX__BasicToggle'
         ],
@@ -25,12 +23,9 @@
             '__PREFIX__-setting-label',
             '__PREFIX__-helper-chip',
             '__PREFIX__-native-select',
+            '__PREFIX__-native-select-wrap',
             '__PREFIX__-select',
-            '__PREFIX__-select-summary',
-            '__PREFIX__-select-arrow-slot',
-            '__PREFIX__-select-body',
-            '__PREFIX__-select-option',
-            '__PREFIX__-select-option-title',
+            '__PREFIX__-select-control',
             '__PREFIX__-text-field',
             '__PREFIX__-switch-card',
             '__PREFIX__-switch-track',
@@ -57,8 +52,8 @@
             'does not require visible Basic settings title or subtitle copy in final runtime tools',
             'may be skipped when a tool has no real high-frequency basic controls',
             'provides helper chip hooks for every setting row',
-            'provides explicit CSS hooks for popup dropdowns, hidden state inputs, plain option rows, text fields, placeholders, switches, and example input',
-            'requires Basic dropdown options to hide radio controls while preserving state',
+            'requires Basic dropdowns to use native select popups inside the standard arrow-chip wrapper with a static centered down chevron that does not mutate on hover or focus',
+            'forbids CSS popup menus, hidden radio option rows, listbox buttons, and per-option styling in Basic settings',
             'defines one-column mobile layout rules',
             'does not define family state, preset application, scanner behavior, formulas, command generation, or assessment filtering'
         ]

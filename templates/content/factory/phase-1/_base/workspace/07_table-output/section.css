@@ -221,10 +221,28 @@
     text-align: center;
 }
 
+.__TOOL_CLASS__ .tool-table-action-head,
 .__TOOL_CLASS__ .__PREFIX__-action-head,
+.__TOOL_CLASS__ .__PREFIX__-output-table:has(thead .tool-table-action-head-label) th:last-child {
+    position: sticky;
+    right: 0;
+    inset-inline-end: 0;
+    z-index: 3;
+    width: 74px;
+    min-width: 74px;
+    background: var(--base-table-head-bg, #f8f5ff);
+    box-shadow: none;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.__TOOL_CLASS__ .tool-table-action-head-label {
+    text-transform: none;
+}
+
+.__TOOL_CLASS__ .tool-table-action-cell,
 .__TOOL_CLASS__ .__PREFIX__-action-cell,
-.__TOOL_CLASS__ .__PREFIX__-output-table th:last-child,
-.__TOOL_CLASS__ .__PREFIX__-output-table td:last-child {
+.__TOOL_CLASS__ .__PREFIX__-output-table:has(thead .tool-table-action-head-label) td:last-child:has(button) {
     position: sticky;
     right: 0;
     inset-inline-end: 0;
@@ -234,27 +252,29 @@
     background: var(--base-table-surface, #ffffff);
     box-shadow: none;
     text-align: center;
-}
-
-.__TOOL_CLASS__ .__PREFIX__-output-table th:last-child {
-    z-index: 3;
-    background: var(--base-table-head-bg, #f8f5ff);
-}
-
-.__TOOL_CLASS__ .__PREFIX__-output-table tbody tr:hover td:last-child {
-    background: var(--base-table-row-hover, rgba(248, 245, 255, 0.95));
-}
-
-.__TOOL_CLASS__ .__PREFIX__-action-cell {
     white-space: nowrap;
 }
 
+.__TOOL_CLASS__ .__PREFIX__-output-table:has(thead .tool-table-action-head-label) tbody tr:hover td:last-child:has(button) {
+    background: var(--base-table-row-hover, rgba(248, 245, 255, 0.95));
+}
+
+.__TOOL_CLASS__ .tool-table-row-copy,
+.__TOOL_CLASS__ .tool-table-action-cell > button,
 .__TOOL_CLASS__ .__PREFIX__-row-copy-btn {
     display: inline-flex;
     width: 34px;
+    min-width: 34px;
+    max-width: 34px;
     height: 34px;
+    min-height: 34px;
+    max-height: 34px;
+    flex: 0 0 34px;
     align-items: center;
     justify-content: center;
+    gap: 0;
+    padding: 0;
+    box-sizing: border-box;
     border: 1px solid var(--base-table-border-strong, #c8b6ff);
     border-radius: var(--base-table-action-radius, 9px);
     background: var(--base-table-control-bg, #ffffff);
@@ -265,6 +285,31 @@
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
+.__TOOL_CLASS__ .tool-table-row-copy i,
+.__TOOL_CLASS__ .tool-table-action-cell > button i,
+.__TOOL_CLASS__ .tool-table-action-cell > button > i.bi,
+.__TOOL_CLASS__ .__PREFIX__-row-copy-btn i {
+    display: inline-flex;
+    width: 15px;
+    min-width: 15px;
+    max-width: 15px;
+    height: 15px;
+    min-height: 15px;
+    max-height: 15px;
+    flex: 0 0 15px;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 15px;
+    line-height: 1;
+}
+
+.__TOOL_CLASS__ .tool-table-row-copy:hover,
+.__TOOL_CLASS__ .tool-table-row-copy:focus,
+.__TOOL_CLASS__ .tool-table-action-cell > button:hover,
+.__TOOL_CLASS__ .tool-table-action-cell > button:focus,
 .__TOOL_CLASS__ .__PREFIX__-row-copy-btn:hover,
 .__TOOL_CLASS__ .__PREFIX__-row-copy-btn:focus {
     border-color: var(--base-table-accent-border, #fed7aa);
@@ -273,11 +318,15 @@
     outline: none;
 }
 
+.__TOOL_CLASS__ .tool-table-row-copy.is-copied,
+.__TOOL_CLASS__ .tool-table-row-copy.copied,
+.__TOOL_CLASS__ .tool-table-action-cell > button.is-copied,
+.__TOOL_CLASS__ .tool-table-action-cell > button.copied,
 .__TOOL_CLASS__ .__PREFIX__-row-copy-btn.is-copied,
 .__TOOL_CLASS__ .__PREFIX__-row-copy-btn.copied {
-    border-color: var(--state-success, #16a34a);
-    background: rgba(22, 163, 74, 0.1);
-    color: var(--state-success, #16a34a);
+    border-color: var(--base-table-border-strong, #c8b6ff);
+    background: var(--base-table-control-bg, #ffffff);
+    color: var(--base-table-accent, #7c3aed);
 }
 
 .__TOOL_CLASS__ .__PREFIX__-empty-row td {
@@ -428,9 +477,10 @@
 
 .__TOOL_CLASS__ .__PREFIX__-section-head,
 .__TOOL_CLASS__ .__PREFIX__-command-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: flex-start;
+    justify-content: stretch;
     gap: 12px;
     min-width: 0;
 }
@@ -466,12 +516,17 @@
 .__TOOL_CLASS__ .__PREFIX__-tabs-shell .__PREFIX__-table-btn[data-field-copy] {
     display: inline-flex;
     width: 34px;
+    min-width: 34px;
+    max-width: 34px;
     height: 34px;
+    min-height: 34px;
+    max-height: 34px;
     flex: 0 0 34px;
     align-items: center;
     justify-content: center;
     gap: 0;
     padding: 0;
+    box-sizing: border-box;
     border: 1px solid var(--base-table-border-strong, #c8b6ff);
     border-radius: var(--base-table-action-radius, 9px);
     background: var(--base-table-control-bg, #ffffff);
@@ -491,10 +546,18 @@
 .__TOOL_CLASS__ .__PREFIX__-tabs-shell .__PREFIX__-table-btn[data-operation-copy] i,
 .__TOOL_CLASS__ .__PREFIX__-tabs-shell .__PREFIX__-table-btn[data-field-copy] i {
     display: inline-flex;
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    min-width: 15px;
+    max-width: 15px;
+    height: 15px;
+    min-height: 15px;
+    max-height: 15px;
+    flex: 0 0 15px;
     align-items: center;
     justify-content: center;
+    gap: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-size: 15px;
     line-height: 1;
 }

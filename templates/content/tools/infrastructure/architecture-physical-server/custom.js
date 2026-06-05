@@ -1,83 +1,6 @@
 // custom.js
 // ns:start family._base.workspace.00_shell
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
-
 // ns:start family._base.workspace.05_result-summary
 function installInfraStackResultSummaryNormalizer(prefix) {
     function formatUpdatedLabel() {
@@ -600,7 +523,7 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
         "sourceBehaviours": [
             "normalizes the primary brief",
             "seeds the normalized model from prompt text",
-            "binds Generate and Load Default actions",
+            "binds Generate and Reset actions",
             "renders parser errors without unlocking generated output"
         ]
     };
@@ -669,27 +592,20 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
             "architecture-physical-server-basic-grid",
             "architecture-physical-server-control-stack",
             "architecture-physical-server-native-select",
-            "architecture-physical-server-custom-select",
-            "architecture-physical-server-custom-select-trigger",
-            "architecture-physical-server-custom-select-menu"
         ],
         "sourceVariables": [
             "presetInput",
             "presetDescription",
             "regionInput",
             "azCountInput",
-            "customSelectControls"
         ],
         "sourceFunctions": [
-            "initializeCustomSelect",
-            "initializeCustomSelects",
             "populateRegionOptions",
             "updatePresetSelection",
             "syncControls",
             "applyPreset"
         ],
         "sourceBehaviours": [
-            "enhances native select fields with the baseline custom dropdown",
             "keeps the preset description synchronized",
             "populates region and zone choices",
             "applies preset defaults to the normalized model"
@@ -1483,20 +1399,20 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
     const core = ArchitecturePhysicalServerModelCore;
     const engineRuntime = globalScope.InfraStackArchitectureEngineRuntime || null;
     const iconSvgMap = {
-        users: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/users.svg')|json_encode|raw }},
-        router: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/router.svg')|json_encode|raw }},
-        firewall: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/firewall.svg')|json_encode|raw }},
-        switch: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/switch.svg')|json_encode|raw }},
-        server: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/server.svg')|json_encode|raw }},
-        virtualization: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/virtualization.svg')|json_encode|raw }},
-        storage: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/storage.svg')|json_encode|raw }},
-        network: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/network.svg')|json_encode|raw }},
-        management: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/management.svg')|json_encode|raw }},
-        backup: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/backup.svg')|json_encode|raw }},
-        rack: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/rack.svg')|json_encode|raw }},
-        power: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/power.svg')|json_encode|raw }},
-        cooling: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/cooling.svg')|json_encode|raw }},
-        security: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/security.svg')|json_encode|raw }}
+        users: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-users.svg')|json_encode|raw }},
+        router: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-router.svg')|json_encode|raw }},
+        firewall: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-firewall.svg')|json_encode|raw }},
+        switch: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-switch.svg')|json_encode|raw }},
+        server: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-server.svg')|json_encode|raw }},
+        virtualization: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-virtualization.svg')|json_encode|raw }},
+        storage: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-storage.svg')|json_encode|raw }},
+        network: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-network.svg')|json_encode|raw }},
+        management: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-management.svg')|json_encode|raw }},
+        backup: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-backup.svg')|json_encode|raw }},
+        rack: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-rack.svg')|json_encode|raw }},
+        power: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-power.svg')|json_encode|raw }},
+        cooling: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-cooling.svg')|json_encode|raw }},
+        security: {{ include('content/tools/infrastructure/architecture-physical-server/assets/icon/infra-arch-security.svg')|json_encode|raw }}
     };
     const dom = {};
     const state = {
@@ -1558,7 +1474,7 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
             connector: '[data-engine-connector-id], [data-connector-id]',
             connectorBendHandle: '[data-engine-connector-bend], .architecture-physical-server-connector-bend-handle',
             resizeHandle: '[data-engine-resize-handle], .architecture-physical-server-resize-handle',
-            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"], .architecture-physical-server-custom-select'
+            keyboardFormTarget: 'input, textarea, select, button, summary, a[href], [contenteditable="true"]'
         },
         classes: {
             selected: 'is-selected',
@@ -1784,37 +1700,11 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
         dom.configTabs = all('.architecture-physical-server-config-tab');
         dom.configPanels = all('[data-config-panel]');
         dom.sortOptions = all('.architecture-physical-server-sort-option');
-        dom.enhancedSelects = all('select.form-select', dom.root);
 
         return Boolean(dom.root && dom.prompt && dom.generate && dom.stageCanvas);
     }
 
-    function syncEnhancedSelects() {
-        all('select[data-custom-select-enhanced="true"]', dom.root).forEach(function (selectElement) {
-            const wrapper = selectElement.nextElementSibling;
-            const activeOption = Array.from(selectElement.options).find(function (option) {
-                return option.value === selectElement.value;
-            }) || selectElement.options[0];
-            const value = wrapper && wrapper.querySelector('.architecture-physical-server-custom-select-value');
-
-            if (value) {
-                value.textContent = activeOption ? activeOption.textContent : '';
-            }
-
-            if (!wrapper) {
-                return;
-            }
-
-            all('.architecture-physical-server-custom-select-option', wrapper).forEach(function (button) {
-                const active = button.dataset.value === selectElement.value;
-
-                button.classList.toggle('selected', active);
-                button.setAttribute('aria-selected', String(active));
-            });
-        });
-    }
-
-    function collectControls() {
+        function collectControls() {
         return {
             rackCount: dom.rackCount.value,
             hypervisorCount: dom.hypervisorCount.value,
@@ -1872,7 +1762,6 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
         dom.redundantPower.checked = Boolean(next.redundantPower);
         dom.cooling.checked = Boolean(next.cooling);
         dom.physicalSecurity.checked = Boolean(next.physicalSecurity);
-        syncEnhancedSelects();
     }
 
     function buildModelFromState() {
@@ -2987,12 +2876,23 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
     }
 
     function flashInventoryCopyButton(button) {
-        button.classList.add('copied');
-        button.setAttribute('title', 'Copied');
+        const icon = button.querySelector('i');
+        const originalIcon = button.dataset.defaultIcon || (icon ? icon.className : '');
+
+        if (icon && !button.dataset.defaultIcon) {
+            button.dataset.defaultIcon = originalIcon;
+        }
+
+        button.classList.add('copied', 'is-copied');
+        if (icon) {
+            icon.className = 'bi bi-check2';
+        }
 
         window.setTimeout(function () {
-            button.classList.remove('copied');
-            button.setAttribute('title', button.dataset.copyTitle || 'Copy row');
+            button.classList.remove('copied', 'is-copied', 'failed');
+            if (icon && button.dataset.defaultIcon) {
+                icon.className = button.dataset.defaultIcon;
+            }
         }, 1400);
     }
 
@@ -3025,7 +2925,7 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
                 '<td>' + escapeHtml(row.component) + '</td>',
                 '<td>' + escapeHtml(row.placement) + '</td>',
                 '<td>' + escapeHtml(row.purpose) + '</td>',
-                '<td class="architecture-physical-server-table-action-cell">',
+                '<td class="architecture-physical-server-table-action-cell tool-table-action-cell">',
                 '<button type="button" class="architecture-physical-server-row-copy" data-inventory-copy-row="' + escapeHtml(index) + '" aria-label="Copy inventory row ' + escapeHtml(row.id || index + 1) + '" title="Copy inventory row">',
                 '<i class="bi bi-clipboard" aria-hidden="true"></i>',
                 '</button>',
@@ -3463,7 +3363,7 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
     }
 
     function isInputTarget(target) {
-        return Boolean(target.closest('input, textarea, select, button, summary, a[href], .architecture-physical-server-custom-select, [contenteditable="true"]'));
+        return Boolean(target.closest('input, textarea, select, button, summary, a[href], [contenteditable="true"]'));
     }
 
     function getSvgPoint(event) {
@@ -4206,116 +4106,7 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
         });
     }
 
-    function enhanceSelects() {
-        function closeSelects(exceptWrapper) {
-            all('.architecture-physical-server-custom-select', dom.root).forEach(function (wrapper) {
-                if (exceptWrapper && wrapper === exceptWrapper) {
-                    return;
-                }
-
-                wrapper.classList.remove('open');
-                const trigger = wrapper.querySelector('.architecture-physical-server-custom-select-trigger');
-
-                if (trigger) {
-                    trigger.setAttribute('aria-expanded', 'false');
-                }
-            });
-        }
-
-        dom.enhancedSelects.forEach(function (selectElement) {
-            if (selectElement.dataset.customSelectEnhanced === 'true') {
-                return;
-            }
-
-            const label = selectElement.id ? document.querySelector('label[for="' + selectElement.id + '"]') : null;
-            const wrapper = document.createElement('div');
-            const trigger = document.createElement('button');
-            const value = document.createElement('span');
-            const icon = document.createElement('i');
-            const menu = document.createElement('div');
-
-            function syncSelect() {
-                const activeOption = Array.from(selectElement.options).find(function (option) {
-                    return option.value === selectElement.value;
-                }) || selectElement.options[0];
-
-                value.textContent = activeOption ? activeOption.textContent : '';
-                all('.architecture-physical-server-custom-select-option', wrapper).forEach(function (button) {
-                    const active = button.dataset.value === selectElement.value;
-
-                    button.classList.toggle('selected', active);
-                    button.setAttribute('aria-selected', String(active));
-                });
-            }
-
-            wrapper.className = 'architecture-physical-server-custom-select';
-            trigger.type = 'button';
-            trigger.className = 'architecture-physical-server-custom-select-trigger';
-            trigger.setAttribute('aria-haspopup', 'listbox');
-            trigger.setAttribute('aria-expanded', 'false');
-            trigger.setAttribute('aria-label', label ? label.textContent.trim() : 'Select option');
-            value.className = 'architecture-physical-server-custom-select-value';
-            icon.className = 'bi bi-chevron-down';
-            icon.setAttribute('aria-hidden', 'true');
-            menu.className = 'architecture-physical-server-custom-select-menu';
-            menu.setAttribute('role', 'listbox');
-            if (selectElement.id) {
-                menu.id = selectElement.id + 'CustomSelectMenu';
-                trigger.setAttribute('aria-controls', menu.id);
-            }
-
-            Array.from(selectElement.options).forEach(function (option) {
-                const optionButton = document.createElement('button');
-
-                optionButton.type = 'button';
-                optionButton.className = 'architecture-physical-server-custom-select-option';
-                optionButton.dataset.value = option.value;
-                optionButton.textContent = option.textContent;
-                optionButton.setAttribute('role', 'option');
-                optionButton.addEventListener('click', function () {
-                    selectElement.value = option.value;
-                    syncSelect();
-                    closeSelects();
-                    selectElement.dispatchEvent(new Event('change', { bubbles: true }));
-                    trigger.focus();
-                });
-                menu.appendChild(optionButton);
-            });
-
-            trigger.appendChild(value);
-            trigger.appendChild(icon);
-            wrapper.appendChild(trigger);
-            wrapper.appendChild(menu);
-            selectElement.classList.add('architecture-physical-server-native-select');
-            selectElement.setAttribute('aria-hidden', 'true');
-            selectElement.tabIndex = -1;
-            selectElement.dataset.customSelectEnhanced = 'true';
-            selectElement.insertAdjacentElement('afterend', wrapper);
-            trigger.addEventListener('click', function () {
-                const willOpen = !wrapper.classList.contains('open');
-
-                closeSelects(wrapper);
-                wrapper.classList.toggle('open', willOpen);
-                trigger.setAttribute('aria-expanded', String(willOpen));
-            });
-            selectElement.addEventListener('change', syncSelect);
-            syncSelect();
-        });
-
-        document.addEventListener('click', function (event) {
-            if (!dom.root || !dom.root.contains(event.target)) {
-                return;
-            }
-
-            if (event.target.closest('.architecture-physical-server-custom-select')) {
-                return;
-            }
-
-            closeSelects();
-        });
-    }
-
-    function exportSvg() {
+        function exportSvg() {
         const svgMarkup = serializeCurrentSvg();
 
         if (!svgMarkup) {
@@ -4427,7 +4218,7 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
     function bindEvents() {
         dom.generate.addEventListener('click', generateArchitecture);
         dom.reset.addEventListener('click', function () {
-            applyPreset('onprem-private-cloud', true);
+            applyPreset('onprem-private-cloud', false);
         });
         dom.preset.addEventListener('change', function () {
             applyPreset(dom.preset.value, true);
@@ -4652,8 +4443,6 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
         state.controls = preset.defaults;
         dom.prompt.value = preset.prompt;
         syncControls(preset.defaults);
-        enhanceSelects();
-        initializeInfraStackCustomDropdowns(document);
         setSortMode('id');
         bindEvents();
         setupPromptCopyButtons();
@@ -4757,7 +4546,12 @@ installInfraStackResultSummaryNormalizer('architecture-physical-server');
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });

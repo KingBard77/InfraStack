@@ -1,84 +1,11 @@
 // custom.js
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
+// ns:start family.calculate.workspace.04_visual-contract
+// Accepted divergence: calculate visual contract remains tool-local until section-safe extraction is applied.
+// ns:end family.calculate.workspace.04_visual-contract
 // ns:start family.calculate.workspace.04_selected-item
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family.calculate.workspace.04_selected-item
@@ -177,9 +104,6 @@ document.addEventListener('DOMContentLoaded', function () {
 // ns:end family._base.workspace.01_input-brief
 // ns:start family._base.workspace.02_basic-settings
     const presetInput = document.getElementById('calculateCostAwsPreset');
-    const presetSummary = document.getElementById('calculateCostAwsPresetSummary');
-    const presetOptionInputs = Array.from(document.querySelectorAll('input[name="calculateCostAwsPresetOption"]'));
-    const presetSelect = document.getElementById('calculateCostAwsPresetSelect');
     const applyPresetButton = document.getElementById('calculateCostAwsApplyPreset');
 // ns:end family._base.workspace.02_basic-settings
     const submitButton = document.getElementById('calculateCostAwsSubmit');
@@ -193,14 +117,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const includeApiInput = document.getElementById('calculateCostAwsIncludeApi');
 
     const ec2InstanceInput = document.getElementById('calculateCostAwsEc2Instance');
-    const ec2InstanceSummary = document.getElementById('calculateCostAwsEc2InstanceSummary');
-    const ec2InstanceOptionInputs = Array.from(document.querySelectorAll('input[name="calculateCostAwsEc2InstanceOption"]'));
-    const ec2InstanceSelect = document.getElementById('calculateCostAwsEc2InstanceSelect');
     const ec2CustomOptionLabel = document.getElementById('calculateCostAwsEc2CustomOptionLabel');
     const ec2PurchaseInput = document.getElementById('calculateCostAwsEc2Purchase');
-    const ec2PurchaseSummary = document.getElementById('calculateCostAwsEc2PurchaseSummary');
-    const ec2PurchaseOptionInputs = Array.from(document.querySelectorAll('input[name="calculateCostAwsEc2PurchaseOption"]'));
-    const ec2PurchaseSelect = document.getElementById('calculateCostAwsEc2PurchaseSelect');
     const ec2CustomFields = document.getElementById('calculateCostAwsEc2CustomFields');
     const ec2CustomHint = document.getElementById('calculateCostAwsEc2CustomHint');
     const ec2CustomLabelInput = document.getElementById('calculateCostAwsEc2CustomLabel');
@@ -223,9 +141,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const lambdaMemoryMbInput = document.getElementById('calculateCostAwsLambdaMemoryMb');
 
     const apiTypeInput = document.getElementById('calculateCostAwsApiType');
-    const apiTypeSummary = document.getElementById('calculateCostAwsApiTypeSummary');
-    const apiTypeOptionInputs = Array.from(document.querySelectorAll('input[name="calculateCostAwsApiTypeOption"]'));
-    const apiTypeSelect = document.getElementById('calculateCostAwsApiTypeSelect');
     const apiRequestsMillionInput = document.getElementById('calculateCostAwsApiRequestsMillion');
     const apiResponseKbInput = document.getElementById('calculateCostAwsApiResponseKb');
 
@@ -277,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const importJsonInput = document.getElementById('calculateCostAwsImportJson');
     const tabButtons = Array.from(document.querySelectorAll('.calculate-cost-aws-tab-btn'));
     const tabPanels = Array.from(document.querySelectorAll('.calculate-cost-aws-tab-panel'));
-    const dropdownSelects = Array.from(document.querySelectorAll('.calculate-cost-aws-select'));
 
     const serviceRefs = {
         ec2: {
@@ -313,9 +227,6 @@ document.addEventListener('DOMContentLoaded', function () {
         !form ||
         !labelInput ||
         !presetInput ||
-        !presetSummary ||
-        presetOptionInputs.length === 0 ||
-        !presetSelect ||
         !applyPresetButton ||
         !submitButton ||
         !resetButton ||
@@ -325,14 +236,8 @@ document.addEventListener('DOMContentLoaded', function () {
         !includeLambdaInput ||
         !includeApiInput ||
         !ec2InstanceInput ||
-        !ec2InstanceSummary ||
-        ec2InstanceOptionInputs.length === 0 ||
-        !ec2InstanceSelect ||
         !ec2CustomOptionLabel ||
         !ec2PurchaseInput ||
-        !ec2PurchaseSummary ||
-        ec2PurchaseOptionInputs.length === 0 ||
-        !ec2PurchaseSelect ||
         !ec2CustomFields ||
         !ec2CustomHint ||
         !ec2CustomLabelInput ||
@@ -351,9 +256,6 @@ document.addEventListener('DOMContentLoaded', function () {
         !lambdaDurationMsInput ||
         !lambdaMemoryMbInput ||
         !apiTypeInput ||
-        !apiTypeSummary ||
-        apiTypeOptionInputs.length === 0 ||
-        !apiTypeSelect ||
         !apiRequestsMillionInput ||
         !apiResponseKbInput ||
         !sharedEgressGbInput ||
@@ -403,31 +305,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    const singleSelectConfigs = [
-        {
-            inputs: presetOptionInputs,
-            hiddenInput: presetInput,
-            summaryElement: presetSummary,
-            detailsElement: presetSelect
-        },
-        {
-            inputs: ec2InstanceOptionInputs,
-            hiddenInput: ec2InstanceInput,
-            summaryElement: ec2InstanceSummary,
-            detailsElement: ec2InstanceSelect
-        },
-        {
-            inputs: ec2PurchaseOptionInputs,
-            hiddenInput: ec2PurchaseInput,
-            summaryElement: ec2PurchaseSummary,
-            detailsElement: ec2PurchaseSelect
-        },
-        {
-            inputs: apiTypeOptionInputs,
-            hiddenInput: apiTypeInput,
-            summaryElement: apiTypeSummary,
-            detailsElement: apiTypeSelect
-        }
+    const nativeSelectInputs = [
+        presetInput,
+        ec2InstanceInput,
+        ec2PurchaseInput,
+        apiTypeInput
     ];
 
     const PURCHASE_MODE_LABELS = {
@@ -1214,17 +1096,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function flashCopyButton(button, state) {
         const isCopied = state === 'copied';
-        const originalHtml = button.dataset.defaultHtml || button.innerHTML;
-        button.dataset.defaultHtml = originalHtml;
+        const icon = button.querySelector('i');
+        const originalIcon = button.dataset.defaultIcon || (icon ? icon.className : '');
+
+        if (icon && !button.dataset.defaultIcon) {
+            button.dataset.defaultIcon = originalIcon;
+        }
+
         button.classList.toggle('copied', isCopied);
+        button.classList.toggle('is-copied', isCopied);
         button.classList.toggle('failed', !isCopied);
-        button.innerHTML = isCopied
-            ? '<i class="bi bi-check2" aria-hidden="true"></i>'
-            : '<i class="bi bi-x-lg" aria-hidden="true"></i>';
+        if (icon) {
+            icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+        }
 
         window.setTimeout(() => {
-            button.classList.remove('copied', 'failed');
-            button.innerHTML = originalHtml;
+            button.classList.remove('copied', 'is-copied', 'failed');
+            if (icon && button.dataset.defaultIcon) {
+                icon.className = button.dataset.defaultIcon;
+            }
         }, 1400);
     }
 
@@ -1278,12 +1168,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.appendChild(textarea);
         textarea.select();
 
-        const didCopy = document.execCommand('copy');
+        document.execCommand('copy');
         textarea.remove();
-
-        if (!didCopy) {
-            throw new Error('Clipboard copy failed.');
-        }
     }
 
     async function writeClipboardText(text) {
@@ -1404,69 +1290,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function getSelectedSingleValue(inputs, fallbackValue) {
-        const selectedInput = inputs.find((input) => input.checked);
+    function setNativeSelectValue(selectElement, value, fallbackValue) {
+        const requestedValue = String(value || '');
+        const fallback = typeof fallbackValue === 'undefined' ? selectElement.value : String(fallbackValue || '');
+        const options = Array.from(selectElement.options);
+        const hasRequestedValue = options.some((option) => option.value === requestedValue);
+        const hasFallbackValue = options.some((option) => option.value === fallback);
 
-        return selectedInput ? selectedInput.value : fallbackValue;
+        selectElement.value = hasRequestedValue
+            ? requestedValue
+            : hasFallbackValue
+                ? fallback
+                : options.length
+                    ? options[0].value
+                    : '';
     }
 
-    function setSelectedSingleValue(inputs, value) {
-        inputs.forEach((input) => {
-            input.checked = input.value === value;
-        });
-    }
+    function getNativeSelectLabel(selectElement, fallbackLabel) {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
 
-    function getSelectSpaceContainer(selectElement) {
-        return selectElement.closest('.calculate-cost-aws-field-stack, .calculate-cost-aws-toolbar-left, .calculate-cost-aws-setting-field') || selectElement.parentElement;
-    }
-
-    function getDropdownBoundaryRect(element) {
-        const boundaryElement = element
-            ? element.closest('.calculate-cost-aws-service-card, .calculate-cost-aws-inner-panel, .calculate-cost-aws-section-card, .tool-box')
-            : null;
-
-        if (boundaryElement) {
-            return boundaryElement.getBoundingClientRect();
-        }
-
-        return {
-            top: 0,
-            bottom: window.innerHeight
-        };
-    }
-
-    function clearSelectSpace(selectElement) {
-        return;
-    }
-
-    function applySelectSpace(selectElement) {
-        return;
-    }
-
-    function getSelectedSingleLabel(inputs, fallbackLabel) {
-        const selectedInput = inputs.find((input) => input.checked);
-
-        if (!selectedInput) {
-            return fallbackLabel;
-        }
-
-        const labelElement = selectedInput.closest('.calculate-cost-aws-select-card').querySelector('.calculate-cost-aws-select-title');
-
-        return labelElement ? labelElement.textContent.trim() : fallbackLabel;
-    }
-
-    function updateSingleSelectState(inputs, hiddenInput, summaryElement, detailsElement) {
-        const selectedInput = inputs.find((input) => input.checked);
-
-        if (selectedInput) {
-            hiddenInput.value = selectedInput.value;
-            summaryElement.textContent = getSelectedSingleLabel(inputs, summaryElement.textContent.trim());
-        }
-
-        if (detailsElement) {
-            detailsElement.removeAttribute('open');
-            clearSelectSpace(detailsElement);
-        }
+        return selectedOption ? selectedOption.textContent.trim() : fallbackLabel;
     }
 
     function setSortOption(value, shouldRender) {
@@ -1524,15 +1367,19 @@ document.addEventListener('DOMContentLoaded', function () {
         resultContent.classList.remove('d-none');
     }
 
+    function setSubmitButtonLabel(label) {
+        submitButton.innerHTML = `<i class="bi bi-calculator" aria-hidden="true"></i><span>${escapeHtml(label)}</span>`;
+    }
+
     function toggleSubmitState(isLoading) {
         if (isLoading) {
             submitButton.disabled = true;
-            submitButton.textContent = 'Estimating...';
+            setSubmitButtonLabel('Estimating...');
             return;
         }
 
         submitButton.disabled = false;
-        submitButton.textContent = 'Estimate';
+        setSubmitButtonLabel('Estimate');
     }
 
     function buildQuery() {
@@ -1654,6 +1501,10 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error('Imported JSON must include an inputs object.');
     }
 
+    function buildImportedPayloadState(payload) {
+        return getImportedQuery(payload);
+    }
+
     function getFiniteValue(value, fallbackValue) {
         const parsedValue = Number(value);
 
@@ -1671,12 +1522,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function setOptionalRateInputValue(input, value) {
         const parsedValue = Number(value);
         input.value = Number.isFinite(parsedValue) && parsedValue >= 0 ? String(parsedValue) : '';
-    }
-
-    function setImportedSingleSelect(inputs, hiddenInput, summaryElement, value) {
-        hiddenInput.value = value;
-        setSelectedSingleValue(inputs, value);
-        updateSingleSelectState(inputs, hiddenInput, summaryElement, null);
     }
 
     function resetResultSort() {
@@ -1702,7 +1547,7 @@ document.addEventListener('DOMContentLoaded', function () {
         applyPreset(presetKey);
 
         labelInput.value = String(importedQuery.label || preset.label || 'AWS cost estimate').trim() || 'AWS cost estimate';
-        setImportedSingleSelect(presetOptionInputs, presetInput, presetSummary, presetKey);
+        setNativeSelectValue(presetInput, presetKey, 'lean-web');
 
         includeEc2Input.checked = getBooleanValue(importedQuery.includeEc2, preset.includeEc2);
         includeEbsInput.checked = getBooleanValue(importedQuery.includeEbs, preset.includeEbs);
@@ -1713,8 +1558,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ec2CustomLabelInput.value = String(importedQuery.ec2CustomLabel || '').trim();
         setNumberInputValue(ec2CustomVcpuInput, importedQuery.ec2CustomVcpu, 4);
         setNumberInputValue(ec2CustomMemoryGiBInput, importedQuery.ec2CustomMemoryGiB, 16);
-        setImportedSingleSelect(ec2InstanceOptionInputs, ec2InstanceInput, ec2InstanceSummary, ec2Instance);
-        setImportedSingleSelect(ec2PurchaseOptionInputs, ec2PurchaseInput, ec2PurchaseSummary, ec2Purchase);
+        setNativeSelectValue(ec2InstanceInput, ec2Instance, preset.ec2Instance);
+        setNativeSelectValue(ec2PurchaseInput, ec2Purchase, preset.ec2Purchase);
         setNumberInputValue(ec2CountInput, importedQuery.ec2Count, preset.ec2Count);
         setNumberInputValue(ec2HoursInput, importedQuery.ec2Hours, preset.ec2Hours);
 
@@ -1731,7 +1576,7 @@ document.addEventListener('DOMContentLoaded', function () {
         setNumberInputValue(lambdaDurationMsInput, importedQuery.lambdaDurationMs, preset.lambdaDurationMs);
         setNumberInputValue(lambdaMemoryMbInput, importedQuery.lambdaMemoryMb, preset.lambdaMemoryMb);
 
-        setImportedSingleSelect(apiTypeOptionInputs, apiTypeInput, apiTypeSummary, apiType);
+        setNativeSelectValue(apiTypeInput, apiType, preset.apiType);
         setNumberInputValue(apiRequestsMillionInput, importedQuery.apiRequestsMillion, preset.apiRequestsMillion);
         setNumberInputValue(apiResponseKbInput, importedQuery.apiResponseKb, preset.apiResponseKb);
 
@@ -1781,9 +1626,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const preset = PRESETS[presetKey] || PRESETS['lean-web'];
 
         labelInput.value = preset.label;
-        presetInput.value = presetKey;
-        setSelectedSingleValue(presetOptionInputs, presetKey);
-        updateSingleSelectState(presetOptionInputs, presetInput, presetSummary, presetSelect);
+        setNativeSelectValue(presetInput, presetKey, 'lean-web');
 
         includeEc2Input.checked = preset.includeEc2;
         includeEbsInput.checked = preset.includeEbs;
@@ -1791,16 +1634,12 @@ document.addEventListener('DOMContentLoaded', function () {
         includeLambdaInput.checked = preset.includeLambda;
         includeApiInput.checked = preset.includeApi;
 
-        ec2InstanceInput.value = preset.ec2Instance;
+        setNativeSelectValue(ec2InstanceInput, preset.ec2Instance, 'custom');
         ec2CustomLabelInput.value = '';
         ec2CustomVcpuInput.value = 4;
         ec2CustomMemoryGiBInput.value = 16;
-        ec2PurchaseInput.value = preset.ec2Purchase;
-        setSelectedSingleValue(ec2InstanceOptionInputs, preset.ec2Instance);
-        setSelectedSingleValue(ec2PurchaseOptionInputs, preset.ec2Purchase);
+        setNativeSelectValue(ec2PurchaseInput, preset.ec2Purchase, 'onDemand');
         updateCustomInstanceLabel();
-        updateSingleSelectState(ec2InstanceOptionInputs, ec2InstanceInput, ec2InstanceSummary, ec2InstanceSelect);
-        updateSingleSelectState(ec2PurchaseOptionInputs, ec2PurchaseInput, ec2PurchaseSummary, ec2PurchaseSelect);
         ec2CountInput.value = preset.ec2Count;
         ec2HoursInput.value = preset.ec2Hours;
 
@@ -1817,9 +1656,7 @@ document.addEventListener('DOMContentLoaded', function () {
         lambdaDurationMsInput.value = preset.lambdaDurationMs;
         lambdaMemoryMbInput.value = preset.lambdaMemoryMb;
 
-        apiTypeInput.value = preset.apiType;
-        setSelectedSingleValue(apiTypeOptionInputs, preset.apiType);
-        updateSingleSelectState(apiTypeOptionInputs, apiTypeInput, apiTypeSummary, apiTypeSelect);
+        setNativeSelectValue(apiTypeInput, preset.apiType, 'http');
         apiRequestsMillionInput.value = preset.apiRequestsMillion;
         apiResponseKbInput.value = preset.apiResponseKb;
 
@@ -2403,7 +2240,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             {
                 name: 'Preset',
-                value: getSelectedSingleLabel(presetOptionInputs, presetSummary.textContent.trim()),
+                value: getNativeSelectLabel(presetInput, 'Selected preset'),
                 note: 'Presets accelerate setup, then yield to your current inputs.'
             },
             {
@@ -2632,7 +2469,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function buildSummaryHtml(result) {
-        const presetLabel = getSelectedSingleLabel(presetOptionInputs, presetSummary.textContent.trim());
+        const presetLabel = getNativeSelectLabel(presetInput, 'Selected preset');
         const generatedAt = new Date(result.generatedAt);
         const generatedAtText = Number.isNaN(generatedAt.getTime()) ? 'Just now' : generatedAt.toLocaleString();
         const overrideCount = getOverrideCount(result.query);
@@ -2748,7 +2585,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${escapeHtml(item.unitBasis)}</td>
                 <td class="calculate-cost-aws-currency">${escapeHtml(formatCurrency(item.monthly))}</td>
                 <td class="calculate-cost-aws-currency">${escapeHtml(formatCurrency(item.annual))}</td>
-                <td class="calculate-cost-aws-copy-cell">
+                <td class="calculate-cost-aws-copy-cell tool-table-action-cell">
                     <button type="button" class="calculate-cost-aws-copy-btn" data-copy="${escapeHtml(item.copyValue)}" aria-label="Copy breakdown row ${index + 1}" title="Copy row">
                         <i class="bi bi-clipboard" aria-hidden="true"></i>
                     </button>
@@ -2766,7 +2603,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td class="calculate-cost-aws-currency">${escapeHtml(formatCurrency(row.annual))}</td>
                 <td>${escapeHtml(formatPercent(row.sharePct))}</td>
                 <td><span class="calculate-cost-aws-signal ${escapeHtml(row.signalClass)}">${escapeHtml(row.signal)}</span></td>
-                <td class="calculate-cost-aws-copy-cell">
+                <td class="calculate-cost-aws-copy-cell tool-table-action-cell">
                     <button type="button" class="calculate-cost-aws-copy-btn" data-copy="${escapeHtml(row.copyValue)}" aria-label="Copy service mix row ${index + 1}" title="Copy row">
                         <i class="bi bi-clipboard" aria-hidden="true"></i>
                     </button>
@@ -2782,7 +2619,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${escapeHtml(row.name)}</td>
                 <td>${escapeHtml(row.value)}</td>
                 <td>${escapeHtml(row.note)}</td>
-                <td class="calculate-cost-aws-copy-cell">
+                <td class="calculate-cost-aws-copy-cell tool-table-action-cell">
                     <button type="button" class="calculate-cost-aws-copy-btn" data-copy="${escapeHtml(`${row.name}: ${row.value}`)}" aria-label="Copy assumption row ${index + 1}" title="Copy row">
                         <i class="bi bi-clipboard" aria-hidden="true"></i>
                     </button>
@@ -2911,28 +2748,11 @@ document.addEventListener('DOMContentLoaded', function () {
     initNumericInputGroups();
     initMarkdownCopyButtons();
 
-    dropdownSelects.forEach((selectElement) => {
-        selectElement.addEventListener('toggle', function () {
-            if (selectElement.open) {
-                applySelectSpace(selectElement);
-                return;
+    nativeSelectInputs.forEach((selectElement) => {
+        selectElement.addEventListener('change', function () {
+            if (selectElement === ec2InstanceInput) {
+                syncCustomInstanceState();
             }
-
-            clearSelectSpace(selectElement);
-        });
-    });
-
-    singleSelectConfigs.forEach((config) => {
-        updateSingleSelectState(config.inputs, config.hiddenInput, config.summaryElement, null);
-
-        config.inputs.forEach((input) => {
-            input.addEventListener('change', function () {
-                updateSingleSelectState(config.inputs, config.hiddenInput, config.summaryElement, config.detailsElement);
-
-                if (config.hiddenInput === ec2InstanceInput) {
-                    syncCustomInstanceState();
-                }
-            });
         });
     });
 
@@ -2949,26 +2769,6 @@ document.addEventListener('DOMContentLoaded', function () {
     updateCustomInstanceLabel();
     syncCustomInstanceState();
 
-    document.addEventListener('click', function (event) {
-        dropdownSelects.forEach((selectElement) => {
-            if (!selectElement.contains(event.target)) {
-                selectElement.removeAttribute('open');
-                clearSelectSpace(selectElement);
-            }
-        });
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key !== 'Escape') {
-            return;
-        }
-
-        dropdownSelects.forEach((selectElement) => {
-            selectElement.removeAttribute('open');
-            clearSelectSpace(selectElement);
-        });
-    });
-
     Object.values(serviceRefs).forEach((serviceRef) => {
         serviceRef.checkbox.addEventListener('change', syncServiceState);
     });
@@ -2978,7 +2778,7 @@ document.addEventListener('DOMContentLoaded', function () {
             updateCustomInstanceLabel();
 
             if (ec2InstanceInput.value === 'custom') {
-                updateSingleSelectState(ec2InstanceOptionInputs, ec2InstanceInput, ec2InstanceSummary, null);
+                syncCustomInstanceState();
             }
         });
     });
@@ -3016,7 +2816,7 @@ document.addEventListener('DOMContentLoaded', function () {
     resetButton.addEventListener('click', function () {
         applyPreset('lean-web');
         latestResult = null;
-    setLoadingState('Build an estimate to review line-item cost drivers, service mix, and exportable JSON.');
+        setLoadingState('Build an estimate to review line-item cost drivers, service mix, and exportable JSON.');
         toggleSubmitState(false);
     });
 
@@ -3103,7 +2903,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             const payload = JSON.parse(await file.text());
-            applyImportedQuery(getImportedQuery(payload));
+            applyImportedQuery(buildImportedPayloadState(payload));
             flashButton(importJsonButton, 'Imported');
         } catch (error) {
             setErrorState(error instanceof Error ? error.message : 'The JSON file could not be imported.');
@@ -3114,8 +2914,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 // ns:end family._base.workspace.08_json-restore
-    setLoadingState('Build an estimate to review line-item cost drivers, service mix, and exportable JSON.');
-    initializeInfraStackCustomDropdowns(document);
+        setLoadingState('Build an estimate to review line-item cost drivers, service mix, and exportable JSON.');
 });
 // ns:end family._base.workspace.00_shell
 // ns:start family._base.workspace.07_table-output
@@ -3214,7 +3013,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });

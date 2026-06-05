@@ -103,7 +103,7 @@
                                         <th scope="col">Item</th>
                                         <th scope="col">Type</th>
                                         <th class="__PREFIX__-status-head" scope="col">Status</th>
-                                        <th class="__PREFIX__-action-head" scope="col">Action</th>
+                                        <th class="__PREFIX__-action-head tool-table-action-head" scope="col"><span class="tool-table-action-head-label">Action</span></th>
                                     </tr>
                                 </thead>
                                 <tbody id="__DOM_PREFIX__PrimaryTableBody">
@@ -112,7 +112,7 @@
                                         <td><span class="__PREFIX__-table-cell-text">Primary row</span></td>
                                         <td><span class="__PREFIX__-table-cell-text">Baseline</span></td>
                                         <td class="__PREFIX__-status-cell"><span class="__PREFIX__-table-cell-text">Ready</span></td>
-                                        <td class="__PREFIX__-action-cell">
+                                        <td class="__PREFIX__-action-cell tool-table-action-cell">
                                             <button type="button" class="__PREFIX__-row-copy-btn" data-copy-row="Primary row" aria-label="Copy row 1" title="Copy row">
                                                 <i class="bi bi-clipboard" aria-hidden="true"></i>
                                             </button>
@@ -135,7 +135,7 @@
                                         <th scope="col">Section</th>
                                         <th scope="col">Value</th>
                                         <th scope="col">Note</th>
-                                        <th class="__PREFIX__-action-head" scope="col">Action</th>
+                                        <th class="__PREFIX__-action-head tool-table-action-head" scope="col"><span class="tool-table-action-head-label">Action</span></th>
                                     </tr>
                                 </thead>
                                 <tbody id="__DOM_PREFIX__SecondaryTableBody">
@@ -161,7 +161,7 @@
                                         <th scope="col">Assumption</th>
                                         <th scope="col">Value</th>
                                         <th scope="col">Source</th>
-                                        <th class="__PREFIX__-action-head" scope="col">Action</th>
+                                        <th class="__PREFIX__-action-head tool-table-action-head" scope="col"><span class="tool-table-action-head-label">Action</span></th>
                                     </tr>
                                 </thead>
                                 <tbody id="__DOM_PREFIX__TertiaryTableBody">
@@ -216,7 +216,7 @@
                                         <th scope="col">Section</th>
                                         <th scope="col">Value</th>
                                         <th scope="col">Note</th>
-                                        <th class="__PREFIX__-action-head" scope="col">Action</th>
+                                        <th class="__PREFIX__-action-head tool-table-action-head" scope="col"><span class="tool-table-action-head-label">Action</span></th>
                                     </tr>
                                 </thead>
                                 <tbody id="__DOM_PREFIX__ExtraTableBody">
@@ -255,6 +255,10 @@
                 );
             });
         });
+
+        window.InfraStackBaseWorkspaceSections.bindBaseTableOutputCopyButtons(
+            document.getElementById('__DOM_PREFIX__TableOutputShell')
+        );
     </script>
 </body>
 </html>

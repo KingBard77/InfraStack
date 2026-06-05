@@ -18,5 +18,5 @@ function check {
 }
 
 function fix {
-    echo "Manual."
+    echo 'Manual: Duplicate group name cleanup requires selecting which group to rename.'
 }

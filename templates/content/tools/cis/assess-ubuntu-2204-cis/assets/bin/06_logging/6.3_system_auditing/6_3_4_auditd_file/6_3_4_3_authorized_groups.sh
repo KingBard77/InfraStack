@@ -1,43 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 
-CRITICALITY=1
-TITLE="Ensure only authorized groups are assigned to audit log files"
-
-function audit_log_directory {
-    LOG_FILE="$(awk -F= '/^[[:space:]]*log_file[[:space:]]*=/{gsub(/[[:space:]]/, "", $2); print $2; exit}' /etc/audit/auditd.conf)"
-
-    if [ -z "$LOG_FILE" ]; then
-        LOG_FILE="/var/log/audit/audit.log"
-    fi
-
-    dirname "$LOG_FILE"
-}
-
-function authorized_group {
-    if getent group adm > /dev/null 2>&1; then
-        echo "adm"
-    else
-        echo "root"
-    fi
+CRITICALITY=2
+TITLE="Ensure audit log files group owner is configured"
+function audit_dir {
+    awk -F= '/^\s*log_file\s*=/{ gsub(/[[:space:]]/, "", $2); print $2 }' /etc/audit/auditd.conf 2>/dev/null | xargs dirname 2>/dev/null
 }
 
 function check {
+    AUDIT_DIR="$(audit_dir)"
+    AUDIT_DIR="${AUDIT_DIR:-/var/log/audit}"
     STATUS="Pass"
-    LOG_DIR="$(audit_log_directory)"
-    GROUP_NAME="$(authorized_group)"
 
-    if [ ! -d "$LOG_DIR" ]; then
-        STATUS="Fail: Audit log directory does not exist"
-    elif find "$LOG_DIR" -type f ! -group "$GROUP_NAME" | grep . > /dev/null 2>&1; then
-        STATUS="Fail: Audit log files do not use the authorized group"
+    if find "$AUDIT_DIR" -type f ! \( -group root -o -group adm \) -print -quit 2>/dev/null | grep -q .; then
+        STATUS="Fail: audit log files are not group-owned by root or adm"
     fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-    LOG_DIR="$(audit_log_directory)"
-    GROUP_NAME="$(authorized_group)"
-    mkdir -p "$LOG_DIR"
-    find "$LOG_DIR" -type f -exec chgrp "$GROUP_NAME" {} +
+    AUDIT_DIR="$(audit_dir)"
+    AUDIT_DIR="${AUDIT_DIR:-/var/log/audit}"
+    find "$AUDIT_DIR" -type f -exec chgrp root {} \; 2>/dev/null
 }

@@ -1,81 +1,5 @@
 // custom.js
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
 // ns:start family.assessment.workspace.04_selected-item
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family.assessment.workspace.04_selected-item
@@ -175,24 +99,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('assessUbuntu2204CisForm');
     const queryInput = document.getElementById('assessUbuntu2204CisQuery');
     const submitButton = document.getElementById('assessUbuntu2204CisSubmit');
+    const resetButton = document.getElementById('assessUbuntu2204CisReset');
 // ns:end family._base.workspace.01_input-brief
 // ns:start family._base.workspace.02_basic-settings
     const familyInput = document.getElementById('assessUbuntu2204CisFamily');
-    const familySummary = document.getElementById('assessUbuntu2204CisFamilySummary');
-    const familySelect = document.getElementById('assessUbuntu2204CisFamilySelect');
-    const familyOptionsContainer = document.getElementById('assessUbuntu2204CisFamilyOptions');
     const sectionPathInput = document.getElementById('assessUbuntu2204CisSectionPath');
-    const sectionSummary = document.getElementById('assessUbuntu2204CisSectionSummary');
-    const sectionSelect = document.getElementById('assessUbuntu2204CisSectionSelect');
-    const sectionOptionsContainer = document.getElementById('assessUbuntu2204CisSectionOptions');
     const criticalityInput = document.getElementById('assessUbuntu2204CisCriticality');
-    const criticalitySummary = document.getElementById('assessUbuntu2204CisCriticalitySummary');
-    const criticalitySelect = document.getElementById('assessUbuntu2204CisCriticalitySelect');
-    const criticalityOptionsContainer = document.getElementById('assessUbuntu2204CisCriticalityOptions');
     const selectedControlInput = document.getElementById('assessUbuntu2204CisSelectedControl');
-    const controlSummary = document.getElementById('assessUbuntu2204CisControlSummary');
-    const controlSelect = document.getElementById('assessUbuntu2204CisControlSelect');
-    const controlOptionsContainer = document.getElementById('assessUbuntu2204CisControlOptions');
+    const selectedControlTrigger = document.getElementById('assessUbuntu2204CisSelectedControlTrigger');
+    const selectedControlLabel = document.getElementById('assessUbuntu2204CisSelectedControlLabel');
+    const selectedControlPanel = document.getElementById('assessUbuntu2204CisControlPickerPanel');
+    const selectedControlSearch = document.getElementById('assessUbuntu2204CisControlPickerSearch');
+    const selectedControlOptions = document.getElementById('assessUbuntu2204CisControlPickerOptions');
 // ns:end family._base.workspace.02_basic-settings
     const sortInput = document.getElementById('assessUbuntu2204CisSort');
     const sortSummary = document.getElementById('assessUbuntu2204CisSortSummary');
@@ -212,6 +130,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const jsonOutput = document.getElementById('assessUbuntu2204CisJsonOutput');
     const copyScriptButton = document.getElementById('assessUbuntu2204CisCopyScript');
     const downloadScriptButton = document.getElementById('assessUbuntu2204CisDownloadScript');
+    const fullScriptButton = document.getElementById('assessUbuntu2204CisFullScript');
+    const bundleModal = document.getElementById('assessUbuntu2204CisBundleModal');
+    const bundleCloseButton = document.getElementById('assessUbuntu2204CisBundleClose');
+    const bundleCancelButton = document.getElementById('assessUbuntu2204CisBundleCancel');
+    const bundleDetails = document.getElementById('assessUbuntu2204CisBundleDetails');
+    const bundleRequestText = document.getElementById('assessUbuntu2204CisBundleRequestText');
+    const bundleEmailLink = document.getElementById('assessUbuntu2204CisBundleEmail');
+    const bundleCopyButton = document.getElementById('assessUbuntu2204CisBundleCopy');
     const exportPdfButton = document.getElementById('assessUbuntu2204CisExportPdf');
     const downloadCsvButton = document.getElementById('assessUbuntu2204CisDownloadCsv');
     const copyJsonButton = document.getElementById('assessUbuntu2204CisCopyJson');
@@ -223,6 +149,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let latestResult = null;
     let latestScriptRequestId = 0;
+    let controlPickerCatalog = [];
+    let bundleModalLastFocus = null;
+    let latestBundleRequest = '';
 
     const sortCatalog = [
         {
@@ -303,22 +232,16 @@ document.addEventListener('DOMContentLoaded', function () {
         !form ||
         !queryInput ||
         !submitButton ||
+        !resetButton ||
         !familyInput ||
-        !familySummary ||
-        !familySelect ||
-        !familyOptionsContainer ||
         !sectionPathInput ||
-        !sectionSummary ||
-        !sectionSelect ||
-        !sectionOptionsContainer ||
         !criticalityInput ||
-        !criticalitySummary ||
-        !criticalitySelect ||
-        !criticalityOptionsContainer ||
         !selectedControlInput ||
-        !controlSummary ||
-        !controlSelect ||
-        !controlOptionsContainer ||
+        !selectedControlTrigger ||
+        !selectedControlLabel ||
+        !selectedControlPanel ||
+        !selectedControlSearch ||
+        !selectedControlOptions ||
         !sortInput ||
         !sortSummary ||
         !sortSelect ||
@@ -337,6 +260,14 @@ document.addEventListener('DOMContentLoaded', function () {
         !jsonOutput ||
         !copyScriptButton ||
         !downloadScriptButton ||
+        !fullScriptButton ||
+        !bundleModal ||
+        !bundleCloseButton ||
+        !bundleCancelButton ||
+        !bundleDetails ||
+        !bundleRequestText ||
+        !bundleEmailLink ||
+        !bundleCopyButton ||
         !exportPdfButton ||
         !downloadCsvButton ||
         !copyJsonButton ||
@@ -350,6 +281,8 @@ document.addEventListener('DOMContentLoaded', function () {
     ) {
         return;
     }
+
+    const resultEmptyDefaultText = resultEmpty.textContent.trim();
 
     function initMarkdownCopyButtons() {
         const promptBlocks = Array.from(document.querySelectorAll('.markdown-content pre.assess-ubuntu-2204-cis-prompt-pre'));
@@ -448,6 +381,36 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function flashButton(button, text) {
+        if (!button) {
+            return;
+        }
+
+        const actionButton = button.closest ? button.closest('.tool-table-action-cell button') : null;
+
+        if (actionButton) {
+            const isCopied = text === 'Copied';
+            const icon = actionButton.querySelector('i');
+            const originalIcon = actionButton.dataset.defaultIcon || (icon ? icon.className : '');
+
+            if (icon && !actionButton.dataset.defaultIcon) {
+                actionButton.dataset.defaultIcon = originalIcon;
+            }
+
+            actionButton.classList.toggle('copied', isCopied);
+            actionButton.classList.toggle('is-copied', isCopied);
+            actionButton.classList.toggle('failed', !isCopied);
+            if (icon) {
+                icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+            }
+            window.setTimeout(function () {
+                actionButton.classList.remove('copied', 'is-copied', 'failed');
+                if (icon && actionButton.dataset.defaultIcon) {
+                    icon.className = actionButton.dataset.defaultIcon;
+                }
+            }, 1400);
+            return;
+        }
+
         const labelTarget = button.querySelector('[data-button-label]') || button;
         const originalText = button.dataset.defaultLabel || labelTarget.textContent;
         button.dataset.defaultLabel = originalText;
@@ -567,25 +530,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }) || null;
     }
 
-    function renderSelectOptions(container, options, selectedValue) {
-        container.innerHTML = options.map(function (option) {
-            const isActive = option.value === selectedValue;
-            const metaMarkup = option.meta
-                ? `<span class="assess-ubuntu-2204-cis-select-meta">${escapeHtml(option.meta)}</span>`
-                : '';
+    function renderNativeSelectOptions(select, options, selectedValue, emptyText) {
+        select.innerHTML = '';
 
-            return `
-                <button
-                  type="button"
-                  class="assess-ubuntu-2204-cis-select-option${isActive ? ' is-active' : ''}"
-                  data-select-value="${escapeHtml(option.value)}"
-                  aria-selected="${isActive ? 'true' : 'false'}"
-                >
-                    <span class="assess-ubuntu-2204-cis-select-title">${escapeHtml(option.title)}</span>
-                    ${metaMarkup}
-                </button>
-            `;
-        }).join('');
+        if (!options.length) {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = emptyText || 'No options available';
+            select.appendChild(option);
+            select.disabled = true;
+            return;
+        }
+
+        select.disabled = false;
+        options.forEach(function (optionData) {
+            const option = document.createElement('option');
+            option.value = optionData.value;
+            option.textContent = optionData.meta ? optionData.title + ' - ' + optionData.meta : optionData.title;
+            select.appendChild(option);
+        });
+
+        select.value = findOptionByValue(options, selectedValue) ? selectedValue : options[0].value;
     }
 
     function renderSortOptions(container, options, selectedValue) {
@@ -601,16 +566,60 @@ document.addEventListener('DOMContentLoaded', function () {
         }).join('');
     }
 
-    function renderControlOptions(controlList, selectedValue) {
-        if (controlList.length === 0) {
-            controlOptionsContainer.innerHTML = '<div class="assess-ubuntu-2204-cis-select-empty">No matched scripts in the current scope.</div>';
-            controlSelect.classList.add('assess-ubuntu-2204-cis-select-inactive');
+    function setControlPickerOpen(isOpen) {
+        selectedControlPanel.hidden = !isOpen;
+        selectedControlTrigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+        if (isOpen) {
+            selectedControlSearch.focus();
+        }
+    }
+
+    function updateControlPickerLabel(selectedValue) {
+        const selectedOption = findOptionByValue(controlPickerCatalog, selectedValue);
+        selectedControlLabel.textContent = selectedOption
+            ? (selectedOption.meta ? selectedOption.title + ' - ' + selectedOption.meta : selectedOption.title)
+            : 'No matched script';
+    }
+
+    function filterControlPickerCatalog(query) {
+        const normalizedQuery = normalizeQuery(query);
+
+        if (!normalizedQuery) {
+            return controlPickerCatalog;
+        }
+
+        return controlPickerCatalog.filter(function (option) {
+            return normalizeQuery(option.title + ' ' + (option.meta || '')).includes(normalizedQuery);
+        });
+    }
+
+    function renderControlPickerButtons(options, selectedValue) {
+        if (!options.length) {
+            selectedControlOptions.innerHTML = '<div class="assess-ubuntu-2204-cis-control-picker-empty">No matched scripts.</div>';
             return;
         }
 
-        controlSelect.classList.remove('assess-ubuntu-2204-cis-select-inactive');
+        selectedControlOptions.innerHTML = options.map(function (option) {
+            const isActive = option.value === selectedValue;
+            const meta = option.meta ? '<span>' + escapeHtml(option.meta) + '</span>' : '';
 
-        renderSelectOptions(controlOptionsContainer, buildControlCatalog(controlList), selectedValue);
+            return '<button type="button" class="assess-ubuntu-2204-cis-control-picker-option' + (isActive ? ' is-active' : '') + '" data-control-value="' + escapeHtml(option.value) + '" role="option" aria-selected="' + (isActive ? 'true' : 'false') + '"><strong>' + escapeHtml(option.title) + '</strong>' + meta + '</button>';
+        }).join('');
+    }
+
+    function renderControlOptions(controlList, selectedValue) {
+        controlPickerCatalog = buildControlCatalog(controlList);
+        const selectedOption = findOptionByValue(controlPickerCatalog, selectedValue);
+        const nextValue = selectedOption
+            ? selectedValue
+            : (controlPickerCatalog[0] ? controlPickerCatalog[0].value : '');
+
+        selectedControlInput.value = nextValue;
+        selectedControlTrigger.disabled = controlPickerCatalog.length === 0;
+        selectedControlSearch.disabled = controlPickerCatalog.length === 0;
+        updateControlPickerLabel(nextValue);
+        renderControlPickerButtons(filterControlPickerCatalog(selectedControlSearch.value), nextValue);
     }
 
     function buildControlCatalog(controlList) {
@@ -677,39 +686,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function renderStaticSelects(state, filteredControls, selectedControl) {
-        renderSelectOptions(familyOptionsContainer, familyCatalog, state.family);
-        renderSelectOptions(sectionOptionsContainer, buildSectionCatalog(state.family), state.sectionPath);
-        renderSelectOptions(criticalityOptionsContainer, criticalityCatalog, state.criticality);
+        const sectionCatalog = buildSectionCatalog(state.family);
+
+        renderNativeSelectOptions(familyInput, familyCatalog, state.family, 'All sections');
+        renderNativeSelectOptions(sectionPathInput, sectionCatalog, state.sectionPath, 'All paths');
+        renderNativeSelectOptions(criticalityInput, criticalityCatalog, state.criticality, 'All criticality');
+        renderNativeSelectOptions(rowLimitInput, rowLimitCatalog, state.rowLimit, '50 rows');
         renderSortOptions(sortOptionsContainer, sortCatalog, state.sort);
         renderControlOptions(filteredControls, state.selectedControl);
         setRowLimitValue(state.rowLimit, '50');
-
-        updateSelectSummary(familySummary, familyCatalog, state.family, 'All sections');
-        updateSelectSummary(sectionSummary, buildSectionCatalog(state.family), state.sectionPath, 'All paths');
-        updateSelectSummary(criticalitySummary, criticalityCatalog, state.criticality, 'All criticality');
         updateSelectSummary(sortSummary, sortCatalog, state.sort, 'ID');
-        controlSummary.textContent = controlSummaryText(selectedControl);
-    }
-
-    function attachSelectOptionHandler(container, hiddenInput, detailsElement, onAfterChange) {
-        container.addEventListener('click', function (event) {
-            const target = event.target instanceof HTMLElement ? event.target : null;
-            const button = target ? target.closest('button[data-select-value]') : null;
-
-            if (!button || !container.contains(button)) {
-                return;
-            }
-
-            hiddenInput.value = button.getAttribute('data-select-value') || '';
-
-            if (detailsElement) {
-                detailsElement.removeAttribute('open');
-            }
-
-            if (typeof onAfterChange === 'function') {
-                onAfterChange(hiddenInput.value);
-            }
-        });
     }
 
     function attachSortButtonHandler() {
@@ -1075,7 +1061,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   </td>
                   <td><span class="assess-ubuntu-2204-cis-criticality-badge" data-tone="${escapeHtml(criticalityTone(control.criticality))}">${escapeHtml(criticalityLabel)}</span></td>
                   <td><span class="assess-ubuntu-2204-cis-script-text" title="${escapeHtml(control.script_path)}">${escapeHtml(scriptDisplay)}</span></td>
-                  <td class="assess-ubuntu-2204-cis-table-action-cell">
+                  <td class="assess-ubuntu-2204-cis-table-action-cell tool-table-action-cell">
                     <button type="button" class="assess-ubuntu-2204-cis-row-copy" data-control-copy-row="${index}" aria-label="Copy control row ${index + 1}" title="Copy control row">
                       <i class="bi bi-clipboard" aria-hidden="true"></i>
                     </button>
@@ -1178,6 +1164,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function toggleScriptButtons(isEnabled) {
         copyScriptButton.disabled = !isEnabled;
         downloadScriptButton.disabled = !isEnabled;
+    }
+
+    function toggleFullScriptButton(result) {
+        fullScriptButton.disabled = !result || !Array.isArray(result.filteredControls) || result.filteredControls.length === 0;
     }
 
     function renderScriptState(control, statusText, scriptContent) {
@@ -1361,6 +1351,96 @@ document.addEventListener('DOMContentLoaded', function () {
         jsonOutput.innerHTML = highlightJsonText(JSON.stringify(result.jsonPayload, null, 2));
     }
 
+    function getOptionTitle(options, value, fallbackText) {
+        const option = findOptionByValue(options, value);
+
+        return option ? option.title : fallbackText;
+    }
+
+    function buildBundleRequest(result) {
+        const sectionCatalog = buildSectionCatalog(result.state.family);
+        const familyLabel = getOptionTitle(familyCatalog, result.state.family, 'All sections');
+        const sectionLabel = getOptionTitle(sectionCatalog, result.state.sectionPath, 'All paths');
+        const criticalityLabel = getOptionTitle(criticalityCatalog, result.state.criticality, 'All criticality');
+        const queryLabel = result.state.query || 'No search filter';
+        const selectedLabel = result.selectedControl
+            ? `${result.selectedControl.id} ${result.selectedControl.title}`
+            : 'No single script selected';
+        const selectedPath = result.selectedControl ? result.selectedControl.script_path : 'Not selected';
+        const currentUrl = window.location.href;
+        const detailRows = [
+            ['Benchmark', benchmark.title || 'CIS Ubuntu Benchmark 2204'],
+            ['Version', benchmark.version || 'CIS_Ubuntu_Benchmark_v22.04'],
+            ['Matched scripts', String(result.filteredControls.length)],
+            ['Family', familyLabel],
+            ['Section', sectionLabel],
+            ['Criticality', criticalityLabel],
+            ['Search filter', queryLabel],
+            ['Selected script', selectedLabel]
+        ];
+        const requestLines = [
+            'Full benchmark script bundle request',
+            '',
+            `Benchmark: ${benchmark.title || 'CIS Ubuntu Benchmark 2204'}`,
+            `Version: ${benchmark.version || 'CIS_Ubuntu_Benchmark_v22.04'}`,
+            `Matched scripts: ${result.filteredControls.length}`,
+            `Family: ${familyLabel}`,
+            `Section: ${sectionLabel}`,
+            `Criticality: ${criticalityLabel}`,
+            `Search filter: ${queryLabel}`,
+            `Selected control: ${selectedLabel}`,
+            `Selected script path: ${selectedPath}`,
+            `Current page: ${currentUrl}`,
+            '',
+            'Intended use:',
+            '- Review and planning',
+            '- Controlled internal use after script review'
+        ];
+
+        return {
+            detailRows: detailRows,
+            requestText: requestLines.join('\n'),
+            subject: `Full script request: ${benchmark.title || 'CIS Ubuntu Benchmark 2204'}`
+        };
+    }
+
+    function renderBundleModal(result) {
+        const bundleRequest = buildBundleRequest(result);
+
+        latestBundleRequest = bundleRequest.requestText;
+        bundleDetails.innerHTML = bundleRequest.detailRows.map(function (row) {
+            return `
+                <div class="assess-ubuntu-2204-cis-bundle-detail">
+                  <dt>${escapeHtml(row[0])}</dt>
+                  <dd>${escapeHtml(row[1])}</dd>
+                </div>
+            `;
+        }).join('');
+        bundleRequestText.textContent = bundleRequest.requestText;
+        bundleEmailLink.href = `mailto:hello@infrastack.my?subject=${encodeURIComponent(bundleRequest.subject)}&body=${encodeURIComponent(bundleRequest.requestText)}`;
+    }
+
+    function openBundleModal() {
+        if (!latestResult || !Array.isArray(latestResult.filteredControls) || latestResult.filteredControls.length === 0) {
+            return;
+        }
+
+        renderBundleModal(latestResult);
+        bundleModalLastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        bundleModal.hidden = false;
+        document.body.classList.add('assess-ubuntu-2204-cis-modal-open');
+        bundleCloseButton.focus();
+    }
+
+    function closeBundleModal() {
+        bundleModal.hidden = true;
+        document.body.classList.remove('assess-ubuntu-2204-cis-modal-open');
+
+        if (bundleModalLastFocus) {
+            bundleModalLastFocus.focus();
+        }
+    }
+
     function convertValueToCsv(value) {
         const text = String(value == null ? '' : value);
         const escapedText = text.replaceAll('"', '""');
@@ -1417,9 +1497,38 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 250);
     }
 
+    function fallbackActionClipboardText(text) {
+        const textarea = document.createElement('textarea');
+
+        textarea.value = text;
+        textarea.setAttribute('readonly', 'readonly');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        document.execCommand('copy');
+
+        textarea.remove();
+    }
+
+    async function writeActionClipboardText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return;
+            } catch (error) {
+                fallbackActionClipboardText(text);
+                return;
+            }
+        }
+
+        fallbackActionClipboardText(text);
+    }
+
     async function copyText(button, value) {
         try {
-            await navigator.clipboard.writeText(value);
+            await writeActionClipboardText(value);
             flashButton(button, 'Copied');
         } catch (error) {
             flashButton(button, 'Failed');
@@ -1493,6 +1602,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function buildImportedPayloadState(payload) {
+        return readStateFromJsonPayload(payload);
+    }
+
 // ns:start family._base.workspace.08_json-restore
     function showImportError(message) {
         resultError.textContent = message || 'Unable to import JSON.';
@@ -1500,7 +1613,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function restoreFromJsonPayload(payload) {
-        const restoredState = readStateFromJsonPayload(payload);
+        const restoredState = buildImportedPayloadState(payload);
         const result = buildResult(restoredState);
 
         queryInput.value = restoredState.query;
@@ -1582,6 +1695,25 @@ document.addEventListener('DOMContentLoaded', function () {
         resultContent.classList.remove('d-none');
     }
 
+    function showEmptyState(message) {
+        latestResult = null;
+        latestScriptRequestId += 1;
+        resultEmpty.textContent = message || resultEmptyDefaultText;
+        resultEmpty.classList.remove('d-none');
+        resultError.classList.add('d-none');
+        resultError.textContent = '';
+        resultContent.classList.add('d-none');
+        resultSummary.innerHTML = '';
+        toolbarMeta.innerHTML = '';
+        controlsTableBody.innerHTML = '';
+        sectionsTableBody.innerHTML = '';
+        scriptMeta.textContent = 'No script selected.';
+        scriptOutput.textContent = '';
+        jsonOutput.innerHTML = '';
+        toggleScriptButtons(false);
+        toggleFullScriptButton(null);
+    }
+
     function renderResult(result) {
         latestResult = result;
         syncInputsFromResult(result);
@@ -1595,6 +1727,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderSectionsTable(result);
         renderJson(result);
         toggleScriptButtons(false);
+        toggleFullScriptButton(result);
         void loadSelectedScript(result);
     }
 
@@ -1626,24 +1759,55 @@ document.addEventListener('DOMContentLoaded', function () {
     syncInputsFromResult(initialResult);
     syncUrlQuery(initialResult);
 
-    attachSelectOptionHandler(familyOptionsContainer, familyInput, familySelect, function () {
+    familyInput.addEventListener('change', function () {
         sectionPathInput.value = 'all';
         selectedControlInput.value = '';
         renderExplorer();
     });
-    attachSelectOptionHandler(sectionOptionsContainer, sectionPathInput, sectionSelect, function () {
+    sectionPathInput.addEventListener('change', function () {
         selectedControlInput.value = '';
         renderExplorer();
     });
-    attachSelectOptionHandler(criticalityOptionsContainer, criticalityInput, criticalitySelect, function () {
+    criticalityInput.addEventListener('change', function () {
         selectedControlInput.value = '';
         renderExplorer();
     });
-    attachSelectOptionHandler(controlOptionsContainer, selectedControlInput, controlSelect, function () {
+    selectedControlTrigger.addEventListener('click', function () {
+        setControlPickerOpen(selectedControlPanel.hidden);
+    });
+    selectedControlSearch.addEventListener('input', function () {
+        renderControlPickerButtons(filterControlPickerCatalog(selectedControlSearch.value), selectedControlInput.value);
+    });
+    selectedControlOptions.addEventListener('click', function (event) {
+        const target = event.target instanceof HTMLElement ? event.target : null;
+        const button = target ? target.closest('button[data-control-value]') : null;
+
+        if (!button || !selectedControlOptions.contains(button)) {
+            return;
+        }
+
+        selectedControlInput.value = button.getAttribute('data-control-value') || '';
+        selectedControlSearch.value = '';
+        setControlPickerOpen(false);
         renderExplorer();
         if (latestResult) {
             activateTab('assessUbuntu2204CisScriptPanel');
         }
+    });
+    selectedControlPanel.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            setControlPickerOpen(false);
+            selectedControlTrigger.focus();
+        }
+    });
+    document.addEventListener('click', function (event) {
+        const target = event.target instanceof HTMLElement ? event.target : null;
+
+        if (target && (selectedControlPanel.contains(target) || selectedControlTrigger.contains(target))) {
+            return;
+        }
+
+        setControlPickerOpen(false);
     });
     attachSortButtonHandler();
     rowLimitInput.addEventListener('change', function () {
@@ -1651,9 +1815,18 @@ document.addEventListener('DOMContentLoaded', function () {
         renderExplorer();
     });
 
+    resetButton.addEventListener('click', function () {
+        const defaultResult = buildResult(defaultUrlState);
+
+        queryInput.value = defaultUrlState.query;
+        syncInputsFromResult(defaultResult);
+        showEmptyState();
+        activateTab('assessUbuntu2204CisControlsPanel');
+        window.history.replaceState({}, '', `${window.location.pathname}${window.location.hash}`);
+    });
+
     form.addEventListener('submit', function (event) {
         event.preventDefault();
-        selectedControlInput.value = '';
         renderExplorer({ showResult: true });
     });
 
@@ -1712,6 +1885,35 @@ document.addEventListener('DOMContentLoaded', function () {
         flashButton(downloadScriptButton, 'Saved');
     });
 
+    fullScriptButton.addEventListener('click', function () {
+        openBundleModal();
+    });
+
+    bundleCloseButton.addEventListener('click', closeBundleModal);
+    bundleCancelButton.addEventListener('click', closeBundleModal);
+
+    bundleModal.addEventListener('click', function (event) {
+        const target = event.target instanceof HTMLElement ? event.target : null;
+
+        if (target && target.hasAttribute('data-bundle-dismiss')) {
+            closeBundleModal();
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && !bundleModal.hidden) {
+            closeBundleModal();
+        }
+    });
+
+    bundleCopyButton.addEventListener('click', function () {
+        if (!latestBundleRequest) {
+            return;
+        }
+
+        copyText(bundleCopyButton, latestBundleRequest);
+    });
+
 // ns:start family._base.workspace.06_output-toolbar
     exportPdfButton.addEventListener('click', function () {
         if (!latestResult) {
@@ -1758,7 +1960,6 @@ document.addEventListener('DOMContentLoaded', function () {
         handleJsonImportFile(file);
     });
 
-    initializeInfraStackCustomDropdowns(document);
 });
 // ns:end family._base.workspace.00_shell
 // ns:start family._base.workspace.07_table-output
@@ -1856,7 +2057,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });

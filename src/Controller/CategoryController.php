@@ -11,6 +11,33 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CategoryController extends AbstractController
 {
+    private const DEFAULT_VIEW_MODE = 'grid';
+    private const VIEW_MODES = ['grid', 'list', 'compact', 'table'];
+    private const DEFAULT_PER_PAGE = 6;
+    private const PER_PAGE_OPTIONS = [6, 12, 24, 48];
+    private const VIEW_MODE_OPTIONS = [
+        [
+            'value' => 'grid',
+            'label' => 'Grid',
+            'icon' => 'bi bi-grid-3x3-gap',
+        ],
+        [
+            'value' => 'list',
+            'label' => 'List',
+            'icon' => 'bi bi-list-ul',
+        ],
+        [
+            'value' => 'compact',
+            'label' => 'Compact',
+            'icon' => 'bi bi-columns-gap',
+        ],
+        [
+            'value' => 'table',
+            'label' => 'Table',
+            'icon' => 'bi bi-view-stacked',
+        ],
+    ];
+
     #[Route('/tools', name: 'app_category')]
     public function category(
         Request $request,
@@ -23,8 +50,13 @@ class CategoryController extends AbstractController
         $categoryFilter = $toolCatalogService->normalizeSlug(trim((string) $request->query->get('category', '')));
         $familyFilter = $toolCatalogService->normalizeFamilySlug(trim((string) $request->query->get('family', '')));
         $tagFilter = trim((string) $request->query->get('tag', ''));
+        $viewMode = $this->normalizeViewMode(
+            (string) $request->query->get('view', self::DEFAULT_VIEW_MODE)
+        );
+        $perPage = $this->normalizePerPage(
+            (int) $request->query->get('per_page', self::DEFAULT_PER_PAGE)
+        );
         $page = max(1, (int) $request->query->get('page', 1));
-        $perPage = 6;
 
         $allTools = $toolCatalogService->getTools();
         $tools = $toolCatalogService->filterTools(
@@ -115,7 +147,31 @@ class CategoryController extends AbstractController
             'total_tools' => $totalTools,
             'family_filter' => $familyFilter,
             'group_filter' => $groupFilter,
+            'view_mode' => $viewMode,
+            'view_modes' => self::VIEW_MODE_OPTIONS,
+            'per_page' => $perPage,
+            'per_page_options' => self::PER_PAGE_OPTIONS,
         ], $sidebarData));
+    }
+
+    private function normalizePerPage(int $perPage): int
+    {
+        if (in_array($perPage, self::PER_PAGE_OPTIONS, true)) {
+            return $perPage;
+        }
+
+        return self::DEFAULT_PER_PAGE;
+    }
+
+    private function normalizeViewMode(string $viewMode): string
+    {
+        $viewMode = mb_strtolower(trim($viewMode));
+
+        if (in_array($viewMode, self::VIEW_MODES, true)) {
+            return $viewMode;
+        }
+
+        return self::DEFAULT_VIEW_MODE;
     }
 
     private function resolvePageCopy(

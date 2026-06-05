@@ -1,0 +1,784 @@
+{# tool.html.twig #}
+{# ns:start family.calculate.workspace.04_visual-contract #}
+{# Accepted divergence: calculate visual contract remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.04_visual-contract #}
+{# ns:start family.calculate.workspace.04_selected-item #}
+{# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.04_selected-item #}
+
+{# ns:start family._base.workspace.00_shell #}
+<div class="__TOOL_CLASS__" data-tool-slug="__TOOL_SLUG__" data-tool-category="AWS">
+<div class="tool-box">
+  <form class="__PREFIX__-form" id="__DOM_ID_PREFIX__Form">
+{# ns:start family._base.workspace.01_input-brief #}
+    <div class="__PREFIX__-input-card">
+      <div class="__PREFIX__-input-brief" data-input-layout="inline">
+        <div class="__PREFIX__-main-row __PREFIX__-input-row">
+          <div class="__PREFIX__-input-label-wrap">
+            <label for="__DOM_ID_PREFIX__Label" class="__PREFIX__-main-label __PREFIX__-input-label">Estimate label:</label>
+            <span class="__PREFIX__-helper-chip" title="Name the workload or environment you want to estimate" aria-label="Name the workload or environment you want to estimate">i</span>
+          </div>
+
+          <div class="__PREFIX__-main-input-grid __PREFIX__-input-stack">
+            <input
+              type="text"
+              id="__DOM_ID_PREFIX__Label"
+              class="form-control __PREFIX__-input-control"
+              placeholder="Production API stack"
+              value="Lean web platform"
+            >
+            <div class="__PREFIX__-input-error d-none" id="__DOM_ID_PREFIX__InputError" role="alert"></div>
+          </div>
+        </div>
+
+        <div class="__PREFIX__-main-actions __PREFIX__-input-actions">
+          <button
+            type="submit"
+            class="btn btn-primary __PREFIX__-submit-btn __PREFIX__-action-btn __PREFIX__-action-btn-primary"
+            id="__DOM_ID_PREFIX__Submit"
+            data-tool-share-generate
+          >
+            <i class="bi bi-calculator" aria-hidden="true"></i>
+            <span>Estimate</span>
+          </button>
+          <button
+            type="button"
+            class="__PREFIX__-secondary-btn __PREFIX__-reset-btn __PREFIX__-action-btn __PREFIX__-action-btn-secondary"
+            id="__DOM_ID_PREFIX__Reset"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        <div class="__PREFIX__-input-helper-card">
+          <span class="__PREFIX__-input-hint">Use a short label that can travel with exported estimate data.</span>
+          <span class="__PREFIX__-helper-chip __PREFIX__-helper-chip-inline" title="Name the workload or environment you want to estimate" aria-label="Name the workload or environment you want to estimate">i</span>
+        </div>
+      </div>
+    </div>
+{# ns:end family._base.workspace.01_input-brief #}
+
+{# ns:start family._base.workspace.02_basic-settings #}
+    <div class="__PREFIX__-basic-panel">
+      <div class="__PREFIX__-inner-panel __PREFIX__-basic-card">
+
+        <div class="__PREFIX__-example-card">
+          <span class="__PREFIX__-example-label">Example estimate settings</span>
+          <strong class="__PREFIX__-example-value">Lean web platform, monthly USD, starter catalog</strong>
+          <span class="__PREFIX__-example-helper">Preset and basis controls must update totals, tables, and JSON together.</span>
+        </div>
+
+        <div class="__PREFIX__-setting-row __PREFIX__-setting-card">
+          <label for="__DOM_ID_PREFIX__Preset" class="__PREFIX__-setting-label">
+            Preset:
+            <span class="info-dot __PREFIX__-helper-chip" title="Load a starting cost shape for a common AWS workload">i</span>
+          </label>
+
+          <div class="__PREFIX__-setting-field">
+            <div class="__PREFIX__-inline-grid __PREFIX__-inline-grid-preset">
+              <div class="__PREFIX__-native-select-wrap" id="__DOM_ID_PREFIX__PresetSelect">
+                <select id="__DOM_ID_PREFIX__Preset" class="form-select __PREFIX__-native-select">
+                  <option value="lean-web" selected>Lean web platform</option>
+                  <option value="serverless-api">Serverless API</option>
+                  <option value="steady-platform">Steady application platform</option>
+                  <option value="blank">Blank estimate</option>
+                </select>
+              </div>
+
+              <button type="button" class="__PREFIX__-secondary-btn" id="__DOM_ID_PREFIX__ApplyPreset">Apply preset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="__PREFIX__-setting-row __PREFIX__-setting-card">
+          <label class="__PREFIX__-setting-label">
+            Pricing basis:
+            <span class="info-dot __PREFIX__-helper-chip" title="Starter prices are visible and editable in Custom so the estimate stays auditable">i</span>
+          </label>
+
+          <div class="__PREFIX__-setting-field">
+            <div class="__PREFIX__-basis-grid">
+              <div class="__PREFIX__-basis-card">
+                <span class="__PREFIX__-basis-label">Catalog</span>
+                <span class="__PREFIX__-basis-value">Starter AWS mix</span>
+                <span class="__PREFIX__-basis-note">EC2 uses a compact purchase-model catalog. Storage, Lambda, API, and egress use visible starter rates that you can override.</span>
+              </div>
+
+              <div class="__PREFIX__-basis-card">
+                <span class="__PREFIX__-basis-label">Output</span>
+                <span class="__PREFIX__-basis-value">USD monthly run rate</span>
+                <span class="__PREFIX__-basis-note">Use the result as a planning estimate, then verify material decisions in AWS pricing or billing data.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="__PREFIX__-service-grid">
+          <section class="__PREFIX__-service-card" data-service-card="ec2">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">EC2 Compute</h3>
+                <p class="__PREFIX__-service-copy">Instance count, runtime, and purchase model.</p>
+              </div>
+
+              <label class="switch __PREFIX__-switch-wrap __PREFIX__-switch-card">
+                <input type="checkbox" id="__DOM_ID_PREFIX__IncludeEc2" checked>
+                <span class="slider"></span>
+                <span class="__PREFIX__-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="__PREFIX__-service-body" id="__DOM_ID_PREFIX__Ec2Body">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__Ec2Instance" class="__PREFIX__-field-label">Instance type</label>
+                  <div class="__PREFIX__-native-select-wrap" id="__DOM_ID_PREFIX__Ec2InstanceSelect">
+                    <select id="__DOM_ID_PREFIX__Ec2Instance" class="form-select __PREFIX__-native-select">
+                      <option value="t4g.micro">t4g.micro • 2 vCPU • 1 GiB</option>
+                      <option value="t4g.small">t4g.small • 2 vCPU • 2 GiB</option>
+                      <option value="t4g.medium" selected>t4g.medium • 2 vCPU • 4 GiB</option>
+                      <option value="t4g.large">t4g.large • 2 vCPU • 8 GiB</option>
+                      <option value="t4g.xlarge">t4g.xlarge • 4 vCPU • 16 GiB</option>
+                      <option value="t3.micro">t3.micro • 2 vCPU • 1 GiB</option>
+                      <option value="t3.small">t3.small • 2 vCPU • 2 GiB</option>
+                      <option value="t3.medium">t3.medium • 2 vCPU • 4 GiB</option>
+                      <option value="t3.large">t3.large • 2 vCPU • 8 GiB</option>
+                      <option value="t3.xlarge">t3.xlarge • 4 vCPU • 16 GiB</option>
+                      <option value="c6g.medium">c6g.medium • 1 vCPU • 2 GiB</option>
+                      <option value="c6g.large">c6g.large • 2 vCPU • 4 GiB</option>
+                      <option value="c7g.medium">c7g.medium • 1 vCPU • 2 GiB</option>
+                      <option value="c7g.large">c7g.large • 2 vCPU • 4 GiB</option>
+                      <option value="m6g.medium">m6g.medium • 1 vCPU • 4 GiB</option>
+                      <option value="m6g.large">m6g.large • 2 vCPU • 8 GiB</option>
+                      <option value="m7g.medium">m7g.medium • 1 vCPU • 4 GiB</option>
+                      <option value="m7g.large">m7g.large • 2 vCPU • 8 GiB</option>
+                      <option value="r6g.medium">r6g.medium • 1 vCPU • 8 GiB</option>
+                      <option value="r6g.large">r6g.large • 2 vCPU • 16 GiB</option>
+                      <option value="r7g.medium">r7g.medium • 1 vCPU • 8 GiB</option>
+                      <option value="r7g.large">r7g.large • 2 vCPU • 16 GiB</option>
+                      <option id="__DOM_ID_PREFIX__Ec2CustomOptionLabel" value="custom">Custom size • user defined</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__Ec2Purchase" class="__PREFIX__-field-label">Purchase model</label>
+                  <div class="__PREFIX__-native-select-wrap" id="__DOM_ID_PREFIX__Ec2PurchaseSelect">
+                    <select id="__DOM_ID_PREFIX__Ec2Purchase" class="form-select __PREFIX__-native-select">
+                      <option value="onDemand" selected>On-Demand</option>
+                      <option value="spot">Spot</option>
+                      <option value="savings1">Savings Plan 1yr</option>
+                      <option value="savings3">Savings Plan 3yr</option>
+                      <option value="reserved1">Reserved 1yr</option>
+                      <option value="reserved3">Reserved 3yr</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="__PREFIX__-custom-instance-grid __PREFIX__-card-span-two d-none" id="__DOM_ID_PREFIX__Ec2CustomFields">
+                  <div class="__PREFIX__-field-stack">
+                    <label for="__DOM_ID_PREFIX__Ec2CustomLabel" class="__PREFIX__-field-label">Custom profile label</label>
+                    <input
+                      type="text"
+                      id="__DOM_ID_PREFIX__Ec2CustomLabel"
+                      class="form-control __PREFIX__-text-field"
+                      placeholder="Custom instance profile"
+                      value=""
+                    >
+                  </div>
+
+                  <div class="__PREFIX__-field-stack">
+                    <label for="__DOM_ID_PREFIX__Ec2CustomVcpu" class="__PREFIX__-field-label">Custom vCPU</label>
+                    <input
+                      type="number"
+                      id="__DOM_ID_PREFIX__Ec2CustomVcpu"
+                      class="form-control __PREFIX__-text-field"
+                      min="1"
+                      step="1"
+                      value="4"
+                    >
+                  </div>
+
+                  <div class="__PREFIX__-field-stack">
+                    <label for="__DOM_ID_PREFIX__Ec2CustomMemoryGiB" class="__PREFIX__-field-label">Custom memory GiB</label>
+                    <input
+                      type="number"
+                      id="__DOM_ID_PREFIX__Ec2CustomMemoryGiB"
+                      class="form-control __PREFIX__-text-field"
+                      min="1"
+                      step="0.5"
+                      value="16"
+                    >
+                  </div>
+                </div>
+
+                <p class="__PREFIX__-field-hint __PREFIX__-card-span-two d-none" id="__DOM_ID_PREFIX__Ec2CustomHint">Custom size uses the EC2 hourly override in Custom. Set the custom vCPU and memory here, then price it with the override field.</p>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__Ec2Count" class="__PREFIX__-field-label">Instance count</label>
+                  <input type="number" id="__DOM_ID_PREFIX__Ec2Count" class="form-control __PREFIX__-text-field" min="0" step="1" value="2">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__Ec2Hours" class="__PREFIX__-field-label">Monthly hours</label>
+                  <input type="number" id="__DOM_ID_PREFIX__Ec2Hours" class="form-control __PREFIX__-text-field" min="0" max="744" step="1" value="730">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="__PREFIX__-service-card" data-service-card="ebs">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">EBS Storage</h3>
+                <p class="__PREFIX__-service-copy">gp3 capacity plus optional IOPS and throughput.</p>
+              </div>
+
+              <label class="switch __PREFIX__-switch-wrap __PREFIX__-switch-card">
+                <input type="checkbox" id="__DOM_ID_PREFIX__IncludeEbs" checked>
+                <span class="slider"></span>
+                <span class="__PREFIX__-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="__PREFIX__-service-body" id="__DOM_ID_PREFIX__EbsBody">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__EbsStorageGb" class="__PREFIX__-field-label">Storage GB</label>
+                  <input type="number" id="__DOM_ID_PREFIX__EbsStorageGb" class="form-control __PREFIX__-text-field" min="0" step="1" value="160">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__EbsIops" class="__PREFIX__-field-label">Provisioned IOPS</label>
+                  <input type="number" id="__DOM_ID_PREFIX__EbsIops" class="form-control __PREFIX__-text-field" min="0" step="100" value="3000">
+                </div>
+
+                <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                  <label for="__DOM_ID_PREFIX__EbsThroughput" class="__PREFIX__-field-label">Throughput MB/s</label>
+                  <input type="number" id="__DOM_ID_PREFIX__EbsThroughput" class="form-control __PREFIX__-text-field" min="0" step="1" value="125">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="__PREFIX__-service-card" data-service-card="s3">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">S3 Storage</h3>
+                <p class="__PREFIX__-service-copy">Object storage, request volume, and outbound transfer.</p>
+              </div>
+
+              <label class="switch __PREFIX__-switch-wrap __PREFIX__-switch-card">
+                <input type="checkbox" id="__DOM_ID_PREFIX__IncludeS3" checked>
+                <span class="slider"></span>
+                <span class="__PREFIX__-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="__PREFIX__-service-body" id="__DOM_ID_PREFIX__S3Body">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__S3StorageGb" class="__PREFIX__-field-label">Storage GB</label>
+                  <input type="number" id="__DOM_ID_PREFIX__S3StorageGb" class="form-control __PREFIX__-text-field" min="0" step="1" value="250">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__S3EgressGb" class="__PREFIX__-field-label">Transfer out GB</label>
+                  <input type="number" id="__DOM_ID_PREFIX__S3EgressGb" class="form-control __PREFIX__-text-field" min="0" step="1" value="180">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__S3GetRequestsK" class="__PREFIX__-field-label">GET requests (1k)</label>
+                  <input type="number" id="__DOM_ID_PREFIX__S3GetRequestsK" class="form-control __PREFIX__-text-field" min="0" step="1" value="2200">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__S3PutRequestsK" class="__PREFIX__-field-label">PUT/LIST requests (1k)</label>
+                  <input type="number" id="__DOM_ID_PREFIX__S3PutRequestsK" class="form-control __PREFIX__-text-field" min="0" step="1" value="120">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="__PREFIX__-service-card" data-service-card="lambda">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">Lambda</h3>
+                <p class="__PREFIX__-service-copy">Requests, duration, and memory drive the bill.</p>
+              </div>
+
+              <label class="switch __PREFIX__-switch-wrap __PREFIX__-switch-card">
+                <input type="checkbox" id="__DOM_ID_PREFIX__IncludeLambda" checked>
+                <span class="slider"></span>
+                <span class="__PREFIX__-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="__PREFIX__-service-body" id="__DOM_ID_PREFIX__LambdaBody">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__LambdaRequestsMillion" class="__PREFIX__-field-label">Requests (million)</label>
+                  <input type="number" id="__DOM_ID_PREFIX__LambdaRequestsMillion" class="form-control __PREFIX__-text-field" min="0" step="0.1" value="1.2">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__LambdaDurationMs" class="__PREFIX__-field-label">Avg duration ms</label>
+                  <input type="number" id="__DOM_ID_PREFIX__LambdaDurationMs" class="form-control __PREFIX__-text-field" min="0" step="1" value="140">
+                </div>
+
+                <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                  <label for="__DOM_ID_PREFIX__LambdaMemoryMb" class="__PREFIX__-field-label">Memory MB</label>
+                  <input type="number" id="__DOM_ID_PREFIX__LambdaMemoryMb" class="form-control __PREFIX__-text-field" min="128" step="128" value="512">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="__PREFIX__-service-card" data-service-card="api">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">API Gateway</h3>
+                <p class="__PREFIX__-service-copy">HTTP and REST requests with response egress.</p>
+              </div>
+
+              <label class="switch __PREFIX__-switch-wrap __PREFIX__-switch-card">
+                <input type="checkbox" id="__DOM_ID_PREFIX__IncludeApi" checked>
+                <span class="slider"></span>
+                <span class="__PREFIX__-switch-label">Include</span>
+              </label>
+            </div>
+
+            <div class="__PREFIX__-service-body" id="__DOM_ID_PREFIX__ApiBody">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__ApiType" class="__PREFIX__-field-label">API type</label>
+                  <div class="__PREFIX__-native-select-wrap" id="__DOM_ID_PREFIX__ApiTypeSelect">
+                    <select id="__DOM_ID_PREFIX__ApiType" class="form-select __PREFIX__-native-select">
+                      <option value="http" selected>HTTP API</option>
+                      <option value="rest">REST API</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__ApiRequestsMillion" class="__PREFIX__-field-label">Requests (million)</label>
+                  <input type="number" id="__DOM_ID_PREFIX__ApiRequestsMillion" class="form-control __PREFIX__-text-field" min="0" step="0.1" value="8">
+                </div>
+
+                <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                  <label for="__DOM_ID_PREFIX__ApiResponseKb" class="__PREFIX__-field-label">Avg response KB</label>
+                  <input type="number" id="__DOM_ID_PREFIX__ApiResponseKb" class="form-control __PREFIX__-text-field" min="0" step="1" value="32">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="__PREFIX__-service-card" data-service-card="overhead">
+            <div class="__PREFIX__-service-head">
+              <div>
+                <h3 class="__PREFIX__-service-title">Shared Egress And Overhead</h3>
+                <p class="__PREFIX__-service-copy">Network, support uplift, and blended buffer.</p>
+              </div>
+            </div>
+
+            <div class="__PREFIX__-service-body">
+              <div class="__PREFIX__-card-grid __PREFIX__-card-grid-two">
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__SharedEgressGb" class="__PREFIX__-field-label">Shared egress GB</label>
+                  <input type="number" id="__DOM_ID_PREFIX__SharedEgressGb" class="form-control __PREFIX__-text-field" min="0" step="1" value="120">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__SupportPct" class="__PREFIX__-field-label">Support uplift %</label>
+                  <input type="number" id="__DOM_ID_PREFIX__SupportPct" class="form-control __PREFIX__-text-field" min="0" step="0.1" value="8">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__ContingencyPct" class="__PREFIX__-field-label">Contingency %</label>
+                  <input type="number" id="__DOM_ID_PREFIX__ContingencyPct" class="form-control __PREFIX__-text-field" min="0" step="0.1" value="10">
+                </div>
+
+                <div class="__PREFIX__-field-stack">
+                  <label for="__DOM_ID_PREFIX__ManualAdjustment" class="__PREFIX__-field-label">Manual adjustment $</label>
+                  <input type="number" id="__DOM_ID_PREFIX__ManualAdjustment" class="form-control __PREFIX__-text-field" step="0.01" value="0">
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+{# ns:end family._base.workspace.02_basic-settings #}
+
+{# ns:start family._base.workspace.03_custom-settings #}
+    <details class="__PREFIX__-advanced" data-custom-layout="compact_two_column_multi_row" id="__DOM_ID_PREFIX__Advanced">
+      <summary class="__PREFIX__-advanced-summary">
+        <span>Custom</span>
+          <span class="__PREFIX__-custom-arrow-slot" aria-hidden="true"></span>
+      </summary>
+
+      <div class="__PREFIX__-advanced-body">
+        <div class="__PREFIX__-inner-panel">
+          <div class="__PREFIX__-setting-row __PREFIX__-setting-card">
+            <label class="__PREFIX__-setting-label">
+              Free tier toggles:
+              <span class="info-dot __PREFIX__-helper-chip" title="Apply the starter free-tier allowances that most affect this model">i</span>
+            </label>
+
+            <div class="__PREFIX__-setting-field">
+              <div class="__PREFIX__-toggle-grid">
+                <label class="__PREFIX__-custom-checkbox-option">
+                  <input type="checkbox" id="__DOM_ID_PREFIX__FreeTierLambda" checked>
+                  <span>Lambda requests + GB-s</span>
+                </label>
+
+                <label class="__PREFIX__-custom-checkbox-option">
+                  <input type="checkbox" id="__DOM_ID_PREFIX__FreeTierApi" checked>
+                  <span>API Gateway calls</span>
+                </label>
+
+                <label class="__PREFIX__-custom-checkbox-option">
+                  <input type="checkbox" id="__DOM_ID_PREFIX__FreeTierEgress" checked>
+                  <span>Shared 100 GB egress</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="__PREFIX__-setting-row __PREFIX__-setting-card">
+            <label for="__DOM_ID_PREFIX__RegionalUpliftPct" class="__PREFIX__-setting-label">
+              Regional uplift:
+              <span class="info-dot __PREFIX__-helper-chip" title="Apply a percentage uplift to starter rates when you want to approximate a pricier region">i</span>
+            </label>
+
+            <div class="__PREFIX__-setting-field">
+              <div class="__PREFIX__-inline-grid __PREFIX__-inline-grid-regional">
+                <div class="__PREFIX__-field-stack __PREFIX__-field-stack-compact">
+                  <input type="number" id="__DOM_ID_PREFIX__RegionalUpliftPct" class="form-control" min="0" step="0.1" value="0" placeholder="0">
+                </div>
+                <div class="__PREFIX__-inline-note">Use direct overrides below when you know the real regional rate.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="__PREFIX__-setting-row __PREFIX__-setting-row-stacked __PREFIX__-setting-card">
+            <label class="__PREFIX__-setting-label">
+              Rate overrides:
+              <span class="info-dot __PREFIX__-helper-chip" title="Set a value here to override the bundled starter rate for that specific cost component">i</span>
+            </label>
+
+            <div class="__PREFIX__-setting-field">
+              <div class="__PREFIX__-override-grid">
+                <section class="__PREFIX__-override-group __PREFIX__-override-group--single">
+                  <div class="__PREFIX__-override-group-head">
+                    <h4 class="__PREFIX__-override-group-title">EC2</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-group-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_ID_PREFIX__Ec2HourlyOverride" class="__PREFIX__-field-label">Hourly rate</label>
+                      <input type="number" id="__DOM_ID_PREFIX__Ec2HourlyOverride" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="__PREFIX__-override-group">
+                  <div class="__PREFIX__-override-group-head">
+                    <h4 class="__PREFIX__-override-group-title">EBS</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-group-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_ID_PREFIX__EbsStorageRate" class="__PREFIX__-field-label">Storage rate</label>
+                      <input type="number" id="__DOM_ID_PREFIX__EbsStorageRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_ID_PREFIX__EbsIopsRate" class="__PREFIX__-field-label">IOPS rate</label>
+                      <input type="number" id="__DOM_ID_PREFIX__EbsIopsRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                      <label for="__DOM_ID_PREFIX__EbsThroughputRate" class="__PREFIX__-field-label">Throughput rate</label>
+                      <input type="number" id="__DOM_ID_PREFIX__EbsThroughputRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="__PREFIX__-override-group">
+                  <div class="__PREFIX__-override-group-head">
+                    <h4 class="__PREFIX__-override-group-title">S3</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-group-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_ID_PREFIX__S3StorageRate" class="__PREFIX__-field-label">Storage rate</label>
+                      <input type="number" id="__DOM_ID_PREFIX__S3StorageRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_ID_PREFIX__S3GetRate" class="__PREFIX__-field-label">GET rate</label>
+                      <input type="number" id="__DOM_ID_PREFIX__S3GetRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                      <label for="__DOM_ID_PREFIX__S3PutRate" class="__PREFIX__-field-label">PUT/LIST rate</label>
+                      <input type="number" id="__DOM_ID_PREFIX__S3PutRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="__PREFIX__-override-group">
+                  <div class="__PREFIX__-override-group-head">
+                    <h4 class="__PREFIX__-override-group-title">Lambda</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-group-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_ID_PREFIX__LambdaRequestRate" class="__PREFIX__-field-label">Request rate</label>
+                      <input type="number" id="__DOM_ID_PREFIX__LambdaRequestRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_ID_PREFIX__LambdaGbSecondRate" class="__PREFIX__-field-label">Compute rate</label>
+                      <input type="number" id="__DOM_ID_PREFIX__LambdaGbSecondRate" class="form-control" min="0" step="0.0000000001" value="" placeholder="0.0000">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="__PREFIX__-override-group">
+                  <div class="__PREFIX__-override-group-head">
+                    <h4 class="__PREFIX__-override-group-title">API Gateway</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-group-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_ID_PREFIX__ApiHttpFirstRate" class="__PREFIX__-field-label">HTTP first tier</label>
+                      <input type="number" id="__DOM_ID_PREFIX__ApiHttpFirstRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_ID_PREFIX__ApiHttpNextRate" class="__PREFIX__-field-label">HTTP next tier</label>
+                      <input type="number" id="__DOM_ID_PREFIX__ApiHttpNextRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+
+                    <div class="__PREFIX__-field-stack __PREFIX__-card-span-two">
+                      <label for="__DOM_ID_PREFIX__ApiRestRate" class="__PREFIX__-field-label">REST rate</label>
+                      <input type="number" id="__DOM_ID_PREFIX__ApiRestRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="__PREFIX__-override-group __PREFIX__-override-group--single">
+                  <div class="__PREFIX__-override-group-head">
+                    <h4 class="__PREFIX__-override-group-title">Network</h4>
+                  </div>
+
+                  <div class="__PREFIX__-override-group-body">
+                    <div class="__PREFIX__-field-stack">
+                      <label for="__DOM_ID_PREFIX__EgressRate" class="__PREFIX__-field-label">Egress rate</label>
+                      <input type="number" id="__DOM_ID_PREFIX__EgressRate" class="form-control" min="0" step="0.0001" value="" placeholder="0.0000">
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+{# ns:end family._base.workspace.03_custom-settings #}
+  </form>
+
+{# ns:start family._base.workspace.05_result-summary #}
+  <div class="__PREFIX__-result-panel" id="__DOM_ID_PREFIX__Panel">
+    <div class="__PREFIX__-result-empty" id="__DOM_ID_PREFIX__ResultEmpty">Build an estimate to review line-item cost drivers, service mix, and exportable JSON.</div>
+
+    <div class="__PREFIX__-result-content d-none" id="__DOM_ID_PREFIX__ResultContent">
+      <div class="__PREFIX__-result-summary" id="__DOM_ID_PREFIX__ResultSummary" data-share-snapshot-source data-share-kind="estimate-summary"></div>
+{# ns:end family._base.workspace.05_result-summary #}
+
+{# ns:start family._base.workspace.06_output-toolbar #}
+      <div class="__TOOL_CLASS__bar-shell">
+        <div class="__TOOL_CLASS__bar tool-output-toolbar tool-result-toolbar">
+          <div class="__TOOL_CLASS__bar-left tool-result-toolbar-main">
+            <label for="__DOM_ID_PREFIX__Sort" class="__PREFIX__-sort-label">Sort</label>
+            <div class="__PREFIX__-sort-wrap">
+              <details class="__PREFIX__-select __PREFIX__-sort-select" id="__DOM_ID_PREFIX__SortSelect">
+                <summary class="__PREFIX__-select-summary __PREFIX__-sort-summary" aria-haspopup="listbox" aria-expanded="false" aria-controls="__DOM_ID_PREFIX__SortMenu">
+                  <span id="__DOM_ID_PREFIX__SortSummary">ID</span>
+                </summary>
+
+                <div class="__PREFIX__-sort-menu" id="__DOM_ID_PREFIX__SortMenu" role="listbox">
+                  <div class="__PREFIX__-sort-grid">
+                    <button type="button" class="__PREFIX__-sort-option is-active" data-sort-value="id" aria-pressed="true" role="option">ID</button>
+                    <button type="button" class="__PREFIX__-sort-option" data-sort-value="cost-desc" aria-pressed="false" role="option">Cost</button>
+                    <button type="button" class="__PREFIX__-sort-option" data-sort-value="service" aria-pressed="false" role="option">Service</button>
+                    <button type="button" class="__PREFIX__-sort-option" data-sort-value="component" aria-pressed="false" role="option">Component</button>
+                    <button type="button" class="__PREFIX__-sort-option" data-sort-value="basis" aria-pressed="false" role="option">Basis</button>
+                  </div>
+                </div>
+              </details>
+              <input type="hidden" id="__DOM_ID_PREFIX__Sort" value="id">
+            </div>
+          </div>
+
+          <div class="__TOOL_CLASS__bar-actions tool-output-actions tool-result-toolbar-actions">
+            <button type="button" class="__PREFIX__-action-btn tool-action-btn tool-action-btn-secondary tool-result-action-btn" id="__DOM_ID_PREFIX__ExportPdf">
+              <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+              <span data-button-label>Export PDF</span>
+            </button>
+            <button type="button" class="__PREFIX__-action-btn tool-action-btn tool-action-btn-secondary tool-result-action-btn" id="__DOM_ID_PREFIX__DownloadCsv">
+              <i class="bi bi-table" aria-hidden="true"></i>
+              <span data-button-label>Download CSV</span>
+            </button>
+            <button type="button" class="__PREFIX__-action-btn tool-action-btn tool-action-btn-secondary tool-result-action-btn" id="__DOM_ID_PREFIX__CopyJson">
+              <i class="bi bi-clipboard" aria-hidden="true"></i>
+              <span data-button-label>Copy JSON</span>
+            </button>
+            <button type="button" class="__PREFIX__-action-btn tool-action-btn tool-action-btn-secondary tool-result-action-btn" id="__DOM_ID_PREFIX__DownloadJson">
+              <i class="bi bi-download" aria-hidden="true"></i>
+              <span data-button-label>Download JSON</span>
+            </button>
+            <button type="button" class="__PREFIX__-action-btn tool-action-btn tool-action-btn-secondary tool-result-action-btn" id="__DOM_ID_PREFIX__ImportJsonButton">
+              <i class="bi bi-upload" aria-hidden="true"></i>
+              <span data-button-label>Import JSON</span>
+            </button>
+          </div>
+        </div>
+      </div>
+{# ns:end family._base.workspace.06_output-toolbar #}
+
+{# ns:start family._base.workspace.07_table-output #}
+
+
+      <div class="__PREFIX__-tabs-shell">
+        <div class="__PREFIX__-tabs" role="tablist" aria-label="AWS cost estimate output views">
+          <button type="button" class="__PREFIX__-tab-btn active" data-tab-target="breakdown" role="tab" aria-selected="true">
+            <i class="bi bi-list-check" aria-hidden="true"></i>
+            <span>Breakdown</span>
+          </button>
+          <button type="button" class="__PREFIX__-tab-btn" data-tab-target="services" role="tab" aria-selected="false">
+            <i class="bi bi-pie-chart" aria-hidden="true"></i>
+            <span>Service Mix</span>
+          </button>
+          <button type="button" class="__PREFIX__-tab-btn" data-tab-target="assumptions" role="tab" aria-selected="false">
+            <i class="bi bi-card-list" aria-hidden="true"></i>
+            <span>Assumptions</span>
+          </button>
+          <button type="button" class="__PREFIX__-tab-btn" data-tab-target="guidance" role="tab" aria-selected="false">
+            <i class="bi bi-lightbulb" aria-hidden="true"></i>
+            <span>Guidance</span>
+          </button>
+          <button type="button" class="__PREFIX__-tab-btn" data-tab-target="json" role="tab" aria-selected="false">
+            <i class="bi bi-braces" aria-hidden="true"></i>
+            <span>JSON</span>
+          </button>
+        </div>
+
+        <div class="__PREFIX__-tab-panel" data-tab-panel="breakdown" role="tabpanel">
+          <div class="__PREFIX__-section-card tool-result-section-card">
+            <h3 class="__PREFIX__-section-title tool-result-section-title">Line-Item Breakdown</h3>
+            <div class="table-responsive __PREFIX__-table-wrap tool-result-table-wrap">
+              <table class="table __PREFIX__-breakdown-table mb-0 tool-result-table">
+                <thead>
+                  <tr>
+                    <th class="tool-generated-rownum-head">#</th>
+                    <th>Service</th>
+                    <th>Driver</th>
+                    <th>Usage</th>
+                    <th>Unit basis</th>
+                    <th>Monthly</th>
+                    <th>Annual</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
+                  </tr>
+                </thead>
+                <tbody id="__DOM_ID_PREFIX__BreakdownTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="__PREFIX__-tab-panel d-none" data-tab-panel="services" role="tabpanel">
+          <div class="__PREFIX__-section-card tool-result-section-card">
+            <h3 class="__PREFIX__-section-title tool-result-section-title">Service Mix</h3>
+            <div class="table-responsive __PREFIX__-table-wrap __PREFIX__-table-wrap-compact tool-result-table-wrap">
+              <table class="table __PREFIX__-service-table mb-0 tool-result-table tool-result-table--compact" data-share-snapshot-source data-share-kind="cost-table">
+                <thead>
+                  <tr>
+                    <th class="tool-generated-rownum-head">#</th>
+                    <th>Service</th>
+                    <th>Monthly</th>
+                    <th>Annual</th>
+                    <th>Share</th>
+                    <th>Signal</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
+                  </tr>
+                </thead>
+                <tbody id="__DOM_ID_PREFIX__ServiceTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="__PREFIX__-tab-panel d-none" data-tab-panel="assumptions" role="tabpanel">
+          <div class="__PREFIX__-section-card tool-result-section-card">
+            <h3 class="__PREFIX__-section-title tool-result-section-title">Assumptions</h3>
+            <div class="table-responsive __PREFIX__-table-wrap __PREFIX__-table-wrap-compact tool-result-table-wrap">
+              <table class="table __PREFIX__-assumption-table mb-0 tool-result-table tool-result-table--compact">
+                <thead>
+                  <tr>
+                    <th class="tool-generated-rownum-head">#</th>
+                    <th>Assumption</th>
+                    <th>Value</th>
+                    <th>Note</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
+                  </tr>
+                </thead>
+                <tbody id="__DOM_ID_PREFIX__AssumptionTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="__PREFIX__-tab-panel d-none" data-tab-panel="guidance" role="tabpanel">
+          <div class="__PREFIX__-section-card tool-result-section-card">
+            <h3 class="__PREFIX__-section-title tool-result-section-title">Recommendations</h3>
+            <div class="__PREFIX__-recommendation-grid" id="__DOM_ID_PREFIX__Recommendations"></div>
+          </div>
+
+          <div class="__PREFIX__-section-card tool-result-section-card">
+            <h3 class="__PREFIX__-section-title tool-result-section-title">Methodology</h3>
+            <div class="__PREFIX__-method-grid" id="__DOM_ID_PREFIX__Methodology"></div>
+          </div>
+        </div>
+
+        <div class="__PREFIX__-tab-panel d-none" data-tab-panel="json" role="tabpanel">
+{# ns:start family._base.workspace.08_json-restore #}
+                  <div class="__PREFIX__-json-restore-shell" id="__DOM_ID_PREFIX__JsonRestoreShell">
+          <section class="__PREFIX__-json-card tool-json-panel" aria-label="Estimate JSON output and restore state">
+            <div class="__PREFIX__-json-head tool-json-head">
+              <div class="__PREFIX__-json-title-wrap">
+                <span class="__PREFIX__-json-title tool-json-title">JSON Output</span>
+                <span class="__PREFIX__-json-helper">Exported estimate state should include inputs, assumptions, line items, totals, and generated output.</span>
+              </div>
+              <span class="__PREFIX__-json-status is-hidden" id="__DOM_ID_PREFIX__JsonRestoreStatus" role="status" aria-live="polite"></span>
+            </div>
+            <div class="__PREFIX__-json-empty is-hidden" id="__DOM_ID_PREFIX__JsonRestoreEmpty">Build an estimate before exporting JSON.</div>
+            <pre class="__PREFIX__-json-output tool-json-output"><code id="__DOM_ID_PREFIX__JsonOutput"></code></pre>
+          </section>
+        </div>
+{# ns:end family._base.workspace.08_json-restore #}
+      </div>
+    </div>
+{# ns:end family._base.workspace.07_table-output #}
+
+
+    <div class="__PREFIX__-result-error d-none" id="__DOM_ID_PREFIX__ResultError"></div>
+    <input type="file" id="__DOM_ID_PREFIX__ImportJson" class="__PREFIX__-import-input d-none" accept="application/json">
+  </div>
+</div>
+</div>
+</div>
+{# ns:end family._base.workspace.00_shell #}

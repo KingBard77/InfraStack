@@ -104,6 +104,7 @@ Before applying the section, choose the matching preference from `../manifest.ym
 - The sort default must visibly start as `ID`.
 - The hidden sort value must start as `id`.
 - The first option in the custom dropdown must be `ID`.
+- The sort dropdown must follow `../manifest.yml` `dropdown_visual_contract`: 46px summary, one 30px arrow chip, 8px popup offset, matching menu width, plain 42px option rows, soft accent selected or hover state, thin internal scrollbar, parent z-index 140, and menu z-index 160.
 - The dropdown menu must be custom CSS, not a native select popup.
 - The dropdown menu must match the width of the closed sort summary.
 - Toolbar, sort wrapper, and sort menu containers must keep `overflow: visible`.
@@ -119,5 +120,6 @@ Before applying the section, choose the matching preference from `../manifest.ym
 - Each action button contains a Bootstrap Icon element.
 - Button corners are compact, not `999px`.
 - Dropdown width matches the closed summary width.
+- Dropdown summary, arrow chip, popup menu, option rows, selected/hover state, scrollbar, and z-index match `dropdown_visual_contract`.
 - Dropdown has a z-index above following cards and ancestors do not clip it.
 - Mobile layout collapses without horizontal overflow.

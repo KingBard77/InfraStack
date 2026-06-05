@@ -56,6 +56,12 @@
     <div class="generate-netcat-shell-basic-panel">
       <div class="generate-netcat-shell-inner-panel generate-netcat-shell-basic-card">
 
+        <div class="generate-netcat-shell-example-card">
+          <span class="generate-netcat-shell-example-label">Example</span>
+          <span class="generate-netcat-shell-example-value">nc -v example.com 443</span>
+          <span class="generate-netcat-shell-example-helper" id="generateNetcatShellCapabilityHint">OpenBSD nc is active. TLS and execution helpers are dropped with warnings, while listen mode, UDP, scans, and shutdown-after-stdin EOF stay available.</span>
+        </div>
+
         <div class="generate-netcat-shell-setting-row generate-netcat-shell-setting-card">
           <label class="generate-netcat-shell-setting-label">
             Command profile:
@@ -66,7 +72,7 @@
             <div class="generate-netcat-shell-stacked-grid">
               <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-two">
                 <div class="generate-netcat-shell-native-select-wrap">
-                  <select id="generateNetcatShellPreset" class="form-select generate-netcat-shell-native-select">
+                  <select id="generateNetcatShellPreset" class="form-select generate-netcat-shell-native-select" aria-label="Command preset">
                     <option value="tcp-client" selected>TCP client</option>
                     <option value="udp-check">UDP payload check</option>
                     <option value="listen-verbose">Verbose listener</option>
@@ -82,7 +88,7 @@
 
               <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-two">
                 <div class="generate-netcat-shell-native-select-wrap">
-                  <select id="generateNetcatShellShell" class="form-select generate-netcat-shell-native-select">
+                  <select id="generateNetcatShellShell" class="form-select generate-netcat-shell-native-select" aria-label="Shell style">
                     <option value="bash" selected>Bash / Zsh</option>
                     <option value="powershell">PowerShell</option>
                     <option value="cmd">Windows CMD</option>
@@ -90,7 +96,7 @@
                 </div>
 
                 <div class="generate-netcat-shell-native-select-wrap">
-                  <select id="generateNetcatShellImplementation" class="form-select generate-netcat-shell-native-select">
+                  <select id="generateNetcatShellImplementation" class="form-select generate-netcat-shell-native-select" aria-label="Netcat implementation">
                     <option value="openbsd" selected>OpenBSD nc</option>
                     <option value="traditional">Traditional netcat</option>
                     <option value="busybox">BusyBox nc</option>
@@ -99,7 +105,6 @@
                 </div>
               </div>
 
-              <div class="generate-netcat-shell-flag-hint" id="generateNetcatShellCapabilityHint">OpenBSD nc is active. TLS and execution helpers are dropped with warnings, while listen mode, UDP, scans, and shutdown-after-stdin EOF stay available.</div>
             </div>
           </div>
         </div>
@@ -113,7 +118,7 @@
           <div class="generate-netcat-shell-setting-field">
             <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
               <div class="generate-netcat-shell-native-select-wrap">
-                <select id="generateNetcatShellConnectionType" class="form-select generate-netcat-shell-native-select">
+                <select id="generateNetcatShellConnectionType" class="form-select generate-netcat-shell-native-select" aria-label="Session mode">
                   <option value="client" selected>Client</option>
                   <option value="listen">Listen</option>
                   <option value="scan">Scan</option>
@@ -231,7 +236,7 @@
                   >
 
                   <div class="generate-netcat-shell-native-select-wrap">
-                    <select id="generateNetcatShellFlagStyle" class="form-select generate-netcat-shell-native-select">
+                    <select id="generateNetcatShellFlagStyle" class="form-select generate-netcat-shell-native-select" aria-label="Flag style">
                       <option value="mixed" selected>Mixed flags</option>
                       <option value="short">Short flags</option>
                       <option value="long">Long flags when available</option>
@@ -358,7 +363,7 @@
                 >
 
                 <div class="generate-netcat-shell-native-select-wrap">
-                  <select id="generateNetcatShellExecutionMode" class="form-select generate-netcat-shell-native-select">
+                  <select id="generateNetcatShellExecutionMode" class="form-select generate-netcat-shell-native-select" aria-label="Execution mode">
                     <option value="none" selected>No execution</option>
                     <option value="exec">Execute command (-e)</option>
                   </select>
@@ -428,48 +433,14 @@
             <div class="generate-netcat-shell-setting-field">
               <div class="generate-netcat-shell-stacked-grid">
                 <div class="generate-netcat-shell-inline-grid generate-netcat-shell-inline-grid-three">
-                  <input type="hidden" id="generateNetcatShellProxyType" value="none">
-
-                  <details class="generate-netcat-shell-custom-dropdown" data-custom-dropdown-for="generateNetcatShellProxyType">
-                    <summary class="generate-netcat-shell-custom-dropdown-summary">
-                      <span data-custom-dropdown-label>No proxy</span>
-                        <span class="generate-netcat-shell-custom-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="generate-netcat-shell-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                      <button
-                        type="button"
-                        class="generate-netcat-shell-custom-dropdown-option active"
-                        data-custom-dropdown-value="none"
-                        role="option"
-                        aria-selected="true"
-                      >No proxy</button>
-
-                      <button
-                        type="button"
-                        class="generate-netcat-shell-custom-dropdown-option"
-                        data-custom-dropdown-value="http"
-                        role="option"
-                        aria-selected="false"
-                      >HTTP CONNECT</button>
-
-                      <button
-                        type="button"
-                        class="generate-netcat-shell-custom-dropdown-option"
-                        data-custom-dropdown-value="socks4"
-                        role="option"
-                        aria-selected="false"
-                      >SOCKS4</button>
-
-                      <button
-                        type="button"
-                        class="generate-netcat-shell-custom-dropdown-option"
-                        data-custom-dropdown-value="socks5"
-                        role="option"
-                        aria-selected="false"
-                      >SOCKS5</button>
-                    </div>
-                  </details>
+                  <div class="generate-netcat-shell-native-select-wrap">
+                    <select id="generateNetcatShellProxyType" class="form-select generate-netcat-shell-native-select" aria-label="Proxy type">
+                      <option value="none" selected>No proxy</option>
+                      <option value="http">HTTP CONNECT</option>
+                      <option value="socks4">SOCKS4</option>
+                      <option value="socks5">SOCKS5</option>
+                    </select>
+                  </div>
 
                   <div class="d-none" id="generateNetcatShellProxyHostWrap">
                     <input
@@ -608,17 +579,17 @@
               <label for="generateNetcatShellSort" class="generate-netcat-shell-sort-label">Sort</label>
               <div class="generate-netcat-shell-sort-wrap">
                 <details class="generate-netcat-shell-sort-select" id="generateNetcatShellSortSelect">
-                  <summary class="generate-netcat-shell-sort-summary">
+                  <summary class="generate-netcat-shell-sort-summary" aria-haspopup="listbox" aria-expanded="false" aria-controls="generateNetcatShellSortMenu">
                     <span id="generateNetcatShellSortSummary">ID</span>
                   </summary>
 
-                  <div class="generate-netcat-shell-sort-menu">
+                  <div class="generate-netcat-shell-sort-menu" id="generateNetcatShellSortMenu" role="listbox">
                     <div class="generate-netcat-shell-sort-grid">
-                      <button type="button" class="generate-netcat-shell-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
-                      <button type="button" class="generate-netcat-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
-                      <button type="button" class="generate-netcat-shell-sort-option" data-sort-value="field" aria-pressed="false">Field</button>
-                      <button type="button" class="generate-netcat-shell-sort-option" data-sort-value="value" aria-pressed="false">Value</button>
-                      <button type="button" class="generate-netcat-shell-sort-option" data-sort-value="length" aria-pressed="false">Length</button>
+                      <button type="button" class="generate-netcat-shell-sort-option is-active" data-sort-value="id" aria-pressed="true" role="option">ID</button>
+                      <button type="button" class="generate-netcat-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false" role="option">A-Z</button>
+                      <button type="button" class="generate-netcat-shell-sort-option" data-sort-value="field" aria-pressed="false" role="option">Field</button>
+                      <button type="button" class="generate-netcat-shell-sort-option" data-sort-value="value" aria-pressed="false" role="option">Value</button>
+                      <button type="button" class="generate-netcat-shell-sort-option" data-sort-value="length" aria-pressed="false" role="option">Length</button>
                     </div>
                   </div>
                 </details>
@@ -680,7 +651,7 @@
           <div class="tool-tab-panel generate-netcat-shell-tab-panel" id="generateNetcatShellCommandPanel" data-tab-panel="generateNetcatShellCommandPanel" role="tabpanel" aria-labelledby="generateNetcatShellCommandTab" hidden>
             <div class="generate-netcat-shell-command-wrap">
               <div class="generate-netcat-shell-command-head">
-                <h3 class="generate-netcat-shell-command-title">Generated netcat Command</h3>
+                <h3 class="generate-netcat-shell-command-title">Netcat Command</h3>
                 <div class="generate-netcat-shell-command-actions">
                   <button type="button" class="generate-netcat-shell-action-btn" id="generateNetcatShellCopyCommand" aria-label="Copy generated netcat command" title="Copy generated netcat command">
                     <i class="bi bi-clipboard" aria-hidden="true"></i>
@@ -703,7 +674,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Field</th>
                         <th scope="col">Value</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                       </tr>
                     </thead>
                     <tbody id="generateNetcatShellOptionsTableBody"></tbody>

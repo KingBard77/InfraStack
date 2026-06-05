@@ -1,7 +1,7 @@
 {# tool.html.twig #}
 {# ns:start family._base.workspace.00_shell #}
 
-<div class="architecture-vpc-aws-tool">
+<div class="architecture-vpc-aws-tool" data-tool-slug="architecture-vpc-aws">
   <div class="tool-box">
     {# ns:start family._base.workspace.01_input-brief #}
     <div class="tool-shell tool-prompt-shell architecture-vpc-aws-input-card">
@@ -37,7 +37,7 @@
             id="architectureVpcAwsReset"
           >
             <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
-            <span>Load Default</span>
+            <span>Reset</span>
           </button>
         </div>
 
@@ -67,34 +67,40 @@
             <div class="architecture-vpc-aws-basic-grid">
               <div class="architecture-vpc-aws-control-stack architecture-vpc-aws-setting-card">
                 <label class="tool-control-label architecture-vpc-aws-setting-label" for="architectureVpcAwsPreset">Preset <span class="architecture-vpc-aws-helper-chip" title="Choose a starting preset that updates the visible controls and generated output." aria-label="Choose a starting preset that updates the visible controls and generated output.">i</span></label>
-                <select id="architectureVpcAwsPreset" class="form-select architecture-vpc-aws-native-select">
-                  <option value="three-tier-web" selected>3-Tier Web</option>
-                  <option value="ecs-fargate">ECS Fargate</option>
-                  <option value="eks-platform">Private EKS</option>
-                  <option value="hybrid-shared">Hybrid Shared Services</option>
-                </select>
+                <div class="architecture-vpc-aws-native-select-wrap" id="architectureVpcAwsPresetSelect">
+                  <select id="architectureVpcAwsPreset" class="form-select architecture-vpc-aws-native-select">
+                    <option value="three-tier-web" selected>3-Tier Web</option>
+                    <option value="ecs-fargate">ECS Fargate</option>
+                    <option value="eks-platform">Private EKS</option>
+                    <option value="hybrid-shared">Hybrid Shared Services</option>
+                  </select>
+                </div>
               </div>
 
               <div class="architecture-vpc-aws-control-stack architecture-vpc-aws-setting-card">
                 <label class="tool-control-label architecture-vpc-aws-setting-label" for="architectureVpcAwsRegion">Region <span class="architecture-vpc-aws-helper-chip" title="Choose the provider region used by the generated model and exported JSON." aria-label="Choose the provider region used by the generated model and exported JSON.">i</span></label>
-                <select id="architectureVpcAwsRegion" class="form-select architecture-vpc-aws-native-select">
-                  <option value="us-east-1">us-east-1</option>
-                  <option value="us-east-2">us-east-2</option>
-                  <option value="us-west-2">us-west-2</option>
-                  <option value="eu-west-1">eu-west-1</option>
-                  <option value="ap-southeast-1">ap-southeast-1</option>
-                  <option value="ap-southeast-2">ap-southeast-2</option>
-                  <option value="ap-northeast-1">ap-northeast-1</option>
-                </select>
+                <div class="architecture-vpc-aws-native-select-wrap" id="architectureVpcAwsRegionSelect">
+                  <select id="architectureVpcAwsRegion" class="form-select architecture-vpc-aws-native-select">
+                    <option value="us-east-1">us-east-1</option>
+                    <option value="us-east-2">us-east-2</option>
+                    <option value="us-west-2">us-west-2</option>
+                    <option value="eu-west-1">eu-west-1</option>
+                    <option value="ap-southeast-1">ap-southeast-1</option>
+                    <option value="ap-southeast-2">ap-southeast-2</option>
+                    <option value="ap-northeast-1">ap-northeast-1</option>
+                  </select>
+                </div>
               </div>
 
               <div class="architecture-vpc-aws-control-stack architecture-vpc-aws-setting-card">
                 <label class="tool-control-label architecture-vpc-aws-setting-label" for="architectureVpcAwsAzCount">Availability zones <span class="architecture-vpc-aws-helper-chip" title="Choose the zone count used by placement and resilience assumptions." aria-label="Choose the zone count used by placement and resilience assumptions.">i</span></label>
-                <select id="architectureVpcAwsAzCount" class="form-select architecture-vpc-aws-native-select">
-                  <option value="1">1 AZ</option>
-                  <option value="2" selected>2 AZ</option>
-                  <option value="3">3 AZ</option>
-                </select>
+                <div class="architecture-vpc-aws-native-select-wrap" id="architectureVpcAwsAzCountSelect">
+                  <select id="architectureVpcAwsAzCount" class="form-select architecture-vpc-aws-native-select">
+                    <option value="1">1 AZ</option>
+                    <option value="2" selected>2 AZ</option>
+                    <option value="3">3 AZ</option>
+                  </select>
+                </div>
               </div>
               <p class="tool-control-hint architecture-vpc-aws-setting-hint" id="architectureVpcAwsPresetDescription">Public ALB, private EC2 app tier, Multi-AZ RDS, single NAT.</p>
             </div>
@@ -123,41 +129,13 @@
                   </div>
 
                   <div class="architecture-vpc-aws-control-stack">
-                    <label class="tool-control-label" for="architectureVpcAwsNatMode">NAT mode <span class="architecture-vpc-aws-helper-chip architecture-vpc-aws-custom-helper-chip" title="Tune nat mode before regenerating the diagram." aria-label="Tune nat mode before regenerating the diagram.">i</span></label>
-                    <input type="hidden" id="architectureVpcAwsNatMode" value="single">
-
-                    <details class="architecture-vpc-aws-custom-dropdown" data-custom-dropdown-for="architectureVpcAwsNatMode">
-                      <summary class="architecture-vpc-aws-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>Single NAT</span>
-                          <span class="architecture-vpc-aws-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="architecture-vpc-aws-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                        <button
-                          type="button"
-                          class="architecture-vpc-aws-custom-dropdown-option"
-                          data-custom-dropdown-value="none"
-                          role="option"
-                          aria-selected="false"
-                        >No NAT</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-aws-custom-dropdown-option active"
-                          data-custom-dropdown-value="single"
-                          role="option"
-                          aria-selected="true"
-                        >Single NAT</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-aws-custom-dropdown-option"
-                          data-custom-dropdown-value="per-az"
-                          role="option"
-                          aria-selected="false"
-                        >One per AZ</button>
-                      </div>
-                    </details>
+                    <label class="tool-control-label" for="architectureVpcAwsNatMode">NAT mode <span class="architecture-vpc-aws-helper-chip architecture-vpc-aws-custom-helper-chip" title="Tune nat mode before regenerating the diagram." aria-label="Tune nat mode before regenerating the diagram.">i</span></label>                    <div class="architecture-vpc-aws-native-select-wrap" id="architectureVpcAwsNatModeSelect">
+                      <select id="architectureVpcAwsNatMode" class="form-select architecture-vpc-aws-native-select">
+                        <option value="none">No NAT</option>
+                        <option value="single" selected>Single NAT</option>
+                        <option value="per-az">One per AZ</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -165,95 +143,25 @@
               <div class="tool-inspector-section architecture-vpc-aws-config-panel" id="architectureVpcAwsWorkloadConfigPanel" data-config-panel role="tabpanel" aria-labelledby="architectureVpcAwsWorkloadConfigTab" hidden>
                 <div class="architecture-vpc-aws-config-grid">
                   <div class="architecture-vpc-aws-control-stack">
-                    <label class="tool-control-label" for="architectureVpcAwsAppTier">App tier <span class="architecture-vpc-aws-helper-chip architecture-vpc-aws-custom-helper-chip" title="Tune app tier before regenerating the diagram." aria-label="Tune app tier before regenerating the diagram.">i</span></label>
-                    <input type="hidden" id="architectureVpcAwsAppTier" value="ec2">
-
-                    <details class="architecture-vpc-aws-custom-dropdown" data-custom-dropdown-for="architectureVpcAwsAppTier">
-                      <summary class="architecture-vpc-aws-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>EC2 Auto Scaling</span>
-                          <span class="architecture-vpc-aws-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="architecture-vpc-aws-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                        <button
-                          type="button"
-                          class="architecture-vpc-aws-custom-dropdown-option active"
-                          data-custom-dropdown-value="ec2"
-                          role="option"
-                          aria-selected="true"
-                        >EC2 Auto Scaling</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-aws-custom-dropdown-option"
-                          data-custom-dropdown-value="ecs"
-                          role="option"
-                          aria-selected="false"
-                        >ECS / Fargate</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-aws-custom-dropdown-option"
-                          data-custom-dropdown-value="eks"
-                          role="option"
-                          aria-selected="false"
-                        >EKS</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-aws-custom-dropdown-option"
-                          data-custom-dropdown-value="lambda"
-                          role="option"
-                          aria-selected="false"
-                        >Lambda in VPC</button>
-                      </div>
-                    </details>
+                    <label class="tool-control-label" for="architectureVpcAwsAppTier">App tier <span class="architecture-vpc-aws-helper-chip architecture-vpc-aws-custom-helper-chip" title="Tune app tier before regenerating the diagram." aria-label="Tune app tier before regenerating the diagram.">i</span></label>                    <div class="architecture-vpc-aws-native-select-wrap" id="architectureVpcAwsAppTierSelect">
+                      <select id="architectureVpcAwsAppTier" class="form-select architecture-vpc-aws-native-select">
+                        <option value="ec2" selected>EC2 Auto Scaling</option>
+                        <option value="ecs">ECS / Fargate</option>
+                        <option value="eks">EKS</option>
+                        <option value="lambda">Lambda in VPC</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div class="architecture-vpc-aws-control-stack">
-                    <label class="tool-control-label" for="architectureVpcAwsDatabase">Database tier <span class="architecture-vpc-aws-helper-chip architecture-vpc-aws-custom-helper-chip" title="Tune database tier before regenerating the diagram." aria-label="Tune database tier before regenerating the diagram.">i</span></label>
-                    <input type="hidden" id="architectureVpcAwsDatabase" value="rds">
-
-                    <details class="architecture-vpc-aws-custom-dropdown" data-custom-dropdown-for="architectureVpcAwsDatabase">
-                      <summary class="architecture-vpc-aws-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>RDS</span>
-                          <span class="architecture-vpc-aws-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="architecture-vpc-aws-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                        <button
-                          type="button"
-                          class="architecture-vpc-aws-custom-dropdown-option"
-                          data-custom-dropdown-value="none"
-                          role="option"
-                          aria-selected="false"
-                        >No database tier</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-aws-custom-dropdown-option active"
-                          data-custom-dropdown-value="rds"
-                          role="option"
-                          aria-selected="true"
-                        >RDS</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-aws-custom-dropdown-option"
-                          data-custom-dropdown-value="aurora"
-                          role="option"
-                          aria-selected="false"
-                        >Aurora</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vpc-aws-custom-dropdown-option"
-                          data-custom-dropdown-value="dynamodb"
-                          role="option"
-                          aria-selected="false"
-                        >DynamoDB</button>
-                      </div>
-                    </details>
+                    <label class="tool-control-label" for="architectureVpcAwsDatabase">Database tier <span class="architecture-vpc-aws-helper-chip architecture-vpc-aws-custom-helper-chip" title="Tune database tier before regenerating the diagram." aria-label="Tune database tier before regenerating the diagram.">i</span></label>                    <div class="architecture-vpc-aws-native-select-wrap" id="architectureVpcAwsDatabaseSelect">
+                      <select id="architectureVpcAwsDatabase" class="form-select architecture-vpc-aws-native-select">
+                        <option value="none">No database tier</option>
+                        <option value="rds" selected>RDS</option>
+                        <option value="aurora">Aurora</option>
+                        <option value="dynamodb">DynamoDB</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -425,7 +333,7 @@
           <button type="button" class="architecture-vpc-aws-icon-btn" id="architectureVpcAwsFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
             <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
           </button>
-          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-vpc-aws-stage-toolbar-btn" id="architectureVpcAwsResetLayout" aria-label="Auto arrange layout" title="Auto arrange layout">Auto layout</button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-vpc-aws-stage-toolbar-btn" id="architectureVpcAwsResetLayout" aria-label="Auto layout" title="Auto layout">Auto layout</button>
         </div>
       </div>
 
@@ -677,7 +585,7 @@
                           <th>Component</th>
                           <th>Placement</th>
                           <th>Purpose</th>
-                          <th>Action</th>
+                          <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                         </tr>
                       </thead>
                       <tbody id="architectureVpcAwsInventoryTableBody"></tbody>

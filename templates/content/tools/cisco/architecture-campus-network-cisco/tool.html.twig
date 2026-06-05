@@ -37,7 +37,7 @@
             id="architectureCampusNetworkCiscoReset"
           >
             <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
-            <span data-button-label>Load Default</span>
+            <span data-button-label>Reset</span>
           </button>
         </div>
 
@@ -66,33 +66,39 @@
           <div class="architecture-campus-network-cisco-basic-grid">
             <div class="architecture-campus-network-cisco-control-stack architecture-campus-network-cisco-setting-card">
               <label class="tool-control-label architecture-campus-network-cisco-setting-label" for="architectureCampusNetworkCiscoPreset">Preset <span class="architecture-campus-network-cisco-helper-chip" title="Choose a starting preset that updates the visible controls and generated output." aria-label="Choose a starting preset that updates the visible controls and generated output.">i</span></label>
-              <select id="architectureCampusNetworkCiscoPreset" class="form-select architecture-campus-network-cisco-native-select">
-                <option value="enterprise-campus" selected>Enterprise Campus</option>
-                <option value="branch-campus">Branch Campus</option>
-                <option value="wireless-campus">Wireless Campus</option>
-                <option value="data-center-edge">Data Center Edge</option>
-              </select>
+              <div class="architecture-campus-network-cisco-native-select-wrap" id="architectureCampusNetworkCiscoPresetSelect">
+                <select id="architectureCampusNetworkCiscoPreset" class="form-select architecture-campus-network-cisco-native-select">
+                  <option value="enterprise-campus" selected>Enterprise Campus</option>
+                  <option value="branch-campus">Branch Campus</option>
+                  <option value="wireless-campus">Wireless Campus</option>
+                  <option value="data-center-edge">Data Center Edge</option>
+                </select>
+              </div>
             </div>
 
             <div class="architecture-campus-network-cisco-control-stack architecture-campus-network-cisco-setting-card">
               <label class="tool-control-label architecture-campus-network-cisco-setting-label" for="architectureCampusNetworkCiscoSize">Campus size <span class="architecture-campus-network-cisco-helper-chip" title="Choose the campus scale used by access, distribution, and core assumptions." aria-label="Choose the campus scale used by access, distribution, and core assumptions.">i</span></label>
-              <select id="architectureCampusNetworkCiscoSize" class="form-select architecture-campus-network-cisco-native-select">
-                <option value="small">Small</option>
-                <option value="medium" selected>Medium</option>
-                <option value="large">Large</option>
-              </select>
+              <div class="architecture-campus-network-cisco-native-select-wrap" id="architectureCampusNetworkCiscoSizeSelect">
+                <select id="architectureCampusNetworkCiscoSize" class="form-select architecture-campus-network-cisco-native-select">
+                  <option value="small">Small</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="large">Large</option>
+                </select>
+              </div>
             </div>
 
             <div class="architecture-campus-network-cisco-control-stack architecture-campus-network-cisco-setting-card">
               <label class="tool-control-label architecture-campus-network-cisco-setting-label" for="architectureCampusNetworkCiscoAccessBlocks">Access blocks <span class="architecture-campus-network-cisco-helper-chip" title="Choose the access block count used by the layout assumptions." aria-label="Choose the access block count used by the layout assumptions.">i</span></label>
-              <select id="architectureCampusNetworkCiscoAccessBlocks" class="form-select architecture-campus-network-cisco-native-select">
-                <option value="1">1 block</option>
-                <option value="2">2 blocks</option>
-                <option value="3" selected>3 blocks</option>
-                <option value="4">4 blocks</option>
-                <option value="5">5 blocks</option>
-                <option value="6">6 blocks</option>
-              </select>
+              <div class="architecture-campus-network-cisco-native-select-wrap" id="architectureCampusNetworkCiscoAccessBlocksSelect">
+                <select id="architectureCampusNetworkCiscoAccessBlocks" class="form-select architecture-campus-network-cisco-native-select">
+                  <option value="1">1 block</option>
+                  <option value="2">2 blocks</option>
+                  <option value="3" selected>3 blocks</option>
+                  <option value="4">4 blocks</option>
+                  <option value="5">5 blocks</option>
+                  <option value="6">6 blocks</option>
+                </select>
+              </div>
             </div>
             <p class="tool-control-hint architecture-campus-network-cisco-setting-hint" id="architectureCampusNetworkCiscoPresetDescription">Redundant core, dual distribution, access blocks, OSPF, HSRP, services, wireless, and edge security.</p>
           </div>
@@ -116,49 +122,14 @@
             <div class="tool-inspector-section architecture-campus-network-cisco-config-panel active" id="architectureCampusNetworkCiscoNetworkPanel" data-config-panel role="tabpanel" aria-labelledby="architectureCampusNetworkCiscoNetworkTab">
               <div class="architecture-campus-network-cisco-config-grid">
                 <div class="architecture-campus-network-cisco-control-stack">
-                  <label class="tool-control-label" for="architectureCampusNetworkCiscoRouting">Routing mode <span class="architecture-campus-network-cisco-helper-chip architecture-campus-network-cisco-custom-helper-chip" title="Tune routing mode before regenerating the diagram." aria-label="Tune routing mode before regenerating the diagram.">i</span></label>
-                  <input type="hidden" id="architectureCampusNetworkCiscoRouting" value="ospf">
-
-                  <details class="architecture-campus-network-cisco-custom-dropdown" data-custom-dropdown-for="architectureCampusNetworkCiscoRouting">
-                    <summary class="architecture-campus-network-cisco-custom-dropdown-summary">
-                      <span data-custom-dropdown-label>OSPF</span>
-                        <span class="architecture-campus-network-cisco-custom-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="architecture-campus-network-cisco-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                      <button
-                        type="button"
-                        class="architecture-campus-network-cisco-custom-dropdown-option"
-                        data-custom-dropdown-value="static"
-                        role="option"
-                        aria-selected="false"
-                      >Static</button>
-
-                      <button
-                        type="button"
-                        class="architecture-campus-network-cisco-custom-dropdown-option active"
-                        data-custom-dropdown-value="ospf"
-                        role="option"
-                        aria-selected="true"
-                      >OSPF</button>
-
-                      <button
-                        type="button"
-                        class="architecture-campus-network-cisco-custom-dropdown-option"
-                        data-custom-dropdown-value="eigrp"
-                        role="option"
-                        aria-selected="false"
-                      >EIGRP</button>
-
-                      <button
-                        type="button"
-                        class="architecture-campus-network-cisco-custom-dropdown-option"
-                        data-custom-dropdown-value="bgp"
-                        role="option"
-                        aria-selected="false"
-                      >BGP</button>
-                    </div>
-                  </details>
+                  <label class="tool-control-label" for="architectureCampusNetworkCiscoRouting">Routing mode <span class="architecture-campus-network-cisco-helper-chip architecture-campus-network-cisco-custom-helper-chip" title="Tune routing mode before regenerating the diagram." aria-label="Tune routing mode before regenerating the diagram.">i</span></label>                  <div class="architecture-campus-network-cisco-native-select-wrap" id="architectureCampusNetworkCiscoRoutingSelect">
+                    <select id="architectureCampusNetworkCiscoRouting" class="form-select architecture-campus-network-cisco-native-select">
+                      <option value="static">Static</option>
+                      <option value="ospf" selected>OSPF</option>
+                      <option value="eigrp">EIGRP</option>
+                      <option value="bgp">BGP</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="architecture-campus-network-cisco-control-stack architecture-campus-network-cisco-vlan-stack">
@@ -372,7 +343,7 @@ VLAN 40 Servers</textarea>
           <button type="button" class="architecture-campus-network-cisco-icon-btn" id="architectureCampusNetworkCiscoFullscreen" aria-label="Open fullscreen" title="Open fullscreen">
             <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
           </button>
-          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-campus-network-cisco-stage-toolbar-btn" id="architectureCampusNetworkCiscoResetLayout" aria-label="Auto arrange layout" title="Auto arrange layout">Auto layout</button>
+          <button type="button" class="tool-action-btn tool-action-btn-ghost architecture-campus-network-cisco-stage-toolbar-btn" id="architectureCampusNetworkCiscoResetLayout" aria-label="Auto layout" title="Auto layout">Auto layout</button>
         </div>
       </div>
 
@@ -622,7 +593,7 @@ VLAN 40 Servers</textarea>
                         <th scope="col">Component</th>
                         <th scope="col">Placement</th>
                         <th scope="col">Purpose</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                       </tr>
                     </thead>
                     <tbody id="architectureCampusNetworkCiscoInventoryTableBody"></tbody>

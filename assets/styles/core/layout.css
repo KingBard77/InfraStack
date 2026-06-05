@@ -22,7 +22,7 @@
 }
 
 .page-title .breadcrumbs .breadcrumb .breadcrumb-item.active {
-    color: var(--accent-color);
+    color: #c2410c;
 }
 
 .page-title .breadcrumbs .breadcrumb .breadcrumb-item a {

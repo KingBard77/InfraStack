@@ -2,13 +2,23 @@ family: calculate
 version: 1.6.0
 status: active
 description: Baseline template for InfraStack browser-first calculator tools composed from shared `_base` workspace structure plus calculate-owned visual contracts, inspector slots, normalized models, table export semantics, and JSON restore boundaries.
+baseline_snapshot: "2026-06-04"
 agent_map: templates/content/factory/phase-1/_family/calculate/FAMILY.md
 
 baseline_path: templates/content/factory/phase-1/_family/calculate/
 preferred_baseline_path: templates/content/factory/phase-1/_family/calculate/
-workspace_path: templates/content/factory/phase-1/_family/calculate/workspace/
+source_path: templates/content/factory/phase-1/_family/calculate/source/calculate-cost-aws/
 scaffold_path: templates/content/factory/phase-2/_content/scaffold/
 content_sections_path: templates/content/factory/phase-2/_content/sections/
+
+reference_tool:
+    path: templates/content/tools/aws/calculate-cost-aws/
+    purpose: Approved production reference for calculate-family composition. Use the workflow grammar and quality bar, not AWS-specific pricing copy.
+    aliases:
+        - AWS Cost Calculator
+        - AWS cost calculator
+        - aws-cost-calculator
+        - calculate-cost-aws
 
 section_runtime_baseline:
     source_tools:
@@ -18,26 +28,26 @@ section_runtime_baseline:
           role: provider-adaptation reference for Azure service names, category/provider tokens, chart palette replacement, and copied-token cleanup
         - path: templates/content/tools/ibm/calculate-cost-ibm/
           role: provider-adaptation reference for IBM Cloud service names, category/provider tokens, chart palette replacement, and copied-token cleanup
-    source_snapshot: templates/content/factory/phase-1/_family/calculate/source/
-    purpose: Section-owned files are the reusable baseline. The source snapshot is reference-only. Do not audit this as active source. AWS supplies the structural reference while Azure and IBM Cloud prove provider adaptation, category/provider token handling, and copied-token cleanup.
+    source_snapshot: templates/content/factory/phase-1/_family/calculate/source/calculate-cost-aws/
+    purpose: Section-owned files are the reusable baseline. The source snapshot is audited for production freshness but is not imported directly as active workspace section source. AWS supplies the structural reference while Azure and IBM Cloud prove provider adaptation, category/provider token handling, and copied-token cleanup.
 
 runtime_baseline:
     source_tool: templates/content/tools/aws/calculate-cost-aws/
-    source_snapshot: templates/content/factory/phase-1/_family/calculate/source/
-    workspace_sections: templates/content/factory/phase-1/_family/calculate/workspace/
+    source_snapshot: templates/content/factory/phase-1/_family/calculate/source/calculate-cost-aws/
+    source_package: templates/content/factory/phase-1/_family/calculate/source/calculate-cost-aws/
     copy_mode: base_plus_family_contract
     source_hashes:
-        tool_html_twig: bd204d9469580503ca6350a65c9f05eaecda415db972dbb6b19cea9999c179d8
-        custom_css: 1644c71c96b9c9bd0c519347cc1a474bb374ee3a80c3b91993e1b61ba756c200
-        custom_js: ab9dcdab32504d365194865e9c5f169e1adbbc3f4f2347619aa6b81197037db8
-    rule: Keep the full copied calculate source under source/ as a reference-only snapshot. Do not audit this as active source. Do not keep root workspace custom.css, custom.js, or demo.html.twig files. Extract stabilized runtime structure into section-owned page.html.twig, section.css, section.js, and demo.html files.
+        tool_html_twig: 84974412729dab4b059aaf4d64daf00a3ca40fbfd51f614998a9d6a76d0dc0d4
+        custom_css: 7d96a0d43219a426c09f1fe3a3a807f2765eb7f541e99b8bd61dcfbd3aca0905
+        custom_js: 9453b9ce6fd5e198122d0a710e24a9a53082f9196bd1aaea2b30eeb9f4236fea
+    rule: Keep the full copied calculate source under source/calculate-cost-aws/ as a reference-only full package snapshot. Audit it for freshness against production before using it as a seed. Do not keep loose root-level source/custom.css, source/custom.js, or source/tool.html.twig files. Keep stabilized runtime structure in namespace-marked source package runtime files.
 
 reference_tools:
     - path: templates/content/tools/aws/calculate-cost-aws/
       title: AWS Cost Calculator
       role: structural_runtime_seed
-      css_sha256: 1644c71c96b9c9bd0c519347cc1a474bb374ee3a80c3b91993e1b61ba756c200
-      js_sha256: ab9dcdab32504d365194865e9c5f169e1adbbc3f4f2347619aa6b81197037db8
+      css_sha256: 7d96a0d43219a426c09f1fe3a3a807f2765eb7f541e99b8bd61dcfbd3aca0905
+      js_sha256: 9453b9ce6fd5e198122d0a710e24a9a53082f9196bd1aaea2b30eeb9f4236fea
       aliases:
           - AWS Cost Calculator
           - AWS cost calculator
@@ -144,6 +154,18 @@ workspace_flow:
     - result_tabs_table_shell
     - json_payload_output_restore
 
+source_namespaces:
+    - family.calculate.workspace.04_visual-contract
+    - family.calculate.workspace.04_selected-item
+    - family._base.workspace.00_shell
+    - family._base.workspace.01_input-brief
+    - family._base.workspace.02_basic-settings
+    - family._base.workspace.03_custom-settings
+    - family._base.workspace.05_result-summary
+    - family._base.workspace.06_output-toolbar
+    - family._base.workspace.07_table-output
+    - family._base.workspace.08_json-restore
+
 export_priority:
     - PDF_or_print_report
     - CSV
@@ -157,9 +179,10 @@ generation_rules:
     - Generate the final runtime package under templates/content/tools/<category>/<tool-slug>/.
     - Do not use the family directory as the final runtime package.
     - Do not omit tool-local files because the family source exists.
-    - Keep full copied calculate source under source/ as a reference-only snapshot when refreshing this baseline. Do not audit this as active source.
+    - Keep the full copied calculate source under source/calculate-cost-aws/ as the approved production package snapshot.
+    - Audit the source snapshot for freshness against templates/content/tools/aws/calculate-cost-aws/ before using it as a seed; do not import it directly as active workspace section source.
     - Use AWS Cost Calculator as the structural reference and Azure plus IBM Cloud as provider-adaptation references.
-    - Compose calculate workspace output from `workspace_namespaces`, using `_base/workspace` for common shell, input, settings, summary, toolbar, table, and JSON restore sections.
+    - Compose calculate runtime output from `source_namespaces`, using `_base/workspace` for common shell, input, settings, summary, toolbar, table, and JSON restore sections.
     - Mirror the stabilized calculate output shell by adapting `_base` result summary, toolbar shell, tabs shell, table shell, and JSON panel.
     - Start sortable line-item output on ID when stable row order exists.
     - Keep output action buttons compact and boxed, not oversized pills.
@@ -170,12 +193,12 @@ generation_rules:
     - Apply category/provider token lineage, restrained visual weight, and tool-specific namespace.
     - Keep CSS and JavaScript scoped to the final tool.
     - Keep content domain-native and aligned with actual behavior.
-    - Use family workspace source from templates/content/factory/phase-1/_family/calculate/workspace/.
-    - Keep every calculate-owned workspace section aligned to the family section bundle contract: README.md, demo.html, page.html.twig, section.css, and section.js.
-    - Use workspace/04_visual-contract for calculate tools that need a reusable model or visual result contract beyond plain inputs and table output.
+    - Use the tokenized family source package from templates/content/factory/phase-1/_family/calculate/source/calculate-cost-aws/.
+    - Keep calculate-owned source behavior aligned to the tokenized source package namespace markers.
+    - Use the source package 04_visual-contract namespace for calculate tools that need a reusable model or visual result contract beyond plain inputs and table output.
     - Omit 04_visual-contract for pure form-and-table calculators only when the omission is recorded as accepted divergence.
     - Keep selected item, details panel, and runtime editing behavior out of 04_visual-contract unless a dedicated inspector section is deliberately added.
-    - When the user says to baseline a calculate tool, extract stabilized markup, CSS, and JavaScript into matching section-owned workspace files.
+    - When the user says to baseline a calculate tool, refresh the approved source package only after explicit approval.
     - Use shared content section source from templates/content/factory/phase-2/_content/sections/.
     - Apply phase-2 content sections as a full contract: content.md markup, section.css visual behavior, and section.js helper behavior when present.
     - Final tool custom.css and custom.js must preserve the applied section card frame, heading divider, typography, table, list, details, FAQ, copy, citation, prompt, or command behavior unless a documented shared include exists.
@@ -185,17 +208,19 @@ generation_rules:
 validation_rules:
     - README.md exists.
     - manifest.yml exists.
-    - workspace/README.md exists.
-    - workspace/manifest.yml exists.
+    - source package folder exists.
+    - source demo.html exists.
     - Shared phase-2 content section source exists under templates/content/factory/phase-2/_content/sections/.
     - Applied shared content sections are validated in the final tool package for namespace markers, unresolved placeholders, required custom.css selectors, and helper hooks when used.
     - Citation links and References rows are paired when 10_references is used.
-    - source/tool.html.twig, source/custom.css, and source/custom.js exist.
-    - Calculate workspace manifest declares `workspace_namespaces`.
-    - Calculate-owned workspace section folders exist under templates/content/factory/phase-1/_family/calculate/workspace/.
-    - Each calculate-owned workspace section folder contains README.md, demo.html, page.html.twig, section.css, and section.js.
-    - workspace/04_visual-contract contains manifest.yml and model-core.js.
-    - workspace/custom.css, workspace/custom.js, and workspace/demo.html.twig do not exist.
+    - source/ contains only source/calculate-cost-aws/.
+    - source/calculate-cost-aws/card.yml, content.md, custom.css, custom.js, demo.html, meta.yml, tool.html.twig, assets/bin/, assets/icon/, and assets/img/post.html.twig exist.
+    - source/calculate-cost-aws/ matches templates/content/tools/aws/calculate-cost-aws/ file-for-file, except local Finder artifacts.
+    - Calculate root family manifest declares `source_namespaces`.
+    - Calculate source namespace markers exist inside the source package runtime files.
+    - Calculate-owned source namespace markers exist inside the source package runtime files.
+    - source package assets/bin/model-core.js exists when the reference tool ships one.
+    - root-level loose source/custom.css, source/custom.js, and source/tool.html.twig do not exist.
     - Declared reference tool paths exist.
     - Reusable workspace section examples are provider-neutral unless a section explicitly documents a provider-specific example.
     - No duplicated calculate sections/ directory exists under templates/content/factory/phase-1/_family/calculate/.

@@ -1,81 +1,5 @@
 // custom.js
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
 // ns:start family._base.workspace.00_shell
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family._base.workspace.00_shell
@@ -91,6 +15,9 @@ function initializeInfraStackCustomDropdowns(root) {
 // ns:start family.scanning.workspace.04_selected-item
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family.scanning.workspace.04_selected-item
+// ns:start family.scanning.workspace.04_visual-contract
+const scanWebSecurityVisualContractMarker = 'family.scanning.workspace.04_visual-contract';
+// ns:end family.scanning.workspace.04_visual-contract
 // ns:start family._base.workspace.05_result-summary
 function installInfraStackResultSummaryNormalizer(prefix) {
     function formatUpdatedLabel() {
@@ -366,6 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const wellKnownInput = getById('scanWebSecurityWellKnown');
     const httpUpgradeInput = getById('scanWebSecurityHttpUpgrade');
     const submitButton = getById('scanWebSecuritySubmit');
+    const resetButton = getById('scanWebSecurityReset');
     const sortInput = getById('scanWebSecuritySort');
     const sortSummary = getById('scanWebSecuritySortSummary');
     const sortOptions = Array.from(root.querySelectorAll('.scan-web-security-sort-option'));
@@ -459,15 +387,26 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function flashButton(button, text) {
-        if (button.dataset.iconOnly === 'true') {
-            const originalTitle = button.dataset.defaultTitle || button.title;
-            button.dataset.defaultTitle = originalTitle;
-            button.title = text;
-            button.classList.add('is-copied');
+        if (button.dataset.iconOnly === 'true' || (button.closest && button.closest('.tool-table-action-cell'))) {
+            const isCopied = text === 'Copied';
+            const icon = button.querySelector('i');
+            const originalIcon = button.dataset.defaultIcon || (icon ? icon.className : '');
 
+            if (icon && !button.dataset.defaultIcon) {
+                button.dataset.defaultIcon = originalIcon;
+            }
+
+            button.classList.toggle('copied', isCopied);
+            button.classList.toggle('is-copied', isCopied);
+            button.classList.toggle('failed', !isCopied);
+            if (icon) {
+                icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+            }
             window.setTimeout(() => {
-                button.title = originalTitle;
-                button.classList.remove('is-copied');
+                button.classList.remove('copied', 'is-copied', 'failed');
+                if (icon && button.dataset.defaultIcon) {
+                    icon.className = button.dataset.defaultIcon;
+                }
             }, 1400);
             return;
         }
@@ -503,12 +442,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.appendChild(textarea);
         textarea.select();
 
-        const didCopy = document.execCommand('copy');
+        document.execCommand('copy');
         textarea.remove();
-
-        if (!didCopy) {
-            throw new Error('Clipboard copy failed.');
-        }
     }
 
     async function writeClipboardText(text) {
@@ -546,6 +481,7 @@ document.addEventListener('DOMContentLoaded', function () {
         !wellKnownInput ||
         !httpUpgradeInput ||
         !submitButton ||
+        !resetButton ||
         !sortInput ||
         !sortSummary ||
         !sortSelect ||
@@ -565,6 +501,8 @@ document.addEventListener('DOMContentLoaded', function () {
     ) {
         return;
     }
+
+    const resultEmptyDefaultText = resultEmpty.textContent.trim();
 
     function escapeHtml(value) {
         return String(value)
@@ -850,16 +788,37 @@ document.addEventListener('DOMContentLoaded', function () {
         resultContent.classList.remove('d-none');
     }
 
+    function setSubmitButtonLabel(label) {
+        submitButton.innerHTML = `<i class="bi bi-search" aria-hidden="true"></i><span>${escapeHtml(label)}</span>`;
+    }
+
     function toggleSubmitState(isLoading) {
         if (isLoading) {
             submitButton.disabled = true;
-            submitButton.textContent = 'Scanning...';
+            setSubmitButtonLabel('Scanning...');
 
             return;
         }
 
         submitButton.disabled = false;
-        submitButton.textContent = 'Scan';
+        setSubmitButtonLabel('Scan');
+    }
+
+    function setEmptyState(message) {
+        destroyScoreRingChart();
+        latestResult = null;
+        resultEmpty.textContent = message || resultEmptyDefaultText;
+        resultEmpty.classList.remove('d-none');
+        resultContent.classList.add('d-none');
+        resultError.classList.add('d-none');
+        resultError.textContent = '';
+        resultSummary.innerHTML = '';
+        findingTableBody.innerHTML = '';
+        headerTableBody.innerHTML = '';
+        transportTableBody.innerHTML = '';
+        knownFileTableBody.innerHTML = '';
+        cookieTableBody.innerHTML = '';
+        jsonOutput.innerHTML = '';
     }
 
     async function scanTarget(query) {
@@ -1078,6 +1037,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const schemeTone = schemeLabel === 'HTTPS' ? 'success' : 'error';
         const failTone = Number(summary.failCount || 0) > 0 ? 'error' : 'success';
         const warnTone = Number(summary.warnCount || 0) > 0 ? 'warning' : 'success';
+        const resultStatusTone = Number(summary.failCount || 0) > 0 ? 'error' : Number(summary.warnCount || 0) > 0 ? 'warning' : 'success';
+        const resultStatusLabel = Number(summary.failCount || 0) > 0 ? 'Needs review' : Number(summary.warnCount || 0) > 0 ? 'Warnings found' : 'Scanned';
+        const scoreChars = Math.max(3, String(score).length);
         const stateTone = function (state) {
             if (state === 'pass') {
                 return 'success';
@@ -1095,68 +1057,96 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         return `
-            <div class="scan-web-security-result-hero-grid" aria-live="polite">
-                <article class="scan-web-security-result-card scan-web-security-result-card-main">
-                    <span class="scan-web-security-result-kicker">Scan summary</span>
-                    <h3 class="scan-web-security-result-title">Visible web posture review</h3>
-                    <p class="scan-web-security-result-copy">Final target: ${escapeHtml(summary.finalUrl || result.query.url || '')}. Treat the score as local evidence organization, not a security guarantee.</p>
-                    <div class="scan-web-security-result-chip-row" aria-label="Scan state">
-                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${schemeTone}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-shield-lock" aria-hidden="true"></i></span>${escapeHtml(schemeLabel)} final</span>
-                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${failTone}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-x-circle" aria-hidden="true"></i></span>${escapeHtml(summary.failCount || 0)} fail</span>
-                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${warnTone}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>${escapeHtml(summary.warnCount || 0)} warn</span>
-                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${stateTone(summary.httpUpgradeState || 'info')}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-arrow-up-right-circle" aria-hidden="true"></i></span>${escapeHtml(summary.httpUpgradeLabel || 'HTTP upgrade not probed')}</span>
-                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${stateTone(summary.hstsState || 'info')}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-lock" aria-hidden="true"></i></span>${escapeHtml(summary.hstsLabel || 'HSTS unknown')}</span>
-                        <span class="scan-web-security-result-chip scan-web-security-result-chip-baseline"><span class="scan-web-security-result-chip-icon"><i class="bi bi-clock-history" aria-hidden="true"></i></span>Last run: ${escapeHtml(lastRunText)}</span>
+            <header class="scan-web-security-result-header" aria-label="Result summary header">
+                <div class="scan-web-security-result-header-main">
+                    <span class="scan-web-security-result-header-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span>
+                    <div class="scan-web-security-result-header-copy">
+                        <h2 class="scan-web-security-result-header-title">Result Summary</h2>
+                        <p>Overview of the local web posture review result and key metrics.</p>
                     </div>
-                </article>
+                </div>
+                <div class="scan-web-security-result-header-meta" aria-label="Result summary status">
+                    <span class="scan-web-security-result-header-chip scan-web-security-result-chip-${resultStatusTone}"><span class="scan-web-security-result-chip-icon" aria-hidden="true"><i class="bi bi-circle-fill"></i></span><span>${escapeHtml(resultStatusLabel)}</span></span>
+                    <span class="scan-web-security-result-header-chip scan-web-security-result-chip-updated"><span class="scan-web-security-result-chip-icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span><span>${escapeHtml(lastRunText)}</span></span>
+                </div>
+            </header>
 
-                <article class="scan-web-security-result-card scan-web-security-result-card-visual">
+            <div class="scan-web-security-result-hero-grid" aria-live="polite">
+                <article class="scan-web-security-result-card scan-web-security-result-card-primary" data-result-visual="ring" aria-label="Primary web posture result">
                     <div class="scan-web-security-result-visual-copy scan-web-security-result-visual-copy-top">
                         <span class="scan-web-security-result-kicker">Primary Result</span>
                         <h3 class="scan-web-security-result-title scan-web-security-result-title-center">Grade ${escapeHtml(grade)}</h3>
                     </div>
-                    <div class="scan-web-security-result-ring scan-web-security-score-ring" id="scanWebSecurityScoreRing" style="--scan-web-security-result-progress: ${escapeHtml(progressAngle.toFixed(1))}deg; --scan-web-security-progress: ${escapeHtml(progressAngle.toFixed(1))}deg; --scan-web-security-ring-color: ${tone.ringColor};" aria-label="Hardening score ${escapeHtml(score)} out of 100">
+                    <div class="scan-web-security-result-primary-visual" id="scanWebSecurityResultVisual" aria-label="Primary web posture result">
+                    <div class="scan-web-security-result-ring scan-web-security-score-ring" id="scanWebSecurityScoreRing" style="--scan-web-security-result-progress: ${escapeHtml(progressAngle.toFixed(1))}deg; --scan-web-security-progress: ${escapeHtml(progressAngle.toFixed(1))}deg; --scan-web-security-ring-color: ${tone.ringColor}; --scan-web-security-result-value-chars: ${escapeHtml(String(scoreChars))};" aria-label="Hardening score ${escapeHtml(score)} out of 100">
                         <div class="scan-web-security-score-echart" id="scanWebSecurityScoreChart" aria-hidden="true"></div>
                         <div class="scan-web-security-result-ring-center scan-web-security-score-center">
                             <div class="scan-web-security-result-ring-value scan-web-security-score-value">${escapeHtml(score)}</div>
                             <div class="scan-web-security-result-ring-unit scan-web-security-score-denominator">/100</div>
                         </div>
                     </div>
+                    </div>
                     <div class="scan-web-security-result-visual-copy">
                         <p class="scan-web-security-result-copy">${escapeHtml(summary.scoreNote || 'Visible web posture only')}</p>
+                    </div>
+                    <span class="scan-web-security-result-card-divider" aria-hidden="true"></span>
+                    <div class="scan-web-security-result-chip-row scan-web-security-result-chip-row-center" aria-label="Primary result outcome">
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-outcome scan-web-security-result-chip-${schemeTone}"><span class="scan-web-security-result-chip-icon" aria-hidden="true"><i class="bi bi-shield-lock"></i></span><span>${escapeHtml(schemeLabel)} final</span></span>
+                    </div>
+                </article>
+
+                <article class="scan-web-security-result-card scan-web-security-result-card-summary" aria-label="Scan summary">
+                    <div class="scan-web-security-result-summary-intro">
+                        <span class="scan-web-security-result-card-icon scan-web-security-result-card-icon-summary" aria-hidden="true"><i class="bi bi-shield-lock"></i></span>
+                        <div class="scan-web-security-result-summary-copy">
+                            <div class="scan-web-security-result-kicker">Descriptive Summary</div>
+                            <h3 class="scan-web-security-result-title">Visible web posture review</h3>
+                            <p class="scan-web-security-result-copy">Final target: ${escapeHtml(summary.finalUrl || result.query.url || '')}. Treat the score as local evidence organization, not a security guarantee.</p>
+                        </div>
+                    </div>
+                    <span class="scan-web-security-result-card-divider" aria-hidden="true"></span>
+                    <div class="scan-web-security-result-chip-grid" aria-label="Scan state">
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${schemeTone}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-shield-lock" aria-hidden="true"></i></span>${escapeHtml(schemeLabel)} final</span>
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${failTone}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-x-circle" aria-hidden="true"></i></span>${escapeHtml(summary.failCount || 0)} fail</span>
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${warnTone}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>${escapeHtml(summary.warnCount || 0)} warn</span>
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${stateTone(summary.httpUpgradeState || 'info')}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-arrow-up-right-circle" aria-hidden="true"></i></span>${escapeHtml(summary.httpUpgradeLabel || 'HTTP upgrade not probed')}</span>
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-${stateTone(summary.hstsState || 'info')}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-lock" aria-hidden="true"></i></span>${escapeHtml(summary.hstsLabel || 'HSTS unknown')}</span>
+                        <span class="scan-web-security-result-chip scan-web-security-result-chip-baseline"><span class="scan-web-security-result-chip-icon"><i class="bi bi-terminal" aria-hidden="true"></i></span>Method ${escapeHtml(summary.methodUsed || result.query.method || 'HEAD')}</span>
                     </div>
                 </article>
             </div>
 
             <div class="scan-web-security-result-metric-grid" aria-label="Scan metrics">
-                <article class="scan-web-security-result-metric-card">
+                <article class="scan-web-security-result-metric-card scan-web-security-result-metric-success">
+                    <span class="scan-web-security-result-metric-icon" aria-hidden="true"><i class="bi bi-card-checklist"></i></span>
                     <span class="scan-web-security-result-metric-label">Findings</span>
                     <strong class="scan-web-security-result-metric-value">${escapeHtml(summary.findingCount || 0)}</strong>
                     <span class="scan-web-security-result-metric-copy">Rows in the evidence table.</span>
+                    <span class="scan-web-security-result-metric-accent" aria-hidden="true"></span>
                 </article>
-                <article class="scan-web-security-result-metric-card">
+                <article class="scan-web-security-result-metric-card scan-web-security-result-metric-info">
+                    <span class="scan-web-security-result-metric-icon" aria-hidden="true"><i class="bi bi-activity"></i></span>
                     <span class="scan-web-security-result-metric-label">Final status</span>
                     <strong class="scan-web-security-result-metric-value">${escapeHtml(statusText || '0')}</strong>
                     <span class="scan-web-security-result-metric-copy">Observed response status.</span>
+                    <span class="scan-web-security-result-metric-accent" aria-hidden="true"></span>
                 </article>
-                <article class="scan-web-security-result-metric-card">
+                <article class="scan-web-security-result-metric-card scan-web-security-result-metric-accent-tone">
+                    <span class="scan-web-security-result-metric-icon" aria-hidden="true"><i class="bi bi-clock-history"></i></span>
                     <span class="scan-web-security-result-metric-label">Duration</span>
                     <strong class="scan-web-security-result-metric-value">${escapeHtml(summary.durationMs || 0)} ms</strong>
                     <span class="scan-web-security-result-metric-copy">Client-side scan timing.</span>
+                    <span class="scan-web-security-result-metric-accent" aria-hidden="true"></span>
                 </article>
-                <article class="scan-web-security-result-metric-card">
+                <article class="scan-web-security-result-metric-card scan-web-security-result-metric-warning">
+                    <span class="scan-web-security-result-metric-icon" aria-hidden="true"><i class="bi bi-file-earmark-check"></i></span>
                     <span class="scan-web-security-result-metric-label">Known files</span>
                     <strong class="scan-web-security-result-metric-value">${escapeHtml(summary.knownFilePresentCount || 0)}/${escapeHtml(summary.knownFileCount || 0)}</strong>
                     <span class="scan-web-security-result-metric-copy">Well-known file probes.</span>
+                    <span class="scan-web-security-result-metric-accent" aria-hidden="true"></span>
                 </article>
             </div>
 
-            <div class="scan-web-security-result-chip-row" aria-label="Scan options">
-                <span class="scan-web-security-result-chip scan-web-security-result-chip-baseline"><span class="scan-web-security-result-chip-icon"><i class="bi bi-terminal" aria-hidden="true"></i></span>Method ${escapeHtml(summary.methodUsed || result.query.method || 'HEAD')}</span>
-                <span class="scan-web-security-result-chip scan-web-security-result-chip-${result.query.followRedirects ? 'ready' : 'baseline'}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-signpost-split" aria-hidden="true"></i></span>Redirects ${result.query.followRedirects ? 'followed' : 'not followed'}</span>
-                <span class="scan-web-security-result-chip scan-web-security-result-chip-${result.query.validateTls ? 'ready' : 'warning'}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-patch-check" aria-hidden="true"></i></span>TLS validation ${result.query.validateTls ? 'on' : 'off'}</span>
-                <span class="scan-web-security-result-chip scan-web-security-result-chip-${result.query.checkWellKnownFiles ? 'ready' : 'baseline'}"><span class="scan-web-security-result-chip-icon"><i class="bi bi-file-earmark-check" aria-hidden="true"></i></span>Well-known files ${result.query.checkWellKnownFiles ? 'checked' : 'skipped'}</span>
-            </div>
         `;
     }
 
@@ -1174,7 +1164,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td><span class="scan-web-security-status-pill ${getStatusPillClass(row.status)}">${escapeHtml(row.status)}</span></td>
                 <td>${escapeHtml(row.evidence)}</td>
                 <td>${escapeHtml(row.recommendation)}</td>
-                <td class="scan-web-security-copy-cell">${buildCopyButton(copyValue, `Copy finding row ${index + 1}`)}</td>
+                <td class="scan-web-security-copy-cell tool-table-action-cell">${buildCopyButton(copyValue, `Copy finding row ${index + 1}`)}</td>
             </tr>
         `;
     }
@@ -1188,7 +1178,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${escapeHtml(row.category)}</td>
                 <td><strong>${escapeHtml(row.name)}</strong></td>
                 <td class="scan-web-security-value-cell">${escapeHtml(row.value)}</td>
-                <td class="scan-web-security-copy-cell">${buildCopyButton(copyValue, `Copy header row ${index + 1}`)}</td>
+                <td class="scan-web-security-copy-cell tool-table-action-cell">${buildCopyButton(copyValue, `Copy header row ${index + 1}`)}</td>
             </tr>
         `;
     }
@@ -1201,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td class="tool-generated-rownum-cell">${index + 1}</td>
                 <td><strong>${escapeHtml(row.label)}</strong></td>
                 <td class="scan-web-security-value-cell">${escapeHtml(row.value)}</td>
-                <td class="scan-web-security-copy-cell">${buildCopyButton(copyValue, `Copy transport row ${index + 1}`)}</td>
+                <td class="scan-web-security-copy-cell tool-table-action-cell">${buildCopyButton(copyValue, `Copy transport row ${index + 1}`)}</td>
             </tr>
         `;
     }
@@ -1215,7 +1205,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td><strong>${escapeHtml(row.path)}</strong></td>
                 <td><span class="scan-web-security-status-pill ${getStatusPillClass(row.present ? 'pass' : 'info')}">${escapeHtml(row.statusLabel || `${row.status} ${row.statusText}`)}</span></td>
                 <td class="scan-web-security-value-cell">${escapeHtml(row.note)}</td>
-                <td class="scan-web-security-copy-cell">${buildCopyButton(copyValue, `Copy well-known file row ${index + 1}`)}</td>
+                <td class="scan-web-security-copy-cell tool-table-action-cell">${buildCopyButton(copyValue, `Copy well-known file row ${index + 1}`)}</td>
             </tr>
         `;
     }
@@ -1231,7 +1221,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${escapeHtml(row.httpOnly)}</td>
                 <td>${escapeHtml(row.sameSite)}</td>
                 <td class="scan-web-security-issues-cell">${escapeHtml(row.issues)}</td>
-                <td class="scan-web-security-copy-cell">${buildCopyButton(copyValue, `Copy cookie row ${index + 1}`)}</td>
+                <td class="scan-web-security-copy-cell tool-table-action-cell">${buildCopyButton(copyValue, `Copy cookie row ${index + 1}`)}</td>
             </tr>
         `;
     }
@@ -1314,6 +1304,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         return result;
+    }
+
+    function buildImportedPayloadState(payload) {
+        return normalizeImportedResult(payload);
     }
 
     function syncFormFromQuery(query) {
@@ -1617,7 +1611,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             const payload = JSON.parse(await file.text());
-            latestResult = normalizeImportedResult(payload);
+            latestResult = buildImportedPayloadState(payload);
             syncFormFromQuery(latestResult.query);
             syncQueryState(latestResult.query);
             renderLatestResult();
@@ -1630,6 +1624,27 @@ document.addEventListener('DOMContentLoaded', function () {
         } finally {
             importJsonInput.value = '';
         }
+    });
+
+    resetButton.addEventListener('click', function () {
+        const defaultQuery = {
+            url: 'http://example.com/',
+            method: 'HEAD',
+            followRedirects: true,
+            timeoutSeconds: 12,
+            validateTls: true,
+            fallbackGetOn405: true,
+            userAgentProfile: 'default',
+            checkWellKnownFiles: true,
+            probeHttpUpgrade: true
+        };
+
+        syncFormFromQuery(defaultQuery);
+        setEmptyState();
+        setSortMode('id', false);
+        activateTab('findings');
+        toggleSubmitState(false);
+        window.history.replaceState(null, '', `${window.location.pathname}${window.location.hash}`);
     });
 
     form.addEventListener('submit', async function (event) {
@@ -1672,7 +1687,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     restoreStateFromQuery();
-    initializeInfraStackCustomDropdowns(document);
 });
 // ns:start family._base.workspace.07_table-output
 (function setupScanWebSecurityTableOutputStandard() {
@@ -1769,7 +1783,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });

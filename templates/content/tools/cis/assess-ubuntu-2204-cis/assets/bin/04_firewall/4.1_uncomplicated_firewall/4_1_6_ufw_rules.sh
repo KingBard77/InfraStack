@@ -18,5 +18,5 @@ function check {
 }
 
 function fix {
-    echo "Manual"
+    echo 'Manual: UFW allow rules for open ports need an approved host port baseline.'
 }

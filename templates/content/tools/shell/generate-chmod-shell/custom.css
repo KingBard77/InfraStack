@@ -428,111 +428,7 @@
 }
 
 .generate-chmod-shell-native-select {
-    display: none !important;
-}
-
-.generate-chmod-shell-enhanced-select {
-    position: relative;
-    width: 100%;
-}
-
-.generate-chmod-shell-enhanced-select-toggle {
-    width: 100%;
-    min-height: 46px;
-    border: 1px solid #cfd9e4;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #334155;
-    box-shadow: none;
-    padding: 10px 42px 10px 14px;
-    font-size: 14px;
-    line-height: 1.45;
-    text-align: left;
-    position: relative;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-}
-
-.generate-chmod-shell-enhanced-select-toggle::after {
-    content: "";
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    width: 9px;
-    height: 9px;
-    border-right: 2px solid #64748b;
-    border-bottom: 2px solid #64748b;
-    transform: translateY(-65%) rotate(45deg);
-    transition: transform 0.2s ease;
-}
-
-.generate-chmod-shell-enhanced-select:hover .generate-chmod-shell-enhanced-select-toggle {
-    border-color: #b8cadb;
-}
-
-.generate-chmod-shell-enhanced-select.is-open .generate-chmod-shell-enhanced-select-toggle,
-.generate-chmod-shell-enhanced-select-toggle:focus,
-.generate-chmod-shell-enhanced-select-toggle:focus-visible {
-    border-color: #0f766e;
-    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.08);
-    outline: none;
-}
-
-.generate-chmod-shell-enhanced-select.is-open .generate-chmod-shell-enhanced-select-toggle::after {
-    transform: translateY(-35%) rotate(-135deg);
-}
-
-.generate-chmod-shell-enhanced-select.is-disabled .generate-chmod-shell-enhanced-select-toggle {
-    background: #f1f5f9;
-    color: #64748b;
-    border-color: #d7e2ee;
-    cursor: not-allowed;
-}
-
-.generate-chmod-shell-enhanced-select-menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    right: 0;
-    z-index: 25;
-    display: none;
-    max-height: 260px;
-    overflow-y: auto;
-    padding: 8px;
-    border: 1px solid #cfd9e4;
-    border-radius: 12px;
-    background: #ffffff;
-    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
-}
-
-.generate-chmod-shell-enhanced-select.is-open .generate-chmod-shell-enhanced-select-menu {
-    display: grid;
-    gap: 6px;
-}
-
-.generate-chmod-shell-enhanced-select-option {
-    width: 100%;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #334155;
-    padding: 10px 12px;
-    font-size: 14px;
-    line-height: 1.45;
-    text-align: left;
-    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
-}
-
-.generate-chmod-shell-enhanced-select-option:hover {
-    border-color: #cfe2f6;
-    background: #f8fbff;
-    color: #0f766e;
-}
-
-.generate-chmod-shell-enhanced-select-option.is-active {
-    border-color: #b9e7df;
-    background: #e8fbf7;
-    color: #0f766e;
-    font-weight: 700;
+    display: block !important;
 }
 
 .generate-chmod-shell-inline-grid {
@@ -1699,31 +1595,6 @@
     line-height: 1.5;
 }
 
-.generate-chmod-shell-form .form-control,
-.generate-chmod-shell-form .form-select,
-.generate-chmod-shell-enhanced-select-toggle {
-    border: 1px solid var(--generate-chmod-shell-border);
-    border-radius: 12px;
-    background: var(--generate-chmod-shell-bg-panel);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
-}
-
-.generate-chmod-shell-form .form-control:hover,
-.generate-chmod-shell-form .form-select:hover,
-.generate-chmod-shell-enhanced-select:hover .generate-chmod-shell-enhanced-select-toggle {
-    border-color: #b8d8d0;
-}
-
-.generate-chmod-shell-form .form-control:focus,
-.generate-chmod-shell-form .form-select:focus,
-.generate-chmod-shell-enhanced-select.is-open .generate-chmod-shell-enhanced-select-toggle,
-.generate-chmod-shell-enhanced-select-toggle:focus,
-.generate-chmod-shell-enhanced-select-toggle:focus-visible {
-    border-color: var(--generate-chmod-shell-accent);
-    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.08);
-    outline: none;
-}
-
 .generate-chmod-shell-submit-btn,
 .generate-chmod-shell-submit-btn.btn,
 .generate-chmod-shell-submit-btn.btn-primary {
@@ -1854,32 +1725,6 @@
     background: #d9fffa;
     color: var(--generate-chmod-shell-accent-strong);
     outline: none;
-}
-
-.generate-chmod-shell-enhanced-select {
-    min-width: 0;
-}
-
-.generate-chmod-shell-enhanced-select-toggle::after {
-    border-right-color: var(--generate-chmod-shell-text);
-    border-bottom-color: var(--generate-chmod-shell-text);
-}
-
-.generate-chmod-shell-enhanced-select-menu {
-    border: 1px solid var(--generate-chmod-shell-border);
-    background: var(--generate-chmod-shell-bg-panel);
-}
-
-.generate-chmod-shell-enhanced-select-option:hover {
-    border-color: #b8d8d0;
-    background: #eefcf8;
-    color: var(--generate-chmod-shell-accent);
-}
-
-.generate-chmod-shell-enhanced-select-option.is-active {
-    border-color: var(--generate-chmod-shell-border-strong);
-    background: #e6fffb;
-    color: var(--generate-chmod-shell-accent);
 }
 
 .generate-chmod-shell-flag-hint {
@@ -2715,7 +2560,6 @@
     min-width: 0;
 }
 
-
 .markdown-content > .generate-chmod-shell-markdown-card-command-tips .tool-guidance-answer,
 .markdown-content > .generate-chmod-shell-markdown-card-how-to .tool-guidance-answer,
 .markdown-content > .generate-chmod-shell-markdown-card-export .tool-export-answer {
@@ -3337,7 +3181,6 @@
     min-width: 0;
 }
 
-
 .markdown-content > .generate-chmod-shell-markdown-card-export > p {
     margin: 0 0 18px;
     color: var(--generate-chmod-shell-text-body, var(--generate-chmod-shell-text, var(--tool-text, #2f2542)));
@@ -3410,7 +3253,6 @@
 .markdown-content > .generate-chmod-shell-markdown-card-export .tool-export-item summary > span:not(.tool-export-icon) {
     min-width: 0;
 }
-
 
 .markdown-content > .generate-chmod-shell-markdown-card-export .tool-export-answer {
     border-top: 1px solid var(--generate-chmod-shell-border, rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.5));
@@ -3509,7 +3351,6 @@
     min-width: 0;
 }
 
-
 .markdown-content > .generate-chmod-shell-markdown-card-how-to .tool-guidance-item {
     overflow: hidden;
     border: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.58);
@@ -3570,7 +3411,6 @@
 .markdown-content > .generate-chmod-shell-markdown-card-how-to .tool-guidance-item summary > span {
     min-width: 0;
 }
-
 
 .markdown-content > .generate-chmod-shell-markdown-card-how-to .tool-guidance-answer {
     border-top: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.36);
@@ -3705,7 +3545,6 @@
 .markdown-content > .generate-chmod-shell-markdown-card-command-tips .tool-guidance-item summary > span {
     min-width: 0;
 }
-
 
 .markdown-content > .generate-chmod-shell-markdown-card-command-tips .tool-guidance-answer {
     border-top: 1px solid rgba(var(--tool-border-strong-rgb, 196, 181, 253), 0.36);
@@ -4492,9 +4331,6 @@
     background: transparent;
 }
 
-
-
-
 .generate-chmod-shell-tool .generate-chmod-shell-example-card {
     display: grid;
     gap: 5px;
@@ -4850,33 +4686,6 @@
     user-select: none;
 }
 
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary::-webkit-details-marker,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary::-webkit-details-marker,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary::-webkit-details-marker,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary::-webkit-details-marker {
-    display: none;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary::marker,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary::marker,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary::marker,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary::marker {
-    content: "";
-    font-size: 0;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary::after,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary::after,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary::before,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary::after,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary::after {
-    content: none !important;
-    display: none !important;
-}
-
 .generate-chmod-shell-tool .generate-chmod-shell-custom-arrow-slot {
     position: absolute;
     top: 50%;
@@ -4894,37 +4703,7 @@
     transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--generate-chmod-shell-border, var(--tool-border, #d8e2ee));
-    border-radius: 9px;
-    background: var(--generate-chmod-shell-bg-soft, var(--tool-surface-soft, #f8fafc));
-    pointer-events: none;
-    transform: translateY(-50%);
-    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary > .generate-chmod-shell-custom-arrow-slot,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before {
-    right: 6px;
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-arrow-slot::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::after,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::after,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::after,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::after {
+.generate-chmod-shell-tool .generate-chmod-shell-custom-arrow-slot::before {
     content: "";
     position: absolute;
     top: 50%;
@@ -4938,41 +4717,11 @@
     transition: transform 0.18s ease;
 }
 
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary:has(> .generate-chmod-shell-custom-arrow-slot)::before,
 .generate-chmod-shell-tool .generate-chmod-shell-custom-summary:has(> .generate-chmod-shell-custom-arrow-slot)::after,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary:has(> .generate-chmod-shell-custom-arrow-slot)::before,
 .generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary:has(> .generate-chmod-shell-custom-arrow-slot)::after,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary:has(> .generate-chmod-shell-custom-arrow-slot)::before,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary:has(> .generate-chmod-shell-custom-arrow-slot)::after,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:has(> .generate-chmod-shell-custom-arrow-slot)::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:has(> .generate-chmod-shell-custom-arrow-slot)::after {
+.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary:has(> .generate-chmod-shell-custom-arrow-slot)::after {
     content: none;
     display: none;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary:hover > .generate-chmod-shell-custom-arrow-slot,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary:focus-visible > .generate-chmod-shell-custom-arrow-slot,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary:hover > .generate-chmod-shell-custom-arrow-slot,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary:focus-visible > .generate-chmod-shell-custom-arrow-slot,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary:hover > .generate-chmod-shell-custom-arrow-slot,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary:focus-visible > .generate-chmod-shell-custom-arrow-slot,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:hover > .generate-chmod-shell-custom-arrow-slot,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:focus-visible > .generate-chmod-shell-custom-arrow-slot,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary:hover:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary:focus-visible:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary:hover:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-panel-summary:focus-visible:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary:hover:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before,
-.generate-chmod-shell-tool .generate-chmod-shell-advanced-summary:focus-visible:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:hover:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:focus-visible:not(:has(> .generate-chmod-shell-custom-arrow-slot))::before {
-    border-color: var(--generate-chmod-shell-border-strong, var(--tool-border-strong, #cbd5e1));
-    background: var(--generate-chmod-shell-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-summary-icon,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-icon {
-    display: none !important;
 }
 
 .generate-chmod-shell-tool .generate-chmod-shell-custom-settings[open] > .generate-chmod-shell-custom-summary,
@@ -4985,12 +4734,14 @@
 .generate-chmod-shell-tool .generate-chmod-shell-custom-panel[open] > .generate-chmod-shell-custom-panel-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::after,
 .generate-chmod-shell-tool .generate-chmod-shell-advanced[open] > .generate-chmod-shell-advanced-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::after {
     transform: translate(-50%, -62%) rotate(45deg);
+    transition: transform 0.18s ease;
 }
 
 .generate-chmod-shell-tool .generate-chmod-shell-custom-settings[open] > .generate-chmod-shell-custom-summary > .generate-chmod-shell-custom-arrow-slot::before,
 .generate-chmod-shell-tool .generate-chmod-shell-custom-panel[open] > .generate-chmod-shell-custom-panel-summary > .generate-chmod-shell-custom-arrow-slot::before,
 .generate-chmod-shell-tool .generate-chmod-shell-advanced[open] > .generate-chmod-shell-advanced-summary > .generate-chmod-shell-custom-arrow-slot::before {
     transform: translate(-50%, -62%) rotate(45deg);
+    transition: transform 0.18s ease;
 }
 
 .generate-chmod-shell-tool .generate-chmod-shell-custom-summary:hover,
@@ -5433,7 +5184,6 @@
     background: transparent;
 }
 
-
 .generate-chmod-shell-tool .generate-chmod-shell-custom-number-field,
 .generate-chmod-shell-tool .generate-chmod-shell-custom-panel input[type="number"],
 .generate-chmod-shell-tool .generate-chmod-shell-advanced input[type="number"] {
@@ -5605,110 +5355,6 @@
     font-size: 12px;
     font-weight: 600;
     line-height: 1.45;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown {
-    position: relative;
-    display: grid;
-    width: 100%;
-    min-width: 0;
-    overflow: visible;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown[open] {
-    z-index: 160;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary {
-    position: relative;
-    display: flex;
-    min-height: 40px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 42px 8px 10px;
-    border: 1px solid var(--generate-chmod-shell-border, var(--tool-border, #d8e2ee));
-    border-radius: 10px;
-    background: var(--generate-chmod-shell-bg-panel, var(--tool-surface, #ffffff));
-    color: var(--generate-chmod-shell-text, var(--tool-text, #334155));
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.35;
-    list-style: none;
-    list-style-type: none;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown[open] .generate-chmod-shell-custom-dropdown-summary:not(:has(> .generate-chmod-shell-custom-arrow-slot))::after {
-    transform: translate(-50%, -62%) rotate(45deg);
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown[open] .generate-chmod-shell-custom-dropdown-summary > .generate-chmod-shell-custom-arrow-slot::before {
-    transform: translate(-50%, -62%) rotate(45deg);
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:hover,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:focus-visible {
-    border-color: var(--generate-chmod-shell-border-strong, var(--tool-border-strong, #cbd5e1));
-    outline: none;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-summary:focus-visible,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown[open] .generate-chmod-shell-custom-dropdown-summary {
-    border-color: var(--generate-chmod-shell-accent, var(--tool-accent, #475569));
-    box-shadow: 0 0 0 3px var(--generate-chmod-shell-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-menu {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    display: grid;
-    width: 100%;
-    min-width: 100%;
-    max-height: min(280px, 52vh);
-    border: 1px solid var(--generate-chmod-shell-accent, var(--tool-accent, #475569));
-    border-radius: 10px;
-    background: var(--generate-chmod-shell-bg-panel, var(--tool-surface, #ffffff));
-    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
-    overflow-x: hidden;
-    overflow-y: auto;
-    z-index: 170;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown:not([open]) .generate-chmod-shell-custom-dropdown-menu {
-    display: none;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-option {
-    display: flex;
-    width: 100%;
-    min-height: 38px;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 8px 10px;
-    border: 0;
-    border-top: 0;
-    background: var(--generate-chmod-shell-bg-panel, var(--tool-surface, #ffffff));
-    color: var(--generate-chmod-shell-text, var(--tool-text, #334155));
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.35;
-    text-align: left;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-option:first-child {
-    border-top: 0;
-}
-
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-option:hover,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-option:focus-visible,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-option.active,
-.generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown-option[aria-selected="true"] {
-    background: var(--generate-chmod-shell-bg-soft, var(--tool-accent-soft, rgba(71, 85, 105, 0.1)));
-    color: var(--generate-chmod-shell-text-strong, var(--tool-heading, #111827));
-    outline: none;
 }
 
 .generate-chmod-shell-tool .generate-chmod-shell-custom-checkbox-option {
@@ -5913,7 +5559,6 @@
     box-shadow: 0 0 0 3px var(--generate-chmod-shell-focus-ring, var(--tool-focus-ring, rgba(71, 85, 105, 0.14)));
 }
 
-
 .generate-chmod-shell-tool .generate-chmod-shell-custom-hint,
 .generate-chmod-shell-tool .generate-chmod-shell-custom-info,
 .generate-chmod-shell-tool .generate-chmod-shell-custom-panel .generate-chmod-shell-field-hint,
@@ -5994,19 +5639,6 @@
     .generate-chmod-shell-tool .generate-chmod-shell-custom-panel-body,
     .generate-chmod-shell-tool .generate-chmod-shell-advanced-body {
         padding: 10px;
-    }
-
-    .generate-chmod-shell-tool .generate-chmod-shell-custom-tab,
-    .generate-chmod-shell-tool .generate-chmod-shell-config-tab,
-    .generate-chmod-shell-tool .generate-chmod-shell-custom-dropdown,
-    .generate-chmod-shell-tool .generate-chmod-shell-custom-radio-group,
-    .generate-chmod-shell-tool .generate-chmod-shell-radio-group,
-    .generate-chmod-shell-tool .generate-chmod-shell-custom-checkbox-option,
-    .generate-chmod-shell-tool .generate-chmod-shell-custom-panel input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
-    .generate-chmod-shell-tool .generate-chmod-shell-custom-panel textarea,
-    .generate-chmod-shell-tool .generate-chmod-shell-advanced input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
-    .generate-chmod-shell-tool .generate-chmod-shell-advanced textarea {
-        width: 100%;
     }
 
     .generate-chmod-shell-tool .generate-chmod-shell-custom-group[data-span="2"],
@@ -7032,7 +6664,6 @@
     outline: none;
 }
 
-
 .generate-chmod-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
 .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
 .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4) {
@@ -7102,7 +6733,6 @@
 /* ns:end family._base.workspace.06_output-toolbar */
 
 /* ns:start family._base.workspace.08_json-restore */
-
 
 .generate-chmod-shell-tool .generate-chmod-shell-json-restore-shell,
 .generate-chmod-shell-tool .generate-chmod-shell-json-card,
@@ -7271,7 +6901,6 @@
     .generate-chmod-shell-tool .generate-chmod-shell-json-head.tool-json-head {
         display: grid;
     }
-
 
     .generate-chmod-shell-tool .generate-chmod-shell-json-output.tool-json-output {
         min-height: 180px;
@@ -7481,19 +7110,20 @@
 }
 
 .generate-chmod-shell-tool .generate-chmod-shell-toolbar-shell {
+    container-type: inline-size;
     position: relative;
     z-index: 20;
     overflow: visible;
 }
 
 .generate-chmod-shell-tool .generate-chmod-shell-toolbar-shell:has(.generate-chmod-shell-sort-select[open]) {
-    z-index: 120;
+    z-index: var(--base-dropdown-open-z, 140);
 }
 
 .generate-chmod-shell-tool .generate-chmod-shell-toolbar {
     display: grid;
     width: 100%;
-    grid-template-columns: minmax(0, 1fr) minmax(390px, 450px);
+    grid-template-columns: minmax(var(--base-output-sort-column-width, 190px), 1fr) minmax(var(--base-output-actions-width, 470px), var(--base-output-actions-width, 470px));
     align-items: start;
     gap: 12px;
     overflow: visible;
@@ -7503,7 +7133,8 @@
 .generate-chmod-shell-tool .generate-chmod-shell-toolbar-left,
 .generate-chmod-shell-tool .generate-chmod-shell-sort-shell {
     display: grid;
-    grid-template-columns: auto minmax(0, 240px);
+    width: min(100%, calc(var(--base-output-control-width, 150px) + 52px));
+    grid-template-columns: auto var(--base-output-control-width, 150px);
     align-items: center;
     justify-content: start;
     gap: 12px;
@@ -7511,8 +7142,9 @@
 }
 
 .generate-chmod-shell-tool .generate-chmod-shell-sort-wrap {
-    width: min(100%, 240px);
-    max-width: 240px;
+    width: min(100%, var(--base-output-control-width, 150px));
+    min-width: 0;
+    max-width: var(--base-output-control-width, 150px);
     overflow: visible;
 }
 
@@ -7527,27 +7159,93 @@
 }
 
 .generate-chmod-shell-tool .generate-chmod-shell-sort-select[open] {
-    z-index: 140;
+    z-index: var(--base-dropdown-open-z, 140);
 }
 
 .generate-chmod-shell-tool .generate-chmod-shell-sort-summary {
-    min-height: 46px;
+    position: relative;
+    width: 100%;
+    height: var(--base-dropdown-summary-height, var(--base-output-control-height, 46px));
+    min-height: var(--base-dropdown-summary-height, var(--base-output-control-height, 46px));
     box-sizing: border-box;
+    padding-right: calc(var(--base-dropdown-arrow-size, 30px) + 22px);
 }
 
 .generate-chmod-shell-tool .generate-chmod-shell-sort-menu {
-    z-index: 160;
+    z-index: var(--base-dropdown-menu-z, 160);
     width: 100%;
     min-width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    max-height: min(280px, 65vh);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-sort-summary::before {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    display: block;
+    width: var(--base-dropdown-arrow-size, 30px);
+    height: var(--base-dropdown-arrow-size, 30px);
+    transform: translateY(-50%);
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-sort-summary::after {
+    position: absolute;
+    top: 50%;
+    right: 21px;
+    display: block;
+    transform: translate(-18%, -62%) rotate(45deg);
+    transform-origin: center;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-sort-select:not([open]) .generate-chmod-shell-sort-summary::after {
+    transform: translate(-8%, -50%) rotate(-45deg);
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-sort-grid {
+    display: grid;
+    gap: 4px;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-sort-option {
+    display: block;
+    width: 100%;
+    min-height: var(--base-dropdown-option-height, 42px);
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: var(--base-dropdown-option-radius, var(--base-output-option-radius, 9px));
+    background: transparent;
+    color: var(--base-output-text, #1f1733);
+    cursor: pointer;
+    font-size: var(--base-output-font-sm, 13px);
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: left;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-sort-option:hover,
+.generate-chmod-shell-tool .generate-chmod-shell-sort-option:focus {
+    background: var(--base-output-accent-soft, #fff7ed);
+    color: var(--base-output-accent, #ea580c);
+    outline: none;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-sort-option.is-active {
+    background: var(--base-output-accent-soft, #fff7ed);
+    color: var(--base-output-accent, #ea580c);
+    box-shadow: none;
 }
 
 .generate-chmod-shell-tool .tool-output-actions,
 .generate-chmod-shell-tool .tool-result-toolbar-actions {
     display: grid;
     width: 100%;
-    max-width: 450px;
+    max-width: var(--base-output-actions-width, 470px);
     grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: center;
     justify-content: end;
@@ -7563,12 +7261,13 @@
 .generate-chmod-shell-tool .tool-result-toolbar-actions .generate-chmod-shell-action-btn {
     width: 100%;
     min-width: 0;
-    min-height: 38px;
-    gap: 6px;
-    padding-right: 10px;
-    padding-left: 10px;
-    border-radius: 10px;
-    font-size: 12px;
+    height: var(--base-output-control-height, 46px);
+    min-height: var(--base-output-control-height, 46px);
+    gap: 8px;
+    padding-right: 12px;
+    padding-left: 12px;
+    border-radius: var(--base-output-control-radius, 10px);
+    font-size: var(--base-output-control-font-size, var(--base-output-font-sm, 13px));
     line-height: 1;
     overflow: visible;
     white-space: nowrap;
@@ -7608,29 +7307,6 @@
     line-height: 1;
 }
 
-@media (max-width: 991.98px) {
-    .generate-chmod-shell-tool .generate-chmod-shell-toolbar {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .generate-chmod-shell-tool .tool-output-actions,
-    .generate-chmod-shell-tool .tool-result-toolbar-actions {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        justify-self: start;
-        margin-left: 0;
-        max-width: none;
-    }
-
-    .generate-chmod-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
-    .generate-chmod-shell-tool .tool-output-actions .tool-action-btn:nth-child(5),
-    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
-    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
-    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
-    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
-        grid-column: auto;
-    }
-}
-
 @media (max-width: 767.98px) {
     .generate-chmod-shell-tool .generate-chmod-shell-toolbar-main,
     .generate-chmod-shell-tool .generate-chmod-shell-toolbar-left,
@@ -7648,10 +7324,115 @@
 
     .generate-chmod-shell-tool .tool-output-actions,
     .generate-chmod-shell-tool .tool-result-toolbar-actions {
+        width: 100%;
         grid-template-columns: minmax(0, 1fr);
+        margin-left: 0;
+    }
+
+    .generate-chmod-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
+    .generate-chmod-shell-tool .tool-output-actions .tool-action-btn:nth-child(5),
+    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
+    }
+}
+
+@container (max-width: 672px) {
+    .generate-chmod-shell-tool .generate-chmod-shell-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-chmod-shell-tool .generate-chmod-shell-toolbar-left {
+        width: 100%;
+    }
+
+    .generate-chmod-shell-tool .generate-chmod-shell-sort-shell {
+        width: min(100%, calc(var(--base-output-control-width, 150px) + 52px));
+    }
+
+    .generate-chmod-shell-tool .tool-output-actions,
+    .generate-chmod-shell-tool .tool-result-toolbar-actions {
+        justify-self: start;
+        width: calc(100% - var(--base-output-sort-offset, 37px));
+        margin-left: var(--base-output-sort-offset, 37px);
+        max-width: var(--base-output-actions-width, 470px);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .generate-chmod-shell-tool .tool-output-actions,
+    .generate-chmod-shell-tool .tool-result-toolbar-actions {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
+        margin-left: 0;
+        max-width: none;
+    }
+
+    .generate-chmod-shell-tool .tool-output-actions .tool-action-btn:nth-child(4),
+    .generate-chmod-shell-tool .tool-output-actions .tool-action-btn:nth-child(5),
+    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(4),
+    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-action-btn:nth-child(5),
+    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(4),
+    .generate-chmod-shell-tool .tool-result-toolbar-actions .tool-result-action-btn:nth-child(5) {
+        grid-column: auto;
     }
 }
 /* output-toolbar-persistence-contract:end */
+
+/* shell-output-toolbar-architecture-sort-size-contract:start */
+.blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-toolbar-main,
+.generate-chmod-shell-tool .generate-chmod-shell-toolbar-main,
+.blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-toolbar-left,
+.generate-chmod-shell-tool .generate-chmod-shell-toolbar-left,
+.blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-sort-shell,
+.generate-chmod-shell-tool .generate-chmod-shell-sort-shell {
+    width: min(100%, calc(150px + 52px));
+    grid-template-columns: auto 150px;
+}
+
+.blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-sort-wrap,
+.generate-chmod-shell-tool .generate-chmod-shell-sort-wrap,
+.blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-sort-select,
+.generate-chmod-shell-tool .generate-chmod-shell-sort-select {
+    width: min(100%, 150px);
+    max-width: 150px;
+    flex: initial;
+}
+
+@container (max-width: 672px) {
+    .blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-toolbar-main,
+    .generate-chmod-shell-tool .generate-chmod-shell-toolbar-main,
+    .blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-toolbar-left,
+    .generate-chmod-shell-tool .generate-chmod-shell-toolbar-left,
+    .blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-sort-shell,
+    .generate-chmod-shell-tool .generate-chmod-shell-sort-shell {
+        width: min(100%, calc(150px + 52px));
+        grid-template-columns: auto 150px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-toolbar-main,
+    .generate-chmod-shell-tool .generate-chmod-shell-toolbar-main,
+    .blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-toolbar-left,
+    .generate-chmod-shell-tool .generate-chmod-shell-toolbar-left,
+    .blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-sort-shell,
+    .generate-chmod-shell-tool .generate-chmod-shell-sort-shell {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-sort-wrap,
+    .generate-chmod-shell-tool .generate-chmod-shell-sort-wrap,
+    .blog-details .article-content .content .generate-chmod-shell-tool .generate-chmod-shell-sort-select,
+    .generate-chmod-shell-tool .generate-chmod-shell-sort-select {
+        width: 100%;
+        max-width: none;
+    }
+}
+/* shell-output-toolbar-architecture-sort-size-contract:end */
 
 /* result-summary-persistence-contract:start */
 .generate-chmod-shell-tool .generate-chmod-shell-result-metric-card {
@@ -7696,6 +7477,171 @@
     }
 }
 /* result-summary-persistence-contract:end */
+
+/* shell-result-summary-architecture-size-contract:start */
+.generate-chmod-shell-tool .generate-chmod-shell-result-summary {
+    gap: 12px;
+    padding: 14px;
+    overflow: visible;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-header,
+.generate-chmod-shell-tool .generate-chmod-shell-result-header-main,
+.generate-chmod-shell-tool .generate-chmod-shell-result-header-copy,
+.generate-chmod-shell-tool .generate-chmod-shell-result-header-title {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-hero-grid {
+    grid-template-columns: minmax(210px, 0.82fr) minmax(0, 1.28fr);
+    grid-auto-rows: auto;
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+    margin-top: 0;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-card,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-primary,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-visual,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-command,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-summary,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-main {
+    min-height: 0;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-card {
+    gap: 10px;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-primary,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-visual,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-command {
+    justify-content: flex-start;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-summary,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-main {
+    align-content: stretch;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-divider,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-primary > .generate-chmod-shell-result-card-divider,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-visual > .generate-chmod-shell-result-card-divider,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-command > .generate-chmod-shell-result-card-divider,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-summary > .generate-chmod-shell-result-card-divider,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-main > .generate-chmod-shell-result-card-divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    flex: 0 0 auto;
+    margin: 0;
+    margin-top: 12px;
+    background: var(--generate-chmod-shell-result-border, #dbe4f0);
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-chip-row,
+.generate-chmod-shell-tool .generate-chmod-shell-result-chip-grid {
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-primary > .generate-chmod-shell-result-chip-row,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-visual > .generate-chmod-shell-result-chip-row,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-command > .generate-chmod-shell-result-chip-row,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-summary > .generate-chmod-shell-result-chip-grid,
+.generate-chmod-shell-tool .generate-chmod-shell-result-card-main > .generate-chmod-shell-result-chip-row {
+    min-height: 0;
+    align-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 0;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-metric-card {
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    align-content: stretch;
+    gap: 7px;
+    min-height: 128px;
+    padding: 14px;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-metric-icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-metric-label {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-metric-value {
+    font-size: clamp(14px, 1vw, 16px);
+    line-height: 1.18;
+}
+
+.generate-chmod-shell-tool .generate-chmod-shell-result-metric-copy {
+    align-self: start;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+@media (max-width: 960px) {
+    .generate-chmod-shell-tool .generate-chmod-shell-result-metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .generate-chmod-shell-tool .generate-chmod-shell-result-hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-chmod-shell-tool .generate-chmod-shell-result-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .generate-chmod-shell-tool .generate-chmod-shell-result-header-meta {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .generate-chmod-shell-tool .generate-chmod-shell-result-metric-card {
+        min-height: 118px;
+        padding: 13px;
+    }
+
+    .generate-chmod-shell-tool .generate-chmod-shell-result-metric-value {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 560px) {
+    .generate-chmod-shell-tool .generate-chmod-shell-result-metric-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .generate-chmod-shell-tool .generate-chmod-shell-result-header-title,
+    .generate-chmod-shell-tool .generate-chmod-shell-result-title {
+        font-size: 19px;
+    }
+}
+/* shell-result-summary-architecture-size-contract:end */
 
 /* table-output-persistence-contract:start */
 .generate-chmod-shell-tool .tool-sr-only,

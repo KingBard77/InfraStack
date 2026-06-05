@@ -15,5 +15,5 @@ function check {
 }
 
 function fix {
-	echo "Manual"
+    echo 'Manual: UFW default-deny policy needs approved allow rules before enforcement.'
 }

@@ -88,18 +88,18 @@ Before creating a new assessment tool, read:
 7. `templates/content/factory/phase-1/_family/FAMILY.md`
 8. `templates/content/factory/phase-1/_family/assessment/README.md`
 9. `templates/content/factory/phase-1/_family/assessment/manifest.yml`
-10. `templates/content/factory/phase-1/_family/assessment/workspace/README.md`
-11. `templates/content/factory/phase-1/_family/assessment/workspace/manifest.yml`
-12. relevant assessment workspace section folders
+10. `templates/content/factory/phase-1/_family/assessment/source package demo.html`
+11. `templates/content/factory/phase-1/_family/assessment/family manifest source_namespaces`
+12. relevant assessment source namespace markers
 13. `templates/content/factory/phase-2/_content/scaffold/README.md`
 14. relevant phase-2 content section folders under `templates/content/factory/phase-2/_content/sections/`
 
 ## Family Workspace Source
 
-The assessment family workspace source lives at:
+The assessment family source package lives at:
 
 ```text
-templates/content/factory/phase-1/_family/assessment/workspace/
+templates/content/factory/phase-1/_family/assessment/source/assess-ubuntu-2204-cis/
 ```
 
 The workspace reference is:
@@ -150,14 +150,14 @@ templates/content/factory/phase-1/_base/workspace/00_shell/
 templates/content/factory/phase-1/_base/workspace/01_input-brief/
 templates/content/factory/phase-1/_base/workspace/02_basic-settings/
 templates/content/factory/phase-1/_base/workspace/03_custom-settings/
-templates/content/factory/phase-1/_family/assessment/workspace/04_selected-item/
+templates/content/factory/phase-1/_family/assessment/source/assess-ubuntu-2204-cis/04_selected-item/
 templates/content/factory/phase-1/_base/workspace/05_result-summary/
 templates/content/factory/phase-1/_base/workspace/06_output-toolbar/
 templates/content/factory/phase-1/_base/workspace/07_table-output/
 templates/content/factory/phase-1/_base/workspace/08_json-restore/
 ```
 
-Each locally owned workspace section folder follows the architecture family bundle shape:
+Each locally owned source namespace marker follows the architecture family bundle shape:
 
 ```text
 README.md
@@ -169,7 +169,7 @@ section.js
 
 Standalone `demo.html` files own demo chrome separately from extracted assessment section source. Keep the demo title icon placeholder local to the demo with any icon stylesheet it needs, `demo-title`, `demo-title-icon`, `demo-title-text`, and an assessment-family placeholder icon such as `bi bi-clipboard-check`.
 
-Use `workspace/manifest.yml` `workspace_namespaces` as the active composition source. The copied `source/` folder is reference-only for traceability. Do not audit this as active source.
+Use `family manifest source_namespaces` `source_namespaces` as the active composition source. The copied `source/assess-ubuntu-2204-cis/` folder is reference-only for traceability and freshness checks, and must compare cleanly against `templates/content/tools/cis/assess-ubuntu-2204-cis/` before new assessment tools are created.
 
 ## Assessment Workspace Flow
 

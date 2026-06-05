@@ -4,83 +4,6 @@
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family._base.workspace.00_shell
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
-
 // ns:start family._base.workspace.05_result-summary
 function installInfraStackResultSummaryNormalizer(prefix) {
     function normalizeSummary(summary) {
@@ -164,9 +87,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const targetTypeInput = document.getElementById('generateChmodShellTargetType');
     const recursiveInput = document.getElementById('generateChmodShellRecursive');
     const verboseInput = document.getElementById('generateChmodShellVerbose');
-    const previewNumeric = document.getElementById('generateChmodShellPreviewNumeric');
-    const previewSymbolic = document.getElementById('generateChmodShellPreviewSymbolic');
-    const previewLs = document.getElementById('generateChmodShellPreviewLs');
     const scopeOctalBadges = Array.from(document.querySelectorAll('[data-scope-octal]'));
     const permissionInputs = Array.from(document.querySelectorAll('.generate-chmod-shell-perm-toggle input[type="checkbox"]'));
     const setuidInput = document.getElementById('generateChmodShellSetuid');
@@ -225,9 +145,6 @@ document.addEventListener('DOMContentLoaded', function () {
         !targetTypeInput ||
         !recursiveInput ||
         !verboseInput ||
-        !previewNumeric ||
-        !previewSymbolic ||
-        !previewLs ||
         scopeOctalBadges.length === 0 ||
         permissionInputs.length === 0 ||
         !setuidInput ||
@@ -277,6 +194,8 @@ document.addEventListener('DOMContentLoaded', function () {
     ) {
         return;
     }
+
+    const resultEmptyDefaultText = resultEmpty.textContent.trim();
 
     const scopeCatalog = {
         user: {
@@ -385,8 +304,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let numericEditorDirty = false;
     let symbolicEditorDirty = false;
     let lastEditedMode = null;
-    const enhancedSelects = [];
-
     function initMarkdownCopyButtons() {
         const codeBlocks = document.querySelectorAll('.markdown-content pre');
 
@@ -451,10 +368,26 @@ document.addEventListener('DOMContentLoaded', function () {
     function flashButton(button, text) {
         const label = button.querySelector('[data-button-label]') || button.querySelector('.generate-chmod-shell-command-copy-label');
 
-        if (!label && button.classList.contains('generate-chmod-shell-row-copy')) {
-            button.classList.add('copied');
+        if (!label && (button.classList.contains('generate-chmod-shell-row-copy') || (button.closest && button.closest('.tool-table-action-cell')))) {
+            const isCopied = text === 'Copied';
+            const icon = button.querySelector('i');
+            const originalIcon = button.dataset.defaultIcon || (icon ? icon.className : '');
+
+            if (icon && !button.dataset.defaultIcon) {
+                button.dataset.defaultIcon = originalIcon;
+            }
+
+            button.classList.toggle('copied', isCopied);
+            button.classList.toggle('is-copied', isCopied);
+            button.classList.toggle('failed', !isCopied);
+            if (icon) {
+                icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+            }
             window.setTimeout(function () {
-                button.classList.remove('copied');
+                button.classList.remove('copied', 'is-copied', 'failed');
+                if (icon && button.dataset.defaultIcon) {
+                    icon.className = button.dataset.defaultIcon;
+                }
             }, 1400);
             return;
         }
@@ -523,116 +456,7 @@ document.addEventListener('DOMContentLoaded', function () {
         jsonOutput.innerHTML = highlightJsonText(JSON.stringify(payload, null, 2));
     }
 
-    function closeEnhancedSelects(exceptSelect) {
-        enhancedSelects.forEach((entry) => {
-            if (exceptSelect && entry.select === exceptSelect) {
-                return;
-            }
-
-            entry.wrapper.classList.remove('is-open');
-            entry.toggle.setAttribute('aria-expanded', 'false');
-        });
-    }
-
-    function syncEnhancedSelect(entry) {
-        const selectedOption = entry.select.options[entry.select.selectedIndex] || entry.select.options[0];
-
-        entry.toggle.textContent = selectedOption ? selectedOption.textContent : '';
-        entry.wrapper.classList.toggle('is-disabled', Boolean(entry.select.disabled));
-
-        entry.optionButtons.forEach((button) => {
-            button.classList.toggle('is-active', button.dataset.value === entry.select.value);
-        });
-    }
-
-    function syncAllEnhancedSelects() {
-        enhancedSelects.forEach((entry) => {
-            syncEnhancedSelect(entry);
-        });
-    }
-
-    function enhanceNativeSelect(select) {
-        if (!select || select.dataset.generateChmodShellEnhanced === '1') {
-            return;
-        }
-
-        const wrapper = document.createElement('div');
-        const toggle = document.createElement('button');
-        const menu = document.createElement('div');
-        const optionButtons = [];
-
-        select.dataset.generateChmodShellEnhanced = '1';
-        select.classList.add('generate-chmod-shell-native-select');
-        wrapper.className = 'generate-chmod-shell-enhanced-select';
-        toggle.type = 'button';
-        toggle.className = 'generate-chmod-shell-enhanced-select-toggle';
-        toggle.setAttribute('aria-haspopup', 'listbox');
-        toggle.setAttribute('aria-expanded', 'false');
-        menu.className = 'generate-chmod-shell-enhanced-select-menu';
-        menu.setAttribute('role', 'listbox');
-
-        Array.from(select.options).forEach((option) => {
-            const optionButton = document.createElement('button');
-
-            optionButton.type = 'button';
-            optionButton.className = 'generate-chmod-shell-enhanced-select-option';
-            optionButton.dataset.value = option.value;
-            optionButton.textContent = option.textContent;
-            optionButton.disabled = option.disabled;
-            optionButton.setAttribute('role', 'option');
-
-            optionButton.addEventListener('click', function () {
-                if (select.disabled || option.disabled) {
-                    return;
-                }
-
-                select.value = option.value;
-                select.dispatchEvent(new Event('change', { bubbles: true }));
-                select.dispatchEvent(new Event('input', { bubbles: true }));
-                closeEnhancedSelects();
-            });
-
-            menu.appendChild(optionButton);
-            optionButtons.push(optionButton);
-        });
-
-        toggle.addEventListener('click', function () {
-            if (select.disabled) {
-                return;
-            }
-
-            const isOpen = wrapper.classList.contains('is-open');
-
-            closeEnhancedSelects(select);
-            wrapper.classList.toggle('is-open', !isOpen);
-            toggle.setAttribute('aria-expanded', String(!isOpen));
-        });
-
-        wrapper.appendChild(toggle);
-        wrapper.appendChild(menu);
-        select.insertAdjacentElement('afterend', wrapper);
-
-        const entry = {
-            select,
-            wrapper,
-            toggle,
-            menu,
-            optionButtons
-        };
-
-        select.addEventListener('change', function () {
-            syncEnhancedSelect(entry);
-        });
-
-        select.addEventListener('input', function () {
-            syncEnhancedSelect(entry);
-        });
-
-        enhancedSelects.push(entry);
-        syncEnhancedSelect(entry);
-    }
-
-    function createBlankState(targetType) {
+function createBlankState(targetType) {
         const state = {
             targetType: targetType || 'file',
             permissions: {},
@@ -1142,7 +966,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         presetInput.value = 'manual';
-        syncAllEnhancedSelects();
     }
 
     function syncScopeBadges() {
@@ -1157,12 +980,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function syncPreviewValues() {
-        previewNumeric.textContent = buildNumericMode(permissionState);
-        previewSymbolic.textContent = buildSymbolicMode(permissionState);
-        previewLs.textContent = buildLsPreview(permissionState);
-    }
-
     function syncStateUi() {
         targetTypeInput.value = permissionState.targetType;
 
@@ -1175,7 +992,6 @@ document.addEventListener('DOMContentLoaded', function () {
         stickyInput.checked = permissionState.special.sticky;
 
         syncScopeBadges();
-        syncPreviewValues();
 
         numericInput.value = buildNumericMode(permissionState);
         symbolicInput.value = buildSymbolicMode(permissionState);
@@ -1185,7 +1001,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         clearFeedback(numericFeedback);
         clearFeedback(symbolicFeedback);
-        syncAllEnhancedSelects();
         updateUmaskPreview();
     }
 
@@ -1528,9 +1343,38 @@ document.addEventListener('DOMContentLoaded', function () {
             .join('\n');
     }
 
+    function fallbackActionClipboardText(text) {
+        const textarea = document.createElement('textarea');
+
+        textarea.value = text;
+        textarea.setAttribute('readonly', 'readonly');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        document.execCommand('copy');
+
+        textarea.remove();
+    }
+
+    async function writeActionClipboardText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return;
+            } catch (error) {
+                fallbackActionClipboardText(text);
+                return;
+            }
+        }
+
+        fallbackActionClipboardText(text);
+    }
+
     async function copyText(value, button) {
         try {
-            await navigator.clipboard.writeText(value);
+            await writeActionClipboardText(value);
             flashButton(button, 'Copied');
         } catch (error) {
             flashButton(button, 'Failed');
@@ -1617,18 +1461,24 @@ document.addEventListener('DOMContentLoaded', function () {
         tableBody.innerHTML = `<tr class="generate-chmod-shell-empty-row"><td colspan="${colspan}">${escapeHtml(label)}</td></tr>`;
     }
 
-    function formatDateTime(dateValue) {
-        return new Intl.DateTimeFormat('en', {
-            dateStyle: 'medium',
-            timeStyle: 'short'
-        }).format(dateValue);
-    }
+function formatDateTime(dateValue) {
+    const date = dateValue instanceof Date ? dateValue : new Date(dateValue || Date.now());
+    const normalized = Number.isNaN(date.getTime()) ? new Date() : date;
+
+    return new Intl.DateTimeFormat('en', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    }).format(normalized);
+}
 
 // ns:start family._base.workspace.05_result-summary
     function renderSummary(result) {
         const warningTone = result.warnings.length > 0 ? 'warning' : 'success';
         const resultTone = result.warnings.length > 0 ? 'warning' : 'ready';
-        const updatedText = new Date().toLocaleString();
+        const updatedText = formatDateTime(new Date());
 
         resultSummary.dataset.resultTone = resultTone;
         resultSummary.dataset.resultLayout = 'command';
@@ -1679,6 +1529,14 @@ document.addEventListener('DOMContentLoaded', function () {
 // ns:end family._base.workspace.05_result-summary
 
 // ns:start family._base.workspace.06_output-toolbar
+    function updateSortExpandedState() {
+        const summaryElement = sortSelect.querySelector('[aria-expanded]');
+
+        if (summaryElement) {
+            summaryElement.setAttribute('aria-expanded', sortSelect.open ? 'true' : 'false');
+        }
+    }
+
     function updateSortState() {
         const selectedButton = sortOptionButtons.find((button) => button.dataset.sortValue === sortInput.value) || sortOptionButtons[0];
         const selectedLabel = selectedButton
@@ -1814,7 +1672,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td>${escapeHtml(row.operation)}</td>
                     <td>${escapeHtml(row.effect)}</td>
                     <td>${escapeHtml(row.result)}</td>
-                    <td class="generate-chmod-shell-table-copy-cell">
+                    <td class="generate-chmod-shell-table-copy-cell tool-table-action-cell">
                         <button type="button" class="generate-chmod-shell-row-copy generate-chmod-shell-row-copy-btn" data-operation-copy="${escapeHtml(row.result)}" aria-label="Copy operation row ${index + 1}" title="Copy operation row">
                             <i class="bi bi-clipboard" aria-hidden="true"></i>
                         </button>
@@ -1850,9 +1708,33 @@ document.addEventListener('DOMContentLoaded', function () {
         resultError.textContent = message;
     }
 
+    function showEmptyState(message) {
+        latestResult = null;
+        resultEmpty.textContent = message || resultEmptyDefaultText;
+        resultEmpty.classList.remove('d-none');
+        resultContent.classList.add('d-none');
+        resultError.classList.add('d-none');
+        resultError.textContent = '';
+        resultSummary.innerHTML = '';
+        commandOutput.textContent = '';
+        lsOutput.textContent = '';
+        summaryTableBody.innerHTML = '';
+        permissionTableBody.innerHTML = '';
+        umaskTableBody.innerHTML = '';
+        operationsTableBody.innerHTML = '';
+        warningsList.innerHTML = '';
+        errorsList.innerHTML = '';
+        jsonOutput.innerHTML = '';
+        activateTab('generateChmodShellOperationsPanel');
+    }
+
+    function setSubmitButtonLabel(label) {
+        submitButton.innerHTML = `<i class="bi bi-terminal" aria-hidden="true"></i><span>${escapeHtml(label)}</span>`;
+    }
+
     function setGeneratingState(isLoading) {
         submitButton.disabled = isLoading;
-        submitButton.textContent = isLoading ? 'Generating...' : 'Generate';
+        setSubmitButtonLabel(isLoading ? 'Generating...' : 'Generate');
     }
 
 // ns:start family._base.workspace.03_custom-settings
@@ -1947,7 +1829,6 @@ document.addEventListener('DOMContentLoaded', function () {
 // ns:start family._base.workspace.02_basic-settings
     function applyPreset(presetKey) {
         if (presetKey === 'manual') {
-            syncAllEnhancedSelects();
             return;
         }
 
@@ -2001,6 +1882,10 @@ document.addEventListener('DOMContentLoaded', function () {
             : payload;
     }
 
+    function buildImportedPayloadState(payload) {
+        return getImportedPayload(payload);
+    }
+
     function getImportedText(payload, key, fallback) {
         const value = payload[key];
 
@@ -2026,7 +1911,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function applyImportedPayload(payload) {
-        const importedPayload = getImportedPayload(payload);
+        const importedPayload = buildImportedPayloadState(payload);
         const modeValue = getImportedText(importedPayload, 'numeric', getImportedText(importedPayload, 'command_mode', ''));
         const parsedMode = modeValue ? parseNumericMode(modeValue) : null;
 
@@ -2115,23 +2000,14 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (enhancedSelects.some((entry) => entry.wrapper.contains(target))) {
-            return;
-        }
-
-        closeEnhancedSelects();
     });
 
     document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
-            closeEnhancedSelects();
         }
     });
 
     initMarkdownCopyButtons();
-    Array.from(document.querySelectorAll('.generate-chmod-shell-form select')).forEach((select) => {
-        enhanceNativeSelect(select);
-    });
 
     if (!restoreStateFromQuery()) {
         applyPreset('deploy-script');
@@ -2282,7 +2158,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     resetButton.addEventListener('click', function () {
         applyPreset('deploy-script');
-        generateAndRender();
+        clearFeedback(numericFeedback);
+        clearFeedback(symbolicFeedback);
+        clearFeedback(operationFeedback);
+        clearFeedback(umaskFeedback);
+        showEmptyState();
+        setGeneratingState(false);
+        window.history.replaceState({}, '', `${window.location.pathname}${window.location.hash}`);
     });
 
     applyPresetButton.addEventListener('click', function () {
@@ -2291,7 +2173,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     presetInput.addEventListener('change', function () {
-        syncAllEnhancedSelects();
     });
 
     tabButtons.forEach((button) => {
@@ -2334,6 +2215,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    sortSelect.addEventListener('toggle', updateSortExpandedState);
 
     copyCommandButton.addEventListener('click', function () {
         if (!latestResult) {
@@ -2409,7 +2292,6 @@ document.addEventListener('DOMContentLoaded', function () {
     updateUmaskPreview();
     syncStateUi();
     generateAndRender();
-    initializeInfraStackCustomDropdowns(document);
 });
 /* ns:start family._base.workspace.07_table-output */
 (function setupGenerateChmodShellTableOutputStandard() {
@@ -2506,7 +2388,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });

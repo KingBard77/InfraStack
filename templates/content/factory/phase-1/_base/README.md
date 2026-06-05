@@ -35,6 +35,8 @@ The base foundation currently includes:
 - `07_table-output`: neutral tabbed output shell with five output sections, table-first rhythm, JSON-last rhythm, table frame, empty state, and icon-only row actions.
 - `08_json-restore`: neutral JSON output, import file input, restore status, empty JSON state, and readable code frame.
 
+Shared dropdown rhythm is documented in `workspace/manifest.yml` under `dropdown_visual_contract`. Short `02_basic-settings` and `03_custom-settings` option lists use real native `<select>` controls with only closed-control styling and a static centered down arrow chip. Long dynamic Basic or Custom lists, such as CIS `Script source`, may use the in-page searchable picker exception when native popup direction or width cannot be made deterministic. `06_output-toolbar` owns the separate CSS popup sort dropdown contract with shared popup menu, option row, selected/hover, scrollbar, and z-index rules.
+
 ## Preference Rule
 
 Use one canonical source section for `01_input-brief`.
@@ -51,13 +53,13 @@ Preference values may set:
 - primary and secondary Bootstrap Icon classes
 - whether the secondary action should be removed
 
-`02_basic-settings` follows the same rule: use one canonical source section and select family-specific meaning from the workspace manifest. Do not create separate base sections just to change preset, scope, shell, scanner, or assessment control wording.
+`02_basic-settings` follows the same rule: use one canonical source section and select family-specific meaning from the workspace manifest. Do not create separate base sections just to change preset, scope, shell, scanner, or assessment control wording. Repeated peer-card editors such as cron fields must use a full-width setting card so the card grid starts flush with the section rhythm instead of sitting beside an empty label rail.
 
 `03_custom-settings` follows the same rule: use one canonical source section and select family-specific meaning from the workspace manifest. Do not create separate base sections just to change the old Advanced label, control density, column count, tab names, or row grouping.
 
 The visible disclosure label for custom settings is always `Custom`. Existing runtime namespace markers may keep `03_advanced-settings` or shell `03_advanced-setting` for compatibility, but users should not see `Advanced` as the panel label.
 
-Custom controls use one outer card per setting, inline CSS dropdowns instead of browser-native select popups, simple radio inputs, simple checkboxes, and typed placeholders such as CIDR slash notation, numeric examples, or quantity examples as appropriate.
+Custom controls use one outer card per setting, native `<select>` popups for short dropdowns, radio-card choices, explicitly styled checkbox controls, and typed placeholders such as CIDR slash notation, numeric examples, or quantity examples as appropriate. Do not hide a native Custom select to replace it with a CSS popup menu. Long dynamic Custom lists may use an in-page searchable picker only when the picker is width-contained, opens below in normal document flow, and keeps a hidden canonical state input synchronized with output, export, restore, and URL state.
 
 `05_result-summary` follows the same rule: use one canonical source section and select family-specific meaning from the workspace manifest. Do not create separate base sections just to change score labels, cost labels, scan status copy, shell mode copy, assessment metric labels, or ring-versus-command visual emphasis.
 
@@ -69,7 +71,7 @@ Output toolbars must start with `ID` as the visible and hidden default sort valu
 
 `07_table-output` follows the same rule: use one canonical source section and select family-specific tab labels, table headings, notes, empty states, and icons from the workspace manifest. Do not create separate base sections just to change breakdown, inventory, findings, operations, assumptions, warnings, or JSON wording.
 
-Table output must have at least five top-level tabs, start with a table tab, and end with JSON. The tab section must align right on desktop. The fifth tab/panel is an optional extra placeholder section for families that need one more output area before JSON. Every tab button must be rounded and icon-bearing. Each panel must include a title inside the section card before the output. Table columns should stay compact and meaningful: the first column must be centered `#`, middle columns use logical start alignment, and the last column must be a centered sticky row action with an icon-only copy button whenever a multi-column table scrolls horizontally. Generated row text should be clamped to 2-3 lines.
+Table output must have at least five top-level tabs, start with a table tab, and end with JSON. The tab section must align right on desktop. The fifth tab/panel is an optional extra placeholder section for families that need one more output area before JSON. Every tab button must be rounded and icon-bearing. Each panel must include a title inside the section card before the output. Section or command titles that share a row with copy/action buttons must use a two-column top-aligned header grid so action buttons do not lower the title text. Table columns should stay compact and meaningful: the first column must be centered `#`, middle columns use logical start alignment, and the last column must be a centered sticky row action with an icon-only copy button whenever a multi-column table scrolls horizontally. Generated row text should be clamped to 2-3 lines.
 
 `08_json-restore` follows the same rule: use one canonical source section and select family-specific JSON title, helper, and empty text from the workspace manifest. Do not create separate base sections just to change estimate state, scan evidence, command state, diagram model, or assessment filter wording.
 
@@ -94,6 +96,12 @@ Apply `_base` only as source material when creating or refreshing a family basel
 Family workspace manifests may reference `_base` sections through `workspace_namespaces`, for example `family._base.workspace.01_input-brief`, alongside family-owned namespaces. This declares source composition for factory and parity tooling; it does not make final tools import `_base` at runtime.
 
 Do not make final tool packages import `_base` files at runtime unless a deliberate shared include system is created and validated.
+
+## Compliance Gate
+
+For new active-family tools, do not start from loose `_base` demo sections when a same-family source package exists. Start from the approved family source or same-family runtime reference, adapt it into the final tool package, then run `_base` compliance against the final package.
+
+The gate must compare the final package to every `_base` namespace carried by the selected family manifest. Check the rendered/shared shape and runtime hooks for shell frame, input brief, Basic settings, Custom settings, Result Summary, output toolbar, table output, JSON restore, export/import actions, button states, row action sizing, responsive wrappers, and normalized state handoff. Basic and Custom dropdown parity must also scan for hidden native selects, stale enhanced-select wrappers, and converted controls that still carry fake-dropdown classes. Long dynamic picker exceptions must be explicit, width-contained, in-page, searchable, open below the trigger, and synchronized to canonical state. Accepted divergence must be explicit, path-based, and stored in the task record.
 
 ## Section Bundle Contract
 

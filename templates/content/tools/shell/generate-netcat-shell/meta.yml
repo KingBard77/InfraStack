@@ -21,9 +21,9 @@ tags:
     - Netcat
     - Networking
 related_links:
-    - links-title: Generate SSH Shell
+    - links-title: SSH Command Generator
       links-label: InfraStack tool
-      links-description: Open the related InfraStack Generate SSH Shell workspace.
+      links-description: Open the related InfraStack SSH Command Generator workspace.
       links-url: https://infrastack.my/tools/shell/generate-ssh-shell
       links-embed: https://infrastack.my/embed/shell/generate-ssh-shell
       links-icon: bi-terminal

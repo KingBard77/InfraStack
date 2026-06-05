@@ -1,83 +1,6 @@
 // custom.js
 // ns:start family._base.workspace.00_shell
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
-
 // ns:start family._base.workspace.05_result-summary
 function installInfraStackResultSummaryNormalizer(prefix) {
     function formatUpdatedLabel() {
@@ -1590,31 +1513,31 @@ const architectureVnetAzureAllowedDatabases = ArchitectureVnetAzureModelCore.all
 const architectureVnetAzureEngineRuntime = window.InfraStackArchitectureEngineRuntime || null;
 
 const architectureVnetAzureIconSvgMap = {
-    amazonVpc: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Virtual-Networks.svg')|json_encode|raw }},
-    route53: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-DNS-Zones.svg')|json_encode|raw }},
-    cloudFront: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Front-Door-and-CDN-Profiles.svg')|json_encode|raw }},
-    waf: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Web-Application-Firewall-Policies.svg')|json_encode|raw }},
-    internetGateway: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Public-IP-Addresses.svg')|json_encode|raw }},
-    applicationLoadBalancer: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Application-Gateways.svg')|json_encode|raw }},
-    vpcRouter: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Virtual-Router.svg')|json_encode|raw }},
-    natGateway: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-NAT.svg')|json_encode|raw }},
-    ec2: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Virtual-Machine.svg')|json_encode|raw }},
-    ec2AutoScaling: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-VM-Scale-Sets.svg')|json_encode|raw }},
-    ecs: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Worker-Container-App.svg')|json_encode|raw }},
-    eks: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Kubernetes-Services.svg')|json_encode|raw }},
-    fargate: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Worker-Container-App.svg')|json_encode|raw }},
-    lambda: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Function-Apps.svg')|json_encode|raw }},
-    rds: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-SQL.svg')|json_encode|raw }},
-    aurora: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Database-PostgreSQL-Server.svg')|json_encode|raw }},
-    dynamodb: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Cosmos-DB.svg')|json_encode|raw }},
-    elasticache: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Cache-Redis.svg')|json_encode|raw }},
-    vpcEndpoints: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Private-Endpoints.svg')|json_encode|raw }},
-    vpcFlowLogs: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Network-Watcher.svg')|json_encode|raw }},
-    cloudWatch: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Monitor.svg')|json_encode|raw }},
-    systemsManager: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Key-Vaults.svg')|json_encode|raw }},
-    siteToSiteVpn: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Virtual-Network-Gateways.svg')|json_encode|raw }},
-    transitGateway: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Virtual-WANs.svg')|json_encode|raw }},
-    bastion: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/Azure-Bastions.svg')|json_encode|raw }}
+    amazonVpc: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-virtual-networks.svg')|json_encode|raw }},
+    route53: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-dns-zones.svg')|json_encode|raw }},
+    cloudFront: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-front-door-and-cdn-profiles.svg')|json_encode|raw }},
+    waf: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-web-application-firewall-policies.svg')|json_encode|raw }},
+    internetGateway: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-public-ip-addresses.svg')|json_encode|raw }},
+    applicationLoadBalancer: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-application-gateways.svg')|json_encode|raw }},
+    vpcRouter: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-virtual-router.svg')|json_encode|raw }},
+    natGateway: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-nat.svg')|json_encode|raw }},
+    ec2: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-virtual-machine.svg')|json_encode|raw }},
+    ec2AutoScaling: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-vm-scale-sets.svg')|json_encode|raw }},
+    ecs: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-worker-container-app.svg')|json_encode|raw }},
+    eks: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-kubernetes-services.svg')|json_encode|raw }},
+    fargate: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-worker-container-app.svg')|json_encode|raw }},
+    lambda: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-function-apps.svg')|json_encode|raw }},
+    rds: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-sql.svg')|json_encode|raw }},
+    aurora: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-database-postgresql-server.svg')|json_encode|raw }},
+    dynamodb: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-cosmos-db.svg')|json_encode|raw }},
+    elasticache: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-cache-redis.svg')|json_encode|raw }},
+    vpcEndpoints: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-private-endpoints.svg')|json_encode|raw }},
+    vpcFlowLogs: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-network-watcher.svg')|json_encode|raw }},
+    cloudWatch: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-monitor.svg')|json_encode|raw }},
+    systemsManager: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-key-vaults.svg')|json_encode|raw }},
+    siteToSiteVpn: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-virtual-network-gateways.svg')|json_encode|raw }},
+    transitGateway: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-virtual-wans.svg')|json_encode|raw }},
+    bastion: {{ include('content/tools/azure/architecture-vnet-azure/assets/icon/azure-arch-bastions.svg')|json_encode|raw }}
 };
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -5455,7 +5378,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 '<td>' + escapeHtml(item.component) + '</td>',
                 '<td>' + escapeHtml(item.placement) + '</td>',
                 '<td>' + escapeHtml(item.purpose) + '</td>',
-                '<td class="architecture-vnet-azure-table-action-cell">',
+                '<td class="architecture-vnet-azure-table-action-cell tool-table-action-cell">',
                 '<button type="button" class="architecture-vnet-azure-row-copy" data-inventory-copy-row="' + escapeHtml(index) + '" aria-label="Copy inventory row ' + escapeHtml(item.inventoryIndex || index + 1) + '" title="Copy inventory row">',
                 '<i class="bi bi-clipboard" aria-hidden="true"></i>',
                 '</button>',
@@ -7810,7 +7733,6 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePresetSelection();
     applyPreset(architectureVnetAzurePresetCatalog[0].id, false);
     applyWorkspaceInfoMarkers();
-    initializeInfraStackCustomDropdowns(document);
 });
 /* table-output-standard:start */
 (function setupArchitectureVnetAzureTableOutputStandard() {
@@ -7906,6 +7828,10 @@ document.addEventListener('DOMContentLoaded', function () {
             cells.forEach(function clampDataCell(cell, index) {
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
+
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                }
 
                 if (!isFirst && !isAction) {
                     clampCell(cell);

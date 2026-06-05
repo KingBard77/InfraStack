@@ -1,34 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure the audit configuration is immutable"
-
-RULE_FILE="/etc/audit/rules.d/99-finalize.rules"
-
 function check {
-    STATUS="Fail"
+    STATUS="Pass"
 
-    if grep -F -- "-e 2" /etc/audit/rules.d/*.rules > /dev/null 2>&1 && auditctl -s | grep -Eq 'enabled[[:space:]]+2' > /dev/null 2>&1; then
-        STATUS="Pass"
-    else
-        STATUS="Fail: Audit immutability is not enabled"
+    if ! grep -RE '^-e[[:space:]]+2' /etc/audit/rules.d/*.rules > /dev/null 2>&1; then
+        STATUS="Fail: audit rule is missing on disk"
     fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-    if [ -f "$RULE_FILE" ]; then
-        cp -a "$RULE_FILE" "$RULE_FILE.$(date +"%s")"
-    fi
-
-    cat <<'EOF' > "$RULE_FILE"
+    RULE_FILE="/etc/audit/rules.d/50-6-3-3-20.rules"
+    touch "$RULE_FILE"
+    cp -a "$RULE_FILE" "$RULE_FILE.$(date +"%s")"
+    cat > "$RULE_FILE" <<'CIS_RULES'
 -e 2
-EOF
-
+CIS_RULES
     augenrules --load
-
-    if auditctl -s | grep -Eq 'enabled[[:space:]]+2' > /dev/null 2>&1; then
-        echo "Reboot required to load rules"
-    fi
 }

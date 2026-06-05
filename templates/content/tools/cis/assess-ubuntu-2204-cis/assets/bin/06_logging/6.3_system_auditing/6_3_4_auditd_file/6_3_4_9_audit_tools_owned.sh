@@ -1,33 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 
-CRITICALITY=1
-TITLE="Ensure audit tools are owned by root"
-
-function audit_tools {
-    for TOOL in /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/augenrules /usr/sbin/auditctl /usr/sbin/aureport /usr/sbin/ausearch /usr/sbin/autrace /usr/sbin/augenrules; do
-        if [ -e "$TOOL" ]; then
-            echo "$TOOL"
-        fi
-    done | sort -u
+CRITICALITY=2
+TITLE="Ensure audit tools owner is configured"
+function audit_dir {
+    awk -F= '/^\s*log_file\s*=/{ gsub(/[[:space:]]/, "", $2); print $2 }' /etc/audit/auditd.conf 2>/dev/null | xargs dirname 2>/dev/null
 }
 
 function check {
+    AUDIT_DIR="$(audit_dir)"
+    AUDIT_DIR="${AUDIT_DIR:-/var/log/audit}"
     STATUS="Pass"
 
-    while IFS= read -r TOOL; do
-        if [ "$(stat -c '%U' "$TOOL")" != "root" ]; then
-            STATUS="Fail: Audit tools are not owned by root"
-            break
-        fi
-    done <<EOF
-$(audit_tools)
-EOF
+    if find /sbin /usr/sbin -maxdepth 1 \( -name auditctl -o -name auditd -o -name ausearch -o -name aureport -o -name autrace -o -name augenrules \) ! -user root -print -quit 2>/dev/null | grep -q .; then
+        STATUS="Fail: audit tools are not owned by root"
+    fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-    audit_tools | while IFS= read -r TOOL; do
-        chown root "$TOOL"
-    done
+    AUDIT_DIR="$(audit_dir)"
+    AUDIT_DIR="${AUDIT_DIR:-/var/log/audit}"
+    find /sbin /usr/sbin -maxdepth 1 \( -name auditctl -o -name auditd -o -name ausearch -o -name aureport -o -name autrace -o -name augenrules \) -exec chown root {} \; 2>/dev/null
 }

@@ -1,19 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 
 CRITICALITY=1
-TITLE="Ensure sshd Banner is configured"
-
+TITLE="Ensure sshd access is configured"
 function check {
-	STATUS="Fail"
+    STATUS="Fail"
 
-	if (grep -e "^AllowUsers" /etc/ssh/sshd_config > /dev/null 2>&1) && \
-	   (grep -e "^AllowGroups" /etc/ssh/sshd_config > /dev/null 2>&1) && \
-	   (grep -e "^DenyUsers" /etc/ssh/sshd_config > /dev/null 2>&1) && \
-	   (grep -e "^DenyGroups" /etc/ssh/sshd_config > /dev/null 2>&1); then
-		STATUS="Pass"
-	fi
+    if sshd -T 2>/dev/null | awk '$1 ~ /^(allowusers|allowgroups|denyusers|denygroups)$/ { found=1 } END { exit found ? 0 : 1 }'; then
+        STATUS="Pass"
+    else
+        STATUS="Fail: sshd access restrictions are not configured"
+    fi
+
+    echo "Check status: $STATUS"
 }
 
 function fix {
-	echo "Manual"
+    echo 'Automated remediation requires site-approved SSH allow or deny lists.'
 }

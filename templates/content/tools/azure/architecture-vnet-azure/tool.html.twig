@@ -67,34 +67,40 @@
             <div class="architecture-vnet-azure-basic-grid">
               <div class="architecture-vnet-azure-control-stack architecture-vnet-azure-setting-card">
                 <label class="tool-control-label architecture-vnet-azure-setting-label" for="architectureVnetAzurePreset">Preset <span class="architecture-vnet-azure-helper-chip" title="Choose a starting preset that updates the visible controls and generated output." aria-label="Choose a starting preset that updates the visible controls and generated output.">i</span></label>
-                <select id="architectureVnetAzurePreset" class="form-select architecture-vnet-azure-native-select">
-                  <option value="three-tier-web" selected>3-Tier Web</option>
-                  <option value="ecs-fargate">Azure Container Apps</option>
-                  <option value="eks-platform">Private AKS</option>
-                  <option value="hybrid-shared">Hybrid Shared Services</option>
-                </select>
+                <div class="architecture-vnet-azure-native-select-wrap" id="architectureVnetAzurePresetSelect">
+                  <select id="architectureVnetAzurePreset" class="form-select architecture-vnet-azure-native-select">
+                    <option value="three-tier-web" selected>3-Tier Web</option>
+                    <option value="ecs-fargate">Azure Container Apps</option>
+                    <option value="eks-platform">Private AKS</option>
+                    <option value="hybrid-shared">Hybrid Shared Services</option>
+                  </select>
+                </div>
               </div>
 
               <div class="architecture-vnet-azure-control-stack architecture-vnet-azure-setting-card">
                 <label class="tool-control-label architecture-vnet-azure-setting-label" for="architectureVnetAzureRegion">Region <span class="architecture-vnet-azure-helper-chip" title="Choose the provider region used by the generated model and exported JSON." aria-label="Choose the provider region used by the generated model and exported JSON.">i</span></label>
-                <select id="architectureVnetAzureRegion" class="form-select architecture-vnet-azure-native-select">
-                  <option value="eastus">eastus</option>
-                  <option value="eastus2">eastus2</option>
-                  <option value="centralus">centralus</option>
-                  <option value="westus2">westus2</option>
-                  <option value="westeurope">westeurope</option>
-                  <option value="southeastasia">southeastasia</option>
-                  <option value="australiaeast">australiaeast</option>
-                </select>
+                <div class="architecture-vnet-azure-native-select-wrap" id="architectureVnetAzureRegionSelect">
+                  <select id="architectureVnetAzureRegion" class="form-select architecture-vnet-azure-native-select">
+                    <option value="eastus">eastus</option>
+                    <option value="eastus2">eastus2</option>
+                    <option value="centralus">centralus</option>
+                    <option value="westus2">westus2</option>
+                    <option value="westeurope">westeurope</option>
+                    <option value="southeastasia">southeastasia</option>
+                    <option value="australiaeast">australiaeast</option>
+                  </select>
+                </div>
               </div>
 
               <div class="architecture-vnet-azure-control-stack architecture-vnet-azure-setting-card">
                 <label class="tool-control-label architecture-vnet-azure-setting-label" for="architectureVnetAzureAzCount">Availability zones <span class="architecture-vnet-azure-helper-chip" title="Choose the zone count used by placement and resilience assumptions." aria-label="Choose the zone count used by placement and resilience assumptions.">i</span></label>
-                <select id="architectureVnetAzureAzCount" class="form-select architecture-vnet-azure-native-select">
-                  <option value="1">1 AZ</option>
-                  <option value="2" selected>2 AZ</option>
-                  <option value="3">3 AZ</option>
-                </select>
+                <div class="architecture-vnet-azure-native-select-wrap" id="architectureVnetAzureAzCountSelect">
+                  <select id="architectureVnetAzureAzCount" class="form-select architecture-vnet-azure-native-select">
+                    <option value="1">1 AZ</option>
+                    <option value="2" selected>2 AZ</option>
+                    <option value="3">3 AZ</option>
+                  </select>
+                </div>
               </div>
               <p class="tool-control-hint architecture-vnet-azure-setting-hint" id="architectureVnetAzurePresetDescription">Public App Gateway, private VM scale sets, Azure SQL, single NAT.</p>
             </div>
@@ -123,41 +129,13 @@
                   </div>
 
                   <div class="architecture-vnet-azure-control-stack">
-                    <label class="tool-control-label" for="architectureVnetAzureNatMode">NAT mode <span class="architecture-vnet-azure-helper-chip architecture-vnet-azure-custom-helper-chip" title="Tune nat mode before regenerating the diagram." aria-label="Tune nat mode before regenerating the diagram.">i</span></label>
-                    <input type="hidden" id="architectureVnetAzureNatMode" value="single">
-
-                    <details class="architecture-vnet-azure-custom-dropdown" data-custom-dropdown-for="architectureVnetAzureNatMode">
-                      <summary class="architecture-vnet-azure-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>Single NAT</span>
-                          <span class="architecture-vnet-azure-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="architecture-vnet-azure-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                        <button
-                          type="button"
-                          class="architecture-vnet-azure-custom-dropdown-option"
-                          data-custom-dropdown-value="none"
-                          role="option"
-                          aria-selected="false"
-                        >No NAT</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vnet-azure-custom-dropdown-option active"
-                          data-custom-dropdown-value="single"
-                          role="option"
-                          aria-selected="true"
-                        >Single NAT</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vnet-azure-custom-dropdown-option"
-                          data-custom-dropdown-value="per-az"
-                          role="option"
-                          aria-selected="false"
-                        >One per AZ</button>
-                      </div>
-                    </details>
+                    <label class="tool-control-label" for="architectureVnetAzureNatMode">NAT mode <span class="architecture-vnet-azure-helper-chip architecture-vnet-azure-custom-helper-chip" title="Tune nat mode before regenerating the diagram." aria-label="Tune nat mode before regenerating the diagram.">i</span></label>                    <div class="architecture-vnet-azure-native-select-wrap" id="architectureVnetAzureNatModeSelect">
+                      <select id="architectureVnetAzureNatMode" class="form-select architecture-vnet-azure-native-select">
+                        <option value="none">No NAT</option>
+                        <option value="single" selected>Single NAT</option>
+                        <option value="per-az">One per AZ</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -165,95 +143,25 @@
               <div class="tool-inspector-section architecture-vnet-azure-config-panel" id="architectureVnetAzureWorkloadConfigPanel" data-config-panel role="tabpanel" aria-labelledby="architectureVnetAzureWorkloadConfigTab" hidden>
                 <div class="architecture-vnet-azure-config-grid">
                   <div class="architecture-vnet-azure-control-stack">
-                    <label class="tool-control-label" for="architectureVnetAzureAppTier">App tier <span class="architecture-vnet-azure-helper-chip architecture-vnet-azure-custom-helper-chip" title="Tune app tier before regenerating the diagram." aria-label="Tune app tier before regenerating the diagram.">i</span></label>
-                    <input type="hidden" id="architectureVnetAzureAppTier" value="ec2">
-
-                    <details class="architecture-vnet-azure-custom-dropdown" data-custom-dropdown-for="architectureVnetAzureAppTier">
-                      <summary class="architecture-vnet-azure-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>Virtual Machine Scale Sets</span>
-                          <span class="architecture-vnet-azure-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="architecture-vnet-azure-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                        <button
-                          type="button"
-                          class="architecture-vnet-azure-custom-dropdown-option active"
-                          data-custom-dropdown-value="ec2"
-                          role="option"
-                          aria-selected="true"
-                        >Virtual Machine Scale Sets</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vnet-azure-custom-dropdown-option"
-                          data-custom-dropdown-value="ecs"
-                          role="option"
-                          aria-selected="false"
-                        >Azure Container Apps</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vnet-azure-custom-dropdown-option"
-                          data-custom-dropdown-value="eks"
-                          role="option"
-                          aria-selected="false"
-                        >AKS</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vnet-azure-custom-dropdown-option"
-                          data-custom-dropdown-value="lambda"
-                          role="option"
-                          aria-selected="false"
-                        >Azure Functions in VNet</button>
-                      </div>
-                    </details>
+                    <label class="tool-control-label" for="architectureVnetAzureAppTier">App tier <span class="architecture-vnet-azure-helper-chip architecture-vnet-azure-custom-helper-chip" title="Tune app tier before regenerating the diagram." aria-label="Tune app tier before regenerating the diagram.">i</span></label>                    <div class="architecture-vnet-azure-native-select-wrap" id="architectureVnetAzureAppTierSelect">
+                      <select id="architectureVnetAzureAppTier" class="form-select architecture-vnet-azure-native-select">
+                        <option value="ec2" selected>Virtual Machine Scale Sets</option>
+                        <option value="ecs">Azure Container Apps</option>
+                        <option value="eks">AKS</option>
+                        <option value="lambda">Azure Functions in VNet</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div class="architecture-vnet-azure-control-stack">
-                    <label class="tool-control-label" for="architectureVnetAzureDatabase">Database tier <span class="architecture-vnet-azure-helper-chip architecture-vnet-azure-custom-helper-chip" title="Tune database tier before regenerating the diagram." aria-label="Tune database tier before regenerating the diagram.">i</span></label>
-                    <input type="hidden" id="architectureVnetAzureDatabase" value="rds">
-
-                    <details class="architecture-vnet-azure-custom-dropdown" data-custom-dropdown-for="architectureVnetAzureDatabase">
-                      <summary class="architecture-vnet-azure-custom-dropdown-summary">
-                        <span data-custom-dropdown-label>Azure SQL</span>
-                          <span class="architecture-vnet-azure-custom-arrow-slot" aria-hidden="true"></span>
-                      </summary>
-
-                      <div class="architecture-vnet-azure-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                        <button
-                          type="button"
-                          class="architecture-vnet-azure-custom-dropdown-option"
-                          data-custom-dropdown-value="none"
-                          role="option"
-                          aria-selected="false"
-                        >No database tier</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vnet-azure-custom-dropdown-option active"
-                          data-custom-dropdown-value="rds"
-                          role="option"
-                          aria-selected="true"
-                        >Azure SQL</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vnet-azure-custom-dropdown-option"
-                          data-custom-dropdown-value="aurora"
-                          role="option"
-                          aria-selected="false"
-                        >Azure Database for PostgreSQL</button>
-
-                        <button
-                          type="button"
-                          class="architecture-vnet-azure-custom-dropdown-option"
-                          data-custom-dropdown-value="dynamodb"
-                          role="option"
-                          aria-selected="false"
-                        >Azure Cosmos DB</button>
-                      </div>
-                    </details>
+                    <label class="tool-control-label" for="architectureVnetAzureDatabase">Database tier <span class="architecture-vnet-azure-helper-chip architecture-vnet-azure-custom-helper-chip" title="Tune database tier before regenerating the diagram." aria-label="Tune database tier before regenerating the diagram.">i</span></label>                    <div class="architecture-vnet-azure-native-select-wrap" id="architectureVnetAzureDatabaseSelect">
+                      <select id="architectureVnetAzureDatabase" class="form-select architecture-vnet-azure-native-select">
+                        <option value="none">No database tier</option>
+                        <option value="rds" selected>Azure SQL</option>
+                        <option value="aurora">Azure Database for PostgreSQL</option>
+                        <option value="dynamodb">Azure Cosmos DB</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -673,7 +581,7 @@
                           <th>Component</th>
                           <th>Placement</th>
                           <th>Purpose</th>
-                          <th>Action</th>
+                          <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                         </tr>
                       </thead>
                       <tbody id="architectureVnetAzureInventoryTableBody"></tbody>

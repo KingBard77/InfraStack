@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CRITICALITY=1
+CRITICALITY=2
 TITLE="Ensure auditing for processes that start prior to auditd is enabled"
 
 GRUB_CMDLINE_LINUX="audit=1"

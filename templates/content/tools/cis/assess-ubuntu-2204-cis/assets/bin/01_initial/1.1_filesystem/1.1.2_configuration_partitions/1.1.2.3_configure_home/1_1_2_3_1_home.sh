@@ -1,18 +1,21 @@
-#!/bin/sh
+#!/bin/bash
 
-CRITICALITY=1
-TITLE="Ensure /home is a separate partition or mounted with other fstype"
+CRITICALITY=2
+TITLE="Ensure separate partition exists for /home"
 
 function check {
+    MOUNTPOINT="/home"
     STATUS="Fail"
 
-    if mount | grep -E "/home" > /dev/null; then
+    if findmnt -n "$MOUNTPOINT" > /dev/null 2>&1; then
         STATUS="Pass"
+    else
+        STATUS="Fail: /home is not a separate partition"
     fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-    echo "Manual"
+    echo 'Automated remediation requires planned storage changes for /home.'
 }

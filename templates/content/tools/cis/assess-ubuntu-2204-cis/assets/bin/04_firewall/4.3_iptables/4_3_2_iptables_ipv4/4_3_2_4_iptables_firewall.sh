@@ -17,10 +17,5 @@ function check {
 }
 
 function fix {
-	echo "Manual"
-	
-	#temp
-	#for PORT in $(ss -ln | grep -E "^tcp|^udp" | grep LISTEN\ | awk '{ print $5 }' | rev | cut -d':' -f1 | rev | sort | uniq); do
-	#	iptables -A INPUT -p tcp --dport $PORT -m state --state NEW -j ACCEPT
-	#done
+    echo 'Manual: IPv4 open-port firewall rules need an approved host port baseline.'
 }

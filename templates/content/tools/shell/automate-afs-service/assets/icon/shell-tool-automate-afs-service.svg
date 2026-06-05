@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="automateAfsServiceIconTitle">
+  <title id="automateAfsServiceIconTitle">AFS Service Automation</title>
+  <defs>
+    <linearGradient id="automateAfsServiceIconGradient" x1="14" x2="114" y1="18" y2="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#14b8a6"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="26" fill="#ecfeff"/>
+  <rect x="18" y="22" width="92" height="70" rx="14" fill="url(#automateAfsServiceIconGradient)"/>
+  <path d="M31 43h66M31 62h42M31 81h58" fill="none" stroke="#ccfbf1" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="96" cy="96" r="18" fill="#0f172a"/>
+  <path d="M86 96h20M96 86v20" fill="none" stroke="#5eead4" stroke-width="7" stroke-linecap="round"/>
+</svg>

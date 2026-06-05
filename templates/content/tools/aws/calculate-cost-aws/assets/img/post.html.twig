@@ -17,6 +17,12 @@
 .calculate-cost-aws-post-visual .tool-post-icon {
     background: rgba(234, 88, 12, 0.28);
 }
+
+.calculate-cost-aws-post-visual .tool-post-icon svg {
+    width: 1.75rem;
+    height: 1.75rem;
+    display: block;
+}
 </style>
 {% else %}
 <div
@@ -32,7 +38,7 @@
   </div>
   <div class="tool-post-header">
     <span class="tool-post-kicker">{{ post.card_kicker|default(post.category|default('AWS')) }}</span>
-    <span class="tool-post-icon"><i class="{{ post.card_icon_class|default('bi bi-cash-stack') }}"></i></span>
+    <span class="tool-post-icon">{{ include('content/tools/aws/calculate-cost-aws/assets/icon/aws-tool-calculate-cost-aws.svg')|raw }}</span>
   </div>
   <div class="tool-post-title">{{ post.card_image_title|default(post.title|default('AWS Cost Calculator')) }}</div>
   <div class="tool-post-map" aria-hidden="true">

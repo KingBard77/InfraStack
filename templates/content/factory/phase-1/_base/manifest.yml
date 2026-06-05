@@ -28,7 +28,7 @@ workspace_sections:
     03_custom-settings: neutral compact Custom panel for optional controls, helper chips, explicit control CSS, placeholder examples, and count-based grouped override columns
     05_result-summary: neutral generated result summary card shell with a header row, aligned left and right big cards, metric cards, state chips, and optional ring visual
     06_output-toolbar: neutral sortable output toolbar with ID-first sort and five icon-ready output actions
-    07_table-output: neutral tabbed output shell with table-first output, JSON-last output, table frame, empty state, and icon-only row actions
+    07_table-output: neutral tabbed output shell with table-first output, JSON-last output, table frame, top-aligned action headers, empty state, and icon-only row actions
 
 generation_rules:
     - Use this foundation only when creating or refreshing reusable family baselines.
@@ -49,6 +49,7 @@ generation_rules:
     - Keep result summary variants in `workspace/manifest.yml`; do not create `_base/workspace/05_result-summary/variants/` folders for layout-only differences.
     - Use the output toolbar preference map in workspace/manifest.yml before inventing family-specific toolbar variants.
     - Use the table output preference map in workspace/manifest.yml before inventing family-specific tab shell and table frame variants.
+    - Keep table-output section and command headers as two-column top-aligned grids when a title shares a row with copy or action buttons.
     - Keep family-specific state, exact output tab meaning, exact table column schemas, exports, restore schemas, visual stages, formulas, parsers, scanners, and command logic outside `_base`.
 
 validation_rules:

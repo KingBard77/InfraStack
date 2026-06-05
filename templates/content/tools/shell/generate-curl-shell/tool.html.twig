@@ -56,6 +56,12 @@
     <div class="generate-curl-shell-basic-panel">
       <div class="generate-curl-shell-inner-panel generate-curl-shell-basic-card">
 
+        <div class="generate-curl-shell-example-card">
+          <span class="generate-curl-shell-example-label">Example</span>
+          <span class="generate-curl-shell-example-value">curl https://api.example.com/v1/resource</span>
+          <span class="generate-curl-shell-example-helper">Presets set method, shell quoting, body posture, and common flags before custom headers and auth.</span>
+        </div>
+
         <div class="generate-curl-shell-setting-row generate-curl-shell-setting-card">
           <label class="generate-curl-shell-setting-label">
             Request profile:
@@ -66,7 +72,7 @@
             <div class="generate-curl-shell-stacked-grid">
               <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-two">
                 <div class="generate-curl-shell-native-select-wrap">
-                  <select id="generateCurlShellPreset" class="form-select generate-curl-shell-native-select">
+                  <select id="generateCurlShellPreset" class="form-select generate-curl-shell-native-select" aria-label="Request preset">
                     <option value="blank" selected>Blank canvas</option>
                     <option value="api-get">JSON API GET</option>
                     <option value="api-post">JSON API POST</option>
@@ -81,7 +87,7 @@
 
               <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-two">
                 <div class="generate-curl-shell-native-select-wrap">
-                  <select id="generateCurlShellShell" class="form-select generate-curl-shell-native-select">
+                  <select id="generateCurlShellShell" class="form-select generate-curl-shell-native-select" aria-label="Shell style">
                     <option value="bash" selected>Bash / Zsh</option>
                     <option value="powershell">PowerShell</option>
                     <option value="cmd">Windows CMD</option>
@@ -89,7 +95,7 @@
                 </div>
 
                 <div class="generate-curl-shell-native-select-wrap">
-                  <select id="generateCurlShellMethod" class="form-select generate-curl-shell-native-select">
+                  <select id="generateCurlShellMethod" class="form-select generate-curl-shell-native-select" aria-label="HTTP method">
                     <option value="GET" selected>GET</option>
                     <option value="POST">POST</option>
                     <option value="PUT">PUT</option>
@@ -100,6 +106,7 @@
                   </select>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -121,7 +128,7 @@
                 >
 
                 <div class="generate-curl-shell-native-select-wrap">
-                  <select id="generateCurlShellBodyMode" class="form-select generate-curl-shell-native-select">
+                  <select id="generateCurlShellBodyMode" class="form-select generate-curl-shell-native-select" aria-label="Body mode">
                     <option value="none" selected>No body</option>
                     <option value="json">JSON</option>
                     <option value="form">Form URL encoded</option>
@@ -172,7 +179,7 @@
               <div class="generate-curl-shell-stacked-grid">
                 <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-two">
                   <div class="generate-curl-shell-native-select-wrap">
-                    <select id="generateCurlShellUserAgentPreset" class="form-select generate-curl-shell-native-select">
+                    <select id="generateCurlShellUserAgentPreset" class="form-select generate-curl-shell-native-select" aria-label="User agent preset">
                       <option value="default" selected>Default cURL</option>
                       <option value="browser">Desktop browser</option>
                       <option value="monitor">Monitoring probe</option>
@@ -234,7 +241,7 @@
                       <th scope="col" class="tool-generated-rownum-head">#</th>
                       <th scope="col">Header</th>
                       <th scope="col">Value</th>
-                      <th scope="col">Actions</th>
+                      <th scope="col" class="tool-table-action-head"><span class="tool-table-action-head-label">Actions</span></th>
                     </tr>
                   </thead>
                   <tbody id="generateCurlShellHeaderTableBody">
@@ -257,7 +264,7 @@
           <div class="generate-curl-shell-setting-field">
             <div class="generate-curl-shell-stacked-grid">
               <div class="generate-curl-shell-native-select-wrap">
-                <select id="generateCurlShellAuthMode" class="form-select generate-curl-shell-native-select">
+                <select id="generateCurlShellAuthMode" class="form-select generate-curl-shell-native-select" aria-label="Authentication mode">
                   <option value="none" selected>None</option>
                   <option value="basic">HTTP Basic</option>
                   <option value="bearer">Bearer token</option>
@@ -316,40 +323,13 @@
             <div class="generate-curl-shell-setting-field">
               <div class="generate-curl-shell-stacked-grid">
                 <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-three">
-                  <input type="hidden" id="generateCurlShellFlagStyle" value="mixed">
-
-                  <details class="generate-curl-shell-custom-dropdown" data-custom-dropdown-for="generateCurlShellFlagStyle">
-                    <summary class="generate-curl-shell-custom-dropdown-summary">
-                      <span data-custom-dropdown-label>Mixed</span>
-                        <span class="generate-curl-shell-custom-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="generate-curl-shell-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                      <button
-                        type="button"
-                        class="generate-curl-shell-custom-dropdown-option active"
-                        data-custom-dropdown-value="mixed"
-                        role="option"
-                        aria-selected="true"
-                      >Mixed</button>
-
-                      <button
-                        type="button"
-                        class="generate-curl-shell-custom-dropdown-option"
-                        data-custom-dropdown-value="long"
-                        role="option"
-                        aria-selected="false"
-                      >Long flags</button>
-
-                      <button
-                        type="button"
-                        class="generate-curl-shell-custom-dropdown-option"
-                        data-custom-dropdown-value="short"
-                        role="option"
-                        aria-selected="false"
-                      >Short flags when possible</button>
-                    </div>
-                  </details>
+                  <div class="generate-curl-shell-native-select-wrap">
+                    <select id="generateCurlShellFlagStyle" class="form-select generate-curl-shell-native-select" aria-label="Flag style">
+                      <option value="mixed" selected>Mixed</option>
+                      <option value="long">Long flags</option>
+                      <option value="short">Short flags when possible</option>
+                    </select>
+                  </div>
 
                   <label class="generate-curl-shell-custom-checkbox-option">
                     <input type="checkbox" id="generateCurlShellCombineShortFlags" checked>
@@ -420,40 +400,13 @@
                 </div>
 
                 <div class="generate-curl-shell-inline-grid generate-curl-shell-inline-grid-three">
-                  <input type="hidden" id="generateCurlShellHttpVersion" value="default">
-
-                  <details class="generate-curl-shell-custom-dropdown" data-custom-dropdown-for="generateCurlShellHttpVersion">
-                    <summary class="generate-curl-shell-custom-dropdown-summary">
-                      <span data-custom-dropdown-label>HTTP version: Default</span>
-                        <span class="generate-curl-shell-custom-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="generate-curl-shell-custom-dropdown-menu" role="listbox" aria-label="Custom option">
-                      <button
-                        type="button"
-                        class="generate-curl-shell-custom-dropdown-option active"
-                        data-custom-dropdown-value="default"
-                        role="option"
-                        aria-selected="true"
-                      >HTTP version: Default</button>
-
-                      <button
-                        type="button"
-                        class="generate-curl-shell-custom-dropdown-option"
-                        data-custom-dropdown-value="http2"
-                        role="option"
-                        aria-selected="false"
-                      >HTTP version: HTTP/2</button>
-
-                      <button
-                        type="button"
-                        class="generate-curl-shell-custom-dropdown-option"
-                        data-custom-dropdown-value="http3"
-                        role="option"
-                        aria-selected="false"
-                      >HTTP version: HTTP/3</button>
-                    </div>
-                  </details>
+                  <div class="generate-curl-shell-native-select-wrap">
+                    <select id="generateCurlShellHttpVersion" class="form-select generate-curl-shell-native-select" aria-label="HTTP version">
+                      <option value="default" selected>HTTP version: Default</option>
+                      <option value="http2">HTTP version: HTTP/2</option>
+                      <option value="http3">HTTP version: HTTP/3</option>
+                    </select>
+                  </div>
 
                   <input
                     type="number"
@@ -576,17 +529,17 @@
               <label for="generateCurlShellSort" class="generate-curl-shell-sort-label">Sort</label>
               <div class="generate-curl-shell-sort-wrap">
                 <details class="generate-curl-shell-sort-select" id="generateCurlShellSortSelect">
-                  <summary class="generate-curl-shell-sort-summary">
+                  <summary class="generate-curl-shell-sort-summary" aria-haspopup="listbox" aria-expanded="false" aria-controls="generateCurlShellSortMenu">
                     <span id="generateCurlShellSortSummary">ID</span>
                   </summary>
 
-                  <div class="generate-curl-shell-sort-menu">
+                  <div class="generate-curl-shell-sort-menu" id="generateCurlShellSortMenu" role="listbox">
                     <div class="generate-curl-shell-sort-grid">
-                      <button type="button" class="generate-curl-shell-sort-option is-active" data-sort-value="id" aria-pressed="true">ID</button>
-                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false">A-Z</button>
-                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="field" aria-pressed="false">Field</button>
-                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="value" aria-pressed="false">Value</button>
-                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="length" aria-pressed="false">Length</button>
+                      <button type="button" class="generate-curl-shell-sort-option is-active" data-sort-value="id" aria-pressed="true" role="option">ID</button>
+                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="alphabetical" aria-pressed="false" role="option">A-Z</button>
+                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="field" aria-pressed="false" role="option">Field</button>
+                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="value" aria-pressed="false" role="option">Value</button>
+                      <button type="button" class="generate-curl-shell-sort-option" data-sort-value="length" aria-pressed="false" role="option">Length</button>
                     </div>
                   </div>
                 </details>
@@ -649,7 +602,7 @@
           <div class="tool-tab-panel generate-curl-shell-tab-panel" id="generateCurlShellCommandPanel" data-tab-panel="generateCurlShellCommandPanel" role="tabpanel" aria-labelledby="generateCurlShellCommandTab" hidden>
             <div class="generate-curl-shell-command-wrap">
               <div class="generate-curl-shell-command-head">
-                <h3 class="generate-curl-shell-command-title">Generated cURL Command</h3>
+                <h3 class="generate-curl-shell-command-title">cURL Command</h3>
                 <div class="generate-curl-shell-command-actions">
                   <button type="button" class="generate-curl-shell-action-btn" id="generateCurlShellCopyCommand" aria-label="Copy generated cURL command" title="Copy generated cURL command">
                     <i class="bi bi-clipboard" aria-hidden="true"></i>
@@ -672,7 +625,7 @@
                         <th scope="col" class="tool-generated-rownum-head">#</th>
                         <th scope="col">Field</th>
                         <th scope="col">Value</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                       </tr>
                     </thead>
                     <tbody id="generateCurlShellOptionsTableBody"></tbody>

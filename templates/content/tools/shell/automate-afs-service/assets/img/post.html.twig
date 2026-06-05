@@ -1,0 +1,64 @@
+{% set visualVariant = variant|default('card') %}
+{% set showPostDetail = visualVariant in ['hero', 'hero-small'] %}
+{% if visualVariant == 'style' %}
+<style>
+.automate-afs-service-post-visual {
+    --post-start: #0f766e;
+    --post-end: #14b8a6;
+    --post-accent: #ccfbf1;
+}
+
+.automate-afs-service-post-visual .tool-post-node:nth-child(1),
+.automate-afs-service-post-visual .tool-post-node:nth-child(3),
+.automate-afs-service-post-visual .tool-post-node:nth-child(5) {
+    background: rgba(204, 251, 241, 0.24);
+}
+
+.automate-afs-service-post-visual .tool-post-icon {
+    background: rgba(15, 118, 110, 0.28);
+}
+</style>
+{% else %}
+<div
+  class="tool-post-visual automate-afs-service-post-visual tool-post-visual-{{ visualVariant }}"
+  style="--post-start: {{ post.card_gradient_start|default('#0f766e') }}; --post-end: {{ post.card_gradient_end|default('#14b8a6') }};"
+>
+  <div class="tool-post-bg-icons" aria-hidden="true">
+    <i class="bi bi-hdd-network"></i>
+    <i class="bi bi-terminal"></i>
+    <i class="bi bi-file-earmark-code"></i>
+    <i class="bi bi-diagram-3"></i>
+    <i class="bi bi-clipboard-check"></i>
+  </div>
+  <div class="tool-post-header">
+    <span class="tool-post-kicker">{{ post.card_kicker|default(post.category|default('Shell')) }}</span>
+    <span class="tool-post-icon"><i class="{{ post.card_icon_class|default('bi bi-hdd-network') }}"></i></span>
+  </div>
+  <div class="tool-post-title">{{ post.card_image_title|default(post.title|default('AFS Service Automation')) }}</div>
+  <div class="tool-post-map" aria-hidden="true">
+    <span class="tool-post-node"><i class="bi bi-terminal"></i></span>
+    <span class="tool-post-node"></span>
+    <span class="tool-post-node"><i class="bi bi-hdd-network"></i></span>
+    <span class="tool-post-node"></span>
+    <span class="tool-post-node"><i class="bi bi-clipboard-check"></i></span>
+  </div>
+  <div class="tool-post-footer">
+    <span>{{ post.reading_time|default('9 min read') }}</span>
+    <span>{{ post.category|default('Shell') }}</span>
+  </div>
+  {% if showPostDetail %}
+    <div class="tool-post-detail">
+      <div class="tool-post-meta">
+        <span><i class="bi bi-chevron-down"></i> {{ post.date_display|default('Jun. 3rd, 2026') }}</span>
+        <span><i class="bi bi-three-dots-vertical"></i> {{ post.category|default('Shell') }}</span>
+        <span><i class="bi bi-clock"></i> {{ post.reading_time|default('9 min read') }}</span>
+      </div>
+      <div class="tool-post-detail-title">{{ post.title|default('AFS Service Automation') }}</div>
+      <span class="tool-post-read-more">
+        Read More
+        <i class="bi bi-arrow-right"></i>
+      </span>
+    </div>
+  {% endif %}
+</div>
+{% endif %}

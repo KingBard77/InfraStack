@@ -1,4 +1,7 @@
 {# tool.html.twig #}
+{# ns:start family.calculate.workspace.04_visual-contract #}
+{# Accepted divergence: calculate visual contract remains tool-local until section-safe extraction is applied. #}
+{# ns:end family.calculate.workspace.04_visual-contract #}
 {# ns:start family.calculate.workspace.04_selected-item #}
 {# Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied. #}
 {# ns:end family.calculate.workspace.04_selected-item #}
@@ -74,37 +77,14 @@
 
           <div class="calculate-cost-gcp-setting-field">
             <div class="calculate-cost-gcp-inline-grid calculate-cost-gcp-inline-grid-preset">
-              <details class="calculate-cost-gcp-select" id="calculateCostGcpPresetSelect">
-                <summary class="calculate-cost-gcp-select-summary">
-                  <span id="calculateCostGcpPresetSummary">Lean web platform</span>
-                  <span class="calculate-cost-gcp-select-arrow-slot" aria-hidden="true"></span>
-                </summary>
-
-                <div class="calculate-cost-gcp-select-body">
-                  <div class="calculate-cost-gcp-select-grid calculate-cost-gcp-select-grid-list">
-                    <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                      <input type="radio" name="calculateCostGcpPresetOption" value="lean-web" checked>
-                      <span class="calculate-cost-gcp-select-title">Lean web platform</span>
-                    </label>
-
-                    <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                      <input type="radio" name="calculateCostGcpPresetOption" value="serverless-api">
-                      <span class="calculate-cost-gcp-select-title">Serverless API</span>
-                    </label>
-
-                    <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                      <input type="radio" name="calculateCostGcpPresetOption" value="steady-platform">
-                      <span class="calculate-cost-gcp-select-title">Steady application platform</span>
-                    </label>
-
-                    <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                      <input type="radio" name="calculateCostGcpPresetOption" value="blank">
-                      <span class="calculate-cost-gcp-select-title">Blank estimate</span>
-                    </label>
-                  </div>
-                </div>
-              </details>
-              <input type="hidden" id="calculateCostGcpPreset" value="lean-web">
+              <div class="calculate-cost-gcp-native-select-wrap" id="calculateCostGcpPresetSelect">
+                <select id="calculateCostGcpPreset" class="form-select calculate-cost-gcp-native-select">
+                  <option value="lean-web" selected>Lean web platform</option>
+                  <option value="serverless-api">Serverless API</option>
+                  <option value="steady-platform">Steady application platform</option>
+                  <option value="blank">Blank estimate</option>
+                </select>
+              </div>
 
               <button type="button" class="calculate-cost-gcp-secondary-btn" id="calculateCostGcpApplyPreset">Apply preset</button>
             </div>
@@ -153,102 +133,32 @@
               <div class="calculate-cost-gcp-card-grid calculate-cost-gcp-card-grid-two">
                 <div class="calculate-cost-gcp-field-stack">
                   <label for="calculateCostGcpComputeInstance" class="calculate-cost-gcp-field-label">Machine profile</label>
-                  <details class="calculate-cost-gcp-select" id="calculateCostGcpComputeInstanceSelect">
-                    <summary class="calculate-cost-gcp-select-summary">
-                      <span id="calculateCostGcpComputeInstanceSummary">e2-standard-2 - 2 vCPU - 8 GiB</span>
-                      <span class="calculate-cost-gcp-select-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="calculate-cost-gcp-select-body">
-                      <div class="calculate-cost-gcp-select-grid calculate-cost-gcp-select-grid-list">
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="b2s">
-                          <span class="calculate-cost-gcp-select-title">e2-medium - 2 vCPU - 4 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="b2ms">
-                          <span class="calculate-cost-gcp-select-title">e2-standard-2 - 2 vCPU - 8 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="d2s-v5" checked>
-                          <span class="calculate-cost-gcp-select-title">e2-standard-2 - 2 vCPU - 8 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="d4s-v5">
-                          <span class="calculate-cost-gcp-select-title">e2-standard-4 - 4 vCPU - 16 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="d8s-v5">
-                          <span class="calculate-cost-gcp-select-title">n2-standard-8 - 8 vCPU - 32 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="f4s-v2">
-                          <span class="calculate-cost-gcp-select-title">c3-standard-4 - 4 vCPU - 16 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="e4s-v5">
-                          <span class="calculate-cost-gcp-select-title">n2-highmem-4 - 4 vCPU - 32 GiB</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputeInstanceOption" value="custom">
-                          <span class="calculate-cost-gcp-select-title" id="calculateCostGcpComputeCustomOptionLabel">Custom size - user defined</span>
-                        </label>
-                      </div>
-                    </div>
-                  </details>
-                  <input type="hidden" id="calculateCostGcpComputeInstance" value="d2s-v5">
+                  <div class="calculate-cost-gcp-native-select-wrap" id="calculateCostGcpComputeInstanceSelect">
+                    <select id="calculateCostGcpComputeInstance" class="form-select calculate-cost-gcp-native-select">
+                      <option value="b2s">e2-medium - 2 vCPU - 4 GiB</option>
+                      <option value="b2ms">e2-standard-2 - 2 vCPU - 8 GiB</option>
+                      <option value="d2s-v5" selected>e2-standard-2 - 2 vCPU - 8 GiB</option>
+                      <option value="d4s-v5">e2-standard-4 - 4 vCPU - 16 GiB</option>
+                      <option value="d8s-v5">n2-standard-8 - 8 vCPU - 32 GiB</option>
+                      <option value="f4s-v2">c3-standard-4 - 4 vCPU - 16 GiB</option>
+                      <option value="e4s-v5">n2-highmem-4 - 4 vCPU - 32 GiB</option>
+                      <option id="calculateCostGcpComputeCustomOptionLabel" value="custom">Custom size - user defined</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="calculate-cost-gcp-field-stack">
                   <label for="calculateCostGcpComputePurchase" class="calculate-cost-gcp-field-label">Purchase model</label>
-                  <details class="calculate-cost-gcp-select" id="calculateCostGcpComputePurchaseSelect">
-                    <summary class="calculate-cost-gcp-select-summary">
-                      <span id="calculateCostGcpComputePurchaseSummary">On-demand</span>
-                      <span class="calculate-cost-gcp-select-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="calculate-cost-gcp-select-body">
-                      <div class="calculate-cost-gcp-select-grid calculate-cost-gcp-select-grid-two">
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="onDemand" checked>
-                          <span class="calculate-cost-gcp-select-title">On-demand</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="spot">
-                          <span class="calculate-cost-gcp-select-title">Spot</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="savings1">
-                          <span class="calculate-cost-gcp-select-title">Committed use 1yr</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="savings3">
-                          <span class="calculate-cost-gcp-select-title">Committed use 3yr</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="reserved1">
-                          <span class="calculate-cost-gcp-select-title">Committed use 1yr</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpComputePurchaseOption" value="reserved3">
-                          <span class="calculate-cost-gcp-select-title">Committed use 3yr</span>
-                        </label>
-                      </div>
-                    </div>
-                  </details>
-                  <input type="hidden" id="calculateCostGcpComputePurchase" value="onDemand">
+                  <div class="calculate-cost-gcp-native-select-wrap" id="calculateCostGcpComputePurchaseSelect">
+                    <select id="calculateCostGcpComputePurchase" class="form-select calculate-cost-gcp-native-select">
+                      <option value="onDemand" selected>On-demand</option>
+                      <option value="spot">Spot</option>
+                      <option value="savings1">Committed use 1yr</option>
+                      <option value="savings3">Committed use 3yr</option>
+                      <option value="reserved1">Committed use 1yr</option>
+                      <option value="reserved3">Committed use 3yr</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="calculate-cost-gcp-custom-instance-grid calculate-cost-gcp-card-span-two d-none" id="calculateCostGcpComputeCustomFields">
@@ -428,27 +338,12 @@
               <div class="calculate-cost-gcp-card-grid calculate-cost-gcp-card-grid-two">
                 <div class="calculate-cost-gcp-field-stack">
                   <label for="calculateCostGcpApiType" class="calculate-cost-gcp-field-label">API type</label>
-                  <details class="calculate-cost-gcp-select" id="calculateCostGcpApiTypeSelect">
-                    <summary class="calculate-cost-gcp-select-summary">
-                      <span id="calculateCostGcpApiTypeSummary">Standard gateway</span>
-                      <span class="calculate-cost-gcp-select-arrow-slot" aria-hidden="true"></span>
-                    </summary>
-
-                    <div class="calculate-cost-gcp-select-body">
-                      <div class="calculate-cost-gcp-select-grid calculate-cost-gcp-select-grid-two">
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpApiTypeOption" value="http" checked>
-                          <span class="calculate-cost-gcp-select-title">Standard gateway</span>
-                        </label>
-
-                        <label class="calculate-cost-gcp-select-card calculate-cost-gcp-radio-card">
-                          <input type="radio" name="calculateCostGcpApiTypeOption" value="rest">
-                          <span class="calculate-cost-gcp-select-title">High-volume gateway</span>
-                        </label>
-                      </div>
-                    </div>
-                  </details>
-                  <input type="hidden" id="calculateCostGcpApiType" value="http">
+                  <div class="calculate-cost-gcp-native-select-wrap" id="calculateCostGcpApiTypeSelect">
+                    <select id="calculateCostGcpApiType" class="form-select calculate-cost-gcp-native-select">
+                      <option value="http" selected>Standard gateway</option>
+                      <option value="rest">High-volume gateway</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="calculate-cost-gcp-field-stack">
@@ -781,7 +676,7 @@
                     <th>Unit basis</th>
                     <th>Monthly</th>
                     <th>Annual</th>
-                    <th>Copy</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                   </tr>
                 </thead>
                 <tbody id="calculateCostGcpBreakdownTableBody"></tbody>
@@ -803,7 +698,7 @@
                     <th>Annual</th>
                     <th>Share</th>
                     <th>Signal</th>
-                    <th>Copy</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                   </tr>
                 </thead>
                 <tbody id="calculateCostGcpServiceTableBody"></tbody>
@@ -823,7 +718,7 @@
                     <th>Assumption</th>
                     <th>Value</th>
                     <th>Note</th>
-                    <th>Copy</th>
+                    <th class="tool-table-action-head"><span class="tool-table-action-head-label">Action</span></th>
                   </tr>
                 </thead>
                 <tbody id="calculateCostGcpAssumptionTableBody"></tbody>

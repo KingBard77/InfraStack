@@ -4,83 +4,6 @@
 // Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family._base.workspace.00_shell
 
-function initializeInfraStackCustomDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const selectedValue = value || targetInput.value || (options[0] ? options[0].dataset.customDropdownValue : '');
-            let selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            const nextValue = selectedOption.dataset.customDropdownValue || '';
-
-            if (targetInput.value !== nextValue) {
-                targetInput.value = nextValue;
-            }
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const isActive = option === selectedOption;
-
-                option.classList.toggle('active', isActive);
-                option.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
-        }
-
-        if (targetInput instanceof HTMLInputElement && !targetInput.dataset.customDropdownValueProxy) {
-            const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-
-            if (descriptor && descriptor.get && descriptor.set) {
-                Object.defineProperty(targetInput, 'value', {
-                    configurable: true,
-                    get: function () {
-                        return descriptor.get.call(this);
-                    },
-                    set: function (nextValue) {
-                        descriptor.set.call(this, nextValue);
-                        window.requestAnimationFrame(function () {
-                            sync(String(nextValue || ''));
-                        });
-                    }
-                });
-                targetInput.dataset.customDropdownValueProxy = 'true';
-            }
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
-
-
 // ns:start family._base.workspace.05_result-summary
 function installInfraStackResultSummaryNormalizer(prefix) {
     function normalizeSummary(summary) {
@@ -231,12 +154,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const resultSummary = document.getElementById('generateNetcatShellResultSummary');
     const commandOutput = document.getElementById('generateNetcatShellCommandOutput');
 // ns:end family._base.workspace.05_result-summary
-// ns:start family._base.workspace.07_table-output
     const optionsTableBody = document.getElementById('generateNetcatShellOptionsTableBody');
     const warningsList = document.getElementById('generateNetcatShellWarningsList');
     const errorsList = document.getElementById('generateNetcatShellErrorsList');
     const jsonOutput = document.getElementById('generateNetcatShellJsonOutput');
-// ns:end family._base.workspace.07_table-output
 // ns:start family._base.workspace.06_output-toolbar
     const sortInput = document.getElementById('generateNetcatShellSort');
     const sortSummary = document.getElementById('generateNetcatShellSortSummary');
@@ -250,7 +171,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const importJsonButton = document.getElementById('generateNetcatShellImportJsonButton');
     const importJsonInput = document.getElementById('generateNetcatShellImportJson');
 // ns:end family._base.workspace.06_output-toolbar
-// ns:start family._base.workspace.07_table-output
     const tabButtons = Array.from(document.querySelectorAll('.generate-netcat-shell-tab-btn'));
     const tabPanels = Array.from(document.querySelectorAll('.generate-netcat-shell-tab-panel'));
     if (
@@ -338,7 +258,8 @@ document.addEventListener('DOMContentLoaded', function () {
     ) {
         return;
     }
-// ns:end family._base.workspace.07_table-output
+
+    const resultEmptyDefaultText = resultEmpty.textContent.trim();
 // ns:start family._base.workspace.02_basic-settings
     const shellCatalog = {
         bash: {
@@ -726,10 +647,8 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         custom: null
     };
-    const enhancedSelects = [];
     let latestResult = null;
 // ns:end family._base.workspace.02_basic-settings
-// ns:start family._base.workspace.07_table-output
     function initMarkdownCopyButtons() {
         const codeBlocks = document.querySelectorAll('.markdown-content pre');
 
@@ -794,10 +713,26 @@ document.addEventListener('DOMContentLoaded', function () {
     function flashButton(button, text) {
         const label = button.querySelector('[data-button-label]') || button.querySelector('.generate-netcat-shell-command-copy-label');
 
-        if (!label && button.classList.contains('generate-netcat-shell-row-copy')) {
-            button.classList.add('copied');
+        if (!label && (button.classList.contains('generate-netcat-shell-row-copy') || (button.closest && button.closest('.tool-table-action-cell')))) {
+            const isCopied = text === 'Copied';
+            const icon = button.querySelector('i');
+            const originalIcon = button.dataset.defaultIcon || (icon ? icon.className : '');
+
+            if (icon && !button.dataset.defaultIcon) {
+                button.dataset.defaultIcon = originalIcon;
+            }
+
+            button.classList.toggle('copied', isCopied);
+            button.classList.toggle('is-copied', isCopied);
+            button.classList.toggle('failed', !isCopied);
+            if (icon) {
+                icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+            }
             window.setTimeout(function () {
-                button.classList.remove('copied');
+                button.classList.remove('copied', 'is-copied', 'failed');
+                if (icon && button.dataset.defaultIcon) {
+                    icon.className = button.dataset.defaultIcon;
+                }
             }, 1400);
             return;
         }
@@ -865,116 +800,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderJsonOutput(payload) {
         jsonOutput.innerHTML = highlightJsonText(JSON.stringify(payload, null, 2));
     }
-// ns:end family._base.workspace.07_table-output
 // ns:start family._base.workspace.02_basic-settings
-    function closeEnhancedSelects(exceptSelect) {
-        enhancedSelects.forEach((entry) => {
-            if (exceptSelect && entry.select === exceptSelect) {
-                return;
-            }
-
-            entry.wrapper.classList.remove('is-open');
-            entry.toggle.setAttribute('aria-expanded', 'false');
-        });
-    }
-
-    function syncEnhancedSelect(entry) {
-        const selectedOption = entry.select.options[entry.select.selectedIndex] || entry.select.options[0];
-
-        entry.toggle.textContent = selectedOption ? selectedOption.textContent : '';
-        entry.wrapper.classList.toggle('is-disabled', Boolean(entry.select.disabled));
-
-        entry.optionButtons.forEach((button) => {
-            button.classList.toggle('is-active', button.dataset.value === entry.select.value);
-        });
-    }
-
-    function syncAllEnhancedSelects() {
-        enhancedSelects.forEach((entry) => {
-            syncEnhancedSelect(entry);
-        });
-    }
-
-    function enhanceNativeSelect(select) {
-        if (!select || select.dataset.generateNetcatShellEnhanced === '1') {
-            return;
-        }
-
-        const wrapper = document.createElement('div');
-        const toggle = document.createElement('button');
-        const menu = document.createElement('div');
-        const optionButtons = [];
-
-        select.dataset.generateNetcatShellEnhanced = '1';
-        select.classList.add('generate-netcat-shell-native-select');
-        wrapper.className = 'generate-netcat-shell-enhanced-select';
-        toggle.type = 'button';
-        toggle.className = 'generate-netcat-shell-enhanced-select-toggle';
-        toggle.setAttribute('aria-haspopup', 'listbox');
-        toggle.setAttribute('aria-expanded', 'false');
-        menu.className = 'generate-netcat-shell-enhanced-select-menu';
-        menu.setAttribute('role', 'listbox');
-
-        Array.from(select.options).forEach((option) => {
-            const optionButton = document.createElement('button');
-
-            optionButton.type = 'button';
-            optionButton.className = 'generate-netcat-shell-enhanced-select-option';
-            optionButton.dataset.value = option.value;
-            optionButton.textContent = option.textContent;
-            optionButton.disabled = option.disabled;
-            optionButton.setAttribute('role', 'option');
-
-            optionButton.addEventListener('click', function () {
-                if (select.disabled || option.disabled) {
-                    return;
-                }
-
-                select.value = option.value;
-                select.dispatchEvent(new Event('change', { bubbles: true }));
-                select.dispatchEvent(new Event('input', { bubbles: true }));
-                closeEnhancedSelects();
-            });
-
-            menu.appendChild(optionButton);
-            optionButtons.push(optionButton);
-        });
-
-        toggle.addEventListener('click', function () {
-            if (select.disabled) {
-                return;
-            }
-
-            const isOpen = wrapper.classList.contains('is-open');
-
-            closeEnhancedSelects(select);
-            wrapper.classList.toggle('is-open', !isOpen);
-            toggle.setAttribute('aria-expanded', String(!isOpen));
-        });
-
-        wrapper.appendChild(toggle);
-        wrapper.appendChild(menu);
-        select.insertAdjacentElement('afterend', wrapper);
-
-        const entry = {
-            select,
-            wrapper,
-            toggle,
-            menu,
-            optionButtons
-        };
-
-        select.addEventListener('change', function () {
-            syncEnhancedSelect(entry);
-        });
-
-        select.addEventListener('input', function () {
-            syncEnhancedSelect(entry);
-        });
-
-        enhancedSelects.push(entry);
-        syncEnhancedSelect(entry);
-    }
 // ns:end family._base.workspace.02_basic-settings
 // ns:start family._base.workspace.03_custom-settings
     function parseCommandString(command) {
@@ -1231,7 +1057,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         presetInput.value = 'custom';
-        syncAllEnhancedSelects();
     }
 
     function getImportedText(query, key, fallback) {
@@ -1266,7 +1091,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const stringValue = typeof value === 'string' || typeof value === 'number' ? String(value) : '';
         const optionValues = select && select.options
             ? Array.from(select.options).map((option) => option.value)
-            : Array.from(document.querySelectorAll(`[data-custom-dropdown-for="${select.id}"] [data-custom-dropdown-value]`)).map((option) => option.dataset.customDropdownValue || '');
+            : [];
         const hasOption = optionValues.includes(stringValue);
 
         return hasOption ? stringValue : fallback;
@@ -1286,6 +1111,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         return candidate;
+    }
+
+    function buildImportedPayloadState(payload) {
+        return getImportedQuery(payload);
     }
 
     function applyImportedQuery(importedQuery) {
@@ -1334,13 +1163,11 @@ document.addEventListener('DOMContentLoaded', function () {
         extraFlagsInput.value = getImportedText(importedQuery, 'extraFlags', defaults.extraFlags);
 
         updateDynamicState();
-        syncAllEnhancedSelects();
         generateAndRender();
     }
 
     function applyPreset(presetKey) {
         if (presetKey === 'custom') {
-            syncAllEnhancedSelects();
             return;
         }
 
@@ -1389,7 +1216,6 @@ document.addEventListener('DOMContentLoaded', function () {
         extraFlagsInput.value = preset.extraFlags;
 
         updateDynamicState();
-        syncAllEnhancedSelects();
     }
 
     function updateDynamicState() {
@@ -2004,7 +1830,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const warningCount = result.warnings.length;
         const errorCount = result.errors.length;
         const resultTone = errorCount > 0 ? 'error' : warningCount > 0 ? 'warning' : 'ready';
-        const updatedText = new Date().toLocaleString();
+        const updatedText = formatDateTime(new Date());
 
         resultSummary.dataset.resultTone = resultTone;
         resultSummary.dataset.resultLayout = 'command';
@@ -2018,6 +1844,14 @@ document.addEventListener('DOMContentLoaded', function () {
 // ns:end family._base.workspace.05_result-summary
 
 // ns:start family._base.workspace.06_output-toolbar
+    function updateSortExpandedState() {
+        const summaryElement = sortSelect.querySelector('[aria-expanded]');
+
+        if (summaryElement) {
+            summaryElement.setAttribute('aria-expanded', sortSelect.open ? 'true' : 'false');
+        }
+    }
+
     function updateSortState() {
         const selectedButton = sortOptionButtons.find((button) => button.dataset.sortValue === sortInput.value) || sortOptionButtons[0];
         const selectedLabel = selectedButton
@@ -2101,7 +1935,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .map((row) => [row.field, row.value, row.id]);
     }
 // ns:end family._base.workspace.06_output-toolbar
-// ns:start family._base.workspace.07_table-output
     function renderOptionsTable(result) {
         optionsTableBody.innerHTML = getSortedSummaryRows(result)
             .map((row, index) => `
@@ -2109,7 +1942,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td>${escapeHtml(row[2] || index + 1)}</td>
                     <td>${escapeHtml(row[0])}</td>
                     <td>${escapeHtml(row[1])}</td>
-                    <td class="generate-netcat-shell-table-copy-cell">
+                    <td class="generate-netcat-shell-table-copy-cell tool-table-action-cell">
                         <button type="button" class="generate-netcat-shell-row-copy generate-netcat-shell-row-copy-btn" data-options-copy="${escapeHtml(row[1])}" aria-label="Copy operation row ${escapeHtml(row[2] || index + 1)}" title="Copy operation row">
                             <i class="bi bi-clipboard" aria-hidden="true"></i>
                         </button>
@@ -2150,6 +1983,26 @@ document.addEventListener('DOMContentLoaded', function () {
     function showResultError(message) {
         resultError.classList.remove('d-none');
         resultError.textContent = message;
+    }
+
+    function showEmptyState(message) {
+        latestResult = null;
+        resultEmpty.textContent = message || resultEmptyDefaultText;
+        resultEmpty.classList.remove('d-none');
+        resultContent.classList.add('d-none');
+        resultError.classList.add('d-none');
+        resultError.textContent = '';
+        resultSummary.innerHTML = '';
+        commandOutput.textContent = '';
+        optionsTableBody.innerHTML = '';
+        warningsList.innerHTML = '';
+        errorsList.innerHTML = '';
+        jsonOutput.innerHTML = '';
+        activateTab('generateNetcatShellOptionsPanel');
+    }
+
+    function setSubmitButtonLabel(label) {
+        submitButton.innerHTML = `<i class="bi bi-terminal" aria-hidden="true"></i><span>${escapeHtml(label)}</span>`;
     }
 
     function convertRowsToCsv(rows) {
@@ -2202,9 +2055,38 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 250);
     }
 
+    function fallbackActionClipboardText(text) {
+        const textarea = document.createElement('textarea');
+
+        textarea.value = text;
+        textarea.setAttribute('readonly', 'readonly');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        document.execCommand('copy');
+
+        textarea.remove();
+    }
+
+    async function writeActionClipboardText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return;
+            } catch (error) {
+                fallbackActionClipboardText(text);
+                return;
+            }
+        }
+
+        fallbackActionClipboardText(text);
+    }
+
     async function copyText(text, button) {
         try {
-            await navigator.clipboard.writeText(text);
+            await writeActionClipboardText(text);
             flashButton(button, 'Copied');
         } catch (error) {
             flashButton(button, 'Failed');
@@ -2228,12 +2110,18 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function formatDateTime(dateValue) {
-        return new Intl.DateTimeFormat('en', {
-            dateStyle: 'medium',
-            timeStyle: 'short'
-        }).format(dateValue);
-    }
+function formatDateTime(dateValue) {
+    const date = dateValue instanceof Date ? dateValue : new Date(dateValue || Date.now());
+    const normalized = Number.isNaN(date.getTime()) ? new Date() : date;
+
+    return new Intl.DateTimeFormat('en', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    }).format(normalized);
+}
 
     function syncSafeStateToUrl(result) {
         const params = new URLSearchParams();
@@ -2374,15 +2262,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         presetInput.value = 'custom';
         updateDynamicState();
-        syncAllEnhancedSelects();
-
         return true;
     }
-// ns:end family._base.workspace.07_table-output
 // ns:start family._base.workspace.01_input-brief
     function generateAndRender() {
         submitButton.disabled = true;
-        submitButton.textContent = 'Generating...';
+        setSubmitButtonLabel('Generating...');
 
         window.setTimeout(() => {
             const result = buildCommand(buildQuery());
@@ -2396,7 +2281,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             submitButton.disabled = false;
-            submitButton.textContent = 'Generate';
+            setSubmitButtonLabel('Generate');
         }, 60);
     }
 
@@ -2404,14 +2289,13 @@ document.addEventListener('DOMContentLoaded', function () {
         applyPreset('tcp-client');
         resultError.classList.add('d-none');
         resultError.textContent = '';
-        generateAndRender();
+        showEmptyState();
+        setSubmitButtonLabel('Generate');
+        submitButton.disabled = false;
+        window.history.replaceState({}, '', `${window.location.pathname}${window.location.hash}`);
     }
 // ns:end family._base.workspace.01_input-brief
-// ns:start family._base.workspace.07_table-output
     initMarkdownCopyButtons();
-    Array.from(document.querySelectorAll('.generate-netcat-shell-form select')).forEach((select) => {
-        enhanceNativeSelect(select);
-    });
 
     applyPreset('tcp-client');
 
@@ -2430,16 +2314,10 @@ document.addEventListener('DOMContentLoaded', function () {
             sortSelect.removeAttribute('open');
         }
 
-        if (enhancedSelects.some((entry) => entry.wrapper.contains(target))) {
-            return;
-        }
-
-        closeEnhancedSelects();
     });
 
     document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
-            closeEnhancedSelects();
             sortSelect.removeAttribute('open');
         }
     });
@@ -2510,7 +2388,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-// ns:end family._base.workspace.07_table-output
 // ns:start family._base.workspace.01_input-brief
     form.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -2529,7 +2406,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     presetInput.addEventListener('change', function () {
-        syncAllEnhancedSelects();
     });
 
 // ns:end family._base.workspace.02_basic-settings
@@ -2552,8 +2428,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    sortSelect.addEventListener('toggle', updateSortExpandedState);
+
 // ns:end family._base.workspace.06_output-toolbar
-// ns:start family._base.workspace.07_table-output
     optionsTableBody.addEventListener('click', function (event) {
         const target = event.target;
 
@@ -2638,7 +2515,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const payload = JSON.parse(await file.text());
 
-            applyImportedQuery(getImportedQuery(payload));
+            applyImportedQuery(buildImportedPayloadState(payload));
             flashButton(importJsonButton, 'Imported');
         } catch (error) {
             showResultError(error instanceof Error ? error.message : 'The selected JSON file could not be imported.');
@@ -2649,13 +2526,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     // ns:end family._base.workspace.08_json-restore
 
-    initializeInfraStackCustomDropdowns(document);
     updateDynamicState();
-    syncAllEnhancedSelects();
     generateAndRender();
 });
-// ns:end family._base.workspace.07_table-output
-/* ns:start family._base.workspace.07_table-output */
+// ns:start family._base.workspace.07_table-output
 (function setupGenerateNetcatShellTableOutputStandard() {
     const rootSelector = '.generate-netcat-shell-tool';
     const tableSelector = '.tool-result-table tbody tr, .generate-netcat-shell-table tbody tr';
@@ -2750,7 +2624,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const isFirst = index === 0;
                 const isAction = actionColumn && index === cells.length - 1;
 
-                if (!isFirst && !isAction) {
+                if (isAction && cell.colSpan <= 1) {
+                    cell.classList.add('tool-table-action-cell');
+                    return;
+                }
+
+                if (!isFirst) {
                     clampCell(cell);
                 }
             });
@@ -2784,4 +2663,4 @@ document.addEventListener('DOMContentLoaded', function () {
         observeTables();
     }
 }());
-/* ns:end family._base.workspace.07_table-output */
+// ns:end family._base.workspace.07_table-output

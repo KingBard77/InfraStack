@@ -1,59 +1,7 @@
 // custom.js
 
 // ns:start family._base.workspace.00_shell
-function initializeGenerateSshShellDropdowns(root) {
-    const scope = root || document;
-    const dropdowns = Array.from(scope.querySelectorAll('[data-custom-dropdown-for]'));
-
-    dropdowns.forEach(function (dropdown) {
-        const targetId = dropdown.getAttribute('data-custom-dropdown-for');
-        const targetInput = targetId ? document.getElementById(targetId) : null;
-        const label = dropdown.querySelector('[data-custom-dropdown-label]');
-        const options = Array.from(dropdown.querySelectorAll('[data-custom-dropdown-value]'));
-
-        if (!targetInput || !label || !options.length || dropdown.dataset.customDropdownBound === 'true') {
-            return;
-        }
-
-        function sync(value) {
-            const fallback = options[0] ? options[0].dataset.customDropdownValue : '';
-            const selectedValue = value || targetInput.value || fallback;
-            const selectedOption = options.find(function (option) {
-                return option.dataset.customDropdownValue === selectedValue;
-            }) || options[0];
-
-            if (!selectedOption) {
-                return;
-            }
-
-            targetInput.value = selectedOption.dataset.customDropdownValue || '';
-            label.textContent = selectedOption.textContent.trim();
-            options.forEach(function (option) {
-                const active = option === selectedOption;
-
-                option.classList.toggle('active', active);
-                option.classList.toggle('is-active', active);
-                option.setAttribute('aria-selected', active ? 'true' : 'false');
-            });
-        }
-
-        options.forEach(function (option) {
-            option.addEventListener('click', function () {
-                sync(option.dataset.customDropdownValue || '');
-                targetInput.dispatchEvent(new Event('change', {
-                    bubbles: true
-                }));
-                dropdown.removeAttribute('open');
-            });
-        });
-
-        targetInput.addEventListener('change', function () {
-            sync(targetInput.value);
-        });
-        sync(targetInput.value);
-        dropdown.dataset.customDropdownBound = 'true';
-    });
-}
+// Retrofit marker: existing runtime remains tool-local until section-safe extraction is applied.
 // ns:end family._base.workspace.00_shell
 
 // ns:start family._base.workspace.05_result-summary
@@ -120,9 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const loginUser = document.getElementById('generateSshShellBasicText');
     const proxyEnabled = document.getElementById('generateSshShellBasicToggle');
     const proxyJump = document.getElementById('generateSshShellProxyJump');
-    const previewShell = document.getElementById('generateSshShellPreviewShell');
-    const previewTarget = document.getElementById('generateSshShellPreviewTarget');
-    const previewRoute = document.getElementById('generateSshShellPreviewRoute');
     const verbose = document.getElementById('generateSshShellVerbose');
     const quiet = document.getElementById('generateSshShellQuiet');
     const ipv4 = document.getElementById('generateSshShellIpv4');
@@ -180,9 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
         !loginUser ||
         !proxyEnabled ||
         !proxyJump ||
-        !previewShell ||
-        !previewTarget ||
-        !previewRoute ||
         !verbose ||
         !quiet ||
         !ipv4 ||
@@ -233,8 +175,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let currentPayload = null;
     let hasGenerated = false;
-    const enhancedSelects = [];
-
     const profileDefaults = {
         interactive: {
             proxy: false,
@@ -330,108 +270,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return String(value || '').trim();
     }
 
-    function closeEnhancedSelects(exceptSelect) {
-        enhancedSelects.forEach(function (entry) {
-            if (exceptSelect && entry.select === exceptSelect) {
-                return;
-            }
-
-            entry.wrapper.classList.remove('is-open');
-            entry.toggle.setAttribute('aria-expanded', 'false');
-        });
-    }
-
-    function syncEnhancedSelect(entry) {
-        const selectedOption = entry.select.options[entry.select.selectedIndex] || entry.select.options[0];
-
-        entry.toggle.textContent = selectedOption ? selectedOption.textContent : '';
-        entry.wrapper.classList.toggle('is-disabled', Boolean(entry.select.disabled));
-        entry.optionButtons.forEach(function (button) {
-            button.classList.toggle('is-active', button.dataset.value === entry.select.value);
-        });
-    }
-
-    function enhanceNativeSelect(select) {
-        if (!select || select.dataset.generateSshShellEnhanced === '1') {
-            return;
-        }
-
-        const wrapper = document.createElement('div');
-        const toggle = document.createElement('button');
-        const menu = document.createElement('div');
-        const optionButtons = [];
-
-        select.dataset.generateSshShellEnhanced = '1';
-        select.classList.add('generate-ssh-shell-native-select');
-        wrapper.className = 'generate-ssh-shell-enhanced-select';
-        toggle.type = 'button';
-        toggle.className = 'generate-ssh-shell-enhanced-select-toggle';
-        toggle.setAttribute('aria-haspopup', 'listbox');
-        toggle.setAttribute('aria-expanded', 'false');
-        menu.className = 'generate-ssh-shell-enhanced-select-menu';
-        menu.setAttribute('role', 'listbox');
-
-        Array.from(select.options).forEach(function (option) {
-            const optionButton = document.createElement('button');
-
-            optionButton.type = 'button';
-            optionButton.className = 'generate-ssh-shell-enhanced-select-option';
-            optionButton.dataset.value = option.value;
-            optionButton.textContent = option.textContent;
-            optionButton.disabled = option.disabled;
-            optionButton.setAttribute('role', 'option');
-
-            optionButton.addEventListener('click', function () {
-                if (select.disabled || option.disabled) {
-                    return;
-                }
-
-                select.value = option.value;
-                select.dispatchEvent(new Event('change', { bubbles: true }));
-                select.dispatchEvent(new Event('input', { bubbles: true }));
-                closeEnhancedSelects();
-            });
-
-            menu.appendChild(optionButton);
-            optionButtons.push(optionButton);
-        });
-
-        toggle.addEventListener('click', function () {
-            if (select.disabled) {
-                return;
-            }
-
-            const isOpen = wrapper.classList.contains('is-open');
-
-            closeEnhancedSelects(select);
-            wrapper.classList.toggle('is-open', !isOpen);
-            toggle.setAttribute('aria-expanded', String(!isOpen));
-        });
-
-        wrapper.appendChild(toggle);
-        wrapper.appendChild(menu);
-        select.insertAdjacentElement('afterend', wrapper);
-
-        const entry = {
-            select: select,
-            wrapper: wrapper,
-            toggle: toggle,
-            menu: menu,
-            optionButtons: optionButtons
-        };
-
-        select.addEventListener('change', function () {
-            syncEnhancedSelect(entry);
-        });
-        select.addEventListener('input', function () {
-            syncEnhancedSelect(entry);
-        });
-
-        enhancedSelects.push(entry);
-        syncEnhancedSelect(entry);
-    }
-
-    function getSessionMode() {
+function getSessionMode() {
         const selected = sessionModes.find(function (item) {
             return item.checked;
         });
@@ -558,18 +397,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         return errors;
-    }
-
-    function updateBasicPreview() {
-        const state = readState();
-        const target = parseTarget(state.target, state.loginUser);
-        const selectedShell = shellStyle.options[shellStyle.selectedIndex]
-            ? shellStyle.options[shellStyle.selectedIndex].text
-            : state.shellStyle;
-
-        previewShell.textContent = selectedShell.replace(/\s+note$/i, '');
-        previewTarget.textContent = target.target || 'target required';
-        previewRoute.textContent = state.proxyEnabled ? 'via ' + (state.proxyJump || 'jump host') : 'direct';
     }
 
     // ns:start family.shell.workspace.04_result-text
@@ -763,14 +590,29 @@ document.addEventListener('DOMContentLoaded', function () {
             .replace(/'/g, '&#039;');
     }
 
+function formatDateTime(dateValue) {
+    const date = dateValue instanceof Date ? dateValue : new Date(dateValue || Date.now());
+    const normalized = Number.isNaN(date.getTime()) ? new Date() : date;
+
+    return new Intl.DateTimeFormat('en', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    }).format(normalized);
+}
+
     // ns:start family.shell.workspace.04_visual-contract
     function renderResultSummary(payload) {
         const state = payload.state;
         const warningTone = payload.warnings.length > 0 ? 'warning' : 'success';
         const resultTone = payload.errors.length ? 'warning' : 'ready';
         const status = payload.errors.length ? 'Needs input' : 'Generated';
-        const updated = new Date(payload.generatedAt).toLocaleString();
-        const commandPreview = payload.command || 'No command generated';
+        const updated = formatDateTime(payload.generatedAt);
+        const primaryTarget = payload.target.target || 'Target required';
+        const primaryStatus = payload.errors.length ? 'Needs Review' : 'Command Generated';
+        const primaryStatusTone = payload.errors.length ? 'warning' : 'ready';
 
         resultSummary.dataset.resultTone = resultTone;
         resultSummary.dataset.resultLayout = 'command';
@@ -789,14 +631,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             </header>
             <div class="generate-ssh-shell-result-hero-grid" aria-live="polite">
-                <article class="generate-ssh-shell-result-card generate-ssh-shell-result-card-primary" data-result-visual="command" aria-label="Primary SSH command result">
-                    <div class="generate-ssh-shell-result-primary-heading generate-ssh-shell-result-visual-copy generate-ssh-shell-result-visual-copy-top"><div class="generate-ssh-shell-result-kicker">Primary Result</div><h3 class="generate-ssh-shell-result-title generate-ssh-shell-result-title-center">SSH command</h3></div>
-                    <div class="generate-ssh-shell-result-primary-visual" id="generateSshShellResultVisual" aria-label="Primary SSH command result">
-                        <div class="generate-ssh-shell-result-command-output"><code class="generate-ssh-shell-result-command-value">${escapeHtml(commandPreview)}</code></div>
+                <article class="generate-ssh-shell-result-card generate-ssh-shell-result-card-primary" data-result-visual="command" aria-label="Primary SSH target result">
+                    <div class="generate-ssh-shell-result-primary-heading generate-ssh-shell-result-visual-copy generate-ssh-shell-result-visual-copy-top"><div class="generate-ssh-shell-result-kicker">Primary Result</div><h3 class="generate-ssh-shell-result-title generate-ssh-shell-result-title-center">Target result</h3></div>
+                    <div class="generate-ssh-shell-result-primary-visual" id="generateSshShellResultVisual" aria-label="Primary SSH target result">
+                        <div class="generate-ssh-shell-result-command-output"><code class="generate-ssh-shell-result-command-value">${escapeHtml(primaryTarget)}</code></div>
                     </div>
-                    <div class="generate-ssh-shell-result-visual-copy"><p class="generate-ssh-shell-result-copy generate-ssh-shell-result-copy-center">Compact command preview for the selected OpenSSH options.</p></div>
+                    <div class="generate-ssh-shell-result-visual-copy"><p class="generate-ssh-shell-result-copy generate-ssh-shell-result-copy-center">Compact target preview for the generated SSH command.</p></div>
                     <span class="generate-ssh-shell-result-card-divider" aria-hidden="true"></span>
-                    <div class="generate-ssh-shell-result-chip-row generate-ssh-shell-result-chip-row-center" aria-label="Primary result outcome"><span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-outcome generate-ssh-shell-result-chip-ready"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span>Command Generated</span></span></div>
+                    <div class="generate-ssh-shell-result-chip-row generate-ssh-shell-result-chip-row-center" aria-label="Primary result outcome"><span class="generate-ssh-shell-result-chip generate-ssh-shell-result-chip-outcome generate-ssh-shell-result-chip-${primaryStatusTone}"><span class="generate-ssh-shell-result-chip-icon" aria-hidden="true"><i class="bi bi-terminal"></i></span><span>${escapeHtml(primaryStatus)}</span></span></div>
                 </article>
                 <article class="generate-ssh-shell-result-card generate-ssh-shell-result-card-summary" aria-label="Command summary">
                     <div class="generate-ssh-shell-result-summary-intro"><span class="generate-ssh-shell-result-card-icon generate-ssh-shell-result-card-icon-summary" aria-hidden="true"><i class="bi bi-terminal"></i></span><div class="generate-ssh-shell-result-summary-copy"><div class="generate-ssh-shell-result-kicker">Descriptive Summary</div><h3 class="generate-ssh-shell-result-title">OpenSSH command preview</h3><p class="generate-ssh-shell-result-copy">Target, option rows, warning rows, and JSON output are generated locally from the visible SSH controls.</p></div></div>
@@ -861,7 +703,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderTableRows(rows, body, includeAction) {
         body.innerHTML = sortRows(rows).map(function (row, index) {
             const action = includeAction
-                ? '<td><button type="button" class="generate-ssh-shell-action-btn generate-ssh-shell-row-action" data-row-copy="' + escapeHtml(row.value) + '" aria-label="Copy row value"><i class="bi bi-clipboard" aria-hidden="true"></i></button></td>'
+                ? '<td class="tool-table-action-cell"><button type="button" class="generate-ssh-shell-action-btn generate-ssh-shell-row-action" data-row-copy="' + escapeHtml(row.value) + '" aria-label="Copy row value"><i class="bi bi-clipboard" aria-hidden="true"></i></button></td>'
                 : '';
 
             return [
@@ -950,8 +792,6 @@ document.addEventListener('DOMContentLoaded', function () {
         remoteForward.value = defaults.remoteForward;
         dynamicForward.value = defaults.dynamicForward;
         extraArgs.value = defaults.extra;
-        updateBasicPreview();
-
         if (hasGenerated) {
             generateCommand();
         }
@@ -984,7 +824,6 @@ document.addEventListener('DOMContentLoaded', function () {
         remoteForward.value = '';
         dynamicForward.value = '';
         extraArgs.value = '';
-        updateBasicPreview();
         hideGeneratedOutput();
         clearSafeStateFromUrl();
     }
@@ -1027,19 +866,94 @@ document.addEventListener('DOMContentLoaded', function () {
         URL.revokeObjectURL(url);
     }
 
-    function copyText(text) {
+    async function copyText(text) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text);
-            return;
+            const didWrite = await navigator.clipboard.writeText(text).then(function () {
+                return true;
+            }).catch(function () {
+                return false;
+            });
+
+            if (didWrite) {
+                return;
+            }
         }
 
         const area = document.createElement('textarea');
 
         area.value = text;
+        area.setAttribute('readonly', 'readonly');
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
         document.body.appendChild(area);
         area.select();
+
         document.execCommand('copy');
+
         document.body.removeChild(area);
+    }
+
+    function flashRowActionButton(button, isCopied) {
+        const icon = button.querySelector('i');
+        const originalIcon = button.dataset.defaultIcon || (icon ? icon.className : '');
+
+        if (icon && !button.dataset.defaultIcon) {
+            button.dataset.defaultIcon = originalIcon;
+        }
+
+        button.classList.toggle('copied', isCopied);
+        button.classList.toggle('is-copied', isCopied);
+        button.classList.toggle('failed', !isCopied);
+        if (icon) {
+            icon.className = isCopied ? 'bi bi-check2' : 'bi bi-x-lg';
+        }
+
+        window.setTimeout(function () {
+            button.classList.remove('copied', 'is-copied', 'failed');
+            if (icon && button.dataset.defaultIcon) {
+                icon.className = button.dataset.defaultIcon;
+            }
+        }, 1400);
+    }
+
+    function flashMarkdownCopyButton(button, label) {
+        const labelNode = button.querySelector('span') || button;
+        const original = labelNode.dataset.originalLabel || labelNode.textContent;
+
+        labelNode.dataset.originalLabel = original;
+        labelNode.textContent = label;
+        button.classList.add('copied');
+        button.dataset.state = 'copied';
+
+        window.setTimeout(function () {
+            labelNode.textContent = original;
+            button.classList.remove('copied');
+            button.removeAttribute('data-state');
+        }, 1400);
+    }
+
+    function initMarkdownCopyButtons() {
+        const commandBlocks = Array.from(document.querySelectorAll('.markdown-content pre.generate-ssh-shell-command-pre'));
+        const commandCopyButtons = Array.from(document.querySelectorAll('.generate-ssh-shell-command-copy-btn'));
+
+        commandCopyButtons.forEach(function (button) {
+            const commandIndex = Number.parseInt(button.dataset.commandCopyIndex || '', 10);
+            const commandBlock = Number.isFinite(commandIndex) ? commandBlocks[commandIndex] : null;
+            const code = commandBlock ? commandBlock.querySelector('code') : null;
+
+            if (!code) {
+                button.disabled = true;
+                return;
+            }
+
+            button.dataset.defaultLabel = 'Copy';
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                copyText(code.textContent.trim());
+                flashMarkdownCopyButton(button, 'Copied');
+            });
+        });
     }
 
     function getExportPayload() {
@@ -1084,7 +998,22 @@ document.addEventListener('DOMContentLoaded', function () {
         remoteForward.value = trim(state.remoteForward);
         dynamicForward.value = trim(state.dynamicForward);
         extraArgs.value = trim(state.extraArgs);
-        updateBasicPreview();
+    }
+
+    function buildImportedPayloadState(payload) {
+        if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+            throw new Error('Imported JSON does not include an SSH state object.');
+        }
+
+        const state = payload.state && typeof payload.state === 'object' && !Array.isArray(payload.state)
+            ? payload.state
+            : payload;
+
+        if (!state || typeof state !== 'object' || Array.isArray(state)) {
+            throw new Error('Imported JSON does not include an SSH state object.');
+        }
+
+        return state;
     }
 
     function setJsonStatus(message) {
@@ -1144,6 +1073,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ns:start family._base.workspace.06_output-toolbar
+    function updateSortExpandedState() {
+        const summaryElement = sortSelect.querySelector('[aria-expanded]');
+
+        if (summaryElement) {
+            summaryElement.setAttribute('aria-expanded', sortSelect.open ? 'true' : 'false');
+        }
+    }
+
     sortOptionButtons.forEach(function (button) {
         button.addEventListener('click', function () {
             const value = button.dataset.sortValue || 'id';
@@ -1169,6 +1106,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    sortSelect.addEventListener('toggle', updateSortExpandedState);
 
     copyCommandButton.addEventListener('click', function () {
         copyText(getExportPayload().command || '');
@@ -1211,7 +1150,7 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.addEventListener('load', function () {
             try {
                 const payload = JSON.parse(String(reader.result || '{}'));
-                const state = payload.state || payload;
+                const state = buildImportedPayloadState(payload);
 
                 applyImportedState(state);
                 renderPayload(buildModel(readState()));
@@ -1258,32 +1197,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const button = event.target.closest('[data-row-copy]');
 
         if (button) {
-            copyText(button.dataset.rowCopy || '');
+            copyText(button.dataset.rowCopy || '').then(function () {
+                flashRowActionButton(button, true);
+            }).catch(function () {
+                flashRowActionButton(button, false);
+            });
         }
     });
     // ns:end family._base.workspace.07_table-output
-
-    document.addEventListener('click', function (event) {
-        const target = event.target;
-
-        if (!(target instanceof Node)) {
-            return;
-        }
-
-        if (enhancedSelects.some(function (entry) {
-            return entry.wrapper.contains(target);
-        })) {
-            return;
-        }
-
-        closeEnhancedSelects();
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-            closeEnhancedSelects();
-        }
-    });
 
     // ns:start family._base.workspace.01_input-brief
     form.addEventListener('submit', function (event) {
@@ -1300,7 +1221,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     input.addEventListener('input', function () {
         inputError.classList.add('d-none');
-        updateBasicPreview();
         if (hasGenerated) {
             generateCommand();
         }
@@ -1312,12 +1232,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     [profile, shellStyle, loginUser, proxyEnabled, proxyJump].forEach(function (field) {
         field.addEventListener('change', function () {
-            updateBasicPreview();
             if (hasGenerated) {
                 generateCommand();
             }
         });
-        field.addEventListener('input', updateBasicPreview);
     });
     // ns:end family._base.workspace.02_basic-settings
 
@@ -1358,8 +1276,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     // ns:end family._base.workspace.03_custom-settings
 
-    initializeGenerateSshShellDropdowns(document.querySelector('.generate-ssh-shell-tool'));
-    Array.from(form.querySelectorAll('select')).forEach(enhanceNativeSelect);
-    updateBasicPreview();
+    initMarkdownCopyButtons();
     restoreSafeStateFromUrl();
 });

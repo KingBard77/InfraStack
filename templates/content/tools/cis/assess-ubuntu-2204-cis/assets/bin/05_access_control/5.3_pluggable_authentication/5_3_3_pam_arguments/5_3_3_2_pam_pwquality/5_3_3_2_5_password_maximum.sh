@@ -1,32 +1,24 @@
-#!/bin/sh
+#!/bin/bash
 
 CRITICALITY=1
-TITLE="Ensure pwquality limits sequential characters"
-
-SETTING_FILE="/etc/security/pwquality.conf"
-
+TITLE="Ensure password maximum sequential characters is configured"
 function check {
+    KEY="maxsequence"
     STATUS="Fail"
 
-    if [ -f "$SETTING_FILE" ] && grep -Eq '^[[:space:]]*maxsequence[[:space:]]*=[[:space:]]*3([[:space:]]*(#.*)?)?$' "$SETTING_FILE" > /dev/null 2>&1; then
+    VALUE="$(awk -F= -v key="$KEY" '$1 ~ "^[[:space:]]*" key "[[:space:]]*$" { gsub(/[[:space:]]/, "", $2); print $2 }' /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf 2>/dev/null | tail -n 1)"
+    if [[ "$VALUE" =~ ^[0-9]+$ && "$VALUE" -le 3 ]]; then
         STATUS="Pass"
     else
-        STATUS="Fail: maxsequence is not set to 3"
+        STATUS="Fail: $KEY is not configured to 3"
     fi
 
     echo "Check status: $STATUS"
 }
 
 function fix {
-    if [ -f "$SETTING_FILE" ]; then
-        cp -a "$SETTING_FILE" "$SETTING_FILE.$(date +"%s")"
-    else
-        touch "$SETTING_FILE"
-    fi
-
-    if grep -Eq '^[[:space:]]*maxsequence[[:space:]]*=' "$SETTING_FILE" > /dev/null 2>&1; then
-        sed -i 's/^[[:space:]]*maxsequence[[:space:]]*=.*/maxsequence = 3/' "$SETTING_FILE"
-    else
-        echo "maxsequence = 3" | tee -a "$SETTING_FILE" > /dev/null
-    fi
+    touch /etc/security/pwquality.conf
+    cp -a /etc/security/pwquality.conf /etc/security/pwquality.conf.$(date +"%s")
+    sed -i "/^\s*$KEY\s*=/d" /etc/security/pwquality.conf
+    echo "$KEY = 3" | tee -a /etc/security/pwquality.conf > /dev/null
 }

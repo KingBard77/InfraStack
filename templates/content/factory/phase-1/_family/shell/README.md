@@ -40,35 +40,35 @@ Preferred verbs:
 Examples:
 
 - `generate_command_shell`
-- `generate_netcat_shell`
+- `generate_chmod_shell`
 - `compose_ssh_tunnel_shell`
 - `validate_curl_shell`
 
-Folder slugs use the kebab-case form, such as `generate-netcat-shell`.
+Folder slugs use the kebab-case form, such as `generate-chmod-shell`.
 
 Preserve existing stable slugs, IDs, classes, routes, and exported JSON keys unless a deliberate migration is part of the task.
 
-## Historical Reference
+## Production Reference
 
 ```text
-templates/content/tools/shell/generate-netcat-shell/
+templates/content/tools/shell/generate-chmod-shell/
 ```
 
-Netcat Command Generator is the historical working shell-family baseline reference.
+Chmod Command Generator is the approved working shell-family baseline reference.
 
 The reusable baseline is this family template, the reference-only source snapshot under:
 
 ```text
-templates/content/factory/phase-1/_family/shell/source/
+templates/content/factory/phase-1/_family/shell/source/generate-chmod-shell/
 ```
 
 and the numbered workspace section sources under:
 
 ```text
-templates/content/factory/phase-1/_family/shell/workspace/
+templates/content/factory/phase-1/_family/shell/source/generate-chmod-shell/
 ```
 
-After promotion, use this composed family source as the source of truth. Shared frame, input, settings, summary, toolbar, table, and JSON restore sections come from `_base/workspace`; shell keeps generated command result text, optional command visual state, and command model helpers. Use the Netcat tool only to understand the original implementation quality or to refresh the reference snapshot. Translate visible labels, flags, examples, category/provider token lineage, command logic, warnings, and assumptions for final non-netcat shell tools.
+After promotion, use this composed family source as the source of truth. Shared frame, input, settings, summary, toolbar, table, and JSON restore sections come from `_base/workspace`; shell keeps generated command result text, optional command visual state, and command model helpers. The `generate-chmod-shell` snapshot must compare cleanly against the production package before new shell tools are created. Translate visible labels, flags, examples, category/provider token lineage, command logic, warnings, and assumptions for final non-chmod shell tools.
 
 ## Required Final Tool Package
 
@@ -112,52 +112,45 @@ Before creating a shell-family tool, read:
 7. `templates/content/factory/phase-1/_family/FAMILY.md`
 8. `templates/content/factory/phase-1/_family/shell/README.md`
 9. `templates/content/factory/phase-1/_family/shell/manifest.yml`
-10. `templates/content/factory/phase-1/_family/shell/workspace/README.md`
-11. `templates/content/factory/phase-1/_family/shell/workspace/manifest.yml`
-12. relevant shell workspace section folders under `templates/content/factory/phase-1/_family/shell/workspace/`
+10. `templates/content/factory/phase-1/_family/shell/source package demo.html`
+11. `templates/content/factory/phase-1/_family/shell/family manifest source_namespaces`
+12. relevant shell source namespace markers under `templates/content/factory/phase-1/_family/shell/source/generate-chmod-shell/`
 13. `templates/content/factory/phase-2/_content/scaffold/README.md`
 14. relevant phase-2 content section folders under `templates/content/factory/phase-2/_content/sections/`
 
 ## Family Workspace Source
 
-The shell family workspace source lives at:
+The shell family source package lives at:
 
 ```text
-templates/content/factory/phase-1/_family/shell/workspace/
+templates/content/factory/phase-1/_family/shell/source/generate-chmod-shell/
 ```
 
 Runtime baseline files:
 
 ```text
-templates/content/factory/phase-1/_family/shell/workspace/assets/bin/model-core.js
+templates/content/factory/phase-1/_family/shell/source/generate-chmod-shell/assets/bin/model-core.js
 ```
 
-Full copied runtime source lives under `source/` for traceability only. Do not audit this as active source. Common reusable workspace markup, CSS, and JavaScript live in `templates/content/factory/phase-1/_base/workspace/`. Shell-owned sources live in `04_result-text`, optional `04_visual-contract`, and `workspace/assets/bin/model-core.js`. Do not recreate root `workspace/custom.css` or `workspace/custom.js` snapshots, and do not embed full custom runtime strings inside section folders.
-
-The reference snapshot under `source/` carries extraction markers in `tool.html.twig`, `custom.css`, and `custom.js`:
-
-```text
-source:start family.shell.workspace.<section>
-source:end family.shell.workspace.<section>
-```
-
-Refresh shell-owned workspace sections from those marked ranges first, then replace exact Netcat identifiers with `__TOOL_CLASS__`, `__PREFIX__`, and `__DOM_PREFIX__`. Keep the replacement exact enough that longer slug-prefixed classes such as `generate-netcat-shell-toolbar` become `__PREFIX__-toolbar`, not a broken root-class placeholder. For common sections, use the `_base` source instead of regenerating shell-local duplicates.
+Full copied runtime source lives under `source/generate-chmod-shell/` for traceability and freshness checks. Common reusable workspace markup, CSS, and JavaScript live in `templates/content/factory/phase-1/_base/workspace/`. Shell-owned sources live in `04_result-text`, optional `04_visual-contract`, and `assets/bin/model-core.js` in the source package. Do not recreate root `source/custom.css` or `source/custom.js` snapshots, and do not embed full custom runtime strings inside section folders.
 
 ## Strict Reapply Rule
 
-When applying or reapplying the shell family to existing shell tools, the composed `workspace_namespaces` contract is mandatory. `_base` provides the common command builder frame, Basic panel, Custom panel, summary cards, Sort toolbar, output actions, tabs, operation table, warnings, JSON, and restore frame. Shell-owned `04_result-text` remains mandatory because `_base` does not own generated command source-of-truth or copyable command preview behavior. `04_visual-contract` is optional until a task explicitly scopes command visual reapplication.
+When applying or reapplying the shell family to existing shell tools, the composed `source_namespaces` contract is mandatory. `_base` provides the common command builder frame, Basic panel, Custom panel, summary cards, Sort toolbar, output actions, tabs, operation table, warnings, JSON, and restore frame. Shell-owned `04_result-text` remains mandatory because `_base` does not own generated command source-of-truth or copyable command preview behavior. `04_visual-contract` is optional until a task explicitly scopes command visual reapplication.
 
-This rule applies to every shell runtime package in scope, including `generate-netcat-shell` when it is named. No reference package is exempt; it satisfies reapply only by passing the same current family-source parity gate as every other target package. Byte-equivalence to an old snapshot is not acceptance when the family workspace source has moved on.
+This rule applies to every shell runtime package in scope, including `generate-chmod-shell` when it is named. No reference package is exempt; it satisfies reapply only by passing the same current family-source parity gate as every other target package. Byte-equivalence to an old snapshot is not acceptance when the family source package has moved on.
 
 Do not count namespace markers, source markers, partial CSS, copied comments, old snapshots, or support-content edits as a completed family reapply. Preserve only command-native labels, operands, options, warning rules, command generation logic, stable DOM IDs required by existing behavior, and exported JSON schema compatibility. Record every intentional divergence.
 
 The shell parity gate must inspect final runtime packages and verify:
 
 - visible panel label `Custom`; legacy `03_advanced-setting` may remain only as a compatibility marker name
+- Basic and Custom dropdowns are real visible native `<select>` controls with no hidden native-select rules, fake-dropdown wrapper classes, or active enhanced-select replacement calls
 - no nested card frame directly inside the opened Custom panel body
 - Sort options exactly `ID`, `A-Z`, `Field`, `Value`, and `Length`, unless a command-native divergence is recorded
 - output actions exactly `Export PDF`, `Download CSV`, `Copy JSON`, `Download JSON`, and `Import JSON` for current shipped shell generators
 - fifth-action toolbar layout is deliberate and responsive
+- command output titles and operation table titles share the `_base` table-output card rhythm, including top-aligned two-column title/action headers when a copy button is present
 - visible `Import JSON` has a hidden file input, JavaScript handler, schema validation, normalized state restore, and output refresh
 - import controls are absent when restore is not implemented and validated
 
@@ -176,9 +169,9 @@ templates/content/factory/phase-1/_base/workspace/
 ├── 07_table-output/
 └── 08_json-restore/
 
-templates/content/factory/phase-1/_family/shell/workspace/04_visual-contract/
-templates/content/factory/phase-1/_family/shell/workspace/04_result-text/
-templates/content/factory/phase-1/_family/shell/workspace/assets/bin/model-core.js
+templates/content/factory/phase-1/_family/shell/source/generate-chmod-shell/04_visual-contract/
+templates/content/factory/phase-1/_family/shell/source/generate-chmod-shell/04_result-text/
+templates/content/factory/phase-1/_family/shell/source/generate-chmod-shell/assets/bin/model-core.js
 ```
 
 Only `04_result-text`, optional `04_visual-contract`, and `assets/bin/model-core.js` remain shell-owned after `_base` composition. The older shell-local common section folders are superseded by `_base`. `04_visual-contract` includes `manifest.yml` and `model-core.js`; it owns the optional shell visual and model contract for command preview, token chips, option groups, warning tones, and operation rows. Generated command text remains owned by `04_result-text`; the visual contract mirrors normalized command state and must not become the command source of truth.
@@ -212,7 +205,7 @@ For shell tools:
 - How To Use and FAQ sections include a short explanatory paragraph before their first accordion row.
 - `06_export-notes` should describe only implemented exports.
 - `10_references` is used for complete factual content delivery and when source-backed citations are present. Substantial `Technical Details` sections must be 1500+ words, cite at least two official or source-of-truth websites or docs when they make technical claims, and use structured review aids such as bullets or tables when they clarify behavior. Factual `content.md` should carry at least three real references.
-- Example command terminal strip titles should stay centered and title case, for example `Netcat Command`.
+- Example command terminal strip titles should stay centered and title case, for example `Chmod Command`.
 
 Final content must still be tool-specific. Do not ship generic family copy as final content.
 
@@ -227,9 +220,9 @@ Shell workspaces use this baseline flow:
 5. Shell-owned result text shows the generated command, empty state, and copy behavior.
 6. `_base` result summary cards summarize status, mode, protocol, warnings, and generated route text.
 7. `_base` output toolbar owns the compact sort and output action toolbar.
-8. `_base` table and JSON sections own operation rows, row copy, warnings, errors, JSON output, and restore import frame when implemented.
+8. `_base` table and JSON sections own operation rows, row copy, command/table card rhythm, top-aligned title/action headers, warnings, errors, JSON output, and restore import frame when implemented.
 
-Family demos should render the extracted section snippet with dummy state around it. Standalone `demo.html` files own demo chrome separately from Netcat runtime extraction: load any icon stylesheet they need, render plain `demo-title` and `demo-title-text` wrappers, and add decorative title icons only when explicitly requested. Result-related family demos must show before and after states as two stacked rows in one column, not side by side.
+Family demos should render the extracted section snippet with dummy state around it. Standalone `demo.html` files own demo chrome separately from the reference package snapshot: load any icon stylesheet they need, render plain `demo-title` and `demo-title-text` wrappers, and add decorative title icons only when explicitly requested. Result-related family demos must show before and after states as two stacked rows in one column, not side by side.
 
 ## Output Expectations
 
@@ -268,6 +261,6 @@ For shell-family tools, validate the changed surface:
 - JSON payload shape
 - shell family parity gate when applying or reapplying the family source
 - model-core smoke tests when present
-- Browser Use check for workspace output, tabs, sorting, copy/export behavior, and responsive layout when browser-facing behavior changes
+- Browser Use check for runtime output, tabs, sorting, copy/export behavior, and responsive layout when browser-facing behavior changes
 
 Do not claim command safety, production readiness, compliance, or security unless actually validated.
