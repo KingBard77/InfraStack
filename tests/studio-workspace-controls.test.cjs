@@ -97,6 +97,7 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
     });
     assert.match(twig, /js\/studio\/providers\/registry\.js/);
     assert.match(twig, /js\/studio\/providers\/aws\/templates\.js/);
+    assert.match(twig, /js\/studio\/providers\/azure\/templates\.js/);
     assert.match(js, /function renderTemplates\(\)/);
     assert.match(js, /function renderContextualFields\(asset\)/);
     assert.match(js, /elements\.assetForm\.addEventListener\('change'/);

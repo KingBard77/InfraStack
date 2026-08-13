@@ -571,7 +571,7 @@ if (root && core && rules && improvements) {
 
     const contextualPropertyFields = {
         vpc: [
-            { key: 'region', label: 'AWS region', type: 'text', placeholder: 'ap-southeast-1' },
+            { key: 'region', label: 'Cloud region', type: 'text', placeholder: 'ap-southeast-1 or southeastasia' },
             { key: 'dns_hostnames', label: 'DNS hostnames', type: 'checkbox' },
             { key: 'dns_resolution', label: 'DNS resolution', type: 'checkbox' },
             { key: 'tags', label: 'Tags', type: 'text', placeholder: 'Environment=Production, Owner=Platform' }
@@ -608,7 +608,8 @@ if (root && core && rules && improvements) {
         if (asset.type === 'subnet') return contextualPropertyFields.subnet;
         if (asset.type === 'server') return contextualPropertyFields.server;
         if (asset.type === 'firewall') return contextualPropertyFields.firewall;
-        if (['switch', 'router'].includes(asset.type) && !String(asset.catalog_id || '').startsWith('aws-')) {
+        const providerService = /^(aws|azure)-/.test(String(asset.catalog_id || ''));
+        if (['switch', 'router'].includes(asset.type) && !providerService) {
             return contextualPropertyFields.network_device;
         }
         return [];

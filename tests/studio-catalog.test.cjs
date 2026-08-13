@@ -8,6 +8,9 @@ const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
 const awsCatalogPath = path.join(__dirname, '../assets/data/studio/providers/aws/catalog.json');
 const awsCatalog = JSON.parse(fs.readFileSync(awsCatalogPath, 'utf8'));
 const awsIconRoot = path.join(__dirname, '../assets/icons/providers/aws');
+const azureCatalogPath = path.join(__dirname, '../assets/data/studio/providers/azure/catalog.json');
+const azureCatalog = JSON.parse(fs.readFileSync(azureCatalogPath, 'utf8'));
+const azureIconRoot = path.join(__dirname, '../assets/icons/providers/azure');
 
 test('Studio catalogue exposes five populated groups', function () {
     const groupIds = catalog.groups.map(function (group) { return group.id; });
@@ -52,6 +55,28 @@ test('Studio AWS catalogue maps 24 service identities to semantic behavior and s
         assert.ok(fs.existsSync(path.join(awsIconRoot, asset.icon)));
         assert.ok(Array.isArray(asset.keywords) && asset.keywords.length > 0);
         assert.ok(Array.isArray(asset.tags) && asset.tags.includes('aws'));
+        catalogIds.add(asset.catalog_id);
+    });
+});
+
+test('Studio Azure catalogue maps provider identities to semantic behavior and local icons', function () {
+    const catalogIds = new Set();
+    const semanticTypes = new Set([
+        'vpc', 'subnet', 'router', 'internet', 'firewall', 'api', 'monitoring',
+        'server', 'cluster', 'kubernetes', 'container', 'application', 'storage',
+        'database', 'cache'
+    ]);
+
+    assert.equal(azureCatalog.provider, 'azure');
+    assert.equal(azureCatalog.assets.length, 25);
+    azureCatalog.assets.forEach(function (asset) {
+        assert.match(asset.catalog_id, /^azure-/);
+        assert.equal(catalogIds.has(asset.catalog_id), false);
+        assert.equal(asset.provider, 'azure');
+        assert.ok(semanticTypes.has(asset.semantic_type));
+        assert.ok(fs.existsSync(path.join(azureIconRoot, asset.icon)));
+        assert.ok(Array.isArray(asset.keywords) && asset.keywords.length > 0);
+        assert.ok(Array.isArray(asset.tags) && asset.tags.includes('azure'));
         catalogIds.add(asset.catalog_id);
     });
 });

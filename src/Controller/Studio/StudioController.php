@@ -12,6 +12,7 @@ class StudioController extends AbstractController
     private const PROVIDERS = [
         'generic' => 'Generic',
         'aws' => 'AWS',
+        'azure' => 'Azure',
     ];
 
     #[Route('/studio', name: 'app_studio', methods: ['GET'])]
