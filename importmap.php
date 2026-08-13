@@ -31,4 +31,10 @@ return [
     '@kurkle/color' => [
         'version' => '0.3.4',
     ],
+    '@maxgraph/core' => [
+        'version' => '0.24.0',
+    ],
+    'studio-maxgraph-adapter' => [
+        'path' => './assets/js/studio/graph/maxgraph-adapter.js',
+    ],
 ];

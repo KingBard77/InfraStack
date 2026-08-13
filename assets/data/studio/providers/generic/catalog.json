@@ -1,0 +1,42 @@
+{
+  "catalog": "infrastack-generic-infrastructure",
+  "version": "0.3.0",
+  "license": "InfraStack original MVP assets",
+  "groups": [
+    { "id": "basic", "label": "Basic" },
+    { "id": "physical", "label": "Physical" },
+    { "id": "network", "label": "Network" },
+    { "id": "platform", "label": "Platform" },
+    { "id": "application-data", "label": "Apps/Data" }
+  ],
+  "assets": [
+    { "type": "domain", "label": "Domain", "category": "Boundary", "group": "basic", "section": "Boundaries", "provider": "generic", "keywords": ["organization", "provider", "group"], "tags": ["logical", "physical"], "icon": "", "views": ["overview", "physical", "network", "availability"], "is_container": true, "default_role": "Organization or provider boundary" },
+    { "type": "environment", "label": "Environment", "category": "Boundary", "group": "basic", "section": "Boundaries", "provider": "generic", "keywords": ["production", "staging", "development"], "tags": ["logical"], "icon": "", "views": ["overview", "physical", "network", "availability"], "is_container": true, "default_role": "Production, staging, or development boundary" },
+    { "type": "availability-zone", "label": "Availability Zone", "category": "Boundary", "group": "basic", "section": "Boundaries", "provider": "generic", "keywords": ["zone", "failure domain", "az"], "tags": ["availability", "logical"], "icon": "", "views": ["overview", "availability"], "is_container": true, "default_role": "Independent failure domain" },
+
+    { "type": "rack", "label": "Rack", "category": "Physical", "group": "physical", "section": "Facilities", "provider": "generic", "keywords": ["cabinet", "datacenter", "equipment"], "tags": ["physical"], "icon": "infrastructure-arch-rack.svg", "views": ["physical"], "is_container": true, "default_role": "Equipment enclosure" },
+    { "type": "server", "label": "Server", "category": "Compute", "group": "physical", "section": "Equipment", "provider": "generic", "keywords": ["host", "bare metal", "compute"], "tags": ["physical", "compute"], "icon": "infrastructure-arch-server.svg", "views": ["physical", "availability"], "default_role": "Application compute" },
+    { "type": "storage", "label": "Storage", "category": "Data", "group": "physical", "section": "Equipment", "provider": "generic", "keywords": ["san", "nas", "disk", "array"], "tags": ["physical", "data"], "icon": "infrastructure-arch-storage.svg", "views": ["physical", "availability"], "default_role": "Shared storage" },
+
+    { "type": "vpc", "label": "VPC / Network", "category": "Boundary", "group": "network", "section": "Addressing", "provider": "generic", "keywords": ["vpc", "vnet", "network", "cidr"], "tags": ["logical", "network"], "icon": "", "views": ["overview", "network", "availability"], "is_container": true, "default_role": "Network boundary" },
+    { "type": "subnet", "label": "Subnet", "category": "Network", "group": "network", "section": "Addressing", "provider": "generic", "keywords": ["cidr", "segment", "vlan"], "tags": ["logical", "network"], "icon": "network-arch-subnet.svg", "views": ["network", "availability"], "is_container": true, "default_role": "IP network segment" },
+    { "type": "internet", "label": "Internet", "category": "External", "group": "network", "section": "Connectivity", "provider": "generic", "keywords": ["public", "external", "wan"], "tags": ["logical", "network"], "icon": "network-arch-internet.svg", "views": ["overview", "network"], "default_role": "Public network" },
+    { "type": "switch", "label": "Switch", "category": "Network", "group": "network", "section": "Connectivity", "provider": "generic", "keywords": ["lan", "access", "core"], "tags": ["physical", "logical", "network"], "icon": "network-arch-switch.svg", "views": ["physical", "network"], "default_role": "Access switching" },
+    { "type": "router", "label": "Router", "category": "Network", "group": "network", "section": "Connectivity", "provider": "generic", "keywords": ["gateway", "route", "wan"], "tags": ["physical", "logical", "network"], "icon": "network-arch-router.svg", "views": ["overview", "physical", "network"], "default_role": "Network gateway" },
+    { "type": "firewall", "label": "Firewall", "category": "Security", "group": "network", "section": "Security", "provider": "generic", "keywords": ["security", "gateway", "inspection"], "tags": ["physical", "logical", "security"], "icon": "security-arch-firewall.svg", "views": ["overview", "physical", "network", "availability"], "default_role": "Security boundary" },
+
+    { "type": "virtual-machine", "label": "Virtual Machine", "category": "Compute", "group": "platform", "section": "Compute", "provider": "generic", "keywords": ["vm", "instance", "guest"], "tags": ["logical", "compute"], "icon": "", "views": ["overview", "availability"], "default_role": "Virtual compute instance" },
+    { "type": "cluster", "label": "Cluster", "category": "Compute", "group": "platform", "section": "Orchestration", "provider": "generic", "keywords": ["compute", "container", "node"], "tags": ["logical", "compute"], "icon": "infrastructure-arch-cluster.svg", "views": ["overview", "availability"], "default_role": "Container or compute cluster" },
+    { "type": "kubernetes", "label": "Kubernetes", "category": "Platform", "group": "platform", "section": "Orchestration", "provider": "generic", "keywords": ["k8s", "cluster", "orchestrator"], "tags": ["logical", "platform"], "icon": "", "views": ["overview", "availability"], "default_role": "Kubernetes platform" },
+    { "type": "container", "label": "Container", "category": "Platform", "group": "platform", "section": "Orchestration", "provider": "generic", "keywords": ["docker", "pod", "workload"], "tags": ["logical", "platform"], "icon": "", "views": ["overview", "availability"], "default_role": "Container workload" },
+    { "type": "monitoring", "label": "Monitoring", "category": "Operations", "group": "platform", "section": "Operations", "provider": "generic", "keywords": ["observability", "metrics", "logs", "alerts"], "tags": ["logical", "operations"], "icon": "", "views": ["overview", "availability"], "default_role": "Monitoring and observability" },
+    { "type": "backup", "label": "Backup", "category": "Operations", "group": "platform", "section": "Operations", "provider": "generic", "keywords": ["restore", "recovery", "archive"], "tags": ["logical", "operations", "data"], "icon": "", "views": ["overview", "availability"], "default_role": "Backup and recovery service" },
+
+    { "type": "application", "label": "Application", "category": "Application", "group": "application-data", "section": "Services", "provider": "generic", "keywords": ["service", "portal", "workload"], "tags": ["logical", "application"], "icon": "infrastructure-arch-application.svg", "views": ["overview", "availability"], "default_role": "Business service" },
+    { "type": "api", "label": "API", "category": "Application", "group": "application-data", "section": "Services", "provider": "generic", "keywords": ["endpoint", "rest", "graphql", "service"], "tags": ["logical", "application"], "icon": "", "views": ["overview", "network"], "default_role": "Application programming interface" },
+    { "type": "database", "label": "Database", "category": "Data", "group": "application-data", "section": "Data Services", "provider": "generic", "keywords": ["sql", "nosql", "rdbms"], "tags": ["logical", "data"], "icon": "infrastructure-arch-database.svg", "views": ["overview", "availability"], "default_role": "Application database" },
+    { "type": "cache", "label": "Cache", "category": "Data", "group": "application-data", "section": "Data Services", "provider": "generic", "keywords": ["redis", "memory", "session"], "tags": ["logical", "data"], "icon": "", "views": ["overview", "availability"], "default_role": "Application cache" },
+    { "type": "queue", "label": "Queue", "category": "Data", "group": "application-data", "section": "Messaging", "provider": "generic", "keywords": ["message", "broker", "event", "stream"], "tags": ["logical", "data", "application"], "icon": "", "views": ["overview", "availability"], "default_role": "Message queue or broker" },
+    { "type": "object-storage", "label": "Object Storage", "category": "Data", "group": "application-data", "section": "Data Services", "provider": "generic", "keywords": ["bucket", "blob", "s3", "archive"], "tags": ["logical", "data"], "icon": "", "views": ["overview", "availability"], "default_role": "Object storage service" }
+  ]
+}

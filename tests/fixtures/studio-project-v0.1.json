@@ -1,0 +1,57 @@
+{
+  "tool": "infrastack-studio",
+  "version": "0.1.0",
+  "project_id": "fixture-project",
+  "name": "Imported architecture proof",
+  "profile": "general-production",
+  "active_view": "logical",
+  "assets": [
+    {
+      "id": "fixture-firewall",
+      "type": "firewall",
+      "label": "Imported Firewall",
+      "category": "Security",
+      "icon": "security-arch-firewall.svg",
+      "views": ["physical", "logical"],
+      "properties": {
+        "role": "Imported boundary",
+        "address": "",
+        "monitoring": true,
+        "backup": false,
+        "redundant": true
+      },
+      "layout": {
+        "physical": { "x": 80, "y": 80 },
+        "logical": { "x": 80, "y": 80 }
+      }
+    },
+    {
+      "id": "fixture-server",
+      "type": "server",
+      "label": "Imported Server",
+      "category": "Compute",
+      "icon": "infrastructure-arch-server.svg",
+      "views": ["physical", "logical"],
+      "properties": {
+        "role": "Imported workload",
+        "address": "10.20.0.10",
+        "monitoring": true,
+        "backup": true,
+        "redundant": false
+      },
+      "layout": {
+        "physical": { "x": 300, "y": 80 },
+        "logical": { "x": 300, "y": 80 }
+      }
+    }
+  ],
+  "connections": [
+    {
+      "id": "fixture-connection",
+      "source": "fixture-firewall",
+      "target": "fixture-server",
+      "relationship": "connected_to"
+    }
+  ],
+  "accepted_risks": []
+}
