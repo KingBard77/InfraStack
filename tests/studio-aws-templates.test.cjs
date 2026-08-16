@@ -1,7 +1,11 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const core = require('../assets/js/studio/core/project-model.js');
-const awsTemplates = require('../assets/js/studio/providers/aws/templates.js');
+const awsTemplates = require('./helpers/studio-aws-package.cjs');
+let core;
+
+test.before(async function () {
+    ({ default: core } = await import('../assets/js/studio/core/studio-model.js'));
+});
 
 test('AWS template catalogue exposes six editable architecture examples', function () {
     const definitions = awsTemplates.listTemplates();

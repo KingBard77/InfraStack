@@ -1,7 +1,19 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const core = require('../assets/js/studio/core/project-model.js');
-const rules = require('../assets/js/studio/review/rules.js');
+const fs = require('node:fs');
+const path = require('node:path');
+let core;
+let rules;
+
+test.before(async function () {
+    [
+        { default: core },
+        { rules }
+    ] = await Promise.all([
+        import('../assets/js/studio/core/studio-model.js'),
+        import('../assets/js/studio/content.js')
+    ]);
+});
 
 test('empty projects are not assigned a misleading grade', function () {
     const result = rules.evaluateProject(core.createEmptyProject());
@@ -94,4 +106,29 @@ test('multi-zone design identifies a shared NAT single point of failure', functi
 
     assert.deepEqual(natFinding.asset_ids, ['nat', 'az-a', 'az-b']);
     assert.equal(result.category_scores.Availability, 90);
+});
+
+test('provider result rules supply scoring, messages, and reference IDs', function () {
+    const definition = JSON.parse(fs.readFileSync(path.join(
+        __dirname,
+        '../assets/studio/packages/architecture/azure/cloud/result.json'
+    ), 'utf8'));
+    let project = core.createEmptyProject();
+    project.assets = [{
+        id: 'vnet',
+        type: 'vpc',
+        label: 'Production VNet',
+        category: 'Network',
+        views: ['network'],
+        is_container: true,
+        properties: { address: '' },
+        layout: { network: { x: 20, y: 20 } }
+    }];
+    project = core.normalizeProject(project).project;
+    const result = rules.evaluateProject(project, definition);
+    const finding = result.findings.find(function (item) { return item.rule_id === 'invalid-network-cidr'; });
+
+    assert.equal(finding.score_deduction, 22);
+    assert.match(finding.title, /Azure virtual network/i);
+    assert.deepEqual(finding.reference_ids, ['azure-virtual-network']);
 });

@@ -35,7 +35,7 @@
             <i class="bi bi-envelope"></i>
           </div>
           <h3>Contact Email</h3>
-          <p>Email: info@example.com</p>
+          <p><a href="mailto:hello@infrastack.my">hello@infrastack.my</a></p>
         </div>
       </div>
 
@@ -44,70 +44,34 @@
           <div class="icon-box">
             <i class="bi bi-clock"></i>
           </div>
-          <h3>Opening Hour</h3>
-          <p>24 hours<br>
-            Article website access</p>
+          <h3>Studio Access</h3>
+          <p>Available anytime<br>
+            Directly in your browser</p>
         </div>
       </div>
     </div>
 
     <div class="row">
       <div class="col-lg-12">
-        <div class="form-wrapper" data-aos="fade-up" data-aos-delay="400">
-          <form action="forms/contact.php" method="post" role="form" class="php-email-form contact-form">
-            <input type="hidden" name="phone" value="xxxxx">
-            <div class="contact-form-grid">
-              <div class="form-field">
-                <label class="visually-hidden" for="contact-name">Your name</label>
-                <div class="field-control">
-                  <span class="field-icon"><i class="bi bi-person"></i></span>
-                  <input id="contact-name" type="text" name="name" class="form-control" placeholder="Your name*" required="">
-                </div>
-              </div>
-              <div class="form-field">
-                <label class="visually-hidden" for="contact-email">Email address</label>
-                <div class="field-control">
-                  <span class="field-icon"><i class="bi bi-envelope"></i></span>
-                  <input id="contact-email" type="email" class="form-control" name="email" placeholder="Email address*" required="">
-                </div>
-              </div>
-              <div class="form-field form-field-full">
-                <label class="visually-hidden" for="contact-subject">Topic</label>
-                <div class="field-control field-control-select">
-                  <span class="field-icon"><i class="bi bi-list"></i></span>
-                  <select id="contact-subject" name="subject" class="form-control contact-select" required="">
-                    <option value="" disabled selected>Select topic*</option>
-                    <option value="Article Feedback">Article feedback</option>
-                    <option value="Technical Correction">Technical correction</option>
-                    <option value="Tool Request">Tool request</option>
-                    <option value="General Inquiry">General inquiry</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-field form-field-full">
-                <label class="visually-hidden" for="contact-message">Message</label>
-                <div class="field-control field-control-message">
-                  <span class="field-icon"><i class="bi bi-chat-dots"></i></span>
-                  <textarea id="contact-message" class="form-control" name="message" rows="6" placeholder="Write a message*" required=""></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="form-status">
-              <div class="loading">Loading</div>
-              <div class="error-message"></div>
-              <div class="sent-message">Your message has been sent. Thank you!</div>
-            </div>
-            <div class="form-actions">
-              <button type="submit">Submit Message</button>
-            </div>
-          </form>
+        <div class="form-wrapper contact-direct" data-aos="fade-up" data-aos-delay="400">
+          <div class="contact-direct-icon"><i class="bi bi-chat-square-text"></i></div>
+          <p class="contact-direct-kicker">Talk to InfraStack</p>
+          <h2>Architecture feedback, library requests, or collaboration</h2>
+          <p>
+            Send the context, provider, and architecture outcome you need. Please do not include passwords,
+            private keys, customer secrets, or production credentials.
+          </p>
+          <a class="contact-primary-action" href="mailto:hello@infrastack.my?subject=InfraStack%20Studio%20Inquiry">
+            <i class="bi bi-envelope"></i>
+            Email hello@infrastack.my
+          </a>
         </div>
       </div>
 
     </div>
 
   </div>
-</section><!-- /Contact Section -->
+</section>
 
 
 {% endblock %}

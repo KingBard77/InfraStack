@@ -3,87 +3,51 @@
   <footer id="footer" class="footer infrastack-footer">
     <div class="container footer-top">
       <div class="row gy-4">
-        <div class="col-lg-4 col-md-6 footer-about">
+        <div class="col-lg-5 col-md-6 footer-about">
           <a href="{{ path('app_main') }}" class="infrastack-footer-logo" aria-label="InfraStack home">
-            <img
-              src="{{ asset('infrastack-logo.svg') }}"
-              width="150"
-              height="48"
-              alt=""
-              aria-hidden="true"
-            >
+            <img src="{{ asset('brand-mark.svg') }}" width="36" height="36" class="infrastack-brand-mark" alt="" aria-hidden="true">
+            <span>InfraStack</span>
           </a>
-
           <div class="footer-contact pt-3">
-            <p>Interactive infrastructure tools for architecture, cloud cost planning, security review, scanning, and shell command work.</p>
+            <p>Browser-based infrastructure architecture design with synchronized diagrams, inventory, relationships, and deterministic results.</p>
             <p class="mt-3"><strong>Email:</strong> <a href="mailto:hello@infrastack.my">hello@infrastack.my</a></p>
             <p><strong>Website:</strong> <a href="https://www.infrastack.my">www.infrastack.my</a></p>
           </div>
         </div>
 
-        <div class="col-lg-2 col-md-3 footer-links">
+        <div class="col-lg-3 col-md-3 footer-links">
           <h4>Product</h4>
           <ul>
-            <li><a href="{{ path('app_category') }}">All Tools</a></li>
-            <li><a href="{{ path('app_category', { family: 'architecture' }) }}">Architecture</a></li>
-            <li><a href="{{ path('app_category', { family: 'calculate' }) }}">Calculators</a></li>
-            <li><a href="{{ path('app_category', { family: 'assessment' }) }}">Assessments</a></li>
-            <li><a href="{{ path('app_category', { family: 'shell' }) }}">Shell Tools</a></li>
+            <li><a href="{{ path('app_studio') }}">InfraStack Studio</a></li>
+            <li><a href="{{ path('app_studio') }}">AWS Architecture</a></li>
+            <li><a href="{{ path('app_studio') }}">Azure Architecture</a></li>
+            <li><a href="{{ path('app_studio') }}">Architecture Review</a></li>
           </ul>
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Categories</h4>
-          <ul>
-            {% for item in sidebar_categories|default([])|slice(0, 5) %}
-              <li>
-                <a href="{{ path('app_category', { category: item.slug }) }}">
-                  {{ item.name }}
-                </a>
-              </li>
-            {% else %}
-              <li><a href="{{ path('app_category') }}">Browse tools</a></li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Recent Tools</h4>
-          <ul>
-            {% for tool in recent_tools|default([])|slice(0, 5) %}
-              <li>
-                <a href="{{ path('tool_detail', { category: tool.category_slug, slug: tool.slug }) }}">
-                  {{ tool.display_title|default(tool.title) }}
-                </a>
-              </li>
-            {% else %}
-              <li><a href="{{ path('app_category') }}">No recent tools</a></li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Resources</h4>
+          <h4>Company</h4>
           <ul>
             <li><a href="{{ path('app_author') }}">Author Profile</a></li>
-            <li><a href="{{ path('app_contact') }}">Contact</a></li>
+            <li><a href="{{ path('app_contact') }}">Contact Us</a></li>
             <li><a href="{{ path('app_privacy') }}">Privacy Policy</a></li>
-            <li><a href="{{ path('app_category') }}">Tools</a></li>
-            <li><a href="{{ path('app_main') }}#home-categories">Categories</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Start</h4>
+          <ul>
+            <li><a href="{{ path('app_main') }}">Home</a></li>
+            <li><a href="{{ path('app_studio') }}">Open Studio</a></li>
+            <li><a href="{{ path('app_contact') }}">Request Architecture</a></li>
           </ul>
         </div>
       </div>
     </div>
 
     <div class="container copyright">
-      <p>
-        © <span>{{ "now"|date("Y") }}</span>
-        <strong class="px-1 sitename">InfraStack</strong>
-        <span>All Rights Reserved</span>
-      </p>
-      <div class="credits">
-        Built for practical infrastructure planning, review, and operations.
-      </div>
+      <p>© <span>{{ "now"|date("Y") }}</span> <strong class="px-1 sitename">InfraStack</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">Built for practical infrastructure architecture planning and review.</div>
     </div>
   </footer>
 {% endblock %}

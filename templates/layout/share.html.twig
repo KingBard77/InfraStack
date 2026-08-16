@@ -1,243 +1,65 @@
 {# templates/layout/share.html.twig #}
-{% set shareMode = share_mode|default('panel') %}
+{% extends 'base.html.twig' %}
 
-{% if shareMode == 'snapshot' %}
-  <section class="share-snapshot-page">
-    <div class="share-snapshot-shell">
-      <p class="share-snapshot-kicker">InfraStack Snapshot</p>
-      <h1 class="share-snapshot-title">{{ page_title }}</h1>
-      <p class="share-snapshot-summary">{{ page_description }}</p>
-      <img
-        class="share-snapshot-image"
-        src="{{ snapshot_image_url }}"
-        alt="{{ page_image_alt }}"
-        width="{{ page_image_width }}"
-        height="{{ page_image_height }}"
-      >
-      <div class="share-snapshot-actions">
-        <a class="share-snapshot-action" href="{{ article_url }}">Open {{ tool_title }}</a>
-      </div>
-    </div>
-  </section>
-{% elseif shareMode == 'popup' %}
-  {% set sharePrefixClass = share_prefix_class|default('') %}
-  {% set shareClassPrefix = sharePrefixClass ? sharePrefixClass ~ '-' : '' %}
-  {% set shareToolClass = share_tool_class|default('') %}
-  {% set shareOverlayId = share_overlay_id|default('toolShareOverlay') %}
-  {% set shareTitleId = share_title_id|default(shareOverlayId ~ 'Title') %}
-  {% set shareCloseId = share_close_id|default(shareOverlayId ~ 'Close') %}
-  {% set shareStatusId = share_status_id|default(shareOverlayId ~ 'Status') %}
-  {% set sharePreviewId = share_preview_id|default(shareOverlayId ~ 'Preview') %}
-  {% set shareContinueId = share_continue_id|default(shareOverlayId ~ 'ContinueArticleShare') %}
-  {% set shareNativeId = share_native_id|default(shareOverlayId ~ 'NativeShare') %}
-  {% set shareCopyImageId = share_copy_image_id|default(shareOverlayId ~ 'CopyShareImage') %}
-  {% set shareDownloadId = share_download_id|default(shareOverlayId ~ 'DownloadShareImage') %}
-  {% set shareOverlayClass = 'tool-share-overlay d-none' ~ (shareToolClass ? ' ' ~ shareToolClass : '') ~ (sharePrefixClass ? ' ' ~ shareClassPrefix ~ 'share-overlay' : '') %}
-  {% set shareDialogClass = 'tool-share-dialog' ~ (sharePrefixClass ? ' ' ~ shareClassPrefix ~ 'share-dialog' : '') %}
-  {% set shareHeaderClass = 'tool-share-header' ~ (sharePrefixClass ? ' ' ~ shareClassPrefix ~ 'share-header' : '') %}
-  {% set shareTitleClass = 'tool-share-title' ~ (sharePrefixClass ? ' ' ~ shareClassPrefix ~ 'share-title' : '') %}
-  {% set shareCopyClass = 'tool-share-copy' ~ (sharePrefixClass ? ' ' ~ shareClassPrefix ~ 'share-copy' : '') %}
-  {% set shareCloseClass = 'tool-share-close' ~ (sharePrefixClass ? ' ' ~ shareClassPrefix ~ 'share-close' : '') %}
-  {% set sharePreviewShellClass = 'tool-share-preview-shell' ~ (sharePrefixClass ? ' ' ~ shareClassPrefix ~ 'share-preview-shell' : '') %}
-  {% set shareStatusClass = 'tool-share-status' ~ (sharePrefixClass ? ' ' ~ shareClassPrefix ~ 'share-status' : '') %}
-  {% set shareFrameClass = 'tool-share-frame' ~ (sharePrefixClass ? ' ' ~ shareClassPrefix ~ 'share-frame' : '') %}
-  {% set sharePreviewClass = 'tool-share-preview' ~ (sharePrefixClass ? ' ' ~ shareClassPrefix ~ 'share-preview' : '') %}
-  {% set shareActionsClass = 'tool-share-actions' ~ (sharePrefixClass ? ' ' ~ shareClassPrefix ~ 'share-actions' : '') %}
+{% block title %}{{ page_title }}{% endblock %}
 
-  <div
-    class="{{ shareOverlayClass }}"
-    id="{{ shareOverlayId }}"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="{{ shareTitleId }}"
-    {% if share_tool_key is defined and share_tool_key %}data-share-tool-key="{{ share_tool_key }}"{% endif %}
-    {% if share_file_name is defined and share_file_name %}data-share-file-name="{{ share_file_name }}"{% endif %}
-    {% if share_title is defined and share_title %}data-share-title="{{ share_title }}"{% endif %}
-    {% if share_summary is defined and share_summary %}data-share-summary="{{ share_summary }}"{% endif %}
-    {% if share_snapshot_endpoint is defined and share_snapshot_endpoint %}data-share-snapshot-endpoint="{{ share_snapshot_endpoint }}"{% endif %}
-  >
-    <div class="{{ shareDialogClass }}">
-      <div class="{{ shareHeaderClass }}">
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/layout/share.css') }}">
+{% endblock %}
+
+{% block body %}
+<section
+    id="studio-shared-project"
+    class="studio-shared-page"
+    data-icon-urls="{{ studio_icon_urls|json_encode|e('html_attr') }}"
+    data-embed-url="{{ embed_url }}"
+>
+    <div class="studio-share-heading">
         <div>
-          <h3 class="{{ shareTitleClass }} tool-share-title-hidden" id="{{ shareTitleId }}">{{ share_title|default('Share Snapshot') }}</h3>
-          <p class="{{ shareCopyClass }}">{{ share_copy|default('Preview the framed output before sending it out.') }}</p>
+            <span>Shared InfraStack project</span>
+            <h1>{{ shared_project.name }}</h1>
+            <p>Read-only diagram, normalized inventory, and Studio Result.</p>
         </div>
-        <button type="button" class="{{ shareCloseClass }}" id="{{ shareCloseId }}" aria-label="{{ share_close_label|default('Close share preview') }}">
-          <i class="bi bi-x-lg" aria-hidden="true"></i>
-        </button>
-      </div>
-
-      <div class="{{ sharePreviewShellClass }}">
-        <div class="{{ shareFrameClass }}">
-          <img id="{{ sharePreviewId }}" class="{{ sharePreviewClass }}" alt="{{ share_preview_alt|default('Framed snapshot preview') }}">
+        <div class="studio-share-actions">
+            <button id="studio-share-copy" type="button"><i class="bi bi-link-45deg"></i> Copy link</button>
+            <button id="studio-embed-copy" type="button"><i class="bi bi-code-slash"></i> Copy embed</button>
+            <a href="{{ path('app_studio') }}"><i class="bi bi-pencil-square"></i> Open Studio</a>
         </div>
-      </div>
-
-      <div class="{{ shareActionsClass }}">
-        <div class="{{ shareStatusClass }}" id="{{ shareStatusId }}" role="status">{{ share_status|default('Preparing framed snapshot...') }}</div>
-        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="{{ shareContinueId }}" data-tool-share-continue disabled>
-          <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
-          <span data-button-label>{{ share_continue_label|default('Continue') }}</span>
-        </button>
-        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="{{ shareNativeId }}" data-tool-share-native disabled>
-          <i class="bi bi-box-arrow-up" aria-hidden="true"></i>
-          <span data-button-label>{{ share_native_label|default('System Share') }}</span>
-        </button>
-        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="{{ shareCopyImageId }}" data-tool-share-copy-image disabled>
-          <i class="bi bi-clipboard" aria-hidden="true"></i>
-          <span data-button-label>{{ share_copy_image_label|default('Copy Image') }}</span>
-        </button>
-        <button type="button" class="tool-action-btn tool-action-btn-secondary" id="{{ shareDownloadId }}" data-tool-share-download disabled>
-          <i class="bi bi-download" aria-hidden="true"></i>
-          <span data-button-label>{{ share_download_label|default('Download PNG') }}</span>
-        </button>
-      </div>
     </div>
-  </div>
-{% else %}
-  {% set shareUrl = article_url|default(app.request.uri) %}
-  {% set shareTitle = article_title|default(meta.title|default('InfraStack Tool')) %}
-  {% set shareSummary = article_summary|default(meta.summary|default('')) %}
-  {% set shareText = shareSummary ? shareTitle ~ ' - ' ~ shareSummary : shareTitle %}
-  {% set embedSeparator = '?' in shareUrl ? '&' : '?' %}
-  {% set embedUrl = embed_url|default(shareUrl ~ embedSeparator ~ 'share=embed') %}
-  {% set embedUrlWithShare = 'share=' in embedUrl ? embedUrl : embedUrl ~ ('?' in embedUrl ? '&' : '?') ~ 'share=embed' %}
-  {% set embedCode = '<iframe src="' ~ embedUrlWithShare ~ '" title="' ~ shareTitle ~ '" width="100%" height="100%" loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" style="width:100%;height:100%;aspect-ratio:16 / 9;border:1px solid #dbe4ee;border-radius:14px;"></iframe>' %}
 
-  <div class="meta-bottom article-share-panel{% if meta.related_links is defined and meta.related_links|length > 0 %} article-share-panel-linked{% endif %}">
-    {% if meta.tags is defined and meta.tags|length > 0 %}
-      <div class="tags-section">
-        <h2 class="article-share-heading">Related Topics</h2>
-        <div class="tags">
-          {% for tag in meta.tags %}
-            <a
-              href="{{ path('app_category', { tag: tag }) }}"
-              class="tag"
-            >
-              {{ tag }}
-            </a>
-          {% endfor %}
-        </div>
-      </div>
-
-      <div class="article-share-divider"></div>
-    {% endif %}
-
-    <div class="share-section">
-      <h2 class="article-share-heading">Share Article</h2>
-      <div class="share-actions" aria-label="Share article">
-        <a
-          href="https://twitter.com/intent/tweet?url={{ shareUrl|url_encode }}&text={{ shareTitle|url_encode }}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="share-action"
-          aria-label="Share on X"
-        >
-          <i class="bi bi-twitter-x"></i>
-        </a>
-
-        <a
-          href="https://www.facebook.com/sharer/sharer.php?u={{ shareUrl|url_encode }}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="share-action"
-          aria-label="Share on Facebook"
-        >
-          <i class="bi bi-facebook"></i>
-        </a>
-
-        <a
-          href="https://www.linkedin.com/feed/?shareActive=true&shareUrl={{ shareUrl|url_encode }}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="share-action"
-          aria-label="Share on LinkedIn"
-        >
-          <i class="bi bi-linkedin"></i>
-        </a>
-
-        <a
-          href="https://api.whatsapp.com/send?text={{ shareText|url_encode }}%20{{ shareUrl|url_encode }}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="share-action"
-          aria-label="Share on WhatsApp"
-        >
-          <i class="bi bi-whatsapp"></i>
-        </a>
-
-        <a
-          href="https://t.me/share/url?url={{ shareUrl|url_encode }}&text={{ shareTitle|url_encode }}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="share-action"
-          aria-label="Share on Telegram"
-        >
-          <i class="bi bi-telegram"></i>
-        </a>
-
-        <a
-          href="https://www.reddit.com/submit?url={{ shareUrl|url_encode }}&title={{ shareTitle|url_encode }}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="share-action"
-          aria-label="Share on Reddit"
-        >
-          <i class="bi bi-reddit"></i>
-        </a>
-
-        <a
-          href="mailto:?subject={{ shareTitle|url_encode }}&body={{ shareText|url_encode }}%0A%0A{{ shareUrl|url_encode }}"
-          class="share-action"
-          aria-label="Share by email"
-        >
-          <i class="bi bi-envelope"></i>
-        </a>
-
-        <button
-          type="button"
-          class="share-action"
-          data-share-copy
-          data-copy-value="{{ shareUrl }}"
-          aria-label="Copy article link"
-        >
-          <i class="bi bi-link-45deg"></i>
-        </button>
-
-        <button
-          type="button"
-          class="share-action share-action-embed"
-          data-share-copy
-          data-copy-value="{{ embedCode|e('html_attr') }}"
-          aria-label="Copy embed code"
-        >
-          <i class="bi bi-code-slash"></i>
-        </button>
-      </div>
+    <div class="studio-share-toolbar">
+        <label for="studio-shared-view">Projection
+            <select id="studio-shared-view"></select>
+        </label>
+        <button id="studio-shared-zoom-out" type="button" aria-label="Zoom out"><i class="bi bi-dash-lg"></i></button>
+        <span id="studio-shared-zoom">100%</span>
+        <button id="studio-shared-zoom-in" type="button" aria-label="Zoom in"><i class="bi bi-plus-lg"></i></button>
+        <button id="studio-shared-fit" type="button"><i class="bi bi-arrows-fullscreen"></i> Fit</button>
+        <span class="studio-share-created">Shared {{ shared_created_at|date('M j, Y') }}</span>
     </div>
-  </div>
 
-  {% if category is defined and slug is defined %}
-    {{ include('layout/share.html.twig', {
-      share_mode: 'popup',
-      share_tool_class: 'tool-share-global',
-      share_prefix_class: 'tool',
-      share_overlay_id: 'toolShareOverlay',
-      share_title_id: 'toolShareTitle',
-      share_close_id: 'toolShareClose',
-      share_status_id: 'toolShareStatus',
-      share_preview_id: 'toolSharePreview',
-      share_continue_id: 'toolShareContinue',
-      share_native_id: 'toolShareNative',
-      share_copy_image_id: 'toolShareCopyImage',
-      share_download_id: 'toolShareDownload',
-      share_title: shareTitle,
-      share_summary: shareSummary,
-      share_copy: 'Preview the generated snapshot before sending it out.',
-      share_preview_alt: 'Framed InfraStack tool snapshot preview',
-      share_tool_key: category ~ '/' ~ slug,
-      share_file_name: slug ~ '-share.png',
-      share_snapshot_endpoint: path('app_share_snapshot_create', { category: category, slug: slug })
-    }) }}
-  {% endif %}
-{% endif %}
+    <div class="studio-shared-canvas-shell">
+        <div id="studio-shared-graph" class="studio-shared-graph" aria-label="Shared project diagram"></div>
+        <div id="studio-shared-outline" class="studio-shared-outline" aria-hidden="true"></div>
+        <a class="studio-share-watermark" href="{{ path('app_studio') }}">Made with InfraStack</a>
+    </div>
+
+    <section class="studio-shared-section" aria-labelledby="studio-shared-inventory-title">
+        <div class="studio-shared-section-heading"><div><span>Project facts</span><h2 id="studio-shared-inventory-title">Inventory</h2></div><strong id="studio-shared-inventory-count"></strong></div>
+        <div class="studio-shared-table-wrap"><table><thead><tr><th>Asset</th><th>Type</th><th>Placement</th><th>Address</th><th>Resources</th><th>Controls</th></tr></thead><tbody id="studio-shared-inventory"></tbody></table></div>
+    </section>
+
+    <section class="studio-shared-section" aria-labelledby="studio-shared-advisory-title">
+        <div class="studio-shared-section-heading"><div><span>Explainable guidance</span><h2 id="studio-shared-advisory-title">Studio Result</h2></div><div class="studio-shared-grade"><span>Grade</span><strong id="studio-shared-grade">—</strong><small id="studio-shared-score">Not graded</small></div></div>
+        <p class="studio-shared-advisory-note">Grades reflect modeled facts and are guidance, not certification.</p>
+        <div id="studio-shared-findings" class="studio-shared-findings"></div>
+    </section>
+
+    <script id="studio-shared-project-data" type="application/json">{{ shared_project|json_encode(constant('JSON_HEX_TAG') + constant('JSON_HEX_AMP') + constant('JSON_HEX_APOS') + constant('JSON_HEX_QUOT'))|raw }}</script>
+</section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ importmap(['app', 'layout-share']) }}
+{% endblock %}

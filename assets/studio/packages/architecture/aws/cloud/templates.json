@@ -1,0 +1,6544 @@
+{
+  "schema_version": "1.0",
+  "package_id": "architecture-aws-cloud",
+  "templates": [
+    {
+      "id": "aws-three-tier",
+      "name": "AWS Three-Tier Multi-AZ",
+      "description": "Route 53, internet ingress, isolated application and data tiers, Multi-AZ RDS and operations services.",
+      "icon": "bi-layers",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-msrgzq3o-k5brt0",
+        "name": "AWS Three-Tier Multi-AZ",
+        "profile": "aws-three-tier",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "users",
+            "catalog_id": null,
+            "type": "application",
+            "label": "Users",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "External clients",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 500,
+                "y": 100,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 500,
+                "y": 100,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 500,
+                "y": 100,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 500,
+                "y": 100,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "route53",
+            "catalog_id": "aws-route-53",
+            "type": "router",
+            "label": "Amazon Route 53",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Public DNS and routing",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 790,
+                "y": 100,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 790,
+                "y": 100,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 790,
+                "y": 100,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 790,
+                "y": 100,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "internet",
+            "catalog_id": "aws-internet-gateway",
+            "type": "internet",
+            "label": "Internet",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Public network edge",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 650,
+                "y": 190,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 650,
+                "y": 190,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 650,
+                "y": 190,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 650,
+                "y": 190,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "alb",
+            "catalog_id": "aws-application-load-balancer",
+            "type": "router",
+            "label": "Application Load Balancer",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Internet-facing ingress",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 620,
+                "y": 275,
+                "width": 300,
+                "height": 88,
+                "icon_size": 26,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 620,
+                "y": 275,
+                "width": 300,
+                "height": 88,
+                "icon_size": 26,
+                "collapsed": false
+              },
+              "network": {
+                "x": 620,
+                "y": 275,
+                "width": 300,
+                "height": 88,
+                "icon_size": 26,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 620,
+                "y": 275,
+                "width": 300,
+                "height": 88,
+                "icon_size": 26,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "vpc",
+            "catalog_id": "aws-vpc",
+            "type": "vpc",
+            "label": "AWS VPC",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "AWS network boundary",
+              "address": "10.0.0.0/16",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "Environment=Production, Owner=Platform Team",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 120,
+                "y": 350,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 120,
+                "y": 350,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 120,
+                "y": 350,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 120,
+                "y": 350,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "az-a",
+            "catalog_id": null,
+            "type": "availability-zone",
+            "label": "Availability Zone A",
+            "category": "Availability",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "Subnet and workload grouping",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "production",
+              "zone": "ap-southeast-1a",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 210,
+                "y": 450,
+                "width": 560,
+                "height": 760,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 210,
+                "y": 450,
+                "width": 560,
+                "height": 760,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 210,
+                "y": 450,
+                "width": 560,
+                "height": 760,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 210,
+                "y": 450,
+                "width": 560,
+                "height": 760,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "az-b",
+            "catalog_id": null,
+            "type": "availability-zone",
+            "label": "Availability Zone B",
+            "category": "Availability",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "Subnet and workload grouping",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "production",
+              "zone": "ap-southeast-1b",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 850,
+                "y": 450,
+                "width": 560,
+                "height": 760,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 850,
+                "y": 450,
+                "width": 560,
+                "height": 760,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 850,
+                "y": 450,
+                "width": 560,
+                "height": 760,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 850,
+                "y": 450,
+                "width": 560,
+                "height": 760,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "public-a",
+            "catalog_id": null,
+            "type": "subnet",
+            "label": "Public Subnet A",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "az-a",
+            "properties": {
+              "role": "Ingress and egress tier",
+              "address": "10.0.1.0/24",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "public",
+              "route_table": "rtb-public-a",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 260,
+                "y": 540,
+                "width": 460,
+                "height": 180,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 260,
+                "y": 540,
+                "width": 460,
+                "height": 180,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 260,
+                "y": 540,
+                "width": 460,
+                "height": 180,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 260,
+                "y": 540,
+                "width": 460,
+                "height": 180,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "public-b",
+            "catalog_id": null,
+            "type": "subnet",
+            "label": "Public Subnet B",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "az-b",
+            "properties": {
+              "role": "Ingress and egress tier",
+              "address": "10.0.2.0/24",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "public",
+              "route_table": "rtb-public-b",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 900,
+                "y": 540,
+                "width": 460,
+                "height": 180,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 900,
+                "y": 540,
+                "width": 460,
+                "height": 180,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 900,
+                "y": 540,
+                "width": 460,
+                "height": 180,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 900,
+                "y": 540,
+                "width": 460,
+                "height": 180,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "nat",
+            "catalog_id": "aws-nat-gateway",
+            "type": "router",
+            "label": "NAT Gateway",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "public-a",
+            "properties": {
+              "role": "Shared outbound path",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "ap-southeast-1a",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 330,
+                "y": 620,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 330,
+                "y": 620,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 330,
+                "y": 620,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 330,
+                "y": 620,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "private-app-a",
+            "catalog_id": null,
+            "type": "subnet",
+            "label": "Private App Subnet A",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "az-a",
+            "properties": {
+              "role": "Private workload tier",
+              "address": "10.0.11.0/24",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "private",
+              "route_table": "rtb-private-app-a",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 260,
+                "y": 760,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 260,
+                "y": 760,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 260,
+                "y": 760,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 260,
+                "y": 760,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "private-app-b",
+            "catalog_id": null,
+            "type": "subnet",
+            "label": "Private App Subnet B",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "az-b",
+            "properties": {
+              "role": "Private workload tier",
+              "address": "10.0.12.0/24",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "private",
+              "route_table": "rtb-private-app-b",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 900,
+                "y": 760,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 900,
+                "y": 760,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 900,
+                "y": 760,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 900,
+                "y": 760,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "ec2-a",
+            "catalog_id": "aws-ec2-auto-scaling",
+            "type": "server",
+            "label": "EC2 Auto Scaling",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "private-app-a",
+            "properties": {
+              "role": "Availability Zone A workload",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "ap-southeast-1a",
+              "owner": "",
+              "cpu": "2 vCPU",
+              "memory": "8 GB",
+              "storage": "40 GB EBS",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "m7i.large",
+              "operating_system": "Amazon Linux 2023",
+              "private_ip": "10.0.11.20",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 330,
+                "y": 850,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 330,
+                "y": 850,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 330,
+                "y": 850,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 330,
+                "y": 850,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "ec2-b",
+            "catalog_id": "aws-ec2-auto-scaling",
+            "type": "server",
+            "label": "EC2 Auto Scaling",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "private-app-b",
+            "properties": {
+              "role": "Availability Zone B workload",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "ap-southeast-1b",
+              "owner": "",
+              "cpu": "2 vCPU",
+              "memory": "8 GB",
+              "storage": "40 GB EBS",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "m7i.large",
+              "operating_system": "Amazon Linux 2023",
+              "private_ip": "10.0.12.20",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 970,
+                "y": 850,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 970,
+                "y": 850,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 970,
+                "y": 850,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 970,
+                "y": 850,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "private-data-a",
+            "catalog_id": null,
+            "type": "subnet",
+            "label": "Private Data Subnet A",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "az-a",
+            "properties": {
+              "role": "Stateful data services",
+              "address": "10.0.21.0/24",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "private",
+              "route_table": "rtb-private-data-a",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 260,
+                "y": 990,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 260,
+                "y": 990,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 260,
+                "y": 990,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 260,
+                "y": 990,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "private-data-b",
+            "catalog_id": null,
+            "type": "subnet",
+            "label": "Private Data Subnet B",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "az-b",
+            "properties": {
+              "role": "Stateful data services",
+              "address": "10.0.22.0/24",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "private",
+              "route_table": "rtb-private-data-b",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 900,
+                "y": 990,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 900,
+                "y": 990,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 900,
+                "y": 990,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 900,
+                "y": 990,
+                "width": 460,
+                "height": 190,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "rds-primary",
+            "catalog_id": "aws-rds",
+            "type": "database",
+            "label": "RDS Primary",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "private-data-a",
+            "properties": {
+              "role": "Writer placement",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "ap-southeast-1a",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "500 GB",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 330,
+                "y": 1080,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 330,
+                "y": 1080,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 330,
+                "y": 1080,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 330,
+                "y": 1080,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "rds-standby",
+            "catalog_id": "aws-rds",
+            "type": "database",
+            "label": "RDS Standby",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "private-data-b",
+            "properties": {
+              "role": "Replica or standby",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "ap-southeast-1b",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "500 GB",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 970,
+                "y": 1080,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 970,
+                "y": 1080,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 970,
+                "y": 1080,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 970,
+                "y": 1080,
+                "width": 320,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "cloudwatch",
+            "catalog_id": "aws-cloudwatch",
+            "type": "monitoring",
+            "label": "Amazon CloudWatch",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Metrics and alarms",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1580,
+                "y": 570,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1580,
+                "y": 570,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1580,
+                "y": 570,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1580,
+                "y": 570,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "flow-logs",
+            "catalog_id": "aws-vpc-flow-logs",
+            "type": "monitoring",
+            "label": "VPC Flow Logs",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Traffic telemetry",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1580,
+                "y": 760,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1580,
+                "y": 760,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1580,
+                "y": 760,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1580,
+                "y": 760,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "endpoints",
+            "catalog_id": "aws-vpc-endpoints",
+            "type": "router",
+            "label": "VPC Endpoints",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Private S3 and Systems Manager access",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1580,
+                "y": 950,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1580,
+                "y": 950,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1580,
+                "y": 950,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1580,
+                "y": 950,
+                "width": 260,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "users-dns",
+            "source": "users",
+            "target": "route53",
+            "type": "network",
+            "label": "DNS routing",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS",
+            "bandwidth": ""
+          },
+          {
+            "id": "dns-internet",
+            "source": "route53",
+            "target": "internet",
+            "type": "network",
+            "label": "Public route",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS/HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "internet-alb",
+            "source": "internet",
+            "target": "alb",
+            "type": "network",
+            "label": "HTTPS ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "alb-a",
+            "source": "alb",
+            "target": "ec2-a",
+            "type": "network",
+            "label": "Application traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "alb-b",
+            "source": "alb",
+            "target": "ec2-b",
+            "type": "network",
+            "label": "Application traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "nat-a",
+            "source": "nat",
+            "target": "ec2-a",
+            "type": "administration",
+            "label": "Private egress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "nat-b",
+            "source": "nat",
+            "target": "ec2-b",
+            "type": "administration",
+            "label": "Private egress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "app-db-a",
+            "source": "ec2-a",
+            "target": "rds-primary",
+            "type": "network",
+            "label": "Database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TCP/5432",
+            "bandwidth": ""
+          },
+          {
+            "id": "app-db-b",
+            "source": "ec2-b",
+            "target": "rds-standby",
+            "type": "network",
+            "label": "Database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TCP/5432",
+            "bandwidth": ""
+          },
+          {
+            "id": "rds-replication",
+            "source": "rds-primary",
+            "target": "rds-standby",
+            "type": "replication",
+            "label": "Multi-AZ replication",
+            "bidirectional": true,
+            "direction": "bidirectional",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "vpc-monitoring",
+            "source": "vpc",
+            "target": "cloudwatch",
+            "type": "administration",
+            "label": "Metrics and alarms",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "vpc-telemetry",
+            "source": "vpc",
+            "target": "flow-logs",
+            "type": "administration",
+            "label": "Traffic telemetry",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "vpc-private-access",
+            "source": "vpc",
+            "target": "endpoints",
+            "type": "network",
+            "label": "Private service access",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "mime_type": "",
+          "visible": false,
+          "opacity": 0.28,
+          "x": 0,
+          "y": 0,
+          "width": 2400,
+          "height": 1400,
+          "locked": true
+        },
+        "updated_at": "2026-08-13T12:04:02.922Z"
+      }
+    },
+    {
+      "id": "aws-serverless",
+      "name": "AWS Serverless Application",
+      "description": "Route 53, CloudFront, WAF, Lambda and DynamoDB.",
+      "icon": "bi-lightning-charge",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-msrgzq3u-quqt6d",
+        "name": "AWS Serverless Application",
+        "profile": "aws-serverless",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "aws-cloud",
+            "catalog_id": null,
+            "type": "domain",
+            "label": "AWS Cloud",
+            "category": "Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "Serverless account boundary",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 160,
+                "y": 120,
+                "width": 1200,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 160,
+                "y": 120,
+                "width": 1200,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 160,
+                "y": 120,
+                "width": 1200,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 160,
+                "y": 120,
+                "width": 1200,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "route53",
+            "catalog_id": "aws-route-53",
+            "type": "router",
+            "label": "Amazon Route 53",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "aws-cloud",
+            "properties": {
+              "role": "Public DNS",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 260,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 260,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 260,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 260,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "cloudfront",
+            "catalog_id": "aws-cloudfront",
+            "type": "internet",
+            "label": "Amazon CloudFront",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "aws-cloud",
+            "properties": {
+              "role": "Global content delivery",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 520,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 520,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 520,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 520,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "waf",
+            "catalog_id": "aws-waf",
+            "type": "firewall",
+            "label": "AWS WAF",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "aws-cloud",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "AWS",
+              "interfaces": "",
+              "security_zones": "Internet, application",
+              "policies": "AWS managed rules",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 790,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 790,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 790,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 790,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "lambda",
+            "catalog_id": "aws-lambda",
+            "type": "application",
+            "label": "AWS Lambda",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "aws-cloud",
+            "properties": {
+              "role": "Application functions",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "Managed",
+              "memory": "2048 MB",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1080,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1080,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1080,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1080,
+                "y": 380,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "dynamodb",
+            "catalog_id": "aws-dynamodb",
+            "type": "database",
+            "label": "Amazon DynamoDB",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "aws-cloud",
+            "properties": {
+              "role": "Application state",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1390,
+                "y": 280,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1390,
+                "y": 280,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1390,
+                "y": 280,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1390,
+                "y": 280,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "cloudwatch",
+            "catalog_id": "aws-cloudwatch",
+            "type": "monitoring",
+            "label": "Amazon CloudWatch",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "aws-cloud",
+            "properties": {
+              "role": "Metrics, logs and alarms",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1390,
+                "y": 520,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1390,
+                "y": 520,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1390,
+                "y": 520,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1390,
+                "y": 520,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "dns-edge",
+            "source": "route53",
+            "target": "cloudfront",
+            "type": "network",
+            "label": "DNS routing",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS",
+            "bandwidth": ""
+          },
+          {
+            "id": "edge-waf",
+            "source": "cloudfront",
+            "target": "waf",
+            "type": "trust",
+            "label": "Filtered ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "waf-lambda",
+            "source": "waf",
+            "target": "lambda",
+            "type": "api",
+            "label": "Application API",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "lambda-db",
+            "source": "lambda",
+            "target": "dynamodb",
+            "type": "api",
+            "label": "Data access",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "AWS API",
+            "bandwidth": ""
+          },
+          {
+            "id": "lambda-monitor",
+            "source": "lambda",
+            "target": "cloudwatch",
+            "type": "administration",
+            "label": "Telemetry",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "mime_type": "",
+          "visible": false,
+          "opacity": 0.28,
+          "x": 0,
+          "y": 0,
+          "width": 2400,
+          "height": 1400,
+          "locked": true
+        },
+        "updated_at": "2026-08-13T12:04:02.922Z"
+      }
+    },
+    {
+      "id": "aws-eks",
+      "name": "AWS EKS Platform",
+      "description": "Multi-AZ EKS, load balancing, worker capacity, RDS and monitoring.",
+      "icon": "bi-hexagon",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-msrgzq3u-era5uf",
+        "name": "AWS EKS Platform",
+        "profile": "aws-eks",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "aws-cloud",
+            "catalog_id": null,
+            "type": "domain",
+            "label": "AWS Cloud",
+            "category": "Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "AWS account boundary",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "Platform Team",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 80,
+                "y": 70,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 80,
+                "y": 70,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 80,
+                "y": 70,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 80,
+                "y": 70,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "production",
+            "catalog_id": null,
+            "type": "environment",
+            "label": "Production",
+            "category": "Environment",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "aws-cloud",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "production",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 140,
+                "y": 145,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 140,
+                "y": 145,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 140,
+                "y": 145,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 140,
+                "y": 145,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "vpc",
+            "catalog_id": "aws-vpc",
+            "type": "vpc",
+            "label": "EKS Platform VPC",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "production",
+            "properties": {
+              "role": "Primary AWS network",
+              "address": "10.0.0.0/16",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "Environment=Production, Owner=Platform Team",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 210,
+                "y": 220,
+                "width": 1200,
+                "height": 880,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 210,
+                "y": 220,
+                "width": 1200,
+                "height": 880,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 210,
+                "y": 220,
+                "width": 1200,
+                "height": 880,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 210,
+                "y": 220,
+                "width": 1200,
+                "height": 880,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "az-a",
+            "catalog_id": null,
+            "type": "availability-zone",
+            "label": "Availability Zone A",
+            "category": "Availability",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "production",
+              "zone": "ap-southeast-1a",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 280,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 280,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 280,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 280,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "az-b",
+            "catalog_id": null,
+            "type": "availability-zone",
+            "label": "Availability Zone B",
+            "category": "Availability",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "production",
+              "zone": "ap-southeast-1b",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1170,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1170,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1170,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1170,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "alb",
+            "catalog_id": "aws-application-load-balancer",
+            "type": "router",
+            "label": "Application Load Balancer",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 990,
+                "y": 270,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 990,
+                "y": 270,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 990,
+                "y": 270,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 990,
+                "y": 270,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "eks",
+            "catalog_id": "aws-eks",
+            "type": "kubernetes",
+            "label": "Amazon EKS",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "Managed Kubernetes control plane",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 990,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 990,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 990,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 990,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "workers-a",
+            "catalog_id": "aws-ec2-auto-scaling",
+            "type": "cluster",
+            "label": "Worker Group A",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "az-a",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "ap-southeast-1a",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "m7i.xlarge",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 520,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 520,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 520,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 520,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "workers-b",
+            "catalog_id": "aws-ec2-auto-scaling",
+            "type": "cluster",
+            "label": "Worker Group B",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "az-b",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "ap-southeast-1b",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "m7i.xlarge",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1410,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1410,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1410,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1410,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "rds",
+            "catalog_id": "aws-rds",
+            "type": "database",
+            "label": "Amazon RDS",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "1 TB",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 990,
+                "y": 790,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 990,
+                "y": 790,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 990,
+                "y": 790,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 990,
+                "y": 790,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "cloudwatch",
+            "catalog_id": "aws-cloudwatch",
+            "type": "monitoring",
+            "label": "Amazon CloudWatch",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 990,
+                "y": 970,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 990,
+                "y": 970,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 990,
+                "y": 970,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 990,
+                "y": 970,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "alb-eks",
+            "source": "alb",
+            "target": "eks",
+            "type": "network",
+            "label": "Kubernetes ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "eks-a",
+            "source": "eks",
+            "target": "workers-a",
+            "type": "administration",
+            "label": "Cluster management",
+            "bidirectional": true,
+            "direction": "bidirectional",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "eks-b",
+            "source": "eks",
+            "target": "workers-b",
+            "type": "administration",
+            "label": "Cluster management",
+            "bidirectional": true,
+            "direction": "bidirectional",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "a-rds",
+            "source": "workers-a",
+            "target": "rds",
+            "type": "network",
+            "label": "Database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TCP/5432",
+            "bandwidth": ""
+          },
+          {
+            "id": "b-rds",
+            "source": "workers-b",
+            "target": "rds",
+            "type": "network",
+            "label": "Database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TCP/5432",
+            "bandwidth": ""
+          },
+          {
+            "id": "eks-monitor",
+            "source": "eks",
+            "target": "cloudwatch",
+            "type": "administration",
+            "label": "Metrics and logs",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "mime_type": "",
+          "visible": false,
+          "opacity": 0.28,
+          "x": 0,
+          "y": 0,
+          "width": 2400,
+          "height": 1400,
+          "locked": true
+        },
+        "updated_at": "2026-08-13T12:04:02.922Z"
+      }
+    },
+    {
+      "id": "aws-hybrid",
+      "name": "AWS Hybrid Connectivity",
+      "description": "On-premises edge, Site-to-Site VPN, Transit Gateway and AWS VPC.",
+      "icon": "bi-bezier2",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-msrgzq3u-w1gm8a",
+        "name": "AWS Hybrid Connectivity",
+        "profile": "aws-hybrid",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "onprem",
+            "catalog_id": null,
+            "type": "domain",
+            "label": "On-Premises Datacenter",
+            "category": "On-Premises",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "Corporate datacenter",
+              "address": "",
+              "hostname": "",
+              "provider": "on-premises",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 80,
+                "y": 180,
+                "width": 650,
+                "height": 720,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 80,
+                "y": 180,
+                "width": 650,
+                "height": 720,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 80,
+                "y": 180,
+                "width": 650,
+                "height": 720,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 80,
+                "y": 180,
+                "width": 650,
+                "height": 720,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "edge-fw",
+            "catalog_id": null,
+            "type": "firewall",
+            "label": "Edge Firewall",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "onprem",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "Palo Alto Networks",
+              "interfaces": "outside, inside, vpn",
+              "security_zones": "untrust, trust, vpn",
+              "policies": "Hybrid application access",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "10.10.0.10",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 300,
+                "y": 360,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 300,
+                "y": 360,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 300,
+                "y": 360,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 300,
+                "y": 360,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "core-router",
+            "catalog_id": null,
+            "type": "router",
+            "label": "Core Router",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "onprem",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "Cisco",
+              "interfaces": "WAN, core",
+              "security_zones": "",
+              "policies": "",
+              "model": "Catalyst 8500",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "10.10.0.1",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 300,
+                "y": 600,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 300,
+                "y": 600,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 300,
+                "y": 600,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 300,
+                "y": 600,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "aws-cloud",
+            "catalog_id": null,
+            "type": "domain",
+            "label": "AWS Cloud",
+            "category": "Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "AWS account boundary",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 850,
+                "y": 90,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 850,
+                "y": 90,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 850,
+                "y": 90,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 850,
+                "y": 90,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "vpn",
+            "catalog_id": "aws-site-to-site-vpn",
+            "type": "router",
+            "label": "AWS Site-to-Site VPN",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "aws-cloud",
+            "properties": {
+              "role": "IPSec hybrid tunnel",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 930,
+                "y": 340,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 930,
+                "y": 340,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 930,
+                "y": 340,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 930,
+                "y": 340,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "tgw",
+            "catalog_id": "aws-transit-gateway",
+            "type": "router",
+            "label": "AWS Transit Gateway",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "aws-cloud",
+            "properties": {
+              "role": "Hybrid routing hub",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1220,
+                "y": 340,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1220,
+                "y": 340,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1220,
+                "y": 340,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1220,
+                "y": 340,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "vpc",
+            "catalog_id": "aws-vpc",
+            "type": "vpc",
+            "label": "Workload VPC",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "aws-cloud",
+            "properties": {
+              "role": "",
+              "address": "10.20.0.0/16",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1510,
+                "y": 220,
+                "width": 560,
+                "height": 690,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1510,
+                "y": 220,
+                "width": 560,
+                "height": 690,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1510,
+                "y": 220,
+                "width": 560,
+                "height": 690,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1510,
+                "y": 220,
+                "width": 560,
+                "height": 690,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "ec2",
+            "catalog_id": "aws-ec2",
+            "type": "server",
+            "label": "Hybrid Application",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "m7i.large",
+              "operating_system": "RHEL 9",
+              "private_ip": "10.20.10.20",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1710,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1710,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1710,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1710,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "rds",
+            "catalog_id": "aws-rds",
+            "type": "database",
+            "label": "Amazon RDS",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1710,
+                "y": 690,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1710,
+                "y": 690,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1710,
+                "y": 690,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1710,
+                "y": 690,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "fw-vpn",
+            "source": "edge-fw",
+            "target": "vpn",
+            "type": "vpn",
+            "label": "IPSec tunnels",
+            "bidirectional": true,
+            "direction": "bidirectional",
+            "protocol": "IPSec",
+            "bandwidth": "1 Gbps"
+          },
+          {
+            "id": "vpn-tgw",
+            "source": "vpn",
+            "target": "tgw",
+            "type": "network",
+            "label": "Transit attachment",
+            "bidirectional": true,
+            "direction": "bidirectional",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "tgw-vpc",
+            "source": "tgw",
+            "target": "vpc",
+            "type": "peering",
+            "label": "VPC attachment",
+            "bidirectional": true,
+            "direction": "bidirectional",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "vpc-app",
+            "source": "vpc",
+            "target": "ec2",
+            "type": "network",
+            "label": "Private application traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "app-db",
+            "source": "ec2",
+            "target": "rds",
+            "type": "network",
+            "label": "Database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TCP/5432",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "mime_type": "",
+          "visible": false,
+          "opacity": 0.28,
+          "x": 0,
+          "y": 0,
+          "width": 2400,
+          "height": 1400,
+          "locked": true
+        },
+        "updated_at": "2026-08-13T12:04:02.922Z"
+      }
+    },
+    {
+      "id": "aws-secure-web",
+      "name": "AWS Secure Web Application",
+      "description": "Route 53, CloudFront, WAF, ALB, private workloads and database.",
+      "icon": "bi-shield-check",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-msrgzq3u-sxrvno",
+        "name": "AWS Secure Web Application",
+        "profile": "aws-secure-web",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "aws-cloud",
+            "catalog_id": null,
+            "type": "domain",
+            "label": "AWS Cloud",
+            "category": "Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "AWS account boundary",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "Platform Team",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 80,
+                "y": 70,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 80,
+                "y": 70,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 80,
+                "y": 70,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 80,
+                "y": 70,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "production",
+            "catalog_id": null,
+            "type": "environment",
+            "label": "Production",
+            "category": "Environment",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "aws-cloud",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "production",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 140,
+                "y": 145,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 140,
+                "y": 145,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 140,
+                "y": 145,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 140,
+                "y": 145,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "vpc",
+            "catalog_id": "aws-vpc",
+            "type": "vpc",
+            "label": "Secure Web VPC",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "production",
+            "properties": {
+              "role": "Primary AWS network",
+              "address": "10.0.0.0/16",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "Environment=Production, Owner=Platform Team",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 210,
+                "y": 220,
+                "width": 1200,
+                "height": 880,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 210,
+                "y": 220,
+                "width": 1200,
+                "height": 880,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 210,
+                "y": 220,
+                "width": 1200,
+                "height": 880,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 210,
+                "y": 220,
+                "width": 1200,
+                "height": 880,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "az-a",
+            "catalog_id": null,
+            "type": "availability-zone",
+            "label": "Availability Zone A",
+            "category": "Availability",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "production",
+              "zone": "ap-southeast-1a",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 280,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 280,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 280,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 280,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "az-b",
+            "catalog_id": null,
+            "type": "availability-zone",
+            "label": "Availability Zone B",
+            "category": "Availability",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "production",
+              "zone": "ap-southeast-1b",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1170,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1170,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1170,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1170,
+                "y": 310,
+                "width": 800,
+                "height": 700,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "route53",
+            "catalog_id": "aws-route-53",
+            "type": "router",
+            "label": "Amazon Route 53",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 160,
+                "y": 250,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 160,
+                "y": 250,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 160,
+                "y": 250,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 160,
+                "y": 250,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "cloudfront",
+            "catalog_id": "aws-cloudfront",
+            "type": "internet",
+            "label": "Amazon CloudFront",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 160,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 160,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 160,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 160,
+                "y": 470,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "waf",
+            "catalog_id": "aws-waf",
+            "type": "firewall",
+            "label": "AWS WAF",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "AWS",
+              "interfaces": "",
+              "security_zones": "internet, web",
+              "policies": "Managed common, reputation and rate-limit rules",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 400,
+                "y": 250,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 400,
+                "y": 250,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 400,
+                "y": 250,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 400,
+                "y": 250,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "alb",
+            "catalog_id": "aws-application-load-balancer",
+            "type": "router",
+            "label": "Application Load Balancer",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "az-a",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 760,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 760,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 760,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 760,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "ec2-a",
+            "catalog_id": "aws-ec2",
+            "type": "server",
+            "label": "Web Application A",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "az-a",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "ap-southeast-1a",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "m7i.large",
+              "operating_system": "Amazon Linux 2023",
+              "private_ip": "10.0.11.20",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 760,
+                "y": 650,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 760,
+                "y": 650,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 760,
+                "y": 650,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 760,
+                "y": 650,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "ec2-b",
+            "catalog_id": "aws-ec2",
+            "type": "server",
+            "label": "Web Application B",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "az-b",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "ap-southeast-1b",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "m7i.large",
+              "operating_system": "Amazon Linux 2023",
+              "private_ip": "10.0.12.20",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1450,
+                "y": 650,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1450,
+                "y": 650,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1450,
+                "y": 650,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1450,
+                "y": 650,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "rds",
+            "catalog_id": "aws-rds",
+            "type": "database",
+            "label": "RDS Multi-AZ",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "500 GB",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1100,
+                "y": 850,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1100,
+                "y": 850,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1100,
+                "y": 850,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1100,
+                "y": 850,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "dns-cdn",
+            "source": "route53",
+            "target": "cloudfront",
+            "type": "network",
+            "label": "Public DNS",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS",
+            "bandwidth": ""
+          },
+          {
+            "id": "cdn-waf",
+            "source": "cloudfront",
+            "target": "waf",
+            "type": "trust",
+            "label": "Filtered HTTPS",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "waf-alb",
+            "source": "waf",
+            "target": "alb",
+            "type": "network",
+            "label": "Approved ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "alb-a",
+            "source": "alb",
+            "target": "ec2-a",
+            "type": "network",
+            "label": "Application traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "alb-b",
+            "source": "alb",
+            "target": "ec2-b",
+            "type": "network",
+            "label": "Application traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "a-db",
+            "source": "ec2-a",
+            "target": "rds",
+            "type": "network",
+            "label": "Database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TCP/5432",
+            "bandwidth": ""
+          },
+          {
+            "id": "b-db",
+            "source": "ec2-b",
+            "target": "rds",
+            "type": "network",
+            "label": "Database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TCP/5432",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "mime_type": "",
+          "visible": false,
+          "opacity": 0.28,
+          "x": 0,
+          "y": 0,
+          "width": 2400,
+          "height": 1400,
+          "locked": true
+        },
+        "updated_at": "2026-08-13T12:04:02.922Z"
+      }
+    },
+    {
+      "id": "aws-disaster-recovery",
+      "name": "AWS Disaster Recovery",
+      "description": "Primary and recovery regions with replicated application and database tiers.",
+      "icon": "bi-arrow-repeat",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-msrgzq3v-ib5a5x",
+        "name": "AWS Disaster Recovery",
+        "profile": "aws-disaster-recovery",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "primary-region",
+            "catalog_id": null,
+            "type": "domain",
+            "label": "Primary Region · Singapore",
+            "category": "AWS Region",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 100,
+                "y": 130,
+                "width": 900,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 100,
+                "y": 130,
+                "width": 900,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 100,
+                "y": 130,
+                "width": 900,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 100,
+                "y": 130,
+                "width": 900,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "primary-vpc",
+            "catalog_id": "aws-vpc",
+            "type": "vpc",
+            "label": "Primary VPC",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "primary-region",
+            "properties": {
+              "role": "",
+              "address": "10.0.0.0/16",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 180,
+                "y": 240,
+                "width": 740,
+                "height": 620,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 180,
+                "y": 240,
+                "width": 740,
+                "height": 620,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 180,
+                "y": 240,
+                "width": 740,
+                "height": 620,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 180,
+                "y": 240,
+                "width": 740,
+                "height": 620,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "primary-app",
+            "catalog_id": "aws-ec2",
+            "type": "server",
+            "label": "Primary Application",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "primary-vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "ap-southeast-1a",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "m7i.large",
+              "operating_system": "Amazon Linux 2023",
+              "private_ip": "10.0.10.20",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 320,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 320,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 320,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 320,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "primary-db",
+            "catalog_id": "aws-rds",
+            "type": "database",
+            "label": "Primary RDS",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "primary-vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "1 TB",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 650,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 650,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 650,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 650,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "recovery-region",
+            "catalog_id": null,
+            "type": "domain",
+            "label": "Recovery Region · Sydney",
+            "category": "AWS Region",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-2",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1200,
+                "y": 130,
+                "width": 900,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1200,
+                "y": 130,
+                "width": 900,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1200,
+                "y": 130,
+                "width": 900,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1200,
+                "y": 130,
+                "width": 900,
+                "height": 850,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "recovery-vpc",
+            "catalog_id": "aws-vpc",
+            "type": "vpc",
+            "label": "Recovery VPC",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "recovery-region",
+            "properties": {
+              "role": "",
+              "address": "10.100.0.0/16",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-2",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1280,
+                "y": 240,
+                "width": 740,
+                "height": 620,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1280,
+                "y": 240,
+                "width": 740,
+                "height": 620,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1280,
+                "y": 240,
+                "width": 740,
+                "height": 620,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1280,
+                "y": 240,
+                "width": 740,
+                "height": 620,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "recovery-app",
+            "catalog_id": "aws-ec2",
+            "type": "server",
+            "label": "Recovery Application",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "recovery-vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "ap-southeast-2a",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "m7i.large",
+              "operating_system": "Amazon Linux 2023",
+              "private_ip": "10.100.10.20",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1420,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1420,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1420,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1420,
+                "y": 420,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "recovery-db",
+            "catalog_id": "aws-rds",
+            "type": "database",
+            "label": "Recovery RDS",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "recovery-vpc",
+            "properties": {
+              "role": "",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "1 TB",
+              "region": "ap-southeast-2",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1750,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1750,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1750,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1750,
+                "y": 620,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "route53",
+            "catalog_id": "aws-route-53",
+            "type": "router",
+            "label": "Amazon Route 53",
+            "category": "AWS",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Health-based failover routing",
+              "address": "",
+              "hostname": "",
+              "provider": "aws",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "ap-southeast-1",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1020,
+                "y": 80,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1020,
+                "y": 80,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1020,
+                "y": 80,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1020,
+                "y": 80,
+                "width": 156,
+                "height": 104,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "dns-primary",
+            "source": "route53",
+            "target": "primary-app",
+            "type": "network",
+            "label": "Primary route",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS/HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "dns-recovery",
+            "source": "route53",
+            "target": "recovery-app",
+            "type": "network",
+            "label": "Failover route",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS/HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "vpc-peer",
+            "source": "primary-vpc",
+            "target": "recovery-vpc",
+            "type": "peering",
+            "label": "Inter-region connectivity",
+            "bidirectional": true,
+            "direction": "bidirectional",
+            "protocol": "",
+            "bandwidth": "Defined by workload"
+          },
+          {
+            "id": "app-replication",
+            "source": "primary-app",
+            "target": "recovery-app",
+            "type": "replication",
+            "label": "Application deployment",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "db-replication",
+            "source": "primary-db",
+            "target": "recovery-db",
+            "type": "replication",
+            "label": "Cross-region database replication",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "mime_type": "",
+          "visible": false,
+          "opacity": 0.28,
+          "x": 0,
+          "y": 0,
+          "width": 2400,
+          "height": 1400,
+          "locked": true
+        },
+        "updated_at": "2026-08-13T12:04:02.923Z"
+      }
+    }
+  ]
+}

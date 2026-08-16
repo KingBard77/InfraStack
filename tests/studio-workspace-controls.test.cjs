@@ -5,8 +5,13 @@ const path = require('node:path');
 
 const projectRoot = path.resolve(__dirname, '..');
 const twig = fs.readFileSync(path.join(projectRoot, 'templates/studio/index.html.twig'), 'utf8');
-const js = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/index.js'), 'utf8');
-const graphAdapter = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/graph/maxgraph-adapter.js'), 'utf8');
+const js = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/studio.js'), 'utf8');
+const publisher = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/publish/share-publish.js'), 'utf8');
+const graphAdapter = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/library/studio-maxgraph.js'), 'utf8');
+const chartAdapter = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/library/studio-chart.js'), 'utf8');
+const contentModule = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/content.js'), 'utf8');
+const contentCss = fs.readFileSync(path.join(projectRoot, 'assets/styles/studio/content.css'), 'utf8');
+const studioCss = fs.readFileSync(path.join(projectRoot, 'assets/styles/studio/studio.css'), 'utf8');
 
 test('Studio uses a canvas projection dropdown instead of permanent view buttons', function () {
     assert.match(twig, /id="studio-view-select"/);
@@ -21,19 +26,28 @@ test('Studio catalogue exposes scalable native library and provider filters', fu
     assert.doesNotMatch(twig, /id="studio-catalogue-tabs"/);
     assert.match(js, /function renderCatalogueFilters\(\)/);
     assert.match(js, /activeCatalogueProvider/);
-    assert.match(twig, /data-provider-config=/);
-    assert.match(twig, /studio_providers\|json_encode/);
-    assert.match(js, /async function loadCatalogueSource\(provider\)/);
-    assert.match(js, /await loadCatalogueSource\(activeCatalogueProvider\)/);
-    assert.match(js, /providerConfig\[provider\]\?\.icon_urls/);
+    assert.match(twig, /data-library-config=/);
+    assert.match(twig, /studio_libraries\|json_encode/);
+    assert.match(js, /async function loadCatalogueSource\(libraryId\)/);
+    assert.match(js, /loadCatalogueSource\(source\.id\)/);
+    assert.match(js, /packageLoader\?\.loadProvider\(activeCatalogueProvider\)/);
+    assert.match(js, /source\.icon_urls\?\.\[iconKey\]/);
     assert.match(js, /resolvedIconUrls/);
-    assert.match(js, /activeCatalogueGroup = 'all'/);
+    assert.match(js, /activeCatalogueLibrary = 'all'/);
     assert.match(js, /elements\.catalogueLibrary\.value = 'all'/);
 });
 
 test('Studio top toolbar contains only wired editor actions', function () {
     [
         'studio-palette-toggle',
+        'studio-inspector-toggle',
+        'studio-palette-collapse',
+        'studio-inspector-collapse',
+        'studio-palette-resizer',
+        'studio-inspector-resizer',
+        'studio-reset-layout',
+        'studio-shortcuts-button',
+        'studio-shortcuts-dialog',
         'studio-zoom-out',
         'studio-zoom-in',
         'studio-fit',
@@ -52,6 +66,29 @@ test('Studio top toolbar contains only wired editor actions', function () {
         assert.match(twig, new RegExp(`id="${id}"`));
     });
     assert.match(js, /elements\.paletteToggle\.addEventListener\('click'/);
+    assert.match(js, /elements\.inspectorToggle\.addEventListener\('click'/);
+    assert.match(js, /elements\.paletteCollapse\.addEventListener\('click', togglePalettePanel\)/);
+    assert.match(js, /elements\.inspectorCollapse\.addEventListener\('click', toggleInspectorPanel\)/);
+    assert.match(js, /elements\.paletteToggle\.hidden = !paletteCollapsed/);
+    assert.match(js, /elements\.inspectorToggle\.hidden = !inspectorCollapsed/);
+    assert.match(studioCss, /\.studio-project-switcher > :not\(i\):not\(input\)/);
+    assert.match(studioCss, /\.studio-panel-collapse/);
+    assert.match(studioCss, /\.studio-panel-expand/);
+    assert.match(js, /startPanelResize\(event, 'palette'\)/);
+    assert.match(js, /startPanelResize\(event, 'inspector'\)/);
+    assert.match(js, /layoutStorageKey = 'infrastack-studio-layout-v0\.1'/);
+    assert.match(js, /elements\.resetLayout\.addEventListener\('click'/);
+    assert.match(js, /elements\.shortcutsDialog\.showModal\(\)/);
+    assert.match(js, /graphAdapter\.selectAllVisible\(\)/);
+    assert.match(js, /graphAdapter\.clearSelection\(\)/);
+    assert.match(js, /graphAdapter\.zoomAt\(event\.deltaY/);
+    assert.match(js, /setSpacePanning\(true\)/);
+    assert.match(graphAdapter, /RubberBandHandler/);
+    assert.match(graphAdapter, /zoomAt\(factor, clientX, clientY\)/);
+    assert.match(graphAdapter, /selectAllVisible\(\)/);
+    assert.match(graphAdapter, /clearSelection\(\)/);
+    assert.match(studioCss, /--studio-palette-width: 250px/);
+    assert.match(studioCss, /--studio-inspector-width: 280px/);
     assert.match(js, /elements\.deleteSelection\.addEventListener\('click'/);
     assert.match(js, /elements\.reviewAction\.addEventListener\('click'/);
     assert.match(js, /elements\.autoLayout\.addEventListener\('click', autoLayoutArchitecture\)/);
@@ -59,10 +96,12 @@ test('Studio top toolbar contains only wired editor actions', function () {
     assert.match(js, /core\.distributeAssets\(project, assetIds, project\.active_view, axis\)/);
 });
 
-test('Studio application shell exposes wired navigation, tabs, preview, and canvas controls', function () {
+test('Studio application shell exposes wired navigation, tabs, display, and canvas controls', function () {
     [
-        'studio-preview',
+        'studio-wide-screen',
+        'studio-fullscreen',
         'studio-share',
+        'studio-embed',
         'studio-components-tab',
         'studio-templates-tab',
         'studio-properties-tab',
@@ -72,17 +111,33 @@ test('Studio application shell exposes wired navigation, tabs, preview, and canv
         'studio-grid-visible',
         'studio-snap-enabled',
         'studio-guides-enabled',
+        'studio-grid-size',
+        'studio-image-asset-file',
+        'studio-upload-custom-icon',
+        'studio-empty-upload-icon',
         'studio-cursor-position'
     ].forEach(function (id) {
         assert.match(twig, new RegExp(`id="${id}"`));
     });
     assert.match(js, /function switchLibraryTab\(tab\)/);
     assert.match(js, /function switchInspectorTab\(tab\)/);
-    assert.match(js, /async function shareProject\(\)/);
+    assert.match(js, /layoutPublishFactory\?\.create/);
+    assert.match(publisher, /async function createPublishedSnapshot\(target\)/);
     assert.match(js, /graphAdapter\.setSnapEnabled\(snapEnabled\)/);
     assert.match(js, /graphAdapter\.setGuidesEnabled\(guidesEnabled\)/);
+    assert.match(js, /elements\.wideScreen\.addEventListener\('click'/);
+    assert.match(js, /elements\.fullscreen\.addEventListener\('click'/);
+    assert.match(js, /requestFullscreen\.call\(root\)/);
+    assert.match(js, /exitFullscreen\.call\(document\)/);
+    assert.match(js, /'fullscreenchange', 'webkitfullscreenchange'/);
+    assert.doesNotMatch(twig, /id="studio-preview"/);
     assert.match(graphAdapter, /setSnapEnabled\(enabled\)/);
     assert.match(graphAdapter, /setGuidesEnabled\(enabled\)/);
+    assert.match(graphAdapter, /setGridSize\(size\)/);
+    assert.match(graphAdapter, /setSnapBypass\(active\)/);
+    assert.match(graphAdapter, /applySmartSnapping\(bounds, delta, states\)/);
+    assert.match(js, /saveLayoutPreferences\(\)/);
+    assert.match(js, /event\.key === 'Alt'/);
 });
 
 test('Studio exposes provider templates and infrastructure-aware inspector fields', function () {
@@ -91,17 +146,99 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
         'studio-context-fields',
         'studio-field-connection-direction',
         'studio-field-connection-protocol',
-        'studio-field-connection-bandwidth'
+        'studio-field-connection-bandwidth',
+        'studio-field-connection-source',
+        'studio-field-connection-target',
+        'studio-field-connection-route',
+        'studio-reset-connection-route',
+        'studio-field-shape',
+        'studio-field-fill-color',
+        'studio-field-border-color',
+        'studio-field-text-color',
+        'studio-field-border-style',
+        'studio-field-border-width',
+        'studio-field-font-size',
+        'studio-field-text-align',
+        'studio-field-asset-locked',
+        'studio-duplicate-item',
+        'studio-reset-asset-style',
+        'studio-delete-item-style',
+        'studio-style-selection-summary',
+        'studio-style-preset',
+        'studio-apply-style-preset',
+        'studio-delete-style-preset',
+        'studio-style-preset-name',
+        'studio-save-style-preset',
+        'studio-copy-asset-style',
+        'studio-paste-asset-style',
+        'studio-image-properties',
+        'studio-field-image-mode',
+        'studio-field-image-fit',
+        'studio-field-image-opacity',
+        'studio-field-image-label',
+        'studio-field-image-width',
+        'studio-field-image-height',
+        'studio-field-image-icon-size',
+        'studio-field-image-locked'
     ].forEach(function (id) {
         assert.match(twig, new RegExp(`id="${id}"`));
     });
-    assert.match(twig, /js\/studio\/providers\/registry\.js/);
-    assert.match(twig, /js\/studio\/providers\/aws\/templates\.js/);
-    assert.match(twig, /js\/studio\/providers\/azure\/templates\.js/);
+    assert.match(twig, /importmap\(\['app', 'studio'\]\)/);
+    assert.match(js, /import providerRegistry from '\.\/providers\/registry\.js'/);
+    assert.match(js, /import packageLoaderFactory from '\.\/packages\/studio-package\.js'/);
+    assert.match(twig, /data-package-registry=/);
+    assert.doesNotMatch(twig, /js\/studio\/providers\/(?:aws|azure)\/templates\.js/);
     assert.match(js, /function renderTemplates\(\)/);
     assert.match(js, /function renderContextualFields\(asset\)/);
+    assert.match(js, /core\.addImageAsset\(project/);
+    assert.match(js, /core\.updateAssetImage\(next, assetId/);
+    assert.match(js, /elements\.uploadCustomIcon\.addEventListener\('click', openImageAssetPicker\)/);
+    assert.match(js, /elements\.emptyUploadIcon\.addEventListener\('click', openImageAssetPicker\)/);
+    assert.match(js, /inspectorCollapsed = false/);
+    assert.match(js, /activeInspectorTab = 'properties'/);
+    assert.match(js, /function trimTransparentImage\(image, mimeType\)/);
+    assert.match(js, /pixels\[\(\(y \* canvas\.width\) \+ x\) \* 4 \+ 3\] <= 16/);
+    assert.match(js, /cropped\.toDataURL\(mimeType\)/);
+    assert.match(js, /function initialImageAssetSize\(imageWidth, imageHeight, zoom\)/);
+    assert.match(js, /imageWidth \/ imageHeight/);
+    assert.match(js, /show_label: false/);
+    assert.match(twig, /<summary>Background reference<\/summary>/);
+    assert.match(graphAdapter, /studio-graph-image-card/);
+    assert.match(graphAdapter, /draggable="false"/);
+    assert.match(graphAdapter, /addImageHitArea\(state\)/);
+    assert.match(graphAdapter, /InternalEvent\.redirectMouseEvents\(hitArea\.node, this\.graph, state\)/);
+    assert.match(graphAdapter, /asset\.image\?\.mode === 'image'/);
+    assert.match(graphAdapter, /fillColor: 'none', strokeColor: 'none', strokeWidth: 0, shadow: false/);
+    assert.match(studioCss, /\.studio-graph-image-card img \{[^}]*pointer-events: none;[^}]*-webkit-user-drag: none;/);
     assert.match(js, /elements\.assetForm\.addEventListener\('change'/);
     assert.match(js, /elements\.connectionForm\.addEventListener\('change'/);
+    assert.match(js, /core\.validateConnection\(project/);
+    assert.match(js, /core\.updateConnectionRoute\(project/);
+    assert.match(js, /resetSelectedConnectionRoute/);
+    assert.match(js, /style: 'orthogonal',[\s\S]*points: \[\]/);
+    assert.match(graphAdapter, /Point/);
+    assert.match(graphAdapter, /change instanceof GeometryChange/);
+    assert.match(graphAdapter, /onConnectionEndpointsChange/);
+    assert.match(graphAdapter, /onConnectionRouteChange/);
+    assert.match(graphAdapter, /setCellsBendable\(true\)/);
+    assert.match(graphAdapter, /isAssetLocked\(cell\)/);
+    assert.match(graphAdapter, /appearance\.fill_color/);
+    assert.match(graphAdapter, /appearance\.border_color/);
+    assert.match(graphAdapter, /appearance\.text_color/);
+    assert.match(js, /core\.updateAssetAppearance\(next/);
+    assert.match(js, /core\.updateAssetAppearances\(project, assetIds/);
+    assert.match(js, /core\.saveStylePreset\(project/);
+    assert.match(js, /core\.removeStylePreset\(project/);
+    assert.match(js, /function copySelectedAssetStyle\(\)/);
+    assert.match(js, /function pasteStyleToSelection\(\)/);
+    assert.match(js, /core\.resetAssetAppearance\(project/);
+    assert.match(js, /elements\.duplicateItem\.addEventListener\('click'/);
+    assert.match(js, /elements\.deleteItemStyle\.addEventListener\('click'/);
+    assert.match(studioCss, /\.studio-color-grid/);
+    assert.match(studioCss, /--studio-cell-font/);
+    assert.match(twig, /spellcheck="false"/);
+    assert.match(twig, /class="studio-reference-toggle"/);
+    assert.match(js, /control\.disabled = !hasReference/);
 });
 
 test('Studio graph uses validated nested drop targets and recursive snapshots', function () {
@@ -118,7 +255,7 @@ test('Studio graph uses validated nested drop targets and recursive snapshots', 
 test('architecture findings expose category scores, recommendations, and multi-asset focus', function () {
     assert.match(twig, /id="studio-category-scores"/);
     assert.match(twig, /id="studio-restore-dismissed"/);
-    assert.match(twig, /review\/improvements\.js/);
+    assert.match(js, /import \{ improvements, rules \} from '\.\/content\.js'/);
     assert.match(js, /result\.category_scores/);
     assert.match(js, /Recommended improvement/);
     assert.match(js, /focusAssets\(item\.asset_ids\)/);
@@ -130,4 +267,147 @@ test('architecture findings expose category scores, recommendations, and multi-a
     assert.match(js, /improvements\.previewPlan/);
     assert.match(js, /improvements\.applyPlan/);
     assert.match(js, /accepted_risks/);
+});
+
+test('Studio content follows the marked result, graph, improvements, inventory, and about hierarchy', function () {
+    const graphPosition = twig.indexOf('aria-label="Studio Graph"');
+    const resultPosition = twig.indexOf('id="studio-review-title"');
+    const improvementsPosition = twig.indexOf('id="studio-improvements-title"');
+    const inventoryPosition = twig.indexOf('id="studio-inventory-title"');
+    const aboutPosition = twig.indexOf('id="studio-package-content"');
+
+    assert.ok(graphPosition > -1);
+    assert.ok(resultPosition < graphPosition);
+    assert.ok(graphPosition < improvementsPosition);
+    assert.ok(improvementsPosition < inventoryPosition);
+    assert.ok(inventoryPosition < aboutPosition);
+    ['content', 'result', 'graph', 'improvements', 'inventory', 'about'].forEach(function (section) {
+        assert.match(twig, new RegExp(`<!-- \\[studio-${section}\\] Section: Start -->`));
+        assert.match(twig, new RegExp(`<!-- \\[studio-${section}\\] Section: End -->`));
+        assert.match(contentCss, new RegExp(`/\\* \\[studio-${section}\\] Section: Start \\*/`));
+        assert.match(contentCss, new RegExp(`/\\* \\[studio-${section}\\] Section: End \\*/`));
+    });
+    ['foundation', 'shell', 'workspace', 'library', 'canvas', 'inspector', 'dialogs', 'responsive'].forEach(function (section) {
+        assert.match(studioCss, new RegExp(`/\\* \\[studio-${section}\\] Section: Start \\*/`));
+        assert.match(studioCss, new RegExp(`/\\* \\[studio-${section}\\] Section: End \\*/`));
+    });
+    ['result', 'improvements'].forEach(function (section) {
+        assert.match(contentModule, new RegExp(`// \\[studio-${section}\\] Section: Start`));
+        assert.match(contentModule, new RegExp(`// \\[studio-${section}\\] Section: End`));
+    });
+    ['bootstrap', 'state', 'workspace', 'canvas', 'library', 'about', 'inspector', 'content-navigation', 'inventory', 'graph', 'result', 'improvements', 'shell', 'persistence', 'events', 'initialization'].forEach(function (section) {
+        assert.match(js, new RegExp(`// \\[studio-${section}\\] Section: Start`));
+        assert.match(js, new RegExp(`// \\[studio-${section}\\] Section: End`));
+    });
+    assert.match(twig, />Studio Improvement</);
+    assert.doesNotMatch(twig, />Studio Overview</);
+    assert.match(twig, />Studio Result</);
+    assert.match(twig, />Studio Inventory</);
+    assert.match(twig, /styles\/studio\/content\.css/);
+    assert.match(js, /import \{ StudioChart \} from '\.\/library\/studio-chart\.js'/);
+    assert.match(js, /overviewChart\.render\(project, provider, elements\.overviewChartSelect\.value\)/);
+    assert.match(chartAdapter, /import \{ Chart, registerables \} from 'chart\.js'/);
+    assert.match(chartAdapter, /type: 'line'/);
+    assert.match(chartAdapter, /key: 'components'/);
+    assert.match(chartAdapter, /key: 'boundaries'/);
+    assert.match(chartAdapter, /key: 'relationships'/);
+    assert.match(chartAdapter, /maintainAspectRatio: false/);
+    assert.match(contentCss, /\/\* \[studio-graph\] Section: Start \*\//);
+    assert.match(contentCss, /\.studio-chart-shell/);
+    assert.match(contentCss, /position: relative/);
+});
+
+test('Studio Overview offers five wired provider-neutral Chart.js presentations', function () {
+    [
+        ['line-styling', 'Line Styling'],
+        ['radar-controls', 'Radar Chart'],
+        ['polar-assets', 'Polar Area Centered'],
+        ['rounded-relationships', 'Bar · Border Radius'],
+        ['time-combo', 'Time Scale · Combo']
+    ].forEach(function ([value, label]) {
+        assert.match(twig, new RegExp(`<option value="${value}">${label}<\\/option>`));
+    });
+    assert.match(twig, /id="studio-overview-chart-select"/);
+    assert.match(js, /overviewChartSelect: byId\('studio-overview-chart-select'\)/);
+    assert.match(js, /overviewChart\.render\(project, provider, elements\.overviewChartSelect\.value\)/);
+    assert.match(js, /elements\.overviewChartSelect\.addEventListener\('change', renderOverview\)/);
+    assert.match(js, /elements\.overviewChart\.setAttribute\('aria-label'/);
+    assert.match(chartAdapter, /'line-styling': viewCoverageData/);
+    assert.match(chartAdapter, /'radar-controls': operationalControlsData/);
+    assert.match(chartAdapter, /'polar-assets': assetTypesData/);
+    assert.match(chartAdapter, /'rounded-relationships': relationshipTypesData/);
+    assert.match(chartAdapter, /'time-combo': timeComboData/);
+    assert.match(chartAdapter, /type: 'radar'/);
+    assert.match(chartAdapter, /type: 'polarArea'/);
+    assert.match(chartAdapter, /type: 'bar'/);
+    assert.match(chartAdapter, /scales\.x\.type = 'time'/);
+    assert.match(chartAdapter, /import 'chartjs-adapter-date-fns'/);
+});
+
+test('Studio Overview exposes complete wired Chart.js accessories', function () {
+    [
+        'studio-chart-values',
+        'studio-chart-reset',
+        'studio-chart-download',
+        'studio-chart-empty',
+        'studio-chart-empty-message',
+        'studio-chart-accessibility'
+    ].forEach(function (id) {
+        assert.match(twig, new RegExp(`id="${id}"`));
+    });
+    assert.match(twig, /role="toolbar" aria-label="Studio chart controls"/);
+    assert.match(twig, /id="studio-chart-values"[^>]+aria-pressed="false"/);
+    assert.match(twig, /id="studio-chart-reset"[^>]+disabled/);
+    assert.match(twig, /id="studio-chart-accessibility"[^>]+aria-live="polite"/);
+    assert.match(js, /overviewChart\.setDataLabelsVisible\(overviewValuesVisible\)/);
+    assert.match(js, /overviewChart\.resetVisibility\(\)/);
+    assert.match(js, /overviewChart\.downloadPng\(`/);
+    assert.match(js, /overviewEmpty\.hidden = !totals\.empty/);
+    assert.match(twig, /class="studio-section-heading"><div><span>Provider template metrics<\/span><h2 id="studio-improvements-title">Studio Improvement<\/h2>/);
+    assert.match(twig, /id="studio-improvements-empty"[^>]+role="status"[^>]+hidden/);
+    assert.match(twig, /id="studio-inventory-empty"[^>]+role="status"[^>]+hidden/);
+    assert.match(twig, /id="studio-inventory-table"/);
+    assert.match(js, /improvementsEmpty\.hidden = false/);
+    assert.match(js, /inventoryEmpty\.hidden = project\.assets\.length > 0/);
+    assert.match(contentCss, /\.studio-overview-actions[^}]+margin-left: auto/s);
+    assert.match(contentCss, /\.studio-chart-heading[^}]+align-items: flex-end/s);
+    assert.match(contentCss, /\.studio-content-empty \{/);
+    assert.match(js, /overviewAccessibility\.textContent =/);
+    assert.match(chartAdapter, /id: 'studioDataLabels'/);
+    assert.match(chartAdapter, /id: 'studioCanvasBackground'/);
+    assert.match(twig, /id="studio-chart-analysis-title"/);
+    assert.match(twig, /id="studio-chart-title">Studio View Coverage<\/h2>/);
+    assert.match(twig, /id="studio-chart-subtitle"/);
+    assert.match(twig, /class="studio-section-heading studio-chart-heading"[\s\S]*class="studio-chart-copy"[\s\S]*class="studio-overview-actions"[\s\S]*class="studio-chart-shell"/);
+    assert.match(js, /overviewAnalysisTitle: byId\('studio-chart-analysis-title'\)/);
+    assert.match(js, /overviewAnalysisTitle\.textContent = totals\.analysisTitle/);
+    assert.match(js, /overviewTitle\.textContent = totals\.title/);
+    assert.match(js, /overviewSubtitle\.textContent = totals\.subtitle/);
+    assert.match(chartAdapter, /analysisTitle: 'Architecture View Analysis'/);
+    assert.match(chartAdapter, /analysisTitle: 'Operational Readiness Analysis'/);
+    assert.match(chartAdapter, /analysisTitle: 'Architecture Inventory Analysis'/);
+    assert.match(chartAdapter, /analysisTitle: 'Architecture Relationship Analysis'/);
+    assert.match(chartAdapter, /analysisTitle: 'Architecture Coverage Analysis'/);
+    assert.match(chartAdapter, /title: 'Studio View Coverage'/);
+    assert.match(chartAdapter, /subtitle:/);
+    assert.match(chartAdapter, /title: \{\s*display: false\s*\}/);
+    assert.match(chartAdapter, /subtitle: \{\s*display: false\s*\}/);
+    assert.match(chartAdapter, /plugins: \[studioCanvasBackgroundPlugin, studioDataLabelsPlugin\]/);
+    assert.match(chartAdapter, /\['doughnut', 'polarArea'\]\.includes/);
+    assert.match(chartAdapter, /Math\.round\(\(value \/ total\) \* 100\)/);
+    assert.match(chartAdapter, /beginAtZero: true/);
+    assert.match(chartAdapter, /Number\.isInteger\(value\)/);
+    assert.match(chartAdapter, /centerPointLabels: true/);
+    assert.match(chartAdapter, /borderRadius: 999/);
+    assert.match(chartAdapter, /borderDash: \[8, 6\]/);
+    assert.match(chartAdapter, /delay: function \(context\)/);
+    assert.match(chartAdapter, /usePointStyle: true/);
+    assert.match(chartAdapter, /align: 'center'/);
+    assert.doesNotMatch(chartAdapter, /text: 'Studio metrics'/);
+    assert.match(chartAdapter, /hasHiddenData\(\)/);
+    assert.match(chartAdapter, /resetVisibility\(\)/);
+    assert.match(chartAdapter, /downloadPng\(filename\)/);
+    assert.match(contentCss, /\.studio-chart-toolbar/);
+    assert.match(contentCss, /\.studio-chart-empty\[hidden\]/);
+    assert.match(contentCss, /\.studio-chart-accessibility/);
 });

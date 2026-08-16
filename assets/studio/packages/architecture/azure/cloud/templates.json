@@ -1,0 +1,2881 @@
+{
+  "schema_version": "1.0",
+  "package_id": "architecture-azure-cloud",
+  "templates": [
+    {
+      "id": "azure-three-tier",
+      "name": "Azure Production Web Application",
+      "description": "Front Door, WAF, Application Gateway, private application and data tiers, zone-redundant PostgreSQL, and Azure operations services.",
+      "icon": "bi-microsoft",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-msrhc2vm-50ujk8",
+        "name": "Azure Production Web Application",
+        "profile": "azure-three-tier",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "users",
+            "catalog_id": null,
+            "type": "application",
+            "label": "Users",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "External clients",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 420,
+                "y": 80,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 420,
+                "y": 80,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 420,
+                "y": 80,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 420,
+                "y": 80,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "dns",
+            "catalog_id": "azure-dns-zone",
+            "type": "router",
+            "label": "Azure DNS",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Public DNS hosting",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 700,
+                "y": 80,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 700,
+                "y": 80,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 700,
+                "y": 80,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 700,
+                "y": 80,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "front-door",
+            "catalog_id": "azure-front-door",
+            "type": "internet",
+            "label": "Azure Front Door",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Global edge and routing",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 980,
+                "y": 80,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 980,
+                "y": 80,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 980,
+                "y": 80,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 980,
+                "y": 80,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "waf",
+            "catalog_id": "azure-waf-policy",
+            "type": "firewall",
+            "label": "WAF Policy",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Web traffic protection",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "Microsoft Azure",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "Managed rules and application exclusions",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 730,
+                "y": 190,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 730,
+                "y": 190,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 730,
+                "y": 190,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 730,
+                "y": 190,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "vnet",
+            "catalog_id": "azure-virtual-network",
+            "type": "vpc",
+            "label": "Production Virtual Network",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "Regional Azure network boundary",
+              "address": "10.20.0.0/16",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "Environment=Production, Owner=Platform Team",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 120,
+                "y": 310,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 120,
+                "y": 310,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 120,
+                "y": 310,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 120,
+                "y": 310,
+                "width": 1200,
+                "height": 900,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "ingress-subnet",
+            "catalog_id": "azure-subnet",
+            "type": "subnet",
+            "label": "Ingress Subnet",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "vnet",
+            "properties": {
+              "role": "Application ingress",
+              "address": "10.20.1.0/24",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "public",
+              "route_table": "rt-ingress",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 200,
+                "y": 410,
+                "width": 360,
+                "height": 300,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 200,
+                "y": 410,
+                "width": 360,
+                "height": 300,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 200,
+                "y": 410,
+                "width": 360,
+                "height": 300,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 200,
+                "y": 410,
+                "width": 360,
+                "height": 300,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "app-subnet",
+            "catalog_id": "azure-subnet",
+            "type": "subnet",
+            "label": "Application Subnet",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "vnet",
+            "properties": {
+              "role": "Private application tier",
+              "address": "10.20.10.0/23",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "private",
+              "route_table": "rt-application",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 610,
+                "y": 410,
+                "width": 420,
+                "height": 650,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 610,
+                "y": 410,
+                "width": 420,
+                "height": 650,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 610,
+                "y": 410,
+                "width": 420,
+                "height": 650,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 610,
+                "y": 410,
+                "width": 420,
+                "height": 650,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "data-subnet",
+            "catalog_id": "azure-subnet",
+            "type": "subnet",
+            "label": "Data Subnet",
+            "category": "Network",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "vnet",
+            "properties": {
+              "role": "Private data tier",
+              "address": "10.20.20.0/24",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "isolated",
+              "route_table": "rt-data",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1080,
+                "y": 410,
+                "width": 410,
+                "height": 650,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1080,
+                "y": 410,
+                "width": 410,
+                "height": 650,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1080,
+                "y": 410,
+                "width": 410,
+                "height": 650,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1080,
+                "y": 410,
+                "width": 410,
+                "height": 650,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "app-gateway",
+            "catalog_id": "azure-application-gateway",
+            "type": "router",
+            "label": "Application Gateway",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "ingress-subnet",
+            "properties": {
+              "role": "Regional Layer 7 ingress",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 260,
+                "y": 510,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 260,
+                "y": 510,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 260,
+                "y": 510,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 260,
+                "y": 510,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "nat",
+            "catalog_id": "azure-nat-gateway",
+            "type": "router",
+            "label": "NAT Gateway",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "ingress-subnet",
+            "properties": {
+              "role": "Controlled outbound path",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 260,
+                "y": 610,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 260,
+                "y": 610,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 260,
+                "y": 610,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 260,
+                "y": 610,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "vmss-zone-1",
+            "catalog_id": "azure-vm-scale-set",
+            "type": "cluster",
+            "label": "VM Scale Set · Zone 1",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "app-subnet",
+            "properties": {
+              "role": "Web and API workload",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "1",
+              "owner": "",
+              "cpu": "4 vCPU",
+              "memory": "16 GB",
+              "storage": "64 GB managed disk",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "Standard_D4s_v5",
+              "operating_system": "Azure Linux",
+              "private_ip": "10.20.10.20",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 690,
+                "y": 530,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 690,
+                "y": 530,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "network": {
+                "x": 690,
+                "y": 530,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 690,
+                "y": 530,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "vmss-zone-2",
+            "catalog_id": "azure-vm-scale-set",
+            "type": "cluster",
+            "label": "VM Scale Set · Zone 2",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "app-subnet",
+            "properties": {
+              "role": "Web and API workload",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "2",
+              "owner": "",
+              "cpu": "4 vCPU",
+              "memory": "16 GB",
+              "storage": "64 GB managed disk",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "Standard_D4s_v5",
+              "operating_system": "Azure Linux",
+              "private_ip": "10.20.11.20",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 690,
+                "y": 680,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 690,
+                "y": 680,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "network": {
+                "x": 690,
+                "y": 680,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 690,
+                "y": 680,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "key-vault",
+            "catalog_id": "azure-key-vault",
+            "type": "storage",
+            "label": "Azure Key Vault",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "app-subnet",
+            "properties": {
+              "role": "Application secrets and certificates",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 690,
+                "y": 830,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 690,
+                "y": 830,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "network": {
+                "x": 690,
+                "y": 830,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 690,
+                "y": 830,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "postgres-primary",
+            "catalog_id": "azure-postgresql",
+            "type": "database",
+            "label": "PostgreSQL Primary",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "data-subnet",
+            "properties": {
+              "role": "Zone-redundant writer",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "1",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "512 GB",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1150,
+                "y": 520,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1150,
+                "y": 520,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1150,
+                "y": 520,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1150,
+                "y": 520,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "postgres-standby",
+            "catalog_id": "azure-postgresql",
+            "type": "database",
+            "label": "PostgreSQL Standby",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "data-subnet",
+            "properties": {
+              "role": "High-availability standby",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "2",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "512 GB",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1150,
+                "y": 680,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1150,
+                "y": 680,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1150,
+                "y": 680,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1150,
+                "y": 680,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "redis",
+            "catalog_id": "azure-cache-redis",
+            "type": "cache",
+            "label": "Azure Managed Redis",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "data-subnet",
+            "properties": {
+              "role": "Distributed application cache",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1150,
+                "y": 840,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1150,
+                "y": 840,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1150,
+                "y": 840,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1150,
+                "y": 840,
+                "width": 270,
+                "height": 88,
+                "icon_size": 30,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "private-endpoint",
+            "catalog_id": "azure-private-endpoint",
+            "type": "api",
+            "label": "Private Endpoint",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "app-subnet",
+            "properties": {
+              "role": "Private data service access",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 760,
+                "y": 980,
+                "width": 220,
+                "height": 88,
+                "icon_size": 26,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 760,
+                "y": 980,
+                "width": 220,
+                "height": 88,
+                "icon_size": 26,
+                "collapsed": false
+              },
+              "network": {
+                "x": 760,
+                "y": 980,
+                "width": 220,
+                "height": 88,
+                "icon_size": 26,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 760,
+                "y": 980,
+                "width": 220,
+                "height": 88,
+                "icon_size": 26,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "monitor",
+            "catalog_id": "azure-monitor",
+            "type": "monitoring",
+            "label": "Azure Monitor",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Metrics, logs, and alerts",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1680,
+                "y": 480,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1680,
+                "y": 480,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1680,
+                "y": 480,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1680,
+                "y": 480,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "network-watcher",
+            "catalog_id": "azure-network-watcher",
+            "type": "monitoring",
+            "label": "Network Watcher Flow Logs",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Network diagnostics and traffic telemetry",
+              "address": "",
+              "hostname": "",
+              "provider": "azure",
+              "environment": "",
+              "zone": "",
+              "owner": "",
+              "cpu": "",
+              "memory": "",
+              "storage": "",
+              "region": "southeastasia",
+              "dns_hostnames": true,
+              "dns_resolution": true,
+              "tags": "",
+              "subnet_type": "",
+              "route_table": "",
+              "instance_type": "",
+              "operating_system": "",
+              "private_ip": "",
+              "public_ip": "",
+              "vendor": "",
+              "interfaces": "",
+              "security_zones": "",
+              "policies": "",
+              "model": "",
+              "vlans": "",
+              "ports": "",
+              "management_ip": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1680,
+                "y": 650,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1680,
+                "y": 650,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1680,
+                "y": 650,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1680,
+                "y": 650,
+                "width": 250,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "users-dns",
+            "source": "users",
+            "target": "dns",
+            "type": "network",
+            "label": "DNS lookup",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS",
+            "bandwidth": ""
+          },
+          {
+            "id": "dns-edge",
+            "source": "dns",
+            "target": "front-door",
+            "type": "network",
+            "label": "Global route",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS/HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "edge-waf",
+            "source": "front-door",
+            "target": "waf",
+            "type": "trust",
+            "label": "Filtered HTTPS",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "waf-gateway",
+            "source": "waf",
+            "target": "app-gateway",
+            "type": "network",
+            "label": "Protected ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "gateway-app-1",
+            "source": "app-gateway",
+            "target": "vmss-zone-1",
+            "type": "network",
+            "label": "Application traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "gateway-app-2",
+            "source": "app-gateway",
+            "target": "vmss-zone-2",
+            "type": "network",
+            "label": "Application traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "app-database-1",
+            "source": "vmss-zone-1",
+            "target": "postgres-primary",
+            "type": "network",
+            "label": "Database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TCP/5432",
+            "bandwidth": ""
+          },
+          {
+            "id": "app-database-2",
+            "source": "vmss-zone-2",
+            "target": "postgres-standby",
+            "type": "network",
+            "label": "Database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TCP/5432",
+            "bandwidth": ""
+          },
+          {
+            "id": "postgres-ha",
+            "source": "postgres-primary",
+            "target": "postgres-standby",
+            "type": "replication",
+            "label": "Zone-redundant HA",
+            "bidirectional": true,
+            "direction": "bidirectional",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "app-cache-1",
+            "source": "vmss-zone-1",
+            "target": "redis",
+            "type": "network",
+            "label": "Cache traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TLS/6380",
+            "bandwidth": ""
+          },
+          {
+            "id": "app-cache-2",
+            "source": "vmss-zone-2",
+            "target": "redis",
+            "type": "network",
+            "label": "Cache traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TLS/6380",
+            "bandwidth": ""
+          },
+          {
+            "id": "private-data",
+            "source": "private-endpoint",
+            "target": "postgres-primary",
+            "type": "network",
+            "label": "Private database access",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Private Link",
+            "bandwidth": ""
+          },
+          {
+            "id": "vnet-monitor",
+            "source": "vnet",
+            "target": "monitor",
+            "type": "administration",
+            "label": "Platform telemetry",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "vnet-flow",
+            "source": "vnet",
+            "target": "network-watcher",
+            "type": "administration",
+            "label": "Flow logs and diagnostics",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "nat-egress-1",
+            "source": "nat",
+            "target": "vmss-zone-1",
+            "type": "administration",
+            "label": "Outbound connectivity",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "nat-egress-2",
+            "source": "nat",
+            "target": "vmss-zone-2",
+            "type": "administration",
+            "label": "Outbound connectivity",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "app-key-vault",
+            "source": "vmss-zone-1",
+            "target": "key-vault",
+            "type": "dependency",
+            "label": "Retrieve application secrets",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "mime_type": "",
+          "visible": false,
+          "opacity": 0.28,
+          "x": 0,
+          "y": 0,
+          "width": 2400,
+          "height": 1400,
+          "locked": true
+        },
+        "updated_at": "2026-08-13T12:13:39.354Z"
+      }
+    },
+    {
+      "id": "azure-serverless-api",
+      "name": "Azure Serverless API",
+      "description": "Front Door and WAF protect an Azure Functions API backed by Cosmos DB, Key Vault, and Azure Monitor.",
+      "icon": "bi-lightning-charge",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-azure-serverless-api",
+        "name": "Azure Serverless API",
+        "profile": "azure-serverless-api",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "serverless-users",
+            "catalog_id": null,
+            "type": "application",
+            "label": "API Clients",
+            "category": "External",
+            "icon": "",
+            "views": [
+              "overview",
+              "network"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "External API consumers",
+              "provider": "azure",
+              "region": "global",
+              "monitoring": false,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 120,
+                "y": 180,
+                "width": 180,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 120,
+                "y": 180,
+                "width": 180,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "serverless-front-door",
+            "catalog_id": "azure-front-door",
+            "type": "internet",
+            "label": "Azure Front Door",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Global API ingress",
+              "provider": "azure",
+              "region": "global",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 400,
+                "y": 180,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 400,
+                "y": 180,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 400,
+                "y": 180,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "serverless-waf",
+            "catalog_id": "azure-waf-policy",
+            "type": "firewall",
+            "label": "Web Application Firewall",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "API edge protection",
+              "provider": "azure",
+              "region": "global",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 700,
+                "y": 180,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 700,
+                "y": 180,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "serverless-functions",
+            "catalog_id": "azure-function-app",
+            "type": "server",
+            "label": "Azure Functions",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Serverless API compute",
+              "provider": "azure",
+              "environment": "production",
+              "region": "southeastasia",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1020,
+                "y": 180,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1020,
+                "y": 180,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1020,
+                "y": 180,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "serverless-cosmos",
+            "catalog_id": "azure-cosmos-db",
+            "type": "database",
+            "label": "Azure Cosmos DB",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Globally distributed application data",
+              "provider": "azure",
+              "environment": "production",
+              "region": "southeastasia",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1340,
+                "y": 80,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1340,
+                "y": 80,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1340,
+                "y": 80,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "serverless-key-vault",
+            "catalog_id": "azure-key-vault",
+            "type": "storage",
+            "label": "Azure Key Vault",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Secrets and certificate management",
+              "provider": "azure",
+              "environment": "production",
+              "region": "southeastasia",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1340,
+                "y": 230,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1340,
+                "y": 230,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "serverless-monitor",
+            "catalog_id": "azure-monitor",
+            "type": "monitoring",
+            "label": "Azure Monitor",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Metrics, logs, and alerts",
+              "provider": "azure",
+              "region": "southeastasia",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1020,
+                "y": 380,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "serverless-client-edge",
+            "source": "serverless-users",
+            "target": "serverless-front-door",
+            "type": "network",
+            "label": "HTTPS API requests",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "serverless-edge-waf",
+            "source": "serverless-front-door",
+            "target": "serverless-waf",
+            "type": "network",
+            "label": "Protected ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "serverless-waf-functions",
+            "source": "serverless-waf",
+            "target": "serverless-functions",
+            "type": "api",
+            "label": "Function invocation",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "serverless-functions-cosmos",
+            "source": "serverless-functions",
+            "target": "serverless-cosmos",
+            "type": "network",
+            "label": "Application data",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TLS",
+            "bandwidth": ""
+          },
+          {
+            "id": "serverless-functions-vault",
+            "source": "serverless-functions",
+            "target": "serverless-key-vault",
+            "type": "trust",
+            "label": "Managed identity secrets",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "serverless-functions-monitor",
+            "source": "serverless-functions",
+            "target": "serverless-monitor",
+            "type": "administration",
+            "label": "Application telemetry",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "mime_type": "",
+          "visible": false,
+          "opacity": 0.28,
+          "x": 0,
+          "y": 0,
+          "width": 2400,
+          "height": 1400,
+          "locked": true
+        },
+        "updated_at": "2026-08-15T13:10:00+08:00"
+      }
+    },
+    {
+      "id": "azure-aks-platform",
+      "name": "Azure AKS Platform",
+      "description": "A private Azure Kubernetes Service platform with controlled ingress, PostgreSQL, Key Vault, and centralized monitoring.",
+      "icon": "bi-boxes",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-azure-aks-platform",
+        "name": "Azure AKS Platform",
+        "profile": "azure-aks-platform",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "aks-users",
+            "catalog_id": null,
+            "type": "application",
+            "label": "Application Users",
+            "category": "External",
+            "icon": "",
+            "views": [
+              "overview",
+              "network"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "External application users",
+              "provider": "azure",
+              "region": "global",
+              "redundant": true
+            },
+            "layout": {
+              "overview": {
+                "x": 100,
+                "y": 100,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 100,
+                "y": 100,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "aks-front-door",
+            "catalog_id": "azure-front-door",
+            "type": "internet",
+            "label": "Azure Front Door",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Global application ingress",
+              "provider": "azure",
+              "region": "global",
+              "monitoring": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 390,
+                "y": 100,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 390,
+                "y": 100,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 390,
+                "y": 100,
+                "width": 200,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "aks-waf",
+            "catalog_id": "azure-waf-policy",
+            "type": "firewall",
+            "label": "Web Application Firewall",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Application edge protection",
+              "provider": "azure",
+              "region": "global",
+              "monitoring": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 690,
+                "y": 100,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 690,
+                "y": 100,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "aks-vnet",
+            "catalog_id": "azure-virtual-network",
+            "type": "vpc",
+            "label": "AKS Virtual Network",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "Private platform network",
+              "address": "10.40.0.0/16",
+              "provider": "azure",
+              "environment": "production",
+              "region": "southeastasia",
+              "monitoring": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 980,
+                "y": 60,
+                "width": 1120,
+                "height": 760,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "network": {
+                "x": 980,
+                "y": 60,
+                "width": 1120,
+                "height": 760,
+                "icon_size": 36,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 980,
+                "y": 60,
+                "width": 1120,
+                "height": 760,
+                "icon_size": 36,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "aks-ingress-subnet",
+            "catalog_id": "azure-subnet",
+            "type": "subnet",
+            "label": "Ingress Subnet",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network"
+            ],
+            "is_container": true,
+            "parent_id": "aks-vnet",
+            "properties": {
+              "role": "Controlled application ingress",
+              "address": "10.40.1.0/24",
+              "provider": "azure",
+              "environment": "production",
+              "region": "southeastasia",
+              "subnet_type": "public",
+              "route_table": "rt-aks-ingress",
+              "monitoring": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1040,
+                "y": 150,
+                "width": 420,
+                "height": 260,
+                "icon_size": 32,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1040,
+                "y": 150,
+                "width": 420,
+                "height": 260,
+                "icon_size": 32,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "aks-node-subnet",
+            "catalog_id": "azure-subnet",
+            "type": "subnet",
+            "label": "AKS Node Subnet",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "aks-vnet",
+            "properties": {
+              "role": "Private AKS nodes and pods",
+              "address": "10.40.8.0/21",
+              "provider": "azure",
+              "environment": "production",
+              "region": "southeastasia",
+              "subnet_type": "private",
+              "route_table": "rt-aks-nodes",
+              "monitoring": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1520,
+                "y": 150,
+                "width": 500,
+                "height": 540,
+                "icon_size": 32,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1520,
+                "y": 150,
+                "width": 500,
+                "height": 540,
+                "icon_size": 32,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1520,
+                "y": 150,
+                "width": 500,
+                "height": 540,
+                "icon_size": 32,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "aks-app-gateway",
+            "catalog_id": "azure-application-gateway",
+            "type": "router",
+            "label": "Application Gateway",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network"
+            ],
+            "is_container": false,
+            "parent_id": "aks-ingress-subnet",
+            "properties": {
+              "role": "Regional ingress controller",
+              "provider": "azure",
+              "environment": "production",
+              "region": "southeastasia",
+              "monitoring": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1130,
+                "y": 250,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1130,
+                "y": 250,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "aks-cluster",
+            "catalog_id": "azure-kubernetes-service",
+            "type": "cluster",
+            "label": "Azure Kubernetes Service",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "aks-node-subnet",
+            "properties": {
+              "role": "Private application platform",
+              "provider": "azure",
+              "environment": "production",
+              "region": "southeastasia",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1640,
+                "y": 250,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1640,
+                "y": 250,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1640,
+                "y": 250,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "aks-postgres",
+            "catalog_id": "azure-postgresql",
+            "type": "database",
+            "label": "Azure Database for PostgreSQL",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "aks-node-subnet",
+            "properties": {
+              "role": "Zone-redundant application data",
+              "provider": "azure",
+              "environment": "production",
+              "region": "southeastasia",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1640,
+                "y": 430,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1640,
+                "y": 430,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1640,
+                "y": 430,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "aks-key-vault",
+            "catalog_id": "azure-key-vault",
+            "type": "storage",
+            "label": "Azure Key Vault",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview",
+              "network"
+            ],
+            "is_container": false,
+            "parent_id": "aks-node-subnet",
+            "properties": {
+              "role": "Cluster secrets and certificates",
+              "provider": "azure",
+              "environment": "production",
+              "region": "southeastasia",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1640,
+                "y": 580,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1640,
+                "y": 580,
+                "width": 240,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "aks-monitor",
+            "catalog_id": "azure-monitor",
+            "type": "monitoring",
+            "label": "Azure Monitor",
+            "category": "Azure",
+            "icon": "",
+            "views": [
+              "overview"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cluster metrics, logs, and alerts",
+              "provider": "azure",
+              "region": "southeastasia",
+              "monitoring": true,
+              "redundant": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1130,
+                "y": 520,
+                "width": 220,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "aks-client-edge",
+            "source": "aks-users",
+            "target": "aks-front-door",
+            "type": "network",
+            "label": "HTTPS application traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "aks-edge-waf",
+            "source": "aks-front-door",
+            "target": "aks-waf",
+            "type": "network",
+            "label": "Protected ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "aks-waf-gateway",
+            "source": "aks-waf",
+            "target": "aks-app-gateway",
+            "type": "network",
+            "label": "Regional ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "aks-gateway-cluster",
+            "source": "aks-app-gateway",
+            "target": "aks-cluster",
+            "type": "network",
+            "label": "Ingress controller traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "aks-cluster-postgres",
+            "source": "aks-cluster",
+            "target": "aks-postgres",
+            "type": "network",
+            "label": "Application data",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TLS/5432",
+            "bandwidth": ""
+          },
+          {
+            "id": "aks-cluster-vault",
+            "source": "aks-cluster",
+            "target": "aks-key-vault",
+            "type": "trust",
+            "label": "Workload identity secrets",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "aks-cluster-monitor",
+            "source": "aks-cluster",
+            "target": "aks-monitor",
+            "type": "administration",
+            "label": "Cluster telemetry",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "mime_type": "",
+          "visible": false,
+          "opacity": 0.28,
+          "x": 0,
+          "y": 0,
+          "width": 2400,
+          "height": 1400,
+          "locked": true
+        },
+        "updated_at": "2026-08-15T13:10:00+08:00"
+      }
+    }
+  ]
+}

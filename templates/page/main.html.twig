@@ -6,296 +6,192 @@
 {% block stylesheets %}
   {{ parent() }}
   <link rel="stylesheet" href="{{ asset('lib/aos/aos.css') }}">
-  <link rel="stylesheet" href="{{ asset('lib/swiper/swiper-bundle.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('styles/page/main.css') }}">
+  <link rel="stylesheet" href="{{ asset('styles/page/home.css') }}">
 {% endblock %}
 
 {% block body %}
+<div class="home-studio-page">
+  <section class="home-studio-hero" aria-labelledby="home-studio-title">
+    <div class="container-xl home-studio-hero-inner">
+      <div class="home-studio-hero-grid">
+        <div class="home-studio-copy" data-aos="fade-up">
+          <span class="home-studio-kicker">Design. Visualize. Document. Your Infrastructure.</span>
+          <h1 id="home-studio-title">
+            Design Infrastructure<br>
+            Diagrams Smarter,<br>
+            <span>Not Harder.</span>
+          </h1>
+          <p>
+            InfraStack Studio is a modern, browser-based diagramming workspace for infrastructure engineers,
+            architects, and DevOps teams. Create, review, and document infrastructure diagrams with clarity.
+          </p>
 
-{{ include('layout/breadcrumbs.html.twig') }}
-
-{% set posts = home_posts|default([]) %}
-{% set familyGroups = home_family_groups|default([]) %}
-{% set categoryCards = sidebar_categories|default([]) %}
-{% set primaryPost = posts|first %}
-{% set featuredPosts = posts|slice(0, 6) %}
-{% set categoryIcons = {
-  aws: 'bi bi-cloud',
-  azure: 'bi bi-microsoft',
-  gcp: 'bi bi-cloud-sun',
-  ibm: 'bi bi-hdd-network',
-  cisco: 'bi bi-diagram-3',
-  cis: 'bi bi-clipboard2-check',
-  security: 'bi bi-shield-check',
-  shell: 'bi bi-terminal'
-} %}
-{% set categoryTones = {
-  aws: 'blue',
-  azure: 'cyan',
-  gcp: 'emerald',
-  ibm: 'indigo',
-  cisco: 'teal',
-  cis: 'slate',
-  security: 'green',
-  shell: 'dark'
-} %}
-
-<section class="home-platform-hero section">
-  <div class="container">
-    <div class="home-platform-hero-grid">
-      <div class="home-platform-hero-copy" data-aos="fade-up">
-        <span class="home-platform-badge">
-          <i class="bi bi-layers"></i>
-          Practical infrastructure workspaces
-        </span>
-        <h1>Practical tools for infrastructure teams</h1>
-        <p>
-          Build diagrams, estimates, assessments, scans, and shell commands inside inspectable InfraStack workspaces.
-        </p>
-
-        <form method="get" action="{{ path('app_category') }}" class="home-platform-search" role="search">
-          <label for="home-platform-search-input" class="visually-hidden">Search tools</label>
-          <i class="bi bi-search" aria-hidden="true"></i>
-          <input
-            id="home-platform-search-input"
-            type="search"
-            name="q"
-            placeholder="Search tools, providers, or families..."
-          >
-          <button type="submit">Search</button>
-        </form>
-
-        <div class="home-platform-meta">
-          <span><i class="bi bi-box"></i> {{ posts|length }} tool packages</span>
-          <span><i class="bi bi-grid-3x3-gap"></i> {{ familyGroups|length }} workspace types</span>
-          <span><i class="bi bi-folder2-open"></i> {{ categoryCards|length }} categories</span>
-        </div>
-
-        <div class="home-platform-actions">
-          <a href="{{ path('app_category') }}" class="home-platform-primary">
-            Browse tools
-            <i class="bi bi-arrow-right"></i>
-          </a>
-          {% if primaryPost %}
-            <a href="{{ primaryPost.url }}" class="home-platform-secondary">
-              Open latest
+          <div class="home-studio-actions">
+            <a href="{{ path('app_studio') }}" class="home-studio-action home-studio-action-primary">
+              Open InfraStack Studio
+              <i class="bi bi-arrow-right" aria-hidden="true"></i>
             </a>
-          {% endif %}
-        </div>
-      </div>
-
-      <div class="home-platform-hero-visual" data-aos="fade-up" data-aos-delay="120">
-        <div class="home-platform-console">
-          <div class="home-platform-console-top">
-            <span>InfraStack workspace</span>
-            <strong>{{ posts|length }} tools</strong>
-          </div>
-          <div class="home-platform-console-stage">
-            {% for family in familyGroups|slice(0, 3) %}
-              <a
-                href="{{ path('app_category', { family: family.slug }) }}"
-                class="home-platform-stage-card"
-                style="--family-start: {{ family.start }}; --family-end: {{ family.end }};"
-              >
-                <span><i class="{{ family.icon }}"></i></span>
-                <strong>{{ family.label }}</strong>
-                <small>{{ family.tool_count }} {{ family.tool_count == 1 ? 'tool' : 'tools' }}</small>
-              </a>
-            {% endfor %}
-          </div>
-          <div class="home-platform-console-flow">
-            <span>Brief</span>
-            <i class="bi bi-arrow-right"></i>
-            <span>Model</span>
-            <i class="bi bi-arrow-right"></i>
-            <span>Export</span>
-          </div>
-        </div>
-
-        <div class="home-platform-stat-grid">
-          <a href="{{ path('app_category') }}" class="home-platform-stat">
-            <i class="bi bi-tools"></i>
-            <strong>{{ posts|length }}</strong>
-            <span>Ready tools</span>
-          </a>
-          <a href="#home-categories" class="home-platform-stat">
-            <i class="bi bi-layers"></i>
-            <strong>{{ familyGroups|length }}</strong>
-            <span>Workflows</span>
-          </a>
-          <a href="#home-categories" class="home-platform-stat">
-            <i class="bi bi-clouds"></i>
-            <strong>{{ categoryCards|length }}</strong>
-            <span>Domains</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-{% if categoryCards|length > 0 %}
-<section id="home-categories" class="home-directory-section section">
-  <div class="container">
-    <div class="home-section-head">
-      <div>
-        <span>Provider and domain categories</span>
-        <h2>Browse by operating surface</h2>
-      </div>
-      <div class="home-section-actions">
-        <div class="home-slider-controls" aria-label="Category slider controls">
-          <button type="button" class="home-slider-button home-category-slider-prev" aria-label="Previous categories">
-            <i class="bi bi-arrow-left"></i>
-          </button>
-          <button type="button" class="home-slider-button home-category-slider-next" aria-label="Next categories">
-            <i class="bi bi-arrow-right"></i>
-          </button>
-        </div>
-        <a href="{{ path('app_category') }}" class="home-section-link">
-          View categories
-          <i class="bi bi-arrow-right"></i>
-        </a>
-      </div>
-    </div>
-
-    <div class="home-one-row-slider home-category-slider swiper init-swiper">
-      <script type="application/json" class="swiper-config">
-        {
-          "loop": false,
-          "speed": 500,
-          "spaceBetween": 16,
-          "slidesPerView": "auto",
-          "watchOverflow": true,
-          "navigation": {
-            "nextEl": ".home-category-slider-next",
-            "prevEl": ".home-category-slider-prev"
-          }
-        }
-      </script>
-      <div class="home-category-catalog swiper-wrapper">
-        {% for category in categoryCards %}
-          {% set categoryTone = categoryTones[category.slug]|default('blue') %}
-          <div class="swiper-slide">
-            <a
-              href="{{ path('app_category', { category: category.slug }) }}"
-              class="home-category-catalog-card home-category-catalog-card-{{ categoryTone }}"
-            >
-              <span><i class="{{ categoryIcons[category.slug]|default('bi bi-folder2-open') }}"></i></span>
-              <strong>{{ category.name }}</strong>
-              <small>{{ category.count }} {{ category.count == 1 ? 'tool' : 'tools' }}</small>
+            <a href="{{ path('app_studio') }}" class="home-studio-action home-studio-action-secondary">
+              View Live Studio
+              <i class="bi bi-play-fill" aria-hidden="true"></i>
             </a>
           </div>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-</section>
-{% endif %}
 
-{% if featuredPosts|length > 0 %}
-<section id="home-featured" class="home-directory-section section">
-  <div class="container">
-    <div class="home-section-head">
-      <div>
-        <span>Featured workspaces</span>
-        <h2>Open a practical InfraStack tool</h2>
-      </div>
-      <div class="home-section-actions">
-        <div class="home-slider-controls" aria-label="Featured tools slider controls">
-          <button type="button" class="home-slider-button home-tool-slider-prev" aria-label="Previous featured tools">
-            <i class="bi bi-arrow-left"></i>
-          </button>
-          <button type="button" class="home-slider-button home-tool-slider-next" aria-label="Next featured tools">
-            <i class="bi bi-arrow-right"></i>
-          </button>
+          <p class="home-studio-assurance">
+            <i class="bi bi-check-circle" aria-hidden="true"></i>
+            Browser-based workspace with local project restore
+          </p>
         </div>
-        <a href="{{ path('app_category') }}" class="home-section-link">
-          View all tools
-          <i class="bi bi-arrow-right"></i>
-        </a>
-      </div>
-    </div>
 
-    <div class="home-one-row-slider home-tool-slider swiper init-swiper">
-      <script type="application/json" class="swiper-config">
-        {
-          "loop": false,
-          "speed": 500,
-          "spaceBetween": 18,
-          "slidesPerView": "auto",
-          "watchOverflow": true,
-          "navigation": {
-            "nextEl": ".home-tool-slider-next",
-            "prevEl": ".home-tool-slider-prev"
-          }
-        }
-      </script>
-      <div class="home-tool-grid swiper-wrapper">
-        {% for tool in featuredPosts %}
-          {% set summary = tool.card_summary|default(tool.summary|default('')) %}
-          {% set tags = tool.tags|default([])|slice(0, 2) %}
-          {% set toolDisplayTitle = tool.display_title|default(tool.title) %}
-          <div class="swiper-slide">
-            <article class="home-tool-card">
-              <div class="home-tool-card-head">
-                <span
-                  class="home-tool-card-icon"
-                  style="--tool-start: {{ tool.card_gradient_start }}; --tool-end: {{ tool.card_gradient_end }};"
-                >
-                  <i class="{{ tool.card_icon_class|default('bi bi-tools') }}"></i>
-                </span>
-                <span class="home-tool-card-badge">{{ tool.family }}</span>
+        <div class="home-studio-preview-wrap" data-aos="fade-up" data-aos-delay="120">
+          <div class="home-studio-preview-glow" aria-hidden="true"></div>
+          <div class="home-studio-preview" aria-label="Static preview of the InfraStack Studio workspace">
+            <div class="home-studio-preview-bar">
+              <div class="home-studio-preview-title">
+                <i class="bi bi-list" aria-hidden="true"></i>
+                <strong>AWS VPC Architecture</strong>
+                <span aria-hidden="true">›</span>
+                <small><i class="bi bi-circle-fill" aria-hidden="true"></i> All changes saved</small>
               </div>
-              <h3><a href="{{ tool.url }}">{{ toolDisplayTitle }}</a></h3>
-              <p>{{ summary|length > 128 ? summary|slice(0, 128) ~ '...' : summary }}</p>
-              <div class="home-tool-card-tags">
-                {% for tag in tags %}
-                  <span>{{ tag }}</span>
-                {% else %}
-                  <span>{{ tool.category }}</span>
-                {% endfor %}
+              <div class="home-studio-preview-actions" aria-hidden="true">
+                <span><i class="bi bi-share"></i> Share</span>
+                <span><i class="bi bi-box-arrow-up"></i> Export</span>
+                <b>BA</b>
               </div>
-              <div class="home-tool-card-foot">
-                <span>{{ tool.category }}</span>
-                <span>{{ tool.reading_time }}</span>
-                <a href="{{ tool.url }}" aria-label="Open {{ toolDisplayTitle }}">
-                  <i class="bi bi-arrow-right"></i>
-                </a>
+            </div>
+
+            <div class="home-studio-preview-body" aria-hidden="true">
+              <aside class="home-studio-library">
+                <div class="home-studio-search"><i class="bi bi-search"></i><span>Search components</span></div>
+                <div class="home-studio-library-heading">Compute</div>
+                <div class="home-studio-library-items">
+                  <span class="is-orange"><i class="bi bi-cpu"></i><small>EC2</small></span>
+                  <span class="is-orange"><i class="bi bi-bezier2"></i><small>Scaling</small></span>
+                  <span class="is-orange"><i class="bi bi-lightning"></i><small>Lambda</small></span>
+                </div>
+                <div class="home-studio-library-heading">Storage</div>
+                <div class="home-studio-library-items">
+                  <span class="is-green"><i class="bi bi-bucket"></i><small>S3</small></span>
+                  <span class="is-green"><i class="bi bi-device-ssd"></i><small>EBS</small></span>
+                  <span class="is-green"><i class="bi bi-hdd-rack"></i><small>EFS</small></span>
+                </div>
+                <div class="home-studio-library-heading">Network</div>
+                <div class="home-studio-library-items">
+                  <span class="is-violet"><i class="bi bi-cloud"></i><small>VPC</small></span>
+                  <span class="is-blue"><i class="bi bi-bounding-box"></i><small>Subnet</small></span>
+                  <span class="is-violet"><i class="bi bi-signpost-split"></i><small>Route</small></span>
+                </div>
+              </aside>
+
+              <div class="home-studio-canvas">
+                <div class="home-studio-canvas-toolbar">
+                  <span class="is-active"><i class="bi bi-cursor"></i></span>
+                  <span><i class="bi bi-bounding-box-circles"></i></span>
+                  <span><i class="bi bi-bezier"></i></span>
+                  <span><i class="bi bi-type"></i></span>
+                  <span><i class="bi bi-grid-3x3-gap"></i></span>
+                </div>
+
+                <div class="home-studio-cloud-shell">
+                  <div class="home-studio-cloud-label"><i class="bi bi-cloud-fill"></i> AWS Cloud</div>
+                  <div class="home-studio-vpc-shell">
+                    <div class="home-studio-vpc-label"><i class="bi bi-bounding-box"></i> VPC <small>10.0.0.0/16</small></div>
+                    <div class="home-studio-subnet-grid">
+                      <div class="home-studio-subnet is-public">
+                        <strong>Public Subnet 1</strong><small>10.0.1.0/24</small>
+                        <span class="home-studio-node is-violet"><i class="bi bi-router"></i></span>
+                        <em>NAT Gateway</em>
+                      </div>
+                      <div class="home-studio-subnet is-public">
+                        <strong>Public Subnet 2</strong><small>10.0.2.0/24</small>
+                        <span class="home-studio-node is-violet"><i class="bi bi-router"></i></span>
+                        <em>NAT Gateway</em>
+                      </div>
+                      <div class="home-studio-subnet is-private">
+                        <strong>Private Subnet 1</strong><small>10.0.3.0/24</small>
+                        <span class="home-studio-node is-orange"><i class="bi bi-cpu"></i></span>
+                        <em>EC2 Instance</em>
+                      </div>
+                      <div class="home-studio-subnet is-private">
+                        <strong>Private Subnet 2</strong><small>10.0.4.0/24</small>
+                        <span class="home-studio-node is-orange"><i class="bi bi-cpu"></i></span>
+                        <em>EC2 Instance</em>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="home-studio-route-node"><i class="bi bi-globe"></i><small>Route 53</small></span>
+                  <span class="home-studio-storage-node"><i class="bi bi-bucket"></i><small>S3 Bucket</small></span>
+                  <span class="home-studio-security-node"><i class="bi bi-lock"></i><small>Security Group</small></span>
+                </div>
+
+                <div class="home-studio-canvas-footer">
+                  <span><i class="bi bi-hand-index"></i></span>
+                  <span><i class="bi bi-dash"></i> 100% <i class="bi bi-plus"></i></span>
+                </div>
               </div>
-            </article>
+
+              <aside class="home-studio-inspector">
+                <div class="home-studio-inspector-title">VPC <i class="bi bi-chevron-down"></i></div>
+                <label>Name<span>Production VPC</span></label>
+                <label>CIDR Block<span>10.0.0.0/16</span></label>
+                <label>Region<span>ap-southeast-1 <i class="bi bi-chevron-down"></i></span></label>
+                <label>DNS Hostnames<span>Enabled <i class="bi bi-chevron-down"></i></span></label>
+                <label>Notes<span class="home-studio-notes">Main production VPC for application workloads.</span></label>
+                <div class="home-studio-save">Save</div>
+              </aside>
+            </div>
+
+            <span class="home-studio-preview-label">Workspace preview</span>
           </div>
-        {% endfor %}
+        </div>
+      </div>
+
+      <div class="home-studio-feature-grid" data-aos="fade-up" data-aos-delay="180">
+        <article>
+          <span class="is-violet"><i class="bi bi-cursor"></i></span>
+          <h2>Drag &amp; Drop Simplicity</h2>
+          <p>Arrange and connect infrastructure components on a focused visual canvas.</p>
+        </article>
+        <article>
+          <span class="is-green"><i class="bi bi-boxes"></i></span>
+          <h2>Smart Infrastructure Library</h2>
+          <p>Use cloud, on-premises, and networking components with consistent identities.</p>
+        </article>
+        <article>
+          <span class="is-blue"><i class="bi bi-people"></i></span>
+          <h2>Review Ready</h2>
+          <p>Keep diagrams, inventory, relationships, and advisory context together.</p>
+        </article>
+        <article>
+          <span class="is-orange"><i class="bi bi-file-earmark-arrow-down"></i></span>
+          <h2>Export &amp; Document</h2>
+          <p>Move from architecture model to shareable project output without busywork.</p>
+        </article>
+        <article>
+          <span class="is-purple"><i class="bi bi-shield-check"></i></span>
+          <h2>Restore &amp; Continue</h2>
+          <p>Save normalized project data locally and return to your work later.</p>
+        </article>
+      </div>
+
+      <div class="home-studio-trust" data-aos="fade-up" data-aos-delay="220">
+        <p>Designed for infrastructure teams working across modern platforms</p>
+        <div>
+          <span><strong>aws</strong></span>
+          <span><i class="bi bi-microsoft"></i> Azure</span>
+          <span><i class="bi bi-cloud-fill"></i> Google Cloud</span>
+          <span><strong>vmware</strong></span>
+          <span><i class="bi bi-hexagon"></i> kubernetes</span>
+          <span><i class="bi bi-router-fill"></i> CISCO</span>
+        </div>
       </div>
     </div>
-
-    <div class="home-tools-center-action">
-      <a href="{{ path('app_category') }}">View all tools</a>
-    </div>
-  </div>
-</section>
-{% endif %}
-
-<section class="home-build-banner section">
-  <div class="container">
-    <div class="home-build-banner-inner">
-      <span><i class="bi bi-rocket-takeoff"></i></span>
-      <div>
-        <h2>Great Prompts Need Great Tools</h2>
-        <p>Use <strong class="px-1 sitename">InfraStack</strong> families as stable patterns for new calculators, diagrams, scans, assessments, and command builders.</p>
-      </div>
-      <div class="home-build-banner-actions">
-        <a href="{{ path('app_category') }}">Explore tools</a>
-        <a href="{{ path('app_contact') }}">Request a tool</a>
-      </div>
-    </div>
-  </div>
-</section>
-
+  </section>
+</div>
 {% endblock %}
 
 {% block javascripts %}
   <script src="{{ asset('lib/aos/aos.js') }}"></script>
-  <script src="{{ asset('lib/swiper/swiper-bundle.min.js') }}"></script>
   {{ parent() }}
-  <script type="module" src="{{ asset('js/page/main.js') }}"></script>
+  <script type="module" src="{{ asset('js/page/home.js') }}"></script>
 {% endblock %}

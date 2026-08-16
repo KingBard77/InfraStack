@@ -1,9 +1,19 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const core = require('../assets/js/studio/core/project-model.js');
-const rules = require('../assets/js/studio/review/rules.js');
-const improvements = require('../assets/js/studio/review/improvements.js');
-const awsTemplates = require('../assets/js/studio/providers/aws/templates.js');
+const awsTemplates = require('./helpers/studio-aws-package.cjs');
+let core;
+let rules;
+let improvements;
+
+test.before(async function () {
+    [
+        { default: core },
+        { rules, improvements }
+    ] = await Promise.all([
+        import('../assets/js/studio/core/studio-model.js'),
+        import('../assets/js/studio/content.js')
+    ]);
+});
 
 test('security boundary plan previews and applies a real WAF insertion', function () {
     const project = awsTemplates.createProject(core, 'aws-three-tier');

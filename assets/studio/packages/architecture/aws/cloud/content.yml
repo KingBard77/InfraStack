@@ -1,0 +1,26 @@
+schema_version: '1.0'
+package_id: architecture-aws-cloud
+introduction: >-
+  Build reusable and editable AWS cloud architectures from provider-owned templates.
+  Maintain a normalized inventory and review modeled availability, security, network, operations, and data-protection facts.
+faq:
+  - question: Does the Studio Result certify an AWS architecture?
+    answer: No. It explains findings from the facts modeled in the diagram and does not replace an AWS Well-Architected review or specialist assessment.
+  - question: Can a template be changed after it is loaded?
+    answer: Yes. Templates create normal Studio projects, so assets, containers, connections, properties, layout, inventory, and review results remain editable.
+  - question: Where are AWS icons stored?
+    answer: AWS SVG icons are shared local assets under assets/icons/studio/libraries/cloud/aws so packages do not duplicate the same files.
+  - question: How is the Studio Result grade produced?
+    answer: Studio evaluates the current editable project against the scoring definition in result.json, so the grade can change when assets, properties, or relationships change.
+  - question: Can the architecture be exported and restored?
+    answer: Yes. Studio exports normalized project JSON that preserves the editable architecture and can be imported again without replaying the original prompt.
+references:
+  - id: aws-architecture-center
+    title: AWS Architecture Center
+    url: https://aws.amazon.com/architecture/
+  - id: aws-well-architected
+    title: AWS Well-Architected Framework
+    url: https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html
+  - id: aws-vpc
+    title: Amazon VPC documentation
+    url: https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html

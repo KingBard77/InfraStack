@@ -1,0 +1,26 @@
+schema_version: '1.0'
+package_id: architecture-azure-cloud
+introduction: >-
+  Build reusable and editable Microsoft Azure architectures from provider-owned templates.
+  Maintain a normalized inventory and review modeled availability, security, network, operations, and data-protection facts.
+faq:
+  - question: Does the Studio Result certify an Azure architecture?
+    answer: No. It explains findings from facts modeled in the diagram and does not replace an Azure Well-Architected review or specialist assessment.
+  - question: Can the Azure template be changed after it is loaded?
+    answer: Yes. The template creates a normal Studio project, so resources, containers, connections, properties, layout, inventory, and review results remain editable.
+  - question: Where are Azure icons stored?
+    answer: Azure SVG icons are shared local assets under assets/icons/studio/libraries/cloud/azure so packages do not duplicate the same files.
+  - question: How is the Studio Result grade produced?
+    answer: Studio evaluates the current editable project against the scoring definition in result.json, so the grade can change when resources, properties, or relationships change.
+  - question: Can the architecture be exported and restored?
+    answer: Yes. Studio exports normalized project JSON that preserves the editable architecture and can be imported again without replaying the original prompt.
+references:
+  - id: azure-architecture-center
+    title: Azure Architecture Center
+    url: https://learn.microsoft.com/en-us/azure/architecture/
+  - id: azure-well-architected
+    title: Azure Well-Architected Framework
+    url: https://learn.microsoft.com/en-us/azure/well-architected/
+  - id: azure-virtual-network
+    title: Azure Virtual Network overview
+    url: https://learn.microsoft.com/en-us/azure/virtual-network/network-overview

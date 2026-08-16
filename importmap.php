@@ -13,7 +13,7 @@
  */
 return [
     'app' => [
-        'path' => './assets/app.js',
+        'path' => './assets/js/main.js',
         'entrypoint' => true,
     ],
     '@hotwired/stimulus' => [
@@ -34,7 +34,18 @@ return [
     '@maxgraph/core' => [
         'version' => '0.24.0',
     ],
-    'studio-maxgraph-adapter' => [
-        'path' => './assets/js/studio/graph/maxgraph-adapter.js',
+    'studio' => [
+        'path' => './assets/js/studio/studio.js',
+        'entrypoint' => true,
+    ],
+    'layout-share' => [
+        'path' => './assets/js/layout/share.js',
+        'entrypoint' => true,
+    ],
+    'chartjs-adapter-date-fns' => [
+        'version' => '3.0.0',
+    ],
+    'date-fns' => [
+        'version' => '2.29.3',
     ],
 ];

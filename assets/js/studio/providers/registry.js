@@ -17,11 +17,18 @@ const InfraStackStudioProviderRegistry = (function () {
                 ? adapter.createProject(core, templateId)
                 : null;
         },
+        content: function (provider) {
+            const adapter = providers.get(provider);
+            return adapter && Array.isArray(adapter.content) ? adapter.content : [];
+        },
+        results: function (provider) {
+            const adapter = providers.get(provider);
+            return adapter && Array.isArray(adapter.results) ? adapter.results : [];
+        },
         providerIds: function () {
             return Array.from(providers.keys());
         }
     };
 }());
 
-if (typeof globalThis !== 'undefined') globalThis.InfraStackStudioProviderRegistry = InfraStackStudioProviderRegistry;
-if (typeof module !== 'undefined' && module.exports) module.exports = InfraStackStudioProviderRegistry;
+export default InfraStackStudioProviderRegistry;

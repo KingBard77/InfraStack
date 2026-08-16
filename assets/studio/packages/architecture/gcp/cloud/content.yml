@@ -1,0 +1,25 @@
+schema_version: '1.0'
+package_id: architecture-gcp-cloud
+introduction: >-
+  Build editable Google Cloud architectures from provider-native starting points while keeping one normalized Studio project. Review the resulting inventory, relationships, and deterministic Studio Result without changing the shared controller or canvas runtime.
+faq:
+  - question: Are these Google Cloud diagrams editable?
+    answer: Yes. Every template loads as a normal Studio project, so assets, labels, properties, positions, and relationships remain editable.
+  - question: Do the templates deploy Google Cloud resources?
+    answer: No. They are architecture models and do not create, configure, or validate resources in a Google Cloud project.
+  - question: What does the Studio Result measure?
+    answer: It evaluates documented network, security, availability, operations, and relationship facts using the rules in this package.
+  - question: Can I add a different Google Cloud architecture later?
+    answer: Yes. Add another normalized project to templates.json and keep provider-specific result guidance and content inside this package.
+  - question: Does a high grade certify the architecture?
+    answer: No. The grade reflects only the deterministic facts modeled in Studio and does not replace design, security, reliability, or compliance review.
+references:
+  - id: gcp-architecture-center
+    title: Google Cloud Architecture Center
+    url: https://docs.cloud.google.com/architecture/
+  - id: gcp-well-architected
+    title: Google Cloud Well-Architected Framework
+    url: https://docs.cloud.google.com/architecture/framework
+  - id: gcp-vpc
+    title: Virtual Private Cloud overview
+    url: https://cloud.google.com/vpc/docs/overview

@@ -46,7 +46,13 @@
 ###< compose ###
 
 ###> codex ###
-/codex/
+/codex/archive/
+/codex/devops/archive/
+/codex/devops/tasks/
+/codex/reports/
+/codex/tooling/archive/
+/codex/**/__pycache__/
+/var/codex-evidence/
 ###< codex ###
 
 ###> validation ###
@@ -58,6 +64,5 @@ setup.sh
 deployer.sh
 ###< script ###
 
-/AGENTS.md
 /SKILL.md
 /tests/

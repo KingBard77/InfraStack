@@ -1,0 +1,2618 @@
+{
+  "schema_version": "1.0",
+  "package_id": "architecture-gcp-cloud",
+  "templates": [
+    {
+      "id": "gcp-regional-web",
+      "name": "Google Cloud Regional Web Application",
+      "description": "A regional multi-zone web platform with Cloud Load Balancing, Cloud Armor, managed instance groups, Cloud SQL HA, and operations telemetry.",
+      "icon": "bi-globe2",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-gcp-regional-web",
+        "name": "Google Cloud Regional Web Application",
+        "profile": "gcp-regional-web",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "web-vpc",
+            "catalog_id": "gcp-vpc-network",
+            "type": "vpc",
+            "label": "Production VPC",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "Regional application network",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "10.20.0.0/16",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 610,
+                "y": 80,
+                "width": 1200,
+                "height": 620,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 610,
+                "y": 80,
+                "width": 1200,
+                "height": 620,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 610,
+                "y": 80,
+                "width": 1200,
+                "height": 620,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-public-subnet",
+            "catalog_id": "gcp-subnet",
+            "type": "subnet",
+            "label": "Ingress Subnet",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "web-vpc",
+            "properties": {
+              "role": "Ingress Subnet",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "10.20.10.0/24",
+              "subnet_type": "public",
+              "route_table": "regional-ingress",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 690,
+                "y": 210,
+                "width": 320,
+                "height": 260,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 690,
+                "y": 210,
+                "width": 320,
+                "height": 260,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 690,
+                "y": 210,
+                "width": 320,
+                "height": 260,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-private-subnet-a",
+            "catalog_id": "gcp-subnet",
+            "type": "subnet",
+            "label": "Application Subnet A",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "web-vpc",
+            "properties": {
+              "role": "Application Subnet A",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "asia-southeast1-a",
+              "address": "10.20.20.0/24",
+              "subnet_type": "private",
+              "route_table": "private-a",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1050,
+                "y": 210,
+                "width": 320,
+                "height": 260,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1050,
+                "y": 210,
+                "width": 320,
+                "height": 260,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1050,
+                "y": 210,
+                "width": 320,
+                "height": 260,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-private-subnet-b",
+            "catalog_id": "gcp-subnet",
+            "type": "subnet",
+            "label": "Application Subnet B",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "web-vpc",
+            "properties": {
+              "role": "Application Subnet B",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "asia-southeast1-b",
+              "address": "10.20.30.0/24",
+              "subnet_type": "private",
+              "route_table": "private-b",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1410,
+                "y": 210,
+                "width": 320,
+                "height": 260,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1410,
+                "y": 210,
+                "width": 320,
+                "height": 260,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1410,
+                "y": 210,
+                "width": 320,
+                "height": 260,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-users",
+            "catalog_id": null,
+            "type": "internet",
+            "label": "Public Users",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Internet clients",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "global",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 70,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 70,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 70,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-dns",
+            "catalog_id": "gcp-cloud-dns",
+            "type": "router",
+            "label": "Cloud DNS",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud DNS",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "global",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 290,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 290,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 290,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-lb",
+            "catalog_id": "gcp-cloud-load-balancing",
+            "type": "router",
+            "label": "Cloud Load Balancing",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "web-public-subnet",
+            "properties": {
+              "role": "Global HTTPS ingress",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 720,
+                "y": 300,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 720,
+                "y": 300,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 720,
+                "y": 300,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-armor",
+            "catalog_id": "gcp-cloud-armor",
+            "type": "firewall",
+            "label": "Cloud Armor",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "web-public-subnet",
+            "properties": {
+              "role": "Cloud Armor",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "global",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 720,
+                "y": 410,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 720,
+                "y": 410,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 720,
+                "y": 410,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-mig-a",
+            "catalog_id": "gcp-managed-instance-group",
+            "type": "cluster",
+            "label": "Web MIG A",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "web-private-subnet-a",
+            "properties": {
+              "role": "Web MIG A",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "asia-southeast1-a",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1080,
+                "y": 310,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1080,
+                "y": 310,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1080,
+                "y": 310,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-mig-b",
+            "catalog_id": "gcp-managed-instance-group",
+            "type": "cluster",
+            "label": "Web MIG B",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "web-private-subnet-b",
+            "properties": {
+              "role": "Web MIG B",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "asia-southeast1-b",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1440,
+                "y": 310,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1440,
+                "y": 310,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1440,
+                "y": 310,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-sql",
+            "catalog_id": "gcp-cloud-sql",
+            "type": "database",
+            "label": "Cloud SQL HA",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Regional high-availability database",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1090,
+                "y": 540,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1090,
+                "y": 540,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1090,
+                "y": 540,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-nat",
+            "catalog_id": "gcp-cloud-nat",
+            "type": "router",
+            "label": "Cloud NAT",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Private egress",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "asia-southeast1-b",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1450,
+                "y": 540,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1450,
+                "y": 540,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1450,
+                "y": 540,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-logging",
+            "catalog_id": "gcp-cloud-logging",
+            "type": "monitoring",
+            "label": "Cloud Logging",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud Logging",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 720,
+                "y": 760,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 720,
+                "y": 760,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 720,
+                "y": 760,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "web-monitoring",
+            "catalog_id": "gcp-cloud-monitoring",
+            "type": "monitoring",
+            "label": "Cloud Monitoring",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud Monitoring",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1040,
+                "y": 760,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1040,
+                "y": 760,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1040,
+                "y": 760,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "web-user-dns",
+            "source": "web-users",
+            "target": "web-dns",
+            "type": "network",
+            "label": "DNS lookup",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS",
+            "bandwidth": ""
+          },
+          {
+            "id": "web-dns-lb",
+            "source": "web-dns",
+            "target": "web-lb",
+            "type": "network",
+            "label": "HTTPS application traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "web-lb-armor",
+            "source": "web-lb",
+            "target": "web-armor",
+            "type": "network",
+            "label": "Protected ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "web-armor-a",
+            "source": "web-armor",
+            "target": "web-mig-a",
+            "type": "network",
+            "label": "Balanced HTTPS",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "web-armor-b",
+            "source": "web-armor",
+            "target": "web-mig-b",
+            "type": "network",
+            "label": "Balanced HTTPS",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "web-a-sql",
+            "source": "web-mig-a",
+            "target": "web-sql",
+            "type": "dependency",
+            "label": "Database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TLS",
+            "bandwidth": ""
+          },
+          {
+            "id": "web-b-sql",
+            "source": "web-mig-b",
+            "target": "web-sql",
+            "type": "dependency",
+            "label": "Database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TLS",
+            "bandwidth": ""
+          },
+          {
+            "id": "web-a-nat",
+            "source": "web-mig-a",
+            "target": "web-nat",
+            "type": "network",
+            "label": "Private outbound",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "web-b-nat",
+            "source": "web-mig-b",
+            "target": "web-nat",
+            "type": "network",
+            "label": "Private outbound",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "web-vpc-logging",
+            "source": "web-vpc",
+            "target": "web-logging",
+            "type": "dependency",
+            "label": "VPC flow logs",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Logging API",
+            "bandwidth": ""
+          },
+          {
+            "id": "web-logging-monitoring",
+            "source": "web-logging",
+            "target": "web-monitoring",
+            "type": "dependency",
+            "label": "Metrics and alerts",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Google APIs",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "data_url": "",
+          "mime_type": "",
+          "opacity": 0.35,
+          "visible": false
+        },
+        "updated_at": "2026-08-15T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "gcp-serverless-application",
+      "name": "Google Cloud Serverless Application",
+      "description": "A Cloud Run application using Firestore, Pub/Sub, Secret Manager, Cloud Logging, and Cloud Monitoring behind protected global ingress.",
+      "icon": "bi-lightning-charge",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-gcp-serverless-application",
+        "name": "Google Cloud Serverless Application",
+        "profile": "gcp-serverless-application",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "sl-users",
+            "catalog_id": null,
+            "type": "internet",
+            "label": "Application Users",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Application Users",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "global",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 80,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 80,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 80,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "sl-dns",
+            "catalog_id": "gcp-cloud-dns",
+            "type": "router",
+            "label": "Cloud DNS",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud DNS",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "global",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 330,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 330,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 330,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "sl-lb",
+            "catalog_id": "gcp-cloud-load-balancing",
+            "type": "router",
+            "label": "Cloud Load Balancing",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud Load Balancing",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "global",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 590,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 590,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 590,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "sl-armor",
+            "catalog_id": "gcp-cloud-armor",
+            "type": "firewall",
+            "label": "Cloud Armor",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud Armor",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "global",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 870,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 870,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 870,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "sl-run",
+            "catalog_id": "gcp-cloud-run",
+            "type": "application",
+            "label": "Cloud Run API",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Autoscaled serverless API",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1150,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1150,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1150,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "sl-firestore",
+            "catalog_id": "gcp-firestore",
+            "type": "database",
+            "label": "Firestore",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Application document store",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1450,
+                "y": 120,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1450,
+                "y": 120,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1450,
+                "y": 120,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "sl-pubsub",
+            "catalog_id": "gcp-pubsub",
+            "type": "application",
+            "label": "Pub/Sub",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Asynchronous events",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1450,
+                "y": 320,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1450,
+                "y": 320,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1450,
+                "y": 320,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "sl-secrets",
+            "catalog_id": "gcp-secret-manager",
+            "type": "storage",
+            "label": "Secret Manager",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Runtime credentials",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1150,
+                "y": 430,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1150,
+                "y": 430,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1150,
+                "y": 430,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "sl-logging",
+            "catalog_id": "gcp-cloud-logging",
+            "type": "monitoring",
+            "label": "Cloud Logging",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud Logging",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1450,
+                "y": 520,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1450,
+                "y": 520,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1450,
+                "y": 520,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "sl-monitoring",
+            "catalog_id": "gcp-cloud-monitoring",
+            "type": "monitoring",
+            "label": "Cloud Monitoring",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud Monitoring",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1150,
+                "y": 650,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1150,
+                "y": 650,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1150,
+                "y": 650,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "sl-user-dns",
+            "source": "sl-users",
+            "target": "sl-dns",
+            "type": "network",
+            "label": "DNS lookup",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS",
+            "bandwidth": ""
+          },
+          {
+            "id": "sl-dns-lb",
+            "source": "sl-dns",
+            "target": "sl-lb",
+            "type": "network",
+            "label": "HTTPS requests",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "sl-lb-armor",
+            "source": "sl-lb",
+            "target": "sl-armor",
+            "type": "network",
+            "label": "Protected ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "sl-armor-run",
+            "source": "sl-armor",
+            "target": "sl-run",
+            "type": "network",
+            "label": "Authorized HTTPS",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "sl-run-firestore",
+            "source": "sl-run",
+            "target": "sl-firestore",
+            "type": "dependency",
+            "label": "Document reads and writes",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Google APIs",
+            "bandwidth": ""
+          },
+          {
+            "id": "sl-run-pubsub",
+            "source": "sl-run",
+            "target": "sl-pubsub",
+            "type": "dependency",
+            "label": "Publish events",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Google APIs",
+            "bandwidth": ""
+          },
+          {
+            "id": "sl-run-secrets",
+            "source": "sl-run",
+            "target": "sl-secrets",
+            "type": "dependency",
+            "label": "Read secrets",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Google APIs",
+            "bandwidth": ""
+          },
+          {
+            "id": "sl-run-logging",
+            "source": "sl-run",
+            "target": "sl-logging",
+            "type": "dependency",
+            "label": "Application logs",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Logging API",
+            "bandwidth": ""
+          },
+          {
+            "id": "sl-logging-monitoring",
+            "source": "sl-logging",
+            "target": "sl-monitoring",
+            "type": "dependency",
+            "label": "Log-based metrics",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Monitoring API",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "data_url": "",
+          "mime_type": "",
+          "opacity": 0.35,
+          "visible": false
+        },
+        "updated_at": "2026-08-15T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "gcp-gke-platform",
+      "name": "Google Kubernetes Engine Platform",
+      "description": "A private multi-zone GKE platform with protected ingress, Cloud SQL HA, Secret Manager, Cloud NAT, logging, and monitoring.",
+      "icon": "bi-boxes",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-gcp-gke-platform",
+        "name": "Google Kubernetes Engine Platform",
+        "profile": "gcp-gke-platform",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "gke-vpc",
+            "catalog_id": "gcp-vpc-network",
+            "type": "vpc",
+            "label": "Platform VPC",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "Platform VPC",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "10.40.0.0/16",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 570,
+                "y": 70,
+                "width": 1280,
+                "height": 660,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 570,
+                "y": 70,
+                "width": 1280,
+                "height": 660,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 570,
+                "y": 70,
+                "width": 1280,
+                "height": 660,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-subnet-a",
+            "catalog_id": "gcp-subnet",
+            "type": "subnet",
+            "label": "GKE Subnet A",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "gke-vpc",
+            "properties": {
+              "role": "GKE Subnet A",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "asia-southeast1-a",
+              "address": "10.40.10.0/24",
+              "subnet_type": "private",
+              "route_table": "private-a",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 690,
+                "y": 210,
+                "width": 390,
+                "height": 300,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 690,
+                "y": 210,
+                "width": 390,
+                "height": 300,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 690,
+                "y": 210,
+                "width": 390,
+                "height": 300,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-subnet-b",
+            "catalog_id": "gcp-subnet",
+            "type": "subnet",
+            "label": "GKE Subnet B",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "gke-vpc",
+            "properties": {
+              "role": "GKE Subnet B",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "asia-southeast1-b",
+              "address": "10.40.20.0/24",
+              "subnet_type": "private",
+              "route_table": "private-b",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1170,
+                "y": 210,
+                "width": 390,
+                "height": 300,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1170,
+                "y": 210,
+                "width": 390,
+                "height": 300,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1170,
+                "y": 210,
+                "width": 390,
+                "height": 300,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-users",
+            "catalog_id": null,
+            "type": "internet",
+            "label": "Platform Users",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Platform Users",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "global",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": false,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 60,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 60,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 60,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-dns",
+            "catalog_id": "gcp-cloud-dns",
+            "type": "router",
+            "label": "Cloud DNS",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud DNS",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "global",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 290,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 290,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 290,
+                "y": 220,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-lb",
+            "catalog_id": "gcp-cloud-load-balancing",
+            "type": "router",
+            "label": "Cloud Load Balancing",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud Load Balancing",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "global",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 620,
+                "y": 590,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 620,
+                "y": 590,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 620,
+                "y": 590,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-armor",
+            "catalog_id": "gcp-cloud-armor",
+            "type": "firewall",
+            "label": "Cloud Armor",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud Armor",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "global",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 850,
+                "y": 590,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 850,
+                "y": 590,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 850,
+                "y": 590,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-cluster-a",
+            "catalog_id": "gcp-gke",
+            "type": "cluster",
+            "label": "GKE Workloads A",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "gke-subnet-a",
+            "properties": {
+              "role": "GKE Workloads A",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "asia-southeast1-a",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 740,
+                "y": 320,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 740,
+                "y": 320,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 740,
+                "y": 320,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-cluster-b",
+            "catalog_id": "gcp-gke",
+            "type": "cluster",
+            "label": "GKE Workloads B",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "gke-subnet-b",
+            "properties": {
+              "role": "GKE Workloads B",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "asia-southeast1-b",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1220,
+                "y": 320,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1220,
+                "y": 320,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1220,
+                "y": 320,
+                "width": 230,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-sql",
+            "catalog_id": "gcp-cloud-sql",
+            "type": "database",
+            "label": "Cloud SQL HA",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud SQL HA",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1630,
+                "y": 280,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1630,
+                "y": 280,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1630,
+                "y": 280,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-secrets",
+            "catalog_id": "gcp-secret-manager",
+            "type": "storage",
+            "label": "Secret Manager",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Secret Manager",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1630,
+                "y": 430,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1630,
+                "y": 430,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1630,
+                "y": 430,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-nat",
+            "catalog_id": "gcp-cloud-nat",
+            "type": "router",
+            "label": "Cloud NAT",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud NAT",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "asia-southeast1-b",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1180,
+                "y": 590,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1180,
+                "y": 590,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1180,
+                "y": 590,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-logging",
+            "catalog_id": "gcp-cloud-logging",
+            "type": "monitoring",
+            "label": "Cloud Logging",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud Logging",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 730,
+                "y": 790,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 730,
+                "y": 790,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 730,
+                "y": 790,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "gke-monitoring",
+            "catalog_id": "gcp-cloud-monitoring",
+            "type": "monitoring",
+            "label": "Cloud Monitoring",
+            "category": "Google Cloud",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Cloud Monitoring",
+              "provider": "gcp",
+              "environment": "production",
+              "region": "asia-southeast1",
+              "zone": "",
+              "address": "",
+              "subnet_type": "",
+              "route_table": "",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1050,
+                "y": 790,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1050,
+                "y": 790,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1050,
+                "y": 790,
+                "width": 190,
+                "height": 88,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "gke-user-dns",
+            "source": "gke-users",
+            "target": "gke-dns",
+            "type": "network",
+            "label": "DNS lookup",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-dns-lb",
+            "source": "gke-dns",
+            "target": "gke-lb",
+            "type": "network",
+            "label": "HTTPS requests",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-lb-armor",
+            "source": "gke-lb",
+            "target": "gke-armor",
+            "type": "network",
+            "label": "Protected ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-armor-a",
+            "source": "gke-armor",
+            "target": "gke-cluster-a",
+            "type": "network",
+            "label": "Kubernetes ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-armor-b",
+            "source": "gke-armor",
+            "target": "gke-cluster-b",
+            "type": "network",
+            "label": "Kubernetes ingress",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-a-sql",
+            "source": "gke-cluster-a",
+            "target": "gke-sql",
+            "type": "dependency",
+            "label": "Private database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TLS",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-b-sql",
+            "source": "gke-cluster-b",
+            "target": "gke-sql",
+            "type": "dependency",
+            "label": "Private database traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TLS",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-a-secrets",
+            "source": "gke-cluster-a",
+            "target": "gke-secrets",
+            "type": "dependency",
+            "label": "Workload secrets",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Google APIs",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-b-secrets",
+            "source": "gke-cluster-b",
+            "target": "gke-secrets",
+            "type": "dependency",
+            "label": "Workload secrets",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Google APIs",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-a-nat",
+            "source": "gke-cluster-a",
+            "target": "gke-nat",
+            "type": "network",
+            "label": "Private outbound",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-b-nat",
+            "source": "gke-cluster-b",
+            "target": "gke-nat",
+            "type": "network",
+            "label": "Private outbound",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-vpc-logging",
+            "source": "gke-vpc",
+            "target": "gke-logging",
+            "type": "dependency",
+            "label": "VPC flow logs",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Logging API",
+            "bandwidth": ""
+          },
+          {
+            "id": "gke-logging-monitoring",
+            "source": "gke-logging",
+            "target": "gke-monitoring",
+            "type": "dependency",
+            "label": "Metrics and alerts",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "Monitoring API",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "reference": {
+          "name": "",
+          "data_url": "",
+          "mime_type": "",
+          "opacity": 0.35,
+          "visible": false
+        },
+        "updated_at": "2026-08-15T00:00:00.000Z"
+      }
+    }
+  ]
+}

@@ -1,12 +1,20 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const core = require('../assets/js/studio/core/project-model.js');
-const azureTemplates = require('../assets/js/studio/providers/azure/templates.js');
+const azureTemplates = require('./helpers/studio-azure-package.cjs');
+let core;
 
-test('Azure template catalogue exposes an editable provider-native example', function () {
+test.before(async function () {
+    ({ default: core } = await import('../assets/js/studio/core/studio-model.js'));
+});
+
+test('Azure template catalogue exposes three editable provider-native examples', function () {
     const definitions = azureTemplates.listTemplates();
 
-    assert.deepEqual(definitions.map(function (template) { return template.id; }), ['azure-three-tier']);
+    assert.deepEqual(definitions.map(function (template) { return template.id; }), [
+        'azure-three-tier',
+        'azure-serverless-api',
+        'azure-aks-platform'
+    ]);
 });
 
 test('Azure production template restores its network hierarchy and service identities', function () {
@@ -18,7 +26,7 @@ test('Azure production template restores its network hierarchy and service ident
     assert.equal(restored.ok, true);
     assert.equal(project.profile, 'azure-three-tier');
     assert.equal(project.assets.length, 19);
-    assert.equal(project.connections.length, 16);
+    assert.equal(project.connections.length, 17);
     assert.equal(vnet.properties.address, '10.20.0.0/16');
     assert.equal(subnets.length, 3);
     assert.ok(subnets.every(function (subnet) { return subnet.parent_id === vnet.id; }));

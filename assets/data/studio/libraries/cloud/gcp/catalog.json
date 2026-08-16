@@ -1,0 +1,423 @@
+{
+  "schema_version": "1.0",
+  "provider": "gcp",
+  "name": "Google Cloud",
+  "icon_source": "https://cloud.google.com/icons",
+  "assets": [
+    {
+      "catalog_id": "gcp-vpc-network",
+      "type": "gcp-vpc-network",
+      "semantic_type": "vpc",
+      "label": "VPC Network",
+      "category": "Network",
+      "group": "network",
+      "section": "Networking",
+      "provider": "gcp",
+      "keywords": [
+        "vpc network",
+        "vpc"
+      ],
+      "tags": [
+        "gcp",
+        "network"
+      ],
+      "icon": "gcp-arch-vpc-network.svg",
+      "views": [
+        "overview",
+        "network",
+        "availability"
+      ],
+      "is_container": true,
+      "default_role": "Google Cloud VPC boundary"
+    },
+    {
+      "catalog_id": "gcp-subnet",
+      "type": "gcp-subnet",
+      "semantic_type": "subnet",
+      "label": "VPC Subnet",
+      "category": "Network",
+      "group": "network",
+      "section": "Networking",
+      "provider": "gcp",
+      "keywords": [
+        "vpc subnet",
+        "subnet"
+      ],
+      "tags": [
+        "gcp",
+        "network"
+      ],
+      "icon": "gcp-arch-vpc-network.svg",
+      "views": [
+        "network",
+        "availability"
+      ],
+      "is_container": true,
+      "default_role": "Regional VPC subnet"
+    },
+    {
+      "catalog_id": "gcp-cloud-dns",
+      "type": "gcp-cloud-dns",
+      "semantic_type": "router",
+      "label": "Cloud DNS",
+      "category": "Network",
+      "group": "network",
+      "section": "Ingress and Edge",
+      "provider": "gcp",
+      "keywords": [
+        "cloud dns",
+        "router"
+      ],
+      "tags": [
+        "gcp",
+        "network"
+      ],
+      "icon": "gcp-arch-cloud-dns.svg",
+      "views": [
+        "overview",
+        "network"
+      ],
+      "default_role": "Managed DNS"
+    },
+    {
+      "catalog_id": "gcp-cloud-load-balancing",
+      "type": "gcp-cloud-load-balancing",
+      "semantic_type": "router",
+      "label": "Cloud Load Balancing",
+      "category": "Network",
+      "group": "network",
+      "section": "Ingress and Edge",
+      "provider": "gcp",
+      "keywords": [
+        "cloud load balancing",
+        "router"
+      ],
+      "tags": [
+        "gcp",
+        "network"
+      ],
+      "icon": "gcp-arch-cloud-load-balancing.svg",
+      "views": [
+        "overview",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed load balancing"
+    },
+    {
+      "catalog_id": "gcp-cloud-armor",
+      "type": "gcp-cloud-armor",
+      "semantic_type": "firewall",
+      "label": "Cloud Armor",
+      "category": "Security",
+      "group": "security",
+      "section": "Security",
+      "provider": "gcp",
+      "keywords": [
+        "cloud armor",
+        "firewall"
+      ],
+      "tags": [
+        "gcp",
+        "security"
+      ],
+      "icon": "gcp-arch-cloud-armor.svg",
+      "views": [
+        "overview",
+        "network"
+      ],
+      "default_role": "Web application protection"
+    },
+    {
+      "catalog_id": "gcp-cloud-nat",
+      "type": "gcp-cloud-nat",
+      "semantic_type": "router",
+      "label": "Cloud NAT",
+      "category": "Network",
+      "group": "network",
+      "section": "Networking",
+      "provider": "gcp",
+      "keywords": [
+        "cloud nat",
+        "router"
+      ],
+      "tags": [
+        "gcp",
+        "network"
+      ],
+      "icon": "gcp-arch-cloud-nat.svg",
+      "views": [
+        "network",
+        "availability"
+      ],
+      "default_role": "Private outbound connectivity"
+    },
+    {
+      "catalog_id": "gcp-compute-engine",
+      "type": "gcp-compute-engine",
+      "semantic_type": "server",
+      "label": "Compute Engine",
+      "category": "Compute",
+      "group": "compute",
+      "section": "Compute",
+      "provider": "gcp",
+      "keywords": [
+        "compute engine",
+        "server"
+      ],
+      "tags": [
+        "gcp",
+        "compute"
+      ],
+      "icon": "gcp-arch-compute-engine.svg",
+      "views": [
+        "overview",
+        "network",
+        "availability"
+      ],
+      "default_role": "Virtual machine"
+    },
+    {
+      "catalog_id": "gcp-managed-instance-group",
+      "type": "gcp-managed-instance-group",
+      "semantic_type": "cluster",
+      "label": "Managed Instance Group",
+      "category": "Compute",
+      "group": "compute",
+      "section": "Compute",
+      "provider": "gcp",
+      "keywords": [
+        "managed instance group",
+        "cluster"
+      ],
+      "tags": [
+        "gcp",
+        "compute"
+      ],
+      "icon": "gcp-arch-compute-engine.svg",
+      "views": [
+        "overview",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed VM group"
+    },
+    {
+      "catalog_id": "gcp-cloud-run",
+      "type": "gcp-cloud-run",
+      "semantic_type": "application",
+      "label": "Cloud Run",
+      "category": "Compute",
+      "group": "compute",
+      "section": "Serverless",
+      "provider": "gcp",
+      "keywords": [
+        "cloud run",
+        "application"
+      ],
+      "tags": [
+        "gcp",
+        "compute"
+      ],
+      "icon": "gcp-arch-cloud-run.svg",
+      "views": [
+        "overview",
+        "network"
+      ],
+      "default_role": "Serverless application"
+    },
+    {
+      "catalog_id": "gcp-gke",
+      "type": "gcp-gke",
+      "semantic_type": "cluster",
+      "label": "Google Kubernetes Engine",
+      "category": "Compute",
+      "group": "compute",
+      "section": "Containers",
+      "provider": "gcp",
+      "keywords": [
+        "google kubernetes engine",
+        "cluster"
+      ],
+      "tags": [
+        "gcp",
+        "compute"
+      ],
+      "icon": "gcp-arch-gke.svg",
+      "views": [
+        "overview",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed Kubernetes"
+    },
+    {
+      "catalog_id": "gcp-cloud-monitoring",
+      "type": "gcp-cloud-monitoring",
+      "semantic_type": "monitoring",
+      "label": "Cloud Monitoring",
+      "category": "Operations",
+      "group": "operations",
+      "section": "Operations",
+      "provider": "gcp",
+      "keywords": [
+        "cloud monitoring",
+        "monitoring"
+      ],
+      "tags": [
+        "gcp",
+        "operations"
+      ],
+      "icon": "gcp-arch-cloud-monitoring.svg",
+      "views": [
+        "overview"
+      ],
+      "default_role": "Metrics and alerting"
+    },
+    {
+      "catalog_id": "gcp-cloud-logging",
+      "type": "gcp-cloud-logging",
+      "semantic_type": "monitoring",
+      "label": "Cloud Logging",
+      "category": "Operations",
+      "group": "operations",
+      "section": "Operations",
+      "provider": "gcp",
+      "keywords": [
+        "cloud logging",
+        "monitoring"
+      ],
+      "tags": [
+        "gcp",
+        "operations"
+      ],
+      "icon": "gcp-arch-cloud-logging.svg",
+      "views": [
+        "overview",
+        "network"
+      ],
+      "default_role": "Central logs and network telemetry"
+    },
+    {
+      "catalog_id": "gcp-secret-manager",
+      "type": "gcp-secret-manager",
+      "semantic_type": "storage",
+      "label": "Secret Manager",
+      "category": "Security",
+      "group": "security",
+      "section": "Security",
+      "provider": "gcp",
+      "keywords": [
+        "secret manager",
+        "storage"
+      ],
+      "tags": [
+        "gcp",
+        "security"
+      ],
+      "icon": "gcp-arch-secret-manager.svg",
+      "views": [
+        "overview",
+        "network"
+      ],
+      "default_role": "Managed secrets"
+    },
+    {
+      "catalog_id": "gcp-cloud-sql",
+      "type": "gcp-cloud-sql",
+      "semantic_type": "database",
+      "label": "Cloud SQL",
+      "category": "Database",
+      "group": "data",
+      "section": "Data",
+      "provider": "gcp",
+      "keywords": [
+        "cloud sql",
+        "database"
+      ],
+      "tags": [
+        "gcp",
+        "data"
+      ],
+      "icon": "gcp-arch-cloud-sql.svg",
+      "views": [
+        "overview",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed relational database"
+    },
+    {
+      "catalog_id": "gcp-firestore",
+      "type": "gcp-firestore",
+      "semantic_type": "database",
+      "label": "Firestore",
+      "category": "Database",
+      "group": "data",
+      "section": "Data",
+      "provider": "gcp",
+      "keywords": [
+        "firestore",
+        "database"
+      ],
+      "tags": [
+        "gcp",
+        "data"
+      ],
+      "icon": "gcp-arch-firestore.svg",
+      "views": [
+        "overview",
+        "network"
+      ],
+      "default_role": "Serverless document database"
+    },
+    {
+      "catalog_id": "gcp-pubsub",
+      "type": "gcp-pubsub",
+      "semantic_type": "application",
+      "label": "Pub/Sub",
+      "category": "Integration",
+      "group": "application",
+      "section": "Integration",
+      "provider": "gcp",
+      "keywords": [
+        "pub/sub",
+        "application"
+      ],
+      "tags": [
+        "gcp",
+        "application"
+      ],
+      "icon": "gcp-arch-pubsub.svg",
+      "views": [
+        "overview",
+        "network"
+      ],
+      "default_role": "Messaging service"
+    },
+    {
+      "catalog_id": "gcp-cloud-storage",
+      "type": "gcp-cloud-storage",
+      "semantic_type": "storage",
+      "label": "Cloud Storage",
+      "category": "Storage",
+      "group": "data",
+      "section": "Data",
+      "provider": "gcp",
+      "keywords": [
+        "cloud storage",
+        "storage"
+      ],
+      "tags": [
+        "gcp",
+        "data"
+      ],
+      "icon": "gcp-arch-cloud-storage.svg",
+      "views": [
+        "overview",
+        "network"
+      ],
+      "default_role": "Object storage"
+    }
+  ]
+}

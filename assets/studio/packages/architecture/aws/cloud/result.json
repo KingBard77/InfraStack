@@ -1,0 +1,307 @@
+{
+  "schema_version": "1.1",
+  "package_id": "architecture-aws-cloud",
+  "engine": "infrastack-architecture-result-v1",
+  "maximum_score": 100,
+  "categories": [
+    {
+      "id": "network",
+      "label": "Network",
+      "weight": 0.2
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "weight": 0.25
+    },
+    {
+      "id": "availability",
+      "label": "Availability",
+      "weight": 0.25
+    },
+    {
+      "id": "operations",
+      "label": "Operations",
+      "weight": 0.18
+    },
+    {
+      "id": "documentation",
+      "label": "Documentation",
+      "weight": 0.12
+    }
+  ],
+  "grade_caps": {
+    "critical": 69,
+    "high": 89
+  },
+  "grades": [
+    {
+      "grade": "A",
+      "minimum_score": 90,
+      "label": "Strong documented design"
+    },
+    {
+      "grade": "B",
+      "minimum_score": 80,
+      "label": "Good with manageable gaps"
+    },
+    {
+      "grade": "C",
+      "minimum_score": 70,
+      "label": "Functional with material gaps"
+    },
+    {
+      "grade": "D",
+      "minimum_score": 60,
+      "label": "Major improvements required"
+    },
+    {
+      "grade": "E",
+      "minimum_score": 0,
+      "label": "Incomplete or high-risk design"
+    }
+  ],
+  "rules": [
+    {
+      "id": "invalid-network-cidr",
+      "category": "Network",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": {
+        "type": "invalid_network_cidr"
+      },
+      "message": "Amazon VPC or subnet has an invalid or missing CIDR",
+      "recommendation": "Enter a valid IPv4 CIDR and confirm that it matches the intended AWS address plan.",
+      "reference_ids": [
+        "aws-vpc"
+      ]
+    },
+    {
+      "id": "subnet-outside-network",
+      "category": "Network",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": {
+        "type": "subnet_outside_network"
+      },
+      "message": "AWS subnet falls outside its parent network",
+      "recommendation": "Move the subnet into the parent Amazon VPC address range or correct the network CIDR.",
+      "reference_ids": [
+        "aws-vpc"
+      ]
+    },
+    {
+      "id": "overlapping-networks",
+      "category": "Network",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": {
+        "type": "overlapping_networks"
+      },
+      "message": "AWS network ranges overlap or duplicate one another",
+      "recommendation": "Assign unique, non-overlapping CIDRs within the same network boundary.",
+      "reference_ids": [
+        "aws-vpc"
+      ]
+    },
+    {
+      "id": "incomplete-subnet-routing",
+      "category": "Documentation",
+      "severity": "low",
+      "score_deduction": 4,
+      "condition": {
+        "type": "incomplete_subnet_routing"
+      },
+      "message": "AWS subnet has incomplete routing facts",
+      "recommendation": "Set the subnet classification and route table so exposure and routing can be reviewed.",
+      "reference_ids": [
+        "aws-vpc"
+      ]
+    },
+    {
+      "id": "internet-without-security-boundary",
+      "category": "Security",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": {
+        "type": "internet_without_security_boundary"
+      },
+      "message": "AWS internet path has no modeled security boundary",
+      "recommendation": "Add AWS WAF or another security boundary to the ingress path, or document the equivalent managed control.",
+      "reference_ids": [
+        "aws-well-architected"
+      ]
+    },
+    {
+      "id": "database-in-public-subnet",
+      "category": "Security",
+      "severity": "critical",
+      "score_deduction": 30,
+      "condition": {
+        "type": "database_in_public_subnet"
+      },
+      "message": "AWS database is placed in a public subnet",
+      "recommendation": "Move the database to a private data subnet and permit only required application traffic.",
+      "reference_ids": [
+        "aws-well-architected",
+        "aws-vpc"
+      ]
+    },
+    {
+      "id": "missing-network-flow-logs",
+      "category": "Security",
+      "severity": "medium",
+      "score_deduction": 10,
+      "condition": {
+        "type": "missing_network_flow_logs",
+        "catalog_ids": [
+          "aws-vpc-flow-logs"
+        ]
+      },
+      "message": "VPC Flow Logs is not modeled",
+      "recommendation": "Add VPC Flow Logs and identify its destination, retention, and review owner.",
+      "reference_ids": [
+        "aws-well-architected",
+        "aws-vpc"
+      ]
+    },
+    {
+      "id": "critical-workloads-single-zone",
+      "category": "Availability",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": {
+        "type": "critical_workloads_single_zone"
+      },
+      "message": "AWS critical workloads use fewer than two zones",
+      "recommendation": "Place critical compute and data services in at least two independent failure domains.",
+      "reference_ids": [
+        "aws-well-architected"
+      ]
+    },
+    {
+      "id": "critical-database-single-instance",
+      "category": "Availability",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": {
+        "type": "critical_database_single_instance"
+      },
+      "message": "AWS critical database has no standby or redundancy fact",
+      "recommendation": "Add a standby or replica in another failure domain and model the replication relationship.",
+      "reference_ids": [
+        "aws-well-architected"
+      ]
+    },
+    {
+      "id": "critical-database-replication-missing",
+      "category": "Availability",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": {
+        "type": "critical_database_replication_missing"
+      },
+      "message": "AWS database replication is incomplete",
+      "recommendation": "Connect primary and standby databases with a typed replication relationship.",
+      "reference_ids": [
+        "aws-well-architected"
+      ]
+    },
+    {
+      "id": "single-nat-multiple-zones",
+      "category": "Availability",
+      "severity": "medium",
+      "score_deduction": 10,
+      "condition": {
+        "type": "single_nat_multiple_zones",
+        "catalog_ids": [
+          "aws-nat-gateway"
+        ]
+      },
+      "message": "A single NAT gateway serves multiple zones",
+      "recommendation": "Add a NAT gateway per active zone and route private subnets to their local gateway.",
+      "reference_ids": [
+        "aws-well-architected",
+        "aws-vpc"
+      ]
+    },
+    {
+      "id": "critical-firewall-not-redundant",
+      "category": "Availability",
+      "severity": "medium",
+      "score_deduction": 10,
+      "condition": {
+        "type": "critical_firewall_not_redundant"
+      },
+      "message": "AWS firewall is a single point of failure",
+      "recommendation": "Model an active/standby or scale-out security boundary across failure domains.",
+      "reference_ids": [
+        "aws-well-architected"
+      ]
+    },
+    {
+      "id": "orphan-asset",
+      "category": "Documentation",
+      "severity": "medium",
+      "score_deduction": 10,
+      "condition": {
+        "type": "orphan_asset"
+      },
+      "message": "AWS asset has no modeled relationship",
+      "recommendation": "Connect the asset to its dependency or remove it from the architecture.",
+      "reference_ids": [
+        "aws-architecture-center"
+      ]
+    },
+    {
+      "id": "critical-asset-without-monitoring",
+      "category": "Operations",
+      "severity": "medium",
+      "score_deduction": 10,
+      "condition": {
+        "type": "critical_asset_without_monitoring"
+      },
+      "message": "AWS critical asset has no monitoring definition",
+      "recommendation": "Record health, performance, log, alert, and escalation coverage for the asset.",
+      "reference_ids": [
+        "aws-well-architected"
+      ]
+    },
+    {
+      "id": "critical-stateful-asset-without-backup",
+      "category": "Operations",
+      "severity": "medium",
+      "score_deduction": 10,
+      "condition": {
+        "type": "critical_stateful_asset_without_backup"
+      },
+      "message": "AWS critical stateful asset has no backup definition",
+      "recommendation": "Document backup scope, retention, restore target, testing frequency, and ownership.",
+      "reference_ids": [
+        "aws-well-architected"
+      ]
+    },
+    {
+      "id": "unlabeled-network-relationship",
+      "category": "Documentation",
+      "severity": "low",
+      "score_deduction": 4,
+      "condition": {
+        "type": "unlabeled_network_relationship"
+      },
+      "message": "AWS network relationship has no purpose label",
+      "recommendation": "Name the protocol, carrier, trust boundary, or traffic purpose.",
+      "reference_ids": [
+        "aws-architecture-center"
+      ]
+    }
+  ],
+  "outputs": [
+    "grade",
+    "score",
+    "confidence",
+    "category_scores",
+    "findings",
+    "improvement_plans"
+  ]
+}

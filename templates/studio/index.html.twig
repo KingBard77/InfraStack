@@ -6,23 +6,23 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/studio/studio.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/studio/content.css') }}">
 {% endblock %}
 
 {% block body %}
 <div
     id="infrastack-studio"
     class="infrastack-studio"
-    data-provider-config="{{ studio_providers|json_encode|e('html_attr') }}"
+    data-library-config="{{ studio_libraries|json_encode|e('html_attr') }}"
+    data-package-registry="{{ studio_packages|json_encode|e('html_attr') }}"
+    data-share-url="{{ path('app_studio_share_create') }}"
+    data-share-csrf="{{ csrf_token('submit') }}"
 >
     <header class="studio-appbar" aria-label="Studio application bar">
-        <a class="studio-app-brand" href="{{ path('app_main') }}" aria-label="InfraStack home">
-            <img src="{{ asset('brand-mark.svg') }}" width="30" height="30" alt="">
-            <strong>InfraStack <span>Studio</span></strong>
-        </a>
         <label class="studio-project-switcher" for="studio-project-name">
             <i class="bi bi-diagram-3" aria-hidden="true"></i>
-            <input id="studio-project-name" type="text" maxlength="80" autocomplete="off" aria-label="Project name">
-            <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            <input id="studio-project-name" type="text" maxlength="80" autocomplete="off" spellcheck="false" aria-label="Project name">
+            <i class="bi bi-pencil" aria-hidden="true"></i>
         </label>
         <span id="studio-save-state" class="studio-save-state"><i aria-hidden="true"></i> All changes saved</span>
         <div class="studio-appbar-spacer"></div>
@@ -44,8 +44,11 @@
             <span id="studio-zoom-value" class="studio-toolbar-value" aria-live="polite">100%</span>
             <button id="studio-zoom-in" class="studio-icon-button" type="button" aria-label="Zoom in"><i class="bi bi-plus-lg"></i></button>
         </div>
-        <button id="studio-preview" class="studio-icon-button studio-preview-button" type="button" aria-label="Preview canvas" aria-pressed="false" title="Preview canvas"><i class="bi bi-play-fill"></i></button>
+        <button id="studio-reset-layout" class="studio-icon-button studio-display-button" type="button" aria-label="Reset panel layout" title="Reset panel layout"><i class="bi bi-layout-three-columns"></i></button>
+        <button id="studio-wide-screen" class="studio-icon-button studio-display-button" type="button" aria-label="Enter wide screen" aria-pressed="false" title="Wide screen"><i class="bi bi-aspect-ratio"></i></button>
+        <button id="studio-fullscreen" class="studio-icon-button studio-display-button" type="button" aria-label="Enter full screen" aria-pressed="false" title="Full screen"><i class="bi bi-fullscreen"></i></button>
         <button id="studio-share" class="studio-button studio-button-primary" type="button"><i class="bi bi-person-plus"></i> Share</button>
+        <button id="studio-embed" class="studio-button" type="button"><i class="bi bi-code-slash"></i> Embed</button>
         <details class="studio-export-menu">
             <summary class="studio-button"><i class="bi bi-download"></i> Export <i class="bi bi-chevron-down"></i></summary>
             <div>
@@ -70,12 +73,18 @@
             <button id="studio-rail-history" type="button" aria-label="Undo last change" title="Undo last change"><i class="bi bi-clock-history"></i></button>
             <span></span>
             <button id="studio-rail-settings" type="button" aria-label="Canvas settings" title="Canvas settings"><i class="bi bi-gear"></i></button>
-            <button id="studio-palette-toggle" type="button" aria-label="Collapse component library" aria-pressed="true" title="Collapse component library"><i class="bi bi-chevron-bar-left"></i></button>
         </nav>
+        <button id="studio-palette-toggle" class="studio-panel-expand studio-palette-expand" type="button" aria-label="Expand component library" title="Expand component library" hidden><i class="bi bi-chevron-right"></i></button>
+        <button id="studio-inspector-toggle" class="studio-panel-expand studio-inspector-expand" type="button" aria-label="Expand inspector" title="Expand inspector" hidden><i class="bi bi-chevron-left"></i></button>
+        <button id="studio-palette-resizer" class="studio-panel-resizer studio-palette-resizer" type="button" role="separator" aria-label="Resize component library" aria-orientation="vertical" aria-valuemin="210" aria-valuemax="420" aria-valuenow="250"></button>
+        <button id="studio-inspector-resizer" class="studio-panel-resizer studio-inspector-resizer" type="button" role="separator" aria-label="Resize inspector" aria-orientation="vertical" aria-valuemin="210" aria-valuemax="420" aria-valuenow="280"></button>
         <aside class="studio-panel studio-palette-panel" aria-labelledby="studio-palette-title">
-            <div class="studio-library-tabs" role="tablist" aria-label="Library views">
-                <button id="studio-components-tab" class="is-active" type="button" role="tab" aria-selected="true">Components</button>
-                <button id="studio-templates-tab" type="button" role="tab" aria-selected="false">Templates</button>
+            <div class="studio-panel-tabs-bar">
+                <div class="studio-library-tabs" role="tablist" aria-label="Library views">
+                    <button id="studio-components-tab" class="is-active" type="button" role="tab" aria-selected="true">Components</button>
+                    <button id="studio-templates-tab" type="button" role="tab" aria-selected="false">Templates</button>
+                </div>
+                <button id="studio-palette-collapse" class="studio-panel-collapse" type="button" aria-label="Collapse component library" title="Collapse component library"><i class="bi bi-chevron-left"></i></button>
             </div>
             <div id="studio-components-panel" role="tabpanel">
                 <div class="studio-panel-heading"><h2 id="studio-palette-title" class="visually-hidden">Component library</h2><span id="studio-asset-count" class="studio-count">0</span></div>
@@ -88,6 +97,7 @@
                     <label for="studio-catalogue-library">Library<select id="studio-catalogue-library" class="studio-select" aria-label="Asset library"></select></label>
                     <label for="studio-catalogue-provider">Provider<select id="studio-catalogue-provider" class="studio-select" aria-label="Asset provider"></select></label>
                 </div>
+                <button id="studio-upload-custom-icon" class="studio-button studio-button-block studio-upload-icon" type="button"><i class="bi bi-upload"></i> Upload custom icon</button>
                 <div id="studio-palette" class="studio-palette"></div>
             </div>
             <div id="studio-templates-panel" class="studio-template-panel" role="tabpanel" hidden>
@@ -97,13 +107,13 @@
                 <button id="studio-new-project" class="studio-template-card" type="button"><i class="bi bi-file-earmark-plus"></i><span><strong>Blank architecture</strong><small>Empty local Studio project</small></span></button>
                 <button id="studio-template-restore" class="studio-template-card" type="button"><i class="bi bi-upload"></i><span><strong>Restore JSON</strong><small>Continue from an exported project</small></span></button>
                 <details class="studio-reference-controls">
-                    <summary>Reference image</summary>
-                    <p>Import a PNG or JPEG as a traceable background layer.</p>
+                    <summary>Background reference</summary>
+                    <p>Import a PNG or JPEG only as a traceable background. It is not a diagram asset.</p>
                     <button id="studio-reference-import" class="studio-button studio-button-block" type="button">Import image</button>
                     <input id="studio-reference-file" class="visually-hidden" type="file" accept="image/png,image/jpeg">
-                    <label><input id="studio-reference-visible" type="checkbox"> Show reference</label>
-                    <label><input id="studio-reference-locked" type="checkbox"> Lock position</label>
-                    <label for="studio-reference-opacity">Opacity <span id="studio-reference-name">None</span></label>
+                    <label class="studio-reference-toggle" for="studio-reference-visible"><span>Show reference</span><input id="studio-reference-visible" type="checkbox"></label>
+                    <label class="studio-reference-toggle" for="studio-reference-locked"><span>Lock position</span><input id="studio-reference-locked" type="checkbox"></label>
+                    <label class="studio-reference-opacity-label" for="studio-reference-opacity"><span>Opacity</span><span id="studio-reference-name">None</span></label>
                     <input id="studio-reference-opacity" type="range" min="5" max="100" value="28">
                     <div class="studio-reference-grid">
                         <label for="studio-reference-x">X<input id="studio-reference-x" type="number" min="0" max="2300" step="10"></label>
@@ -150,7 +160,8 @@
                             <button type="button" data-distribute="vertical">Distribute vertically</button>
                         </div>
                     </details>
-                    <button id="studio-insert-image" type="button" aria-label="Insert reference image" title="Insert reference image"><i class="bi bi-image"></i></button>
+                    <button id="studio-insert-image" type="button" aria-label="Insert image or icon asset" title="Insert image or icon asset"><i class="bi bi-image"></i></button>
+                    <input id="studio-image-asset-file" class="visually-hidden" type="file" accept="image/png,image/jpeg,image/webp">
                     <button id="studio-delete-selection" type="button" aria-label="Delete selected items" title="Delete selected items" disabled><i class="bi bi-trash3"></i></button>
                     <button id="studio-review-action" type="button" aria-label="Review architecture" title="Review architecture"><i class="bi bi-stars"></i></button>
                 </div>
@@ -159,31 +170,36 @@
                     <span class="studio-resize-handle studio-reference-resize" aria-hidden="true"></span>
                 </div>
                 <div id="studio-graph" class="studio-graph" aria-label="Editable architecture graph"></div>
-                <div id="studio-empty-state" class="studio-empty-state" hidden><i class="bi bi-bounding-box-circles"></i><strong>No assets in this view</strong><span>Add an asset or switch projections.</span></div>
+                <div id="studio-empty-state" class="studio-empty-state" hidden><i class="bi bi-bounding-box-circles"></i><strong>No assets in this view</strong><span>Add a component, upload an icon, or switch projections.</span><button id="studio-empty-upload-icon" class="studio-button" type="button"><i class="bi bi-upload"></i> Upload icon</button></div>
                 <div id="studio-minimap" class="studio-minimap" aria-label="Canvas minimap"></div>
                 <div class="studio-canvas-controls" aria-label="Canvas viewport controls">
                     <button id="studio-bottom-zoom-out" type="button" aria-label="Zoom out"><i class="bi bi-dash-lg"></i></button>
                     <span id="studio-bottom-zoom-value">100%</span>
                     <button id="studio-bottom-zoom-in" type="button" aria-label="Zoom in"><i class="bi bi-plus-lg"></i></button>
                     <button id="studio-bottom-fit" type="button" aria-label="Fit to screen"><i class="bi bi-arrows-angle-expand"></i></button>
+                    <button id="studio-shortcuts-button" type="button" aria-label="Keyboard shortcuts" title="Keyboard shortcuts"><i class="bi bi-keyboard"></i></button>
                 </div>
                 <div class="studio-canvas-settings" aria-label="Canvas settings">
                     <label><input id="studio-grid-visible" type="checkbox" checked> Grid</label>
                     <label><input id="studio-snap-enabled" type="checkbox" checked> Snap</label>
                     <label><input id="studio-guides-enabled" type="checkbox" checked> Guides</label>
+                    <label for="studio-grid-size">Grid <select id="studio-grid-size" class="studio-canvas-select"><option value="5">5 px</option><option value="10" selected>10 px</option><option value="20">20 px</option><option value="40">40 px</option></select></label>
                     <span id="studio-cursor-position">X: 0, Y: 0</span>
                 </div>
             </div>
-            <div class="studio-stage-footer"><span id="studio-stage-summary">0 assets · 0 connections</span><span>Drag catalogue assets onto the canvas. Shift-click selects multiple items. Arrow keys nudge.</span></div>
+            <div class="studio-stage-footer"><span id="studio-stage-summary">0 assets · 0 connections</span><span>Drag empty canvas to select. Space-drag pans. Mouse wheel zooms. Press ? for shortcuts.</span></div>
             <div class="studio-relationship-legend" aria-label="Relationship legend">
                 <span data-type="network">Network</span><span data-type="vpn">VPN</span><span data-type="peering">Peering</span><span data-type="trust">Trust</span><span data-type="api">API</span><span data-type="replication">Replication</span><span data-type="administration">Administration</span>
             </div>
         </main>
 
         <aside class="studio-panel studio-inspector-panel" aria-labelledby="studio-inspector-title">
-            <div class="studio-inspector-tabs" role="tablist" aria-label="Inspector views">
-                <button id="studio-properties-tab" class="is-active" type="button" role="tab" aria-selected="true">Properties</button>
-                <button id="studio-style-tab" type="button" role="tab" aria-selected="false">Style</button>
+            <div class="studio-panel-tabs-bar">
+                <div class="studio-inspector-tabs" role="tablist" aria-label="Inspector views">
+                    <button id="studio-properties-tab" class="is-active" type="button" role="tab" aria-selected="true">Properties</button>
+                    <button id="studio-style-tab" type="button" role="tab" aria-selected="false">Style</button>
+                </div>
+                <button id="studio-inspector-collapse" class="studio-panel-collapse" type="button" aria-label="Collapse inspector" title="Collapse inspector"><i class="bi bi-chevron-right"></i></button>
             </div>
             <div class="studio-panel-heading"><div><span>Selected item</span><h2 id="studio-inspector-title">Inspector</h2></div><button id="studio-delete-item" class="studio-icon-button" type="button" title="Delete selected item" disabled><i class="bi bi-trash3"></i></button></div>
             <div id="studio-inspector-empty" class="studio-inspector-empty"><i class="bi bi-cursor"></i><p>Select an asset, boundary, or relationship to edit it.</p></div>
@@ -198,48 +214,160 @@
                     <div class="studio-form-grid"><div><label for="studio-field-provider">Provider / region</label><input id="studio-field-provider" type="text" maxlength="60"></div><div><label for="studio-field-environment">Environment</label><input id="studio-field-environment" type="text" maxlength="40"></div><div><label for="studio-field-zone">Availability zone</label><input id="studio-field-zone" type="text" maxlength="40"></div><div><label for="studio-field-owner">Owner</label><input id="studio-field-owner" type="text" maxlength="80"></div></div>
                     <div class="studio-form-grid"><div><label for="studio-field-cpu">CPU</label><input id="studio-field-cpu" type="text" maxlength="30"></div><div><label for="studio-field-memory">Memory</label><input id="studio-field-memory" type="text" maxlength="30"></div><div><label for="studio-field-storage">Storage</label><input id="studio-field-storage" type="text" maxlength="40"></div></div>
                     <div id="studio-context-fields" class="studio-context-fields"></div>
+                    <section id="studio-image-properties" class="studio-image-properties" hidden><h3>Image or icon</h3><div class="studio-form-grid"><div><label for="studio-field-image-mode">Display as</label><select id="studio-field-image-mode" class="studio-select"><option value="icon">Icon card</option><option value="image">Image</option></select></div><div><label for="studio-field-image-fit">Image fit</label><select id="studio-field-image-fit" class="studio-select"><option value="contain">Contain</option><option value="cover">Cover</option><option value="fill">Stretch</option></select></div></div><div class="studio-form-grid studio-size-grid"><div><label for="studio-field-image-width">Width</label><input id="studio-field-image-width" type="number" min="132" max="1200" step="4"></div><div><label for="studio-field-image-height">Height</label><input id="studio-field-image-height" type="number" min="88" max="900" step="4"></div><div><label for="studio-field-image-icon-size">Icon size</label><input id="studio-field-image-icon-size" type="number" min="24" max="96" step="2"></div></div><label class="studio-image-opacity-label" for="studio-field-image-opacity"><span>Image opacity</span><output id="studio-field-image-opacity-value">100%</output></label><input id="studio-field-image-opacity" type="range" min="10" max="100" value="100"><label class="studio-reference-toggle" for="studio-field-image-label"><span>Show label</span><input id="studio-field-image-label" type="checkbox" checked></label><label class="studio-reference-toggle" for="studio-field-image-locked"><span>Lock position and size</span><input id="studio-field-image-locked" type="checkbox"></label></section>
                     <div class="studio-check-grid"><label><input id="studio-field-monitoring" type="checkbox"> Monitoring</label><label><input id="studio-field-backup" type="checkbox"> Backup</label><label><input id="studio-field-redundant" type="checkbox"> Redundant</label><label><input id="studio-field-critical" type="checkbox"> Critical</label></div>
                 </div>
                 <div id="studio-style-panel" class="studio-inspector-tab-panel" hidden>
-                    <div class="studio-form-grid studio-size-grid"><div><label for="studio-field-width">Box width</label><input id="studio-field-width" type="number" min="132" max="1200" step="4"></div><div><label for="studio-field-height">Box height</label><input id="studio-field-height" type="number" min="88" max="900" step="4"></div><div><label for="studio-field-icon-size">Icon size</label><input id="studio-field-icon-size" type="number" min="24" max="96" step="2"></div></div>
-                    <p>Size changes are stored independently for each architecture projection.</p>
+                    <div id="studio-style-selection-summary" class="studio-style-selection-summary"></div>
+                    <section id="studio-style-dimensions" class="studio-style-section"><h3>Dimensions</h3><div class="studio-form-grid studio-size-grid"><div><label for="studio-field-width">Box width</label><input id="studio-field-width" type="number" min="132" max="1200" step="4"></div><div><label for="studio-field-height">Box height</label><input id="studio-field-height" type="number" min="88" max="900" step="4"></div><div><label for="studio-field-icon-size">Icon size</label><input id="studio-field-icon-size" type="number" min="24" max="96" step="2"></div></div></section>
+                    <section class="studio-style-section"><h3>Appearance</h3><label for="studio-field-shape">Shape</label><select id="studio-field-shape" class="studio-select"><option value="rectangle">Rectangle</option><option value="rounded">Rounded rectangle</option><option value="ellipse">Ellipse</option></select><div class="studio-color-grid"><label for="studio-field-fill-color">Background<input id="studio-field-fill-color" type="color" value="#ffffff"></label><label for="studio-field-border-color">Border<input id="studio-field-border-color" type="color" value="#cbd5e1"></label><label for="studio-field-text-color">Text<input id="studio-field-text-color" type="color" value="#172033"></label></div><div class="studio-form-grid"><div><label for="studio-field-border-style">Border style</label><select id="studio-field-border-style" class="studio-select"><option value="solid">Solid</option><option value="dashed">Dashed</option><option value="dotted">Dotted</option></select></div><div><label for="studio-field-border-width">Border width</label><input id="studio-field-border-width" type="number" min="1" max="8" step="1"></div><div><label for="studio-field-font-size">Font size</label><input id="studio-field-font-size" type="number" min="9" max="24" step="1"></div><div><label for="studio-field-text-align">Text alignment</label><select id="studio-field-text-align" class="studio-select"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></div></div></section>
+                    <div class="studio-check-grid studio-lock-grid"><label><input id="studio-field-asset-locked" type="checkbox"> Lock position and size</label></div>
+                    <section class="studio-style-section"><h3>Reusable styles</h3><label for="studio-style-preset">Named preset</label><div class="studio-style-preset-row"><select id="studio-style-preset" class="studio-select"></select><button id="studio-apply-style-preset" class="studio-button" type="button">Apply</button><button id="studio-delete-style-preset" class="studio-icon-button" type="button" aria-label="Delete selected preset" title="Delete selected preset"><i class="bi bi-trash3"></i></button></div><label for="studio-style-preset-name">Save current style</label><div class="studio-style-save-row"><input id="studio-style-preset-name" type="text" maxlength="40" placeholder="Preset name"><button id="studio-save-style-preset" class="studio-button" type="button">Save preset</button></div><div class="studio-style-clipboard-actions"><button id="studio-copy-asset-style" class="studio-button" type="button"><i class="bi bi-copy"></i> Copy style</button><button id="studio-paste-asset-style" class="studio-button" type="button"><i class="bi bi-clipboard-check"></i> Paste style</button></div></section>
+                    <p>Dimensions and appearance are stored independently for each architecture projection.</p>
+                    <div class="studio-style-actions"><button id="studio-duplicate-item" class="studio-button" type="button"><i class="bi bi-copy"></i> Duplicate</button><button id="studio-reset-asset-style" class="studio-button" type="button"><i class="bi bi-arrow-counterclockwise"></i> Reset style</button><button id="studio-delete-item-style" class="studio-button studio-button-danger" type="button"><i class="bi bi-trash3"></i> Delete</button></div>
                 </div>
                 <p class="studio-autosave-note"><i class="bi bi-check-circle"></i> Changes save automatically</p>
             </form>
             <form id="studio-connection-form" class="studio-inspector-form" hidden>
                 <strong id="studio-connection-endpoints" class="studio-selected-type"></strong>
+                <div class="studio-form-grid"><div><label for="studio-field-connection-source">Source asset</label><select id="studio-field-connection-source" class="studio-select"></select></div><div><label for="studio-field-connection-target">Destination asset</label><select id="studio-field-connection-target" class="studio-select"></select></div></div>
                 <label for="studio-field-connection-type">Relationship type</label><select id="studio-field-connection-type" class="studio-select"></select>
-                <label for="studio-field-connection-label">Purpose / protocol</label><input id="studio-field-connection-label" type="text" maxlength="80">
+                <label for="studio-field-connection-label">Relationship label</label><input id="studio-field-connection-label" type="text" maxlength="80" placeholder="Public ingress, database traffic">
                 <label for="studio-field-connection-direction">Direction</label><select id="studio-field-connection-direction" class="studio-select"><option value="source-to-target">Source to target</option><option value="target-to-source">Target to source</option><option value="bidirectional">Bidirectional</option></select>
                 <div class="studio-form-grid"><div><label for="studio-field-connection-protocol">Protocol</label><input id="studio-field-connection-protocol" type="text" maxlength="40" placeholder="HTTPS, TCP, IPSec"></div><div><label for="studio-field-connection-bandwidth">Bandwidth</label><input id="studio-field-connection-bandwidth" type="text" maxlength="40" placeholder="1 Gbps"></div></div>
+                <div class="studio-connection-route"><label for="studio-field-connection-route">Route style</label><select id="studio-field-connection-route" class="studio-select"><option value="orthogonal">Orthogonal</option><option value="straight">Straight</option><option value="elbow">Elbow</option><option value="curved">Curved</option></select><button id="studio-reset-connection-route" class="studio-button studio-button-secondary" type="button"><i class="bi bi-bezier2"></i> Reset route</button></div>
+                <p class="studio-connection-route-help">Select the relationship on the canvas and drag its bend handles. Routing is saved separately for each view.</p>
                 <div class="studio-check-grid"><label><input id="studio-field-bidirectional" type="checkbox"> Bidirectional</label></div>
                 <p class="studio-autosave-note"><i class="bi bi-check-circle"></i> Changes save automatically</p>
             </form>
         </aside>
     </div>
 
-    <section class="studio-inventory" aria-labelledby="studio-inventory-title">
-        <div class="studio-section-heading"><div><span>Normalized project data</span><h2 id="studio-inventory-title">Architecture inventory</h2></div><span id="studio-inventory-count">0 items</span></div>
-        <div class="studio-table-wrap"><table><thead><tr><th>Asset</th><th>Type</th><th>Placement</th><th>Address</th><th>Resources</th><th>Controls</th></tr></thead><tbody id="studio-inventory-body"></tbody></table></div>
-    </section>
-
+    <!-- [studio-content] Section: Start -->
+    <!-- [studio-result] Section: Start -->
     <section class="studio-review" aria-labelledby="studio-review-title">
-        <div class="studio-review-heading"><div><span>Advisory architecture review</span><h2 id="studio-review-title">What is missing and what can improve</h2></div><p>Grades explain modeled facts. They are guidance, not certification.</p></div>
+        <div class="studio-review-heading"><div><span>Deterministic architecture review</span><h2 id="studio-review-title">Studio Result</h2></div><p>Grades explain modeled facts. They are guidance, not certification.</p></div>
         <div class="studio-score-grid"><article class="studio-score-card studio-score-card-grade"><span>Grade</span><strong id="studio-grade">—</strong><small id="studio-grade-label">Not graded</small></article><article class="studio-score-card"><span>Score</span><strong id="studio-score">—</strong><small>Out of 100</small></article><article class="studio-score-card"><span>Confidence</span><strong id="studio-confidence">—</strong><small>Based on entered facts</small></article><article class="studio-score-card"><span>Open findings</span><strong id="studio-finding-count">0</strong><small id="studio-finding-summary">No review yet</small></article></div>
         <div class="studio-category-review"><div><span>Category scores</span><small>Deterministic deductions from modeled facts</small><button id="studio-restore-dismissed" class="studio-restore-dismissed" type="button" hidden>Restore dismissed findings</button></div><div id="studio-category-scores" class="studio-category-scores"></div></div>
-        <div id="studio-findings" class="studio-findings"></div>
     </section>
+    <!-- [studio-result] Section: End -->
+
+    <!-- [studio-graph] Section: Start -->
+    <section class="studio-overview" aria-label="Studio Graph">
+        <div class="studio-section-heading studio-chart-heading">
+            <div class="studio-chart-copy">
+                <div class="studio-chart-analysis"><span id="studio-chart-analysis-title">Architecture View Analysis</span></div>
+                <h2 id="studio-chart-title">Studio View Coverage</h2>
+                <p id="studio-chart-subtitle">Solid, dashed, and filled lines compare components, boundaries, and relationships by projection.</p>
+            </div>
+            <div class="studio-overview-actions">
+                <span id="studio-overview-summary" class="studio-overview-summary">Loading project metrics</span>
+                <div class="studio-chart-toolbar" role="toolbar" aria-label="Studio chart controls">
+                    <label for="studio-overview-chart-select">Chart<select id="studio-overview-chart-select" class="studio-select"><option value="line-styling">Line Styling</option><option value="radar-controls">Radar Chart</option><option value="polar-assets">Polar Area Centered</option><option value="rounded-relationships">Bar · Border Radius</option><option value="time-combo">Time Scale · Combo</option></select></label>
+                    <button id="studio-chart-values" class="studio-chart-action" type="button" aria-pressed="false"><i class="bi bi-123" aria-hidden="true"></i><span>Show values</span></button>
+                    <button id="studio-chart-reset" class="studio-chart-action" type="button" disabled><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i><span>Reset</span></button>
+                    <button id="studio-chart-download" class="studio-chart-action" type="button"><i class="bi bi-download" aria-hidden="true"></i><span>Download PNG</span></button>
+                </div>
+            </div>
+        </div>
+        <div class="studio-chart-shell">
+            <canvas id="studio-overview-chart" role="img" aria-label="Selected Studio project metrics chart">Studio project metrics chart</canvas>
+            <div id="studio-chart-empty" class="studio-chart-empty" role="status" hidden><i class="bi bi-bar-chart" aria-hidden="true"></i><strong>No chart data</strong><span id="studio-chart-empty-message"></span></div>
+        </div>
+        <p id="studio-chart-accessibility" class="studio-chart-accessibility" aria-live="polite"></p>
+    </section>
+    <!-- [studio-graph] Section: End -->
+
+    <!-- [studio-improvements] Section: Start -->
+    <section class="studio-review studio-improvements" aria-labelledby="studio-improvements-title">
+        <div class="studio-section-heading"><div><span>Provider template metrics</span><h2 id="studio-improvements-title">Studio Improvement</h2></div></div>
+        <div id="studio-findings" class="studio-findings"></div>
+        <div id="studio-improvements-empty" class="studio-content-empty" role="status" hidden><i class="bi bi-stars" aria-hidden="true"></i><strong>No improvement data</strong><span id="studio-improvements-empty-message">Add assets to begin the architecture review.</span></div>
+    </section>
+    <!-- [studio-improvements] Section: End -->
+
+    <!-- [studio-inventory] Section: Start -->
+    <section class="studio-inventory" aria-labelledby="studio-inventory-title">
+        <div class="studio-section-heading"><div><span>Normalized project data</span><h2 id="studio-inventory-title">Studio Inventory</h2></div><span id="studio-inventory-count">0 items</span></div>
+        <div id="studio-inventory-empty" class="studio-content-empty" role="status" hidden><i class="bi bi-table" aria-hidden="true"></i><strong>No inventory data</strong><span>Add assets to populate the normalized project inventory.</span></div>
+        <div id="studio-inventory-table" class="studio-table-wrap"><table><thead><tr><th>Asset</th><th>Type</th><th>Placement</th><th>Address</th><th>Resources</th><th>Controls</th></tr></thead><tbody id="studio-inventory-body"></tbody></table></div>
+    </section>
+    <!-- [studio-inventory] Section: End -->
+
+    <!-- [studio-about] Section: Start -->
+    <section id="studio-package-content" class="studio-package-content" aria-labelledby="studio-package-content-title" hidden>
+        <div class="studio-content-heading">
+            <span class="studio-content-heading-icon"><i class="bi bi-journal-richtext" aria-hidden="true"></i></span>
+            <div><span>Architecture guidance</span><h2 id="studio-package-content-title">About this architecture library</h2></div>
+            <span id="studio-package-content-provider" class="studio-content-provider"></span>
+        </div>
+        <div id="studio-package-introductions" class="studio-package-introductions"></div>
+        <div class="studio-package-support-grid">
+            <section aria-labelledby="studio-package-faq-title">
+                <div class="studio-content-subheading"><i class="bi bi-question-circle" aria-hidden="true"></i><h3 id="studio-package-faq-title">Frequently asked questions</h3></div>
+                <p>Practical answers about the selected Studio architecture package.</p>
+                <div id="studio-package-faq" class="studio-package-faq"></div>
+            </section>
+            <section aria-labelledby="studio-package-references-title">
+                <div class="studio-content-subheading"><i class="bi bi-book" aria-hidden="true"></i><h3 id="studio-package-references-title">References</h3></div>
+                <p>Official provider material supporting the package context.</p>
+                <ol id="studio-package-references" class="studio-package-references"></ol>
+            </section>
+        </div>
+    </section>
+    <!-- [studio-about] Section: End -->
+    <!-- [studio-content] Section: End -->
+
+    <dialog id="studio-shortcuts-dialog" class="studio-shortcuts-dialog" aria-labelledby="studio-shortcuts-title">
+        <form method="dialog" class="studio-shortcuts-shell">
+            <header><div><span>Canvas help</span><h2 id="studio-shortcuts-title">Keyboard shortcuts</h2></div><button class="studio-icon-button" type="submit" value="close" aria-label="Close keyboard shortcuts"><i class="bi bi-x-lg"></i></button></header>
+            <div class="studio-shortcuts-grid">
+                <section><h3>Navigate</h3><dl><div><dt><kbd>Space</kbd> + drag</dt><dd>Pan canvas</dd></div><div><dt><kbd>Wheel</kbd></dt><dd>Zoom at cursor</dd></div><div><dt><kbd>F</kbd></dt><dd>Fit architecture</dd></div><div><dt><kbd>Alt</kbd> + drag</dt><dd>Temporarily disable snapping</dd></div></dl></section>
+                <section><h3>Select and edit</h3><dl><div><dt><kbd>Drag</kbd></dt><dd>Box select</dd></div><div><dt><kbd>Shift</kbd> + click</dt><dd>Add or remove selection</dd></div><div><dt><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>A</kbd></dt><dd>Select visible assets</dd></div><div><dt><kbd>Esc</kbd></dt><dd>Clear selection or Connect mode</dd></div><div><dt><kbd>Arrow keys</kbd></dt><dd>Nudge selected assets</dd></div></dl></section>
+                <section><h3>Actions</h3><dl><div><dt><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>D</kbd></dt><dd>Duplicate</dd></div><div><dt><kbd>Delete</kbd></dt><dd>Delete selection</dd></div><div><dt><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Z</kbd></dt><dd>Undo</dd></div><div><dt><kbd>Shift</kbd> + <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Z</kbd></dt><dd>Redo</dd></div><div><dt><kbd>?</kbd></dt><dd>Open this guide</dd></div></dl></section>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="studio-share-dialog" class="studio-publish-dialog studio-share-dialog" aria-labelledby="studio-share-dialog-title">
+        <form method="dialog" class="studio-publish-dialog-shell studio-share-shell">
+            <header class="studio-share-heading">
+                <h2 id="studio-share-dialog-title" class="studio-visually-hidden">Share architecture</h2>
+                <p id="studio-share-introduction" class="studio-share-introduction"></p>
+                <button class="studio-icon-button" type="submit" value="close" aria-label="Close sharing"><i class="bi bi-x-lg"></i></button>
+            </header>
+            <figure class="studio-share-preview"><img id="studio-share-preview" alt="Generated architecture share image"></figure>
+            <div class="studio-share-primary-actions">
+                <div class="studio-share-status" role="status"><span id="studio-share-status-text">Read-only share link ready</span><input id="studio-share-link" type="url" readonly aria-label="Shared project URL"><button id="studio-share-copy-link" type="button" aria-label="Copy read-only share link"><i class="bi bi-copy"></i><span>Copy link</span></button><a id="studio-share-open-link" href="#" target="_blank" rel="noopener" aria-label="Open read-only shared project"><i class="bi bi-box-arrow-up-right"></i><span>Open</span></a></div>
+                <a id="studio-share-whatsapp" class="studio-share-action is-whatsapp" href="#" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i><span>Continue to WhatsApp</span></a>
+                <button id="studio-share-system" class="studio-share-action" type="button"><i class="bi bi-box-arrow-up"></i><span>System Share</span></button>
+                <button id="studio-share-copy-image" class="studio-share-action" type="button"><i class="bi bi-clipboard"></i><span>Copy Image</span></button>
+                <button id="studio-share-download-image" class="studio-share-action" type="button"><i class="bi bi-download"></i><span>Download PNG</span></button>
+            </div>
+            <details class="studio-share-more"><summary>More sharing options</summary><div aria-label="Additional social sharing options"><a id="studio-share-x" href="#" target="_blank" rel="noopener" aria-label="Share on X" title="Share on X"><i class="bi bi-twitter-x"></i></a><a id="studio-share-facebook" href="#" target="_blank" rel="noopener" aria-label="Share on Facebook" title="Share on Facebook"><i class="bi bi-facebook"></i></a><a id="studio-share-linkedin" href="#" target="_blank" rel="noopener" aria-label="Share on LinkedIn" title="Share on LinkedIn"><i class="bi bi-linkedin"></i></a><a id="studio-share-whatsapp-more" href="#" target="_blank" rel="noopener" aria-label="Share on WhatsApp" title="Share on WhatsApp"><i class="bi bi-whatsapp"></i></a><a id="studio-share-telegram" href="#" target="_blank" rel="noopener" aria-label="Share on Telegram" title="Share on Telegram"><i class="bi bi-telegram"></i></a><a id="studio-share-reddit" href="#" target="_blank" rel="noopener" aria-label="Share on Reddit" title="Share on Reddit"><i class="bi bi-reddit"></i></a><a id="studio-share-email" href="#" aria-label="Share by email" title="Share by email"><i class="bi bi-envelope"></i></a><button id="studio-share-copy-link-more" type="button" aria-label="Copy read-only share link" title="Copy link"><i class="bi bi-link-45deg"></i></button><button id="studio-share-open-embed" type="button" aria-label="Open embed options" title="Embed"><i class="bi bi-code-slash"></i></button></div></details>
+        </form>
+    </dialog>
+
+    <dialog id="studio-embed-dialog" class="studio-publish-dialog studio-embed-dialog" aria-labelledby="studio-embed-dialog-title">
+        <form method="dialog" class="studio-publish-dialog-shell studio-embed-shell">
+            <header class="studio-embed-heading"><h2 id="studio-embed-dialog-title">Embed</h2><nav class="studio-embed-tabs" aria-label="Embed settings"><button class="is-customize is-active" type="button" data-embed-focus="studio-embed-panel-customize" aria-controls="studio-embed-panel-customize" aria-expanded="true"><i class="bi bi-sliders"></i> Customize</button><button class="is-disclaimer is-active" type="button" data-embed-focus="studio-embed-panel-disclaimer" aria-controls="studio-embed-panel-disclaimer" aria-expanded="true"><i class="bi bi-shield-exclamation"></i> Disclaimer</button><button class="is-advanced is-active" type="button" data-embed-focus="studio-embed-panel-advanced" aria-controls="studio-embed-panel-advanced" aria-expanded="true"><i class="bi bi-gear"></i> Advanced</button></nav><button id="studio-embed-close" class="studio-icon-button" type="submit" value="close" aria-label="Close embed"><i class="bi bi-x-lg"></i></button></header>
+            <div class="studio-embed-code-row"><input id="studio-embed-code" type="text" readonly aria-label="Embed iframe code"><button id="studio-share-copy-embed" type="button"><i class="bi bi-clipboard"></i> Copy</button><a id="studio-embed-demo" href="#" target="_blank" rel="noopener"><i class="bi bi-window"></i> Demo</a></div>
+            <section id="studio-embed-panel-disclaimer" class="studio-embed-disclaimer" tabindex="-1"><strong>Embed this InfraStack architecture only where the surrounding page gives users enough context to interpret the result.</strong><ul><li>Treat the frame as a planning aid, not approval, certification, compliance evidence, or production guidance.</li><li>Validate generated diagrams, values, exports, and assumptions before technical or business decisions.</li><li>Do not embed it in a misleading, unsafe, unlawful, or security-sensitive context.</li><li>InfraStack may revise behavior, labels, limits, routes, or availability as the platform changes.</li></ul><span>If that does not fit the page, link to the shared architecture instead.</span></section>
+            <section id="studio-embed-panel-customize" class="studio-embed-panel" tabindex="-1">
+                <div class="studio-embed-field-grid">
+                    <label>Width <span><input id="studio-embed-width" type="number" min="1" max="1600" value="100"><select id="studio-embed-width-unit"><option value="%">%</option><option value="px">px</option><option value="vw">vw</option></select></span></label>
+                    <label>Height <span><input id="studio-embed-height" type="number" min="1" max="1600" value="100"><select id="studio-embed-height-unit"><option value="%">%</option><option value="px">px</option><option value="vh">vh</option></select></span></label>
+                    <label class="studio-embed-ratio">Aspect ratio <span><input id="studio-embed-ratio-width" type="number" min="1" max="32" value="16"><b>:</b><input id="studio-embed-ratio-height" type="number" min="1" max="32" value="9"></span></label>
+                    <label>Max height <span><input id="studio-embed-max-height" type="number" min="0" max="2000" placeholder="None"><select id="studio-embed-max-height-unit"><option value="px">px</option><option value="vh">vh</option></select></span></label>
+                </div>
+                <div class="studio-share-options"><label><input id="studio-embed-inventory" type="checkbox"> Include inventory</label><label><input id="studio-embed-advisory" type="checkbox"> Include Studio Result</label><label><input id="studio-embed-collapsible" type="checkbox"> Collapsible embed</label><label><input id="studio-embed-fullscreen" type="checkbox"> Allow fullscreen</label></div>
+            </section>
+            <section id="studio-embed-panel-advanced" class="studio-embed-panel studio-embed-advanced" tabindex="-1"><div class="studio-embed-field-grid"><label>Referrer policy <select id="studio-embed-referrer"><option value="no-referrer-when-downgrade">no-referrer-when-downgrade</option><option value="strict-origin-when-cross-origin">strict-origin-when-cross-origin</option><option value="no-referrer">no-referrer</option></select></label><label>Sandbox tokens <input id="studio-embed-sandbox" type="text" value="allow-scripts allow-same-origin allow-forms allow-popups"></label></div></section>
+        </form>
+    </dialog>
 </div>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('js/studio/core/project-model.js') }}"></script>
-    <script src="{{ asset('js/studio/core/reference-storage.js') }}"></script>
-    <script src="{{ asset('js/studio/review/rules.js') }}"></script>
-    <script src="{{ asset('js/studio/review/improvements.js') }}"></script>
-    <script src="{{ asset('js/studio/providers/registry.js') }}"></script>
-    <script src="{{ asset('js/studio/providers/aws/templates.js') }}"></script>
-    <script src="{{ asset('js/studio/providers/azure/templates.js') }}"></script>
-    <script type="module" src="{{ asset('js/studio/index.js') }}"></script>
+    {{ importmap(['app', 'studio']) }}
 {% endblock %}

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Huawei Cloud subnet">
-  <rect x="5" y="9" width="22" height="14" rx="3.5" fill="#111827"/>
-  <path d="M9 14h14M9 18h14" stroke="#F8FAFC" stroke-width="2" stroke-linecap="round"/>
-  <circle cx="10" cy="23.5" r="1.5" fill="#C7000B"/>
-  <circle cx="16" cy="23.5" r="1.5" fill="#C7000B"/>
-  <circle cx="22" cy="23.5" r="1.5" fill="#C7000B"/>
-</svg>

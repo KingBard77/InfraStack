@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "packages": [
+    {
+      "id": "architecture-aws-cloud",
+      "family": "architecture",
+      "provider": "aws",
+      "slug": "cloud",
+      "name": "AWS Cloud Architecture",
+      "version": "1.0.0",
+      "manifest": "architecture/aws/cloud/package.json",
+      "templates": "architecture/aws/cloud/templates.json",
+      "result": "architecture/aws/cloud/result.json",
+      "content": "architecture/aws/cloud/content.yml"
+    },
+    {
+      "id": "architecture-azure-cloud",
+      "family": "architecture",
+      "provider": "azure",
+      "slug": "cloud",
+      "name": "Azure Cloud Architecture",
+      "version": "1.0.0",
+      "manifest": "architecture/azure/cloud/package.json",
+      "templates": "architecture/azure/cloud/templates.json",
+      "result": "architecture/azure/cloud/result.json",
+      "content": "architecture/azure/cloud/content.yml"
+    },
+    {
+      "id": "architecture-gcp-cloud",
+      "family": "architecture",
+      "provider": "gcp",
+      "slug": "cloud",
+      "name": "Google Cloud Architecture",
+      "version": "1.0.0",
+      "manifest": "architecture/gcp/cloud/package.json",
+      "templates": "architecture/gcp/cloud/templates.json",
+      "result": "architecture/gcp/cloud/result.json",
+      "content": "architecture/gcp/cloud/content.yml"
+    }
+  ]
+}

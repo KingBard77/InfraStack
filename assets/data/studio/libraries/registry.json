@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "groups": [
+    { "id": "general", "label": "General" },
+    { "id": "infrastructure", "label": "Infrastructure" },
+    { "id": "cloud", "label": "Cloud" },
+    { "id": "virtualization", "label": "Virtualization" },
+    { "id": "containers", "label": "Containers" },
+    { "id": "vendors", "label": "Vendors" }
+  ],
+  "libraries": [
+    {
+      "id": "infrastructure-generic",
+      "group": "infrastructure",
+      "label": "Generic Infrastructure",
+      "provider": "generic",
+      "provider_label": "Generic",
+      "catalog": "infrastructure/generic/catalog.json",
+      "icons": "infrastructure/generic"
+    },
+    {
+      "id": "cloud-aws",
+      "group": "cloud",
+      "label": "AWS",
+      "provider": "aws",
+      "provider_label": "AWS",
+      "catalog": "cloud/aws/catalog.json",
+      "icons": "cloud/aws"
+    },
+    {
+      "id": "cloud-azure",
+      "group": "cloud",
+      "label": "Azure",
+      "provider": "azure",
+      "provider_label": "Azure",
+      "catalog": "cloud/azure/catalog.json",
+      "icons": "cloud/azure"
+    },
+    {
+      "id": "cloud-gcp",
+      "group": "cloud",
+      "label": "Google Cloud",
+      "provider": "gcp",
+      "provider_label": "Google Cloud",
+      "catalog": "cloud/gcp/catalog.json",
+      "icons": "cloud/gcp"
+    }
+  ]
+}

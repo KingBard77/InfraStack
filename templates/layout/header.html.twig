@@ -9,12 +9,14 @@
           aria-label="InfraStack home"
         >
           <img
-            src="{{ asset('infrastack-logo.svg') }}"
-            width="150"
-            height="48"
+            src="{{ asset('brand-mark.svg') }}"
+            width="34"
+            height="34"
+            class="infrastack-brand-mark"
             alt=""
             aria-hidden="true"
           >
+          <span>InfraStack</span>
         </a>
 
         <nav id="navmenu" class="navmenu infrastack-nav">
@@ -25,8 +27,8 @@
               </a>
             </li>
             <li>
-              <a href="{{ path('app_category') }}" class="{{ app.request.attributes.get('_route') in ['app_category', 'tool_detail'] ? 'active' : '' }}">
-                Tools
+              <a href="{{ path('app_studio') }}" class="{{ app.request.attributes.get('_route') == 'app_studio' ? 'active' : '' }}">
+                Studio
               </a>
             </li>
             <li>
@@ -57,20 +59,7 @@
           </button>
         </nav>
 
-        <form method="get" action="{{ path('app_category') }}" class="search-form infrastack-header-search" role="search">
-          <label for="infrastack-header-search-input" class="visually-hidden">Search tools</label>
-          <input
-            id="infrastack-header-search-input"
-            type="search"
-            name="q"
-            value="{{ app.request.query.get('q') }}"
-            placeholder="Search tools..."
-            class="form-control"
-          >
-          <button type="submit" class="btn" title="Search">
-            <i class="bi bi-search"></i>
-          </button>
-        </form>
+        <a href="{{ path('app_studio') }}" class="infrastack-header-studio-link"><i class="bi bi-bounding-box-circles"></i> Open Studio</a>
       </div>
     </div>
   </header>

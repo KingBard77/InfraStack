@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "id": "architecture-gcp-cloud",
+  "family": "architecture",
+  "provider": "gcp",
+  "slug": "cloud",
+  "name": "Google Cloud Architecture",
+  "version": "1.0.0",
+  "engine": "infrastack-studio",
+  "provider_catalog": "gcp",
+  "capabilities": [
+    "diagram",
+    "inventory",
+    "result",
+    "json",
+    "share",
+    "embed",
+    "multiple_views"
+  ],
+  "icon_source": "shared-local-provider-svg",
+  "entries": {
+    "templates": "templates.json",
+    "result": "result.json",
+    "content": "content.yml"
+  }
+}
