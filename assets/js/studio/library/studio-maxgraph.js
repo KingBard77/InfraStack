@@ -53,7 +53,8 @@ function nodeValue(asset, iconUrl) {
         const label = asset.image.show_label
             ? `<strong>${escapeHtml(asset.label)}</strong>`
             : '';
-        return `<div class="studio-graph-image-card"><img src="${escapeHtml(asset.image.data_url)}" alt="" draggable="false" style="object-fit:${escapeHtml(asset.image.fit)};opacity:${asset.image.opacity}">${label}</div>`;
+        const background = asset.image.background === 'color' ? asset.image.background_color : 'transparent';
+        return `<div class="studio-graph-image-card" style="box-sizing:border-box;padding:${asset.image.padding}px;background:${escapeHtml(background)}"><img src="${escapeHtml(asset.image.data_url)}" alt="" draggable="false" style="object-fit:${escapeHtml(asset.image.fit)};opacity:${asset.image.opacity}">${label}</div>`;
     }
 
     return `<div class="studio-graph-card" style="--studio-cell-icon:${asset.layout.icon_size}px;--studio-cell-font:${asset.appearance.font_size}px;--studio-cell-text:${escapeHtml(asset.appearance.text_color)};--studio-cell-align:${escapeHtml(asset.appearance.text_align)};--studio-image-opacity:${asset.image?.opacity || 1}">` +

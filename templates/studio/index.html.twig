@@ -24,19 +24,14 @@
             <input id="studio-project-name" type="text" maxlength="80" autocomplete="off" spellcheck="false" aria-label="Project name">
             <i class="bi bi-pencil" aria-hidden="true"></i>
         </label>
-        <span id="studio-save-state" class="studio-save-state"><i aria-hidden="true"></i> All changes saved</span>
+        <span id="studio-save-state" class="studio-save-state"><i aria-hidden="true"></i> Blank project ready</span>
         <div class="studio-appbar-spacer"></div>
         <div class="studio-control-cluster" aria-label="History controls">
             <button id="studio-undo" class="studio-icon-button" type="button" aria-label="Undo" title="Undo"><i class="bi bi-arrow-counterclockwise"></i></button>
             <button id="studio-redo" class="studio-icon-button" type="button" aria-label="Redo" title="Redo"><i class="bi bi-arrow-clockwise"></i></button>
         </div>
         <div class="studio-control-cluster" aria-label="View controls">
-            <select id="studio-view-select" class="studio-select" aria-label="Architecture projection">
-                <option value="overview">Overview</option>
-                <option value="physical">Physical</option>
-                <option value="network">Network</option>
-                <option value="availability">Availability</option>
-            </select>
+            <select id="studio-view-select" class="studio-select" aria-label="Architecture projection"><option value="overview">Overview</option></select>
             <button id="studio-fit" class="studio-icon-button" type="button" aria-label="Fit architecture" title="Fit architecture"><i class="bi bi-arrows-fullscreen"></i></button>
         </div>
         <div class="studio-control-cluster studio-zoom-cluster" aria-label="Zoom controls">
@@ -214,7 +209,16 @@
                     <div class="studio-form-grid"><div><label for="studio-field-provider">Provider / region</label><input id="studio-field-provider" type="text" maxlength="60"></div><div><label for="studio-field-environment">Environment</label><input id="studio-field-environment" type="text" maxlength="40"></div><div><label for="studio-field-zone">Availability zone</label><input id="studio-field-zone" type="text" maxlength="40"></div><div><label for="studio-field-owner">Owner</label><input id="studio-field-owner" type="text" maxlength="80"></div></div>
                     <div class="studio-form-grid"><div><label for="studio-field-cpu">CPU</label><input id="studio-field-cpu" type="text" maxlength="30"></div><div><label for="studio-field-memory">Memory</label><input id="studio-field-memory" type="text" maxlength="30"></div><div><label for="studio-field-storage">Storage</label><input id="studio-field-storage" type="text" maxlength="40"></div></div>
                     <div id="studio-context-fields" class="studio-context-fields"></div>
-                    <section id="studio-image-properties" class="studio-image-properties" hidden><h3>Image or icon</h3><div class="studio-form-grid"><div><label for="studio-field-image-mode">Display as</label><select id="studio-field-image-mode" class="studio-select"><option value="icon">Icon card</option><option value="image">Image</option></select></div><div><label for="studio-field-image-fit">Image fit</label><select id="studio-field-image-fit" class="studio-select"><option value="contain">Contain</option><option value="cover">Cover</option><option value="fill">Stretch</option></select></div></div><div class="studio-form-grid studio-size-grid"><div><label for="studio-field-image-width">Width</label><input id="studio-field-image-width" type="number" min="132" max="1200" step="4"></div><div><label for="studio-field-image-height">Height</label><input id="studio-field-image-height" type="number" min="88" max="900" step="4"></div><div><label for="studio-field-image-icon-size">Icon size</label><input id="studio-field-image-icon-size" type="number" min="24" max="96" step="2"></div></div><label class="studio-image-opacity-label" for="studio-field-image-opacity"><span>Image opacity</span><output id="studio-field-image-opacity-value">100%</output></label><input id="studio-field-image-opacity" type="range" min="10" max="100" value="100"><label class="studio-reference-toggle" for="studio-field-image-label"><span>Show label</span><input id="studio-field-image-label" type="checkbox" checked></label><label class="studio-reference-toggle" for="studio-field-image-locked"><span>Lock position and size</span><input id="studio-field-image-locked" type="checkbox"></label></section>
+                    <section id="studio-image-properties" class="studio-image-properties" hidden>
+                        <h3>Image or icon</h3>
+                        <div class="studio-form-grid"><div><label for="studio-field-image-mode">Display as</label><select id="studio-field-image-mode" class="studio-select"><option value="icon">Icon card</option><option value="image">Image</option></select></div><div><label for="studio-field-image-fit">Image fit</label><select id="studio-field-image-fit" class="studio-select"><option value="contain">Contain</option><option value="cover">Cover</option><option value="fill">Stretch</option></select></div></div>
+                        <div class="studio-form-grid studio-size-grid"><div><label for="studio-field-image-width">Width</label><input id="studio-field-image-width" type="number" min="132" max="1200" step="4"></div><div><label for="studio-field-image-height">Height</label><input id="studio-field-image-height" type="number" min="88" max="900" step="4"></div><div><label for="studio-field-image-icon-size">Icon size</label><input id="studio-field-image-icon-size" type="number" min="24" max="96" step="2"></div></div>
+                        <label class="studio-image-opacity-label" for="studio-field-image-opacity"><span>Image opacity</span><output id="studio-field-image-opacity-value">100%</output></label><input id="studio-field-image-opacity" type="range" min="10" max="100" value="100">
+                        <label for="studio-field-image-padding">Image padding</label><input id="studio-field-image-padding" type="number" min="0" max="120" step="2" value="0">
+                        <div class="studio-form-grid"><div><label for="studio-field-image-background">Background</label><select id="studio-field-image-background" class="studio-select"><option value="transparent">Transparent</option><option value="color">Custom colour</option></select></div><div id="studio-image-background-color-wrap"><label for="studio-field-image-background-color">Background colour</label><input id="studio-field-image-background-color" type="color" value="#ffffff"></div></div>
+                        <div class="studio-image-actions"><button id="studio-trim-image" class="studio-button" type="button"><i class="bi bi-crop"></i> Trim transparent space</button><button id="studio-reset-image" class="studio-button" type="button"><i class="bi bi-arrow-counterclockwise"></i> Reset original</button></div>
+                        <label class="studio-reference-toggle" for="studio-field-image-label"><span>Show label</span><input id="studio-field-image-label" type="checkbox" checked></label><label class="studio-reference-toggle" for="studio-field-image-locked"><span>Lock position and size</span><input id="studio-field-image-locked" type="checkbox"></label>
+                    </section>
                     <div class="studio-check-grid"><label><input id="studio-field-monitoring" type="checkbox"> Monitoring</label><label><input id="studio-field-backup" type="checkbox"> Backup</label><label><input id="studio-field-redundant" type="checkbox"> Redundant</label><label><input id="studio-field-critical" type="checkbox"> Critical</label></div>
                 </div>
                 <div id="studio-style-panel" class="studio-inspector-tab-panel" hidden>

@@ -1,138 +1,194 @@
 # InfraStack Studio Roadmap
 
-## Purpose
+## Vision
 
-Grow Studio through small file-based architecture releases while keeping one shared editor, normalized project state, inventory model, advisory engine, graph system, and share/embed flow.
+Build one web-based tool for infrastructure diagrams and architecture design. InfraStack is not intended to copy every draw.io feature. It should be the focused alternative for cloud, physical infrastructure, virtualization, containers, networks, security, inventory, and architecture review.
 
-This roadmap records intended work, not production-readiness claims. A release is complete only after its package, library assets, checks, and browser behavior are verified.
+One shared `/studio` editor owns the canvas and project behavior. Diagram types, technology libraries, and vendor packs are released as data packages instead of separate applications.
 
-## Current Repository Baseline
+## Status
 
-| Capability | Current state |
-| --- | --- |
-| Shared Studio editor | Available for editable diagrams, inventory, deterministic results, graphs, JSON restore/export, share, and embed |
-| Package model | `package.json`, `templates.json`, `result.json`, and `content.yml` |
-| Registered cloud packages | AWS, Azure, and Google Cloud |
-| Registered libraries | Generic infrastructure, AWS, Azure, and Google Cloud |
-| Generic physical assets | Rack, server, storage, switch, router, and firewall catalogue entries |
-| Release validation | Repository, Studio, performance, deployment, and browser checks |
+- `[x]` available in the repository
+- `[-]` partially available or represented by the current generic model
+- `[ ]` planned
 
-Azure and GCP are already registered in the repository. Their next work is maintenance, broader templates, catalogue coverage, and release validation rather than creating duplicate providers.
+## Available Now
 
-## Deployment Order
+### Studio Editor
 
-### Phase 0 — Scale And Release Readiness
+- [x] One shared web-based diagram editor.
+- [x] Editable assets, boundaries, labels, properties, styles, and relationships.
+- [x] Drag, resize, multi-select, duplicate, delete, align, distribute, and auto-layout controls.
+- [x] Relationship types, directions, labels, protocols, and connector routing.
+- [x] Zoom, fit, grid, snapping, guides, keyboard movement, undo, and redo.
+- [x] Collapsible and resizable component and inspector panels.
+- [x] Reference-image overlay and custom image assets.
+- [x] Normalized JSON export and restore.
+- [x] Derived inventory, deterministic Studio Result, improvements, and graphs.
+- [x] Read-only share and embed layouts.
 
-- Establish browser measurements using small, medium, and large reference projects.
-- Remove repeated asset-parent lookup work during project normalization.
-- Move expensive import normalization and advisory work off the browser main thread where practical.
-- Render large diagrams progressively and virtualize large inventory tables.
-- Replace large-project `localStorage` persistence with an IndexedDB-backed design while preserving normalized exports.
-- Add import size and component-count guidance, progress feedback, cancellation, and graceful failure states.
-- Add supported schema migrations so older exports remain restorable.
-- Complete Alt plus arrow-key resizing and modifier-wheel one-percent zoom, then browser-verify them.
-- Keep registries compact and provider packages lazily loaded.
+### Architecture Packages
 
-### Phase 1 — Physical Infrastructure And Network Vendors
+- [x] AWS Cloud Architecture: six editable templates.
+- [x] Azure Cloud Architecture: three editable templates.
+- [x] Google Cloud Architecture: three editable templates.
+- [-] Generic physical, network, platform, application, and data components are available, but do not yet form complete released architecture packages.
 
-#### Physical Server And Data Centre
+### Current Views
 
-Create the first full generic physical-infrastructure package. The existing catalogue is a base, but it still needs released templates, rules, and content.
+- [x] Overview.
+- [x] Physical.
+- [x] Network.
+- [x] Availability.
+- [-] Logical diagrams currently use the Network projection.
+- [ ] Dedicated Logical view.
+- [ ] Dedicated Security view.
 
-- Rack elevation and room or data-centre boundaries.
-- Physical servers, chassis, storage arrays, SAN/NAS, UPS, PDU, switches, routers, firewalls, and load balancers.
-- Power, network, storage, management, and replication relationships.
-- Inventory fields for hostname, rack position, serial or asset identity, CPU, memory, storage, addressing, ownership, support, and lifecycle.
-- Templates for standalone server, virtualized cluster, redundant network, backup, and disaster-recovery layouts.
+## Diagram Types To Build
 
-#### Cisco
+### Infrastructure And Operations
 
-- Add a `vendors/cisco` catalogue and shared icon root using redistributable assets.
-- Cover switching, routing, wireless, firewall, load balancing, management, and common data-centre patterns.
-- Release editable campus, branch, data-centre, WAN, and high-availability templates.
-- Keep Cisco product identities mapped to shared semantic types for inventory and advisory behavior.
+- [ ] Production Infrastructure Architecture.
+- [ ] Hybrid Infrastructure and Network Architecture.
+- [ ] Physical Server and Data Centre Architecture.
+- [ ] Rack Elevation and Equipment Layout.
+- [ ] Campus, Branch, WAN, and Data Centre Network Architecture.
+- [ ] High Availability and Failure-Domain Architecture.
+- [ ] Backup, Restore, and Disaster-Recovery Architecture.
+- [ ] Monitoring, Logging, and Operations Architecture.
 
-#### Huawei
+### Cloud And Platform
 
-- Add a `vendors/huawei` catalogue and shared icon root using redistributable assets.
-- Cover compute, storage, switching, routing, firewall, cloud, and management components selected for the first release.
-- Release editable data-centre, campus, private-cloud, and high-availability templates.
-- Keep vendor-specific fields in package data without forking the Studio shell.
+- [ ] Hybrid Cloud Architecture.
+- [ ] Multi-Cloud Architecture.
+- [ ] Private Cloud Architecture.
+- [ ] VMware Virtualization Architecture.
+- [ ] Kubernetes Platform Architecture.
+- [ ] Container and OpenShift Architecture.
+- [ ] Application and Microservice Architecture.
+- [ ] Data Platform and Analytics Architecture.
 
-### Phase 2 — Additional Cloud And Hybrid Releases
+### Security And Business Systems
 
-#### IBM Cloud
+- [ ] Network Security Architecture.
+- [ ] Zero-Trust Architecture.
+- [ ] Identity and Access Architecture.
+- [ ] Entity-Relationship Diagrams.
+- [ ] Flowcharts and Process Maps.
+- [ ] Service Dependency and Operational Topology Maps.
 
-- Add an IBM Cloud library, icons, and an `architecture/ibm/cloud` package.
-- Cover account and region boundaries, VPC, subnets, compute, Kubernetes, databases, object storage, IAM, security, monitoring, backup, and connectivity.
-- Provide landing-zone, web application, private workload, Kubernetes, and resilient data templates.
+## Libraries To Build
 
-#### TM Cloud
+### Available
 
-- Confirm whether the release targets TM Cloud, TM One Cloud Alpha, or another current service catalogue before fixing provider IDs.
-- Use official service names and only icons with clear redistribution permission.
-- Model local connectivity, compute, storage, security, backup, disaster recovery, managed services, and hybrid integration where supported.
-- Provide Malaysian enterprise, government, hybrid, and disaster-recovery templates based on verified product capabilities.
+- [x] AWS.
+- [x] Azure.
+- [x] Google Cloud.
+- [x] Generic Infrastructure.
+- [-] Generic Network components inside Generic Infrastructure.
+- [-] Generic Kubernetes and container components inside Generic Infrastructure.
 
-#### Hybrid And Multi-Cloud
+### Planned
 
-- Add shared patterns spanning on-premises, AWS, Azure, GCP, IBM Cloud, and later providers.
-- Cover VPN, private circuits, transit, identity federation, DNS, observability, backup, and disaster recovery.
-- Keep provider packages independent; hybrid templates should reference shared libraries rather than duplicate icons.
+- [ ] Generic Network as a complete expanded library.
+- [ ] Generic Physical and Data Centre.
+- [ ] VMware.
+- [ ] Kubernetes.
+- [ ] Docker and Containers.
+- [ ] Red Hat OpenShift.
+- [ ] Microsoft Hyper-V.
+- [ ] Proxmox VE.
+- [ ] OpenStack.
+- [ ] IBM Cloud.
+- [ ] TM Cloud, after confirming the exact current service catalogue.
+- [ ] Oracle Cloud Infrastructure.
+- [ ] Alibaba Cloud.
 
-### Phase 3 — Virtualization, Containers, And Security
+## Vendor Packs To Build
 
-#### Virtualization
+### Priority Vendor Packs
 
-- VMware vSphere and VMware Cloud Foundation.
-- Microsoft Hyper-V.
-- Proxmox VE.
-- OpenStack private cloud.
-- Common clusters, hosts, virtual machines, storage, networks, migration, backup, and failure-domain templates.
+- [ ] Cisco: switching, routing, wireless, security, management, and data-centre components.
+- [ ] Fortinet: firewall, secure access, SD-WAN, management, and security components.
+- [ ] Dell: servers, chassis, storage, networking, and infrastructure management components.
+- [ ] Synology: NAS, storage, backup, replication, and surveillance components.
+- [ ] Huawei: compute, storage, switching, routing, firewall, cloud, and management components.
 
-#### Containers
+### Later Vendor Packs
 
-- Kubernetes and Docker generic libraries.
-- Red Hat OpenShift.
-- Cluster, node pool, namespace, workload, ingress, service mesh, registry, secrets, observability, and persistent-storage patterns.
+- [ ] HPE.
+- [ ] Lenovo.
+- [ ] NetApp.
+- [ ] Juniper Networks.
+- [ ] Palo Alto Networks.
+- [ ] F5.
+- [ ] Check Point.
+- [ ] Arista.
 
-#### Network And Security Vendors
+Every vendor pack must map vendor products to shared semantic asset types. Vendor icons must have clear redistribution permission and must not be copied into architecture packages.
 
-- Fortinet, Palo Alto Networks, Juniper, F5, and Check Point, added only when catalogue scope and icon licensing are confirmed.
-- Shared patterns for segmentation, zero-trust access, internet edge, remote access, WAF, load balancing, IDS/IPS, and secure management.
+## Editor Capabilities To Build
 
-### Phase 4 — Broader Architecture Families
+### Diagram Creation
 
-- Application and microservice architecture.
-- Data platform and analytics architecture.
-- Security and zero-trust architecture.
-- Business continuity and disaster recovery.
-- Flowchart and process maps.
-- Entity-relationship diagrams.
-- Dependency, service, and operational topology maps.
+- [ ] Layers with visibility, locking, and ordering.
+- [ ] Groups and reusable user-defined components.
+- [ ] Multiple diagram pages within one project.
+- [ ] Free text, notes, callouts, legends, basic shapes, and containers.
+- [ ] Rulers, minimap, improved guides, and canvas search.
+- [ ] More connector styles, endpoint controls, labels, and crossing behavior.
+- [ ] Copy and paste between projects.
+- [ ] Reusable personal templates and custom libraries.
+- [ ] Alt plus arrow-key resizing and modifier-wheel one-percent zoom.
 
-These families must reuse normalized state and the shared canvas. Add family-specific code only when package data and configuration cannot express the required behavior.
+### Import, Export, And Publishing
 
-## Definition Of Done For Every Release
+- [ ] Large-file import progress, cancellation, validation details, and recovery.
+- [ ] Versioned project-schema migrations for older exports.
+- [ ] Verified PNG, SVG, PDF, and print exports with InfraStack watermarking where required.
+- [ ] Optional draw.io XML import after a safe mapping into normalized Studio state is defined.
+- [ ] Share access controls, expiry, revocation, and protected embeds.
 
-Each provider or domain release must include:
+### Projects And Collaboration
 
-1. A stable package identity registered in `assets/studio/packages/registry.json`.
-2. Complete `package.json`, `templates.json`, `result.json`, and `content.yml` files.
-3. A registered catalogue and shared icon root when new components are required.
-4. Editable templates covering at least one realistic baseline and one resilient design.
-5. Inventory fields derived from normalized project state.
-6. Deterministic findings with stable IDs, recommendations, and supporting references.
-7. Introduction, at least five FAQs, and three to five verified source-of-truth references.
-8. JSON export/restore and share/embed compatibility without changing stable keys or URLs.
-9. Lazy loading so unselected provider packages do not inflate initial Studio startup.
-10. Passing repository, Studio, performance, deployment, and browser-visible acceptance checks appropriate to the release.
+- [ ] Signed-in project storage while retaining downloadable JSON ownership.
+- [ ] Project folders, search, tags, duplication, and archive.
+- [ ] Named versions, change history, restore points, and comparison.
+- [ ] Comments, review requests, and approval notes.
+- [ ] Team workspaces and role-based access.
+- [ ] Real-time collaboration after project locking, conflict handling, and audit history are defined.
 
-## Deployment Guardrails
+### Large Architecture Performance
 
-- Do not copy the Studio editor into release packages.
-- Do not duplicate shared icons or create view-specific icon trees.
-- Do not change stable package, provider, library, route, DOM, state, export, share, or embed identities silently.
-- Do not advertise export formats, controls, provider coverage, security, compliance, or production readiness before they are implemented and verified.
-- Do not treat deterministic Studio findings as certification or approval.
-- Deploy one complete provider or domain slice at a time; a long provider list without usable templates and rules is merely a logo parade.
+- [ ] Browser performance baselines for small, medium, and large projects.
+- [ ] Faster parent and relationship validation during normalization.
+- [ ] Background import normalization and advisory evaluation where practical.
+- [ ] Progressive or viewport-aware canvas rendering.
+- [ ] Virtualized inventory for large projects.
+- [ ] IndexedDB-backed local persistence for projects too large for `localStorage`.
+- [ ] Clear size guidance and graceful handling of browser memory limits.
+
+## Next Delivery Order
+
+1. Production Infrastructure Architecture using the current generic library.
+2. Expanded Generic Network library and Hybrid Infrastructure / Network templates.
+3. VMware and Kubernetes libraries with one complete template package each.
+4. Cisco, Fortinet, Dell, and Synology priority vendor packs.
+5. Dedicated Logical and Security views.
+6. Large-project import, persistence, inventory, and canvas performance.
+7. Huawei, IBM Cloud, and the confirmed TM Cloud offering.
+8. Project storage, versions, comments, and team collaboration.
+9. Additional diagram families, cloud providers, and vendor packs.
+
+## Complete Release Standard
+
+A checked architecture release means more than displaying a set of icons. It must include:
+
+1. A registered package with stable identity and complete manifest, templates, result rules, and content.
+2. Registered reusable libraries and icons when new components are required.
+3. At least one realistic editable baseline and one resilient design.
+4. Working normalized inventory, advisory results, graphs, JSON restore/export, share, and embed behavior.
+5. Lazy loading without copying the Studio shell or duplicating shared icons.
+6. Verified repository, Studio, performance, deployment, and browser behavior appropriate to the release.
+
+The roadmap is a target list, not a production-readiness claim. A box becomes checked only when the working result is present and verified—otherwise it is just enthusiastic Markdown.

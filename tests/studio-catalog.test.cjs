@@ -8,6 +8,7 @@ const iconRoot = path.join(__dirname, '../assets/icons/studio/libraries');
 const registry = JSON.parse(fs.readFileSync(path.join(libraryRoot, 'registry.json'), 'utf8'));
 const catalogPath = path.join(libraryRoot, 'infrastructure/generic/catalog.json');
 const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+const genericIconRoot = path.join(iconRoot, 'infrastructure/generic');
 const awsCatalogPath = path.join(libraryRoot, 'cloud/aws/catalog.json');
 const awsCatalog = JSON.parse(fs.readFileSync(awsCatalogPath, 'utf8'));
 const awsIconRoot = path.join(iconRoot, 'cloud/aws');
@@ -55,6 +56,30 @@ test('Studio catalogue assets have searchable grouping metadata and unique types
         assert.ok(Array.isArray(asset.tags) && asset.tags.length > 0);
         assert.ok(asset.views.every(function (view) { return supportedViews.has(view); }));
         types.add(asset.type);
+    });
+});
+
+test('Studio generic catalogue gives every drawable asset a monochrome SVG icon', function () {
+    const suppliedTypes = new Set([
+        'database', 'hub', 'internet', 'object-storage', 'postgresql', 'router',
+        'website', 'wifi-router'
+    ]);
+
+    suppliedTypes.forEach(function (type) {
+        assert.ok(catalog.assets.some(function (asset) { return asset.type === type; }));
+    });
+    catalog.assets.filter(function (asset) {
+        return asset.category !== 'Boundary';
+    }).forEach(function (asset) {
+        const iconPath = path.join(genericIconRoot, asset.icon);
+
+        assert.match(asset.icon, /^[a-z0-9-]+\.svg$/);
+        assert.ok(fs.existsSync(iconPath));
+        const source = fs.readFileSync(iconPath, 'utf8');
+
+        assert.match(source, /viewBox="0 0 512 512"/);
+        assert.match(source, /stroke="#000"/);
+        assert.doesNotMatch(source, /<rect[^>]+width="512"[^>]+height="512"/);
     });
 });
 

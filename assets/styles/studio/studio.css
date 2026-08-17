@@ -520,6 +520,9 @@ body.is-studio-wide-screen { overflow: hidden; }
 .studio-image-properties h3 { margin: 0; font: 800 .76rem "Nunito", sans-serif; }
 .studio-image-properties input[type="range"] { width: 100%; accent-color: var(--studio-blue); }
 .studio-image-opacity-label { display: flex; align-items: center; justify-content: space-between; }
+.studio-image-actions { display: grid; gap: 8px; }
+.studio-image-actions .studio-button { justify-content: center; width: 100%; }
+#studio-image-background-color-wrap[hidden] { display: none; }
 .studio-context-fields .studio-context-check { grid-template-columns: minmax(0, 1fr) auto; align-items: center; border: 1px solid #d9e1ec; border-radius: 8px; padding: 8px 10px; background: #f7f9fc; }
 .studio-context-fields .studio-context-check input { width: auto; min-height: 0; accent-color: #6546ff; }
 .studio-autosave-note { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 2px 0 0; border-radius: 8px; padding: 8px; background: #effaf4; color: #16835b; font-size: .64rem; font-weight: 800; }

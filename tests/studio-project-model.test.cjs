@@ -156,6 +156,7 @@ test('embedded image assets keep editable icon properties in Studio JSON', funct
     const added = core.addImageAsset(project, {
         label: 'Gateway mark',
         data_url: imageData,
+        original_data_url: imageData,
         mode: 'icon',
         fit: 'contain',
         opacity: 0.8,
@@ -167,7 +168,10 @@ test('embedded image assets keep editable icon properties in Studio JSON', funct
         mode: 'image',
         fit: 'cover',
         opacity: 0.55,
-        show_label: false
+        show_label: false,
+        padding: 18,
+        background: 'color',
+        background_color: '#112233'
     });
     const restored = core.normalizeProject(core.buildExportPayload(changed)).project;
     const image = restored.assets.find(function (asset) { return asset.id === added.assetId; });
@@ -177,11 +181,15 @@ test('embedded image assets keep editable icon properties in Studio JSON', funct
     assert.equal(image.layout.overview.x, 320);
     assert.deepEqual(image.image, {
         data_url: imageData,
+        original_data_url: imageData,
         mime_type: 'image/png',
         mode: 'image',
         fit: 'cover',
         opacity: 0.55,
-        show_label: false
+        show_label: false,
+        padding: 18,
+        background: 'color',
+        background_color: '#112233'
     });
 });
 

@@ -16,8 +16,6 @@ const root = document.getElementById('infrastack-studio');
 
 if (root && core && rules && improvements) {
     document.body.classList.add('studio-app-body');
-    const storageKey = 'infrastack-studio-project-v0.2';
-    const legacyStorageKey = 'infrastack-studio-project-v0.1';
     const layoutStorageKey = 'infrastack-studio-layout-v0.1';
     const layoutDefaults = {
         paletteCollapsed: false,
@@ -160,6 +158,12 @@ if (root && core && rules && improvements) {
         fieldImageFit: byId('studio-field-image-fit'),
         fieldImageOpacity: byId('studio-field-image-opacity'),
         fieldImageOpacityValue: byId('studio-field-image-opacity-value'),
+        fieldImagePadding: byId('studio-field-image-padding'),
+        fieldImageBackground: byId('studio-field-image-background'),
+        fieldImageBackgroundColor: byId('studio-field-image-background-color'),
+        imageBackgroundColorWrap: byId('studio-image-background-color-wrap'),
+        trimImage: byId('studio-trim-image'),
+        resetImage: byId('studio-reset-image'),
         fieldImageLabel: byId('studio-field-image-label'),
         fieldImageWidth: byId('studio-field-image-width'),
         fieldImageHeight: byId('studio-field-image-height'),
@@ -260,7 +264,7 @@ if (root && core && rules && improvements) {
 
 // [studio-state] Section: Start
 
-    let project = loadLocalProject();
+    let project = core.createEmptyProject();
     let catalog = [];
     let catalogueGroups = [];
     const catalogueSources = Object.fromEntries(libraryDefinitions.map(function (definition) {
@@ -271,9 +275,7 @@ if (root && core && rules && improvements) {
         }];
     }));
     let activeCatalogueLibrary = 'all';
-    let activeCatalogueProvider = libraryDefinitions.some(function (definition) { return definition.provider === 'aws'; })
-        ? 'aws'
-        : (libraryDefinitions[0]?.provider || 'generic');
+    let activeCatalogueProvider = 'all';
     const layoutPreferences = loadLayoutPreferences();
     let paletteCollapsed = layoutPreferences.paletteCollapsed;
     let inspectorCollapsed = layoutPreferences.inspectorCollapsed;
@@ -300,21 +302,6 @@ if (root && core && rules && improvements) {
     let layoutFitTimer = null;
     let spacePanning = false;
     let styleClipboard = null;
-
-    function loadLocalProject() {
-        for (const key of [storageKey, legacyStorageKey]) {
-            try {
-                const stored = localStorage.getItem(key);
-                if (stored) {
-                    const result = core.normalizeProject(JSON.parse(stored));
-                    if (result.ok) return result.project;
-                }
-            } catch (error) {
-                localStorage.removeItem(key);
-            }
-        }
-        return core.createExampleProject();
-    }
 
     function assetById(assetId) {
         return project.assets.find(function (asset) { return asset.id === assetId; });
@@ -442,8 +429,7 @@ if (root && core && rules && improvements) {
 
     function saveProject() {
         project.updated_at = new Date().toISOString();
-        localStorage.setItem(storageKey, JSON.stringify(core.buildExportPayload(project)));
-        elements.saveState.innerHTML = '<i aria-hidden="true"></i> All changes saved';
+        elements.saveState.innerHTML = '<i aria-hidden="true"></i> Changes saved in this session';
     }
 
     function replaceProject(nextProject, options = {}) {
@@ -475,6 +461,77 @@ if (root && core && rules && improvements) {
         return project.connections.filter(function (connection) {
             return ids.has(connection.source) && ids.has(connection.target);
         });
+    }
+
+    function projectViewSnapshot(view) {
+        const assets = project.assets.filter(function (asset) {
+            return asset.views.includes(view);
+        }).map(function (asset) {
+            return {
+                id: asset.id,
+                parent_id: asset.parent_id,
+                layout: asset.layout[view]
+            };
+        }).sort(function (left, right) {
+            return left.id.localeCompare(right.id);
+        });
+        const assetIds = new Set(assets.map(function (asset) { return asset.id; }));
+        const connections = project.connections.filter(function (connection) {
+            return assetIds.has(connection.source) && assetIds.has(connection.target);
+        }).map(function (connection) {
+            return {
+                id: connection.id,
+                source: connection.source,
+                target: connection.target,
+                routing: connection.routing?.[view] || null
+            };
+        }).sort(function (left, right) {
+            return left.id.localeCompare(right.id);
+        });
+
+        return JSON.stringify({ assets, connections });
+    }
+
+    function availableProjectViews() {
+        const overviewSnapshot = projectViewSnapshot('overview');
+
+        return core.supportedViews.filter(function (view) {
+            if (view === 'overview') return true;
+            const viewAssets = project.assets.filter(function (asset) { return asset.views.includes(view); });
+            const hasDistinctLayout = viewAssets.length > 0 && projectViewSnapshot(view) !== overviewSnapshot;
+            if (!hasDistinctLayout) return false;
+            if (view === 'physical') {
+                const physicalProfile = /hybrid|on[- ]?prem|data ?center|physical/i.test(project.profile);
+                const physicalAsset = viewAssets.some(function (asset) {
+                    return asset.type === 'rack' || ['vendor', 'model', 'management_ip', 'interfaces', 'ports', 'vlans'].some(function (property) {
+                        return Boolean(asset.properties[property]);
+                    });
+                });
+                return physicalProfile || physicalAsset;
+            }
+            if (view === 'network') {
+                return project.connections.length > 0 || viewAssets.some(function (asset) {
+                    return ['vpc', 'subnet', 'router', 'switch', 'firewall', 'gateway'].some(function (type) {
+                        return asset.type.includes(type);
+                    });
+                });
+            }
+            if (view === 'availability') {
+                return project.connections.some(function (connection) { return connection.type === 'replication'; }) || viewAssets.some(function (asset) {
+                    return asset.type === 'availability-zone' || Boolean(asset.properties.zone) || asset.properties.redundant === true;
+                });
+            }
+            return true;
+        });
+    }
+
+    function renderViewOptions() {
+        const views = availableProjectViews();
+        if (!views.includes(project.active_view)) project.active_view = 'overview';
+        elements.viewSelect.replaceChildren(...views.map(function (view) {
+            return new Option(viewLabels[view], view);
+        }));
+        elements.viewSelect.value = project.active_view;
     }
 
     function deleteItems(items) {
@@ -747,6 +804,8 @@ if (root && core && rules && improvements) {
         if (icon instanceof HTMLImageElement) {
             icon.src = iconUrl;
             icon.alt = '';
+            icon.loading = 'lazy';
+            icon.decoding = 'async';
         } else {
             icon.className = 'studio-palette-glyph';
             icon.textContent = catalogueInitials(definition.label);
@@ -847,7 +906,9 @@ if (root && core && rules && improvements) {
         if (!matches.length) {
             const empty = document.createElement('div');
             empty.className = 'studio-palette-empty';
-            empty.innerHTML = '<i class="bi bi-search"></i><strong>No matching assets</strong><span>Try another name, role, or provider.</span>';
+            empty.innerHTML = activeCatalogueProvider === 'all' && activeCatalogueLibrary === 'all'
+                ? '<i class="bi bi-boxes"></i><strong>Choose a provider or library</strong><span>Components and icons load only when requested.</span>'
+                : '<i class="bi bi-search"></i><strong>No matching assets</strong><span>Try another name, role, or provider.</span>';
             fragment.append(empty);
         }
         elements.palette.replaceChildren(fragment);
@@ -1148,6 +1209,10 @@ if (root && core && rules && improvements) {
                 elements.fieldImageFit.value = asset.image.fit;
                 elements.fieldImageOpacity.value = String(Math.round(asset.image.opacity * 100));
                 elements.fieldImageOpacityValue.value = `${Math.round(asset.image.opacity * 100)}%`;
+                elements.fieldImagePadding.value = String(asset.image.padding);
+                elements.fieldImageBackground.value = asset.image.background;
+                elements.fieldImageBackgroundColor.value = asset.image.background_color;
+                elements.imageBackgroundColorWrap.hidden = asset.image.background !== 'color';
                 elements.fieldImageLabel.checked = asset.image.show_label;
                 elements.fieldImageWidth.value = String(Math.round(layout.width));
                 elements.fieldImageHeight.value = String(Math.round(layout.height));
@@ -1462,7 +1527,7 @@ if (root && core && rules && improvements) {
     function renderToolbar() {
         const fullscreenMode = document.fullscreenElement === root || document.webkitFullscreenElement === root;
 
-        elements.viewSelect.value = project.active_view;
+        renderViewOptions();
         root.classList.toggle('is-palette-collapsed', paletteCollapsed);
         root.classList.toggle('is-inspector-collapsed', inspectorCollapsed);
         root.classList.toggle('is-wide-screen', wideScreenMode);
@@ -1688,16 +1753,11 @@ if (root && core && rules && improvements) {
     }
 
     async function loadCatalog() {
-        try {
-            await Promise.all(Object.keys(catalogueSources).map(loadCatalogueSource));
-            if (activeCatalogueLibrary !== 'all' && !catalogueSources[activeCatalogueLibrary]) {
-                activeCatalogueLibrary = 'all';
-            }
-            renderCatalogueFilters();
-            renderPalette();
-        } catch (error) {
-            showMessage('The asset catalogue could not be loaded.', 'error');
+        if (activeCatalogueLibrary !== 'all' && !catalogueSources[activeCatalogueLibrary]) {
+            activeCatalogueLibrary = 'all';
         }
+        renderCatalogueFilters();
+        renderPalette();
     }
 
 // [studio-persistence] Section: End
@@ -2004,7 +2064,10 @@ if (root && core && rules && improvements) {
                 mode: elements.fieldImageMode.value,
                 fit: elements.fieldImageFit.value,
                 opacity: Number(elements.fieldImageOpacity.value) / 100,
-                show_label: elements.fieldImageLabel.checked
+                show_label: elements.fieldImageLabel.checked,
+                padding: elements.fieldImagePadding.value,
+                background: elements.fieldImageBackground.value,
+                background_color: elements.fieldImageBackgroundColor.value
             });
         }
         next = core.updateAssetLayout(next, assetId, project.active_view, {
@@ -2176,6 +2239,17 @@ if (root && core && rules && improvements) {
         showMessage(`Route reset for ${viewLabels[project.active_view]}.`, 'success');
     }
 
+    elements.trimImage.addEventListener('click', function () {
+        const asset = selected?.kind === 'asset' ? assetById(selected.id) : null;
+        if (asset?.image) updateSelectedImageSource(asset.image.data_url, true);
+    });
+    elements.resetImage.addEventListener('click', function () {
+        const asset = selected?.kind === 'asset' ? assetById(selected.id) : null;
+        if (asset?.image) updateSelectedImageSource(asset.image.original_data_url, false);
+    });
+    elements.fieldImageBackground.addEventListener('change', function () {
+        elements.imageBackgroundColorWrap.hidden = elements.fieldImageBackground.value !== 'color';
+    });
     elements.assetForm.addEventListener('submit', function (event) {
         event.preventDefault();
         updateSelectedAssetFromInspector();
@@ -2344,14 +2418,58 @@ if (root && core && rules && improvements) {
         return dataUrl.length <= 3000000 ? { dataUrl, width, height } : original;
     }
 
-    function initialImageAssetSize(imageWidth, imageHeight, zoom) {
-        const maximumDimension = Math.round(Math.min(640, Math.max(320, 260 / zoom)));
+    function imageAssetSize(imageWidth, imageHeight, maximumDimension) {
         const aspectRatio = Math.max(0.1, Math.min(10, imageWidth / imageHeight));
 
         if (aspectRatio >= 1) {
             return { width: maximumDimension, height: Math.max(88, Math.round(maximumDimension / aspectRatio)) };
         }
         return { width: Math.max(132, Math.round(maximumDimension * aspectRatio)), height: maximumDimension };
+    }
+
+    function initialImageAssetSize(imageWidth, imageHeight, zoom) {
+        const maximumDimension = Math.round(Math.min(640, Math.max(320, 260 / zoom)));
+        return imageAssetSize(imageWidth, imageHeight, maximumDimension);
+    }
+
+    function loadEmbeddedImage(dataUrl) {
+        return new Promise(function (resolve, reject) {
+            const image = new Image();
+            image.addEventListener('load', function () { resolve(image); }, { once: true });
+            image.addEventListener('error', reject, { once: true });
+            image.src = dataUrl;
+        });
+    }
+
+    async function updateSelectedImageSource(dataUrl, trim) {
+        if (!selected || selected.kind !== 'asset') return;
+        const asset = assetById(selected.id);
+        if (!asset?.image) return;
+
+        try {
+            const sourceImage = await loadEmbeddedImage(dataUrl);
+            const source = trim ? trimTransparentImage(sourceImage, asset.image.mime_type) : {
+                dataUrl,
+                width: sourceImage.naturalWidth,
+                height: sourceImage.naturalHeight
+            };
+            if (source.dataUrl === asset.image.data_url) {
+                showMessage(trim ? 'The image has no additional transparent space to trim.' : 'The original image is already active.', 'neutral');
+                return;
+            }
+            const currentLayout = asset.layout[project.active_view];
+            const size = imageAssetSize(source.width, source.height, Math.max(currentLayout.width, currentLayout.height));
+            pushHistory();
+            let next = core.updateAssetImage(project, asset.id, { data_url: source.dataUrl });
+            next = core.updateAssetLayout(next, asset.id, project.active_view, size);
+            project = next;
+            saveProject();
+            render();
+            graphAdapter.selectAsset(asset.id);
+            showMessage(trim ? 'Transparent image space trimmed.' : 'Original image restored.', 'success');
+        } catch (error) {
+            showMessage('The embedded image could not be processed.', 'error');
+        }
     }
 
     elements.uploadCustomIcon.addEventListener('click', openImageAssetPicker);
@@ -2381,11 +2499,15 @@ if (root && core && rules && improvements) {
                 const result = core.addImageAsset(project, {
                     label: file.name.replace(/\.[^.]+$/, ''),
                     data_url: trimmed.dataUrl,
+                    original_data_url: String(reader.result),
                     mime_type: file.type,
                     mode: 'image',
                     fit: 'contain',
                     opacity: 1,
                     show_label: false,
+                    padding: 0,
+                    background: 'transparent',
+                    background_color: '#ffffff',
                     x,
                     y,
                     width: size.width,
@@ -2499,14 +2621,6 @@ if (root && core && rules && improvements) {
         render();
         loadCatalog();
         loadReference();
-        Promise.resolve(packageLoader?.loadProvider(activeCatalogueProvider))
-            .then(function () {
-                renderTemplates();
-                renderPackageContent();
-            })
-            .catch(function () {
-                showMessage(`${providerLabel(activeCatalogueProvider)} templates could not be loaded.`, 'error');
-            });
     }
 
     initializeStudio();

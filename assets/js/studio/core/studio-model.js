@@ -271,16 +271,24 @@ const InfraStackStudioCore = (function () {
         const dataUrl = String(value.data_url || '');
         const match = dataUrl.match(/^data:(image\/(?:png|jpeg|webp));base64,[a-z0-9+/=\r\n]+$/i);
         if (!match || dataUrl.length > 3000000) return null;
+        const originalDataUrl = String(value.original_data_url || dataUrl);
+        const originalMatch = originalDataUrl.match(/^data:(image\/(?:png|jpeg|webp));base64,[a-z0-9+/=\r\n]+$/i);
         const mode = safeString(value.mode, 10).toLowerCase();
         const fit = safeString(value.fit, 10).toLowerCase();
+        const background = safeString(value.background, 12).toLowerCase();
+        const backgroundColor = safeString(value.background_color, 7).toLowerCase();
 
         return {
             data_url: dataUrl,
+            original_data_url: originalMatch && originalDataUrl.length <= 3000000 ? originalDataUrl : dataUrl,
             mime_type: match[1].toLowerCase(),
             mode: ['icon', 'image'].includes(mode) ? mode : 'icon',
             fit: ['contain', 'cover', 'fill'].includes(fit) ? fit : 'contain',
             opacity: clamp(value.opacity, 0.1, 1, 1),
-            show_label: value.show_label !== false
+            show_label: value.show_label !== false,
+            padding: clamp(value.padding, 0, 120, 0),
+            background: ['transparent', 'color'].includes(background) ? background : 'transparent',
+            background_color: /^#[0-9a-f]{6}$/i.test(backgroundColor) ? backgroundColor : '#ffffff'
         };
     }
 

@@ -17,6 +17,11 @@ test('Studio uses a canvas projection dropdown instead of permanent view buttons
     assert.match(twig, /id="studio-view-select"/);
     assert.doesNotMatch(twig, /id="studio-view-buttons"/);
     assert.match(js, /elements\.viewSelect\.addEventListener\('change'/);
+    assert.match(js, /function availableProjectViews\(\)/);
+    assert.match(js, /projectViewSnapshot\(view\) !== overviewSnapshot/);
+    assert.match(js, /hybrid\|on\[- \]\?prem\|data \?center\|physical/);
+    assert.match(js, /connection\.type === 'replication'/);
+    assert.match(js, /function renderViewOptions\(\)/);
     assert.doesNotMatch(js, /elements\.viewButtons/);
 });
 
@@ -35,6 +40,19 @@ test('Studio catalogue exposes scalable native library and provider filters', fu
     assert.match(js, /resolvedIconUrls/);
     assert.match(js, /activeCatalogueLibrary = 'all'/);
     assert.match(js, /elements\.catalogueLibrary\.value = 'all'/);
+    assert.match(js, /let activeCatalogueProvider = 'all'/);
+    assert.match(js, /icon\.loading = 'lazy'/);
+    assert.match(js, /icon\.decoding = 'async'/);
+    assert.doesNotMatch(js, /Promise\.all\(Object\.keys\(catalogueSources\)\.map\(loadCatalogueSource\)\)/);
+    assert.match(js, /Components and icons load only when requested/);
+});
+
+test('Studio starts with a blank session and keeps restore explicit', function () {
+    assert.match(js, /let project = core\.createEmptyProject\(\)/);
+    assert.doesNotMatch(js, /function loadLocalProject\(\)/);
+    assert.doesNotMatch(js, /localStorage\.setItem\(storageKey/);
+    assert.match(twig, /Blank project ready/);
+    assert.match(twig, /id="studio-template-restore"/);
 });
 
 test('Studio top toolbar contains only wired editor actions', function () {
@@ -175,6 +193,11 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
         'studio-field-image-mode',
         'studio-field-image-fit',
         'studio-field-image-opacity',
+        'studio-field-image-padding',
+        'studio-field-image-background',
+        'studio-field-image-background-color',
+        'studio-trim-image',
+        'studio-reset-image',
         'studio-field-image-label',
         'studio-field-image-width',
         'studio-field-image-height',
@@ -202,6 +225,11 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
     assert.match(js, /function initialImageAssetSize\(imageWidth, imageHeight, zoom\)/);
     assert.match(js, /imageWidth \/ imageHeight/);
     assert.match(js, /show_label: false/);
+    assert.match(js, /original_data_url: String\(reader\.result\)/);
+    assert.match(js, /function updateSelectedImageSource\(dataUrl, trim\)/);
+    assert.match(js, /updateSelectedImageSource\(asset\.image\.original_data_url, false\)/);
+    assert.match(js, /background: elements\.fieldImageBackground\.value/);
+    assert.match(js, /padding: elements\.fieldImagePadding\.value/);
     assert.match(twig, /<summary>Background reference<\/summary>/);
     assert.match(graphAdapter, /studio-graph-image-card/);
     assert.match(graphAdapter, /draggable="false"/);
@@ -209,6 +237,8 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
     assert.match(graphAdapter, /InternalEvent\.redirectMouseEvents\(hitArea\.node, this\.graph, state\)/);
     assert.match(graphAdapter, /asset\.image\?\.mode === 'image'/);
     assert.match(graphAdapter, /fillColor: 'none', strokeColor: 'none', strokeWidth: 0, shadow: false/);
+    assert.match(graphAdapter, /asset\.image\.padding/);
+    assert.match(graphAdapter, /asset\.image\.background === 'color'/);
     assert.match(studioCss, /\.studio-graph-image-card img \{[^}]*pointer-events: none;[^}]*-webkit-user-drag: none;/);
     assert.match(js, /elements\.assetForm\.addEventListener\('change'/);
     assert.match(js, /elements\.connectionForm\.addEventListener\('change'/);
