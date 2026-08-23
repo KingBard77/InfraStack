@@ -1,0 +1,1459 @@
+{
+  "catalog": "infrastack-studio-ubiquiti-unifi",
+  "version": "0.1.0",
+  "provider": "ubiquiti",
+  "source": "https://github.com/kallsbo/Unifi-Draw.IO",
+  "source_package_version": "main-user-supplied-2026-08-21",
+  "notice": "Ubiquiti owns the product icon artwork and Ubiquiti and UniFi marks. InfraStack is not affiliated with or endorsed by Ubiquiti.",
+  "groups": [
+    {
+      "id": "wireless",
+      "label": "Wireless"
+    },
+    {
+      "id": "gateways-security",
+      "label": "Gateways and Security"
+    },
+    {
+      "id": "switching",
+      "label": "Switching"
+    },
+    {
+      "id": "management",
+      "label": "Management"
+    },
+    {
+      "id": "video-security",
+      "label": "Video Security"
+    },
+    {
+      "id": "voice",
+      "label": "Voice"
+    }
+  ],
+  "assets": [
+    {
+      "catalog_id": "ubiquiti-unifi-ap-uap-48",
+      "type": "ubiquiti-unifi-ap-uap-48",
+      "semantic_type": "access-point",
+      "label": "UniFi AP UAP-48",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Indoor Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "unifi ap uap-48",
+        "ap uap 48"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-ap-uap-48.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-ap-uap-48-lr",
+      "type": "ubiquiti-unifi-ap-uap-48-lr",
+      "semantic_type": "access-point",
+      "label": "UniFi AP UAP-48-LR",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Indoor Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "unifi ap uap-48-lr",
+        "ap uap 48 lr"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-ap-uap-48-lr.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-ap-uap-lr",
+      "type": "ubiquiti-unifi-ap-uap-lr",
+      "semantic_type": "access-point",
+      "label": "UniFi AP UAP-LR",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Indoor Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "unifi ap uap-lr",
+        "ap uap lr"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-ap-uap-lr.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-ap-uap-outdoor",
+      "type": "ubiquiti-unifi-ap-uap-outdoor",
+      "semantic_type": "access-point",
+      "label": "UniFi AP UAP-Outdoor",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Outdoor and Mesh Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "unifi ap uap-outdoor",
+        "ap uap outdoor"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-ap-uap-outdoor.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Outdoor or mesh wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-ap-uap-outdoor-plus",
+      "type": "ubiquiti-unifi-ap-uap-outdoor-plus",
+      "semantic_type": "access-point",
+      "label": "UniFi AP UAP-Outdoor+",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Outdoor and Mesh Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "unifi ap uap-outdoor+",
+        "ap uap outdoor plus"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-ap-uap-outdoor-plus.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Outdoor or mesh wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-ap-uap-pro",
+      "type": "ubiquiti-unifi-ap-uap-pro",
+      "semantic_type": "access-point",
+      "label": "UniFi AP UAP-PRO",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Indoor Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "unifi ap uap-pro",
+        "ap uap pro"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-ap-uap-pro.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-ap-uap-iw",
+      "type": "ubiquiti-unifi-ap-uap-iw",
+      "semantic_type": "access-point",
+      "label": "UniFi AP UAP-IW",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "In-Wall Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "unifi ap uap-iw",
+        "ap uap iw"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-ap-uap-iw.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-uap-ac-lite",
+      "type": "ubiquiti-unifi-uap-ac-lite",
+      "semantic_type": "access-point",
+      "label": "UAP-AC-Lite",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Indoor Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "uap-ac-lite",
+        "uap ac lite"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-uap-ac-lite.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-uap-ac-lr",
+      "type": "ubiquiti-unifi-uap-ac-lr",
+      "semantic_type": "access-point",
+      "label": "UAP-AC-LR",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Indoor Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "uap-ac-lr",
+        "uap ac lr"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-uap-ac-lr.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-uap-ac-mesh",
+      "type": "ubiquiti-unifi-uap-ac-mesh",
+      "semantic_type": "access-point",
+      "label": "UAP-AC-Mesh",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Outdoor and Mesh Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "uap-ac-mesh",
+        "uap ac mesh"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-uap-ac-mesh.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Outdoor or mesh wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-uap-ac-mesh-pro",
+      "type": "ubiquiti-unifi-uap-ac-mesh-pro",
+      "semantic_type": "access-point",
+      "label": "UAP-AC-Mesh-PRO",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Outdoor and Mesh Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "uap-ac-mesh-pro",
+        "uap ac mesh pro"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-uap-ac-mesh-pro.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Outdoor or mesh wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-uap-ac-outdoor",
+      "type": "ubiquiti-unifi-uap-ac-outdoor",
+      "semantic_type": "access-point",
+      "label": "UAP-AC-Outdoor",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Outdoor and Mesh Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "uap-ac-outdoor",
+        "uap ac outdoor"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-uap-ac-outdoor.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Outdoor or mesh wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-uap-ac-pro",
+      "type": "ubiquiti-unifi-uap-ac-pro",
+      "semantic_type": "access-point",
+      "label": "UAP-AC-PRO",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Indoor Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "uap-ac-pro",
+        "uap ac pro"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-uap-ac-pro.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-uap-ac",
+      "type": "ubiquiti-unifi-uap-ac",
+      "semantic_type": "access-point",
+      "label": "UAP-AC",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Indoor Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "uap-ac",
+        "uap ac"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-uap-ac.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-uap-ac-edu",
+      "type": "ubiquiti-unifi-uap-ac-edu",
+      "semantic_type": "access-point",
+      "label": "UAP-AC-EDU",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Indoor Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "uap-ac-edu",
+        "uap ac edu"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-uap-ac-edu.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-uap-ac-hd",
+      "type": "ubiquiti-unifi-uap-ac-hd",
+      "semantic_type": "access-point",
+      "label": "UAP-AC-HD",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "Indoor Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "uap-ac-hd",
+        "uap ac hd"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-uap-ac-hd.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-uap-ac-iw",
+      "type": "ubiquiti-unifi-uap-ac-iw",
+      "semantic_type": "access-point",
+      "label": "UAP-AC-IW",
+      "category": "Wireless",
+      "group": "wireless",
+      "section": "In-Wall Access Points",
+      "provider": "ubiquiti",
+      "keywords": [
+        "wireless",
+        "wifi",
+        "access point",
+        "radio",
+        "uap-ac-iw",
+        "uap ac iw"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "wireless",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-uap-ac-iw.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed wireless access point"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-cloudkey-uc-ck",
+      "type": "ubiquiti-unifi-cloudkey-uc-ck",
+      "semantic_type": "monitoring",
+      "label": "UniFi Cloudkey UC-CK",
+      "category": "Management",
+      "group": "management",
+      "section": "Controllers",
+      "provider": "ubiquiti",
+      "keywords": [
+        "controller",
+        "cloud key",
+        "management",
+        "adoption",
+        "unifi cloudkey uc-ck",
+        "cloudkey uc ck"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "management",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-cloudkey-uc-ck.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "UniFi management controller"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-usg",
+      "type": "ubiquiti-unifi-usg",
+      "semantic_type": "firewall",
+      "label": "USG",
+      "category": "Security",
+      "group": "gateways-security",
+      "section": "Security Gateways",
+      "provider": "ubiquiti",
+      "keywords": [
+        "gateway",
+        "firewall",
+        "routing",
+        "wan",
+        "usg",
+        "usg"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "gateways-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-usg.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Network security gateway"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-usg-pro",
+      "type": "ubiquiti-unifi-usg-pro",
+      "semantic_type": "firewall",
+      "label": "USG-PRO",
+      "category": "Security",
+      "group": "gateways-security",
+      "section": "Security Gateways",
+      "provider": "ubiquiti",
+      "keywords": [
+        "gateway",
+        "firewall",
+        "routing",
+        "wan",
+        "usg-pro",
+        "usg pro"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "gateways-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-usg-pro.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Network security gateway"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-us-16-xg",
+      "type": "ubiquiti-unifi-us-16-xg",
+      "semantic_type": "switch",
+      "label": "US-16-XG",
+      "category": "Network",
+      "group": "switching",
+      "section": "Aggregation Switching",
+      "provider": "ubiquiti",
+      "keywords": [
+        "switch",
+        "ethernet",
+        "lan",
+        "poe",
+        "us-16-xg",
+        "us 16 xg"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "switching",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-us-16-xg.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed network switch"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-us-24-250w",
+      "type": "ubiquiti-unifi-us-24-250w",
+      "semantic_type": "switch",
+      "label": "US-24-250W",
+      "category": "Network",
+      "group": "switching",
+      "section": "Access and PoE Switching",
+      "provider": "ubiquiti",
+      "keywords": [
+        "switch",
+        "ethernet",
+        "lan",
+        "poe",
+        "us-24-250w",
+        "us 24 250w"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "switching",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-us-24-250w.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed network switch"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-us-24-500w",
+      "type": "ubiquiti-unifi-us-24-500w",
+      "semantic_type": "switch",
+      "label": "US-24-500W",
+      "category": "Network",
+      "group": "switching",
+      "section": "Access and PoE Switching",
+      "provider": "ubiquiti",
+      "keywords": [
+        "switch",
+        "ethernet",
+        "lan",
+        "poe",
+        "us-24-500w",
+        "us 24 500w"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "switching",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-us-24-500w.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed network switch"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-us-24-lite",
+      "type": "ubiquiti-unifi-us-24-lite",
+      "semantic_type": "switch",
+      "label": "US-24-Lite",
+      "category": "Network",
+      "group": "switching",
+      "section": "Access and PoE Switching",
+      "provider": "ubiquiti",
+      "keywords": [
+        "switch",
+        "ethernet",
+        "lan",
+        "poe",
+        "us-24-lite",
+        "us 24 lite"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "switching",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-us-24-lite.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed network switch"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-us-48-500w",
+      "type": "ubiquiti-unifi-us-48-500w",
+      "semantic_type": "switch",
+      "label": "US-48-500W",
+      "category": "Network",
+      "group": "switching",
+      "section": "Access and PoE Switching",
+      "provider": "ubiquiti",
+      "keywords": [
+        "switch",
+        "ethernet",
+        "lan",
+        "poe",
+        "us-48-500w",
+        "us 48 500w"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "switching",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-us-48-500w.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed network switch"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-us-48-750w",
+      "type": "ubiquiti-unifi-us-48-750w",
+      "semantic_type": "switch",
+      "label": "US-48-750W",
+      "category": "Network",
+      "group": "switching",
+      "section": "Access and PoE Switching",
+      "provider": "ubiquiti",
+      "keywords": [
+        "switch",
+        "ethernet",
+        "lan",
+        "poe",
+        "us-48-750w",
+        "us 48 750w"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "switching",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-us-48-750w.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed network switch"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-us-48-lite",
+      "type": "ubiquiti-unifi-us-48-lite",
+      "semantic_type": "switch",
+      "label": "US-48-Lite",
+      "category": "Network",
+      "group": "switching",
+      "section": "Access and PoE Switching",
+      "provider": "ubiquiti",
+      "keywords": [
+        "switch",
+        "ethernet",
+        "lan",
+        "poe",
+        "us-48-lite",
+        "us 48 lite"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "switching",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-us-48-lite.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed network switch"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-us-8",
+      "type": "ubiquiti-unifi-us-8",
+      "semantic_type": "switch",
+      "label": "US-8",
+      "category": "Network",
+      "group": "switching",
+      "section": "Access and PoE Switching",
+      "provider": "ubiquiti",
+      "keywords": [
+        "switch",
+        "ethernet",
+        "lan",
+        "poe",
+        "us-8",
+        "us 8"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "switching",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-us-8.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed network switch"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-us-8-60w",
+      "type": "ubiquiti-unifi-us-8-60w",
+      "semantic_type": "switch",
+      "label": "US-8-60W",
+      "category": "Network",
+      "group": "switching",
+      "section": "Access and PoE Switching",
+      "provider": "ubiquiti",
+      "keywords": [
+        "switch",
+        "ethernet",
+        "lan",
+        "poe",
+        "us-8-60w",
+        "us 8 60w"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "switching",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-us-8-60w.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed network switch"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-us-8-150w",
+      "type": "ubiquiti-unifi-us-8-150w",
+      "semantic_type": "switch",
+      "label": "US-8-150W",
+      "category": "Network",
+      "group": "switching",
+      "section": "Access and PoE Switching",
+      "provider": "ubiquiti",
+      "keywords": [
+        "switch",
+        "ethernet",
+        "lan",
+        "poe",
+        "us-8-150w",
+        "us 8 150w"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "switching",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-us-8-150w.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed network switch"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-us-16-150w",
+      "type": "ubiquiti-unifi-us-16-150w",
+      "semantic_type": "switch",
+      "label": "US-16-150W",
+      "category": "Network",
+      "group": "switching",
+      "section": "Access and PoE Switching",
+      "provider": "ubiquiti",
+      "keywords": [
+        "switch",
+        "ethernet",
+        "lan",
+        "poe",
+        "us-16-150w",
+        "us 16 150w"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "switching",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-us-16-150w.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Managed network switch"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-video-uvc-g3-led",
+      "type": "ubiquiti-unifi-video-uvc-g3-led",
+      "semantic_type": "camera",
+      "label": "UniFi Video UVC-G3-LED",
+      "category": "Video Security",
+      "group": "video-security",
+      "section": "Cameras",
+      "provider": "ubiquiti",
+      "keywords": [
+        "camera",
+        "video",
+        "surveillance",
+        "protect",
+        "unifi video uvc-g3-led",
+        "video uvc g3 led"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "video-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-video-uvc-g3-led.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed security camera"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-video-uvc-micro",
+      "type": "ubiquiti-unifi-video-uvc-micro",
+      "semantic_type": "camera",
+      "label": "UniFi Video UVC-MICRO",
+      "category": "Video Security",
+      "group": "video-security",
+      "section": "Cameras",
+      "provider": "ubiquiti",
+      "keywords": [
+        "camera",
+        "video",
+        "surveillance",
+        "protect",
+        "unifi video uvc-micro",
+        "video uvc micro"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "video-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-video-uvc-micro.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed security camera"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-video-uvc-pro",
+      "type": "ubiquiti-unifi-video-uvc-pro",
+      "semantic_type": "camera",
+      "label": "UniFi Video UVC-PRO",
+      "category": "Video Security",
+      "group": "video-security",
+      "section": "Cameras",
+      "provider": "ubiquiti",
+      "keywords": [
+        "camera",
+        "video",
+        "surveillance",
+        "protect",
+        "unifi video uvc-pro",
+        "video uvc pro"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "video-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-video-uvc-pro.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed security camera"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-video-uvc-pro-c",
+      "type": "ubiquiti-unifi-video-uvc-pro-c",
+      "semantic_type": "camera",
+      "label": "UniFi Video UVC-PRO-C",
+      "category": "Video Security",
+      "group": "video-security",
+      "section": "Cameras",
+      "provider": "ubiquiti",
+      "keywords": [
+        "camera",
+        "video",
+        "surveillance",
+        "protect",
+        "unifi video uvc-pro-c",
+        "video uvc pro c"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "video-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-video-uvc-pro-c.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed security camera"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-video-uvc-pro-m",
+      "type": "ubiquiti-unifi-video-uvc-pro-m",
+      "semantic_type": "camera",
+      "label": "UniFi Video UVC-PRO-M",
+      "category": "Video Security",
+      "group": "video-security",
+      "section": "Cameras",
+      "provider": "ubiquiti",
+      "keywords": [
+        "camera",
+        "video",
+        "surveillance",
+        "protect",
+        "unifi video uvc-pro-m",
+        "video uvc pro m"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "video-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-video-uvc-pro-m.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed security camera"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-video-nvr",
+      "type": "ubiquiti-unifi-video-nvr",
+      "semantic_type": "storage",
+      "label": "UniFi Video NVR",
+      "category": "Video Security",
+      "group": "video-security",
+      "section": "Video Recording",
+      "provider": "ubiquiti",
+      "keywords": [
+        "nvr",
+        "video",
+        "recording",
+        "storage",
+        "unifi video nvr",
+        "video nvr"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "video-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-video-nvr.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network",
+        "availability"
+      ],
+      "default_role": "Network video recorder"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-video-uvc",
+      "type": "ubiquiti-unifi-video-uvc",
+      "semantic_type": "camera",
+      "label": "UniFi Video UVC",
+      "category": "Video Security",
+      "group": "video-security",
+      "section": "Cameras",
+      "provider": "ubiquiti",
+      "keywords": [
+        "camera",
+        "video",
+        "surveillance",
+        "protect",
+        "unifi video uvc",
+        "video uvc"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "video-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-video-uvc.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed security camera"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-video-uvc-dome",
+      "type": "ubiquiti-unifi-video-uvc-dome",
+      "semantic_type": "camera",
+      "label": "UniFi Video UVC-Dome",
+      "category": "Video Security",
+      "group": "video-security",
+      "section": "Cameras",
+      "provider": "ubiquiti",
+      "keywords": [
+        "camera",
+        "video",
+        "surveillance",
+        "protect",
+        "unifi video uvc-dome",
+        "video uvc dome"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "video-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-video-uvc-dome.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed security camera"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-video-uvc-g3",
+      "type": "ubiquiti-unifi-video-uvc-g3",
+      "semantic_type": "camera",
+      "label": "UniFi Video UVC-G3",
+      "category": "Video Security",
+      "group": "video-security",
+      "section": "Cameras",
+      "provider": "ubiquiti",
+      "keywords": [
+        "camera",
+        "video",
+        "surveillance",
+        "protect",
+        "unifi video uvc-g3",
+        "video uvc g3"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "video-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-video-uvc-g3.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed security camera"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-video-uvc-g3-dome",
+      "type": "ubiquiti-unifi-video-uvc-g3-dome",
+      "semantic_type": "camera",
+      "label": "UniFi Video UVC-G3-Dome",
+      "category": "Video Security",
+      "group": "video-security",
+      "section": "Cameras",
+      "provider": "ubiquiti",
+      "keywords": [
+        "camera",
+        "video",
+        "surveillance",
+        "protect",
+        "unifi video uvc-g3-dome",
+        "video uvc g3 dome"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "video-security",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-video-uvc-g3-dome.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed security camera"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-voip-uvp-executive",
+      "type": "ubiquiti-unifi-voip-uvp-executive",
+      "semantic_type": "phone",
+      "label": "UniFi VoIP UVP-Executive",
+      "category": "Voice",
+      "group": "voice",
+      "section": "VoIP Phones",
+      "provider": "ubiquiti",
+      "keywords": [
+        "phone",
+        "voip",
+        "voice",
+        "talk",
+        "unifi voip uvp-executive",
+        "voip uvp executive"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "voice",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-voip-uvp-executive.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed VoIP phone"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-voip-uvp-pro",
+      "type": "ubiquiti-unifi-voip-uvp-pro",
+      "semantic_type": "phone",
+      "label": "UniFi VoIP UVP-PRO",
+      "category": "Voice",
+      "group": "voice",
+      "section": "VoIP Phones",
+      "provider": "ubiquiti",
+      "keywords": [
+        "phone",
+        "voip",
+        "voice",
+        "talk",
+        "unifi voip uvp-pro",
+        "voip uvp pro"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "voice",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-voip-uvp-pro.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed VoIP phone"
+    },
+    {
+      "catalog_id": "ubiquiti-unifi-voip-uvp",
+      "type": "ubiquiti-unifi-voip-uvp",
+      "semantic_type": "phone",
+      "label": "UniFi VoIP UVP",
+      "category": "Voice",
+      "group": "voice",
+      "section": "VoIP Phones",
+      "provider": "ubiquiti",
+      "keywords": [
+        "phone",
+        "voip",
+        "voice",
+        "talk",
+        "unifi voip uvp",
+        "voip uvp"
+      ],
+      "tags": [
+        "ubiquiti",
+        "unifi",
+        "voice",
+        "physical",
+        "network"
+      ],
+      "icon": "ubiquiti-unifi-voip-uvp.svg",
+      "views": [
+        "overview",
+        "physical",
+        "network"
+      ],
+      "default_role": "Managed VoIP phone"
+    }
+  ]
+}

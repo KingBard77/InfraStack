@@ -6,11 +6,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="robots" content="noindex, follow">
         <title>{{ page_title }}</title>
-        <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+        <link rel="icon" type="image/png" sizes="128x128" href="{{ asset('images/logo/infrastack-icon.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/logo/infrastack-icon.png') }}">
         <link rel="preload" href="{{ asset('fonts/roboto-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
         <link rel="preload" href="{{ asset('fonts/nunito-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
         <link rel="stylesheet" href="{{ asset('styles/fonts.css') }}">
         <link rel="stylesheet" href="{{ asset('lib/bootstrap-icons/bootstrap-icons.css') }}">
+        <link rel="stylesheet" href="{{ asset('styles/layout/share.css') }}">
         <link rel="stylesheet" href="{{ asset('styles/layout/embed.css') }}">
     </head>
     <body class="studio-embed-body">

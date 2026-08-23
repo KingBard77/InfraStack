@@ -7,7 +7,6 @@
     --home-heading: #f8fafc;
     --home-violet: #6546ff;
     --home-violet-bright: #7c5cff;
-    min-height: 100vh;
     color: var(--home-copy);
     background: var(--home-bg);
     font-family: var(--page-font);
@@ -33,12 +32,6 @@ body:has(.home-studio-page) .infrastack-header {
     border-bottom-color: rgba(129, 140, 248, 0.1);
     background: rgba(3, 6, 23, 0.9);
     box-shadow: none;
-}
-
-body:has(.home-studio-page) .infrastack-logo,
-body:has(.home-studio-page) .infrastack-logo:hover,
-body:has(.home-studio-page) .infrastack-logo span {
-    color: #f8fafc;
 }
 
 body:has(.home-studio-page) .infrastack-nav a,

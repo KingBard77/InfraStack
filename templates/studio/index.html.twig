@@ -1,5 +1,6 @@
 {# templates/studio/index.html.twig #}
 {% extends 'base.html.twig' %}
+{% import 'layout/advertisement.html.twig' as advertisement %}
 
 {% block title %}{{ page_title }}{% endblock %}
 
@@ -65,7 +66,7 @@
             <button id="studio-rail-templates" type="button" aria-label="Templates" title="Templates"><i class="bi bi-grid"></i></button>
             <button id="studio-rail-assets" type="button" aria-label="Components" title="Components"><i class="bi bi-boxes"></i></button>
             <button id="studio-rail-connections" type="button" aria-label="Connections" title="Connections"><i class="bi bi-bezier2"></i></button>
-            <button id="studio-rail-history" type="button" aria-label="Undo last change" title="Undo last change"><i class="bi bi-clock-history"></i></button>
+            <button id="studio-rail-history" type="button" aria-label="History and recovery" aria-expanded="false" title="History and recovery"><i class="bi bi-clock-history"></i></button>
             <span></span>
             <button id="studio-rail-settings" type="button" aria-label="Canvas settings" title="Canvas settings"><i class="bi bi-gear"></i></button>
         </nav>
@@ -82,21 +83,27 @@
                 <button id="studio-palette-collapse" class="studio-panel-collapse" type="button" aria-label="Collapse component library" title="Collapse component library"><i class="bi bi-chevron-left"></i></button>
             </div>
             <div id="studio-components-panel" role="tabpanel">
-                <div class="studio-panel-heading"><h2 id="studio-palette-title" class="visually-hidden">Component library</h2><span id="studio-asset-count" class="studio-count">0</span></div>
-                <label class="studio-catalogue-search" for="studio-catalogue-search">
-                    <i class="bi bi-search" aria-hidden="true"></i>
-                    <input id="studio-catalogue-search" type="search" placeholder="Search components" autocomplete="off">
-                    <kbd>⌘ K</kbd>
-                </label>
-                <div class="studio-catalogue-filters">
-                    <label for="studio-catalogue-library">Library<select id="studio-catalogue-library" class="studio-select" aria-label="Asset library"></select></label>
-                    <label for="studio-catalogue-provider">Provider<select id="studio-catalogue-provider" class="studio-select" aria-label="Asset provider"></select></label>
-                </div>
                 <button id="studio-upload-custom-icon" class="studio-button studio-button-block studio-upload-icon" type="button"><i class="bi bi-upload"></i> Upload custom icon</button>
-                <div id="studio-palette" class="studio-palette"></div>
+                <div id="studio-catalogue-browser">
+                    <div class="studio-panel-heading"><h2 id="studio-palette-title" class="visually-hidden">Component library</h2><span id="studio-asset-count" class="studio-count">0</span></div>
+                    <label class="studio-catalogue-search" for="studio-catalogue-search">
+                        <i class="bi bi-search" aria-hidden="true"></i>
+                        <input id="studio-catalogue-search" type="search" placeholder="Search components" autocomplete="off">
+                        <kbd>⌘ K</kbd>
+                    </label>
+                    <div class="studio-catalogue-filters">
+                        <label for="studio-catalogue-library">Library<select id="studio-catalogue-library" class="studio-select" aria-label="Asset library"></select></label>
+                        <label for="studio-catalogue-provider">Provider<select id="studio-catalogue-provider" class="studio-select" aria-label="Asset provider"></select></label>
+                    </div>
+                    <div id="studio-palette" class="studio-palette"></div>
+                </div>
             </div>
             <div id="studio-templates-panel" class="studio-template-panel" role="tabpanel" hidden>
-                <div class="studio-template-heading"><div><span>Architecture templates</span><strong id="studio-template-provider-label">AWS examples</strong></div><span id="studio-template-count" class="studio-count">0</span></div>
+                <div class="studio-catalogue-filters studio-template-filters">
+                    <label for="studio-template-family">Library<select id="studio-template-family" class="studio-select" aria-label="Template library"></select></label>
+                    <label for="studio-template-provider">Provider<select id="studio-template-provider" class="studio-select" aria-label="Template provider"></select></label>
+                </div>
+                <div class="studio-template-heading"><div><span>Architecture templates</span><strong id="studio-template-provider-label">Choose a library and provider</strong></div><span id="studio-template-count" class="studio-count">0</span></div>
                 <p>Choose a provider-native starting point. Every template remains fully editable.</p>
                 <div id="studio-template-list" class="studio-template-list"></div>
                 <button id="studio-new-project" class="studio-template-card" type="button"><i class="bi bi-file-earmark-plus"></i><span><strong>Blank architecture</strong><small>Empty local Studio project</small></span></button>
@@ -119,6 +126,21 @@
                     <button id="studio-reference-fit" class="studio-button studio-button-block" type="button">Fit to canvas</button>
                     <button id="studio-reference-remove" class="studio-button studio-button-block" type="button">Remove reference</button>
                 </details>
+            </div>
+            <div id="studio-history-panel" class="studio-history-panel" role="tabpanel" hidden>
+                <div class="studio-history-heading">
+                    <span><i class="bi bi-clock-history" aria-hidden="true"></i></span>
+                    <div><small>Session timeline</small><strong>History and recovery</strong></div>
+                    <span id="studio-history-count" class="studio-count">0</span>
+                </div>
+                <p>Select an earlier state to undo multiple changes. Redo remains available from the top toolbar.</p>
+                <div id="studio-history-list" class="studio-history-list"></div>
+                <div id="studio-history-empty" class="studio-history-empty"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i><strong>No changes yet</strong><span>Edits made during this session will appear here.</span></div>
+                <section id="studio-recovery-card" class="studio-recovery-card" aria-labelledby="studio-recovery-title" hidden>
+                    <div class="studio-recovery-heading"><i class="bi bi-clock-history" aria-hidden="true"></i><span><strong id="studio-recovery-title">Recover previous session</strong><small id="studio-recovery-name"></small></span></div>
+                    <p id="studio-recovery-meta"></p>
+                    <div class="studio-recovery-actions"><button id="studio-recover-session" class="studio-button studio-button-primary" type="button">Recover</button><button id="studio-discard-recovery" class="studio-button" type="button">Discard</button></div>
+                </section>
             </div>
         </aside>
 
@@ -248,11 +270,19 @@
     </div>
 
     <!-- [studio-content] Section: Start -->
+    <div id="studio-content-sections" class="studio-content-rail-layout">
+        {{ advertisement.rail('studio-ad-rail-left', 'left', 'studio-content-left') }}
+        <div class="studio-content-column">
     <!-- [studio-result] Section: Start -->
     <section class="studio-review" aria-labelledby="studio-review-title">
         <div class="studio-review-heading"><div><span>Deterministic architecture review</span><h2 id="studio-review-title">Studio Result</h2></div><p>Grades explain modeled facts. They are guidance, not certification.</p></div>
-        <div class="studio-score-grid"><article class="studio-score-card studio-score-card-grade"><span>Grade</span><strong id="studio-grade">—</strong><small id="studio-grade-label">Not graded</small></article><article class="studio-score-card"><span>Score</span><strong id="studio-score">—</strong><small>Out of 100</small></article><article class="studio-score-card"><span>Confidence</span><strong id="studio-confidence">—</strong><small>Based on entered facts</small></article><article class="studio-score-card"><span>Open findings</span><strong id="studio-finding-count">0</strong><small id="studio-finding-summary">No review yet</small></article></div>
-        <div class="studio-category-review"><div><span>Category scores</span><small>Deterministic deductions from modeled facts</small><button id="studio-restore-dismissed" class="studio-restore-dismissed" type="button" hidden>Restore dismissed findings</button></div><div id="studio-category-scores" class="studio-category-scores"></div></div>
+        <div class="studio-score-grid">
+            <article class="studio-score-card studio-score-card-grade"><img class="studio-score-card-icon" src="{{ asset('images/studio/result-grade.svg') }}" alt="" aria-hidden="true"><span>Grade</span><strong id="studio-grade">—</strong><small id="studio-grade-label">Not graded</small></article>
+            <article class="studio-score-card"><img class="studio-score-card-icon" src="{{ asset('images/studio/result-score.svg') }}" alt="" aria-hidden="true"><span>Score</span><strong id="studio-score">—</strong><small>Out of 100</small></article>
+            <article class="studio-score-card"><img class="studio-score-card-icon" src="{{ asset('images/studio/result-confidence.svg') }}" alt="" aria-hidden="true"><span>Confidence</span><strong id="studio-confidence">—</strong><small>Based on entered facts</small></article>
+            <article class="studio-score-card"><img class="studio-score-card-icon" src="{{ asset('images/studio/result-findings.svg') }}" alt="" aria-hidden="true"><span>Open findings</span><strong id="studio-finding-count">0</strong><small id="studio-finding-summary">No review yet</small></article>
+        </div>
+        <div class="studio-category-review"><div><img class="studio-category-review-icon" src="{{ asset('images/studio/result-categories.svg') }}" alt="" aria-hidden="true"><span>Category scores</span><small>Deterministic deductions from modeled facts</small><button id="studio-restore-dismissed" class="studio-restore-dismissed" type="button" hidden>Restore dismissed findings</button></div><div id="studio-category-scores" class="studio-category-scores"></div></div>
     </section>
     <!-- [studio-result] Section: End -->
 
@@ -299,27 +329,33 @@
     <!-- [studio-inventory] Section: End -->
 
     <!-- [studio-about] Section: Start -->
-    <section id="studio-package-content" class="studio-package-content" aria-labelledby="studio-package-content-title" hidden>
+    <section id="studio-package-content" class="studio-package-content" aria-labelledby="studio-package-content-title">
         <div class="studio-content-heading">
             <span class="studio-content-heading-icon"><i class="bi bi-journal-richtext" aria-hidden="true"></i></span>
             <div><span>Architecture guidance</span><h2 id="studio-package-content-title">About this architecture library</h2></div>
             <span id="studio-package-content-provider" class="studio-content-provider"></span>
         </div>
         <div id="studio-package-introductions" class="studio-package-introductions"></div>
+        <div id="studio-package-introductions-empty" class="studio-package-data-empty" role="status"><i class="bi bi-diagram-3" aria-hidden="true"></i><strong>No architecture guidance data</strong><span>Select a template or restore a Studio project to load package guidance.</span></div>
         <div class="studio-package-support-grid">
             <section aria-labelledby="studio-package-faq-title">
                 <div class="studio-content-subheading"><i class="bi bi-question-circle" aria-hidden="true"></i><h3 id="studio-package-faq-title">Frequently asked questions</h3></div>
                 <p>Practical answers about the selected Studio architecture package.</p>
                 <div id="studio-package-faq" class="studio-package-faq"></div>
+                <div id="studio-package-faq-empty" class="studio-package-data-empty" role="status"><i class="bi bi-question-circle" aria-hidden="true"></i><strong>No FAQ data</strong><span>Select an architecture package to load its questions and answers.</span></div>
             </section>
             <section aria-labelledby="studio-package-references-title">
                 <div class="studio-content-subheading"><i class="bi bi-book" aria-hidden="true"></i><h3 id="studio-package-references-title">References</h3></div>
                 <p>Official provider material supporting the package context.</p>
                 <ol id="studio-package-references" class="studio-package-references"></ol>
+                <div id="studio-package-references-empty" class="studio-package-data-empty" role="status"><i class="bi bi-book" aria-hidden="true"></i><strong>No reference data</strong><span>Select an architecture package to load its official references.</span></div>
             </section>
         </div>
     </section>
     <!-- [studio-about] Section: End -->
+        </div>
+        {{ advertisement.rail('studio-ad-rail-right', 'right', 'studio-content-right') }}
+    </div>
     <!-- [studio-content] Section: End -->
 
     <dialog id="studio-shortcuts-dialog" class="studio-shortcuts-dialog" aria-labelledby="studio-shortcuts-title">
@@ -342,13 +378,23 @@
             </header>
             <figure class="studio-share-preview"><img id="studio-share-preview" alt="Generated architecture share image"></figure>
             <div class="studio-share-primary-actions">
-                <div class="studio-share-status" role="status"><span id="studio-share-status-text">Read-only share link ready</span><input id="studio-share-link" type="url" readonly aria-label="Shared project URL"><button id="studio-share-copy-link" type="button" aria-label="Copy read-only share link"><i class="bi bi-copy"></i><span>Copy link</span></button><a id="studio-share-open-link" href="#" target="_blank" rel="noopener" aria-label="Open read-only shared project"><i class="bi bi-box-arrow-up-right"></i><span>Open</span></a></div>
+                <div class="studio-share-status" role="status"><span id="studio-share-status-text">Read-only share link ready</span></div>
                 <a id="studio-share-whatsapp" class="studio-share-action is-whatsapp" href="#" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i><span>Continue to WhatsApp</span></a>
                 <button id="studio-share-system" class="studio-share-action" type="button"><i class="bi bi-box-arrow-up"></i><span>System Share</span></button>
                 <button id="studio-share-copy-image" class="studio-share-action" type="button"><i class="bi bi-clipboard"></i><span>Copy Image</span></button>
                 <button id="studio-share-download-image" class="studio-share-action" type="button"><i class="bi bi-download"></i><span>Download PNG</span></button>
             </div>
-            <details class="studio-share-more"><summary>More sharing options</summary><div aria-label="Additional social sharing options"><a id="studio-share-x" href="#" target="_blank" rel="noopener" aria-label="Share on X" title="Share on X"><i class="bi bi-twitter-x"></i></a><a id="studio-share-facebook" href="#" target="_blank" rel="noopener" aria-label="Share on Facebook" title="Share on Facebook"><i class="bi bi-facebook"></i></a><a id="studio-share-linkedin" href="#" target="_blank" rel="noopener" aria-label="Share on LinkedIn" title="Share on LinkedIn"><i class="bi bi-linkedin"></i></a><a id="studio-share-whatsapp-more" href="#" target="_blank" rel="noopener" aria-label="Share on WhatsApp" title="Share on WhatsApp"><i class="bi bi-whatsapp"></i></a><a id="studio-share-telegram" href="#" target="_blank" rel="noopener" aria-label="Share on Telegram" title="Share on Telegram"><i class="bi bi-telegram"></i></a><a id="studio-share-reddit" href="#" target="_blank" rel="noopener" aria-label="Share on Reddit" title="Share on Reddit"><i class="bi bi-reddit"></i></a><a id="studio-share-email" href="#" aria-label="Share by email" title="Share by email"><i class="bi bi-envelope"></i></a><button id="studio-share-copy-link-more" type="button" aria-label="Copy read-only share link" title="Copy link"><i class="bi bi-link-45deg"></i></button><button id="studio-share-open-embed" type="button" aria-label="Open embed options" title="Embed"><i class="bi bi-code-slash"></i></button></div></details>
+            <details class="studio-share-platforms-disclosure">
+                <summary>More sharing options <i class="bi bi-chevron-down" aria-hidden="true"></i></summary>
+                <nav class="studio-share-platforms" aria-label="Share on another platform">
+                    <a id="studio-share-x" href="#" target="_blank" rel="noopener" aria-label="Share on X" title="Share on X"><i class="bi bi-twitter-x"></i></a>
+                    <a id="studio-share-facebook" href="#" target="_blank" rel="noopener" aria-label="Share on Facebook" title="Share on Facebook"><i class="bi bi-facebook"></i></a>
+                    <a id="studio-share-linkedin" href="#" target="_blank" rel="noopener" aria-label="Share on LinkedIn" title="Share on LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a id="studio-share-telegram" href="#" target="_blank" rel="noopener" aria-label="Share on Telegram" title="Share on Telegram"><i class="bi bi-telegram"></i></a>
+                    <a id="studio-share-reddit" href="#" target="_blank" rel="noopener" aria-label="Share on Reddit" title="Share on Reddit"><i class="bi bi-reddit"></i></a>
+                    <a id="studio-share-email" href="#" aria-label="Share by email" title="Share by email"><i class="bi bi-envelope"></i></a>
+                </nav>
+            </details>
         </form>
     </dialog>
 

@@ -147,6 +147,8 @@ Text must not overlap buttons, tabs, cards, chips, canvas labels, or table cells
 
 Use the existing restrained white Studio shell and semantic state colors. Do not introduce unrelated font families or provider colors as global shell colors.
 
+The shared header and footer use `public/images/logo/infrastack-wordmark.png`. Light surfaces render the supplied image directly. Dark surfaces and `html[data-theme="dark"]` render a deterministic accessible composite with theme-aware white `InfraStack` text and the unchanged purple K, separator, and `Studio` artwork from the supplied wordmark. `public/images/logo/infrastack-icon.png` owns favicon and touch-icon contexts.
+
 ## Validation
 
 Static checks validate paths, syntax, schemas, and known hooks. Browser Use must validate visible changes against `https://infrastack.my`.

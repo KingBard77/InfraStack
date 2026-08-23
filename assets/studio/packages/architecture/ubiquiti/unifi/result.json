@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.1",
+  "package_id": "architecture-ubiquiti-unifi",
+  "engine": "infrastack-architecture-result-v1",
+  "maximum_score": 100,
+  "categories": [
+    { "id": "network", "label": "Network", "weight": 0.24 },
+    { "id": "security", "label": "Security", "weight": 0.25 },
+    { "id": "availability", "label": "Availability", "weight": 0.22 },
+    { "id": "operations", "label": "Operations", "weight": 0.18 },
+    { "id": "documentation", "label": "Documentation", "weight": 0.11 }
+  ],
+  "grade_caps": { "critical": 69, "high": 89 },
+  "grades": [
+    { "grade": "A", "minimum_score": 90, "label": "Strong documented design" },
+    { "grade": "B", "minimum_score": 80, "label": "Good with manageable gaps" },
+    { "grade": "C", "minimum_score": 70, "label": "Functional with material gaps" },
+    { "grade": "D", "minimum_score": 60, "label": "Major improvements required" },
+    { "grade": "E", "minimum_score": 0, "label": "Incomplete or high-risk design" }
+  ],
+  "rules": [
+    {
+      "id": "ubiquiti-invalid-network-cidr",
+      "category": "Network",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": { "type": "invalid_network_cidr" },
+      "message": "UniFi network or VLAN has an invalid or missing CIDR",
+      "recommendation": "Enter a valid IPv4 CIDR and confirm that it matches the intended UniFi virtual network plan.",
+      "reference_ids": ["unifi-vlans"]
+    },
+    {
+      "id": "ubiquiti-subnet-outside-network",
+      "category": "Network",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": { "type": "subnet_outside_network" },
+      "message": "UniFi VLAN falls outside its parent network",
+      "recommendation": "Move the VLAN into the parent address range or correct the parent network CIDR.",
+      "reference_ids": ["unifi-vlans"]
+    },
+    {
+      "id": "ubiquiti-overlapping-networks",
+      "category": "Network",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": { "type": "overlapping_networks" },
+      "message": "UniFi network ranges overlap or duplicate one another",
+      "recommendation": "Assign unique non-overlapping CIDRs to each routed network and VLAN.",
+      "reference_ids": ["unifi-vlans"]
+    },
+    {
+      "id": "ubiquiti-incomplete-vlan-routing",
+      "category": "Documentation",
+      "severity": "low",
+      "score_deduction": 4,
+      "condition": { "type": "incomplete_subnet_routing" },
+      "message": "UniFi VLAN has incomplete routing or isolation facts",
+      "recommendation": "Document the VLAN classification and routing or isolation policy.",
+      "reference_ids": ["unifi-vlans", "unifi-isolation"]
+    },
+    {
+      "id": "ubiquiti-internet-without-gateway-security",
+      "category": "Security",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": { "type": "internet_without_security_boundary" },
+      "message": "Internet path has no modeled UniFi gateway or firewall",
+      "recommendation": "Add a UniFi gateway or another firewall boundary to the WAN path and document the enforced policy.",
+      "reference_ids": ["unifi-introduction", "unifi-isolation"]
+    },
+    {
+      "id": "ubiquiti-network-telemetry-missing",
+      "category": "Operations",
+      "severity": "medium",
+      "score_deduction": 10,
+      "condition": { "type": "missing_network_flow_logs", "catalog_ids": ["ubiquiti-unifi-cloudkey-uc-ck"] },
+      "message": "UniFi controller or equivalent network telemetry is not modeled",
+      "recommendation": "Add the UniFi controller or another telemetry component and document log retention and review ownership.",
+      "reference_ids": ["unifi-adoption"]
+    },
+    {
+      "id": "ubiquiti-critical-assets-single-location",
+      "category": "Availability",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": { "type": "critical_workloads_single_zone" },
+      "message": "Critical UniFi infrastructure is modeled in one location",
+      "recommendation": "Distribute critical gateway, switching, management, or recording functions across independent locations where uptime requires it.",
+      "reference_ids": ["unifi-ha"]
+    },
+    {
+      "id": "ubiquiti-critical-gateway-not-redundant",
+      "category": "Availability",
+      "severity": "high",
+      "score_deduction": 22,
+      "condition": { "type": "critical_firewall_not_redundant" },
+      "message": "Critical UniFi gateway has no redundancy fact",
+      "recommendation": "Model a supported gateway failover design or document the accepted single-gateway recovery plan.",
+      "reference_ids": ["unifi-ha"]
+    },
+    {
+      "id": "ubiquiti-orphan-device",
+      "category": "Documentation",
+      "severity": "low",
+      "score_deduction": 4,
+      "condition": { "type": "orphan_asset" },
+      "message": "UniFi device has no modeled relationship",
+      "recommendation": "Connect the device to its gateway, switch, controller, recorder, or managed endpoint path.",
+      "reference_ids": ["unifi-adoption"]
+    },
+    {
+      "id": "ubiquiti-critical-device-without-monitoring",
+      "category": "Operations",
+      "severity": "medium",
+      "score_deduction": 10,
+      "condition": { "type": "critical_asset_without_monitoring" },
+      "message": "Critical UniFi device has no monitoring fact",
+      "recommendation": "Enable and document monitoring, alerting, ownership, and escalation for the critical device.",
+      "reference_ids": ["unifi-adoption"]
+    },
+    {
+      "id": "ubiquiti-stateful-device-without-backup",
+      "category": "Operations",
+      "severity": "medium",
+      "score_deduction": 10,
+      "condition": { "type": "critical_stateful_asset_without_backup" },
+      "message": "Critical UniFi controller or recorder has no backup fact",
+      "recommendation": "Document configuration backup or video recovery requirements for the stateful UniFi component.",
+      "reference_ids": ["unifi-adoption"]
+    },
+    {
+      "id": "ubiquiti-unlabeled-network-relationship",
+      "category": "Documentation",
+      "severity": "low",
+      "score_deduction": 4,
+      "condition": { "type": "unlabeled_network_relationship" },
+      "message": "UniFi network relationship lacks operational detail",
+      "recommendation": "Add a relationship label and document protocol or capacity where it affects design interpretation.",
+      "reference_ids": ["unifi-introduction"]
+    }
+  ]
+}

@@ -43,7 +43,8 @@
         {{ include('layout/app.html.twig') }}
 
         <!-- Favicons -->
-        <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+        <link rel="icon" type="image/png" sizes="128x128" href="{{ asset('images/logo/infrastack-icon.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/logo/infrastack-icon.png') }}">
 
         {% block stylesheets %}
 

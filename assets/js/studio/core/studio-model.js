@@ -1338,7 +1338,7 @@ const InfraStackStudioCore = (function () {
         const metrics = new Map();
         const padding = 28;
         const header = 58;
-        const gap = 28;
+        const gap = 40;
         const containerMinimums = {
             domain: [800, 500],
             environment: [760, 460],

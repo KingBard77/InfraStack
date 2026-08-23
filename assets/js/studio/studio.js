@@ -17,6 +17,7 @@ const root = document.getElementById('infrastack-studio');
 if (root && core && rules && improvements) {
     document.body.classList.add('studio-app-body');
     const layoutStorageKey = 'infrastack-studio-layout-v0.1';
+    const recoveryStorageKey = 'infrastack-studio-recovery-v0.2';
     const layoutDefaults = {
         paletteCollapsed: false,
         inspectorCollapsed: false,
@@ -43,11 +44,12 @@ if (root && core && rules && improvements) {
     }));
     const packageRegistry = JSON.parse(root.dataset.packageRegistry || '{"packages":[]}');
     const packageLoader = packageLoaderFactory?.create(packageRegistry, providerRegistry);
-    const genericLibrary = libraryDefinitions.find(function (definition) { return definition.provider === 'generic'; });
-    const iconUrls = genericLibrary?.icon_urls || {};
-    const resolvedIconUrls = libraryDefinitions.reduce(function (urls, definition) {
-        return { ...urls, ...(definition.icon_urls || {}) };
-    }, {});
+    const defaultProvider = packageRegistry.packages?.find(function (entry) {
+        return entry.provider && entry.provider !== 'generic';
+    })?.provider || libraryDefinitions.find(function (definition) {
+        return definition.provider !== 'generic';
+    })?.provider || 'generic';
+    const resolvedIconUrls = {};
     const elements = {
         projectName: byId('studio-project-name'),
         saveState: byId('studio-save-state'),
@@ -74,6 +76,11 @@ if (root && core && rules && improvements) {
         templatesTab: byId('studio-templates-tab'),
         componentsPanel: byId('studio-components-panel'),
         templatesPanel: byId('studio-templates-panel'),
+        historyPanel: byId('studio-history-panel'),
+        historyList: byId('studio-history-list'),
+        historyEmpty: byId('studio-history-empty'),
+        historyCount: byId('studio-history-count'),
+        catalogueBrowser: byId('studio-catalogue-browser'),
         templateRestore: byId('studio-template-restore'),
         propertiesTab: byId('studio-properties-tab'),
         styleTab: byId('studio-style-tab'),
@@ -94,6 +101,13 @@ if (root && core && rules && improvements) {
         templateList: byId('studio-template-list'),
         templateCount: byId('studio-template-count'),
         templateProviderLabel: byId('studio-template-provider-label'),
+        templateFamily: byId('studio-template-family'),
+        templateProvider: byId('studio-template-provider'),
+        recoveryCard: byId('studio-recovery-card'),
+        recoveryName: byId('studio-recovery-name'),
+        recoveryMeta: byId('studio-recovery-meta'),
+        recoverSession: byId('studio-recover-session'),
+        discardRecovery: byId('studio-discard-recovery'),
         newProject: byId('studio-new-project'),
         downloadJson: byId('studio-download-json'),
         importJson: byId('studio-import-json'),
@@ -245,8 +259,12 @@ if (root && core && rules && improvements) {
         packageContent: byId('studio-package-content'),
         packageContentProvider: byId('studio-package-content-provider'),
         packageIntroductions: byId('studio-package-introductions'),
+        packageIntroductionsEmpty: byId('studio-package-introductions-empty'),
         packageFaq: byId('studio-package-faq'),
-        packageReferences: byId('studio-package-references')
+        packageFaqEmpty: byId('studio-package-faq-empty'),
+        packageReferences: byId('studio-package-references'),
+        packageReferencesEmpty: byId('studio-package-references-empty'),
+        contentSections: byId('studio-content-sections')
     };
     const appearanceControls = new Map([
         [elements.fieldShape, 'shape'],
@@ -271,11 +289,14 @@ if (root && core && rules && improvements) {
         return [definition.id, {
             ...definition,
             url: definition.catalog_url,
-            loaded: false
+            loaded: false,
+            loadPromise: null
         }];
     }));
-    let activeCatalogueLibrary = 'all';
-    let activeCatalogueProvider = 'all';
+    let activeCatalogueLibrary = '';
+    let activeCatalogueProvider = '';
+    let activeTemplateFamily = '';
+    let activeTemplateProvider = '';
     const layoutPreferences = loadLayoutPreferences();
     let paletteCollapsed = layoutPreferences.paletteCollapsed;
     let inspectorCollapsed = layoutPreferences.inspectorCollapsed;
@@ -302,6 +323,9 @@ if (root && core && rules && improvements) {
     let layoutFitTimer = null;
     let spacePanning = false;
     let styleClipboard = null;
+    let recoveryProject = loadRecoveryProject();
+    let recoveryDismissedForSession = false;
+    let recoverySaveTimer = null;
 
     function assetById(assetId) {
         return project.assets.find(function (asset) { return asset.id === assetId; });
@@ -315,6 +339,85 @@ if (root && core && rules && improvements) {
         return String(value || '').replace(/[&<>"']/g, function (character) {
             return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character];
         });
+    }
+
+    function hasRecoverableProject(candidate) {
+        return candidate.assets.length > 0
+            || candidate.connections.length > 0
+            || Boolean(candidate.reference?.name)
+            || candidate.name !== 'Untitled architecture';
+    }
+
+    function hasProjectData(candidate) {
+        return candidate.assets.length > 0
+            || candidate.connections.length > 0
+            || Boolean(candidate.reference?.name);
+    }
+
+    function removeRecoveryStorage() {
+        try {
+            localStorage.removeItem(recoveryStorageKey);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function loadRecoveryProject() {
+        try {
+            const stored = localStorage.getItem(recoveryStorageKey);
+            if (!stored) return null;
+            const storedRecovery = JSON.parse(stored);
+            const candidate = storedRecovery.project || storedRecovery;
+            const result = core.normalizeProject(candidate);
+            if (result.ok && hasRecoverableProject(result.project)) {
+                result.project.updated_at = storedRecovery.saved_at || candidate.updated_at || result.project.updated_at;
+                return result.project;
+            }
+            removeRecoveryStorage();
+        } catch (error) {
+            removeRecoveryStorage();
+        }
+        return null;
+    }
+
+    function recoverySavedLabel(candidate) {
+        const savedAt = new Date(candidate.updated_at);
+        if (Number.isNaN(savedAt.getTime())) return 'Saved time unavailable';
+        return `Saved ${new Intl.DateTimeFormat(undefined, {
+            dateStyle: 'medium',
+            timeStyle: 'short'
+        }).format(savedAt)}`;
+    }
+
+    function renderRecoveryCard() {
+        const visible = Boolean(recoveryProject) && !recoveryDismissedForSession;
+        elements.recoveryCard.hidden = !visible;
+        if (!visible) return;
+        elements.recoveryName.textContent = recoveryProject.name;
+        elements.recoveryMeta.textContent = `${recoveryProject.assets.length} assets · ${recoveryProject.connections.length} relationships · ${recoverySavedLabel(recoveryProject)}`;
+    }
+
+    function persistRecoveryProject() {
+        window.clearTimeout(recoverySaveTimer);
+        recoverySaveTimer = null;
+        if (!hasRecoverableProject(project)) return;
+        try {
+            const payload = core.buildExportPayload(project);
+            const recovery = { schema_version: '1.0', saved_at: project.updated_at, project: payload };
+            localStorage.setItem(recoveryStorageKey, JSON.stringify(recovery));
+            recoveryProject = { ...payload, updated_at: recovery.saved_at };
+            recoveryDismissedForSession = true;
+            elements.saveState.innerHTML = '<i aria-hidden="true"></i> Recovery saved locally';
+            renderRecoveryCard();
+        } catch (error) {
+            elements.saveState.innerHTML = '<i aria-hidden="true"></i> Saved in this session only';
+        }
+    }
+
+    function scheduleRecoverySave() {
+        window.clearTimeout(recoverySaveTimer);
+        recoverySaveTimer = window.setTimeout(persistRecoveryProject, 180);
     }
 
 // [studio-workspace] Section: Start
@@ -421,19 +524,84 @@ if (root && core && rules && improvements) {
 
 // [studio-workspace] Section: End
 
-    function pushHistory() {
-        history.push(JSON.stringify(project));
+    function createHistoryEntry(label, candidate = project) {
+        return {
+            label: label || 'Architecture changed',
+            created_at: new Date().toISOString(),
+            snapshot: JSON.stringify(candidate)
+        };
+    }
+
+    function historyEntryProject(entry) {
+        try {
+            const result = core.normalizeProject(JSON.parse(entry.snapshot));
+            return result.ok ? result.project : null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function historyEntryMeta(entry, candidate) {
+        const timestamp = new Date(entry.created_at);
+        const time = Number.isNaN(timestamp.getTime())
+            ? 'This session'
+            : new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(timestamp);
+        return `${candidate.assets.length} assets · ${candidate.connections.length} relationships · ${time}`;
+    }
+
+    function renderHistoryPanel() {
+        const fragment = document.createDocumentFragment();
+        [...history].reverse().forEach(function (entry, reverseIndex) {
+            const candidate = historyEntryProject(entry);
+            if (!candidate) return;
+            const index = history.length - reverseIndex - 1;
+            const button = document.createElement('button');
+            const icon = document.createElement('i');
+            const copy = document.createElement('span');
+            const title = document.createElement('strong');
+            const meta = document.createElement('small');
+            button.type = 'button';
+            button.className = 'studio-history-item';
+            button.setAttribute('aria-label', `Undo ${entry.label}`);
+            icon.className = 'bi bi-arrow-counterclockwise';
+            icon.setAttribute('aria-hidden', 'true');
+            title.textContent = entry.label;
+            meta.textContent = historyEntryMeta(entry, candidate);
+            copy.append(title, meta);
+            button.append(icon, copy);
+            button.addEventListener('click', function () { restoreHistoryIndex(index); });
+            fragment.append(button);
+        });
+        elements.historyList.replaceChildren(fragment);
+        elements.historyCount.textContent = String(history.length);
+        elements.historyEmpty.hidden = history.length > 0;
+    }
+
+    function pushHistory(label = 'Architecture changed') {
+        history.push(createHistoryEntry(label));
         if (history.length > historyLimit) history.shift();
         future = [];
+        renderHistoryPanel();
+    }
+
+    function projectChangeLabel(nextProject) {
+        if (nextProject.name !== project.name) return 'Rename project';
+        if (nextProject.assets.length > project.assets.length) return 'Add assets';
+        if (nextProject.assets.length < project.assets.length) return 'Delete assets';
+        if (nextProject.connections.length > project.connections.length) return 'Add relationships';
+        if (nextProject.connections.length < project.connections.length) return 'Delete relationships';
+        if (nextProject.active_view !== project.active_view) return 'Change Studio view';
+        return 'Edit architecture';
     }
 
     function saveProject() {
         project.updated_at = new Date().toISOString();
         elements.saveState.innerHTML = '<i aria-hidden="true"></i> Changes saved in this session';
+        scheduleRecoverySave();
     }
 
     function replaceProject(nextProject, options = {}) {
-        if (options.history !== false) pushHistory();
+        if (options.history !== false) pushHistory(options.historyLabel || projectChangeLabel(nextProject));
         project = nextProject;
         previewFindingId = null;
         selectedItems = options.selectedItems || (options.selected ? [options.selected] : []);
@@ -536,7 +704,7 @@ if (root && core && rules && improvements) {
 
     function deleteItems(items) {
         if (!items.length) return;
-        pushHistory();
+        pushHistory('Delete selected items');
         let next = project;
         items.filter(function (item) { return item.kind === 'connection'; }).forEach(function (item) {
             next = core.removeConnection(next, item.id);
@@ -571,20 +739,6 @@ if (root && core && rules && improvements) {
 
     function selectedAssets() {
         return selectedAssetIds().map(assetById).filter(Boolean);
-    }
-
-    function appearanceFromControls() {
-        return {
-            shape: elements.fieldShape.value,
-            fill_color: elements.fieldFillColor.value,
-            border_color: elements.fieldBorderColor.value,
-            text_color: elements.fieldTextColor.value,
-            border_style: elements.fieldBorderStyle.value,
-            border_width: elements.fieldBorderWidth.value,
-            font_size: elements.fieldFontSize.value,
-            text_align: elements.fieldTextAlign.value,
-            locked: elements.fieldAssetLocked.checked
-        };
     }
 
     function renderStylePresets() {
@@ -656,7 +810,7 @@ if (root && core && rules && improvements) {
             renderToolbar();
         },
         onGeometryChange: function (snapshot) {
-            pushHistory();
+            pushHistory('Move or resize assets');
             project = core.applyGraphSnapshot(project, project.active_view, snapshot);
             saveProject();
             renderInspector();
@@ -698,7 +852,7 @@ if (root && core && rules && improvements) {
         },
         onConnectionRouteChange: function (connectionId, route) {
             if (!connectionById(connectionId)) return;
-            pushHistory();
+            pushHistory('Edit relationship route');
             project = core.updateConnectionRoute(project, connectionId, project.active_view, route);
             saveProject();
             renderInspector();
@@ -794,7 +948,7 @@ if (root && core && rules && improvements) {
 
     function createCatalogueItem(definition) {
         const button = document.createElement('button');
-        const iconUrl = definition.icon_url || iconUrls[definition.semantic_type || definition.type];
+        const iconUrl = definition.icon_url || resolvedIconUrls[definition.semantic_type || definition.type];
         const icon = iconUrl ? document.createElement('img') : document.createElement('span');
         const label = document.createElement('strong');
         button.type = 'button';
@@ -825,7 +979,10 @@ if (root && core && rules && improvements) {
     }
 
     function renderCatalogueFilters() {
-        const libraryOptions = [new Option('All libraries', 'all')];
+        const libraryOptions = [
+            new Option('Choose library', ''),
+            new Option('All libraries', 'all')
+        ];
         const groups = Array.isArray(libraryConfig.groups) ? libraryConfig.groups : [];
         groups.forEach(function (group) {
             const definitions = libraryDefinitions.filter(function (definition) {
@@ -840,6 +997,9 @@ if (root && core && rules && improvements) {
             libraryOptions.push(optionGroup);
         });
         elements.catalogueLibrary.replaceChildren(...libraryOptions);
+        if (activeCatalogueLibrary !== 'all' && activeCatalogueLibrary && !catalogueSources[activeCatalogueLibrary]) {
+            activeCatalogueLibrary = '';
+        }
         elements.catalogueLibrary.value = activeCatalogueLibrary;
 
         const providers = [...new Set(libraryDefinitions.map(function (definition) {
@@ -849,12 +1009,17 @@ if (root && core && rules && improvements) {
             if (right === 'generic') return 1;
             return left.localeCompare(right);
         });
-        const providerOptions = [new Option('All providers', 'all')];
+        const providerOptions = [
+            new Option('Choose provider', ''),
+            new Option('All providers', 'all')
+        ];
         providers.forEach(function (provider) {
             providerOptions.push(new Option(providerLabel(provider), provider));
         });
         elements.catalogueProvider.replaceChildren(...providerOptions);
-        if (!providers.includes(activeCatalogueProvider)) activeCatalogueProvider = 'all';
+        if (activeCatalogueProvider !== 'all' && activeCatalogueProvider && !providers.includes(activeCatalogueProvider)) {
+            activeCatalogueProvider = '';
+        }
         elements.catalogueProvider.value = activeCatalogueProvider;
     }
 
@@ -906,7 +1071,7 @@ if (root && core && rules && improvements) {
         if (!matches.length) {
             const empty = document.createElement('div');
             empty.className = 'studio-palette-empty';
-            empty.innerHTML = activeCatalogueProvider === 'all' && activeCatalogueLibrary === 'all'
+            empty.innerHTML = !activeCatalogueProvider && !activeCatalogueLibrary
                 ? '<i class="bi bi-boxes"></i><strong>Choose a provider or library</strong><span>Components and icons load only when requested.</span>'
                 : '<i class="bi bi-search"></i><strong>No matching assets</strong><span>Try another name, role, or provider.</span>';
             fragment.append(empty);
@@ -929,18 +1094,40 @@ if (root && core && rules && improvements) {
         elements.bottomZoomValue.textContent = zoomLabel;
     }
 
-    function switchLibraryTab(tab) {
-        activeLibraryTab = tab === 'templates' ? 'templates' : 'components';
+    async function switchLibraryTab(tab) {
+        activeLibraryTab = ['templates', 'history'].includes(tab) ? tab : 'components';
         const componentsActive = activeLibraryTab === 'components';
+        const templatesActive = activeLibraryTab === 'templates';
+        const historyActive = activeLibraryTab === 'history';
         elements.componentsTab.classList.toggle('is-active', componentsActive);
-        elements.templatesTab.classList.toggle('is-active', !componentsActive);
+        elements.templatesTab.classList.toggle('is-active', templatesActive);
         elements.componentsTab.setAttribute('aria-selected', String(componentsActive));
-        elements.templatesTab.setAttribute('aria-selected', String(!componentsActive));
+        elements.templatesTab.setAttribute('aria-selected', String(templatesActive));
         elements.componentsPanel.hidden = !componentsActive;
-        elements.templatesPanel.hidden = componentsActive;
+        elements.templatesPanel.hidden = !templatesActive;
+        elements.historyPanel.hidden = !historyActive;
         elements.railAssets.classList.toggle('is-active', componentsActive);
-        elements.railTemplates.classList.toggle('is-active', !componentsActive);
-        if (!componentsActive) renderTemplates();
+        elements.railTemplates.classList.toggle('is-active', templatesActive);
+        elements.railHistory.classList.toggle('is-active', historyActive);
+        elements.railHistory.setAttribute('aria-expanded', String(historyActive));
+        if (historyActive) {
+            renderHistoryPanel();
+            renderRecoveryCard();
+            return;
+        }
+        try {
+            if (componentsActive) {
+                if (activeCatalogueProvider || activeCatalogueLibrary) {
+                    await loadProviderCatalogues(activeCatalogueProvider || catalogueSources[activeCatalogueLibrary]?.provider);
+                }
+                renderPalette();
+            } else {
+                renderTemplateFilters();
+                renderTemplates();
+            }
+        } catch (error) {
+            showMessage(`${providerLabel(activeCatalogueProvider)} ${componentsActive ? 'components' : 'templates'} could not be loaded.`, 'error');
+        }
     }
 
     const contextualPropertyFields = {
@@ -1022,39 +1209,86 @@ if (root && core && rules && improvements) {
         elements.contextFields.hidden = elements.contextFields.childElementCount === 0;
     }
 
+    function packageFamilyLabel(family) {
+        return String(family || '').split(/[-_]/).filter(Boolean).map(function (part) {
+            return part.charAt(0).toUpperCase() + part.slice(1);
+        }).join(' ');
+    }
+
+    function renderTemplateFilters() {
+        const entries = Array.isArray(packageRegistry.packages) ? packageRegistry.packages : [];
+        const families = [...new Set(entries.map(function (entry) { return entry.family; }))].sort();
+        const familyOptions = [new Option('Choose library', '')];
+        families.forEach(function (family) {
+            familyOptions.push(new Option(packageFamilyLabel(family), family));
+        });
+        elements.templateFamily.replaceChildren(...familyOptions);
+        elements.templateFamily.value = activeTemplateFamily;
+
+        const providers = [...new Set(entries.filter(function (entry) {
+            return !activeTemplateFamily || entry.family === activeTemplateFamily;
+        }).map(function (entry) { return entry.provider; }))].sort();
+        const providerOptions = [new Option('Choose provider', '')];
+        providers.forEach(function (provider) {
+            providerOptions.push(new Option(providerLabel(provider), provider));
+        });
+        if (!providers.includes(activeTemplateProvider)) activeTemplateProvider = '';
+        elements.templateProvider.replaceChildren(...providerOptions);
+        elements.templateProvider.value = activeTemplateProvider;
+    }
+
     function renderTemplates() {
         elements.templateList.replaceChildren();
-        const templateProviders = activeCatalogueProvider === 'all'
-            ? (providerRegistry?.providerIds() || [])
-            : [activeCatalogueProvider];
+        const templateProviders = activeTemplateFamily && activeTemplateProvider
+            ? [activeTemplateProvider]
+            : [];
         const visibleTemplates = templateProviders.flatMap(function (provider) {
             return (providerRegistry?.templates(provider) || []).map(function (definition) {
                 return { ...definition, provider };
             });
         });
-        elements.templateProviderLabel.textContent = activeCatalogueProvider === 'all'
-            ? 'All provider examples'
-            : `${providerLabel(activeCatalogueProvider)} examples`;
+        elements.templateProviderLabel.textContent = activeTemplateFamily && activeTemplateProvider
+            ? `${providerLabel(activeTemplateProvider)} ${packageFamilyLabel(activeTemplateFamily).toLowerCase()} examples`
+            : 'Choose a library and provider';
         visibleTemplates.forEach(function (definition) {
             const button = document.createElement('button');
             button.type = 'button';
             button.className = 'studio-template-card';
             button.dataset.templateId = definition.id;
             button.innerHTML = `<i class="bi ${escapeHtml(definition.icon)}"></i><span><strong>${escapeHtml(definition.name)}</strong><small>${escapeHtml(definition.description)}</small></span>`;
-            button.addEventListener('click', function () {
+            button.addEventListener('click', async function () {
+                button.disabled = true;
+                try {
+                    await loadProviderCatalogues(definition.provider);
+                } catch (error) {
+                    showMessage(`${providerLabel(definition.provider)} icons could not be loaded.`, 'error');
+                    button.disabled = false;
+                    return;
+                }
                 const templateProject = providerRegistry?.createProject(definition.provider, core, definition.id);
-                if (!templateProject) return;
-                replaceProject(templateProject);
+                if (!templateProject) {
+                    button.disabled = false;
+                    return;
+                }
+                activeCatalogueProvider = definition.provider;
+                activeCatalogueLibrary = 'all';
+                replaceProject(templateProject, { historyLabel: `Load ${definition.name}` });
+                renderCatalogueFilters();
+                renderPalette();
+                renderPackageContent();
                 loadReference();
                 showMessage(`${definition.name} loaded.`, 'success');
                 window.setTimeout(function () { graphAdapter.fit(); }, 80);
+                button.disabled = false;
             });
             elements.templateList.append(button);
         });
         if (!visibleTemplates.length) {
             const empty = document.createElement('p');
             empty.className = 'studio-template-empty';
-            empty.textContent = `No ${providerLabel(activeCatalogueProvider)} templates are available yet.`;
+            empty.textContent = activeTemplateFamily && activeTemplateProvider
+                ? `No ${providerLabel(activeTemplateProvider)} templates are available for this library.`
+                : 'Choose a template library and provider to load examples.';
             elements.templateList.append(empty);
         }
         elements.templateCount.textContent = String(visibleTemplates.length);
@@ -1065,16 +1299,21 @@ if (root && core && rules && improvements) {
 // [studio-about] Section: Start
 
     function renderPackageContent() {
-        const packages = activeCatalogueProvider === 'all'
+        const packages = !hasProjectData(project) || activeCatalogueProvider === 'all'
             ? []
             : (providerRegistry?.content(activeCatalogueProvider) || []);
-        elements.packageContent.hidden = packages.length === 0;
+        elements.packageContent.hidden = false;
         elements.packageIntroductions.replaceChildren();
         elements.packageFaq.replaceChildren();
         elements.packageReferences.replaceChildren();
+        elements.packageContentProvider.textContent = packages.length
+            ? providerLabel(activeCatalogueProvider)
+            : 'No package selected';
+        elements.packageIntroductionsEmpty.hidden = packages.length > 0;
+        elements.packageFaqEmpty.hidden = false;
+        elements.packageReferencesEmpty.hidden = false;
         if (!packages.length) return;
 
-        elements.packageContentProvider.textContent = providerLabel(activeCatalogueProvider);
         const referenceUrls = new Set();
         packages.forEach(function (packageContent) {
             const introduction = document.createElement('article');
@@ -1117,6 +1356,8 @@ if (root && core && rules && improvements) {
                 elements.packageReferences.append(listItem);
             });
         });
+        elements.packageFaqEmpty.hidden = elements.packageFaq.childElementCount > 0;
+        elements.packageReferencesEmpty.hidden = elements.packageReferences.childElementCount > 0;
     }
 
 // [studio-about] Section: End
@@ -1134,18 +1375,22 @@ if (root && core && rules && improvements) {
         elements.stylePanel.hidden = propertiesActive;
     }
 
-    function projectProvider() {
+    function providerForProject(candidate, fallback = defaultProvider) {
         const providerIds = [...new Set(libraryDefinitions.map(function (definition) {
             return definition.provider;
         }))];
-        const profileProvider = String(project.profile || '').split('-')[0].toLowerCase();
+        const profileProvider = String(candidate.profile || '').split('-')[0].toLowerCase();
         if (providerIds.includes(profileProvider)) return profileProvider;
-        const counts = project.assets.reduce(function (totals, asset) {
+        const counts = candidate.assets.reduce(function (totals, asset) {
             const provider = String(asset.properties?.provider || '').toLowerCase();
             if (providerIds.includes(provider)) totals[provider] = (totals[provider] || 0) + 1;
             return totals;
         }, {});
-        return Object.entries(counts).sort(function (left, right) { return right[1] - left[1]; })[0]?.[0] || activeCatalogueProvider;
+        return Object.entries(counts).sort(function (left, right) { return right[1] - left[1]; })[0]?.[0] || fallback;
+    }
+
+    function projectProvider() {
+        return providerForProject(project, activeCatalogueProvider);
     }
 
     function selectedPackageIntroduction() {
@@ -1563,7 +1808,6 @@ if (root && core && rules && improvements) {
         elements.fullscreen.innerHTML = `<i class="bi ${fullscreenMode ? 'bi-fullscreen-exit' : 'bi-fullscreen'}"></i>`;
         elements.undo.disabled = history.length === 0;
         elements.redo.disabled = future.length === 0;
-        elements.railHistory.disabled = history.length === 0;
         elements.duplicate.disabled = !selectedItems.some(function (item) { return item.kind === 'asset'; });
         elements.autoLayout.disabled = visibleAssets().length < 2;
         elements.alignMenu.classList.toggle('is-disabled', selectedAssetIds().length < 2);
@@ -1609,7 +1853,10 @@ if (root && core && rules && improvements) {
         renderOverview();
         renderReview();
         renderInventory();
+        renderPackageContent();
         renderReference();
+        renderHistoryPanel();
+        renderRecoveryCard();
     }
 
     window.addEventListener('pagehide', function () { overviewChart.destroy(); }, { once: true });
@@ -1673,16 +1920,34 @@ if (root && core && rules && improvements) {
 
     function undo() {
         if (!history.length) return;
-        future.push(JSON.stringify(project));
-        const result = core.normalizeProject(JSON.parse(history.pop()));
-        if (result.ok) replaceProject(result.project, { history: false });
+        const entry = history.pop();
+        const previousProject = historyEntryProject(entry);
+        if (!previousProject) return;
+        future.push(createHistoryEntry(entry.label, project));
+        replaceProject(previousProject, { history: false });
     }
 
     function redo() {
         if (!future.length) return;
-        history.push(JSON.stringify(project));
-        const result = core.normalizeProject(JSON.parse(future.pop()));
-        if (result.ok) replaceProject(result.project, { history: false });
+        const entry = future.pop();
+        const nextProject = historyEntryProject(entry);
+        if (!nextProject) return;
+        history.push(createHistoryEntry(entry.label, project));
+        replaceProject(nextProject, { history: false });
+    }
+
+    function restoreHistoryIndex(index) {
+        if (!Number.isInteger(index) || index < 0 || index >= history.length) return;
+        let nextProject = project;
+        while (history.length > index) {
+            const entry = history.pop();
+            const previousProject = historyEntryProject(entry);
+            if (!previousProject) continue;
+            future.push(createHistoryEntry(entry.label, nextProject));
+            nextProject = previousProject;
+        }
+        replaceProject(nextProject, { history: false });
+        showMessage('Earlier Studio state restored.', 'success');
     }
 
     function downloadProject() {
@@ -1699,11 +1964,19 @@ if (root && core && rules && improvements) {
 
     function importProject(file) {
         const reader = new FileReader();
-        reader.addEventListener('load', function () {
+        reader.addEventListener('load', async function () {
             try {
                 const result = core.normalizeProject(JSON.parse(String(reader.result || '')));
                 if (!result.ok) return showMessage(result.error, 'error');
+                const provider = providerForProject(result.project);
+                await loadProviderResources(provider);
+                activeCatalogueProvider = provider;
+                activeCatalogueLibrary = 'all';
+                renderCatalogueFilters();
                 replaceProject(result.project);
+                renderPalette();
+                renderTemplates();
+                renderPackageContent();
                 loadReference();
                 showMessage('Studio project restored.', 'success');
             } catch (error) {
@@ -1711,6 +1984,55 @@ if (root && core && rules && improvements) {
             }
         });
         reader.readAsText(file);
+    }
+
+    async function recoverPreviousSession() {
+        if (!recoveryProject) return;
+        const result = core.normalizeProject(recoveryProject);
+        if (!result.ok) {
+            removeRecoveryStorage();
+            recoveryProject = null;
+            renderRecoveryCard();
+            showMessage('The previous session could not be recovered.', 'error');
+            return;
+        }
+        const provider = providerForProject(result.project);
+        elements.recoverSession.disabled = true;
+        try {
+            await loadProviderResources(provider);
+            activeCatalogueProvider = provider;
+            activeCatalogueLibrary = 'all';
+            recoveryDismissedForSession = true;
+            renderCatalogueFilters();
+            replaceProject(result.project, { history: false });
+            renderPalette();
+            renderTemplates();
+            renderPackageContent();
+            await loadReference();
+            showMessage(`${result.project.name} recovered.`, 'success');
+            window.setTimeout(function () { graphAdapter.fit(); }, 80);
+        } catch (error) {
+            recoveryDismissedForSession = false;
+            renderRecoveryCard();
+            showMessage('The previous session resources could not be loaded.', 'error');
+        } finally {
+            elements.recoverSession.disabled = false;
+        }
+    }
+
+    function discardRecoveryProject() {
+        if (!recoveryProject) return;
+        if (!window.confirm(`Discard the saved recovery for “${recoveryProject.name}”? This cannot be undone.`)) return;
+        window.clearTimeout(recoverySaveTimer);
+        recoverySaveTimer = null;
+        if (!removeRecoveryStorage()) {
+            showMessage('The saved recovery could not be discarded in this browser.', 'error');
+            return;
+        }
+        recoveryProject = null;
+        recoveryDismissedForSession = false;
+        renderRecoveryCard();
+        showMessage('Previous session recovery discarded.', 'neutral');
     }
 
     function normalizeCatalogueAsset(definition, source) {
@@ -1723,7 +2045,8 @@ if (root && core && rules && improvements) {
             library_label: source.label
         };
         const iconKey = definition.catalog_id || definition.type;
-        normalized.icon_url = source.icon_urls?.[iconKey] || null;
+        normalized.icon_url = definition.icon_url || null;
+        if (normalized.icon_url) resolvedIconUrls[iconKey] = normalized.icon_url;
         return normalized;
     }
 
@@ -1736,28 +2059,79 @@ if (root && core && rules && improvements) {
     async function loadCatalogueSource(libraryId) {
         const source = catalogueSources[libraryId];
         if (!source || source.loaded) return;
-        const response = await fetch(source.url, { headers: { Accept: 'application/json' } });
-        if (!response.ok) throw new Error(`${libraryId} catalogue request failed.`);
-        const payload = await response.json();
-        const sourceAssets = Array.isArray(payload.assets) ? payload.assets : [];
-        const sourceGroups = Array.isArray(payload.groups) ? payload.groups : [];
-        catalog = catalog.concat(sourceAssets.map(function (definition) {
-            return normalizeCatalogueAsset(definition, source);
-        }));
-        sourceGroups.forEach(function (group) {
-            if (!catalogueGroups.some(function (candidate) { return candidate.id === group.id; })) {
-                catalogueGroups.push(group);
-            }
-        });
-        source.loaded = true;
+        if (!source.loadPromise) {
+            source.loadPromise = fetch(source.url, { headers: { Accept: 'application/json' } })
+                .then(function (response) {
+                    if (!response.ok) throw new Error(`${libraryId} catalogue request failed.`);
+                    return response.json();
+                })
+                .then(function (payload) {
+                    const sourceAssets = Array.isArray(payload.assets) ? payload.assets : [];
+                    const sourceGroups = Array.isArray(payload.groups) ? payload.groups : [];
+                    catalog = catalog.concat(sourceAssets.map(function (definition) {
+                        return normalizeCatalogueAsset(definition, source);
+                    }));
+                    sourceGroups.forEach(function (group) {
+                        if (!catalogueGroups.some(function (candidate) { return candidate.id === group.id; })) {
+                            catalogueGroups.push(group);
+                        }
+                    });
+                    source.loaded = true;
+                })
+                .catch(function (error) {
+                    source.loadPromise = null;
+                    throw error;
+                });
+        }
+        await source.loadPromise;
     }
 
-    async function loadCatalog() {
-        if (activeCatalogueLibrary !== 'all' && !catalogueSources[activeCatalogueLibrary]) {
-            activeCatalogueLibrary = 'all';
-        }
-        renderCatalogueFilters();
-        renderPalette();
+    function requestedProviders(provider) {
+        return provider === 'all'
+            ? [...new Set(libraryDefinitions.map(function (definition) { return definition.provider; }))]
+            : ['generic', provider];
+    }
+
+    /**
+     * Loads Generic plus the requested provider catalogues once.
+     *
+     * @param {string} provider Provider identity or all.
+     * @returns {Promise<void>} Resolves when component definitions are registered.
+     */
+    async function loadProviderCatalogues(provider) {
+        const providers = requestedProviders(provider);
+        const sources = Object.values(catalogueSources).filter(function (source) {
+            return providers.includes(source.provider);
+        });
+        await Promise.all(sources.map(function (source) { return loadCatalogueSource(source.id); }));
+    }
+
+    /**
+     * Loads the requested provider packages without loading component icons.
+     *
+     * @param {string} provider Provider identity or all.
+     * @returns {Promise<void>} Resolves when template, result, and content data is registered.
+     */
+    async function loadProviderPackages(provider) {
+        const packageProviders = requestedProviders(provider).filter(function (candidate) {
+            return candidate !== 'generic';
+        });
+        await Promise.all(packageProviders.map(function (candidate) {
+            return packageLoader?.loadProvider(candidate);
+        }));
+    }
+
+    /**
+     * Loads all resources required by a selected or restored project.
+     *
+     * @param {string} provider Provider identity or all.
+     * @returns {Promise<void>} Resolves when catalogues and packages are registered.
+     */
+    async function loadProviderResources(provider) {
+        await Promise.all([
+            loadProviderCatalogues(provider),
+            loadProviderPackages(provider)
+        ]);
     }
 
 // [studio-persistence] Section: End
@@ -1766,9 +2140,32 @@ if (root && core && rules && improvements) {
 
     elements.componentsTab.addEventListener('click', function () { switchLibraryTab('components'); });
     elements.templatesTab.addEventListener('click', function () { switchLibraryTab('templates'); });
+    async function loadSelectedTemplatePackages() {
+        if (!activeTemplateFamily || !activeTemplateProvider) {
+            renderTemplates();
+            return;
+        }
+        try {
+            await loadProviderPackages(activeTemplateProvider);
+            renderTemplates();
+        } catch (error) {
+            showMessage(`${providerLabel(activeTemplateProvider)} templates could not be loaded.`, 'error');
+        }
+    }
+    elements.templateFamily.addEventListener('change', async function () {
+        activeTemplateFamily = elements.templateFamily.value;
+        renderTemplateFilters();
+        await loadSelectedTemplatePackages();
+    });
+    elements.templateProvider.addEventListener('change', async function () {
+        activeTemplateProvider = elements.templateProvider.value;
+        await loadSelectedTemplatePackages();
+    });
     elements.propertiesTab.addEventListener('click', function () { switchInspectorTab('properties'); });
     elements.styleTab.addEventListener('click', function () { switchInspectorTab('style'); });
     elements.templateRestore.addEventListener('click', function () { elements.importFile.click(); });
+    elements.recoverSession.addEventListener('click', recoverPreviousSession);
+    elements.discardRecovery.addEventListener('click', discardRecoveryProject);
     elements.restoreDismissed.addEventListener('click', function () {
         const next = { ...project, accepted_risks: [] };
         replaceProject(core.normalizeProject(next).project);
@@ -1842,7 +2239,7 @@ if (root && core && rules && improvements) {
     elements.railTemplates.addEventListener('click', function () { switchLibraryTab('templates'); });
     elements.railAssets.addEventListener('click', function () { switchLibraryTab('components'); });
     elements.railConnections.addEventListener('click', function () { elements.connect.click(); });
-    elements.railHistory.addEventListener('click', undo);
+    elements.railHistory.addEventListener('click', function () { switchLibraryTab('history'); });
     elements.railSettings.addEventListener('click', function () {
         elements.gridVisible.focus();
         showMessage('Canvas settings are available in the bottom-right corner.');
@@ -1913,39 +2310,30 @@ if (root && core && rules && improvements) {
         if (selectedLibrary) {
             activeCatalogueProvider = selectedLibrary.provider;
             elements.catalogueProvider.value = activeCatalogueProvider;
+        } else if (!activeCatalogueLibrary) {
+            activeCatalogueProvider = '';
+            elements.catalogueProvider.value = '';
         }
         elements.catalogueSearch.value = '';
         try {
             if (selectedLibrary) {
-                await Promise.all([
-                    loadCatalogueSource(selectedLibrary.id),
-                    packageLoader?.loadProvider(selectedLibrary.provider)
-                ]);
+                await loadProviderCatalogues(selectedLibrary.provider);
             }
             renderPalette();
-            renderTemplates();
-            renderPackageContent();
         } catch (error) {
             showMessage('The selected Studio library could not be loaded.', 'error');
         }
     });
     elements.catalogueProvider.addEventListener('change', async function () {
         activeCatalogueProvider = elements.catalogueProvider.value;
-        activeCatalogueLibrary = 'all';
-        elements.catalogueLibrary.value = 'all';
+        activeCatalogueLibrary = activeCatalogueProvider ? 'all' : '';
+        elements.catalogueLibrary.value = activeCatalogueLibrary;
         elements.catalogueSearch.value = '';
         try {
-            if (activeCatalogueProvider !== 'all') {
-                await Promise.all([
-                    Promise.all(Object.values(catalogueSources).filter(function (source) {
-                        return source.provider === activeCatalogueProvider;
-                    }).map(function (source) { return loadCatalogueSource(source.id); })),
-                    packageLoader?.loadProvider(activeCatalogueProvider)
-                ]);
+            if (activeCatalogueProvider) {
+                await loadProviderCatalogues(activeCatalogueProvider);
             }
             renderPalette();
-            renderTemplates();
-            renderPackageContent();
         } catch (error) {
             showMessage(`${providerLabel(activeCatalogueProvider)} assets could not be loaded.`, 'error');
         }
@@ -2010,12 +2398,15 @@ if (root && core && rules && improvements) {
     });
     elements.shortcutsButton.addEventListener('click', function () { elements.shortcutsDialog.showModal(); });
     elements.newProject.addEventListener('click', function () {
+        if (hasRecoverableProject(project)) persistRecoveryProject();
         replaceProject(core.createEmptyProject());
+        recoveryDismissedForSession = false;
+        renderRecoveryCard();
         loadReference();
         showMessage('New local project created.', 'success');
     });
     elements.projectName.addEventListener('change', function () {
-        pushHistory();
+        pushHistory('Rename project');
         project.name = elements.projectName.value.trim().slice(0, 80) || 'Untitled architecture';
         saveProject();
         renderToolbar();
@@ -2036,7 +2427,7 @@ if (root && core && rules && improvements) {
 
     function updateSelectedAssetFromInspector() {
         if (!selected || selected.kind !== 'asset') return;
-        pushHistory();
+        pushHistory('Edit asset properties');
         const assetId = selected.id;
         const values = {
             label: elements.fieldLabel.value,
@@ -2099,7 +2490,7 @@ if (root && core && rules && improvements) {
     function applyAppearanceToSelection(changes, message) {
         const assetIds = selectedAssetIds();
         if (!assetIds.length) return;
-        pushHistory();
+        pushHistory('Apply asset style');
         project = core.updateAssetAppearances(project, assetIds, project.active_view, changes);
         saveProject();
         renderStage();
@@ -2122,7 +2513,7 @@ if (root && core && rules && improvements) {
     function resetSelectedAssetStyle() {
         const assetIds = selectedAssetIds();
         if (!assetIds.length) return;
-        pushHistory();
+        pushHistory('Reset asset style');
         assetIds.forEach(function (assetId) {
             project = core.resetAssetAppearance(project, assetId, project.active_view);
         });
@@ -2169,7 +2560,7 @@ if (root && core && rules && improvements) {
             elements.stylePresetName.focus();
             return;
         }
-        pushHistory();
+        pushHistory('Save style preset');
         project = result.project;
         elements.stylePresetName.value = '';
         saveProject();
@@ -2181,7 +2572,7 @@ if (root && core && rules && improvements) {
     function deleteSelectedStylePreset() {
         const presetId = elements.stylePreset.value;
         if (!presetId) return;
-        pushHistory();
+        pushHistory('Delete style preset');
         project = core.removeStylePreset(project, presetId);
         saveProject();
         renderInspector();
@@ -2204,7 +2595,7 @@ if (root && core && rules && improvements) {
             renderStage();
             return;
         }
-        pushHistory();
+        pushHistory('Edit relationship');
         project = core.updateConnection(project, selected.id, {
             source: elements.fieldConnectionSource.value,
             target: elements.fieldConnectionTarget.value,
@@ -2228,7 +2619,7 @@ if (root && core && rules && improvements) {
 
     function resetSelectedConnectionRoute() {
         if (!selected || selected.kind !== 'connection') return;
-        pushHistory();
+        pushHistory('Reset relationship route');
         project = core.updateConnectionRoute(project, selected.id, project.active_view, {
             style: 'orthogonal',
             points: []
@@ -2459,7 +2850,7 @@ if (root && core && rules && improvements) {
             }
             const currentLayout = asset.layout[project.active_view];
             const size = imageAssetSize(source.width, source.height, Math.max(currentLayout.width, currentLayout.height));
-            pushHistory();
+            pushHistory(trim ? 'Trim image transparency' : 'Reset image source');
             let next = core.updateAssetImage(project, asset.id, { data_url: source.dataUrl });
             next = core.updateAssetLayout(next, asset.id, project.active_view, size);
             project = next;
@@ -2605,6 +2996,7 @@ if (root && core && rules && improvements) {
         showMessage('Reference image removed.', 'success');
     });
     window.addEventListener('beforeunload', function () {
+        if (recoverySaveTimer) persistRecoveryProject();
         if (referenceUrl) URL.revokeObjectURL(referenceUrl);
         layoutPublish?.destroy();
         graphAdapter.destroy();
@@ -2618,8 +3010,9 @@ if (root && core && rules && improvements) {
         graphAdapter.setGridSize(gridSize);
         graphAdapter.setSnapEnabled(snapEnabled);
         graphAdapter.setGuidesEnabled(guidesEnabled);
+        renderCatalogueFilters();
+        renderPalette();
         render();
-        loadCatalog();
         loadReference();
     }
 

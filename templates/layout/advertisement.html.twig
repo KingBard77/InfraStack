@@ -1,0 +1,15 @@
+{# templates/layout/advertisement.html.twig #}
+{% macro rail(id, placement, slot) %}
+    <aside
+        id="{{ id }}"
+        class="studio-ad-rail studio-ad-rail-{{ placement }}"
+        data-ad-placement="{{ placement }}"
+        aria-label="Advertisement"
+    >
+        <div class="studio-ad-placeholder" data-ad-slot="{{ slot }}" data-ad-state="placeholder">
+            <span>Advertisement</span>
+            <strong>160 × 600</strong>
+            <small>Reserved ad space</small>
+        </div>
+    </aside>
+{% endmacro %}

@@ -192,6 +192,8 @@ src/Service/Layout/ShareService.php
 
 Shared projects are read-only snapshots of normalized state. Embeds must include enough context to avoid presenting guidance as certification or production approval.
 
+Anonymous snapshots are stored under `APP_STUDIO_SHARE_DIR`, which defaults to `var/studio/shares`. New snapshots expire according to `APP_STUDIO_SHARE_TTL_DAYS`, which defaults to 90 days. Legacy snapshots without `expires_at` remain readable and are never removed automatically. Preview lifecycle cleanup with `php bin/console app:studio:shares:cleanup --dry-run`; permanent deletion requires the explicit `--delete` option.
+
 ## Routes And Navigation
 
 The maintained navigation is:

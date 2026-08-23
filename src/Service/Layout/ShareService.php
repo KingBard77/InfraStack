@@ -3,6 +3,10 @@
 namespace App\Service\Layout;
 
 use App\Exception\Layout\ShareException;
+use DateTimeImmutable;
+use DateTimeZone;
+use Exception;
+use InvalidArgumentException;
 use JsonException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,18 +21,31 @@ class ShareService
 
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
-        private readonly string $projectDirectory
+        private readonly string $projectDirectory,
+        private readonly string $shareDirectory = 'var/studio/shares',
+        private readonly int $retentionDays = 90
     ) {
+        if (trim($this->shareDirectory) === '') {
+            throw new InvalidArgumentException('Studio share directory cannot be empty.');
+        }
+        if (preg_match('#(^|[\\/])\.\.([\\/]|$)#', $this->shareDirectory) === 1) {
+            throw new InvalidArgumentException('Studio share directory cannot contain parent traversal.');
+        }
+        if ($this->retentionDays < 1) {
+            throw new InvalidArgumentException('Studio share retention must be at least one day.');
+        }
     }
 
     public function create(array $project): array
     {
         $project = $this->validateProject($project);
         $shareId = bin2hex(random_bytes(16));
+        $createdAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
         $snapshot = [
             'schema_version' => '1.0',
             'share_id' => $shareId,
-            'created_at' => gmdate('c'),
+            'created_at' => $createdAt->format(DATE_ATOM),
+            'expires_at' => $createdAt->modify(sprintf('+%d days', $this->retentionDays))->format(DATE_ATOM),
             'project' => $project,
         ];
         $encoded = $this->encode($snapshot);
@@ -82,9 +99,75 @@ class ShareService
             throw new ShareException('Shared project is invalid.', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
+        if (array_key_exists('expires_at', $snapshot)) {
+            $expiresAt = $this->parseDate($snapshot['expires_at']);
+            if ($expiresAt === null) {
+                throw new ShareException('Shared project is invalid.', Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+            if ($expiresAt <= new DateTimeImmutable('now', new DateTimeZone('UTC'))) {
+                throw new ShareException('Shared project not found.', Response::HTTP_NOT_FOUND);
+            }
+        }
+
         $snapshot['project'] = $this->validateProject($snapshot['project']);
 
         return $snapshot;
+    }
+
+    public function cleanupExpired(bool $delete = false, ?DateTimeImmutable $now = null): array
+    {
+        $result = [
+            'examined' => 0,
+            'expired' => 0,
+            'deleted' => 0,
+            'legacy' => 0,
+            'invalid' => 0,
+            'failed' => 0,
+        ];
+        $directory = $this->storageDirectory();
+        if (!is_dir($directory)) {
+            return $result;
+        }
+
+        $now ??= new DateTimeImmutable('now', new DateTimeZone('UTC'));
+        foreach (glob($directory . '/*.json') ?: [] as $path) {
+            $result['examined']++;
+            try {
+                $snapshot = json_decode((string) file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                $result['invalid']++;
+                continue;
+            }
+            if (!is_array($snapshot)) {
+                $result['invalid']++;
+                continue;
+            }
+            if (!array_key_exists('expires_at', $snapshot)) {
+                $result['legacy']++;
+                continue;
+            }
+
+            $expiresAt = $this->parseDate($snapshot['expires_at']);
+            if ($expiresAt === null) {
+                $result['invalid']++;
+                continue;
+            }
+            if ($expiresAt > $now) {
+                continue;
+            }
+
+            $result['expired']++;
+            if (!$delete) {
+                continue;
+            }
+            if (@unlink($path)) {
+                $result['deleted']++;
+            } else {
+                $result['failed']++;
+            }
+        }
+
+        return $result;
     }
 
     private function validateProject(array $project): array
@@ -134,11 +217,34 @@ class ShareService
 
     private function storageDirectory(): string
     {
-        return $this->projectDirectory . '/var/studio/shares';
+        $configured = rtrim(trim($this->shareDirectory), '/');
+        if (str_starts_with($configured, '/')) {
+            return $configured;
+        }
+
+        return $this->projectDirectory . '/' . ltrim($configured, '/');
     }
 
     private function snapshotPath(string $shareId): string
     {
         return $this->storageDirectory() . '/' . $shareId . '.json';
+    }
+
+    private function parseDate(mixed $value): ?DateTimeImmutable
+    {
+        if (!is_string($value) || trim($value) === '') {
+            return null;
+        }
+        try {
+            $date = DateTimeImmutable::createFromFormat(DATE_ATOM, $value);
+        } catch (Exception) {
+            return null;
+        }
+        $errors = DateTimeImmutable::getLastErrors();
+        if ($errors !== false && ($errors['warning_count'] > 0 || $errors['error_count'] > 0)) {
+            return null;
+        }
+
+        return $date === false ? null : $date;
     }
 }

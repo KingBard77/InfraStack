@@ -12,6 +12,9 @@ const chartAdapter = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/li
 const contentModule = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/content.js'), 'utf8');
 const contentCss = fs.readFileSync(path.join(projectRoot, 'assets/styles/studio/content.css'), 'utf8');
 const studioCss = fs.readFileSync(path.join(projectRoot, 'assets/styles/studio/studio.css'), 'utf8');
+const advertisementTwig = fs.readFileSync(path.join(projectRoot, 'templates/layout/advertisement.html.twig'), 'utf8');
+const studioController = fs.readFileSync(path.join(projectRoot, 'src/Controller/Studio/StudioController.php'), 'utf8');
+const studioLibraryService = fs.readFileSync(path.join(projectRoot, 'src/Service/Studio/StudioLibraryService.php'), 'utf8');
 
 test('Studio uses a canvas projection dropdown instead of permanent view buttons', function () {
     assert.match(twig, /id="studio-view-select"/);
@@ -35,16 +38,31 @@ test('Studio catalogue exposes scalable native library and provider filters', fu
     assert.match(twig, /studio_libraries\|json_encode/);
     assert.match(js, /async function loadCatalogueSource\(libraryId\)/);
     assert.match(js, /loadCatalogueSource\(source\.id\)/);
-    assert.match(js, /packageLoader\?\.loadProvider\(activeCatalogueProvider\)/);
-    assert.match(js, /source\.icon_urls\?\.\[iconKey\]/);
+    assert.match(js, /async function loadProviderCatalogues\(provider\)/);
+    assert.match(js, /async function loadProviderPackages\(provider\)/);
+    assert.match(js, /async function loadProviderResources\(provider\)/);
+    assert.match(js, /packageLoader\?\.loadProvider\(candidate\)/);
+    assert.match(js, /await loadProviderCatalogues\(activeCatalogueProvider\)/);
+    assert.match(js, /await loadProviderPackages\(activeTemplateProvider\)/);
+    assert.match(js, /normalized\.icon_url = definition\.icon_url \|\| null/);
     assert.match(js, /resolvedIconUrls/);
     assert.match(js, /activeCatalogueLibrary = 'all'/);
-    assert.match(js, /elements\.catalogueLibrary\.value = 'all'/);
-    assert.match(js, /let activeCatalogueProvider = 'all'/);
+    assert.match(js, /elements\.catalogueLibrary\.value = activeCatalogueLibrary/);
+    assert.match(js, /let activeCatalogueProvider = ''/);
+    assert.match(js, /let activeCatalogueLibrary = ''/);
+    assert.match(js, /: \['generic', provider\]/);
+    assert.match(js, /source\.loadPromise/);
+    assert.match(js, /let activeLibraryTab = 'components'/);
+    assert.match(js, /new Option\('Choose library', ''\)/);
+    assert.match(js, /new Option\('Choose provider', ''\)/);
+    assert.doesNotMatch(js, /loadCatalog\(\)/);
     assert.match(js, /icon\.loading = 'lazy'/);
     assert.match(js, /icon\.decoding = 'async'/);
     assert.doesNotMatch(js, /Promise\.all\(Object\.keys\(catalogueSources\)\.map\(loadCatalogueSource\)\)/);
-    assert.match(js, /Components and icons load only when requested/);
+    assert.match(studioController, /\/api\/studio\/libraries\/\{libraryId\}\/\{version\}/);
+    assert.match(studioController, /->setImmutable\(\)/);
+    assert.match(studioLibraryService, /public function catalogue\(string \$libraryId/);
+    assert.doesNotMatch(studioLibraryService, /'icon_urls' =>/);
 });
 
 test('Studio starts with a blank session and keeps restore explicit', function () {
@@ -53,6 +71,46 @@ test('Studio starts with a blank session and keeps restore explicit', function (
     assert.doesNotMatch(js, /localStorage\.setItem\(storageKey/);
     assert.match(twig, /Blank project ready/);
     assert.match(twig, /id="studio-template-restore"/);
+    assert.match(twig, /id="studio-components-tab" class="is-active"/);
+    assert.match(twig, /id="studio-catalogue-browser">/);
+    assert.match(twig, /id="studio-upload-custom-icon"/);
+    assert.match(twig, /id="studio-content-sections" class="studio-content-rail-layout">/);
+    assert.match(js, /function hasProjectData\(candidate\)/);
+    assert.doesNotMatch(js, /elements\.contentSections\.hidden/);
+    assert.match(studioCss, /\.infrastack-studio \{[^}]*overflow: clip/);
+    assert.match(js, /if \(activeCatalogueProvider\) \{\s*await loadProviderCatalogues\(activeCatalogueProvider\)/);
+});
+
+test('Studio saves meaningful work for explicit previous-session recovery', function () {
+    [
+        'studio-recovery-card',
+        'studio-recovery-name',
+        'studio-recovery-meta',
+        'studio-recover-session',
+        'studio-discard-recovery'
+    ].forEach(function (id) {
+        assert.match(twig, new RegExp(`id="${id}"`));
+    });
+    assert.match(js, /recoveryStorageKey = 'infrastack-studio-recovery-v0\.2'/);
+    assert.match(js, /function hasRecoverableProject\(candidate\)/);
+    assert.match(js, /const recovery = \{ schema_version: '1\.0', saved_at: project\.updated_at, project: payload \}/);
+    assert.match(js, /localStorage\.setItem\(recoveryStorageKey, JSON\.stringify\(recovery\)\)/);
+    assert.match(js, /storedRecovery\.saved_at \|\| candidate\.updated_at/);
+    assert.match(js, /const payload = core\.buildExportPayload\(project\)/);
+    assert.match(js, /function recoverPreviousSession\(\)/);
+    assert.match(js, /await loadProviderResources\(provider\)/);
+    assert.match(js, /window\.confirm\(`Discard the saved recovery/);
+    assert.match(js, /elements\.recoverSession\.addEventListener\('click', recoverPreviousSession\)/);
+    assert.match(js, /elements\.discardRecovery\.addEventListener\('click', discardRecoveryProject\)/);
+    assert.match(twig, /id="studio-history-panel"/);
+    assert.ok(twig.indexOf('id="studio-history-panel"') < twig.indexOf('id="studio-recovery-card"'));
+    assert.match(js, /elements\.railHistory\.addEventListener\('click', function \(\) \{ switchLibraryTab\('history'\); \}\)/);
+    assert.match(js, /function renderHistoryPanel\(\)/);
+    assert.match(js, /function restoreHistoryIndex\(index\)/);
+    assert.match(js, /snapshot: JSON\.stringify\(candidate\)/);
+    assert.match(studioCss, /\.studio-history-list/);
+    assert.match(studioCss, /\.studio-recovery-card\[hidden\] \{ display: none; \}/);
+    assert.match(studioCss, /\.studio-recovery-actions/);
 });
 
 test('Studio top toolbar contains only wired editor actions', function () {
@@ -159,6 +217,18 @@ test('Studio application shell exposes wired navigation, tabs, display, and canv
 });
 
 test('Studio exposes provider templates and infrastructure-aware inspector fields', function () {
+    assert.match(twig, /id="studio-template-family"/);
+    assert.match(twig, /id="studio-template-provider"/);
+    assert.match(js, /let activeTemplateFamily = ''/);
+    assert.match(js, /let activeTemplateProvider = ''/);
+    assert.match(js, /function renderTemplateFilters\(\)/);
+    assert.match(js, /new Option\('Choose library', ''\)/);
+    assert.match(js, /new Option\('Choose provider', ''\)/);
+    assert.match(js, /Choose a template library and provider to load examples/);
+    assert.match(js, /elements\.templateFamily\.addEventListener\('change'/);
+    assert.match(js, /elements\.templateProvider\.addEventListener\('change'/);
+    assert.match(js, /async function loadSelectedTemplatePackages\(\)/);
+    assert.doesNotMatch(js, /templateProvider\.disabled/);
     [
         'studio-template-list',
         'studio-context-fields',
@@ -247,6 +317,22 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
     assert.match(js, /resetSelectedConnectionRoute/);
     assert.match(js, /style: 'orthogonal',[\s\S]*points: \[\]/);
     assert.match(graphAdapter, /Point/);
+    assert.match(graphAdapter, /studio-connection-label-overlay/);
+    assert.match(graphAdapter, /studio-graph-connection-label/);
+    assert.match(graphAdapter, /labelBackgroundColor: 'none'/);
+    assert.match(graphAdapter, /updateConnectionLabels\(\) \{/);
+    assert.match(graphAdapter, /state\?\.absolutePoints/);
+    assert.match(graphAdapter, /!collides\(candidate, obstacles\)/);
+    assert.match(graphAdapter, /!collides\(candidate, placed\)/);
+    assert.match(graphAdapter, /point\.horizontal/);
+    assert.match(graphAdapter, /\(width \/ 2\) \+ 34/);
+    assert.match(graphAdapter, /resolveConnectionLabelCollisions\(\) \{/);
+    assert.match(graphAdapter, /querySelectorAll\('\.studio-graph-card, \.studio-graph-boundary-label'\)/);
+    assert.match(graphAdapter, /for \(let radius = 16; radius <= 160; radius \+= 16\)/);
+    assert.match(graphAdapter, /value: ''/);
+    assert.match(studioCss, /\.studio-graph-connection-label \{[^}]*font: 800 12px\/1\.15[^}]*text-shadow:/);
+    assert.match(studioCss, /\.studio-connection-label-overlay \{[^}]*z-index: 25/);
+    assert.doesNotMatch(studioCss, /\.studio-graph-connection-label \{[^}]*(?:border|background|box-shadow):/);
     assert.match(graphAdapter, /change instanceof GeometryChange/);
     assert.match(graphAdapter, /onConnectionEndpointsChange/);
     assert.match(graphAdapter, /onConnectionRouteChange/);
@@ -292,7 +378,6 @@ test('architecture findings expose category scores, recommendations, and multi-a
     assert.match(js, /graphAdapter\.selectAssets\(visibleIds\)/);
     assert.match(js, /Apply improvement/);
     assert.match(js, /Confirm apply/);
-    assert.doesNotMatch(js, /window\.confirm/);
     assert.match(js, /Dismiss risk/);
     assert.match(js, /improvements\.previewPlan/);
     assert.match(js, /improvements\.applyPlan/);
@@ -311,6 +396,37 @@ test('Studio content follows the marked result, graph, improvements, inventory, 
     assert.ok(graphPosition < improvementsPosition);
     assert.ok(improvementsPosition < inventoryPosition);
     assert.ok(inventoryPosition < aboutPosition);
+    assert.match(twig, /class="studio-content-rail-layout"/);
+    assert.match(twig, /class="studio-content-column"/);
+    assert.match(twig, /import 'layout\/advertisement\.html\.twig' as advertisement/);
+    assert.match(twig, /advertisement\.rail\('studio-ad-rail-left', 'left', 'studio-content-left'\)/);
+    assert.match(twig, /advertisement\.rail\('studio-ad-rail-right', 'right', 'studio-content-right'\)/);
+    assert.match(advertisementTwig, /macro rail\(id, placement, slot\)/);
+    assert.match(advertisementTwig, /data-ad-placement="\{\{ placement \}\}"/);
+    assert.match(advertisementTwig, /data-ad-slot="\{\{ slot \}\}" data-ad-state="placeholder"/);
+    assert.doesNotMatch(advertisementTwig, /googlesyndication|doubleclick|adsbygoogle|adservice|<script/i);
+    [
+        'result-grade.svg',
+        'result-score.svg',
+        'result-confidence.svg',
+        'result-findings.svg',
+        'result-categories.svg'
+    ].forEach(function (filename) {
+        assert.match(twig, new RegExp(`images/studio/${filename.replace('.', '\\.').replace('-', '\\-')}`));
+        const iconPath = path.join(projectRoot, 'public/images/studio', filename);
+        assert.ok(fs.existsSync(iconPath));
+        const iconSource = fs.readFileSync(iconPath, 'utf8');
+        assert.match(iconSource, /viewBox="0 0 64 64"/);
+        assert.doesNotMatch(iconSource, /<script|<foreignObject|javascript:|onload=/i);
+    });
+    assert.equal((twig.match(/class="studio-score-card-icon"/g) || []).length, 4);
+    assert.match(twig, /class="studio-category-review-icon"/);
+    assert.ok(twig.indexOf('class="studio-content-rail-layout"') < resultPosition);
+    assert.match(contentCss, /grid-template-columns: 160px minmax\(764px, 1180px\) 160px/);
+    assert.match(contentCss, /grid-template-columns: minmax\(764px, 1180px\) 160px/);
+    assert.match(contentCss, /@media \(min-width: 1280px\) and \(max-width: 1535px\)/);
+    assert.match(contentCss, /@media \(min-width: 1536px\)/);
+    assert.doesNotMatch(twig, /googlesyndication|doubleclick|adsbygoogle|adservice/);
     ['content', 'result', 'graph', 'improvements', 'inventory', 'about'].forEach(function (section) {
         assert.match(twig, new RegExp(`<!-- \\[studio-${section}\\] Section: Start -->`));
         assert.match(twig, new RegExp(`<!-- \\[studio-${section}\\] Section: End -->`));

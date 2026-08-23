@@ -18,13 +18,17 @@ const azureIconRoot = path.join(iconRoot, 'cloud/azure');
 const gcpCatalogPath = path.join(libraryRoot, 'cloud/gcp/catalog.json');
 const gcpCatalog = JSON.parse(fs.readFileSync(gcpCatalogPath, 'utf8'));
 const gcpIconRoot = path.join(iconRoot, 'cloud/gcp');
+const unifiCatalogPath = path.join(libraryRoot, 'vendors/ubiquiti/unifi/catalog.json');
+const unifiCatalog = JSON.parse(fs.readFileSync(unifiCatalogPath, 'utf8'));
+const unifiIconRoot = path.join(iconRoot, 'vendors/ubiquiti/unifi');
 
 test('Studio library registry declares scalable groups and valid current sources', function () {
     assert.deepEqual(registry.groups.map(function (group) { return group.id; }), [
         'general', 'infrastructure', 'cloud', 'virtualization', 'containers', 'vendors'
     ]);
     assert.deepEqual(registry.libraries.map(function (library) { return library.id; }), [
-        'infrastructure-generic', 'cloud-aws', 'cloud-azure', 'cloud-gcp'
+        'infrastructure-generic', 'cloud-aws', 'cloud-azure', 'cloud-gcp',
+        'vendors-ubiquiti-unifi'
     ]);
     registry.libraries.forEach(function (library) {
         assert.ok(registry.groups.some(function (group) { return group.id === library.group; }));
@@ -145,4 +149,31 @@ test('Studio Google Cloud catalogue maps provider identities to official local i
         assert.ok(Array.isArray(asset.tags) && asset.tags.includes('gcp'));
         catalogIds.add(asset.catalog_id);
     });
+});
+
+test('Studio Ubiquiti UniFi catalogue maps all supplied product identities to optimized local SVGs', function () {
+    const catalogIds = new Set();
+    const semanticTypes = new Set([
+        'access-point', 'firewall', 'switch', 'monitoring', 'camera', 'storage', 'phone'
+    ]);
+    const groups = new Set([
+        'wireless', 'gateways-security', 'switching', 'management', 'video-security', 'voice'
+    ]);
+
+    assert.equal(unifiCatalog.provider, 'ubiquiti');
+    assert.equal(unifiCatalog.assets.length, 44);
+    assert.deepEqual(new Set(unifiCatalog.groups.map(function (group) { return group.id; })), groups);
+    unifiCatalog.assets.forEach(function (asset) {
+        assert.match(asset.catalog_id, /^ubiquiti-unifi-/);
+        assert.equal(catalogIds.has(asset.catalog_id), false);
+        assert.equal(asset.provider, 'ubiquiti');
+        assert.ok(semanticTypes.has(asset.semantic_type));
+        assert.ok(groups.has(asset.group));
+        assert.match(asset.icon, /^ubiquiti-unifi-[a-z0-9-]+\.svg$/);
+        assert.ok(fs.existsSync(path.join(unifiIconRoot, asset.icon)));
+        assert.ok(Array.isArray(asset.keywords) && asset.keywords.length > 0);
+        assert.ok(Array.isArray(asset.tags) && asset.tags.includes('ubiquiti') && asset.tags.includes('unifi'));
+        catalogIds.add(asset.catalog_id);
+    });
+    assert.ok(fs.existsSync(path.join(unifiIconRoot, 'NOTICE.md')));
 });

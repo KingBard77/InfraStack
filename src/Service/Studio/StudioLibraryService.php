@@ -13,15 +13,15 @@ class StudioLibraryService
     ) {
     }
 
-    public function decoratedRegistry(Packages $assets): array
+    public function registry(): array
     {
-        $registry = $this->registry();
+        $registry = $this->rawRegistry();
         $libraries = [];
 
         foreach ($registry['libraries'] ?? [] as $library) {
-            $decorated = $this->decorateLibrary($library, $assets);
-            if ($decorated !== null) {
-                $libraries[] = $decorated;
+            $normalized = $this->normalizeLibrary($library);
+            if ($normalized !== null) {
+                $libraries[] = $normalized;
             }
         }
 
@@ -32,18 +32,56 @@ class StudioLibraryService
         ];
     }
 
+    public function catalogue(string $libraryId, Packages $assets, ?string $version = null): ?array
+    {
+        $library = null;
+        foreach ($this->registry()['libraries'] as $candidate) {
+            if ($candidate['id'] === $libraryId) {
+                $library = $candidate;
+                break;
+            }
+        }
+        if ($library === null) {
+            return null;
+        }
+        if ($version !== null && $library['version'] !== $version) {
+            return null;
+        }
+
+        $catalogPath = $this->projectDirectory . '/assets/data/studio/libraries/' . $library['catalog'];
+        $catalog = json_decode((string) file_get_contents($catalogPath), true);
+        if (!is_array($catalog) || !is_array($catalog['assets'] ?? null)) {
+            return null;
+        }
+
+        $catalog['library_id'] = $libraryId;
+        $catalog['assets'] = array_values(array_filter(array_map(
+            fn (mixed $definition): ?array => $this->decorateAsset($definition, $library, $assets),
+            $catalog['assets']
+        )));
+
+        return $catalog;
+    }
+
     public function iconUrls(Packages $assets): array
     {
         $urls = [];
 
-        foreach ($this->decoratedRegistry($assets)['libraries'] as $library) {
-            $urls = array_replace($urls, $library['icon_urls']);
+        foreach ($this->registry()['libraries'] as $library) {
+            $catalog = $this->catalogue($library['id'], $assets);
+            foreach ($catalog['assets'] ?? [] as $definition) {
+                $catalogId = $definition['catalog_id'] ?? $definition['type'] ?? null;
+                $iconUrl = $definition['icon_url'] ?? null;
+                if (is_string($catalogId) && is_string($iconUrl)) {
+                    $urls[$catalogId] = $iconUrl;
+                }
+            }
         }
 
         return $urls;
     }
 
-    private function registry(): array
+    private function rawRegistry(): array
     {
         $path = $this->projectDirectory . '/assets/data/studio/libraries/registry.json';
         $registry = is_file($path) ? json_decode((string) file_get_contents($path), true) : null;
@@ -66,7 +104,7 @@ class StudioLibraryService
         }));
     }
 
-    private function decorateLibrary(mixed $library, Packages $assets): ?array
+    private function normalizeLibrary(mixed $library): ?array
     {
         if (!is_array($library)) {
             return null;
@@ -88,35 +126,41 @@ class StudioLibraryService
         }
 
         $catalogPath = $this->projectDirectory . '/assets/data/studio/libraries/' . $library['catalog'];
-        $catalog = is_file($catalogPath) ? json_decode((string) file_get_contents($catalogPath), true) : null;
-        if (!is_array($catalog) || !is_array($catalog['assets'] ?? null)) {
+        $iconPath = $this->projectDirectory . '/assets/icons/studio/libraries/' . $library['icons'];
+        if (!is_file($catalogPath) || !is_dir($iconPath)) {
             return null;
         }
-
-        $iconUrls = [];
-        foreach ($catalog['assets'] as $definition) {
-            if (!is_array($definition)) {
-                continue;
-            }
-            $catalogId = $definition['catalog_id'] ?? $definition['type'] ?? null;
-            $filename = $definition['icon'] ?? null;
-            if (
-                !is_string($catalogId)
-                || preg_match('/^[a-z0-9-]+$/', $catalogId) !== 1
-                || !is_string($filename)
-                || preg_match('/^[a-z0-9-]+\.svg$/', $filename) !== 1
-            ) {
-                continue;
-            }
-            $iconUrls[$catalogId] = $assets->getUrl(
-                'icons/studio/libraries/' . $library['icons'] . '/' . $filename
-            );
+        $catalogVersion = hash_file('sha256', $catalogPath);
+        if (!is_string($catalogVersion)) {
+            return null;
         }
 
         return [
             ...$library,
-            'catalog_url' => $assets->getUrl('data/studio/libraries/' . $library['catalog']),
-            'icon_urls' => $iconUrls,
+            'version' => substr($catalogVersion, 0, 12),
+        ];
+    }
+
+    private function decorateAsset(mixed $definition, array $library, Packages $assets): ?array
+    {
+        if (!is_array($definition)) {
+            return null;
+        }
+
+        $catalogId = $definition['catalog_id'] ?? $definition['type'] ?? null;
+        $filename = $definition['icon'] ?? null;
+        if (
+            !is_string($catalogId)
+            || preg_match('/^[a-z0-9-]+$/', $catalogId) !== 1
+            || !is_string($filename)
+            || preg_match('/^[a-z0-9-]+\.svg$/', $filename) !== 1
+        ) {
+            return $definition;
+        }
+
+        return [
+            ...$definition,
+            'icon_url' => $assets->getUrl('icons/studio/libraries/' . $library['icons'] . '/' . $filename),
         ];
     }
 }

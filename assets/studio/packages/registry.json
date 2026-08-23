@@ -36,6 +36,18 @@
       "templates": "architecture/gcp/cloud/templates.json",
       "result": "architecture/gcp/cloud/result.json",
       "content": "architecture/gcp/cloud/content.yml"
+    },
+    {
+      "id": "architecture-ubiquiti-unifi",
+      "family": "architecture",
+      "provider": "ubiquiti",
+      "slug": "unifi",
+      "name": "Ubiquiti UniFi Architecture",
+      "version": "1.0.0",
+      "manifest": "architecture/ubiquiti/unifi/package.json",
+      "templates": "architecture/ubiquiti/unifi/templates.json",
+      "result": "architecture/ubiquiti/unifi/result.json",
+      "content": "architecture/ubiquiti/unifi/content.yml"
     }
   ]
 }

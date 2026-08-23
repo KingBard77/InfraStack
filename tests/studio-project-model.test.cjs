@@ -410,6 +410,11 @@ test('auto layout arranges AWS ingress, nested boundaries, and operations rail',
     assert.equal(contains(asset('vpc'), asset('az-a')), true);
     assert.equal(contains(asset('az-a'), asset('private-app-a')), true);
     assert.equal(contains(asset('private-app-a'), asset('ec2-a')), true);
+    const azAChildren = ['public-a', 'private-app-a', 'private-data-a'].map(function (id) {
+        return asset(id).layout.overview;
+    }).sort(function (left, right) { return left.y - right.y; });
+    assert.ok(azAChildren[1].y - (azAChildren[0].y + azAChildren[0].height) >= 40);
+    assert.ok(azAChildren[2].y - (azAChildren[1].y + azAChildren[1].height) >= 40);
     assert.deepEqual(
         core.autoLayoutProject(arranged, 'overview').assets.map(function (item) { return item.layout.overview; }),
         arranged.assets.map(function (item) { return item.layout.overview; })

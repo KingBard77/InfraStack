@@ -13,11 +13,7 @@ const InfraStackLayoutStudioPublish = (function () {
             shareIntroduction: byId('studio-share-introduction'),
             sharePreview: byId('studio-share-preview'),
             shareStatusText: byId('studio-share-status-text'),
-            shareLink: byId('studio-share-link'),
-            shareCopyLink: byId('studio-share-copy-link'),
-            shareOpenLink: byId('studio-share-open-link'),
             shareWhatsapp: byId('studio-share-whatsapp'),
-            shareWhatsappMore: byId('studio-share-whatsapp-more'),
             shareFacebook: byId('studio-share-facebook'),
             shareLinkedin: byId('studio-share-linkedin'),
             shareX: byId('studio-share-x'),
@@ -27,8 +23,6 @@ const InfraStackLayoutStudioPublish = (function () {
             shareSystem: byId('studio-share-system'),
             shareCopyImage: byId('studio-share-copy-image'),
             shareDownloadImage: byId('studio-share-download-image'),
-            shareCopyLinkMore: byId('studio-share-copy-link-more'),
-            shareOpenEmbed: byId('studio-share-open-embed'),
             embedInventory: byId('studio-embed-inventory'),
             embedAdvisory: byId('studio-embed-advisory'),
             embedCollapsible: byId('studio-embed-collapsible'),
@@ -143,13 +137,10 @@ const InfraStackLayoutStudioPublish = (function () {
             );
             shareImageBlob = shareImage.blob;
             shareImageUrl = shareImage.url;
-            elements.shareLink.value = result.share_url;
-            elements.shareOpenLink.href = result.share_url;
             elements.shareIntroduction.textContent = introduction;
             elements.shareStatusText.textContent = 'Read-only share link ready';
             elements.sharePreview.src = shareImageUrl;
             elements.shareWhatsapp.href = `https://wa.me/?text=${encodedText}%0A${encodedUrl}`;
-            elements.shareWhatsappMore.href = elements.shareWhatsapp.href;
             elements.shareFacebook.href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
             elements.shareLinkedin.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
             elements.shareX.href = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`;
@@ -209,25 +200,6 @@ const InfraStackLayoutStudioPublish = (function () {
 
         elements.share.addEventListener('click', function () { createPublishedSnapshot('share'); }, eventOptions);
         elements.embed.addEventListener('click', function () { createPublishedSnapshot('embed'); }, eventOptions);
-        elements.shareCopyLink.addEventListener('click', function () {
-            copyValue(elements.shareLink.value, elements.shareCopyLink, 'Link copied').catch(function () {
-                options.showMessage('The share link could not be copied.', 'error');
-            });
-        }, eventOptions);
-        elements.shareCopyLinkMore.addEventListener('click', function () {
-            copyValue(elements.shareLink.value, elements.shareCopyLinkMore, 'Copied').catch(function () {
-                options.showMessage('The share link could not be copied.', 'error');
-            });
-        }, eventOptions);
-        elements.shareOpenEmbed.addEventListener('click', function () {
-            const embedUrl = elements.shareDialog.dataset.embedUrl;
-            if (!embedUrl) {
-                options.showMessage('The embed options are not ready yet.', 'warning');
-                return;
-            }
-            elements.shareDialog.close();
-            openEmbedDialog({ embed_url: embedUrl });
-        }, eventOptions);
         elements.embedCopy.addEventListener('click', function () {
             copyValue(elements.embedCode.value, elements.embedCopy, 'Embed copied').catch(function () {
                 options.showMessage('The embed code could not be copied.', 'error');

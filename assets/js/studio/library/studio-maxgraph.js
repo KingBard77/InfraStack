@@ -109,8 +109,12 @@ export class StudioMaxGraphAdapter {
         this.gridSize = 10;
         this.paletteDragSources = [];
         this.imageHitAreas = [];
+        this.connectionLabelEntries = [];
         this.graph = new Graph(container, undefined, [...getDefaultPlugins(), RubberBandHandler]);
         this.outline = new Outline(this.graph, outlineContainer);
+        this.connectionLabelOverlay = document.createElement('div');
+        this.connectionLabelOverlay.className = 'studio-connection-label-overlay';
+        this.graph.container.append(this.connectionLabelOverlay);
         this.configureGraph();
         this.attachListeners();
     }
@@ -430,7 +434,161 @@ export class StudioMaxGraphAdapter {
     }
 
     emitViewport() {
+        window.requestAnimationFrame(() => this.updateConnectionLabels());
         if (!this.rendering && this.callbacks.onViewportChange) this.callbacks.onViewportChange(this.viewport());
+    }
+
+    updateConnectionLabels() {
+        if (!this.connectionLabelOverlay) return;
+        const obstacles = [];
+        (this.visibleAssets || []).forEach((asset) => {
+            const cell = this.visibleAssetCells?.get(asset.id);
+            const state = cell && this.graph.getView().getState(cell);
+            if (!state) return;
+            obstacles.push(asset.is_container
+                ? { x: state.x, y: state.y, width: state.width, height: Math.min(28, state.height) }
+                : { x: state.x, y: state.y, width: state.width, height: state.height });
+        });
+        const placed = [];
+        const fragment = document.createDocumentFragment();
+        this.connectionLabelEntries.forEach((entry) => {
+            const text = entry.connection.label || entry.connection.protocol || '';
+            const state = this.graph.getView().getState(entry.cell);
+            const points = (state?.absolutePoints || []).filter(Boolean);
+            if (!text || points.length < 2) return;
+            const segments = [];
+            let totalLength = 0;
+            points.slice(1).forEach(function (point, index) {
+                const start = points[index];
+                const length = Math.hypot(point.x - start.x, point.y - start.y);
+                if (length > 0) segments.push({ start, end: point, length });
+                totalLength += length;
+            });
+            if (!segments.length) return;
+            let travelled = 0;
+            const halfLength = totalLength / 2;
+            let pathMiddle = segments[0];
+            let pathRatio = 0.5;
+            for (const segment of segments) {
+                if (travelled + segment.length >= halfLength) {
+                    pathMiddle = segment;
+                    pathRatio = (halfLength - travelled) / segment.length;
+                    break;
+                }
+                travelled += segment.length;
+            }
+            const midpoint = function (segment, ratio = 0.5) {
+                return {
+                    x: segment.start.x + ((segment.end.x - segment.start.x) * ratio),
+                    y: segment.start.y + ((segment.end.y - segment.start.y) * ratio),
+                    horizontal: Math.abs(segment.end.x - segment.start.x) >= Math.abs(segment.end.y - segment.start.y)
+                };
+            };
+            const baseCandidates = [midpoint(pathMiddle, pathRatio), ...segments.sort(function (left, right) {
+                return right.length - left.length;
+            }).map(function (segment) { return midpoint(segment); })];
+            const width = Math.min(190, Math.max(44, (text.length * 6.8) + 8));
+            const height = 18;
+            const candidates = baseCandidates.flatMap(function (point) {
+                if (point.horizontal) {
+                    return [
+                        point,
+                        { x: point.x, y: point.y - (height + 24) },
+                        { x: point.x, y: point.y + (height + 24) },
+                        { x: point.x, y: point.y - (height + 44) },
+                        { x: point.x, y: point.y + (height + 44) }
+                    ];
+                }
+                return [
+                    point,
+                    { x: point.x - ((width / 2) + 14), y: point.y },
+                    { x: point.x + ((width / 2) + 14), y: point.y },
+                    { x: point.x - ((width / 2) + 34), y: point.y },
+                    { x: point.x + ((width / 2) + 34), y: point.y }
+                ];
+            });
+            const collides = function (candidate, rectangles) {
+                const bounds = { x: candidate.x - (width / 2), y: candidate.y - (height / 2), width, height };
+                return rectangles.some(function (rectangle) {
+                    return bounds.x < rectangle.x + rectangle.width + 3
+                        && bounds.x + bounds.width > rectangle.x - 3
+                        && bounds.y < rectangle.y + rectangle.height + 3
+                        && bounds.y + bounds.height > rectangle.y - 3;
+                });
+            };
+            const position = candidates.find(function (candidate) {
+                return candidate.x - (width / 2) >= 4
+                    && candidate.x + (width / 2) <= this.graph.container.clientWidth - 4
+                    && candidate.y - (height / 2) >= 4
+                    && candidate.y + (height / 2) <= this.graph.container.clientHeight - 4
+                    && !collides(candidate, obstacles)
+                    && !collides(candidate, placed);
+            }, this) || baseCandidates[0];
+            const label = document.createElement('span');
+            label.className = 'studio-graph-connection-label';
+            label.textContent = text;
+            label.style.left = `${position.x}px`;
+            label.style.top = `${position.y}px`;
+            label.title = text;
+            fragment.append(label);
+            placed.push({ x: position.x - (width / 2), y: position.y - (height / 2), width, height });
+        });
+        this.connectionLabelOverlay.replaceChildren(fragment);
+        this.resolveConnectionLabelCollisions();
+    }
+
+    resolveConnectionLabelCollisions() {
+        const overlayBounds = this.connectionLabelOverlay.getBoundingClientRect();
+        const obstacleBounds = Array.from(this.graph.container.querySelectorAll('.studio-graph-card, .studio-graph-boundary-label')).map(function (element) {
+            const bounds = element.getBoundingClientRect();
+            return {
+                left: bounds.left - overlayBounds.left,
+                top: bounds.top - overlayBounds.top,
+                right: bounds.right - overlayBounds.left,
+                bottom: bounds.bottom - overlayBounds.top
+            };
+        });
+        const placedBounds = [];
+        const overlaps = function (bounds, obstacles) {
+            return obstacles.some(function (obstacle) {
+                return bounds.left < obstacle.right + 3
+                    && bounds.right > obstacle.left - 3
+                    && bounds.top < obstacle.bottom + 3
+                    && bounds.bottom > obstacle.top - 3;
+            });
+        };
+        Array.from(this.connectionLabelOverlay.children).forEach((label) => {
+            const initialLeft = Number.parseFloat(label.style.left);
+            const initialTop = Number.parseFloat(label.style.top);
+            const rendered = label.getBoundingClientRect();
+            const width = rendered.width;
+            const height = rendered.height;
+            const offsets = [{ x: 0, y: 0 }];
+            for (let radius = 16; radius <= 160; radius += 16) {
+                offsets.push(
+                    { x: 0, y: -radius }, { x: 0, y: radius },
+                    { x: -radius, y: 0 }, { x: radius, y: 0 },
+                    { x: -radius, y: -radius }, { x: radius, y: -radius },
+                    { x: -radius, y: radius }, { x: radius, y: radius }
+                );
+            }
+            const position = offsets.find((offset) => {
+                const left = initialLeft + offset.x - (width / 2);
+                const top = initialTop + offset.y - (height / 2);
+                const bounds = { left, top, right: left + width, bottom: top + height };
+                return left >= 4
+                    && top >= 4
+                    && bounds.right <= this.connectionLabelOverlay.clientWidth - 4
+                    && bounds.bottom <= this.connectionLabelOverlay.clientHeight - 4
+                    && !overlaps(bounds, obstacleBounds)
+                    && !overlaps(bounds, placedBounds);
+            }) || offsets[0];
+            label.style.left = `${initialLeft + position.x}px`;
+            label.style.top = `${initialTop + position.y}px`;
+            const left = initialLeft + position.x - (width / 2);
+            const top = initialTop + position.y - (height / 2);
+            placedBounds.push({ left, top, right: left + width, bottom: top + height });
+        });
     }
 
     isAssetLocked(cell) {
@@ -489,7 +647,8 @@ export class StudioMaxGraphAdapter {
             dashed: edgeDash(connection.type), endArrow: direction === 'target-to-source' ? 'none' : (direction === 'bidirectional' ? 'classic' : 'block'),
             startArrow: direction === 'bidirectional' || direction === 'target-to-source' ? 'classic' : 'none',
             html: true, fontFamily: 'Roboto',
-            fontSize: 11, fontColor: '#475569', labelBackgroundColor: '#ffffff'
+            fontSize: 12, fontColor: '#253247', labelBackgroundColor: 'none', labelBorderColor: 'none',
+            whiteSpace: 'nowrap', overflow: 'visible', spacing: 4
         };
     }
 
@@ -523,6 +682,9 @@ export class StudioMaxGraphAdapter {
         const root = this.graph.getDefaultParent();
 
         this.clearImageHitAreas();
+        this.connectionLabelEntries = [];
+        this.visibleAssets = visibleAssets;
+        this.visibleAssetCells = cells;
         this.graph.batchUpdate(() => {
             this.graph.removeCells(this.graph.getChildCells(root, true, true));
             const insertAsset = (asset) => {
@@ -552,11 +714,12 @@ export class StudioMaxGraphAdapter {
                 const edge = this.graph.insertEdge({
                     parent: root,
                     id: `${connectionPrefix}${connection.id}`,
-                    value: connection.label || connection.protocol || '',
+                    value: '',
                     source: cells.get(connection.source),
                     target: cells.get(connection.target),
                     style: this.connectionStyle(connection)
                 });
+                this.connectionLabelEntries.push({ cell: edge, connection });
                 const route = connection.routing?.[view];
                 if (route && route.points.length > 0) {
                     const geometry = edge.getGeometry().clone();
@@ -573,6 +736,7 @@ export class StudioMaxGraphAdapter {
         this.graph.setSelectionCells(selection);
         this.rendering = false;
         this.graph.refresh();
+        this.updateConnectionLabels();
         visibleAssets.filter(function (asset) {
             return asset.image?.mode === 'image';
         }).forEach((asset) => {

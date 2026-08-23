@@ -28,6 +28,14 @@ const InfraStackLayoutShareImage = (function () {
         });
     }
 
+    function fitSingleLine(context, value, maximumWidth) {
+        const source = String(value || '');
+        if (context.measureText(source).width <= maximumWidth) return source;
+        let text = source;
+        while (text.length > 1 && context.measureText(`${text}…`).width > maximumWidth) text = text.slice(0, -1);
+        return `${text}…`;
+    }
+
     function loadImage(url) {
         return new Promise(function (resolve) {
             if (!url) {
@@ -183,6 +191,22 @@ const InfraStackLayoutShareImage = (function () {
             context.stroke();
             context.restore();
             drawArrow(context, targetX, targetY, targetX >= middleX ? 0 : Math.PI, color);
+            const relationshipLabel = connection.label || connection.protocol || '';
+            if (relationshipLabel) {
+                const labelY = sourceY + ((targetY - sourceY) / 2);
+                context.save();
+                context.font = '800 12px Roboto, sans-serif';
+                const fittedLabel = fitSingleLine(context, relationshipLabel, 160);
+                context.strokeStyle = 'rgba(255, 255, 255, .98)';
+                context.lineWidth = 4;
+                context.lineJoin = 'round';
+                context.fillStyle = '#253247';
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';
+                context.strokeText(fittedLabel, middleX, labelY);
+                context.fillText(fittedLabel, middleX, labelY);
+                context.restore();
+            }
         });
 
         visibleAssets.filter(function (asset) { return !asset.is_container; }).forEach(function (asset) {

@@ -19,9 +19,33 @@ class StudioController extends AbstractController
             'page_title' => 'InfraStack Studio',
             'page_description' => 'Model physical and logical infrastructure views from one local-first architecture project.',
             'page_keywords' => 'InfraStack Studio, infrastructure architecture, physical diagram, logical network diagram',
-            'studio_libraries' => $libraryService->decoratedRegistry($assets),
+            'studio_libraries' => $this->studioLibraries($libraryService),
             'studio_packages' => $this->studioPackages($assets),
         ]);
+    }
+
+    #[Route(
+        '/api/studio/libraries/{libraryId}/{version}',
+        name: 'app_studio_library_catalogue',
+        requirements: ['libraryId' => '[a-z0-9-]+', 'version' => '[a-f0-9]{12}'],
+        methods: ['GET']
+    )]
+    public function libraryCatalogue(
+        string $libraryId,
+        string $version,
+        Packages $assets,
+        StudioLibraryService $libraryService
+    ): JsonResponse {
+        $catalogue = $libraryService->catalogue($libraryId, $assets, $version);
+        if ($catalogue === null) {
+            throw $this->createNotFoundException('Studio library catalogue was not found.');
+        }
+
+        return $this->json($catalogue)
+            ->setPublic()
+            ->setImmutable()
+            ->setMaxAge(604800)
+            ->setSharedMaxAge(604800);
     }
 
     #[Route(
@@ -53,6 +77,22 @@ class StudioController extends AbstractController
         }
 
         throw $this->createNotFoundException('Studio package content was not found.');
+    }
+
+    private function studioLibraries(StudioLibraryService $libraryService): array
+    {
+        $registry = $libraryService->registry();
+        $registry['libraries'] = array_map(function (array $library): array {
+            return [
+                ...$library,
+                'catalog_url' => $this->generateUrl('app_studio_library_catalogue', [
+                    'libraryId' => $library['id'],
+                    'version' => $library['version'],
+                ]),
+            ];
+        }, $registry['libraries']);
+
+        return $registry;
     }
 
     private function studioPackages(Packages $assets): array

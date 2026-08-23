@@ -457,7 +457,7 @@
             "layout": {
               "overview": {
                 "x": 720,
-                "y": 410,
+                "y": 418,
                 "width": 190,
                 "height": 88,
                 "icon_size": 28,
@@ -465,7 +465,7 @@
               },
               "network": {
                 "x": 720,
-                "y": 410,
+                "y": 418,
                 "width": 190,
                 "height": 88,
                 "icon_size": 28,
@@ -473,7 +473,7 @@
               },
               "availability": {
                 "x": 720,
-                "y": 410,
+                "y": 418,
                 "width": 190,
                 "height": 88,
                 "icon_size": 28,

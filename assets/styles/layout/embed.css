@@ -1,287 +1,61 @@
 /* embed.css */
-:root {
-    --shared-ink: #172033;
-    --shared-muted: #667085;
-    --shared-line: #d9e1ec;
-    --shared-blue: #6546ff;
-}
 
-.studio-shared-page {
-    width: min(100% - 32px, 1440px);
-    margin: 0 auto;
-    padding: 40px 0 64px;
-    color: var(--shared-ink);
-    font-family: "Roboto", sans-serif;
-}
-
-.studio-share-heading,
-.studio-shared-section-heading,
-.studio-share-toolbar,
-.studio-embed-toolbar {
-    display: flex;
-    align-items: center;
-}
-
-.studio-share-heading {
-    justify-content: space-between;
-    gap: 24px;
-    margin-bottom: 22px;
-}
-
-.studio-share-heading span,
-.studio-shared-section-heading > div > span {
-    color: var(--shared-blue);
-    font-size: .72rem;
-    font-weight: 800;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-}
-
-.studio-share-heading h1 {
-    margin: 5px 0 8px;
-    color: var(--shared-ink);
-    font: 900 clamp(1.8rem, 4vw, 2.8rem) "Nunito", sans-serif;
-}
-
-.studio-share-heading p,
-.studio-shared-advisory-note {
+.studio-embed-body {
     margin: 0;
-    color: var(--shared-muted);
+    background: #eef2f7;
 }
 
-.studio-share-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 8px;
-}
-
-.studio-share-actions button,
-.studio-share-actions a,
-.studio-share-toolbar button,
-.studio-embed-toolbar button,
-.studio-embed-toolbar a {
-    min-height: 40px;
-    border: 1px solid var(--shared-line);
-    border-radius: 9px;
-    padding: 0 14px;
-    background: #ffffff;
-    color: #344054;
-    font-size: .75rem;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-.studio-share-actions a,
-.studio-embed-toolbar a {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    color: #ffffff;
-    background: var(--shared-blue);
-    border-color: var(--shared-blue);
-    text-decoration: none;
-}
-
-.studio-share-toolbar {
-    min-height: 58px;
-    gap: 7px;
-    border: 1px solid var(--shared-line);
-    border-bottom: 0;
-    border-radius: 12px 12px 0 0;
-    padding: 8px 12px;
-    background: #ffffff;
-}
-
-.studio-share-toolbar label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-right: 8px;
-    color: var(--shared-muted);
-    font-size: .7rem;
-    font-weight: 800;
-}
-
-.studio-share-toolbar select,
-.studio-embed-toolbar select {
-    min-height: 38px;
-    border: 1px solid var(--shared-line);
-    border-radius: 8px;
-    padding: 0 30px 0 10px;
-    background: #ffffff;
-    color: var(--shared-ink);
-}
-
-.studio-share-created {
-    margin-left: auto;
-    color: var(--shared-muted);
-    font-size: .7rem;
-}
-
-.studio-shared-canvas-shell {
-    position: relative;
-    height: min(72vh, 860px);
-    min-height: 560px;
-    overflow: hidden;
-    border: 1px solid var(--shared-line);
-    background-color: #fbfcfe;
-    background-image: linear-gradient(rgba(71, 84, 103, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(71, 84, 103, .08) 1px, transparent 1px);
-    background-size: 20px 20px;
-}
-
-.studio-shared-graph {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    touch-action: none;
-}
-
-.studio-shared-outline {
-    position: absolute;
-    right: 12px;
-    bottom: 12px;
-    width: 180px;
-    height: 105px;
-    overflow: hidden;
-    border: 1px solid #94a3b8;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, .94);
-    box-shadow: 0 8px 24px rgba(15, 23, 42, .14);
-}
-
-.studio-share-watermark {
-    position: absolute;
-    right: 12px;
-    top: 12px;
-    z-index: 8;
-    border: 1px solid rgba(101, 70, 255, .3);
-    border-radius: 999px;
-    padding: 6px 10px;
-    background: rgba(255, 255, 255, .92);
-    color: var(--shared-blue);
-    font: 800 .65rem "Nunito", sans-serif;
-    text-decoration: none;
-}
-
-.studio-graph-card {
-    display: grid;
+.studio-embedded-page {
     width: 100%;
-    height: 100%;
-    grid-template-columns: calc(var(--studio-cell-icon, 36px) + 8px) minmax(0, 1fr);
-    align-items: center;
-    gap: 8px;
-    padding: 8px;
-    box-sizing: border-box;
-    color: var(--shared-ink);
-    text-align: left;
-    user-select: none;
+    margin: 0;
+    padding: 0;
 }
 
-.studio-graph-card-icon {
-    display: grid;
-    width: calc(var(--studio-cell-icon, 36px) + 6px);
-    height: calc(var(--studio-cell-icon, 36px) + 6px);
-    place-items: center;
-    border-radius: 9px;
-    background: #eef3f9;
+.studio-embed-toolbar {
+    min-height: 52px;
+    gap: 7px;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--shared-line);
+    background: #ffffff;
 }
 
-.studio-graph-card-icon img {
-    display: block;
-    width: var(--studio-cell-icon, 36px);
-    height: var(--studio-cell-icon, 36px);
-    object-fit: contain;
-}
-
-.studio-graph-card-glyph {
-    display: grid;
-    width: var(--studio-cell-icon, 36px);
-    height: var(--studio-cell-icon, 36px);
-    place-items: center;
-    border: 1px solid #bdd0f7;
-    border-radius: 8px;
-    color: #2554b8;
-    font: 900 .65rem "Nunito", sans-serif;
-}
-
-.studio-graph-card-copy {
-    display: grid;
+.studio-embed-toolbar strong {
     min-width: 0;
-    gap: 2px;
-}
-
-.studio-graph-card-copy strong,
-.studio-graph-card-copy small {
+    margin-right: auto;
     overflow: hidden;
+    font: 800 .85rem "Nunito", sans-serif;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.studio-graph-card-copy strong { font: 800 .74rem "Nunito", sans-serif; }
-.studio-graph-card-copy small { color: var(--shared-muted); font-size: .62rem; }
-.studio-graph-boundary-label { display: flex; min-width: 0; align-items: center; gap: 8px; padding: 8px 10px; text-align: left; }
-.studio-graph-boundary-label strong { overflow: hidden; font: 800 .76rem "Nunito", sans-serif; text-overflow: ellipsis; white-space: nowrap; }
-.studio-graph-boundary-label small { overflow: hidden; color: var(--shared-muted); font-size: .6rem; text-overflow: ellipsis; white-space: nowrap; }
-.studio-graph-boundary-label.is-vpc { padding: 10px 12px; }
-.studio-graph-boundary-label.is-vpc strong { color: #14395b; font-size: 1rem; }
-
-.studio-shared-section {
-    margin-top: 24px;
-    border: 1px solid var(--shared-line);
-    border-radius: 12px;
-    padding: 24px;
-    background: #ffffff;
+.studio-embed-toolbar button {
+    min-height: 36px;
+    padding: 0 10px;
 }
 
-.studio-shared-section-heading {
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 18px;
+.studio-embedded-page .studio-shared-canvas-shell {
+    height: calc(100vh - 52px);
+    min-height: 420px;
+    border: 0;
 }
 
-.studio-shared-section-heading h2 {
-    margin: 3px 0 0;
-    color: var(--shared-ink);
-    font: 900 1.35rem "Nunito", sans-serif;
+.studio-embedded-page .studio-shared-section {
+    margin: 0;
+    border-width: 1px 0 0;
+    border-radius: 0;
 }
-
-.studio-shared-table-wrap { overflow-x: auto; border: 1px solid var(--shared-line); border-radius: 9px; }
-.studio-shared-table-wrap table { width: 100%; border-collapse: collapse; font-size: .74rem; }
-.studio-shared-table-wrap th, .studio-shared-table-wrap td { padding: 11px 12px; border-bottom: 1px solid var(--shared-line); text-align: left; white-space: nowrap; }
-.studio-shared-table-wrap th { background: #f7f9fc; color: #475467; }
-.studio-shared-grade { display: grid; grid-template-columns: auto auto; align-items: center; gap: 0 10px; }
-.studio-shared-grade span { color: var(--shared-muted); font-size: .65rem; font-weight: 800; text-transform: uppercase; }
-.studio-shared-grade strong { grid-row: span 2; color: var(--shared-blue); font: 900 2rem "Nunito", sans-serif; }
-.studio-shared-grade small { color: var(--shared-muted); font-size: .65rem; }
-.studio-shared-findings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
-.studio-shared-findings article { display: grid; gap: 8px; border: 1px solid var(--shared-line); border-radius: 10px; padding: 16px; }
-.studio-shared-findings article > strong { font-family: "Nunito", sans-serif; }
-.studio-shared-findings p { margin: 0; color: var(--shared-muted); font-size: .76rem; line-height: 1.55; }
-.studio-shared-finding-heading { display: flex; justify-content: space-between; gap: 8px; color: var(--shared-muted); font-size: .66rem; text-transform: capitalize; }
-.studio-shared-finding-heading span { border-radius: 999px; padding: 3px 7px; background: #fff4e8; color: #a15c00; font-weight: 800; }
-.studio-shared-recommendation { border-left: 3px solid var(--shared-blue); padding-left: 10px; color: #344054 !important; }
-.studio-shared-empty { grid-column: 1 / -1; margin: 0; color: var(--shared-muted); }
-
-.studio-embed-body { margin: 0; background: #eef2f7; }
-.studio-embedded-page { width: 100%; margin: 0; padding: 0; }
-.studio-embed-toolbar { min-height: 52px; gap: 7px; padding: 7px 10px; background: #ffffff; border-bottom: 1px solid var(--shared-line); }
-.studio-embed-toolbar strong { min-width: 0; margin-right: auto; overflow: hidden; font: 800 .85rem "Nunito", sans-serif; text-overflow: ellipsis; white-space: nowrap; }
-.studio-embed-toolbar button { min-height: 36px; padding: 0 10px; }
-.studio-embedded-page .studio-shared-canvas-shell { height: calc(100vh - 52px); min-height: 420px; border: 0; }
-.studio-embedded-page .studio-shared-section { margin: 0; border-width: 1px 0 0; border-radius: 0; }
 
 @media (max-width: 760px) {
-    .studio-shared-page { width: min(100% - 16px, 1440px); padding-top: 24px; }
-    .studio-share-heading, .studio-shared-section-heading { align-items: flex-start; flex-direction: column; }
-    .studio-share-actions { justify-content: flex-start; }
-    .studio-share-toolbar { flex-wrap: wrap; }
-    .studio-share-created { width: 100%; margin-left: 0; }
-    .studio-shared-canvas-shell { min-height: 480px; }
-    .studio-shared-findings { grid-template-columns: 1fr; }
-    .studio-shared-outline { width: 130px; height: 76px; }
-    .studio-embed-toolbar strong { width: 100%; flex-basis: 100%; }
-    .studio-embed-toolbar { flex-wrap: wrap; }
-    .studio-embedded-page .studio-shared-canvas-shell { height: calc(100vh - 98px); }
-}
+    .studio-embed-toolbar {
+        flex-wrap: wrap;
+    }
 
+    .studio-embed-toolbar strong {
+        width: 100%;
+        flex-basis: 100%;
+    }
+
+    .studio-embedded-page .studio-shared-canvas-shell {
+        height: calc(100vh - 98px);
+    }
+}

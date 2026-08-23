@@ -60,8 +60,8 @@
 ###< validation ###
 
 ###> script ###
-setup.sh
-deployer.sh
+xxsetup.sh
+xxdeployer.sh
 ###< script ###
 
 /SKILL.md

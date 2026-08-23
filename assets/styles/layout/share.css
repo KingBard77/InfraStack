@@ -263,14 +263,6 @@
 .studio-shared-recommendation { border-left: 3px solid var(--shared-blue); padding-left: 10px; color: #344054 !important; }
 .studio-shared-empty { grid-column: 1 / -1; margin: 0; color: var(--shared-muted); }
 
-.studio-embed-body { margin: 0; background: #eef2f7; }
-.studio-embedded-page { width: 100%; margin: 0; padding: 0; }
-.studio-embed-toolbar { min-height: 52px; gap: 7px; padding: 7px 10px; background: #ffffff; border-bottom: 1px solid var(--shared-line); }
-.studio-embed-toolbar strong { min-width: 0; margin-right: auto; overflow: hidden; font: 800 .85rem "Nunito", sans-serif; text-overflow: ellipsis; white-space: nowrap; }
-.studio-embed-toolbar button { min-height: 36px; padding: 0 10px; }
-.studio-embedded-page .studio-shared-canvas-shell { height: calc(100vh - 52px); min-height: 420px; border: 0; }
-.studio-embedded-page .studio-shared-section { margin: 0; border-width: 1px 0 0; border-radius: 0; }
-
 @media (max-width: 760px) {
     .studio-shared-page { width: min(100% - 16px, 1440px); padding-top: 24px; }
     .studio-share-heading, .studio-shared-section-heading { align-items: flex-start; flex-direction: column; }
@@ -280,7 +272,4 @@
     .studio-shared-canvas-shell { min-height: 480px; }
     .studio-shared-findings { grid-template-columns: 1fr; }
     .studio-shared-outline { width: 130px; height: 76px; }
-    .studio-embed-toolbar strong { width: 100%; flex-basis: 100%; }
-    .studio-embed-toolbar { flex-wrap: wrap; }
-    .studio-embedded-page .studio-shared-canvas-shell { height: calc(100vh - 98px); }
 }

@@ -44,6 +44,15 @@
       "provider_label": "Google Cloud",
       "catalog": "cloud/gcp/catalog.json",
       "icons": "cloud/gcp"
+    },
+    {
+      "id": "vendors-ubiquiti-unifi",
+      "group": "vendors",
+      "label": "Ubiquiti UniFi",
+      "provider": "ubiquiti",
+      "provider_label": "Ubiquiti",
+      "catalog": "vendors/ubiquiti/unifi/catalog.json",
+      "icons": "vendors/ubiquiti/unifi"
     }
   ]
 }
