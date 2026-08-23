@@ -362,7 +362,7 @@ body.is-studio-wide-screen { overflow: hidden; }
 .studio-panel-tabs-bar { position: sticky; z-index: 5; top: 0; display: grid; grid-template-columns: minmax(0, 1fr) 34px; align-items: center; border-bottom: 1px solid var(--studio-line); background: #fff; }
 .studio-library-tabs, .studio-inspector-tabs { display: grid; grid-template-columns: 1fr 1fr; }
 .studio-library-tabs button, .studio-inspector-tabs button { min-height: 54px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: #667085; font-size: .72rem; cursor: pointer; }
-.studio-library-tabs button.is-active, .studio-inspector-tabs button.is-active { border-bottom-color: #755bff; color: #8a73ff; }
+.studio-library-tabs button.is-active, .studio-inspector-tabs button.is-active { border-bottom-color: #755bff; color: #6d50ee; }
 .studio-panel-collapse { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid #d9e1ec; border-radius: 7px; background: #fff; color: #667085; cursor: pointer; }
 .studio-panel-collapse:hover, .studio-panel-collapse:focus-visible { border-color: #a99aff; background: #f0edff; color: #4d35df; outline: 0; }
 .studio-panel-heading { min-height: 46px; }

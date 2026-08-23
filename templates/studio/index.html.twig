@@ -53,7 +53,7 @@
             </div>
         </details>
         <span class="studio-avatar" aria-label="Local user">BA</span>
-        <input id="studio-import-file" class="visually-hidden" type="file" accept="application/json,.json">
+        <input id="studio-import-file" class="visually-hidden" type="file" accept="application/json,.json" aria-label="Restore project JSON file">
     </header>
 
     <div id="studio-message" class="studio-message" role="status" aria-live="polite"></div>
@@ -178,7 +178,7 @@
                         </div>
                     </details>
                     <button id="studio-insert-image" type="button" aria-label="Insert image or icon asset" title="Insert image or icon asset"><i class="bi bi-image"></i></button>
-                    <input id="studio-image-asset-file" class="visually-hidden" type="file" accept="image/png,image/jpeg,image/webp">
+                    <input id="studio-image-asset-file" class="visually-hidden" type="file" accept="image/png,image/jpeg,image/webp" aria-label="Upload image asset file">
                     <button id="studio-delete-selection" type="button" aria-label="Delete selected items" title="Delete selected items" disabled><i class="bi bi-trash3"></i></button>
                     <button id="studio-review-action" type="button" aria-label="Review architecture" title="Review architecture"><i class="bi bi-stars"></i></button>
                 </div>
@@ -186,9 +186,9 @@
                     <img id="studio-reference-image" class="studio-reference-image" alt="Local architecture reference">
                     <span class="studio-resize-handle studio-reference-resize" aria-hidden="true"></span>
                 </div>
-                <div id="studio-graph" class="studio-graph" aria-label="Editable architecture graph"></div>
+                <div id="studio-graph" class="studio-graph" role="group" aria-label="Editable architecture graph"></div>
                 <div id="studio-empty-state" class="studio-empty-state" hidden><i class="bi bi-bounding-box-circles"></i><strong>No assets in this view</strong><span>Add a component, upload an icon, or switch projections.</span><button id="studio-empty-upload-icon" class="studio-button" type="button"><i class="bi bi-upload"></i> Upload icon</button></div>
-                <div id="studio-minimap" class="studio-minimap" aria-label="Canvas minimap"></div>
+                <div id="studio-minimap" class="studio-minimap" role="img" aria-label="Canvas minimap"></div>
                 <div class="studio-canvas-controls" aria-label="Canvas viewport controls">
                     <button id="studio-bottom-zoom-out" type="button" aria-label="Zoom out"><i class="bi bi-dash-lg"></i></button>
                     <span id="studio-bottom-zoom-value">100%</span>

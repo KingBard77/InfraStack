@@ -62,6 +62,7 @@
 ###> script ###
 xxsetup.sh
 xxdeployer.sh
+xxcdncache.sh
 ###< script ###
 
 /SKILL.md
