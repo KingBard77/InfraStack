@@ -1330,15 +1330,16 @@ const InfraStackStudioCore = (function () {
      *
      * @param {object} project Current project.
      * @param {string} view Active projection.
+     * @param {{gap?: number}} [options={}] Optional spacing controls.
      * @returns {object} Updated normalized project.
      */
-    function autoLayoutProject(project, view) {
+    function autoLayoutProject(project, view, options = {}) {
         const next = clone(project);
         const context = visibleAssetContext(next, view);
         const metrics = new Map();
         const padding = 28;
         const header = 58;
-        const gap = 40;
+        const gap = clamp(options.gap, 40, 100, 40);
         const containerMinimums = {
             domain: [800, 500],
             environment: [760, 460],
@@ -1414,13 +1415,6 @@ const InfraStackStudioCore = (function () {
         const rootContainers = roots.filter(function (asset) { return asset.is_container; });
         const rootLeaves = roots.filter(function (asset) { return !asset.is_container; });
         const rootMetrics = rootContainers.map(measure);
-        let rootX = 160;
-        const rootY = 450;
-
-        rootMetrics.forEach(function (metric) {
-            place(metric, rootX, rootY);
-            rootX += metric.width + 80;
-        });
 
         const insideIds = new Set();
         rootContainers.forEach(function (container) {
@@ -1454,24 +1448,36 @@ const InfraStackStudioCore = (function () {
         support.sort(function (left, right) {
             return left.layout[view].y - right.layout[view].y || left.label.localeCompare(right.label);
         });
-        const primary = rootMetrics[0] || { width: 1100, height: 700 };
-        const primaryX = rootContainers.length ? rootContainers[0].layout[view].x : 160;
         const ingressGroups = new Map();
         ingress.forEach(function (item) {
             if (!ingressGroups.has(item.distance)) ingressGroups.set(item.distance, []);
             ingressGroups.get(item.distance).push(item.asset);
         });
-        [...ingressGroups.keys()].sort(function (left, right) { return right - left; }).forEach(function (distance, rowIndex) {
+        const ingressDistances = [...ingressGroups.keys()].sort(function (left, right) { return right - left; });
+        const ingressHeight = ingressDistances.reduce(function (total, distance, index) {
+            const rowHeight = Math.max(...ingressGroups.get(distance).map(function (asset) { return asset.layout[view].height; }));
+            return total + rowHeight + (index > 0 ? gap : 0);
+        }, 0);
+        let rootX = 160;
+        const rootY = Math.max(450, 20 + ingressHeight + gap);
+        rootMetrics.forEach(function (metric) {
+            place(metric, rootX, rootY);
+            rootX += metric.width + Math.max(80, gap);
+        });
+        const primary = rootMetrics[0] || { width: 1100, height: 700 };
+        const primaryX = rootContainers.length ? rootContainers[0].layout[view].x : 160;
+        let ingressY = 20;
+        ingressDistances.forEach(function (distance) {
             const assets = ingressGroups.get(distance);
             const ordered = sortAssetsForLayout(assets, view);
             const rowWidth = ordered.reduce(function (total, asset) { return total + asset.layout[view].width; }, 0) + (Math.max(0, ordered.length - 1) * gap);
             let x = primaryX + ((primary.width - rowWidth) / 2);
-            const y = 20 + (rowIndex * 100);
             ordered.forEach(function (asset) {
                 asset.layout[view].x = x;
-                asset.layout[view].y = y;
+                asset.layout[view].y = ingressY;
                 x += asset.layout[view].width + gap;
             });
+            ingressY += Math.max(...ordered.map(function (asset) { return asset.layout[view].height; })) + gap;
         });
         support.forEach(function (asset, index) {
             asset.layout[view].x = Math.min(canvasSize.width - asset.layout[view].width - 24, primaryX + primary.width + 80);

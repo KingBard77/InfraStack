@@ -2,12 +2,14 @@ import {
     DragSource,
     GeometryChange,
     Graph,
+    ImageExport,
     InternalEvent,
     Outline,
     Point,
     Rectangle,
     RectangleShape,
     RubberBandHandler,
+    SvgCanvas2D,
     getDefaultPlugins
 } from '@maxgraph/core';
 
@@ -84,6 +86,24 @@ function relativePosition(asset, parentAsset, view) {
         layout.x - (parentLayout ? parentLayout.x : 0),
         layout.y - (parentLayout ? parentLayout.y : 0)
     ];
+}
+
+const exportStyleProperties = [
+    'align-items', 'background', 'background-color', 'border', 'border-radius', 'box-sizing', 'color',
+    'display', 'font-family', 'font-size', 'font-style', 'font-weight', 'gap', 'grid-template-columns',
+    'height', 'justify-content', 'line-height', 'margin', 'max-width', 'min-width', 'object-fit', 'opacity',
+    'overflow', 'padding', 'place-items', 'position', 'text-align', 'text-overflow', 'text-shadow', 'transform',
+    'transform-origin', 'user-select', 'vertical-align', 'white-space', 'width'
+];
+
+function inlineExportStyles(root) {
+    root.querySelectorAll('.studio-graph-card, .studio-graph-card *, .studio-graph-image-card, .studio-graph-image-card *, .studio-graph-boundary-label, .studio-graph-boundary-label *').forEach(function (element) {
+        const style = window.getComputedStyle(element);
+        exportStyleProperties.forEach(function (property) {
+            const value = style.getPropertyValue(property);
+            if (value) element.style.setProperty(property, value);
+        });
+    });
 }
 
 /**
@@ -433,13 +453,22 @@ export class StudioMaxGraphAdapter {
         return snapshot;
     }
 
+    /** @param {number} zoom Current graph zoom. */
+    updateZoomPresentation(zoom) {
+        this.graph.container.style.setProperty('--studio-viewport-zoom', String(zoom));
+        this.graph.container.classList.toggle('is-compact-zoom', zoom < 0.58);
+        this.graph.container.classList.toggle('is-overview-zoom', zoom < 0.36);
+    }
+
     emitViewport() {
+        this.updateZoomPresentation(this.viewport().zoom);
         window.requestAnimationFrame(() => this.updateConnectionLabels());
         if (!this.rendering && this.callbacks.onViewportChange) this.callbacks.onViewportChange(this.viewport());
     }
 
     updateConnectionLabels() {
         if (!this.connectionLabelOverlay) return;
+        const viewportZoom = this.viewport().zoom;
         const obstacles = [];
         (this.visibleAssets || []).forEach((asset) => {
             const cell = this.visibleAssetCells?.get(asset.id);
@@ -487,33 +516,33 @@ export class StudioMaxGraphAdapter {
             const baseCandidates = [midpoint(pathMiddle, pathRatio), ...segments.sort(function (left, right) {
                 return right.length - left.length;
             }).map(function (segment) { return midpoint(segment); })];
-            const width = Math.min(190, Math.max(44, (text.length * 6.8) + 8));
-            const height = 18;
+            const width = Math.min(240, Math.max(60, (text.length * 6.8) + 12));
+            const height = text.length > 34 ? 34 : 20;
             const candidates = baseCandidates.flatMap(function (point) {
                 if (point.horizontal) {
                     return [
                         point,
-                        { x: point.x, y: point.y - (height + 24) },
-                        { x: point.x, y: point.y + (height + 24) },
-                        { x: point.x, y: point.y - (height + 44) },
-                        { x: point.x, y: point.y + (height + 44) }
+                        { x: point.x, y: point.y - (height + 36) },
+                        { x: point.x, y: point.y + (height + 36) },
+                        { x: point.x, y: point.y - (height + 64) },
+                        { x: point.x, y: point.y + (height + 64) }
                     ];
                 }
                 return [
                     point,
-                    { x: point.x - ((width / 2) + 14), y: point.y },
-                    { x: point.x + ((width / 2) + 14), y: point.y },
-                    { x: point.x - ((width / 2) + 34), y: point.y },
-                    { x: point.x + ((width / 2) + 34), y: point.y }
+                    { x: point.x - ((width / 2) + 28), y: point.y },
+                    { x: point.x + ((width / 2) + 28), y: point.y },
+                    { x: point.x - ((width / 2) + 54), y: point.y },
+                    { x: point.x + ((width / 2) + 54), y: point.y }
                 ];
             });
             const collides = function (candidate, rectangles) {
                 const bounds = { x: candidate.x - (width / 2), y: candidate.y - (height / 2), width, height };
                 return rectangles.some(function (rectangle) {
-                    return bounds.x < rectangle.x + rectangle.width + 3
-                        && bounds.x + bounds.width > rectangle.x - 3
-                        && bounds.y < rectangle.y + rectangle.height + 3
-                        && bounds.y + bounds.height > rectangle.y - 3;
+                    return bounds.x < rectangle.x + rectangle.width + 10
+                        && bounds.x + bounds.width > rectangle.x - 10
+                        && bounds.y < rectangle.y + rectangle.height + 10
+                        && bounds.y + bounds.height > rectangle.y - 10;
                 });
             };
             const position = candidates.find(function (candidate) {
@@ -529,6 +558,8 @@ export class StudioMaxGraphAdapter {
             label.textContent = text;
             label.style.left = `${position.x}px`;
             label.style.top = `${position.y}px`;
+            label.style.width = `${width}px`;
+            label.style.fontSize = `${Math.max(10, Math.min(12, 10 + (viewportZoom * 2)))}px`;
             label.title = text;
             fragment.append(label);
             placed.push({ x: position.x - (width / 2), y: position.y - (height / 2), width, height });
@@ -551,10 +582,10 @@ export class StudioMaxGraphAdapter {
         const placedBounds = [];
         const overlaps = function (bounds, obstacles) {
             return obstacles.some(function (obstacle) {
-                return bounds.left < obstacle.right + 3
-                    && bounds.right > obstacle.left - 3
-                    && bounds.top < obstacle.bottom + 3
-                    && bounds.bottom > obstacle.top - 3;
+                return bounds.left < obstacle.right + 10
+                    && bounds.right > obstacle.left - 10
+                    && bounds.top < obstacle.bottom + 10
+                    && bounds.bottom > obstacle.top - 10;
             });
         };
         Array.from(this.connectionLabelOverlay.children).forEach((label) => {
@@ -564,7 +595,7 @@ export class StudioMaxGraphAdapter {
             const width = rendered.width;
             const height = rendered.height;
             const offsets = [{ x: 0, y: 0 }];
-            for (let radius = 16; radius <= 160; radius += 16) {
+            for (let radius = 20; radius <= 240; radius += 20) {
                 offsets.push(
                     { x: 0, y: -radius }, { x: 0, y: radius },
                     { x: -radius, y: 0 }, { x: radius, y: 0 },
@@ -849,6 +880,7 @@ export class StudioMaxGraphAdapter {
         const panX = Number(viewport && viewport.pan_x) || 0;
         const panY = Number(viewport && viewport.pan_y) || 0;
         this.graph.getView().scaleAndTranslate(zoom, panX / zoom, panY / zoom);
+        this.updateZoomPresentation(zoom);
     }
 
     /** Fits all visible cells inside the stage. */
@@ -865,17 +897,71 @@ export class StudioMaxGraphAdapter {
         const maximumY = Math.max(...boxes.map((box) => box.y + box.height));
         const width = Math.max(1, maximumX - minimumX);
         const height = Math.max(1, maximumY - minimumY);
+        const availableWidth = Math.max(1, this.graph.container.clientWidth - (horizontalPadding * 2));
+        const availableHeight = Math.max(1, this.graph.container.clientHeight - topPadding - bottomPadding);
         const zoom = Math.max(0.2, Math.min(
             2.5,
-            (this.graph.container.clientWidth - (horizontalPadding * 2)) / width,
-            (this.graph.container.clientHeight - topPadding - bottomPadding) / height
+            availableWidth / width,
+            availableHeight / height
         ));
+        const centeredX = horizontalPadding + ((availableWidth - (width * zoom)) / 2);
+        const centeredY = topPadding + ((availableHeight - (height * zoom)) / 2);
         this.setViewport({
             zoom,
-            pan_x: horizontalPadding - (minimumX * zoom),
-            pan_y: topPadding - (minimumY * zoom)
+            pan_x: centeredX - (minimumX * zoom),
+            pan_y: centeredY - (minimumY * zoom)
         });
         this.emitViewport();
+    }
+
+    /**
+     * Exports the current fitted maxGraph presentation as a standalone SVG.
+     *
+     * @param {number} width Export viewport width.
+     * @param {number} height Export viewport height.
+     * @returns {SVGSVGElement} Standalone diagram SVG.
+     */
+    exportSvg(width, height) {
+        const namespace = 'http://www.w3.org/2000/svg';
+        const xhtmlNamespace = 'http://www.w3.org/1999/xhtml';
+        const svg = document.createElementNS(namespace, 'svg');
+        const drawing = document.createElementNS(namespace, 'g');
+        svg.setAttribute('xmlns', namespace);
+        svg.setAttribute('xmlns:xhtml', xhtmlNamespace);
+        svg.setAttribute('width', String(width));
+        svg.setAttribute('height', String(height));
+        svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        svg.classList.add('studio-graph');
+        svg.classList.toggle('is-compact-zoom', this.graph.container.classList.contains('is-compact-zoom'));
+        svg.classList.toggle('is-overview-zoom', this.graph.container.classList.contains('is-overview-zoom'));
+        svg.style.position = 'static';
+        svg.style.inset = 'auto';
+        svg.style.overflow = 'visible';
+        svg.append(drawing);
+        const canvas = new SvgCanvas2D(drawing);
+        const exporter = new ImageExport();
+        exporter.drawState(this.graph.getView().getState(this.graph.getDataModel().getRoot()), canvas);
+        Array.from(this.connectionLabelOverlay.children).forEach(function (label) {
+            const labelWidth = Number.parseFloat(label.style.width) || 120;
+            const labelHeight = Math.max(20, label.scrollHeight || 20);
+            const x = (Number.parseFloat(label.style.left) || 0) - (labelWidth / 2);
+            const y = (Number.parseFloat(label.style.top) || 0) - (labelHeight / 2);
+            const foreignObject = document.createElementNS(namespace, 'foreignObject');
+            const text = document.createElementNS(xhtmlNamespace, 'div');
+            foreignObject.setAttribute('x', String(x));
+            foreignObject.setAttribute('y', String(y));
+            foreignObject.setAttribute('width', String(labelWidth));
+            foreignObject.setAttribute('height', String(labelHeight));
+            text.textContent = label.textContent;
+            text.style.cssText = `display:flex;width:100%;height:100%;box-sizing:border-box;align-items:center;justify-content:center;overflow:visible;color:#253247;font:800 ${label.style.fontSize || '12px'}/1.15 Roboto,sans-serif;text-align:center;text-shadow:-1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff,0 0 4px #fff;white-space:normal`;
+            foreignObject.append(text);
+            svg.append(foreignObject);
+        });
+        const mount = this.graph.container.parentElement || document.body;
+        mount.append(svg);
+        inlineExportStyles(svg);
+        svg.remove();
+        return svg;
     }
 
     /** @param {number} factor Multiplicative zoom factor. */
@@ -972,6 +1058,20 @@ export class StudioMaxGraphAdapter {
     selectAssets(assetIds) {
         const cells = assetIds.map((assetId) => {
             return this.graph.getDataModel().getCell(`${assetPrefix}${assetId}`);
+        }).filter(Boolean);
+        this.graph.setSelectionCells(cells);
+    }
+
+    /**
+     * Selects normalized assets and relationships together.
+     *
+     * @param {Array<{kind: 'asset'|'connection', id: string}>} items Normalized selection identities.
+     * @returns {void}
+     */
+    selectItems(items) {
+        const cells = items.map((item) => {
+            const prefix = item.kind === 'connection' ? connectionPrefix : assetPrefix;
+            return this.graph.getDataModel().getCell(`${prefix}${item.id}`);
         }).filter(Boolean);
         this.graph.setSelectionCells(cells);
     }

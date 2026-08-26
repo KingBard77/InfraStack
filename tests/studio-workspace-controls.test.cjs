@@ -76,7 +76,7 @@ test('Studio starts with a blank session and keeps restore explicit', function (
     assert.match(twig, /id="studio-upload-custom-icon"/);
     assert.match(twig, /id="studio-content-sections" class="studio-content-rail-layout">/);
     assert.match(js, /function hasProjectData\(candidate\)/);
-    assert.doesNotMatch(js, /elements\.contentSections\.hidden/);
+    assert.match(twig, /id="studio-mode-content"[^>]+hidden/);
     assert.match(studioCss, /\.infrastack-studio \{[^}]*overflow: clip/);
     assert.match(js, /if \(activeCatalogueProvider\) \{\s*await loadProviderCatalogues\(activeCatalogueProvider\)/);
 });
@@ -124,9 +124,9 @@ test('Studio top toolbar contains only wired editor actions', function () {
         'studio-reset-layout',
         'studio-shortcuts-button',
         'studio-shortcuts-dialog',
-        'studio-zoom-out',
-        'studio-zoom-in',
-        'studio-fit',
+        'studio-bottom-zoom-out',
+        'studio-bottom-zoom-in',
+        'studio-bottom-fit',
         'studio-undo',
         'studio-redo',
         'studio-duplicate',
@@ -170,6 +170,17 @@ test('Studio top toolbar contains only wired editor actions', function () {
     assert.match(js, /elements\.autoLayout\.addEventListener\('click', autoLayoutArchitecture\)/);
     assert.match(js, /core\.alignAssets\(project, assetIds, project\.active_view, alignment\)/);
     assert.match(js, /core\.distributeAssets\(project, assetIds, project\.active_view, axis\)/);
+    const appbarStart = twig.indexOf('<header class="studio-appbar"');
+    const appbar = twig.slice(appbarStart, twig.indexOf('</header>', appbarStart));
+    ['studio-undo', 'studio-redo', 'studio-view-select', 'studio-reset-layout', 'studio-wide-screen', 'studio-fullscreen', 'studio-share', 'studio-embed'].forEach(function (id) {
+        assert.match(appbar, new RegExp(`id="${id}"`));
+    });
+    ['studio-zoom-out', 'studio-zoom-in', 'studio-fit'].forEach(function (id) {
+        assert.doesNotMatch(appbar, new RegExp(`id="${id}"`));
+    });
+    assert.ok(twig.indexOf('id="studio-reset-layout"') < twig.indexOf('id="studio-shortcuts-dialog"'));
+    assert.ok(twig.indexOf('id="studio-wide-screen"') < twig.indexOf('id="studio-shortcuts-dialog"'));
+    assert.doesNotMatch(js, /elements\.(?:zoomIn|zoomOut|zoomValue|fit)/);
 });
 
 test('Studio application shell exposes wired navigation, tabs, display, and canvas controls', function () {
@@ -190,12 +201,73 @@ test('Studio application shell exposes wired navigation, tabs, display, and canv
         'studio-grid-size',
         'studio-image-asset-file',
         'studio-upload-custom-icon',
+        'studio-empty-template',
+        'studio-empty-blank',
+        'studio-empty-restore',
         'studio-empty-upload-icon',
         'studio-cursor-position'
     ].forEach(function (id) {
         assert.match(twig, new RegExp(`id="${id}"`));
     });
     assert.match(js, /function switchLibraryTab\(tab\)/);
+    assert.match(js, /function switchStudioMode\(mode, options = \{\}\)/);
+    ['studio-mode-navigation', 'studio-mode-design-tab', 'studio-mode-review-tab', 'studio-mode-inventory-tab', 'studio-mode-share-tab', 'studio-mode-design', 'studio-mode-content', 'studio-mode-review', 'studio-mode-inventory', 'studio-mode-share'].forEach(function (id) {
+        assert.match(twig, new RegExp(`id="${id}"`));
+    });
+    assert.match(twig, /class="studio-mode-segments"/);
+    assert.match(twig, /id="studio-mode-review-count"[^>]+hidden/);
+    assert.match(twig, /id="studio-mode-inventory-count"[^>]+hidden/);
+    assert.doesNotMatch(twig, /<small>Canvas and editing<\/small>/);
+    assert.doesNotMatch(twig, /<small>Results and guidance<\/small>/);
+    assert.match(js, /elements\.modeReviewCount\.hidden = findings\.length === 0/);
+    assert.match(js, /elements\.modeInventoryCount\.hidden = rows\.length === 0/);
+    assert.match(studioCss, /\.studio-mode-segments \{[^}]*width: max-content;[^}]*grid-template-columns: repeat\(4, max-content\)/);
+    assert.match(studioCss, /\.studio-mode-navigation \{[^}]*position: fixed;[^}]*bottom:[^}]*left: 50%/);
+    assert.match(studioCss, /\.studio-mode-navigation \{[^}]*width: auto;[^}]*max-width: calc\(100vw - 24px\)/);
+    assert.match(studioCss, /\.studio-mode-segments \{[^}]*border-radius: 999px/);
+    assert.match(studioCss, /--studio-mode-nav-height: 0px/);
+    assert.match(studioCss, /\.studio-mode-navigation button\.is-active \{[^}]*linear-gradient/);
+    ['studio-share-mode-preview', 'studio-share-mode-create', 'studio-share-mode-embed', 'studio-share-mode-download-png', 'studio-share-mode-export-project', 'studio-share-mode-import-project'].forEach(function (id) {
+        assert.match(twig, new RegExp(`id="${id}"`));
+    });
+    assert.match(js, /const modes = \['design', 'review', 'inventory', 'share'\]/);
+    assert.match(js, /layoutPublish\?\.previewImage\(\)/);
+    assert.match(js, /layoutPublish\?\.openShare\(\)/);
+    assert.match(js, /layoutPublish\?\.openEmbed\(\)/);
+    assert.match(js, /layoutPublish\?\.downloadPng\(\)/);
+    assert.match(js, /switchStudioMode\('review', \{ focus: false \}\)/);
+    assert.match(js, /switchStudioMode\('design', \{ focus: false \}\)/);
+    assert.match(js, /function focusFinding\(finding\)/);
+    assert.match(js, /graphAdapter\.selectItems\(selectedItems\)/);
+    assert.match(js, /Show on diagram/);
+    assert.match(js, /Preview improvement/);
+    assert.match(graphAdapter, /selectItems\(items\)/);
+    assert.match(twig, /id="studio-review-finding-summary"/);
+    assert.match(studioCss, /#studio-mode-content \{[^}]*padding: 0/);
+    assert.match(contentCss, /\.studio-content-column \{[^}]*overflow: hidden;[^}]*border: 1px solid/);
+    assert.match(contentCss, /\.studio-ad-rail \{[^}]*padding-top: 0/);
+    assert.match(js, /overviewChart\.resize\(\)/);
+    assert.match(chartAdapter, /resize\(\) \{\s*if \(this\.chart\) this\.chart\.resize\(\);/);
+    assert.match(js, /function renderRailNavigation\(\)/);
+    assert.match(js, /let activeRailSection = 'canvas'/);
+    [
+        'studio-rail-canvas',
+        'studio-rail-templates',
+        'studio-rail-assets',
+        'studio-rail-history'
+    ].forEach(function (id) {
+        assert.match(twig, new RegExp(`id="${id}"`));
+    });
+    [
+        'studio-rail-projects',
+        'studio-rail-files',
+        'studio-rail-connections',
+        'studio-rail-settings'
+    ].forEach(function (id) {
+        assert.doesNotMatch(twig, new RegExp(`id="${id}"`));
+    });
+    assert.doesNotMatch(js, /railProjects|railFiles|railConnections|railSettings/);
+    assert.match(studioCss, /grid-template-rows: repeat\(4, 46px\)/);
     assert.match(js, /function switchInspectorTab\(tab\)/);
     assert.match(js, /layoutPublishFactory\?\.create/);
     assert.match(publisher, /async function createPublishedSnapshot\(target\)/);
@@ -283,10 +355,27 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
     assert.doesNotMatch(twig, /js\/studio\/providers\/(?:aws|azure)\/templates\.js/);
     assert.match(js, /function renderTemplates\(\)/);
     assert.match(js, /function renderContextualFields\(asset\)/);
+    assert.match(js, /function contextualFieldGroup\(key\)/);
+    assert.match(js, /function renderInspectorSectionRelevance\(asset, contextualCounts\)/);
+    ['studio-inspector-basic', 'studio-inspector-placement', 'studio-inspector-network', 'studio-inspector-resources', 'studio-inspector-image', 'studio-inspector-advanced'].forEach(function (id) {
+        assert.match(twig, new RegExp(`id="${id}"`));
+    });
+    ['studio-connection-basic', 'studio-connection-transport', 'studio-connection-routing'].forEach(function (id) {
+        assert.match(twig, new RegExp(`id="${id}"`));
+    });
+    assert.match(twig, /id="studio-inspector-basic"[^>]+open/);
+    assert.match(twig, /id="studio-connection-basic"[^>]+open/);
+    assert.match(studioCss, /\.studio-inspector-section > summary/);
+    assert.match(studioCss, /\.studio-inspector-section\[open\]/);
     assert.match(js, /core\.addImageAsset\(project/);
     assert.match(js, /core\.updateAssetImage\(next, assetId/);
     assert.match(js, /elements\.uploadCustomIcon\.addEventListener\('click', openImageAssetPicker\)/);
     assert.match(js, /elements\.emptyUploadIcon\.addEventListener\('click', openImageAssetPicker\)/);
+    assert.match(js, /elements\.emptyTemplate\.addEventListener\('click'/);
+    assert.match(js, /elements\.emptyBlank\.addEventListener\('click'/);
+    assert.match(js, /elements\.emptyRestore\.addEventListener\('click'/);
+    assert.match(js, /function syncInspectorToSelection\(\)/);
+    assert.match(js, /inspectorCollapsed = selectedItems\.length === 0/);
     assert.match(js, /inspectorCollapsed = false/);
     assert.match(js, /activeInspectorTab = 'properties'/);
     assert.match(js, /function trimTransparentImage\(image, mimeType\)/);
@@ -325,10 +414,17 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
     assert.match(graphAdapter, /!collides\(candidate, obstacles\)/);
     assert.match(graphAdapter, /!collides\(candidate, placed\)/);
     assert.match(graphAdapter, /point\.horizontal/);
-    assert.match(graphAdapter, /\(width \/ 2\) \+ 34/);
+    assert.match(graphAdapter, /\(width \/ 2\) \+ 54/);
     assert.match(graphAdapter, /resolveConnectionLabelCollisions\(\) \{/);
     assert.match(graphAdapter, /querySelectorAll\('\.studio-graph-card, \.studio-graph-boundary-label'\)/);
-    assert.match(graphAdapter, /for \(let radius = 16; radius <= 160; radius \+= 16\)/);
+    assert.match(graphAdapter, /for \(let radius = 20; radius <= 240; radius \+= 20\)/);
+    assert.match(js, /function prepareTemplateProject\(templateProject\)/);
+    assert.match(js, /core\.autoLayoutProject\(prepared, view, \{ gap: 72 \}\)/);
+    assert.match(js, /connection\.routing\?\.\[view\][^\n]+points = \[\]/);
+    assert.match(js, /function fitLoadedTemplate\(\)/);
+    assert.match(graphAdapter, /const centeredX = horizontalPadding/);
+    assert.match(graphAdapter, /classList\.toggle\('is-compact-zoom'/);
+    assert.match(studioCss, /\.studio-graph\.is-overview-zoom \.studio-graph-card-copy small \{ display: none; \}/);
     assert.match(graphAdapter, /value: ''/);
     assert.match(studioCss, /\.studio-graph-connection-label \{[^}]*font: 800 12px\/1\.15[^}]*text-shadow:/);
     assert.match(studioCss, /\.studio-connection-label-overlay \{[^}]*z-index: 25/);
@@ -357,6 +453,15 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
     assert.match(js, /control\.disabled = !hasReference/);
 });
 
+test('Studio uses focused application chrome without the shared website header', function () {
+    const base = fs.readFileSync(path.join(projectRoot, 'templates/base.html.twig'), 'utf8');
+
+    assert.match(base, /block site_header/);
+    assert.match(twig, /block site_header %}{% endblock/);
+    assert.match(twig, /class="studio-appbar-brand"/);
+    assert.match(studioCss, /--studio-site-header-height: 0px/);
+});
+
 test('Studio graph uses validated nested drop targets and recursive snapshots', function () {
     assert.match(graphAdapter, /setSwimlaneNesting\(true\)/);
     assert.match(graphAdapter, /isValidDropTarget = .*isValidAssetDropTarget/);
@@ -374,7 +479,7 @@ test('architecture findings expose category scores, recommendations, and multi-a
     assert.match(js, /import \{ improvements, rules \} from '\.\/content\.js'/);
     assert.match(js, /result\.category_scores/);
     assert.match(js, /Recommended improvement/);
-    assert.match(js, /focusAssets\(item\.asset_ids\)/);
+    assert.match(js, /focusFinding\(item\)/);
     assert.match(js, /graphAdapter\.selectAssets\(visibleIds\)/);
     assert.match(js, /Apply improvement/);
     assert.match(js, /Confirm apply/);
@@ -384,7 +489,7 @@ test('architecture findings expose category scores, recommendations, and multi-a
     assert.match(js, /accepted_risks/);
 });
 
-test('Studio content follows the marked result, graph, improvements, inventory, and about hierarchy', function () {
+test('Studio orders Review and keeps expanded guidance in Inventory inside one shared rail', function () {
     const graphPosition = twig.indexOf('aria-label="Studio Graph"');
     const resultPosition = twig.indexOf('id="studio-review-title"');
     const improvementsPosition = twig.indexOf('id="studio-improvements-title"');
@@ -445,10 +550,10 @@ test('Studio content follows the marked result, graph, improvements, inventory, 
         assert.match(js, new RegExp(`// \\[studio-${section}\\] Section: Start`));
         assert.match(js, new RegExp(`// \\[studio-${section}\\] Section: End`));
     });
-    assert.match(twig, />Studio Improvement</);
+    assert.match(twig, />Studio Finding</);
     assert.doesNotMatch(twig, />Studio Overview</);
     assert.match(twig, />Studio Result</);
-    assert.match(twig, />Studio Inventory</);
+    assert.match(twig, />Architecture Inventory</);
     assert.match(twig, /styles\/studio\/content\.css/);
     assert.match(js, /import \{ StudioChart \} from '\.\/library\/studio-chart\.js'/);
     assert.match(js, /overviewChart\.render\(project, provider, elements\.overviewChartSelect\.value\)/);
@@ -509,12 +614,25 @@ test('Studio Overview exposes complete wired Chart.js accessories', function () 
     assert.match(js, /overviewChart\.resetVisibility\(\)/);
     assert.match(js, /overviewChart\.downloadPng\(`/);
     assert.match(js, /overviewEmpty\.hidden = !totals\.empty/);
-    assert.match(twig, /class="studio-section-heading"><div><span>Provider template metrics<\/span><h2 id="studio-improvements-title">Studio Improvement<\/h2>/);
+    assert.match(twig, /class="studio-section-heading"><div><span>Actionable architecture guidance<\/span><h2 id="studio-improvements-title">Studio Finding<\/h2>/);
+    assert.match(twig, /<section id="studio-package-content" class="studio-package-content"/);
+    assert.doesNotMatch(twig, /<details id="studio-package-content"/);
     assert.match(twig, /id="studio-improvements-empty"[^>]+role="status"[^>]+hidden/);
     assert.match(twig, /id="studio-inventory-empty"[^>]+role="status"[^>]+hidden/);
     assert.match(twig, /id="studio-inventory-table"/);
     assert.match(js, /improvementsEmpty\.hidden = false/);
-    assert.match(js, /inventoryEmpty\.hidden = project\.assets\.length > 0/);
+    assert.match(js, /inventoryEmpty\.hidden = rows\.length > 0/);
+    assert.match(twig, /id="studio-inventory-search"/);
+    assert.match(twig, /id="studio-inventory-page-size"/);
+    assert.match(twig, /data-inventory-sort="label"/);
+    assert.match(twig, /id="studio-inventory-pagination"/);
+    assert.match(js, /function inventoryRowForAsset\(asset\)/);
+    assert.match(js, /function inventoryPageSequence\(totalPages\)/);
+    assert.match(js, /function renderInventoryPagination\(totalPages\)/);
+    assert.match(js, /inventoryQuery = elements\.inventorySearch\.value/);
+    assert.match(js, /inventorySortDirection = inventorySortDirection === 'asc' \? 'desc' : 'asc'/);
+    assert.match(js, /row\.tabIndex = 0/);
+    assert.match(js, /if \(!\['Enter', ' '\]\.includes\(event\.key\)\) return/);
     assert.match(contentCss, /\.studio-overview-actions[^}]+margin-left: auto/s);
     assert.match(contentCss, /\.studio-chart-heading[^}]+align-items: flex-end/s);
     assert.match(contentCss, /\.studio-content-empty \{/);
@@ -522,7 +640,7 @@ test('Studio Overview exposes complete wired Chart.js accessories', function () 
     assert.match(chartAdapter, /id: 'studioDataLabels'/);
     assert.match(chartAdapter, /id: 'studioCanvasBackground'/);
     assert.match(twig, /id="studio-chart-analysis-title"/);
-    assert.match(twig, /id="studio-chart-title">Studio View Coverage<\/h2>/);
+    assert.match(twig, /id="studio-chart-title">Studio Analysis<\/h2>/);
     assert.match(twig, /id="studio-chart-subtitle"/);
     assert.match(twig, /class="studio-section-heading studio-chart-heading"[\s\S]*class="studio-chart-copy"[\s\S]*class="studio-overview-actions"[\s\S]*class="studio-chart-shell"/);
     assert.match(js, /overviewAnalysisTitle: byId\('studio-chart-analysis-title'\)/);

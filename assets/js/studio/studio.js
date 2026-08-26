@@ -20,7 +20,7 @@ if (root && core && rules && improvements) {
     const recoveryStorageKey = 'infrastack-studio-recovery-v0.2';
     const layoutDefaults = {
         paletteCollapsed: false,
-        inspectorCollapsed: false,
+        inspectorCollapsed: true,
         paletteWidth: 250,
         inspectorWidth: 280,
         wideScreen: false,
@@ -55,6 +55,18 @@ if (root && core && rules && improvements) {
         saveState: byId('studio-save-state'),
         shortcutsButton: byId('studio-shortcuts-button'),
         shortcutsDialog: byId('studio-shortcuts-dialog'),
+        modeNavigation: byId('studio-mode-navigation'),
+        modeDesignTab: byId('studio-mode-design-tab'),
+        modeReviewTab: byId('studio-mode-review-tab'),
+        modeInventoryTab: byId('studio-mode-inventory-tab'),
+        modeShareTab: byId('studio-mode-share-tab'),
+        modeReviewCount: byId('studio-mode-review-count'),
+        modeInventoryCount: byId('studio-mode-inventory-count'),
+        modeDesignPanel: byId('studio-mode-design'),
+        modeContentPanel: byId('studio-mode-content'),
+        modeReviewPanel: byId('studio-mode-review'),
+        modeInventoryPanel: byId('studio-mode-inventory'),
+        modeSharePanel: byId('studio-mode-share'),
         resetLayout: byId('studio-reset-layout'),
         wideScreen: byId('studio-wide-screen'),
         fullscreen: byId('studio-fullscreen'),
@@ -65,13 +77,9 @@ if (root && core && rules && improvements) {
         paletteResizer: byId('studio-palette-resizer'),
         inspectorResizer: byId('studio-inspector-resizer'),
         railCanvas: byId('studio-rail-canvas'),
-        railProjects: byId('studio-rail-projects'),
-        railFiles: byId('studio-rail-files'),
         railTemplates: byId('studio-rail-templates'),
         railAssets: byId('studio-rail-assets'),
-        railConnections: byId('studio-rail-connections'),
         railHistory: byId('studio-rail-history'),
-        railSettings: byId('studio-rail-settings'),
         componentsTab: byId('studio-components-tab'),
         templatesTab: byId('studio-templates-tab'),
         componentsPanel: byId('studio-components-panel'),
@@ -124,11 +132,11 @@ if (root && core && rules && improvements) {
         stage: byId('studio-stage'),
         graph: byId('studio-graph'),
         emptyState: byId('studio-empty-state'),
+        emptyTemplate: byId('studio-empty-template'),
+        emptyBlank: byId('studio-empty-blank'),
+        emptyRestore: byId('studio-empty-restore'),
         emptyUploadIcon: byId('studio-empty-upload-icon'),
         stageSummary: byId('studio-stage-summary'),
-        zoomOut: byId('studio-zoom-out'),
-        zoomIn: byId('studio-zoom-in'),
-        zoomValue: byId('studio-zoom-value'),
         bottomZoomOut: byId('studio-bottom-zoom-out'),
         bottomZoomIn: byId('studio-bottom-zoom-in'),
         bottomZoomValue: byId('studio-bottom-zoom-value'),
@@ -138,7 +146,6 @@ if (root && core && rules && improvements) {
         guidesEnabled: byId('studio-guides-enabled'),
         gridSize: byId('studio-grid-size'),
         cursorPosition: byId('studio-cursor-position'),
-        fit: byId('studio-fit'),
         reviewAction: byId('studio-review-action'),
         minimap: byId('studio-minimap'),
         inspectorEmpty: byId('studio-inspector-empty'),
@@ -159,6 +166,14 @@ if (root && core && rules && improvements) {
         fieldMemory: byId('studio-field-memory'),
         fieldStorage: byId('studio-field-storage'),
         contextFields: byId('studio-context-fields'),
+        contextPlacementFields: byId('studio-context-placement-fields'),
+        contextNetworkFields: byId('studio-context-network-fields'),
+        contextResourcesFields: byId('studio-context-resources-fields'),
+        contextAdvancedFields: byId('studio-context-advanced-fields'),
+        inspectorPlacement: byId('studio-inspector-placement'),
+        inspectorNetwork: byId('studio-inspector-network'),
+        inspectorResources: byId('studio-inspector-resources'),
+        inspectorImage: byId('studio-inspector-image'),
         fieldMonitoring: byId('studio-field-monitoring'),
         fieldBackup: byId('studio-field-backup'),
         fieldRedundant: byId('studio-field-redundant'),
@@ -244,7 +259,19 @@ if (root && core && rules && improvements) {
         inventoryBody: byId('studio-inventory-body'),
         inventoryCount: byId('studio-inventory-count'),
         inventoryEmpty: byId('studio-inventory-empty'),
+        inventoryNoMatches: byId('studio-inventory-no-matches'),
         inventoryTable: byId('studio-inventory-table'),
+        inventorySearch: byId('studio-inventory-search'),
+        inventoryPageSize: byId('studio-inventory-page-size'),
+        inventoryStatus: byId('studio-inventory-status'),
+        inventoryPagination: byId('studio-inventory-pagination'),
+        shareModePreview: byId('studio-share-mode-preview'),
+        shareModePreviewStatus: byId('studio-share-mode-preview-status'),
+        shareModeCreate: byId('studio-share-mode-create'),
+        shareModeEmbed: byId('studio-share-mode-embed'),
+        shareModeDownloadPng: byId('studio-share-mode-download-png'),
+        shareModeExportProject: byId('studio-share-mode-export-project'),
+        shareModeImportProject: byId('studio-share-mode-import-project'),
         grade: byId('studio-grade'),
         gradeLabel: byId('studio-grade-label'),
         score: byId('studio-score'),
@@ -254,6 +281,9 @@ if (root && core && rules && improvements) {
         categoryScores: byId('studio-category-scores'),
         restoreDismissed: byId('studio-restore-dismissed'),
         findings: byId('studio-findings'),
+        reviewHighCount: byId('studio-review-high-count'),
+        reviewGuidanceCount: byId('studio-review-guidance-count'),
+        reviewDismissedCount: byId('studio-review-dismissed-count'),
         improvementsEmpty: byId('studio-improvements-empty'),
         improvementsEmptyMessage: byId('studio-improvements-empty-message'),
         packageContent: byId('studio-package-content'),
@@ -299,11 +329,18 @@ if (root && core && rules && improvements) {
     let activeTemplateProvider = '';
     const layoutPreferences = loadLayoutPreferences();
     let paletteCollapsed = layoutPreferences.paletteCollapsed;
-    let inspectorCollapsed = layoutPreferences.inspectorCollapsed;
+    let inspectorCollapsed = true;
     let paletteWidth = layoutPreferences.paletteWidth;
     let inspectorWidth = layoutPreferences.inspectorWidth;
     let wideScreenMode = layoutPreferences.wideScreen;
+    let activeStudioMode = 'design';
+    let inventoryQuery = '';
+    let inventoryPage = 1;
+    let inventoryPageSize = 10;
+    let inventorySortKey = 'label';
+    let inventorySortDirection = 'asc';
     let activeLibraryTab = 'components';
+    let activeRailSection = 'canvas';
     let activeInspectorTab = 'properties';
     let gridVisible = layoutPreferences.gridVisible;
     let snapEnabled = layoutPreferences.snapEnabled;
@@ -319,6 +356,7 @@ if (root && core && rules && improvements) {
     let viewportTimer = null;
     let inspectorUpdateTimer = null;
     let previewFindingId = null;
+    let shareModePreviewRequest = 0;
     let overviewValuesVisible = false;
     let layoutFitTimer = null;
     let spacePanning = false;
@@ -606,10 +644,18 @@ if (root && core && rules && improvements) {
         previewFindingId = null;
         selectedItems = options.selectedItems || (options.selected ? [options.selected] : []);
         selected = selectedItems.length === 1 ? selectedItems[0] : null;
+        syncInspectorToSelection();
         connectSourceId = null;
         saveProject();
         render();
         if (options.selectAssets) graphAdapter.selectAssets(options.selectAssets);
+    }
+
+    function syncInspectorToSelection() {
+        inspectorCollapsed = selectedItems.length === 0;
+        if (selectedItems.length === 1) activeInspectorTab = 'properties';
+        if (selectedItems.length > 1) activeInspectorTab = 'style';
+        saveLayoutPreferences();
     }
 
     function showMessage(text, tone = 'neutral') {
@@ -722,6 +768,7 @@ if (root && core && rules && improvements) {
         project = next;
         selectedItems = [];
         selected = null;
+        syncInspectorToSelection();
         saveProject();
         render();
     }
@@ -806,8 +853,10 @@ if (root && core && rules && improvements) {
             }
             selectedItems = items;
             selected = items.length === 1 ? items[0] : null;
+            syncInspectorToSelection();
             renderInspector();
             renderToolbar();
+            scheduleLayoutFit();
         },
         onGeometryChange: function (snapshot) {
             pushHistory('Move or resize assets');
@@ -871,7 +920,6 @@ if (root && core && rules && improvements) {
         onViewportChange: function (nextViewport) {
             project = core.updateViewport(project, project.active_view, nextViewport);
             const zoomLabel = `${Math.round(nextViewport.zoom * 100)}%`;
-            elements.zoomValue.textContent = zoomLabel;
             elements.bottomZoomValue.textContent = zoomLabel;
             renderReference();
             window.clearTimeout(viewportTimer);
@@ -1090,12 +1138,73 @@ if (root && core && rules && improvements) {
         elements.stageSummary.textContent = `${assets.length} assets · ${connections.length} relationships · maxGraph editor`;
         graphAdapter.render(project, project.active_view, resolvedIconUrls);
         const zoomLabel = `${Math.round(graphAdapter.viewport().zoom * 100)}%`;
-        elements.zoomValue.textContent = zoomLabel;
         elements.bottomZoomValue.textContent = zoomLabel;
+    }
+
+    function renderRailNavigation() {
+        const sections = {
+            canvas: elements.railCanvas,
+            templates: elements.railTemplates,
+            components: elements.railAssets,
+            history: elements.railHistory
+        };
+        Object.entries(sections).forEach(function ([section, button]) {
+            button.classList.toggle('is-active', activeRailSection === section);
+            button.setAttribute('aria-current', activeRailSection === section ? 'page' : 'false');
+        });
+        elements.railHistory.setAttribute('aria-expanded', String(activeLibraryTab === 'history'));
+    }
+
+    function switchStudioMode(mode, options = {}) {
+        const nextMode = ['review', 'inventory', 'share'].includes(mode) ? mode : 'design';
+        if (nextMode !== 'design' && wideScreenMode) {
+            wideScreenMode = false;
+            saveLayoutPreferences();
+        }
+        activeStudioMode = nextMode;
+        const designActive = activeStudioMode === 'design';
+        const reviewActive = activeStudioMode === 'review';
+        const inventoryActive = activeStudioMode === 'inventory';
+        const shareActive = activeStudioMode === 'share';
+        elements.modeDesignPanel.hidden = !designActive;
+        elements.modeContentPanel.hidden = designActive;
+        elements.modeReviewPanel.hidden = !reviewActive;
+        elements.modeInventoryPanel.hidden = !inventoryActive;
+        elements.modeSharePanel.hidden = !shareActive;
+        elements.modeDesignTab.classList.toggle('is-active', designActive);
+        elements.modeReviewTab.classList.toggle('is-active', reviewActive);
+        elements.modeInventoryTab.classList.toggle('is-active', inventoryActive);
+        elements.modeShareTab.classList.toggle('is-active', shareActive);
+        elements.modeDesignTab.setAttribute('aria-selected', String(designActive));
+        elements.modeReviewTab.setAttribute('aria-selected', String(reviewActive));
+        elements.modeInventoryTab.setAttribute('aria-selected', String(inventoryActive));
+        elements.modeShareTab.setAttribute('aria-selected', String(shareActive));
+        root.dataset.studioMode = activeStudioMode;
+        renderToolbar();
+        if (designActive) {
+            window.setTimeout(function () { graphAdapter.fit(); }, 80);
+        } else if (reviewActive) {
+            renderReview();
+            renderPackageContent();
+            window.requestAnimationFrame(function () {
+                renderOverview();
+                overviewChart.resize();
+            });
+        } else if (inventoryActive) {
+            renderInventory();
+            renderPackageContent();
+        } else {
+            renderShareMode();
+        }
+        if (options.focus !== false) {
+            const activeTab = { design: elements.modeDesignTab, review: elements.modeReviewTab, inventory: elements.modeInventoryTab, share: elements.modeShareTab }[activeStudioMode];
+            activeTab.focus();
+        }
     }
 
     async function switchLibraryTab(tab) {
         activeLibraryTab = ['templates', 'history'].includes(tab) ? tab : 'components';
+        activeRailSection = activeLibraryTab;
         const componentsActive = activeLibraryTab === 'components';
         const templatesActive = activeLibraryTab === 'templates';
         const historyActive = activeLibraryTab === 'history';
@@ -1106,10 +1215,7 @@ if (root && core && rules && improvements) {
         elements.componentsPanel.hidden = !componentsActive;
         elements.templatesPanel.hidden = !templatesActive;
         elements.historyPanel.hidden = !historyActive;
-        elements.railAssets.classList.toggle('is-active', componentsActive);
-        elements.railTemplates.classList.toggle('is-active', templatesActive);
-        elements.railHistory.classList.toggle('is-active', historyActive);
-        elements.railHistory.setAttribute('aria-expanded', String(historyActive));
+        renderRailNavigation();
         if (historyActive) {
             renderHistoryPanel();
             renderRecoveryCard();
@@ -1176,8 +1282,38 @@ if (root && core && rules && improvements) {
         return [];
     }
 
+    function contextualFieldGroup(key) {
+        const groups = {
+            region: 'placement',
+            vendor: 'placement',
+            dns_hostnames: 'network',
+            dns_resolution: 'network',
+            subnet_type: 'network',
+            route_table: 'network',
+            private_ip: 'network',
+            public_ip: 'network',
+            interfaces: 'network',
+            security_zones: 'network',
+            management_ip: 'network',
+            vlans: 'network',
+            instance_type: 'resources',
+            operating_system: 'resources',
+            model: 'resources',
+            ports: 'resources',
+            tags: 'advanced',
+            policies: 'advanced'
+        };
+        return groups[key] || 'advanced';
+    }
+
     function renderContextualFields(asset) {
-        const fragment = document.createDocumentFragment();
+        const fragments = {
+            placement: document.createDocumentFragment(),
+            network: document.createDocumentFragment(),
+            resources: document.createDocumentFragment(),
+            advanced: document.createDocumentFragment()
+        };
+        const counts = { placement: 0, network: 0, resources: 0, advanced: 0 };
         contextualFieldsFor(asset).forEach(function (definition) {
             const wrapper = document.createElement('div');
             const label = document.createElement('label');
@@ -1203,10 +1339,30 @@ if (root && core && rules && improvements) {
             input.id = fieldId;
             input.dataset.property = definition.key;
             wrapper.append(label, input);
-            fragment.append(wrapper);
+            const group = contextualFieldGroup(definition.key);
+            fragments[group].append(wrapper);
+            counts[group] += 1;
         });
-        elements.contextFields.replaceChildren(fragment);
-        elements.contextFields.hidden = elements.contextFields.childElementCount === 0;
+        [
+            ['placement', elements.contextPlacementFields],
+            ['network', elements.contextNetworkFields],
+            ['resources', elements.contextResourcesFields],
+            ['advanced', elements.contextAdvancedFields]
+        ].forEach(function ([group, container]) {
+            container.replaceChildren(fragments[group]);
+            container.hidden = counts[group] === 0;
+        });
+        return counts;
+    }
+
+    function renderInspectorSectionRelevance(asset, contextualCounts) {
+        const networkType = /vpc|subnet|network|router|switch|firewall|gateway|load.?balancer|internet/i.test(asset.type);
+        const resourceType = /server|database|storage|compute|cluster|node|container|vm|workload/i.test(asset.type);
+        const hasNetworkValue = Boolean(asset.properties.address || asset.properties.hostname || contextualCounts.network);
+        const hasResourceValue = Boolean(asset.properties.cpu || asset.properties.memory || asset.properties.storage || contextualCounts.resources);
+        elements.inspectorNetwork.hidden = !(networkType || hasNetworkValue);
+        elements.inspectorResources.hidden = !(resourceType || hasResourceValue);
+        elements.inspectorImage.hidden = !asset.image;
     }
 
     function packageFamilyLabel(family) {
@@ -1235,6 +1391,28 @@ if (root && core && rules && improvements) {
         if (!providers.includes(activeTemplateProvider)) activeTemplateProvider = '';
         elements.templateProvider.replaceChildren(...providerOptions);
         elements.templateProvider.value = activeTemplateProvider;
+    }
+
+    function prepareTemplateProject(templateProject) {
+        const activeView = templateProject.active_view;
+        let prepared = templateProject;
+        core.supportedViews.forEach(function (view) {
+            const visibleCount = prepared.assets.filter(function (asset) { return asset.views.includes(view); }).length;
+            if (visibleCount > 1) {
+                prepared = core.autoLayoutProject(prepared, view, { gap: 72 });
+                prepared.connections.forEach(function (connection) {
+                    if (connection.routing?.[view]) connection.routing[view].points = [];
+                });
+            }
+        });
+        prepared.active_view = activeView;
+        return core.normalizeProject(prepared).project;
+    }
+
+    function fitLoadedTemplate() {
+        window.requestAnimationFrame(function () {
+            window.requestAnimationFrame(function () { graphAdapter.fit(); });
+        });
     }
 
     function renderTemplates() {
@@ -1270,15 +1448,16 @@ if (root && core && rules && improvements) {
                     button.disabled = false;
                     return;
                 }
+                const preparedProject = prepareTemplateProject(templateProject);
                 activeCatalogueProvider = definition.provider;
                 activeCatalogueLibrary = 'all';
-                replaceProject(templateProject, { historyLabel: `Load ${definition.name}` });
+                replaceProject(preparedProject, { historyLabel: `Load ${definition.name}` });
                 renderCatalogueFilters();
                 renderPalette();
                 renderPackageContent();
                 loadReference();
                 showMessage(`${definition.name} loaded.`, 'success');
-                window.setTimeout(function () { graphAdapter.fit(); }, 80);
+                fitLoadedTemplate();
                 button.disabled = false;
             });
             elements.templateList.append(button);
@@ -1410,6 +1589,36 @@ if (root && core && rules && improvements) {
         showMessage
     });
 
+    async function renderShareMode() {
+        const request = ++shareModePreviewRequest;
+        const hasAssets = project.assets.length > 0;
+        [elements.shareModeCreate, elements.shareModeEmbed, elements.shareModeDownloadPng].forEach(function (button) {
+            button.disabled = !hasAssets;
+        });
+        elements.shareModePreview.hidden = true;
+        elements.shareModePreviewStatus.hidden = false;
+        const statusTitle = elements.shareModePreviewStatus.querySelector('strong');
+        const statusCopy = elements.shareModePreviewStatus.querySelector('span');
+        if (!hasAssets) {
+            statusTitle.textContent = 'Nothing to preview yet';
+            statusCopy.textContent = 'Add an asset or choose a template in Design first.';
+            return;
+        }
+        statusTitle.textContent = 'Preparing preview';
+        statusCopy.textContent = 'Rendering the active architecture view…';
+        try {
+            const image = await layoutPublish?.previewImage();
+            if (request !== shareModePreviewRequest || !image?.url) return;
+            elements.shareModePreview.src = image.url;
+            elements.shareModePreview.hidden = false;
+            elements.shareModePreviewStatus.hidden = true;
+        } catch (error) {
+            if (request !== shareModePreviewRequest) return;
+            statusTitle.textContent = 'Preview unavailable';
+            statusCopy.textContent = error.message || 'The architecture image could not be created.';
+        }
+    }
+
     function renderInspector() {
         const asset = selected && selected.kind === 'asset' ? assetById(selected.id) : null;
         const connection = selected && selected.kind === 'connection' ? connectionById(selected.id) : null;
@@ -1464,9 +1673,11 @@ if (root && core && rules && improvements) {
                 elements.fieldImageIconSize.value = String(Math.round(layout.icon_size));
                 elements.fieldImageLocked.checked = asset.appearance[project.active_view].locked;
             }
-            renderContextualFields(asset);
+            const contextualCounts = renderContextualFields(asset);
+            renderInspectorSectionRelevance(asset, contextualCounts);
         } else {
             elements.imageProperties.hidden = true;
+            elements.inspectorImage.hidden = true;
         }
         if (styleAsset) {
             const appearance = styleAsset.appearance[project.active_view];
@@ -1541,9 +1752,11 @@ if (root && core && rules && improvements) {
     }
 
     function focusAsset(asset) {
+        switchStudioMode('design', { focus: false });
         if (!asset.views.includes(project.active_view)) project.active_view = asset.views[0];
         selectedItems = [{ kind: 'asset', id: asset.id }];
         selected = selectedItems[0];
+        syncInspectorToSelection();
         saveProject();
         render();
         graphAdapter.selectAsset(asset.id);
@@ -1553,6 +1766,7 @@ if (root && core && rules && improvements) {
     function focusAssets(assetIds) {
         const assets = assetIds.map(assetById).filter(Boolean);
         if (!assets.length) return;
+        switchStudioMode('design', { focus: false });
         if (!assets.some(function (asset) { return asset.views.includes(project.active_view); })) {
             project.active_view = assets[0].views[0];
         }
@@ -1561,6 +1775,7 @@ if (root && core && rules && improvements) {
         }).map(function (asset) { return asset.id; });
         selectedItems = visibleIds.map(function (id) { return { kind: 'asset', id }; });
         selected = selectedItems.length === 1 ? selectedItems[0] : null;
+        syncInspectorToSelection();
         saveProject();
         render();
         graphAdapter.selectAssets(visibleIds);
@@ -1568,30 +1783,154 @@ if (root && core && rules && improvements) {
         showMessage(`${visibleIds.length} affected asset${visibleIds.length === 1 ? '' : 's'} highlighted.`, 'neutral');
     }
 
+    function focusFinding(finding) {
+        const assetIds = [...new Set((finding.asset_ids || []).filter(function (id) { return assetById(id); }))];
+        const connectionIds = [...new Set((finding.connection_ids || []).filter(function (id) { return connectionById(id); }))];
+        if (!assetIds.length && !connectionIds.length) return;
+        const scoredViews = core.supportedViews.map(function (view) {
+            const visibleAssets = assetIds.filter(function (id) { return assetById(id).views.includes(view); });
+            const visibleConnections = connectionIds.filter(function (id) {
+                const connection = connectionById(id);
+                const source = assetById(connection.source);
+                const target = assetById(connection.target);
+                return source?.views.includes(view) && target?.views.includes(view);
+            });
+            return { view, visibleAssets, visibleConnections, score: visibleAssets.length + (visibleConnections.length * 2) };
+        }).sort(function (left, right) { return right.score - left.score; });
+        const targetView = scoredViews[0];
+        if (!targetView || targetView.score === 0) return;
+        switchStudioMode('design', { focus: false });
+        project.active_view = targetView.view;
+        selectedItems = targetView.visibleAssets.map(function (id) { return { kind: 'asset', id }; }).concat(
+            targetView.visibleConnections.map(function (id) { return { kind: 'connection', id }; })
+        );
+        selected = selectedItems.length === 1 ? selectedItems[0] : null;
+        syncInspectorToSelection();
+        saveProject();
+        render();
+        graphAdapter.selectItems(selectedItems);
+        elements.stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const parts = [];
+        if (targetView.visibleAssets.length) parts.push(`${targetView.visibleAssets.length} asset${targetView.visibleAssets.length === 1 ? '' : 's'}`);
+        if (targetView.visibleConnections.length) parts.push(`${targetView.visibleConnections.length} relationship${targetView.visibleConnections.length === 1 ? '' : 's'}`);
+        showMessage(`${parts.join(' and ')} highlighted.`, 'neutral');
+    }
+
 // [studio-content-navigation] Section: End
 
 // [studio-inventory] Section: Start
 
-    function renderInventory() {
-        const fragment = document.createDocumentFragment();
-        project.assets.forEach(function (asset) {
-            const row = document.createElement('tr');
-            const controls = ['monitoring', 'backup', 'redundant', 'critical'].filter(function (key) {
+    function inventoryRowForAsset(asset) {
+        return {
+            asset,
+            label: asset.label,
+            type: asset.type,
+            placement: placementFor(asset),
+            address: asset.properties.address || '—',
+            resources: [asset.properties.cpu, asset.properties.memory, asset.properties.storage].filter(Boolean).join(' · ') || '—',
+            controls: ['monitoring', 'backup', 'redundant', 'critical'].filter(function (key) {
                 return asset.properties[key];
-            }).join(', ') || '—';
-            const resources = [asset.properties.cpu, asset.properties.memory, asset.properties.storage].filter(Boolean).join(' · ') || '—';
-            [asset.label, asset.type, placementFor(asset), asset.properties.address || '—', resources, controls].forEach(function (value) {
+            }).join(', ') || '—'
+        };
+    }
+
+    function inventoryPageSequence(totalPages) {
+        if (totalPages <= 7) return Array.from({ length: totalPages }, function (value, index) { return index + 1; });
+        const pages = new Set([1, totalPages, inventoryPage - 1, inventoryPage, inventoryPage + 1]);
+        const ordered = [...pages].filter(function (page) { return page >= 1 && page <= totalPages; }).sort(function (left, right) { return left - right; });
+        const sequence = [];
+        ordered.forEach(function (page, index) {
+            if (index > 0 && page - ordered[index - 1] > 1) sequence.push(null);
+            sequence.push(page);
+        });
+        return sequence;
+    }
+
+    function renderInventoryPagination(totalPages) {
+        const fragment = document.createDocumentFragment();
+        const createButton = function (label, page, disabled = false, current = false) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = label;
+            button.dataset.page = String(page);
+            button.disabled = disabled;
+            if (current) button.setAttribute('aria-current', 'page');
+            return button;
+        };
+        fragment.append(createButton('Previous', inventoryPage - 1, inventoryPage <= 1));
+        inventoryPageSequence(totalPages).forEach(function (page) {
+            if (page === null) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '…';
+                ellipsis.setAttribute('aria-hidden', 'true');
+                fragment.append(ellipsis);
+                return;
+            }
+            fragment.append(createButton(String(page), page, false, page === inventoryPage));
+        });
+        fragment.append(createButton('Next', inventoryPage + 1, inventoryPage >= totalPages));
+        elements.inventoryPagination.replaceChildren(fragment);
+        elements.inventoryPagination.hidden = totalPages <= 1;
+    }
+
+    function renderInventory() {
+        const rows = project.assets.map(inventoryRowForAsset);
+        const query = inventoryQuery.trim().toLowerCase();
+        const searchableKeys = ['label', 'type', 'placement', 'address', 'resources', 'controls'];
+        const filteredRows = rows.filter(function (row) {
+            return !query || searchableKeys.some(function (key) { return String(row[key]).toLowerCase().includes(query); });
+        }).sort(function (left, right) {
+            const comparison = String(left[inventorySortKey]).localeCompare(String(right[inventorySortKey]), undefined, {
+                numeric: true,
+                sensitivity: 'base'
+            });
+            return inventorySortDirection === 'desc' ? -comparison : comparison;
+        });
+        const effectivePageSize = inventoryPageSize === 0 ? Math.max(filteredRows.length, 1) : inventoryPageSize;
+        const totalPages = Math.max(1, Math.ceil(filteredRows.length / effectivePageSize));
+        inventoryPage = Math.min(Math.max(inventoryPage, 1), totalPages);
+        const start = (inventoryPage - 1) * effectivePageSize;
+        const visibleRows = filteredRows.slice(start, start + effectivePageSize);
+        const fragment = document.createDocumentFragment();
+        visibleRows.forEach(function (entry) {
+            const row = document.createElement('tr');
+            row.tabIndex = 0;
+            row.setAttribute('aria-label', `Open ${entry.label} in Design`);
+            searchableKeys.forEach(function (key) {
                 const cell = document.createElement('td');
-                cell.textContent = value;
+                cell.textContent = entry[key];
                 row.append(cell);
             });
-            row.addEventListener('click', function () { focusAsset(asset); });
+            row.addEventListener('click', function () { focusAsset(entry.asset); });
+            row.addEventListener('keydown', function (event) {
+                if (!['Enter', ' '].includes(event.key)) return;
+                event.preventDefault();
+                focusAsset(entry.asset);
+            });
             fragment.append(row);
         });
         elements.inventoryBody.replaceChildren(fragment);
-        elements.inventoryCount.textContent = `${project.assets.length} items`;
-        elements.inventoryEmpty.hidden = project.assets.length > 0;
-        elements.inventoryTable.hidden = project.assets.length === 0;
+        elements.inventoryCount.textContent = `${rows.length} items`;
+        elements.modeInventoryCount.textContent = String(rows.length);
+        elements.modeInventoryCount.hidden = rows.length === 0;
+        elements.modeInventoryCount.setAttribute('aria-label', `${rows.length} asset${rows.length === 1 ? '' : 's'}`);
+        elements.inventoryEmpty.hidden = rows.length > 0;
+        elements.inventoryNoMatches.hidden = rows.length === 0 || filteredRows.length > 0;
+        elements.inventoryTable.hidden = filteredRows.length === 0;
+        elements.inventorySearch.disabled = rows.length === 0;
+        elements.inventoryPageSize.disabled = rows.length === 0;
+        const end = Math.min(start + visibleRows.length, filteredRows.length);
+        elements.inventoryStatus.textContent = filteredRows.length
+            ? `Showing ${start + 1}–${end} of ${filteredRows.length}${filteredRows.length !== rows.length ? ` matching ${rows.length} total items` : ' items'}`
+            : rows.length ? `No matches among ${rows.length} items` : 'Showing 0 items';
+        elements.inventoryTable.querySelectorAll('[data-inventory-sort]').forEach(function (button) {
+            const active = button.dataset.inventorySort === inventorySortKey;
+            const direction = active ? inventorySortDirection : '';
+            button.dataset.direction = direction;
+            button.parentElement.setAttribute('aria-sort', active ? (direction === 'asc' ? 'ascending' : 'descending') : 'none');
+            button.querySelector('i').className = `bi ${active ? (direction === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'}`;
+        });
+        renderInventoryPagination(totalPages);
     }
 
 // [studio-inventory] Section: End
@@ -1629,8 +1968,15 @@ if (root && core && rules && improvements) {
         elements.score.textContent = result.score === null ? '—' : String(result.score);
         elements.confidence.textContent = result.score === null ? '—' : `${result.confidence}%`;
         elements.findingCount.textContent = String(findings.length);
+        elements.modeReviewCount.textContent = String(findings.length);
+        elements.modeReviewCount.hidden = findings.length === 0;
+        elements.modeReviewCount.setAttribute('aria-label', `${findings.length} open finding${findings.length === 1 ? '' : 's'}`);
         const high = findings.filter(function (item) { return ['critical', 'high'].includes(item.severity); }).length;
-        elements.findingSummary.textContent = findings.length ? `${high} high priority · ${findings.length - high} guidance${dismissedCount ? ` · ${dismissedCount} dismissed` : ''}` : dismissedCount ? `${dismissedCount} finding${dismissedCount === 1 ? '' : 's'} dismissed` : 'No open deterministic findings';
+        const guidance = findings.length - high;
+        elements.reviewHighCount.textContent = String(high);
+        elements.reviewGuidanceCount.textContent = String(guidance);
+        elements.reviewDismissedCount.textContent = String(dismissedCount);
+        elements.findingSummary.textContent = findings.length ? `${high} high priority · ${guidance} guidance${dismissedCount ? ` · ${dismissedCount} dismissed` : ''}` : dismissedCount ? `${dismissedCount} finding${dismissedCount === 1 ? '' : 's'} dismissed` : 'No open deterministic findings';
         elements.restoreDismissed.hidden = dismissedCount === 0;
         elements.categoryScores.replaceChildren();
         Object.entries(result.category_scores).forEach(function (entry) {
@@ -1654,7 +2000,21 @@ if (root && core && rules && improvements) {
         }
         elements.findings.hidden = false;
         elements.improvementsEmpty.hidden = true;
-        findings.forEach(function (item) {
+        const severityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+        const orderedFindings = findings.slice().sort(function (left, right) {
+            return (severityOrder[left.severity] ?? 4) - (severityOrder[right.severity] ?? 4);
+        });
+        let activeGroup = '';
+        orderedFindings.forEach(function (item) {
+            const group = ['critical', 'high'].includes(item.severity) ? 'priority' : 'guidance';
+            if (group !== activeGroup) {
+                activeGroup = group;
+                const heading = document.createElement('div');
+                heading.className = 'studio-finding-group-heading';
+                const groupCount = group === 'priority' ? high : guidance;
+                heading.innerHTML = `<span>${group === 'priority' ? 'High priority' : 'Recommended'}</span><strong>${groupCount}</strong>`;
+                elements.findings.append(heading);
+            }
             const card = document.createElement('article');
             const improvement = improvements.buildPlan(project, item);
             const projection = improvements.previewPlan(project, improvement, core, rules, {
@@ -1666,7 +2026,10 @@ if (root && core && rules && improvements) {
                 : '';
             card.className = 'studio-finding-card';
             card.dataset.severity = item.severity;
-            card.innerHTML = `<div class="studio-finding-heading"><span class="studio-finding-severity">${escapeHtml(item.severity)}</span><small>${escapeHtml(item.category)}</small></div><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.detail)}</p><div class="studio-finding-recommendation"><span>Recommended improvement</span><p>${escapeHtml(item.recommendation)}</p></div><div class="studio-improvement-plan"${previewFindingId === item.id ? '' : ' hidden'}><div><span>Guided plan</span>${projection ? `<strong>${escapeHtml(result.grade)} ${escapeHtml(result.score)} → ${escapeHtml(projection.grade)} ${escapeHtml(projection.score)}${escapeHtml(categoryProjection)}</strong>` : '<strong>Manual review</strong>'}</div><h3>${escapeHtml(improvement.title)}</h3><p>${escapeHtml(improvement.summary)}</p><ol>${improvement.changes.map(function (change) { return `<li>${escapeHtml(change)}</li>`; }).join('')}</ol></div>`;
+            const affectedAssets = (item.asset_ids || []).length;
+            const affectedConnections = (item.connection_ids || []).length;
+            const impact = [`${affectedAssets} asset${affectedAssets === 1 ? '' : 's'}`, `${affectedConnections} relationship${affectedConnections === 1 ? '' : 's'}`];
+            card.innerHTML = `<div class="studio-finding-heading"><span class="studio-finding-severity">${escapeHtml(item.severity)}</span><small>${escapeHtml(item.category)}</small></div><strong>${escapeHtml(item.title)}</strong><div class="studio-finding-impact"><i class="bi bi-bounding-box-circles" aria-hidden="true"></i><span>${escapeHtml(impact.join(' · '))}</span></div><p>${escapeHtml(item.detail)}</p><div class="studio-finding-recommendation"><span>Recommended improvement</span><p>${escapeHtml(item.recommendation)}</p></div><div class="studio-improvement-plan"${previewFindingId === item.id ? '' : ' hidden'}><div><span>Guided plan</span>${projection ? `<strong>${escapeHtml(result.grade)} ${escapeHtml(result.score)} → ${escapeHtml(projection.grade)} ${escapeHtml(projection.score)}${escapeHtml(categoryProjection)}</strong>` : '<strong>Manual review</strong>'}</div><h3>${escapeHtml(improvement.title)}</h3><p>${escapeHtml(improvement.summary)}</p><ol>${improvement.changes.map(function (change) { return `<li>${escapeHtml(change)}</li>`; }).join('')}</ol></div>`;
             const references = (providerRegistry?.content(projectProvider())?.[0]?.references || []).filter(function (reference) {
                 return (item.reference_ids || []).includes(reference.id);
             });
@@ -1688,24 +2051,23 @@ if (root && core && rules && improvements) {
             }
             const actions = document.createElement('div');
             actions.className = 'studio-finding-actions';
-            if (item.asset_ids.length) {
+            if (affectedAssets || affectedConnections) {
                 const button = document.createElement('button');
                 button.type = 'button';
                 button.className = 'studio-finding-focus';
-                button.textContent = `Show ${item.asset_ids.length} affected asset${item.asset_ids.length === 1 ? '' : 's'}`;
+                button.innerHTML = '<i class="bi bi-crosshair" aria-hidden="true"></i> Show on diagram';
                 button.addEventListener('click', function () {
-                    focusAssets(item.asset_ids);
+                    focusFinding(item);
                 });
                 actions.append(button);
             }
             const preview = document.createElement('button');
             preview.type = 'button';
             preview.className = 'studio-finding-action';
-            preview.textContent = previewFindingId === item.id ? 'Hide plan' : 'Preview plan';
+            preview.textContent = previewFindingId === item.id ? 'Hide improvement' : 'Preview improvement';
             preview.addEventListener('click', function () {
                 previewFindingId = previewFindingId === item.id ? null : item.id;
-                if (previewFindingId && improvement.asset_ids.length) focusAssets(improvement.asset_ids);
-                else renderReview();
+                renderReview();
             });
             actions.append(preview);
             if (improvement.applyable) {
@@ -1773,11 +2135,13 @@ if (root && core && rules && improvements) {
         const fullscreenMode = document.fullscreenElement === root || document.webkitFullscreenElement === root;
 
         renderViewOptions();
+        renderRailNavigation();
         root.classList.toggle('is-palette-collapsed', paletteCollapsed);
         root.classList.toggle('is-inspector-collapsed', inspectorCollapsed);
         root.classList.toggle('is-wide-screen', wideScreenMode);
         root.classList.toggle('is-fullscreen-mode', fullscreenMode);
         root.classList.toggle('is-grid-visible', gridVisible);
+        root.dataset.studioMode = activeStudioMode;
         root.style.setProperty('--studio-grid-size', `${gridSize}px`);
         root.style.setProperty('--studio-grid-major', `${gridSize * 4}px`);
         applyPanelWidths();
@@ -1794,7 +2158,6 @@ if (root && core && rules && improvements) {
         elements.inspectorCollapse.title = 'Collapse inspector';
         elements.connect.classList.toggle('is-active', connectMode);
         elements.selectTool.classList.toggle('is-active', !connectMode);
-        elements.railConnections.classList.toggle('is-active', connectMode);
         elements.connect.setAttribute('aria-pressed', String(connectMode));
         elements.wideScreen.classList.toggle('is-active', wideScreenMode);
         elements.wideScreen.setAttribute('aria-pressed', String(wideScreenMode));
@@ -1850,7 +2213,8 @@ if (root && core && rules && improvements) {
         renderToolbar();
         renderStage();
         renderInspector();
-        renderOverview();
+        if (activeStudioMode === 'review') renderOverview();
+        if (activeStudioMode === 'share') renderShareMode();
         renderReview();
         renderInventory();
         renderPackageContent();
@@ -2138,6 +2502,55 @@ if (root && core && rules && improvements) {
 
 // [studio-events] Section: Start
 
+    elements.modeDesignTab.addEventListener('click', function () { switchStudioMode('design'); });
+    elements.modeReviewTab.addEventListener('click', function () { switchStudioMode('review'); });
+    elements.modeInventoryTab.addEventListener('click', function () { switchStudioMode('inventory'); });
+    elements.modeShareTab.addEventListener('click', function () { switchStudioMode('share'); });
+    elements.modeNavigation.addEventListener('keydown', function (event) {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const modes = ['design', 'review', 'inventory', 'share'];
+        const currentIndex = modes.indexOf(activeStudioMode);
+        let targetIndex = currentIndex;
+        if (event.key === 'Home') targetIndex = 0;
+        else if (event.key === 'End') targetIndex = modes.length - 1;
+        else if (event.key === 'ArrowRight') targetIndex = (currentIndex + 1) % modes.length;
+        else targetIndex = (currentIndex - 1 + modes.length) % modes.length;
+        switchStudioMode(modes[targetIndex]);
+    });
+    elements.shareModeCreate.addEventListener('click', function () { layoutPublish?.openShare(); });
+    elements.shareModeEmbed.addEventListener('click', function () { layoutPublish?.openEmbed(); });
+    elements.shareModeDownloadPng.addEventListener('click', function () { layoutPublish?.downloadPng(); });
+    elements.shareModeExportProject.addEventListener('click', downloadProject);
+    elements.shareModeImportProject.addEventListener('click', function () { elements.importFile.click(); });
+    elements.inventorySearch.addEventListener('input', function () {
+        inventoryQuery = elements.inventorySearch.value;
+        inventoryPage = 1;
+        renderInventory();
+    });
+    elements.inventoryPageSize.addEventListener('change', function () {
+        inventoryPageSize = Number(elements.inventoryPageSize.value);
+        inventoryPage = 1;
+        renderInventory();
+    });
+    elements.inventoryTable.addEventListener('click', function (event) {
+        const button = event.target.closest('[data-inventory-sort]');
+        if (!button) return;
+        const key = button.dataset.inventorySort;
+        if (inventorySortKey === key) inventorySortDirection = inventorySortDirection === 'asc' ? 'desc' : 'asc';
+        else {
+            inventorySortKey = key;
+            inventorySortDirection = 'asc';
+        }
+        inventoryPage = 1;
+        renderInventory();
+    });
+    elements.inventoryPagination.addEventListener('click', function (event) {
+        const button = event.target.closest('[data-page]');
+        if (!button || button.disabled) return;
+        inventoryPage = Number(button.dataset.page);
+        renderInventory();
+    });
     elements.componentsTab.addEventListener('click', function () { switchLibraryTab('components'); });
     elements.templatesTab.addEventListener('click', function () { switchLibraryTab('templates'); });
     async function loadSelectedTemplatePackages() {
@@ -2164,6 +2577,16 @@ if (root && core && rules && improvements) {
     elements.propertiesTab.addEventListener('click', function () { switchInspectorTab('properties'); });
     elements.styleTab.addEventListener('click', function () { switchInspectorTab('style'); });
     elements.templateRestore.addEventListener('click', function () { elements.importFile.click(); });
+    elements.emptyTemplate.addEventListener('click', async function () {
+        paletteCollapsed = false;
+        saveLayoutPreferences();
+        await switchLibraryTab('templates');
+        renderToolbar();
+        scheduleLayoutFit();
+        elements.templateFamily.focus();
+    });
+    elements.emptyBlank.addEventListener('click', function () { elements.newProject.click(); });
+    elements.emptyRestore.addEventListener('click', function () { elements.importFile.click(); });
     elements.recoverSession.addEventListener('click', recoverPreviousSession);
     elements.discardRecovery.addEventListener('click', discardRecoveryProject);
     elements.restoreDismissed.addEventListener('click', function () {
@@ -2233,17 +2656,14 @@ if (root && core && rules && improvements) {
         saveLayoutPreferences();
         renderToolbar();
     });
-    elements.railCanvas.addEventListener('click', function () { elements.stage.focus(); });
-    elements.railProjects.addEventListener('click', function () { switchLibraryTab('templates'); });
-    elements.railFiles.addEventListener('click', function () { elements.importFile.click(); });
+    elements.railCanvas.addEventListener('click', function () {
+        activeRailSection = 'canvas';
+        renderRailNavigation();
+        elements.stage.focus();
+    });
     elements.railTemplates.addEventListener('click', function () { switchLibraryTab('templates'); });
     elements.railAssets.addEventListener('click', function () { switchLibraryTab('components'); });
-    elements.railConnections.addEventListener('click', function () { elements.connect.click(); });
     elements.railHistory.addEventListener('click', function () { switchLibraryTab('history'); });
-    elements.railSettings.addEventListener('click', function () {
-        elements.gridVisible.focus();
-        showMessage('Canvas settings are available in the bottom-right corner.');
-    });
     elements.stage.addEventListener('pointermove', function (event) {
         const bounds = elements.stage.getBoundingClientRect();
         const viewport = graphAdapter.viewport();
@@ -2282,6 +2702,7 @@ if (root && core && rules && improvements) {
         project.active_view = elements.viewSelect.value;
         selectedItems = [];
         selected = null;
+        syncInspectorToSelection();
         connectSourceId = null;
         saveProject();
         render();
@@ -2702,11 +3123,9 @@ if (root && core && rules && improvements) {
     elements.saveStylePreset.addEventListener('click', saveCurrentStylePreset);
     elements.deleteStylePreset.addEventListener('click', deleteSelectedStylePreset);
     elements.deleteItem.addEventListener('click', function () { graphAdapter.requestDelete(); });
-    elements.zoomIn.addEventListener('click', function () { graphAdapter.zoom(1.2); });
-    elements.zoomOut.addEventListener('click', function () { graphAdapter.zoom(1 / 1.2); });
-    elements.fit.addEventListener('click', function () { graphAdapter.fit(); });
     elements.reviewAction.addEventListener('click', function () {
-        byId('studio-review-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        switchStudioMode('review', { focus: false });
+        elements.modeNavigation.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
     elements.stage.addEventListener('keydown', function (event) {
         if (isTypingTarget(event.target)) return;

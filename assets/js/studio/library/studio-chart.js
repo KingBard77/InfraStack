@@ -626,6 +626,15 @@ export class StudioChart {
     }
 
     /**
+     * Resizes the active chart after its Studio mode becomes visible.
+     *
+     * @returns {void}
+     */
+    resize() {
+        if (this.chart) this.chart.resize();
+    }
+
+    /**
      * Shows or hides numeric labels drawn on chart elements.
      *
      * @param {boolean} visible Whether data labels should be visible.

@@ -64,7 +64,7 @@ const InfraStackLayoutStudioPublish = (function () {
      * @param {Function} options.getProvider Returns the current project provider.
      * @param {Function} options.getIntroduction Returns the current package introduction.
      * @param {Function} options.showMessage Displays a Studio status message.
-     * @returns {{destroy: Function}} Controller lifecycle API.
+     * @returns {{destroy: Function, openShare: Function, openEmbed: Function, downloadPng: Function, previewImage: Function}} Controller API.
      */
     function create(options) {
         const elements = collectElements();
@@ -73,6 +73,7 @@ const InfraStackLayoutStudioPublish = (function () {
         const eventOptions = { signal: eventController.signal };
         let shareImageBlob = null;
         let shareImageUrl = null;
+        let shareImageSignature = null;
 
         function project() {
             return options.getProject();
@@ -122,21 +123,32 @@ const InfraStackLayoutStudioPublish = (function () {
             return `${name || 'infrastack-architecture'}.png`;
         }
 
+        async function renderShareImage() {
+            const currentProject = project();
+            const signature = [currentProject.updated_at, currentProject.active_view, currentProject.name].join(':');
+            if (shareImageUrl && shareImageBlob && shareImageSignature === signature) {
+                return { blob: shareImageBlob, url: shareImageUrl };
+            }
+            if (!options.shareImageRenderer) throw new Error('The share image renderer is unavailable.');
+            const shareImage = await options.shareImageRenderer.create(
+                currentProject,
+                currentProject.active_view,
+                options.resolvedIconUrls,
+                options.getIntroduction()
+            );
+            if (shareImageUrl) URL.revokeObjectURL(shareImageUrl);
+            shareImageBlob = shareImage.blob;
+            shareImageUrl = shareImage.url;
+            shareImageSignature = signature;
+            return shareImage;
+        }
+
         async function openShareDialog(result) {
             const currentProject = project();
             const introduction = options.getIntroduction();
             const encodedUrl = encodeURIComponent(result.share_url);
             const encodedText = encodeURIComponent(`${currentProject.name}\n\n${introduction}`);
-            if (!options.shareImageRenderer) throw new Error('The share image renderer is unavailable.');
-            if (shareImageUrl) URL.revokeObjectURL(shareImageUrl);
-            const shareImage = await options.shareImageRenderer.create(
-                currentProject,
-                currentProject.active_view,
-                options.resolvedIconUrls,
-                introduction
-            );
-            shareImageBlob = shareImage.blob;
-            shareImageUrl = shareImage.url;
+            await renderShareImage();
             elements.shareIntroduction.textContent = introduction;
             elements.shareStatusText.textContent = 'Read-only share link ready';
             elements.sharePreview.src = shareImageUrl;
@@ -198,6 +210,21 @@ const InfraStackLayoutStudioPublish = (function () {
             }
         }
 
+        async function downloadPng() {
+            try {
+                await renderShareImage();
+                const download = document.createElement('a');
+                download.href = shareImageUrl;
+                download.download = imageFileName();
+                document.body.appendChild(download);
+                download.click();
+                download.remove();
+                options.showMessage('Architecture PNG downloaded.', 'success');
+            } catch (error) {
+                options.showMessage(error.message || 'The architecture image could not be created.', 'error');
+            }
+        }
+
         elements.share.addEventListener('click', function () { createPublishedSnapshot('share'); }, eventOptions);
         elements.embed.addEventListener('click', function () { createPublishedSnapshot('embed'); }, eventOptions);
         elements.embedCopy.addEventListener('click', function () {
@@ -239,18 +266,7 @@ const InfraStackLayoutStudioPublish = (function () {
                 options.showMessage('The image could not be copied. Download the PNG instead.', 'warning');
             }
         }, eventOptions);
-        elements.shareDownloadImage.addEventListener('click', function () {
-            if (!shareImageUrl) {
-                options.showMessage('The share image is not ready yet.', 'warning');
-                return;
-            }
-            const download = document.createElement('a');
-            download.href = shareImageUrl;
-            download.download = imageFileName();
-            document.body.appendChild(download);
-            download.click();
-            download.remove();
-        }, eventOptions);
+        elements.shareDownloadImage.addEventListener('click', downloadPng, eventOptions);
         [
             elements.embedInventory,
             elements.embedAdvisory,
@@ -283,11 +299,16 @@ const InfraStackLayoutStudioPublish = (function () {
         });
 
         return {
+            openShare: function () { return createPublishedSnapshot('share'); },
+            openEmbed: function () { return createPublishedSnapshot('embed'); },
+            downloadPng,
+            previewImage: renderShareImage,
             destroy: function () {
                 eventController.abort();
                 if (shareImageUrl) URL.revokeObjectURL(shareImageUrl);
                 shareImageUrl = null;
                 shareImageBlob = null;
+                shareImageSignature = null;
             }
         };
     }

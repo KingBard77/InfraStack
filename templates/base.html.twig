@@ -70,9 +70,11 @@
         {% endif %}
     </head>
     <body>
-        <!-- Header -->
-        {{ include('layout/header.html.twig') }}
-        <!-- End Header -->
+        {% block site_header %}
+            <!-- Header -->
+            {{ include('layout/header.html.twig') }}
+            <!-- End Header -->
+        {% endblock %}
 
         <!-- Body -->
         <main>
