@@ -53,11 +53,11 @@ The project-name control must remain a single compact editable field. Unexpected
 
 Panel collapse state and widths should persist locally. The canvas must reclaim available space when either panel collapses.
 
-Loading any released template prepares every populated projection with expanded layout spacing, clears stale bend points from the pre-layout geometry, then fits the active projection after the workspace has rendered. Fit centers the complete visible bounds rather than pinning them to the top-left. At compact zoom levels, Studio reduces icon and secondary-copy emphasis before primary asset labels. Relationship labels remain visible, may wrap, and use collision-aware clearance from source and destination boxes.
+Loading a released template normally prepares every populated projection with expanded automatic spacing, clears stale bend points from the pre-layout geometry, then fits the active projection after the workspace has rendered. A package may declare `layout_mode: preserve` for deliberate multi-boundary geometry; in that case Studio keeps the package layout and routing while still fitting the active projection. Auto Layout on a preserved project must retain the initial rows, columns, boundaries, and reading direction while correcting grid alignment, true overlaps, child containment, and connector routing. Fit centers the complete visible bounds rather than pinning them to the top-left. At compact zoom levels, Studio reduces icon and secondary-copy emphasis before primary asset labels. Relationship labels remain visible, may wrap, and use collision-aware clearance from source and destination boxes.
 
 The mode navigation behaves as one compact floating, fully rounded segmented tab dock centered near the bottom of the viewport. It stays available across Design, Review, Inventory, and Share without reserving a full navigation row. The dock and its segments size themselves to their icon, label, and optional badge instead of stretching to equal or fixed widths. It must avoid the bottom-left minimap and bottom-right canvas settings, add enough bottom clearance to scrolling content, and respect mobile safe-area insets. Each segment uses an icon and short label without a permanent subtitle. Review and Inventory may show compact nonzero count badges derived from the current normalized project state. The active segment uses the primary purple treatment, while the shared container remains visually lighter than page content. Returning to Design must restore a usable graph viewport. Opening Review must render or resize its chart after the panel becomes visible. Opening Share must generate a current static preview without publishing a snapshot. Finding and inventory actions that locate modeled objects must return to Design before selecting and focusing those objects.
 
-The Design inspector uses progressive disclosure. Asset Properties exposes Basic by default, followed by relevant Placement, Network, Resources, Image, and Advanced sections. Provider-specific fields render inside the matching section without changing normalized keys. Style remains a separate inspector tab. Relationship inspection uses Basic, Transport, and Routing sections with Basic expanded by default.
+The Design inspector uses progressive disclosure. Asset Properties exposes Basic by default, followed by relevant Placement, Network, Resources, Image, and Advanced sections. Provider-specific fields render inside the matching section without changing normalized keys. Kubernetes workloads expose image, replica, resource-limit, probe, autoscaling, disruption-budget, and service-account facts; namespaces expose network-policy and Pod Security facts; Services and storage expose their relevant type and class facts. Style remains a separate inspector tab. Relationship inspection uses Basic, Transport, and Routing sections with Basic expanded by default.
 
 ## Diagram Interaction
 
@@ -89,7 +89,10 @@ Controls must remain on or adjacent to the stage and must be wired:
 - delete
 - review
 - zoom and fit
+- reset panel layout, wide screen, and full screen in the bottom-left viewport control group
 - keyboard shortcuts
+
+Reset panel layout, wide screen, and full screen belong with the minimap viewport controls rather than the application bar. All viewport and workspace-display actions remain in one horizontal icon row.
 
 Do not display inactive decorative controls.
 
@@ -129,6 +132,12 @@ Each released architecture should provide:
 - related topics when the shared renderer supports them
 
 FAQ and references are package content, not hard-coded provider copy in the shared shell.
+
+## Studio Template Routes
+
+Every released template has a stable workspace URL at `/studio/{provider}/{templateId}`. Opening that URL renders the same Studio shell, lazily loads the matching provider package and catalogue, and creates the normalized template project. Selecting another template updates the browser URL, canonical metadata, document title, description, and visually hidden page-level `h1` without reloading or duplicating Studio.
+
+Starting a blank project, restoring exported JSON, or recovering local state returns to `/studio`. Editing a released template keeps its originating route because the URL identifies the starting template, not a public copy of the user's evolving local project. Back and forward navigation reload the corresponding released template or blank Studio state. View changes do not create additional routes.
 
 ## Share, Embed, And Watermarks
 

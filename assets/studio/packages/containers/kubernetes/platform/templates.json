@@ -1,0 +1,3729 @@
+{
+  "schema_version": "1.0",
+  "package_id": "containers-kubernetes-platform",
+  "templates": [
+    {
+      "id": "kubernetes-production-application",
+      "name": "Kubernetes Production Application",
+      "description": "Gateway, Service, replicated Deployment, restricted namespace, policies, autoscaling, disruption protection, and observability.",
+      "icon": "bi-boxes",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-kubernetes-production",
+        "name": "Kubernetes Production Application",
+        "profile": "kubernetes-platform",
+        "active_view": "overview",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "prod-cluster",
+            "catalog_id": "kubernetes-cluster",
+            "type": "kubernetes-cluster",
+            "label": "Production Kubernetes Cluster",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "Provider-neutral production cluster",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 360,
+                "y": 160,
+                "width": 1500,
+                "height": 1150,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 360,
+                "y": 160,
+                "width": 1500,
+                "height": 1150,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 360,
+                "y": 160,
+                "width": 1500,
+                "height": 1150,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 360,
+                "y": 160,
+                "width": 1500,
+                "height": 1150,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-namespace",
+            "catalog_id": "kubernetes-namespace",
+            "type": "kubernetes-namespace",
+            "label": "Production Namespace",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "prod-cluster",
+            "properties": {
+              "role": "Restricted application boundary",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true,
+              "network_policy": true,
+              "pod_security_level": "restricted"
+            },
+            "layout": {
+              "overview": {
+                "x": 450,
+                "y": 270,
+                "width": 970,
+                "height": 720,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 450,
+                "y": 270,
+                "width": 970,
+                "height": 720,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 450,
+                "y": 270,
+                "width": 970,
+                "height": 720,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 450,
+                "y": 270,
+                "width": 970,
+                "height": 720,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-pool-a",
+            "catalog_id": "kubernetes-node-pool",
+            "type": "kubernetes-node-pool",
+            "label": "Application Node Pool A",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "prod-cluster",
+            "properties": {
+              "role": "Zone A worker capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-a",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 470,
+                "y": 1020,
+                "width": 420,
+                "height": 230,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 470,
+                "y": 1020,
+                "width": 420,
+                "height": 230,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 470,
+                "y": 1020,
+                "width": 420,
+                "height": 230,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 470,
+                "y": 1020,
+                "width": 420,
+                "height": 230,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-pool-b",
+            "catalog_id": "kubernetes-node-pool",
+            "type": "kubernetes-node-pool",
+            "label": "Application Node Pool B",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "prod-cluster",
+            "properties": {
+              "role": "Zone B worker capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-b",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 930,
+                "y": 1020,
+                "width": 420,
+                "height": 230,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 930,
+                "y": 1020,
+                "width": 420,
+                "height": 230,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 930,
+                "y": 1020,
+                "width": 420,
+                "height": 230,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 930,
+                "y": 1020,
+                "width": 420,
+                "height": 230,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-users",
+            "catalog_id": null,
+            "type": "application",
+            "label": "External Users",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network"
+            ],
+            "is_container": false,
+            "parent_id": null,
+            "properties": {
+              "role": "Public application clients",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 80,
+                "y": 300,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 80,
+                "y": 300,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 80,
+                "y": 300,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 80,
+                "y": 300,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-gateway",
+            "catalog_id": "kubernetes-gateway",
+            "type": "kubernetes-gateway",
+            "label": "Application Gateway",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-namespace",
+            "properties": {
+              "role": "TLS and HTTP routing",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 520,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 520,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 520,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 520,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-service",
+            "catalog_id": "kubernetes-service",
+            "type": "kubernetes-service",
+            "label": "Frontend Service",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-namespace",
+            "properties": {
+              "role": "Internal application endpoint",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true,
+              "service_type": "ClusterIP"
+            },
+            "layout": {
+              "overview": {
+                "x": 790,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 790,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 790,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 790,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-deployment",
+            "catalog_id": "kubernetes-deployment",
+            "type": "kubernetes-deployment",
+            "label": "Frontend Deployment",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-namespace",
+            "properties": {
+              "role": "Replicated stateless application",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true,
+              "image_reference": "registry.example/frontend:1.4.0",
+              "replicas": 4,
+              "cpu": "500m request",
+              "memory": "512Mi request",
+              "cpu_limit": "1000m",
+              "memory_limit": "1Gi",
+              "readiness_probe": true,
+              "liveness_probe": true,
+              "autoscaling": true,
+              "disruption_budget": true,
+              "service_account": "frontend-runtime"
+            },
+            "layout": {
+              "overview": {
+                "x": 1060,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1060,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1060,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1060,
+                "y": 350,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-config",
+            "catalog_id": "kubernetes-configmap",
+            "type": "kubernetes-configmap",
+            "label": "Frontend ConfigMap",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-namespace",
+            "properties": {
+              "role": "Non-sensitive application configuration",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 520,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 520,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 520,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 520,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-secret",
+            "catalog_id": "kubernetes-secret",
+            "type": "kubernetes-secret",
+            "label": "External Secret Reference",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-namespace",
+            "properties": {
+              "role": "Application credential reference",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 790,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 790,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 790,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 790,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-identity",
+            "catalog_id": "kubernetes-service-account",
+            "type": "kubernetes-service-account",
+            "label": "Frontend ServiceAccount",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network"
+            ],
+            "is_container": false,
+            "parent_id": "prod-namespace",
+            "properties": {
+              "role": "Dedicated workload identity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1060,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1060,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1060,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1060,
+                "y": 550,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-policy",
+            "catalog_id": "kubernetes-network-policy",
+            "type": "kubernetes-network-policy",
+            "label": "Default Deny NetworkPolicy",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-namespace",
+            "properties": {
+              "role": "Default-deny with explicit application traffic",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 520,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 520,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 520,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 520,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-hpa",
+            "catalog_id": "kubernetes-hpa",
+            "type": "kubernetes-hpa",
+            "label": "Frontend HPA",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-namespace",
+            "properties": {
+              "role": "CPU and request-rate scaling",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 790,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 790,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 790,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 790,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-pdb",
+            "catalog_id": "kubernetes-pdb",
+            "type": "kubernetes-pdb",
+            "label": "Frontend PDB",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-namespace",
+            "properties": {
+              "role": "Minimum available replicas during maintenance",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 1060,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1060,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1060,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1060,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-dns",
+            "catalog_id": "kubernetes-dns",
+            "type": "kubernetes-dns",
+            "label": "Cluster DNS",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-cluster",
+            "properties": {
+              "role": "Service discovery",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1490,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1490,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1490,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1490,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-metrics",
+            "catalog_id": "kubernetes-monitoring",
+            "type": "kubernetes-monitoring",
+            "label": "Metrics and Alerts",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-cluster",
+            "properties": {
+              "role": "Platform and workload telemetry",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1490,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1490,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1490,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1490,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-logging",
+            "catalog_id": "kubernetes-logging",
+            "type": "kubernetes-logging",
+            "label": "Central Logging",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-cluster",
+            "properties": {
+              "role": "Central workload and audit logs",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1490,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1490,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1490,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1490,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "prod-users-gateway",
+            "source": "prod-users",
+            "target": "prod-gateway",
+            "type": "network",
+            "label": "HTTPS application traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "prod-gateway-service",
+            "source": "prod-gateway",
+            "target": "prod-service",
+            "type": "network",
+            "label": "Gateway route",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTP",
+            "bandwidth": ""
+          },
+          {
+            "id": "prod-service-deployment",
+            "source": "prod-service",
+            "target": "prod-deployment",
+            "type": "network",
+            "label": "Service endpoints",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTP",
+            "bandwidth": ""
+          },
+          {
+            "id": "prod-config-deployment",
+            "source": "prod-config",
+            "target": "prod-deployment",
+            "type": "administration",
+            "label": "Application configuration",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "prod-secret-deployment",
+            "source": "prod-secret",
+            "target": "prod-deployment",
+            "type": "trust",
+            "label": "Secret volume reference",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "prod-identity-deployment",
+            "source": "prod-identity",
+            "target": "prod-deployment",
+            "type": "trust",
+            "label": "Workload identity",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "prod-policy-deployment",
+            "source": "prod-policy",
+            "target": "prod-deployment",
+            "type": "trust",
+            "label": "Allowed traffic policy",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "prod-hpa-deployment",
+            "source": "prod-hpa",
+            "target": "prod-deployment",
+            "type": "administration",
+            "label": "Replica scaling",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "prod-pdb-deployment",
+            "source": "prod-pdb",
+            "target": "prod-deployment",
+            "type": "administration",
+            "label": "Disruption protection",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "prod-deployment-dns",
+            "source": "prod-deployment",
+            "target": "prod-dns",
+            "type": "network",
+            "label": "Service discovery",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS",
+            "bandwidth": ""
+          },
+          {
+            "id": "prod-deployment-metrics",
+            "source": "prod-deployment",
+            "target": "prod-metrics",
+            "type": "administration",
+            "label": "Metrics and health",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "prod-deployment-logging",
+            "source": "prod-deployment",
+            "target": "prod-logging",
+            "type": "administration",
+            "label": "Application logs",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "layout_mode": "preserve"
+      },
+      "layout_mode": "preserve"
+    },
+    {
+      "id": "kubernetes-stateful-application",
+      "name": "Kubernetes Stateful Application",
+      "description": "StatefulSet, headless Service, persistent storage, backup, disruption protection, policies, and database observability.",
+      "icon": "bi-database",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-kubernetes-stateful",
+        "name": "Kubernetes Stateful Application",
+        "profile": "kubernetes-platform",
+        "active_view": "availability",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "state-cluster",
+            "catalog_id": "kubernetes-cluster",
+            "type": "kubernetes-cluster",
+            "label": "Stateful Kubernetes Cluster",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "Multi-zone stateful platform",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 320,
+                "y": 140,
+                "width": 1580,
+                "height": 1250,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 320,
+                "y": 140,
+                "width": 1580,
+                "height": 1250,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 320,
+                "y": 140,
+                "width": 1580,
+                "height": 1250,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 320,
+                "y": 140,
+                "width": 1580,
+                "height": 1250,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-namespace",
+            "catalog_id": "kubernetes-namespace",
+            "type": "kubernetes-namespace",
+            "label": "Data Services Namespace",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "state-cluster",
+            "properties": {
+              "role": "Restricted stateful workload boundary",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true,
+              "network_policy": true,
+              "pod_security_level": "restricted"
+            },
+            "layout": {
+              "overview": {
+                "x": 430,
+                "y": 250,
+                "width": 1040,
+                "height": 820,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 430,
+                "y": 250,
+                "width": 1040,
+                "height": 820,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 430,
+                "y": 250,
+                "width": 1040,
+                "height": 820,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 430,
+                "y": 250,
+                "width": 1040,
+                "height": 820,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-pool-a",
+            "catalog_id": "kubernetes-node-pool",
+            "type": "kubernetes-node-pool",
+            "label": "Stateful Node Pool A",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "state-cluster",
+            "properties": {
+              "role": "Zone A storage-aware capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-a",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 470,
+                "y": 1090,
+                "width": 430,
+                "height": 220,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 470,
+                "y": 1090,
+                "width": 430,
+                "height": 220,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 470,
+                "y": 1090,
+                "width": 430,
+                "height": 220,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 470,
+                "y": 1090,
+                "width": 430,
+                "height": 220,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-pool-b",
+            "catalog_id": "kubernetes-node-pool",
+            "type": "kubernetes-node-pool",
+            "label": "Stateful Node Pool B",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "state-cluster",
+            "properties": {
+              "role": "Zone B storage-aware capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-b",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 950,
+                "y": 1090,
+                "width": 430,
+                "height": 220,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 950,
+                "y": 1090,
+                "width": 430,
+                "height": 220,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 950,
+                "y": 1090,
+                "width": 430,
+                "height": 220,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 950,
+                "y": 1090,
+                "width": 430,
+                "height": 220,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-gateway",
+            "catalog_id": "kubernetes-gateway",
+            "type": "kubernetes-gateway",
+            "label": "Internal Gateway",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-namespace",
+            "properties": {
+              "role": "Private administrative entry",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 500,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 500,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 500,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 500,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-service",
+            "catalog_id": "kubernetes-service",
+            "type": "kubernetes-service",
+            "label": "Headless Service",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-namespace",
+            "properties": {
+              "role": "Stable StatefulSet discovery",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true,
+              "service_type": "Headless"
+            },
+            "layout": {
+              "overview": {
+                "x": 780,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 780,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 780,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 780,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-workload",
+            "catalog_id": "kubernetes-statefulset",
+            "type": "kubernetes-statefulset",
+            "label": "PostgreSQL StatefulSet",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-namespace",
+            "properties": {
+              "role": "Replicated stateful database",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true,
+              "image_reference": "registry.example/postgresql:16.4",
+              "replicas": 3,
+              "cpu": "1000m request",
+              "memory": "2Gi request",
+              "cpu_limit": "2000m",
+              "memory_limit": "4Gi",
+              "readiness_probe": true,
+              "liveness_probe": true,
+              "autoscaling": false,
+              "disruption_budget": true,
+              "service_account": "postgres-runtime",
+              "storage": "300Gi per replica",
+              "storage_class": "fast-encrypted"
+            },
+            "layout": {
+              "overview": {
+                "x": 1060,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1060,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1060,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1060,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-config",
+            "catalog_id": "kubernetes-configmap",
+            "type": "kubernetes-configmap",
+            "label": "Database ConfigMap",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-namespace",
+            "properties": {
+              "role": "Database runtime configuration",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 500,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 500,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 500,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 500,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-secret",
+            "catalog_id": "kubernetes-secret",
+            "type": "kubernetes-secret",
+            "label": "Database Secret Reference",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-namespace",
+            "properties": {
+              "role": "Database credentials reference",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 780,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 780,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 780,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 780,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-identity",
+            "catalog_id": "kubernetes-service-account",
+            "type": "kubernetes-service-account",
+            "label": "Database ServiceAccount",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network"
+            ],
+            "is_container": false,
+            "parent_id": "state-namespace",
+            "properties": {
+              "role": "Dedicated database identity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1060,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1060,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1060,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1060,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-pvc",
+            "catalog_id": "kubernetes-pvc",
+            "type": "kubernetes-pvc",
+            "label": "Database PVC",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-namespace",
+            "properties": {
+              "role": "Per-replica storage request",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": true,
+              "redundant": true,
+              "critical": true,
+              "storage": "300Gi",
+              "storage_class": "fast-encrypted"
+            },
+            "layout": {
+              "overview": {
+                "x": 500,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 500,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 500,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 500,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-pv",
+            "catalog_id": "kubernetes-pv",
+            "type": "kubernetes-pv",
+            "label": "Replicated PersistentVolume",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-cluster",
+            "properties": {
+              "role": "Zone-aware persistent storage",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true,
+              "storage": "900Gi",
+              "storage_class": "fast-encrypted"
+            },
+            "layout": {
+              "overview": {
+                "x": 1530,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1530,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1530,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1530,
+                "y": 330,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-storage-class",
+            "catalog_id": "kubernetes-storage-class",
+            "type": "kubernetes-storage-class",
+            "label": "Encrypted StorageClass",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-cluster",
+            "properties": {
+              "role": "Dynamic encrypted volume provisioning",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true,
+              "storage_class": "fast-encrypted"
+            },
+            "layout": {
+              "overview": {
+                "x": 1530,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1530,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1530,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1530,
+                "y": 540,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-pdb",
+            "catalog_id": "kubernetes-pdb",
+            "type": "kubernetes-pdb",
+            "label": "Database PDB",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-namespace",
+            "properties": {
+              "role": "Two replicas remain available",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": false
+            },
+            "layout": {
+              "overview": {
+                "x": 780,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 780,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 780,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 780,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-policy",
+            "catalog_id": "kubernetes-network-policy",
+            "type": "kubernetes-network-policy",
+            "label": "Database NetworkPolicy",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-namespace",
+            "properties": {
+              "role": "Only approved application and admin traffic",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1060,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1060,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1060,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1060,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-metrics",
+            "catalog_id": "kubernetes-monitoring",
+            "type": "kubernetes-monitoring",
+            "label": "Database Metrics and Alerts",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-cluster",
+            "properties": {
+              "role": "Database and storage telemetry",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1530,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1530,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1530,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1530,
+                "y": 750,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-logging",
+            "catalog_id": "kubernetes-logging",
+            "type": "kubernetes-logging",
+            "label": "Database Central Logging",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-cluster",
+            "properties": {
+              "role": "Database and audit logs",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1530,
+                "y": 950,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1530,
+                "y": 950,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1530,
+                "y": 950,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1530,
+                "y": 950,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "state-gateway-service",
+            "source": "state-gateway",
+            "target": "state-service",
+            "type": "network",
+            "label": "Private database route",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TLS",
+            "bandwidth": ""
+          },
+          {
+            "id": "state-service-workload",
+            "source": "state-service",
+            "target": "state-workload",
+            "type": "network",
+            "label": "Stable database endpoints",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TCP",
+            "bandwidth": ""
+          },
+          {
+            "id": "state-config-workload",
+            "source": "state-config",
+            "target": "state-workload",
+            "type": "administration",
+            "label": "Database configuration",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "state-secret-workload",
+            "source": "state-secret",
+            "target": "state-workload",
+            "type": "trust",
+            "label": "Credential reference",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "state-identity-workload",
+            "source": "state-identity",
+            "target": "state-workload",
+            "type": "trust",
+            "label": "Workload identity",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "state-policy-workload",
+            "source": "state-policy",
+            "target": "state-workload",
+            "type": "trust",
+            "label": "Database traffic policy",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "state-pdb-workload",
+            "source": "state-pdb",
+            "target": "state-workload",
+            "type": "administration",
+            "label": "Disruption protection",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "state-workload-pvc",
+            "source": "state-workload",
+            "target": "state-pvc",
+            "type": "network",
+            "label": "Persistent volume claims",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "state-pvc-pv",
+            "source": "state-pvc",
+            "target": "state-pv",
+            "type": "network",
+            "label": "Bound persistent volumes",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "state-pv-class",
+            "source": "state-pv",
+            "target": "state-storage-class",
+            "type": "administration",
+            "label": "Dynamic provisioning policy",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "state-workload-metrics",
+            "source": "state-workload",
+            "target": "state-metrics",
+            "type": "administration",
+            "label": "Database metrics",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "state-workload-logging",
+            "source": "state-workload",
+            "target": "state-logging",
+            "type": "administration",
+            "label": "Database and audit logs",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "layout_mode": "preserve"
+      },
+      "layout_mode": "preserve"
+    },
+    {
+      "id": "kubernetes-cluster-foundation",
+      "name": "Kubernetes Cluster Foundation",
+      "description": "Highly available control plane, worker pools, node agents, runtime, CNI, CSI, DNS, monitoring, and centralized logging.",
+      "icon": "bi-diagram-3",
+      "project": {
+        "tool": "infrastack-studio",
+        "version": "0.5.0",
+        "project_id": "project-kubernetes-foundation",
+        "name": "Kubernetes Cluster Foundation",
+        "profile": "kubernetes-platform",
+        "active_view": "availability",
+        "canvas": {
+          "width": 2400,
+          "height": 1400
+        },
+        "viewports": {
+          "overview": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "physical": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "network": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          },
+          "availability": {
+            "zoom": 0.75,
+            "pan_x": 24,
+            "pan_y": 24
+          }
+        },
+        "assets": [
+          {
+            "id": "foundation-cluster",
+            "catalog_id": "kubernetes-cluster",
+            "type": "kubernetes-cluster",
+            "label": "Kubernetes Cluster Foundation",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": null,
+            "properties": {
+              "role": "Provider-neutral cluster foundation",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 300,
+                "y": 120,
+                "width": 1660,
+                "height": 1260,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 300,
+                "y": 120,
+                "width": 1660,
+                "height": 1260,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 300,
+                "y": 120,
+                "width": 1660,
+                "height": 1260,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 300,
+                "y": 120,
+                "width": 1660,
+                "height": 1260,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-control",
+            "catalog_id": "kubernetes-control-plane",
+            "type": "kubernetes-control-plane",
+            "label": "Highly Available Control Plane",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Three control-plane replicas",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 430,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 430,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 430,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 430,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-api",
+            "catalog_id": "kubernetes-api-server",
+            "type": "kubernetes-api-server",
+            "label": "API Server",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Authenticated Kubernetes API",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 700,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 700,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 700,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 700,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-etcd",
+            "catalog_id": "kubernetes-etcd",
+            "type": "kubernetes-etcd",
+            "label": "etcd Cluster",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Three-member cluster state store",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true,
+              "storage": "Encrypted SSD"
+            },
+            "layout": {
+              "overview": {
+                "x": 970,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 970,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 970,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 970,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-scheduler",
+            "catalog_id": "kubernetes-scheduler",
+            "type": "kubernetes-scheduler",
+            "label": "Scheduler",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Pod placement decisions",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1240,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1240,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1240,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1240,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-controllers",
+            "catalog_id": "kubernetes-controller-manager",
+            "type": "kubernetes-controller-manager",
+            "label": "Controller Manager",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Built-in reconciliation controllers",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1510,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1510,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1510,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1510,
+                "y": 230,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-pool-a",
+            "catalog_id": "kubernetes-node-pool",
+            "type": "kubernetes-node-pool",
+            "label": "Worker Pool A",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Zone A worker capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-a",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 430,
+                "y": 480,
+                "width": 600,
+                "height": 360,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 430,
+                "y": 480,
+                "width": 600,
+                "height": 360,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 430,
+                "y": 480,
+                "width": 600,
+                "height": 360,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 430,
+                "y": 480,
+                "width": 600,
+                "height": 360,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-pool-b",
+            "catalog_id": "kubernetes-node-pool",
+            "type": "kubernetes-node-pool",
+            "label": "Worker Pool B",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Zone B worker capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-b",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1100,
+                "y": 480,
+                "width": 600,
+                "height": 360,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1100,
+                "y": 480,
+                "width": 600,
+                "height": 360,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1100,
+                "y": 480,
+                "width": 600,
+                "height": 360,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1100,
+                "y": 480,
+                "width": 600,
+                "height": 360,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-node-a",
+            "catalog_id": "kubernetes-worker-node",
+            "type": "kubernetes-worker-node",
+            "label": "Worker Node A",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-pool-a",
+            "properties": {
+              "role": "Container workload capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-a",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": true,
+              "cpu": "16 vCPU",
+              "memory": "64Gi"
+            },
+            "layout": {
+              "overview": {
+                "x": 500,
+                "y": 570,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 500,
+                "y": 570,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 500,
+                "y": 570,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 500,
+                "y": 570,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-node-b",
+            "catalog_id": "kubernetes-worker-node",
+            "type": "kubernetes-worker-node",
+            "label": "Worker Node B",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-pool-b",
+            "properties": {
+              "role": "Container workload capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-b",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": false,
+              "critical": true,
+              "cpu": "16 vCPU",
+              "memory": "64Gi"
+            },
+            "layout": {
+              "overview": {
+                "x": 1170,
+                "y": 570,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1170,
+                "y": 570,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1170,
+                "y": 570,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1170,
+                "y": 570,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-kubelet",
+            "catalog_id": "kubernetes-kubelet",
+            "type": "kubernetes-kubelet",
+            "label": "kubelet Agents",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Node workload lifecycle",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 430,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 430,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 430,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 430,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-runtime",
+            "catalog_id": "kubernetes-container-runtime",
+            "type": "kubernetes-container-runtime",
+            "label": "containerd Runtime",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "CRI-compatible container runtime",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 700,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 700,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 700,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 700,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-cni",
+            "catalog_id": "kubernetes-cni",
+            "type": "kubernetes-cni",
+            "label": "CNI Plugin",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Pod addressing and network policy enforcement",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 970,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 970,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 970,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 970,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-csi",
+            "catalog_id": "kubernetes-csi",
+            "type": "kubernetes-csi",
+            "label": "CSI Driver",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Persistent volume integration",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1240,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1240,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1240,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1240,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-dns",
+            "catalog_id": "kubernetes-dns",
+            "type": "kubernetes-dns",
+            "label": "Cluster DNS",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Service discovery",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1510,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1510,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1510,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1510,
+                "y": 890,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-system-ns",
+            "catalog_id": "kubernetes-namespace",
+            "type": "kubernetes-namespace",
+            "label": "Platform Services Namespace",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "network",
+              "availability"
+            ],
+            "is_container": true,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Restricted platform service boundary",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": false,
+              "backup": false,
+              "redundant": false,
+              "critical": true,
+              "network_policy": true,
+              "pod_security_level": "restricted"
+            },
+            "layout": {
+              "overview": {
+                "x": 430,
+                "y": 1070,
+                "width": 500,
+                "height": 190,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 430,
+                "y": 1070,
+                "width": 500,
+                "height": 190,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 430,
+                "y": 1070,
+                "width": 500,
+                "height": 190,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 430,
+                "y": 1070,
+                "width": 500,
+                "height": 190,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-metrics",
+            "catalog_id": "kubernetes-monitoring",
+            "type": "kubernetes-monitoring",
+            "label": "Platform Metrics and Alerts",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Control plane, node, and workload telemetry",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": false,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1100,
+                "y": 1080,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1100,
+                "y": 1080,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1100,
+                "y": 1080,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1100,
+                "y": 1080,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "foundation-logging",
+            "catalog_id": "kubernetes-logging",
+            "type": "kubernetes-logging",
+            "label": "Platform Central Logging",
+            "category": "Kubernetes",
+            "icon": "",
+            "views": [
+              "overview",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "foundation-cluster",
+            "properties": {
+              "role": "Control plane, audit, and workload logs",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "",
+              "owner": "Platform Engineering",
+              "monitoring": true,
+              "backup": true,
+              "redundant": true,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1380,
+                "y": 1080,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1380,
+                "y": 1080,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1380,
+                "y": 1080,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1380,
+                "y": 1080,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "id": "foundation-control-api",
+            "source": "foundation-control",
+            "target": "foundation-api",
+            "type": "administration",
+            "label": "Control plane API",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-api-etcd",
+            "source": "foundation-api",
+            "target": "foundation-etcd",
+            "type": "trust",
+            "label": "Cluster state transactions",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "TLS",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-scheduler-api",
+            "source": "foundation-scheduler",
+            "target": "foundation-api",
+            "type": "administration",
+            "label": "Scheduling API",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-controller-api",
+            "source": "foundation-controllers",
+            "target": "foundation-api",
+            "type": "administration",
+            "label": "Controller API",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-api-node-a",
+            "source": "foundation-api",
+            "target": "foundation-node-a",
+            "type": "administration",
+            "label": "Node API traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-api-node-b",
+            "source": "foundation-api",
+            "target": "foundation-node-b",
+            "type": "administration",
+            "label": "Node API traffic",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "HTTPS",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-kubelet-node-a",
+            "source": "foundation-kubelet",
+            "target": "foundation-node-a",
+            "type": "administration",
+            "label": "Node lifecycle agent",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-kubelet-node-b",
+            "source": "foundation-kubelet",
+            "target": "foundation-node-b",
+            "type": "administration",
+            "label": "Node lifecycle agent",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-runtime-node-a",
+            "source": "foundation-runtime",
+            "target": "foundation-node-a",
+            "type": "administration",
+            "label": "Container execution",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-runtime-node-b",
+            "source": "foundation-runtime",
+            "target": "foundation-node-b",
+            "type": "administration",
+            "label": "Container execution",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-cni-node-a",
+            "source": "foundation-cni",
+            "target": "foundation-node-a",
+            "type": "network",
+            "label": "Pod networking",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-cni-node-b",
+            "source": "foundation-cni",
+            "target": "foundation-node-b",
+            "type": "network",
+            "label": "Pod networking",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-csi-node-a",
+            "source": "foundation-csi",
+            "target": "foundation-node-a",
+            "type": "administration",
+            "label": "Volume operations",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-csi-node-b",
+            "source": "foundation-csi",
+            "target": "foundation-node-b",
+            "type": "administration",
+            "label": "Volume operations",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-dns-api",
+            "source": "foundation-dns",
+            "target": "foundation-api",
+            "type": "network",
+            "label": "Service discovery records",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "DNS",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-metrics-control",
+            "source": "foundation-control",
+            "target": "foundation-metrics",
+            "type": "administration",
+            "label": "Control plane metrics",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          },
+          {
+            "id": "foundation-logging-control",
+            "source": "foundation-control",
+            "target": "foundation-logging",
+            "type": "administration",
+            "label": "Audit and control plane logs",
+            "bidirectional": false,
+            "direction": "source-to-target",
+            "protocol": "",
+            "bandwidth": ""
+          }
+        ],
+        "accepted_risks": [],
+        "layout_mode": "preserve"
+      },
+      "layout_mode": "preserve"
+    }
+  ]
+}

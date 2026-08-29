@@ -404,6 +404,175 @@ const InfraStackStudioRules = (function () {
         });
     }
 
+    function addKubernetesFindings(assets, connections, assetMap, findings) {
+        const kubernetesAssets = assets.filter(function (asset) {
+            return asset.properties.provider === 'kubernetes'
+                || String(asset.catalog_id || '').startsWith('kubernetes-')
+                || asset.type.startsWith('kubernetes-');
+        });
+        if (!kubernetesAssets.length) return;
+        const workloadTypes = new Set([
+            'kubernetes-pod', 'kubernetes-deployment', 'kubernetes-statefulset',
+            'kubernetes-daemonset', 'kubernetes-job', 'kubernetes-cronjob'
+        ]);
+        const scalableTypes = new Set(['kubernetes-deployment', 'kubernetes-statefulset']);
+        const workloads = kubernetesAssets.filter(function (asset) { return workloadTypes.has(asset.type); });
+        workloads.forEach(function (asset) {
+            if (asset.properties.critical && scalableTypes.has(asset.type) && asset.properties.replicas < 2) {
+                findings.push(finding(
+                    `kubernetes-replicas-${asset.id}`,
+                    'high',
+                    'Availability',
+                    `${asset.label} has fewer than two replicas`,
+                    'The workload is marked critical but its modeled replica count does not tolerate one Pod becoming unavailable.',
+                    'Use at least two replicas and distribute them across independent failure domains where the workload permits it.',
+                    [asset.id]
+                ));
+            }
+            if (!asset.properties.cpu || !asset.properties.memory || !asset.properties.cpu_limit || !asset.properties.memory_limit) {
+                findings.push(finding(
+                    `kubernetes-resources-${asset.id}`,
+                    'medium',
+                    'Workload',
+                    `${asset.label} has incomplete resource controls`,
+                    'CPU or memory requests and limits are not fully documented for this workload.',
+                    'Document CPU and memory requests and limits so scheduling and resource isolation can be reviewed.',
+                    [asset.id]
+                ));
+            }
+            if (scalableTypes.has(asset.type) && (!asset.properties.readiness_probe || !asset.properties.liveness_probe)) {
+                findings.push(finding(
+                    `kubernetes-probes-${asset.id}`,
+                    'medium',
+                    'Workload',
+                    `${asset.label} has incomplete health probes`,
+                    'Readiness or liveness behavior is not fully documented.',
+                    'Model separate readiness and liveness probes that reflect whether the workload can receive traffic and make progress.',
+                    [asset.id]
+                ));
+            }
+            if (asset.properties.critical && asset.type === 'kubernetes-deployment' && !asset.properties.autoscaling) {
+                findings.push(finding(
+                    `kubernetes-autoscaling-${asset.id}`,
+                    'medium',
+                    'Availability',
+                    `${asset.label} has no autoscaling fact`,
+                    'The critical stateless workload has no modeled horizontal scaling control.',
+                    'Document a HorizontalPodAutoscaler or record why fixed capacity is intentional.',
+                    [asset.id]
+                ));
+            }
+            if (asset.properties.critical && scalableTypes.has(asset.type) && !asset.properties.disruption_budget) {
+                findings.push(finding(
+                    `kubernetes-pdb-${asset.id}`,
+                    'medium',
+                    'Availability',
+                    `${asset.label} has no disruption budget`,
+                    'Voluntary disruption tolerance is not documented for this critical workload.',
+                    'Add a PodDisruptionBudget that reflects the workload replica count and maintenance requirements.',
+                    [asset.id]
+                ));
+            }
+            if (!asset.properties.service_account || asset.properties.service_account.toLowerCase() === 'default') {
+                findings.push(finding(
+                    `kubernetes-service-account-${asset.id}`,
+                    'medium',
+                    'Security',
+                    `${asset.label} has no dedicated service account`,
+                    'The workload uses the default identity or has no workload identity documented.',
+                    'Assign a dedicated ServiceAccount and bind only the API permissions required by this workload.',
+                    [asset.id]
+                ));
+            }
+        });
+        kubernetesAssets.filter(function (asset) { return asset.type === 'kubernetes-namespace'; }).forEach(function (namespace) {
+            if (!namespace.properties.network_policy) {
+                findings.push(finding(
+                    `kubernetes-network-policy-${namespace.id}`,
+                    'high',
+                    'Network',
+                    `${namespace.label} has no default network policy`,
+                    'The namespace has no modeled default traffic isolation.',
+                    'Document default-deny ingress and egress policies, then add explicit workload traffic allowances.',
+                    [namespace.id]
+                ));
+            }
+            if (!['baseline', 'restricted'].includes(namespace.properties.pod_security_level)) {
+                findings.push(finding(
+                    `kubernetes-pod-security-${namespace.id}`,
+                    'high',
+                    'Security',
+                    `${namespace.label} has no protective Pod Security level`,
+                    'The namespace is not modeled with the Baseline or Restricted Pod Security standard.',
+                    'Apply and document an appropriate Baseline or Restricted Pod Security level.',
+                    [namespace.id]
+                ));
+            }
+        });
+        kubernetesAssets.filter(function (asset) { return asset.type === 'kubernetes-service'; }).forEach(function (service) {
+            if (!['NodePort', 'LoadBalancer'].includes(service.properties.service_type)) return;
+            const related = connectionsFor(connections, service.id);
+            const hasGateway = related.some(function (connection) {
+                const otherId = connection.source === service.id ? connection.target : connection.source;
+                const other = assetMap.get(otherId);
+                return other && ['kubernetes-gateway', 'kubernetes-ingress'].includes(other.type);
+            });
+            if (!hasGateway) {
+                findings.push(finding(
+                    `kubernetes-public-service-${service.id}`,
+                    'high',
+                    'Network',
+                    `${service.label} exposes traffic without a modeled gateway`,
+                    `The ${service.properties.service_type} Service has no direct relationship to a Gateway or Ingress control.`,
+                    'Route public application traffic through a documented Gateway or Ingress implementation and its security controls.',
+                    [service.id]
+                ));
+            }
+        });
+        kubernetesAssets.filter(function (asset) { return asset.type === 'kubernetes-statefulset'; }).forEach(function (statefulSet) {
+            const hasStorage = connectionsFor(connections, statefulSet.id).some(function (connection) {
+                const otherId = connection.source === statefulSet.id ? connection.target : connection.source;
+                const other = assetMap.get(otherId);
+                return other && ['kubernetes-pvc', 'kubernetes-pv'].includes(other.type);
+            });
+            if (!hasStorage) {
+                findings.push(finding(
+                    `kubernetes-stateful-storage-${statefulSet.id}`,
+                    'high',
+                    'Availability',
+                    `${statefulSet.label} has no persistent storage relationship`,
+                    'The StatefulSet has no modeled PersistentVolumeClaim or PersistentVolume dependency.',
+                    'Connect the StatefulSet to its persistent storage and document the StorageClass and failure-domain behavior.',
+                    [statefulSet.id]
+                ));
+            }
+            if (statefulSet.properties.critical && !statefulSet.properties.backup) {
+                findings.push(finding(
+                    `kubernetes-stateful-backup-${statefulSet.id}`,
+                    'high',
+                    'Operations',
+                    `${statefulSet.label} has no backup fact`,
+                    'The critical stateful workload has no modeled backup and restore coverage.',
+                    'Document backup scope, retention, restore testing, and ownership for the persistent data.',
+                    [statefulSet.id]
+                ));
+            }
+        });
+        const hasMetrics = kubernetesAssets.some(function (asset) { return asset.type === 'kubernetes-monitoring'; });
+        const hasLogging = kubernetesAssets.some(function (asset) { return asset.type === 'kubernetes-logging'; });
+        if (!hasMetrics || !hasLogging) {
+            findings.push(finding(
+                'kubernetes-observability-missing',
+                'medium',
+                'Operations',
+                'Kubernetes observability coverage is incomplete',
+                `${hasMetrics ? 'Central logging' : hasLogging ? 'Metrics and alerting' : 'Metrics, alerting, and central logging'} is not modeled.`,
+                'Add cluster and workload metrics, alerts, and centralized logs with clear operational ownership.',
+                kubernetesAssets.filter(function (asset) { return asset.type === 'kubernetes-cluster'; }).map(function (asset) { return asset.id; })
+            ));
+        }
+    }
+
     function categoryScores(findings, resultDefinition) {
         const configuredWeights = {};
         (resultDefinition?.categories || []).forEach(function (category) {
@@ -437,6 +606,18 @@ const InfraStackStudioRules = (function () {
         if (findingId.startsWith('monitoring-')) return 'critical_asset_without_monitoring';
         if (findingId.startsWith('backup-')) return 'critical_stateful_asset_without_backup';
         if (findingId.startsWith('generic-link-')) return 'unlabeled_network_relationship';
+        if (findingId.startsWith('kubernetes-replicas-')) return 'kubernetes_critical_workload_single_replica';
+        if (findingId.startsWith('kubernetes-resources-')) return 'kubernetes_workload_without_resources';
+        if (findingId.startsWith('kubernetes-probes-')) return 'kubernetes_workload_without_probes';
+        if (findingId.startsWith('kubernetes-autoscaling-')) return 'kubernetes_critical_workload_without_autoscaling';
+        if (findingId.startsWith('kubernetes-pdb-')) return 'kubernetes_critical_workload_without_pdb';
+        if (findingId.startsWith('kubernetes-service-account-')) return 'kubernetes_workload_without_service_account';
+        if (findingId.startsWith('kubernetes-network-policy-')) return 'kubernetes_namespace_without_network_policy';
+        if (findingId.startsWith('kubernetes-pod-security-')) return 'kubernetes_namespace_without_pod_security';
+        if (findingId.startsWith('kubernetes-public-service-')) return 'kubernetes_public_service_without_gateway';
+        if (findingId.startsWith('kubernetes-stateful-storage-')) return 'kubernetes_statefulset_without_storage';
+        if (findingId.startsWith('kubernetes-stateful-backup-')) return 'kubernetes_statefulset_without_backup';
+        if (findingId === 'kubernetes-observability-missing') return 'kubernetes_cluster_without_observability';
         return null;
     }
 
@@ -468,6 +649,14 @@ const InfraStackStudioRules = (function () {
             if (['vpc', 'subnet'].includes(asset.type)) applicableFacts.push(Boolean(asset.properties.address));
             if (asset.type === 'subnet') applicableFacts.push(Boolean(asset.properties.subnet_type), Boolean(asset.properties.route_table));
             if (asset.properties.critical) applicableFacts.push(typeof asset.properties.monitoring === 'boolean');
+            if (asset.type.startsWith('kubernetes-')) {
+                if (/pod|deployment|statefulset|daemonset|job|cronjob/.test(asset.type)) {
+                    applicableFacts.push(Boolean(asset.properties.image_reference), Boolean(asset.properties.cpu), Boolean(asset.properties.memory));
+                }
+                if (asset.type === 'kubernetes-namespace') {
+                    applicableFacts.push(Boolean(asset.properties.pod_security_level), typeof asset.properties.network_policy === 'boolean');
+                }
+            }
         });
         connections.forEach(function (connection) {
             applicableFacts.push(Boolean(connection.source), Boolean(connection.target), Boolean(connection.type), Boolean(connection.label));
@@ -505,6 +694,7 @@ const InfraStackStudioRules = (function () {
         addSecurityFindings(assets, connections, assetMap, findings, resultDefinition);
         addAvailabilityFindings(assets, connections, assetMap, findings, resultDefinition);
         addOperationsFindings(assets, connections, findings);
+        addKubernetesFindings(assets, connections, assetMap, findings);
 
         const configuredFindings = applyResultRules(findings, resultDefinition);
         const scores = categoryScores(configuredFindings, resultDefinition);

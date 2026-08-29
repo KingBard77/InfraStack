@@ -501,6 +501,10 @@ body.is-studio-wide-screen { overflow: hidden; }
 .studio-canvas-controls { position: absolute; z-index: 20; bottom: 12px; left: 12px; display: flex; align-items: center; gap: 2px; border: 1px solid #d9e1ec; border-radius: 8px; padding: 4px; background: rgba(255, 255, 255, .97); box-shadow: 0 8px 24px rgba(23, 32, 51, .1); }
 .studio-canvas-controls button { display: grid; width: 32px; height: 32px; place-items: center; border: 0; border-radius: 6px; cursor: pointer; }
 .studio-canvas-controls span { min-width: 48px; color: #172033; font-size: .67rem; font-weight: 700; text-align: center; }
+.studio-canvas-controls .studio-canvas-control-divider { width: 1px; min-width: 1px; height: 22px; margin-inline: 3px; background: #d9e1ec; }
+.studio-canvas-controls .studio-display-button { border: 0 !important; background: transparent !important; }
+.studio-canvas-controls .studio-display-button:hover { background: #eef2f7 !important; }
+.studio-canvas-controls .studio-display-button.is-active { background: #f0edff !important; color: #4d35df !important; }
 .studio-canvas-settings { position: absolute; z-index: 20; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 14px; border: 1px solid #d9e1ec; border-radius: 8px; padding: 9px 12px; background: rgba(255, 255, 255, .97); color: #475467; font-size: .65rem; box-shadow: 0 8px 24px rgba(23, 32, 51, .1); }
 .studio-canvas-settings label { display: inline-flex; align-items: center; gap: 5px; }
 .studio-canvas-settings input { accent-color: #6546ff; }

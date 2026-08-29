@@ -62,7 +62,12 @@ const InfraStackStudioPackageLoader = (function () {
                     if (templates.has(template.id)) {
                         throw new Error(`Duplicate Studio template identifier: ${template.id}`);
                     }
-                    templates.set(template.id, template);
+                    templates.set(template.id, {
+                        ...template,
+                        package_id: loadedPackage.manifest.id,
+                        family: loadedPackage.manifest.family,
+                        provider: loadedPackage.manifest.provider
+                    });
                 });
             });
             providerRegistry.register(provider, {
@@ -77,7 +82,11 @@ const InfraStackStudioPackageLoader = (function () {
                             id: template.id,
                             name: template.name,
                             description: template.description,
-                            icon: template.icon
+                            icon: template.icon,
+                            package_id: template.package_id,
+                            family: template.family,
+                            provider: template.provider,
+                            layout_mode: template.layout_mode === 'preserve' ? 'preserve' : 'auto'
                         };
                     });
                 },

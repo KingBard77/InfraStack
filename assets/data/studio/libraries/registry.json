@@ -46,6 +46,15 @@
       "icons": "cloud/gcp"
     },
     {
+      "id": "containers-kubernetes",
+      "group": "containers",
+      "label": "Kubernetes",
+      "provider": "kubernetes",
+      "provider_label": "Kubernetes",
+      "catalog": "containers/kubernetes/catalog.json",
+      "icons": "containers/kubernetes"
+    },
+    {
       "id": "vendors-ubiquiti-unifi",
       "group": "vendors",
       "label": "Ubiquiti UniFi",

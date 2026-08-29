@@ -6,6 +6,7 @@ const path = require('node:path');
 const projectRoot = path.resolve(__dirname, '..');
 const twig = fs.readFileSync(path.join(projectRoot, 'templates/studio/index.html.twig'), 'utf8');
 const js = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/studio.js'), 'utf8');
+const model = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/core/studio-model.js'), 'utf8');
 const publisher = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/publish/share-publish.js'), 'utf8');
 const graphAdapter = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/library/studio-maxgraph.js'), 'utf8');
 const chartAdapter = fs.readFileSync(path.join(projectRoot, 'assets/js/studio/library/studio-chart.js'), 'utf8');
@@ -172,14 +173,24 @@ test('Studio top toolbar contains only wired editor actions', function () {
     assert.match(js, /core\.distributeAssets\(project, assetIds, project\.active_view, axis\)/);
     const appbarStart = twig.indexOf('<header class="studio-appbar"');
     const appbar = twig.slice(appbarStart, twig.indexOf('</header>', appbarStart));
-    ['studio-undo', 'studio-redo', 'studio-view-select', 'studio-reset-layout', 'studio-wide-screen', 'studio-fullscreen', 'studio-share', 'studio-embed'].forEach(function (id) {
+    ['studio-undo', 'studio-redo', 'studio-view-select', 'studio-share', 'studio-embed'].forEach(function (id) {
         assert.match(appbar, new RegExp(`id="${id}"`));
     });
+    ['studio-reset-layout', 'studio-wide-screen', 'studio-fullscreen'].forEach(function (id) {
+        assert.doesNotMatch(appbar, new RegExp(`id="${id}"`));
+    });
+    const canvasControlsStart = twig.indexOf('<div class="studio-canvas-controls"');
+    const canvasControls = twig.slice(canvasControlsStart, twig.indexOf('<div class="studio-canvas-settings"', canvasControlsStart));
+    ['studio-bottom-zoom-out', 'studio-bottom-zoom-in', 'studio-bottom-fit', 'studio-reset-layout', 'studio-wide-screen', 'studio-fullscreen', 'studio-shortcuts-button'].forEach(function (id) {
+        assert.match(canvasControls, new RegExp(`id="${id}"`));
+    });
+    assert.doesNotMatch(canvasControls, /<details|<summary/);
     ['studio-zoom-out', 'studio-zoom-in', 'studio-fit'].forEach(function (id) {
         assert.doesNotMatch(appbar, new RegExp(`id="${id}"`));
     });
     assert.ok(twig.indexOf('id="studio-reset-layout"') < twig.indexOf('id="studio-shortcuts-dialog"'));
     assert.ok(twig.indexOf('id="studio-wide-screen"') < twig.indexOf('id="studio-shortcuts-dialog"'));
+    assert.doesNotMatch(js, /canvasDisplayMenu|compactCanvasControlsMedia|syncCanvasDisplayMenu/);
     assert.doesNotMatch(js, /elements\.(?:zoomIn|zoomOut|zoomValue|fit)/);
 });
 
@@ -357,6 +368,19 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
     assert.match(js, /function renderContextualFields\(asset\)/);
     assert.match(js, /function contextualFieldGroup\(key\)/);
     assert.match(js, /function renderInspectorSectionRelevance\(asset, contextualCounts\)/);
+    assert.match(js, /elements\.fieldWidth\.max = asset\.is_container \? String\(core\.canvasSize\.width - 24\) : '1200'/);
+    assert.match(js, /elements\.fieldHeight\.max = asset\.is_container \? String\(core\.canvasSize\.height - 24\) : '900'/);
+    assert.match(js, /kubernetes_workload: \[/);
+    assert.match(js, /kubernetes_namespace: \[/);
+    assert.match(js, /kubernetes_service: \[/);
+    assert.match(js, /kubernetes_storage: \[/);
+    [
+        'image_reference', 'replicas', 'cpu_limit', 'memory_limit', 'readiness_probe',
+        'liveness_probe', 'autoscaling', 'disruption_budget', 'network_policy',
+        'pod_security_level', 'service_account', 'storage_class'
+    ].forEach(function (property) {
+        assert.match(js, new RegExp(`key: '${property}'`));
+    });
     ['studio-inspector-basic', 'studio-inspector-placement', 'studio-inspector-network', 'studio-inspector-resources', 'studio-inspector-image', 'studio-inspector-advanced'].forEach(function (id) {
         assert.match(twig, new RegExp(`id="${id}"`));
     });
@@ -418,7 +442,12 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
     assert.match(graphAdapter, /resolveConnectionLabelCollisions\(\) \{/);
     assert.match(graphAdapter, /querySelectorAll\('\.studio-graph-card, \.studio-graph-boundary-label'\)/);
     assert.match(graphAdapter, /for \(let radius = 20; radius <= 240; radius \+= 20\)/);
-    assert.match(js, /function prepareTemplateProject\(templateProject\)/);
+    assert.match(js, /function prepareTemplateProject\(templateProject, layoutMode = 'auto'\)/);
+    assert.match(js, /prepared\.layout_mode = layoutMode/);
+    assert.match(js, /if \(layoutMode !== 'preserve'\)/);
+    assert.match(js, /prepareTemplateProject\(templateProject, definition\.layout_mode\)/);
+    assert.match(js, /project\.layout_mode === 'preserve'/);
+    assert.match(model, /function tidyPreservedLayout\(project, view, options = \{\}\)/);
     assert.match(js, /core\.autoLayoutProject\(prepared, view, \{ gap: 72 \}\)/);
     assert.match(js, /connection\.routing\?\.\[view\][^\n]+points = \[\]/);
     assert.match(js, /function fitLoadedTemplate\(\)/);

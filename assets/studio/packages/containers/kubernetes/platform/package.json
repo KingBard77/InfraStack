@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "id": "containers-kubernetes-platform",
+  "family": "containers",
+  "provider": "kubernetes",
+  "slug": "platform",
+  "name": "Kubernetes Platform Architecture",
+  "version": "1.0.4",
+  "engine": "infrastack-studio",
+  "provider_catalog": "kubernetes",
+  "capabilities": [
+    "diagram",
+    "inventory",
+    "result",
+    "json",
+    "share",
+    "embed",
+    "multiple_views"
+  ],
+  "icon_source": "official-kubernetes-community-svg",
+  "entries": {
+    "templates": "templates.json",
+    "result": "result.json",
+    "content": "content.yml"
+  }
+}

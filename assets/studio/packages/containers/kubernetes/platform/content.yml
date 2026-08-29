@@ -1,0 +1,35 @@
+schema_version: '1.0'
+package_id: containers-kubernetes-platform
+introduction: >-
+  Build editable provider-neutral Kubernetes architectures covering cluster boundaries, workload controllers, Services and Gateway routing, policy, persistent storage, scaling, disruption tolerance, and observability. Inventory and Studio Result remain derived from the same normalized project state and provide modeled guidance rather than certification or live-cluster validation.
+faq:
+  - question: Do these templates deploy a Kubernetes cluster?
+    answer: No. They are editable architecture models and do not create, connect to, or validate a live Kubernetes cluster.
+  - question: Can the templates represent EKS, AKS, GKE, or an on-premises cluster?
+    answer: Yes. The package is provider-neutral, so you can rename components, add cloud services, and record provider context while preserving Kubernetes semantics.
+  - question: Why are Deployment, StatefulSet, DaemonSet, Job, and CronJob separate components?
+    answer: They model different workload-controller behavior, including interchangeable replicas, stable stateful identity, node-local agents, run-to-completion work, and scheduled work.
+  - question: Why does the package prefer Gateway for new public application paths?
+    answer: Kubernetes recommends Gateway for new capabilities while the Ingress API remains stable but frozen. Ingress remains available for existing designs.
+  - question: What does the Kubernetes Studio Result evaluate?
+    answer: It evaluates modeled replicas, resource controls, probes, autoscaling, disruption budgets, network policy, Pod Security, service accounts, storage, backup, and observability facts.
+  - question: Does a high grade certify production readiness or security?
+    answer: No. The grade only explains the deterministic facts entered in Studio and does not replace workload testing, threat modeling, operational review, or compliance assessment.
+  - question: Can I export, restore, share, and embed these architectures?
+    answer: Yes. Kubernetes templates use the normal Studio project format and the shared JSON, read-only share, embed, inventory, graph, and PNG workflows.
+references:
+  - id: kubernetes-architecture
+    title: Kubernetes Cluster Architecture
+    url: https://kubernetes.io/docs/concepts/architecture/
+  - id: kubernetes-workloads
+    title: Kubernetes Workload Management
+    url: https://kubernetes.io/docs/concepts/workloads/controllers/
+  - id: kubernetes-networking
+    title: Kubernetes Services, Load Balancing, and Networking
+    url: https://kubernetes.io/docs/concepts/services-networking/
+  - id: kubernetes-security
+    title: Kubernetes Security Concepts
+    url: https://kubernetes.io/docs/concepts/security/
+  - id: kubernetes-probes
+    title: Liveness, Readiness, and Startup Probes
+    url: https://kubernetes.io/docs/concepts/workloads/pods/probes/

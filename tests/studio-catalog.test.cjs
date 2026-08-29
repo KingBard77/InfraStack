@@ -18,6 +18,9 @@ const azureIconRoot = path.join(iconRoot, 'cloud/azure');
 const gcpCatalogPath = path.join(libraryRoot, 'cloud/gcp/catalog.json');
 const gcpCatalog = JSON.parse(fs.readFileSync(gcpCatalogPath, 'utf8'));
 const gcpIconRoot = path.join(iconRoot, 'cloud/gcp');
+const kubernetesCatalogPath = path.join(libraryRoot, 'containers/kubernetes/catalog.json');
+const kubernetesCatalog = JSON.parse(fs.readFileSync(kubernetesCatalogPath, 'utf8'));
+const kubernetesIconRoot = path.join(iconRoot, 'containers/kubernetes');
 const unifiCatalogPath = path.join(libraryRoot, 'vendors/ubiquiti/unifi/catalog.json');
 const unifiCatalog = JSON.parse(fs.readFileSync(unifiCatalogPath, 'utf8'));
 const unifiIconRoot = path.join(iconRoot, 'vendors/ubiquiti/unifi');
@@ -27,7 +30,7 @@ test('Studio library registry declares scalable groups and valid current sources
         'general', 'infrastructure', 'cloud', 'virtualization', 'containers', 'vendors'
     ]);
     assert.deepEqual(registry.libraries.map(function (library) { return library.id; }), [
-        'infrastructure-generic', 'cloud-aws', 'cloud-azure', 'cloud-gcp',
+        'infrastructure-generic', 'cloud-aws', 'cloud-azure', 'cloud-gcp', 'containers-kubernetes',
         'vendors-ubiquiti-unifi'
     ]);
     registry.libraries.forEach(function (library) {
@@ -176,4 +179,45 @@ test('Studio Ubiquiti UniFi catalogue maps all supplied product identities to op
         catalogIds.add(asset.catalog_id);
     });
     assert.ok(fs.existsSync(path.join(unifiIconRoot, 'NOTICE.md')));
+});
+
+test('Studio Kubernetes catalogue provides complete grouped container-platform components', function () {
+    const catalogIds = new Set();
+    const groupIds = new Set(kubernetesCatalog.groups.map(function (group) { return group.id; }));
+    const withoutOfficialIcon = new Set([
+        'kubernetes-container-runtime', 'kubernetes-gateway', 'kubernetes-dns',
+        'kubernetes-cni', 'kubernetes-pod-security', 'kubernetes-csi',
+        'kubernetes-pdb', 'kubernetes-monitoring', 'kubernetes-logging'
+    ]);
+
+    assert.equal(kubernetesCatalog.provider, 'kubernetes');
+    assert.equal(kubernetesCatalog.assets.length, 36);
+    assert.deepEqual(groupIds, new Set([
+        'boundaries', 'control-plane', 'workloads', 'networking',
+        'configuration-security', 'storage', 'operations'
+    ]));
+    kubernetesCatalog.assets.forEach(function (asset) {
+        assert.match(asset.catalog_id, /^kubernetes-/);
+        assert.equal(catalogIds.has(asset.catalog_id), false);
+        assert.equal(asset.provider, 'kubernetes');
+        assert.ok(groupIds.has(asset.group));
+        assert.ok(Array.isArray(asset.keywords) && asset.keywords.length > 0);
+        assert.ok(Array.isArray(asset.tags) && asset.tags.includes('kubernetes'));
+        if (withoutOfficialIcon.has(asset.catalog_id)) assert.equal(asset.icon, '');
+        else {
+            assert.match(asset.icon, /^kubernetes-[a-z0-9-]+\.svg$/);
+            const iconPath = path.join(kubernetesIconRoot, asset.icon);
+            assert.ok(fs.existsSync(iconPath));
+            const icon = fs.readFileSync(iconPath, 'utf8');
+            assert.match(icon, /<svg/);
+            assert.match(icon, /#326ce5/i);
+        }
+        catalogIds.add(asset.catalog_id);
+    });
+    assert.equal(kubernetesCatalog.assets.filter(function (asset) { return asset.icon; }).length, 27);
+    assert.equal(fs.readdirSync(kubernetesIconRoot).filter(function (filename) { return filename.endsWith('.svg'); }).length, 26);
+    assert.equal(fs.readdirSync(kubernetesIconRoot).some(function (filename) { return filename.startsWith('official-'); }), false);
+    ['NOTICE.md', 'LICENSE-KUBERNETES-ICONS.txt', 'LICENSE-KUBERNETES-LOGO.txt', 'KUBERNETES-LOGO-USAGE.md'].forEach(function (filename) {
+        assert.ok(fs.existsSync(path.join(kubernetesIconRoot, filename)));
+    });
 });

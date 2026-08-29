@@ -18,9 +18,14 @@
     class="infrastack-studio"
     data-library-config="{{ studio_libraries|json_encode|e('html_attr') }}"
     data-package-registry="{{ studio_packages|json_encode|e('html_attr') }}"
+    data-initial-template="{{ studio_initial_template|json_encode|e('html_attr') }}"
+    data-studio-url="{{ path('app_studio') }}"
+    data-base-page-title="InfraStack Studio"
+    data-base-page-description="Model physical and logical infrastructure views from one local-first architecture project."
     data-share-url="{{ path('app_studio_share_create') }}"
     data-share-csrf="{{ csrf_token('submit') }}"
 >
+    <h1 id="studio-page-heading" class="studio-visually-hidden">{{ studio_page_heading }}</h1>
     <header class="studio-appbar" aria-label="Studio application bar">
         <a href="{{ path('app_main') }}" class="studio-appbar-brand" aria-label="InfraStack home">
             <img src="{{ asset('images/logo/infrastack-wordmark.png') }}" width="180" height="33" alt="">
@@ -39,9 +44,6 @@
         <div class="studio-control-cluster" aria-label="View controls">
             <select id="studio-view-select" class="studio-select" aria-label="Architecture projection"><option value="overview">Overview</option></select>
         </div>
-        <button id="studio-reset-layout" class="studio-icon-button studio-display-button" type="button" aria-label="Reset panel layout" title="Reset panel layout"><i class="bi bi-layout-three-columns"></i></button>
-        <button id="studio-wide-screen" class="studio-icon-button studio-display-button" type="button" aria-label="Enter wide screen" aria-pressed="false" title="Wide screen"><i class="bi bi-aspect-ratio"></i></button>
-        <button id="studio-fullscreen" class="studio-icon-button studio-display-button" type="button" aria-label="Enter full screen" aria-pressed="false" title="Full screen"><i class="bi bi-fullscreen"></i></button>
         <button id="studio-share" class="studio-button studio-button-primary" type="button"><i class="bi bi-person-plus"></i> Share</button>
         <button id="studio-embed" class="studio-button" type="button"><i class="bi bi-code-slash"></i> Embed</button>
         <details class="studio-export-menu">
@@ -214,6 +216,11 @@
                     <span id="studio-bottom-zoom-value">100%</span>
                     <button id="studio-bottom-zoom-in" type="button" aria-label="Zoom in"><i class="bi bi-plus-lg"></i></button>
                     <button id="studio-bottom-fit" type="button" aria-label="Fit to screen"><i class="bi bi-arrows-angle-expand"></i></button>
+                    <span class="studio-canvas-control-divider" aria-hidden="true"></span>
+                    <button id="studio-reset-layout" class="studio-display-button" type="button" aria-label="Reset panel layout" title="Reset panel layout"><i class="bi bi-layout-three-columns"></i></button>
+                    <button id="studio-wide-screen" class="studio-display-button" type="button" aria-label="Enter wide screen" aria-pressed="false" title="Wide screen"><i class="bi bi-aspect-ratio"></i></button>
+                    <button id="studio-fullscreen" class="studio-display-button" type="button" aria-label="Enter full screen" aria-pressed="false" title="Full screen"><i class="bi bi-fullscreen"></i></button>
+                    <span class="studio-canvas-control-divider" aria-hidden="true"></span>
                     <button id="studio-shortcuts-button" type="button" aria-label="Keyboard shortcuts" title="Keyboard shortcuts"><i class="bi bi-keyboard"></i></button>
                 </div>
                 <div class="studio-canvas-settings" aria-label="Canvas settings">

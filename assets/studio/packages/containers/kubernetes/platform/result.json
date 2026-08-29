@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.1",
+  "package_id": "containers-kubernetes-platform",
+  "engine": "infrastack-architecture-result-v1",
+  "maximum_score": 100,
+  "categories": [
+    { "id": "workload", "label": "Workload", "weight": 0.2 },
+    { "id": "security", "label": "Security", "weight": 0.25 },
+    { "id": "availability", "label": "Availability", "weight": 0.25 },
+    { "id": "network", "label": "Network", "weight": 0.15 },
+    { "id": "operations", "label": "Operations", "weight": 0.15 }
+  ],
+  "grade_caps": { "critical": 69, "high": 89 },
+  "grades": [
+    { "grade": "A", "minimum_score": 90, "label": "Strong documented platform" },
+    { "grade": "B", "minimum_score": 80, "label": "Good with manageable gaps" },
+    { "grade": "C", "minimum_score": 70, "label": "Functional with material gaps" },
+    { "grade": "D", "minimum_score": 60, "label": "Major improvements required" },
+    { "grade": "E", "minimum_score": 0, "label": "Incomplete or high-risk design" }
+  ],
+  "rules": [
+    { "id": "kubernetes-critical-workload-single-replica", "category": "Availability", "severity": "high", "score_deduction": 22, "condition": { "type": "kubernetes_critical_workload_single_replica" }, "message": "Critical Kubernetes workload has fewer than two replicas", "recommendation": "Use at least two replicas and distribute them across independent failure domains where the workload permits it.", "reference_ids": ["kubernetes-workloads"] },
+    { "id": "kubernetes-workload-without-resources", "category": "Workload", "severity": "medium", "score_deduction": 10, "condition": { "type": "kubernetes_workload_without_resources" }, "message": "Kubernetes workload has incomplete resource requests or limits", "recommendation": "Document CPU and memory requests and limits so scheduling and resource isolation can be reviewed.", "reference_ids": ["kubernetes-workloads"] },
+    { "id": "kubernetes-workload-without-probes", "category": "Workload", "severity": "medium", "score_deduction": 10, "condition": { "type": "kubernetes_workload_without_probes" }, "message": "Kubernetes workload has incomplete health probes", "recommendation": "Model readiness and liveness probes that separately represent traffic readiness and workload health.", "reference_ids": ["kubernetes-probes"] },
+    { "id": "kubernetes-critical-workload-without-autoscaling", "category": "Availability", "severity": "medium", "score_deduction": 10, "condition": { "type": "kubernetes_critical_workload_without_autoscaling" }, "message": "Critical stateless workload has no autoscaling fact", "recommendation": "Document a HorizontalPodAutoscaler or explain why fixed capacity is intentional.", "reference_ids": ["kubernetes-workloads"] },
+    { "id": "kubernetes-critical-workload-without-pdb", "category": "Availability", "severity": "medium", "score_deduction": 10, "condition": { "type": "kubernetes_critical_workload_without_pdb" }, "message": "Critical Kubernetes workload has no disruption budget", "recommendation": "Add a PodDisruptionBudget aligned with the workload replica count and maintenance requirements.", "reference_ids": ["kubernetes-workloads"] },
+    { "id": "kubernetes-workload-without-service-account", "category": "Security", "severity": "medium", "score_deduction": 10, "condition": { "type": "kubernetes_workload_without_service_account" }, "message": "Kubernetes workload has no dedicated service account", "recommendation": "Assign a dedicated ServiceAccount and bind only the API permissions required by the workload.", "reference_ids": ["kubernetes-security"] },
+    { "id": "kubernetes-namespace-without-network-policy", "category": "Network", "severity": "high", "score_deduction": 22, "condition": { "type": "kubernetes_namespace_without_network_policy" }, "message": "Kubernetes namespace has no default network policy", "recommendation": "Document default-deny ingress and egress policies, then add explicit workload traffic allowances.", "reference_ids": ["kubernetes-networking"] },
+    { "id": "kubernetes-namespace-without-pod-security", "category": "Security", "severity": "high", "score_deduction": 22, "condition": { "type": "kubernetes_namespace_without_pod_security" }, "message": "Kubernetes namespace has no protective Pod Security level", "recommendation": "Apply and document an appropriate Baseline or Restricted Pod Security level.", "reference_ids": ["kubernetes-security"] },
+    { "id": "kubernetes-public-service-without-gateway", "category": "Network", "severity": "high", "score_deduction": 22, "condition": { "type": "kubernetes_public_service_without_gateway" }, "message": "Public Kubernetes Service has no modeled Gateway or Ingress", "recommendation": "Route public traffic through a documented Gateway or Ingress implementation and its security controls.", "reference_ids": ["kubernetes-networking"] },
+    { "id": "kubernetes-statefulset-without-storage", "category": "Availability", "severity": "high", "score_deduction": 22, "condition": { "type": "kubernetes_statefulset_without_storage" }, "message": "StatefulSet has no persistent storage relationship", "recommendation": "Connect the StatefulSet to a PersistentVolumeClaim or PersistentVolume and document StorageClass behavior.", "reference_ids": ["kubernetes-workloads"] },
+    { "id": "kubernetes-statefulset-without-backup", "category": "Operations", "severity": "high", "score_deduction": 22, "condition": { "type": "kubernetes_statefulset_without_backup" }, "message": "Critical StatefulSet has no backup fact", "recommendation": "Document backup scope, retention, restore testing, and ownership for persistent data.", "reference_ids": ["kubernetes-workloads"] },
+    { "id": "kubernetes-cluster-without-observability", "category": "Operations", "severity": "medium", "score_deduction": 10, "condition": { "type": "kubernetes_cluster_without_observability" }, "message": "Kubernetes observability coverage is incomplete", "recommendation": "Add cluster and workload metrics, alerts, and centralized logs with clear operational ownership.", "reference_ids": ["kubernetes-architecture"] }
+  ]
+}

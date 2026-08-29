@@ -85,6 +85,10 @@ Each project preserves, when applicable:
 - accepted risks
 - style presets
 
+Templates may declare `layout_mode: preserve` when their package owns deliberate multi-boundary geometry that must not be replaced by the shared automatic layout during loading. This mode persists in normalized project state. Auto Layout then tidies the existing composition by snapping, separating true overlaps, containing children, and refreshing routes rather than rebuilding it. Other templates continue to use automatic preparation by default.
+
+Shared container-platform facts include image references, replica counts, Service type, CPU and memory limits, probes, autoscaling, disruption budgets, network policy, Pod Security level, service accounts, and storage classes. These remain optional normalized properties so Kubernetes packages can use the same inventory, result, export, restore, share, and embed workflows.
+
 ### `result.json`
 
 Owns deterministic advisory behavior:
@@ -205,6 +209,10 @@ The maintained navigation is:
 - Privacy
 
 `/tools` is a legacy navigation route. Do not restore removed per-tool detail pages without a separate approved migration.
+
+Released templates have stable workspace routes at `/studio/{provider}/{templateId}`. Direct visits load the selected package lazily and open that template in the shared Studio editor. Selecting another released template updates the route and page metadata without reloading the editor. Blank, restored, and locally recovered projects use `/studio`; user edits do not create public routes.
+
+`/sitemap.xml` is rendered from maintained public routes and every valid template ID in registered package `templates.json` files. New released templates therefore receive a crawlable Studio route automatically. Share/embed routes and private local state remain excluded.
 
 ## Performance Contract
 

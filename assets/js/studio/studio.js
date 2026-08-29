@@ -43,14 +43,17 @@ if (root && core && rules && improvements) {
         return [definition.provider, definition.provider_label || definition.label];
     }));
     const packageRegistry = JSON.parse(root.dataset.packageRegistry || '{"packages":[]}');
+    const initialTemplateRoute = JSON.parse(root.dataset.initialTemplate || 'null');
+    const studioBaseUrl = root.dataset.studioUrl || '/studio';
     const packageLoader = packageLoaderFactory?.create(packageRegistry, providerRegistry);
-    const defaultProvider = packageRegistry.packages?.find(function (entry) {
+    const defaultProvider = initialTemplateRoute?.provider || packageRegistry.packages?.find(function (entry) {
         return entry.provider && entry.provider !== 'generic';
     })?.provider || libraryDefinitions.find(function (definition) {
         return definition.provider !== 'generic';
     })?.provider || 'generic';
     const resolvedIconUrls = {};
     const elements = {
+        pageHeading: byId('studio-page-heading'),
         projectName: byId('studio-project-name'),
         saveState: byId('studio-save-state'),
         shortcutsButton: byId('studio-shortcuts-button'),
@@ -364,6 +367,67 @@ if (root && core && rules && improvements) {
     let recoveryProject = loadRecoveryProject();
     let recoveryDismissedForSession = false;
     let recoverySaveTimer = null;
+
+    function studioTemplateUrl(provider, templateId) {
+        const base = studioBaseUrl.replace(/\/$/, '');
+        return `${base}/${encodeURIComponent(provider)}/${encodeURIComponent(templateId)}`;
+    }
+
+    function setPageMeta(selector, value) {
+        const element = document.querySelector(selector);
+        if (element) element.setAttribute('content', value);
+    }
+
+    function updateStudioPageMetadata(definition = null) {
+        const title = definition ? `${definition.name} | InfraStack Studio` : root.dataset.basePageTitle;
+        const description = definition
+            ? `${definition.description} Open this editable architecture in InfraStack Studio.`
+            : root.dataset.basePageDescription;
+        const heading = definition
+            ? `${definition.name} Architecture Diagram`
+            : 'Cloud and Infrastructure Architecture Diagram Builder';
+        const relativeUrl = definition
+            ? studioTemplateUrl(definition.provider, definition.id)
+            : studioBaseUrl;
+        const absoluteUrl = new URL(relativeUrl, window.location.origin).href;
+
+        document.title = title;
+        elements.pageHeading.textContent = heading;
+        document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+        document.querySelector('link[rel="canonical"]')?.setAttribute('href', absoluteUrl);
+        setPageMeta('meta[property="og:title"]', title);
+        setPageMeta('meta[property="og:description"]', description);
+        setPageMeta('meta[property="og:url"]', absoluteUrl);
+        setPageMeta('meta[name="twitter:title"]', title);
+        setPageMeta('meta[name="twitter:description"]', description);
+    }
+
+    function updateStudioRoute(definition = null, mode = 'push') {
+        updateStudioPageMetadata(definition);
+        if (mode === 'none') return;
+        const relativeUrl = definition
+            ? studioTemplateUrl(definition.provider, definition.id)
+            : studioBaseUrl;
+        const method = mode === 'replace' ? 'replaceState' : 'pushState';
+        window.history[method]({}, '', relativeUrl);
+    }
+
+    function templateRouteFromLocation() {
+        const basePath = new URL(studioBaseUrl, window.location.origin).pathname.replace(/\/$/, '');
+        const currentPath = window.location.pathname.replace(/\/$/, '');
+        if (currentPath === basePath) return null;
+        if (!currentPath.startsWith(`${basePath}/`)) return null;
+        const segments = currentPath.slice(basePath.length + 1).split('/').map(decodeURIComponent);
+        if (
+            segments.length !== 2
+            || !segments.every(function (segment) {
+                return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(segment);
+            })
+        ) {
+            return null;
+        }
+        return { provider: segments[0], templateId: segments[1] };
+    }
 
     function assetById(assetId) {
         return project.assets.find(function (asset) { return asset.id === assetId; });
@@ -804,10 +868,13 @@ if (root && core && rules && improvements) {
     }
 
     function autoLayoutArchitecture() {
+        const preservedLayout = project.layout_mode === 'preserve';
         const next = core.autoLayoutProject(project, project.active_view);
         replaceProject(next);
         window.setTimeout(function () { graphAdapter.fit(); }, 80);
-        showMessage('Architecture arranged from its boundaries and relationships.', 'success');
+        showMessage(preservedLayout
+            ? 'Architecture spacing and connector routes refreshed without changing its composition.'
+            : 'Architecture arranged from its boundaries and relationships.', 'success');
     }
 
     function alignSelection(alignment) {
@@ -1267,10 +1334,35 @@ if (root && core && rules && improvements) {
             { key: 'vlans', label: 'VLANs', type: 'text', placeholder: '10, 20, 30' },
             { key: 'ports', label: 'Ports', type: 'text', placeholder: '48 x 1G, 4 x 10G' },
             { key: 'management_ip', label: 'Management IP', type: 'text', placeholder: '10.0.0.2' }
+        ],
+        kubernetes_workload: [
+            { key: 'image_reference', label: 'Container image', type: 'text', placeholder: 'registry.example/app:1.4.0' },
+            { key: 'replicas', label: 'Desired replicas', type: 'number', placeholder: '3' },
+            { key: 'cpu_limit', label: 'CPU limit', type: 'text', placeholder: '1000m' },
+            { key: 'memory_limit', label: 'Memory limit', type: 'text', placeholder: '1Gi' },
+            { key: 'readiness_probe', label: 'Readiness probe', type: 'checkbox' },
+            { key: 'liveness_probe', label: 'Liveness probe', type: 'checkbox' },
+            { key: 'autoscaling', label: 'Horizontal autoscaling', type: 'checkbox' },
+            { key: 'disruption_budget', label: 'Disruption budget', type: 'checkbox' },
+            { key: 'service_account', label: 'Service account', type: 'text', placeholder: 'application-runtime' }
+        ],
+        kubernetes_namespace: [
+            { key: 'pod_security_level', label: 'Pod Security level', type: 'select', options: [['privileged', 'Privileged'], ['baseline', 'Baseline'], ['restricted', 'Restricted']] },
+            { key: 'network_policy', label: 'Default network policy', type: 'checkbox' }
+        ],
+        kubernetes_service: [
+            { key: 'service_type', label: 'Service type', type: 'select', options: [['ClusterIP', 'ClusterIP'], ['NodePort', 'NodePort'], ['LoadBalancer', 'LoadBalancer'], ['ExternalName', 'ExternalName'], ['Headless', 'Headless']] }
+        ],
+        kubernetes_storage: [
+            { key: 'storage_class', label: 'Storage class', type: 'text', placeholder: 'fast-encrypted' }
         ]
     };
 
     function contextualFieldsFor(asset) {
+        if (/^kubernetes-(?:pod|deployment|statefulset|daemonset|job|cronjob)$/.test(asset.type)) return contextualPropertyFields.kubernetes_workload;
+        if (asset.type === 'kubernetes-namespace') return contextualPropertyFields.kubernetes_namespace;
+        if (asset.type === 'kubernetes-service') return contextualPropertyFields.kubernetes_service;
+        if (/^kubernetes-(?:pvc|pv|storage-class)$/.test(asset.type)) return contextualPropertyFields.kubernetes_storage;
         if (asset.type === 'vpc') return contextualPropertyFields.vpc;
         if (asset.type === 'subnet') return contextualPropertyFields.subnet;
         if (asset.type === 'server') return contextualPropertyFields.server;
@@ -1300,6 +1392,19 @@ if (root && core && rules && improvements) {
             operating_system: 'resources',
             model: 'resources',
             ports: 'resources',
+            image_reference: 'resources',
+            replicas: 'resources',
+            cpu_limit: 'resources',
+            memory_limit: 'resources',
+            storage_class: 'resources',
+            service_type: 'network',
+            network_policy: 'network',
+            readiness_probe: 'advanced',
+            liveness_probe: 'advanced',
+            autoscaling: 'advanced',
+            disruption_budget: 'advanced',
+            pod_security_level: 'advanced',
+            service_account: 'advanced',
             tags: 'advanced',
             policies: 'advanced'
         };
@@ -1356,7 +1461,7 @@ if (root && core && rules && improvements) {
     }
 
     function renderInspectorSectionRelevance(asset, contextualCounts) {
-        const networkType = /vpc|subnet|network|router|switch|firewall|gateway|load.?balancer|internet/i.test(asset.type);
+        const networkType = /vpc|subnet|network|router|switch|firewall|gateway|service|load.?balancer|internet/i.test(asset.type);
         const resourceType = /server|database|storage|compute|cluster|node|container|vm|workload/i.test(asset.type);
         const hasNetworkValue = Boolean(asset.properties.address || asset.properties.hostname || contextualCounts.network);
         const hasResourceValue = Boolean(asset.properties.cpu || asset.properties.memory || asset.properties.storage || contextualCounts.resources);
@@ -1393,18 +1498,21 @@ if (root && core && rules && improvements) {
         elements.templateProvider.value = activeTemplateProvider;
     }
 
-    function prepareTemplateProject(templateProject) {
+    function prepareTemplateProject(templateProject, layoutMode = 'auto') {
         const activeView = templateProject.active_view;
         let prepared = templateProject;
-        core.supportedViews.forEach(function (view) {
-            const visibleCount = prepared.assets.filter(function (asset) { return asset.views.includes(view); }).length;
-            if (visibleCount > 1) {
-                prepared = core.autoLayoutProject(prepared, view, { gap: 72 });
-                prepared.connections.forEach(function (connection) {
-                    if (connection.routing?.[view]) connection.routing[view].points = [];
-                });
-            }
-        });
+        prepared.layout_mode = layoutMode;
+        if (layoutMode !== 'preserve') {
+            core.supportedViews.forEach(function (view) {
+                const visibleCount = prepared.assets.filter(function (asset) { return asset.views.includes(view); }).length;
+                if (visibleCount > 1) {
+                    prepared = core.autoLayoutProject(prepared, view, { gap: 72 });
+                    prepared.connections.forEach(function (connection) {
+                        if (connection.routing?.[view]) connection.routing[view].points = [];
+                    });
+                }
+            });
+        }
         prepared.active_view = activeView;
         return core.normalizeProject(prepared).project;
     }
@@ -1415,13 +1523,47 @@ if (root && core && rules && improvements) {
         });
     }
 
+    async function openStudioTemplate(provider, templateId, options = {}) {
+        await loadProviderPackages(provider);
+        const definition = (providerRegistry?.templates(provider) || []).find(function (template) {
+            return template.id === templateId && template.provider === provider;
+        });
+        if (!definition) return false;
+
+        await loadProviderCatalogues(provider);
+        const templateProject = providerRegistry?.createProject(provider, core, templateId);
+        if (!templateProject) return false;
+
+        const preparedProject = prepareTemplateProject(templateProject, definition.layout_mode);
+        activeTemplateFamily = definition.family;
+        activeTemplateProvider = provider;
+        activeCatalogueProvider = provider;
+        activeCatalogueLibrary = 'all';
+        replaceProject(preparedProject, options.recordHistory === false
+            ? { history: false }
+            : { historyLabel: `Load ${definition.name}` });
+        renderTemplateFilters();
+        renderCatalogueFilters();
+        renderPalette();
+        renderTemplates();
+        renderPackageContent();
+        await loadReference();
+        updateStudioRoute(definition, options.routeMode || 'push');
+        if (options.showMessage !== false) showMessage(`${definition.name} loaded.`, 'success');
+        fitLoadedTemplate();
+
+        return true;
+    }
+
     function renderTemplates() {
         elements.templateList.replaceChildren();
         const templateProviders = activeTemplateFamily && activeTemplateProvider
             ? [activeTemplateProvider]
             : [];
         const visibleTemplates = templateProviders.flatMap(function (provider) {
-            return (providerRegistry?.templates(provider) || []).map(function (definition) {
+            return (providerRegistry?.templates(provider) || []).filter(function (definition) {
+                return definition.family === activeTemplateFamily;
+            }).map(function (definition) {
                 return { ...definition, provider };
             });
         });
@@ -1437,27 +1579,11 @@ if (root && core && rules && improvements) {
             button.addEventListener('click', async function () {
                 button.disabled = true;
                 try {
-                    await loadProviderCatalogues(definition.provider);
+                    const opened = await openStudioTemplate(definition.provider, definition.id);
+                    if (!opened) showMessage(`${definition.name} could not be loaded.`, 'error');
                 } catch (error) {
-                    showMessage(`${providerLabel(definition.provider)} icons could not be loaded.`, 'error');
-                    button.disabled = false;
-                    return;
+                    showMessage(`${definition.name} could not be loaded.`, 'error');
                 }
-                const templateProject = providerRegistry?.createProject(definition.provider, core, definition.id);
-                if (!templateProject) {
-                    button.disabled = false;
-                    return;
-                }
-                const preparedProject = prepareTemplateProject(templateProject);
-                activeCatalogueProvider = definition.provider;
-                activeCatalogueLibrary = 'all';
-                replaceProject(preparedProject, { historyLabel: `Load ${definition.name}` });
-                renderCatalogueFilters();
-                renderPalette();
-                renderPackageContent();
-                loadReference();
-                showMessage(`${definition.name} loaded.`, 'success');
-                fitLoadedTemplate();
                 button.disabled = false;
             });
             elements.templateList.append(button);
@@ -1646,6 +1772,8 @@ if (root && core && rules && improvements) {
             const layout = asset.layout[project.active_view];
             elements.fieldWidth.min = asset.is_container ? '260' : '132';
             elements.fieldHeight.min = asset.is_container ? '180' : '88';
+            elements.fieldWidth.max = asset.is_container ? String(core.canvasSize.width - 24) : '1200';
+            elements.fieldHeight.max = asset.is_container ? String(core.canvasSize.height - 24) : '900';
             elements.fieldWidth.value = String(Math.round(layout.width));
             elements.fieldHeight.value = String(Math.round(layout.height));
             elements.fieldIconSize.value = String(Math.round(layout.icon_size));
@@ -1821,16 +1949,36 @@ if (root && core && rules && improvements) {
 // [studio-inventory] Section: Start
 
     function inventoryRowForAsset(asset) {
+        const kubernetesControls = [
+            ['readiness_probe', 'readiness probe'],
+            ['liveness_probe', 'liveness probe'],
+            ['autoscaling', 'autoscaling'],
+            ['disruption_budget', 'disruption budget'],
+            ['network_policy', 'network policy']
+        ].filter(function (entry) { return asset.properties[entry[0]]; }).map(function (entry) { return entry[1]; });
+        if (asset.properties.pod_security_level) kubernetesControls.push(`pod security: ${asset.properties.pod_security_level}`);
+        if (asset.properties.service_account) kubernetesControls.push(`service account: ${asset.properties.service_account}`);
+        const standardControls = ['monitoring', 'backup', 'redundant', 'critical'].filter(function (key) {
+            return asset.properties[key];
+        });
         return {
             asset,
             label: asset.label,
-            type: asset.type,
+            type: asset.type.startsWith('kubernetes-')
+                ? asset.type.slice('kubernetes-'.length).split('-').map(function (part) { return part.charAt(0).toUpperCase() + part.slice(1); }).join(' ')
+                : asset.type,
             placement: placementFor(asset),
             address: asset.properties.address || '—',
-            resources: [asset.properties.cpu, asset.properties.memory, asset.properties.storage].filter(Boolean).join(' · ') || '—',
-            controls: ['monitoring', 'backup', 'redundant', 'critical'].filter(function (key) {
-                return asset.properties[key];
-            }).join(', ') || '—'
+            resources: [
+                asset.properties.replicas ? `${asset.properties.replicas} replicas` : '',
+                asset.properties.cpu,
+                asset.properties.cpu_limit ? `limit ${asset.properties.cpu_limit}` : '',
+                asset.properties.memory,
+                asset.properties.memory_limit ? `limit ${asset.properties.memory_limit}` : '',
+                asset.properties.storage,
+                asset.properties.storage_class
+            ].filter(Boolean).join(' · ') || '—',
+            controls: standardControls.concat(kubernetesControls).join(', ') || '—'
         };
     }
 
@@ -2342,6 +2490,7 @@ if (root && core && rules && improvements) {
                 renderTemplates();
                 renderPackageContent();
                 loadReference();
+                updateStudioRoute(null);
                 showMessage('Studio project restored.', 'success');
             } catch (error) {
                 showMessage('The selected file is not valid Studio JSON.', 'error');
@@ -2373,6 +2522,7 @@ if (root && core && rules && improvements) {
             renderTemplates();
             renderPackageContent();
             await loadReference();
+            updateStudioRoute(null);
             showMessage(`${result.project.name} recovered.`, 'success');
             window.setTimeout(function () { graphAdapter.fit(); }, 80);
         } catch (error) {
@@ -2821,6 +2971,7 @@ if (root && core && rules && improvements) {
     elements.newProject.addEventListener('click', function () {
         if (hasRecoverableProject(project)) persistRecoveryProject();
         replaceProject(core.createEmptyProject());
+        updateStudioRoute(null);
         recoveryDismissedForSession = false;
         renderRecoveryCard();
         loadReference();
@@ -3420,22 +3571,50 @@ if (root && core && rules && improvements) {
         layoutPublish?.destroy();
         graphAdapter.destroy();
     });
+    window.addEventListener('popstate', async function () {
+        const route = templateRouteFromLocation();
+        if (!route) {
+            replaceProject(core.createEmptyProject(), { history: false });
+            updateStudioRoute(null, 'none');
+            return;
+        }
+        try {
+            const opened = await openStudioTemplate(route.provider, route.templateId, {
+                recordHistory: false,
+                routeMode: 'none',
+                showMessage: false
+            });
+            if (!opened) showMessage('The selected Studio template route is unavailable.', 'error');
+        } catch (error) {
+            showMessage('The selected Studio template route could not be loaded.', 'error');
+        }
+    });
 
 // [studio-events] Section: End
 
 // [studio-initialization] Section: Start
 
-    function initializeStudio() {
+    async function initializeStudio() {
         graphAdapter.setGridSize(gridSize);
         graphAdapter.setSnapEnabled(snapEnabled);
         graphAdapter.setGuidesEnabled(guidesEnabled);
         renderCatalogueFilters();
         renderPalette();
         render();
-        loadReference();
+        await loadReference();
+        if (initialTemplateRoute) {
+            const opened = await openStudioTemplate(
+                initialTemplateRoute.provider,
+                initialTemplateRoute.template_id,
+                { recordHistory: false, routeMode: 'replace', showMessage: false }
+            );
+            if (!opened) showMessage('The selected Studio template route is unavailable.', 'error');
+        }
     }
 
-    initializeStudio();
+    initializeStudio().catch(function () {
+        showMessage('Studio could not finish loading the selected template.', 'error');
+    });
 
 // [studio-initialization] Section: End
 

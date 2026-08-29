@@ -27,7 +27,7 @@
               </a>
             </li>
             <li>
-              <a href="{{ path('app_studio') }}" class="{{ app.request.attributes.get('_route') == 'app_studio' ? 'active' : '' }}">
+              <a href="{{ path('app_studio') }}" class="{{ app.request.attributes.get('_route') in ['app_studio', 'app_studio_template'] ? 'active' : '' }}">
                 Studio
               </a>
             </li>

@@ -3,11 +3,13 @@
 namespace App\Controller\Studio;
 
 use App\Service\Studio\StudioLibraryService;
+use App\Service\Studio\StudioTemplateRouteService;
 use Symfony\Component\Asset\Packages;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Yaml\Yaml;
 
 class StudioController extends AbstractController
@@ -15,12 +17,58 @@ class StudioController extends AbstractController
     #[Route('/studio', name: 'app_studio', methods: ['GET'])]
     public function index(Packages $assets, StudioLibraryService $libraryService): Response
     {
+        return $this->renderStudio($assets, $libraryService, null);
+    }
+
+    #[Route(
+        '/studio/{provider}/{templateId}',
+        name: 'app_studio_template',
+        requirements: [
+            'provider' => '[a-z0-9]+(?:-[a-z0-9]+)*',
+            'templateId' => '[a-z0-9]+(?:-[a-z0-9]+)*',
+        ],
+        methods: ['GET']
+    )]
+    public function template(
+        string $provider,
+        string $templateId,
+        Packages $assets,
+        StudioLibraryService $libraryService,
+        StudioTemplateRouteService $templateRouteService
+    ): Response {
+        $templateRoute = $templateRouteService->resolve($provider, $templateId);
+        if ($templateRoute === null) {
+            throw $this->createNotFoundException('Studio template route was not found.');
+        }
+
+        return $this->renderStudio($assets, $libraryService, $templateRoute);
+    }
+
+    private function renderStudio(
+        Packages $assets,
+        StudioLibraryService $libraryService,
+        ?array $templateRoute
+    ): Response {
+        $pageTitle = $templateRoute['page_title'] ?? 'InfraStack Studio';
+        $pageDescription = $templateRoute['page_description']
+            ?? 'Model physical and logical infrastructure views from one local-first architecture project.';
+        $pageUrl = $templateRoute === null
+            ? $this->generateUrl('app_studio', [], UrlGeneratorInterface::ABSOLUTE_URL)
+            : $this->generateUrl('app_studio_template', [
+                'provider' => $templateRoute['provider'],
+                'templateId' => $templateRoute['template_id'],
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
+
         return $this->render('studio/index.html.twig', [
-            'page_title' => 'InfraStack Studio',
-            'page_description' => 'Model physical and logical infrastructure views from one local-first architecture project.',
+            'page_title' => $pageTitle,
+            'page_description' => $pageDescription,
             'page_keywords' => 'InfraStack Studio, infrastructure architecture, physical diagram, logical network diagram',
+            'page_url' => $pageUrl,
             'studio_libraries' => $this->studioLibraries($libraryService),
             'studio_packages' => $this->studioPackages($assets),
+            'studio_initial_template' => $templateRoute,
+            'studio_page_heading' => $templateRoute['page_heading']
+                ?? 'Cloud and Infrastructure Architecture Diagram Builder',
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from .common import CheckReport
@@ -21,14 +22,22 @@ REQUIRED_PATHS = (
     "assets/icons/studio/libraries",
     "src/Controller/Studio/StudioController.php",
     "src/Controller/Layout/ShareController.php",
+    "src/Controller/SitemapController.php",
+    "src/Service/Studio/StudioTemplateRouteService.php",
     "src/Service/Studio/StudioLibraryService.php",
     "src/Service/Layout/ShareService.php",
+    "templates/search/sitemap.xml.twig",
+    "public/robots.txt",
 )
 
 RETIRED_PATHS = (
     "templates/content/tools",
     "src/Controller/Content/ToolPageController.php",
     "src/Service/Tools/ToolCatalogService.php",
+    "templates/architecture",
+    "assets/styles/page/architecture.css",
+    "src/Controller/Architecture/ArchitectureLandingController.php",
+    "src/Service/Studio/ArchitectureLandingService.php",
 )
 
 
@@ -81,5 +90,50 @@ def run(repo_root: Path) -> CheckReport:
 
     if report.ok:
         report.passed("active contracts contain no retired tool-tree references")
+
+    robots_path = repo_root / "public/robots.txt"
+    if robots_path.is_file():
+        robots = robots_path.read_text(encoding="utf-8")
+        if "Sitemap: https://www.infrastack.my/sitemap.xml" in robots:
+            report.passed("robots.txt advertises the canonical sitemap")
+        else:
+            report.failed("robots.txt does not advertise the canonical sitemap")
+
+    package_registry_path = repo_root / "assets/studio/packages/registry.json"
+    try:
+        package_registry = json.loads(package_registry_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        report.failed(f"landing-page registry is unreadable: {error}")
+        package_registry = {}
+
+    template_routes = []
+    for package in package_registry.get("packages", []):
+        package_id = package.get("id", "unknown") if isinstance(package, dict) else "unknown"
+        if not isinstance(package, dict):
+            report.failed("package registry contains a non-object entry")
+            continue
+        if "landing" in package:
+            report.failed(f"retired landing metadata remains in package: {package_id}")
+            continue
+        provider = package.get("provider")
+        templates_path = package.get("templates")
+        if not isinstance(provider, str) or not isinstance(templates_path, str):
+            report.failed(f"package route metadata is incomplete: {package_id}")
+            continue
+        full_templates_path = repo_root / "assets/studio/packages" / templates_path
+        try:
+            template_data = json.loads(full_templates_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as error:
+            report.failed(f"package templates are unreadable for {package_id}: {error}")
+            continue
+        for template in template_data.get("templates", []):
+            template_id = template.get("id") if isinstance(template, dict) else None
+            if isinstance(template_id, str):
+                template_routes.append(f"/studio/{provider}/{template_id}")
+
+    if len(template_routes) == 18 and len(template_routes) == len(set(template_routes)):
+        report.passed("Studio registry produces 18 unique template routes")
+    else:
+        report.failed(f"unexpected Studio template routes: {sorted(template_routes)}")
 
     return report

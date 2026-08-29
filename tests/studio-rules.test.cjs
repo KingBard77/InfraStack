@@ -132,3 +132,44 @@ test('provider result rules supply scoring, messages, and reference IDs', functi
     assert.match(finding.title, /Azure virtual network/i);
     assert.deepEqual(finding.reference_ids, ['azure-virtual-network']);
 });
+
+test('Kubernetes result rules identify modeled workload, policy, storage, and operations gaps', function () {
+    const definition = JSON.parse(fs.readFileSync(path.join(
+        __dirname,
+        '../assets/studio/packages/containers/kubernetes/platform/result.json'
+    ), 'utf8'));
+    let project = core.createEmptyProject('Incomplete Kubernetes platform');
+    project.assets = [
+        { id: 'cluster', catalog_id: 'kubernetes-cluster', type: 'kubernetes-cluster', label: 'Cluster', category: 'Boundary', views: ['overview'], is_container: true, properties: { provider: 'kubernetes' }, layout: { overview: { x: 20, y: 20, width: 900, height: 700 } } },
+        { id: 'namespace', catalog_id: 'kubernetes-namespace', type: 'kubernetes-namespace', label: 'Namespace', category: 'Boundary', views: ['overview'], is_container: true, parent_id: 'cluster', properties: { provider: 'kubernetes' }, layout: { overview: { x: 60, y: 80, width: 600, height: 500 } } },
+        { id: 'deployment', catalog_id: 'kubernetes-deployment', type: 'kubernetes-deployment', label: 'Critical Deployment', category: 'Workload', views: ['overview'], parent_id: 'namespace', properties: { provider: 'kubernetes', critical: true, replicas: 1, service_account: 'default' }, layout: { overview: { x: 120, y: 160 } } },
+        { id: 'service', catalog_id: 'kubernetes-service', type: 'kubernetes-service', label: 'Public Service', category: 'Network', views: ['overview'], parent_id: 'namespace', properties: { provider: 'kubernetes', service_type: 'LoadBalancer' }, layout: { overview: { x: 360, y: 160 } } },
+        { id: 'stateful', catalog_id: 'kubernetes-statefulset', type: 'kubernetes-statefulset', label: 'Critical StatefulSet', category: 'Workload', views: ['overview'], parent_id: 'namespace', properties: { provider: 'kubernetes', critical: true, replicas: 1, service_account: 'database-runtime' }, layout: { overview: { x: 120, y: 360 } } },
+        { id: 'metrics', catalog_id: 'kubernetes-monitoring', type: 'kubernetes-monitoring', label: 'Metrics', category: 'Operations', views: ['overview'], parent_id: 'cluster', properties: { provider: 'kubernetes' }, layout: { overview: { x: 700, y: 160 } } }
+    ];
+    project.connections = [
+        { id: 'service-deployment', source: 'service', target: 'deployment', type: 'network', label: 'Service endpoints', direction: 'source-to-target' },
+        { id: 'metrics-deployment', source: 'deployment', target: 'metrics', type: 'administration', label: 'Metrics', direction: 'source-to-target' }
+    ];
+    project = core.normalizeProject(project).project;
+    const result = rules.evaluateProject(project, definition);
+    const ruleIds = new Set(result.findings.map(function (finding) { return finding.rule_id; }));
+
+    [
+        'kubernetes-critical-workload-single-replica',
+        'kubernetes-workload-without-resources',
+        'kubernetes-workload-without-probes',
+        'kubernetes-critical-workload-without-autoscaling',
+        'kubernetes-critical-workload-without-pdb',
+        'kubernetes-workload-without-service-account',
+        'kubernetes-namespace-without-network-policy',
+        'kubernetes-namespace-without-pod-security',
+        'kubernetes-public-service-without-gateway',
+        'kubernetes-statefulset-without-storage',
+        'kubernetes-statefulset-without-backup',
+        'kubernetes-cluster-without-observability'
+    ].forEach(function (ruleId) {
+        assert.equal(ruleIds.has(ruleId), true, ruleId);
+    });
+    assert.equal(result.grade, 'E');
+});

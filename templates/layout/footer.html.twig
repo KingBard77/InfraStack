@@ -19,9 +19,9 @@
           <h4>Product</h4>
           <ul>
             <li><a href="{{ path('app_studio') }}">InfraStack Studio</a></li>
-            <li><a href="{{ path('app_studio') }}">AWS Architecture</a></li>
-            <li><a href="{{ path('app_studio') }}">Azure Architecture</a></li>
-            <li><a href="{{ path('app_studio') }}">Architecture Review</a></li>
+            <li><a href="{{ path('app_studio_template', {provider: 'aws', templateId: 'aws-three-tier'}) }}">AWS Architecture</a></li>
+            <li><a href="{{ path('app_studio_template', {provider: 'azure', templateId: 'azure-three-tier'}) }}">Azure Architecture</a></li>
+            <li><a href="{{ path('app_studio_template', {provider: 'kubernetes', templateId: 'kubernetes-production-application'}) }}">Kubernetes Architecture</a></li>
           </ul>
         </div>
 

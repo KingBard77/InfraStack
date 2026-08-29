@@ -45,6 +45,10 @@ const InfraStackStudioCore = (function () {
         return view === 'logical' ? 'network' : view;
     }
 
+    function normalizeLayoutMode(value) {
+        return value === 'preserve' ? 'preserve' : 'auto';
+    }
+
     function normalizeViews(value, type) {
         const source = Array.isArray(value) ? value.map(normalizeViewName) : [];
         const views = supportedViews.filter(function (view) {
@@ -91,8 +95,10 @@ const InfraStackStudioCore = (function () {
         const layout = value && typeof value === 'object' ? value : {};
         const defaultWidth = isContainer ? 520 : 156;
         const defaultHeight = isContainer ? 330 : 104;
-        const width = clamp(layout.width, isContainer ? 260 : 132, 1200, defaultWidth);
-        const height = clamp(layout.height, isContainer ? 180 : 88, 900, defaultHeight);
+        const maximumWidth = isContainer ? canvasSize.width - 24 : 1200;
+        const maximumHeight = isContainer ? canvasSize.height - 24 : 900;
+        const width = clamp(layout.width, isContainer ? 260 : 132, maximumWidth, defaultWidth);
+        const height = clamp(layout.height, isContainer ? 180 : 88, maximumHeight, defaultHeight);
         const maximumIconSize = isContainer ? 96 : Math.max(24, Math.min(96, width - 60, height - 28));
 
         return {
@@ -259,6 +265,19 @@ const InfraStackStudioCore = (function () {
             vlans: safeString(properties.vlans, 160),
             ports: safeString(properties.ports, 80),
             management_ip: safeString(properties.management_ip, 64),
+            image_reference: safeString(properties.image_reference, 200),
+            replicas: Math.round(clamp(properties.replicas, 0, 10000, 0)),
+            service_type: safeString(properties.service_type, 30),
+            cpu_limit: safeString(properties.cpu_limit, 30),
+            memory_limit: safeString(properties.memory_limit, 30),
+            readiness_probe: properties.readiness_probe === true,
+            liveness_probe: properties.liveness_probe === true,
+            autoscaling: properties.autoscaling === true,
+            disruption_budget: properties.disruption_budget === true,
+            network_policy: properties.network_policy === true,
+            pod_security_level: safeString(properties.pod_security_level, 20),
+            service_account: safeString(properties.service_account, 80),
+            storage_class: safeString(properties.storage_class, 80),
             monitoring: properties.monitoring === true,
             backup: properties.backup === true,
             redundant: properties.redundant === true,
@@ -468,6 +487,7 @@ const InfraStackStudioCore = (function () {
             project_id: createId('project'),
             name: safeString(name || 'Untitled architecture', 80),
             profile: 'hybrid-production',
+            layout_mode: 'auto',
             active_view: 'overview',
             canvas: clone(canvasSize),
             viewports: viewports,
@@ -590,6 +610,7 @@ const InfraStackStudioCore = (function () {
                 project_id: safeString(payload.project_id || createId('project'), 100),
                 name: safeString(payload.name || 'Untitled architecture', 80),
                 profile: safeString(payload.profile || 'hybrid-production', 50),
+                layout_mode: normalizeLayoutMode(payload.layout_mode),
                 active_view: supportedViews.includes(activeView) ? activeView : 'overview',
                 canvas: clone(canvasSize),
                 viewports: normalizeViewports(payload.viewports),
@@ -1325,6 +1346,84 @@ const InfraStackStudioCore = (function () {
         return normalizeProject(next).project;
     }
 
+    function layoutBoxesNeedClearance(left, right, gap) {
+        return left.x < right.x + right.width + gap
+            && left.x + left.width + gap > right.x
+            && left.y < right.y + right.height + gap
+            && left.y + left.height + gap > right.y;
+    }
+
+    /**
+     * Tidies a package-owned layout without replacing its visual composition.
+     *
+     * @param {object} project Current project.
+     * @param {string} view Active projection.
+     * @param {{gap?: number}} [options={}] Optional spacing controls.
+     * @returns {object} Updated normalized project.
+     */
+    function tidyPreservedLayout(project, view, options = {}) {
+        const next = clone(project);
+        const context = visibleAssetContext(next, view);
+        const gap = clamp(options.gap, 24, 72, 40);
+        const grid = 10;
+
+        if (!supportedViews.includes(view) || context.assets.length === 0) return next;
+        context.assets.filter(function (asset) {
+            return !context.assetMap.has(asset.parent_id);
+        }).forEach(function (asset) {
+            const box = asset.layout[view];
+            const targetX = Math.round(box.x / grid) * grid;
+            const targetY = Math.round(box.y / grid) * grid;
+            translateAssetTree(next, context, asset.id, view, targetX - box.x, targetY - box.y);
+        });
+        context.children.forEach(function (siblings) {
+            const ordered = [...siblings].sort(function (left, right) {
+                return left.layout[view].y - right.layout[view].y
+                    || left.layout[view].x - right.layout[view].x
+                    || left.label.localeCompare(right.label);
+            });
+            for (let pass = 0; pass < ordered.length; pass += 1) {
+                for (let leftIndex = 0; leftIndex < ordered.length; leftIndex += 1) {
+                    for (let rightIndex = leftIndex + 1; rightIndex < ordered.length; rightIndex += 1) {
+                        const left = ordered[leftIndex].layout[view];
+                        const rightAsset = ordered[rightIndex];
+                        const right = rightAsset.layout[view];
+                        if (!layoutBoxesNeedClearance(left, right, gap)) continue;
+                        const horizontalDistance = Math.abs((right.x + (right.width / 2)) - (left.x + (left.width / 2)));
+                        const verticalDistance = Math.abs((right.y + (right.height / 2)) - (left.y + (left.height / 2)));
+                        if (horizontalDistance >= verticalDistance) {
+                            const direction = right.x + (right.width / 2) >= left.x + (left.width / 2) ? 1 : -1;
+                            const target = direction > 0 ? left.x + left.width + gap : left.x - right.width - gap;
+                            translateAssetTree(next, context, rightAsset.id, view, target - right.x, 0);
+                        } else {
+                            const direction = right.y + (right.height / 2) >= left.y + (left.height / 2) ? 1 : -1;
+                            const target = direction > 0 ? left.y + left.height + gap : left.y - right.height - gap;
+                            translateAssetTree(next, context, rightAsset.id, view, 0, target - right.y);
+                        }
+                    }
+                }
+            }
+        });
+        context.assets.filter(function (asset) { return context.assetMap.has(asset.parent_id); }).forEach(function (asset) {
+            const parent = context.assetMap.get(asset.parent_id);
+            const parentBox = parent.layout[view];
+            const box = asset.layout[view];
+            const padding = 28;
+            const minimumX = parentBox.x + padding;
+            const minimumY = parentBox.y + 58 + padding;
+            const maximumX = Math.max(minimumX, parentBox.x + parentBox.width - padding - box.width);
+            const maximumY = Math.max(minimumY, parentBox.y + parentBox.height - padding - box.height);
+            const targetX = Math.max(minimumX, Math.min(maximumX, box.x));
+            const targetY = Math.max(minimumY, Math.min(maximumY, box.y));
+            translateAssetTree(next, context, asset.id, view, targetX - box.x, targetY - box.y);
+        });
+        next.connections.forEach(function (connection) {
+            if (connection.routing?.[view]) connection.routing[view].points = [];
+        });
+        next.updated_at = new Date().toISOString();
+        return normalizeProject(next).project;
+    }
+
     /**
      * Builds a deterministic hierarchy-aware layout for one projection.
      *
@@ -1334,6 +1433,7 @@ const InfraStackStudioCore = (function () {
      * @returns {object} Updated normalized project.
      */
     function autoLayoutProject(project, view, options = {}) {
+        if (project.layout_mode === 'preserve') return tidyPreservedLayout(project, view, options);
         const next = clone(project);
         const context = visibleAssetContext(next, view);
         const metrics = new Map();
@@ -1372,7 +1472,7 @@ const InfraStackStudioCore = (function () {
             const minimums = containerMinimums[container.type] || [320, 200];
             const width = Math.max(minimums[0], Math.max(leafLaneWidth, childWidth) + (padding * 2));
             const height = Math.max(minimums[1], header + padding + leafLaneHeight + (leaves.length && childContainers.length ? gap : 0) + childHeight + padding);
-            const result = { asset: container, leaves: leaves, children: childMetrics, horizontal: horizontal, width: Math.min(1200, width), height: Math.min(900, height), leafWidth: leafWidth, leafHeight: leafHeight, leafColumns: leafColumns, leafLaneHeight: leafLaneHeight };
+            const result = { asset: container, leaves: leaves, children: childMetrics, horizontal: horizontal, width: Math.min(canvasSize.width - 24, width), height: Math.min(canvasSize.height - 24, height), leafWidth: leafWidth, leafHeight: leafHeight, leafColumns: leafColumns, leafLaneHeight: leafLaneHeight };
             metrics.set(container.id, result);
             return result;
         }
