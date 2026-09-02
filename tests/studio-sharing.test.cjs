@@ -67,7 +67,8 @@ test('Studio Share creates a persisted read-only project instead of sharing the 
     assert.match(graphAdapter, /exportSvg\(width, height\)/);
     assert.match(graphAdapter, /new SvgCanvas2D\(drawing\)/);
     assert.match(graphAdapter, /new ImageExport\(\)/);
-    assert.match(graphAdapter, /this\.connectionLabelOverlay\.children/);
+    assert.match(graphAdapter, /exporter\.drawState\(this\.graph\.getView\(\)\.getState\(this\.graph\.getDataModel\(\)\.getRoot\(\)\), canvas\)/);
+    assert.doesNotMatch(graphAdapter, /connectionLabelOverlay/);
     assert.match(studio, /import shareImageRenderer from '\.\/publish\/share-image\.js'/);
     assert.match(page, /importmap\(\['app', 'studio'\]\)/);
     assert.match(page, /data-embed-focus/);

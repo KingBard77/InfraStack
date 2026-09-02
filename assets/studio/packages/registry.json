@@ -43,7 +43,7 @@
       "provider": "kubernetes",
       "slug": "platform",
       "name": "Kubernetes Platform Architecture",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "manifest": "containers/kubernetes/platform/package.json",
       "templates": "containers/kubernetes/platform/templates.json",
       "result": "containers/kubernetes/platform/result.json",

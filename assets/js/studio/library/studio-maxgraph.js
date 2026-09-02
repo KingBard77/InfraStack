@@ -50,6 +50,12 @@ function nodeValue(asset, iconUrl) {
     const imageUrl = asset.image?.data_url || iconUrl;
     const icon = imageUrl ? `<img src="${escapeHtml(imageUrl)}" alt="" draggable="false">` : `<span class="studio-graph-card-glyph">${escapeHtml(initials)}</span>`;
     const detail = asset.properties.role || asset.category;
+    const automaticFontSize = Math.max(9, Math.min(24, Math.round(Math.min(asset.layout.width / 14, asset.layout.height / 8))));
+    const fontSize = asset.appearance.automatic_font_size ? automaticFontSize : asset.appearance.font_size;
+    const textBackground = asset.appearance.text_background_enabled
+        ? asset.appearance.text_background_color
+        : (asset.appearance.box_transparent ? '#fbfcfe' : 'transparent');
+    const textBorder = asset.appearance.text_border_enabled ? `1px solid ${asset.appearance.text_border_color}` : '0 solid transparent';
 
     if (asset.image?.mode === 'image') {
         const label = asset.image.show_label
@@ -59,7 +65,7 @@ function nodeValue(asset, iconUrl) {
         return `<div class="studio-graph-image-card" style="box-sizing:border-box;padding:${asset.image.padding}px;background:${escapeHtml(background)}"><img src="${escapeHtml(asset.image.data_url)}" alt="" draggable="false" style="object-fit:${escapeHtml(asset.image.fit)};opacity:${asset.image.opacity}">${label}</div>`;
     }
 
-    return `<div class="studio-graph-card" style="--studio-cell-icon:${asset.layout.icon_size}px;--studio-cell-font:${asset.appearance.font_size}px;--studio-cell-text:${escapeHtml(asset.appearance.text_color)};--studio-cell-align:${escapeHtml(asset.appearance.text_align)};--studio-image-opacity:${asset.image?.opacity || 1}">` +
+    return `<div class="studio-graph-card${asset.appearance.word_wrap ? ' is-word-wrap' : ''}" style="--studio-cell-icon:${asset.layout.icon_size}px;--studio-cell-font:${fontSize}px;--studio-cell-text:${escapeHtml(asset.appearance.text_color)};--studio-cell-align:${escapeHtml(asset.appearance.text_align)};--studio-cell-vertical:${{ top: 'start', middle: 'center', bottom: 'end' }[asset.appearance.vertical_align] || 'center'};--studio-cell-font-family:${escapeHtml(asset.appearance.font_family)};--studio-cell-font-weight:${asset.appearance.font_bold ? 800 : 400};--studio-cell-font-style:${asset.appearance.font_italic ? 'italic' : 'normal'};--studio-cell-decoration:${asset.appearance.font_underline ? 'underline' : 'none'};--studio-text-background:${escapeHtml(textBackground)};--studio-text-border:${escapeHtml(textBorder)};--studio-text-opacity:${asset.appearance.text_opacity};--studio-text-spacing:${asset.appearance.text_spacing}px;--studio-image-opacity:${asset.image?.opacity || 1}">` +
         `<span class="studio-graph-card-icon">${icon}</span>` +
         `<span class="studio-graph-card-copy"><strong>${escapeHtml(asset.label)}</strong><small>${escapeHtml(detail)}</small></span></div>`;
 }
@@ -71,7 +77,13 @@ function boundaryValue(asset) {
     } else if (['availability-zone', 'subnet'].includes(asset.type)) {
         detail = asset.properties.role || asset.properties.address || asset.properties.zone || asset.category;
     }
-    return `<div class="studio-graph-boundary-label is-${escapeHtml(asset.type)}" style="--studio-cell-font:${asset.appearance.font_size}px;--studio-cell-text:${escapeHtml(asset.appearance.text_color)};--studio-cell-align:${escapeHtml(asset.appearance.text_align)}"><strong>${escapeHtml(asset.label)}</strong><small>${escapeHtml(detail)}</small></div>`;
+    const automaticFontSize = Math.max(9, Math.min(24, Math.round(asset.layout.width / 24)));
+    const fontSize = asset.appearance.automatic_font_size ? automaticFontSize : asset.appearance.font_size;
+    const textBackground = asset.appearance.text_background_enabled
+        ? asset.appearance.text_background_color
+        : (asset.appearance.box_transparent ? '#fbfcfe' : 'transparent');
+    const textBorder = asset.appearance.text_border_enabled ? `1px solid ${asset.appearance.text_border_color}` : '0 solid transparent';
+    return `<div class="studio-graph-boundary-label is-${escapeHtml(asset.type)}${asset.appearance.word_wrap ? ' is-word-wrap' : ''}" style="--studio-cell-font:${fontSize}px;--studio-cell-text:${escapeHtml(asset.appearance.text_color)};--studio-cell-align:${escapeHtml(asset.appearance.text_align)};--studio-cell-font-family:${escapeHtml(asset.appearance.font_family)};--studio-cell-font-weight:${asset.appearance.font_bold ? 800 : 400};--studio-cell-font-style:${asset.appearance.font_italic ? 'italic' : 'normal'};--studio-cell-decoration:${asset.appearance.font_underline ? 'underline' : 'none'};--studio-text-background:${escapeHtml(textBackground)};--studio-text-border:${escapeHtml(textBorder)};--studio-text-opacity:${asset.appearance.text_opacity};--studio-text-spacing:${asset.appearance.text_spacing}px"><strong>${escapeHtml(asset.label)}</strong><small>${escapeHtml(detail)}</small></div>`;
 }
 
 function globalGeometry(asset, view) {
@@ -88,11 +100,149 @@ function relativePosition(asset, parentAsset, view) {
     ];
 }
 
+function segmentIntersectsBox(start, end, box) {
+    if (start.x === end.x) {
+        const top = Math.min(start.y, end.y);
+        const bottom = Math.max(start.y, end.y);
+        return start.x > box.x && start.x < box.x + box.width
+            && bottom > box.y && top < box.y + box.height;
+    }
+    if (start.y === end.y) {
+        const left = Math.min(start.x, end.x);
+        const right = Math.max(start.x, end.x);
+        return start.y > box.y && start.y < box.y + box.height
+            && right > box.x && left < box.x + box.width;
+    }
+    return true;
+}
+
+function automaticObstacleRoute(connection, assets, view) {
+    const source = assets.find(function (asset) { return asset.id === connection.source; });
+    const target = assets.find(function (asset) { return asset.id === connection.target; });
+    if (!source || !target) return [];
+    const clearance = 20;
+    const center = function (asset) {
+        const layout = asset.layout[view];
+        return { x: layout.x + (layout.width / 2), y: layout.y + (layout.height / 2) };
+    };
+    const sourceCenter = center(source);
+    const targetCenter = center(target);
+    const routeBounds = {
+        left: Math.min(sourceCenter.x, targetCenter.x) - 240,
+        right: Math.max(sourceCenter.x, targetCenter.x) + 240,
+        top: Math.min(sourceCenter.y, targetCenter.y) - 240,
+        bottom: Math.max(sourceCenter.y, targetCenter.y) + 240
+    };
+    const obstacles = assets.filter(function (asset) {
+        return !asset.is_container && asset.id !== source.id && asset.id !== target.id;
+    }).map(function (asset) {
+        const layout = asset.layout[view];
+        return {
+            x: layout.x - clearance,
+            y: layout.y - clearance,
+            width: layout.width + (clearance * 2),
+            height: layout.height + (clearance * 2)
+        };
+    }).filter(function (box) {
+        return box.x < routeBounds.right && box.x + box.width > routeBounds.left
+            && box.y < routeBounds.bottom && box.y + box.height > routeBounds.top;
+    });
+    if (!obstacles.length) return [];
+    const normalizeControls = function (controls) {
+        return controls.filter(function (point, index) {
+            const previous = index === 0 ? sourceCenter : controls[index - 1];
+            return point.x !== previous.x || point.y !== previous.y;
+        }).filter(function (point) {
+            return point.x !== targetCenter.x || point.y !== targetCenter.y;
+        });
+    };
+    const routeCollides = function (controls) {
+        const route = [sourceCenter, ...controls, targetCenter];
+        return route.slice(1).some(function (point, index) {
+            return obstacles.some(function (box) { return segmentIntersectsBox(route[index], point, box); });
+        });
+    };
+    const simpleRoutes = [
+        normalizeControls([{ x: targetCenter.x, y: sourceCenter.y }]),
+        normalizeControls([{ x: sourceCenter.x, y: targetCenter.y }])
+    ];
+    const clearSimpleRoute = simpleRoutes.find(function (controls) { return !routeCollides(controls); });
+    if (clearSimpleRoute) return clearSimpleRoute;
+    const xValues = [...new Set([sourceCenter.x, targetCenter.x, ...obstacles.flatMap(function (box) {
+        return [box.x, box.x + box.width];
+    })])].sort(function (left, right) { return left - right; });
+    const yValues = [...new Set([sourceCenter.y, targetCenter.y, ...obstacles.flatMap(function (box) {
+        return [box.y, box.y + box.height];
+    })])].sort(function (left, right) { return left - right; });
+    const pointInsideObstacle = function (point) {
+        return obstacles.some(function (box) {
+            return point.x > box.x && point.x < box.x + box.width
+                && point.y > box.y && point.y < box.y + box.height;
+        });
+    };
+    const keyFor = function (point) { return `${point.x}:${point.y}`; };
+    const points = new Map();
+    xValues.forEach(function (x) {
+        yValues.forEach(function (y) {
+            const point = { x, y };
+            if (!pointInsideObstacle(point)) points.set(keyFor(point), point);
+        });
+    });
+    const neighbors = new Map(Array.from(points.keys()).map(function (key) { return [key, []]; }));
+    const connectLine = function (line) {
+        line.sort(function (left, right) { return left.x === right.x ? left.y - right.y : left.x - right.x; });
+        line.slice(1).forEach(function (point, index) {
+            const previous = line[index];
+            if (obstacles.some(function (box) { return segmentIntersectsBox(previous, point, box); })) return;
+            const distance = Math.abs(point.x - previous.x) + Math.abs(point.y - previous.y);
+            neighbors.get(keyFor(previous)).push({ key: keyFor(point), distance });
+            neighbors.get(keyFor(point)).push({ key: keyFor(previous), distance });
+        });
+    };
+    yValues.forEach(function (y) { connectLine(Array.from(points.values()).filter(function (point) { return point.y === y; })); });
+    xValues.forEach(function (x) { connectLine(Array.from(points.values()).filter(function (point) { return point.x === x; })); });
+    const startKey = keyFor(sourceCenter);
+    const targetKey = keyFor(targetCenter);
+    const distances = new Map([[startKey, 0]]);
+    const previous = new Map();
+    const queue = [{ key: startKey, distance: 0 }];
+    const visited = new Set();
+    while (queue.length) {
+        queue.sort(function (left, right) { return left.distance - right.distance; });
+        const current = queue.shift();
+        if (visited.has(current.key)) continue;
+        visited.add(current.key);
+        if (current.key === targetKey) break;
+        (neighbors.get(current.key) || []).forEach(function (neighbor) {
+            const distance = current.distance + neighbor.distance;
+            if (distance >= (distances.get(neighbor.key) ?? Infinity)) return;
+            distances.set(neighbor.key, distance);
+            previous.set(neighbor.key, current.key);
+            queue.push({ key: neighbor.key, distance });
+        });
+    }
+    if (!distances.has(targetKey)) return [];
+    const path = [];
+    let currentKey = targetKey;
+    while (currentKey) {
+        path.unshift(points.get(currentKey));
+        if (currentKey === startKey) break;
+        currentKey = previous.get(currentKey);
+    }
+    return path.filter(function (point, index) {
+        if (index === 0 || index === path.length - 1) return false;
+        const before = path[index - 1];
+        const after = path[index + 1];
+        return !(before.x === point.x && point.x === after.x)
+            && !(before.y === point.y && point.y === after.y);
+    });
+}
+
 const exportStyleProperties = [
     'align-items', 'background', 'background-color', 'border', 'border-radius', 'box-sizing', 'color',
     'display', 'font-family', 'font-size', 'font-style', 'font-weight', 'gap', 'grid-template-columns',
     'height', 'justify-content', 'line-height', 'margin', 'max-width', 'min-width', 'object-fit', 'opacity',
-    'overflow', 'padding', 'place-items', 'position', 'text-align', 'text-overflow', 'text-shadow', 'transform',
+    'overflow', 'padding', 'place-items', 'position', 'text-align', 'text-decoration', 'text-overflow', 'text-shadow', 'transform',
     'transform-origin', 'user-select', 'vertical-align', 'white-space', 'width'
 ];
 
@@ -129,12 +279,8 @@ export class StudioMaxGraphAdapter {
         this.gridSize = 10;
         this.paletteDragSources = [];
         this.imageHitAreas = [];
-        this.connectionLabelEntries = [];
         this.graph = new Graph(container, undefined, [...getDefaultPlugins(), RubberBandHandler]);
         this.outline = new Outline(this.graph, outlineContainer);
-        this.connectionLabelOverlay = document.createElement('div');
-        this.connectionLabelOverlay.className = 'studio-connection-label-overlay';
-        this.graph.container.append(this.connectionLabelOverlay);
         this.configureGraph();
         this.attachListeners();
     }
@@ -174,7 +320,21 @@ export class StudioMaxGraphAdapter {
             return asset ? asset.label : (connection ? connection.label || connection.type : '');
         };
         const panning = this.graph.getPlugin('PanningHandler');
-        if (panning) panning.useLeftButtonForPanning = false;
+        if (panning) {
+            panning.useLeftButtonForPanning = false;
+            panning.addListener(InternalEvent.PAN_END, () => {
+                const horizontalOnly = panning.dx !== 0 && panning.dy === 0;
+                const verticalOnly = panning.dx === 0 && panning.dy !== 0;
+                if (!horizontalOnly && !verticalOnly) return;
+                const view = this.graph.getView();
+                const translate = view.getTranslate();
+                const scale = view.getScale();
+                const nextX = translate.x + (panning.dx / scale);
+                const nextY = translate.y + (panning.dy / scale);
+                this.graph.panGraph(0, 0);
+                view.setTranslate(nextX, nextY);
+            });
+        }
         this.installSmartGuides();
     }
 
@@ -462,164 +622,7 @@ export class StudioMaxGraphAdapter {
 
     emitViewport() {
         this.updateZoomPresentation(this.viewport().zoom);
-        window.requestAnimationFrame(() => this.updateConnectionLabels());
         if (!this.rendering && this.callbacks.onViewportChange) this.callbacks.onViewportChange(this.viewport());
-    }
-
-    updateConnectionLabels() {
-        if (!this.connectionLabelOverlay) return;
-        const viewportZoom = this.viewport().zoom;
-        const obstacles = [];
-        (this.visibleAssets || []).forEach((asset) => {
-            const cell = this.visibleAssetCells?.get(asset.id);
-            const state = cell && this.graph.getView().getState(cell);
-            if (!state) return;
-            obstacles.push(asset.is_container
-                ? { x: state.x, y: state.y, width: state.width, height: Math.min(28, state.height) }
-                : { x: state.x, y: state.y, width: state.width, height: state.height });
-        });
-        const placed = [];
-        const fragment = document.createDocumentFragment();
-        this.connectionLabelEntries.forEach((entry) => {
-            const text = entry.connection.label || entry.connection.protocol || '';
-            const state = this.graph.getView().getState(entry.cell);
-            const points = (state?.absolutePoints || []).filter(Boolean);
-            if (!text || points.length < 2) return;
-            const segments = [];
-            let totalLength = 0;
-            points.slice(1).forEach(function (point, index) {
-                const start = points[index];
-                const length = Math.hypot(point.x - start.x, point.y - start.y);
-                if (length > 0) segments.push({ start, end: point, length });
-                totalLength += length;
-            });
-            if (!segments.length) return;
-            let travelled = 0;
-            const halfLength = totalLength / 2;
-            let pathMiddle = segments[0];
-            let pathRatio = 0.5;
-            for (const segment of segments) {
-                if (travelled + segment.length >= halfLength) {
-                    pathMiddle = segment;
-                    pathRatio = (halfLength - travelled) / segment.length;
-                    break;
-                }
-                travelled += segment.length;
-            }
-            const midpoint = function (segment, ratio = 0.5) {
-                return {
-                    x: segment.start.x + ((segment.end.x - segment.start.x) * ratio),
-                    y: segment.start.y + ((segment.end.y - segment.start.y) * ratio),
-                    horizontal: Math.abs(segment.end.x - segment.start.x) >= Math.abs(segment.end.y - segment.start.y)
-                };
-            };
-            const baseCandidates = [midpoint(pathMiddle, pathRatio), ...segments.sort(function (left, right) {
-                return right.length - left.length;
-            }).map(function (segment) { return midpoint(segment); })];
-            const width = Math.min(240, Math.max(60, (text.length * 6.8) + 12));
-            const height = text.length > 34 ? 34 : 20;
-            const candidates = baseCandidates.flatMap(function (point) {
-                if (point.horizontal) {
-                    return [
-                        point,
-                        { x: point.x, y: point.y - (height + 36) },
-                        { x: point.x, y: point.y + (height + 36) },
-                        { x: point.x, y: point.y - (height + 64) },
-                        { x: point.x, y: point.y + (height + 64) }
-                    ];
-                }
-                return [
-                    point,
-                    { x: point.x - ((width / 2) + 28), y: point.y },
-                    { x: point.x + ((width / 2) + 28), y: point.y },
-                    { x: point.x - ((width / 2) + 54), y: point.y },
-                    { x: point.x + ((width / 2) + 54), y: point.y }
-                ];
-            });
-            const collides = function (candidate, rectangles) {
-                const bounds = { x: candidate.x - (width / 2), y: candidate.y - (height / 2), width, height };
-                return rectangles.some(function (rectangle) {
-                    return bounds.x < rectangle.x + rectangle.width + 10
-                        && bounds.x + bounds.width > rectangle.x - 10
-                        && bounds.y < rectangle.y + rectangle.height + 10
-                        && bounds.y + bounds.height > rectangle.y - 10;
-                });
-            };
-            const position = candidates.find(function (candidate) {
-                return candidate.x - (width / 2) >= 4
-                    && candidate.x + (width / 2) <= this.graph.container.clientWidth - 4
-                    && candidate.y - (height / 2) >= 4
-                    && candidate.y + (height / 2) <= this.graph.container.clientHeight - 4
-                    && !collides(candidate, obstacles)
-                    && !collides(candidate, placed);
-            }, this) || baseCandidates[0];
-            const label = document.createElement('span');
-            label.className = 'studio-graph-connection-label';
-            label.textContent = text;
-            label.style.left = `${position.x}px`;
-            label.style.top = `${position.y}px`;
-            label.style.width = `${width}px`;
-            label.style.fontSize = `${Math.max(10, Math.min(12, 10 + (viewportZoom * 2)))}px`;
-            label.title = text;
-            fragment.append(label);
-            placed.push({ x: position.x - (width / 2), y: position.y - (height / 2), width, height });
-        });
-        this.connectionLabelOverlay.replaceChildren(fragment);
-        this.resolveConnectionLabelCollisions();
-    }
-
-    resolveConnectionLabelCollisions() {
-        const overlayBounds = this.connectionLabelOverlay.getBoundingClientRect();
-        const obstacleBounds = Array.from(this.graph.container.querySelectorAll('.studio-graph-card, .studio-graph-boundary-label')).map(function (element) {
-            const bounds = element.getBoundingClientRect();
-            return {
-                left: bounds.left - overlayBounds.left,
-                top: bounds.top - overlayBounds.top,
-                right: bounds.right - overlayBounds.left,
-                bottom: bounds.bottom - overlayBounds.top
-            };
-        });
-        const placedBounds = [];
-        const overlaps = function (bounds, obstacles) {
-            return obstacles.some(function (obstacle) {
-                return bounds.left < obstacle.right + 10
-                    && bounds.right > obstacle.left - 10
-                    && bounds.top < obstacle.bottom + 10
-                    && bounds.bottom > obstacle.top - 10;
-            });
-        };
-        Array.from(this.connectionLabelOverlay.children).forEach((label) => {
-            const initialLeft = Number.parseFloat(label.style.left);
-            const initialTop = Number.parseFloat(label.style.top);
-            const rendered = label.getBoundingClientRect();
-            const width = rendered.width;
-            const height = rendered.height;
-            const offsets = [{ x: 0, y: 0 }];
-            for (let radius = 20; radius <= 240; radius += 20) {
-                offsets.push(
-                    { x: 0, y: -radius }, { x: 0, y: radius },
-                    { x: -radius, y: 0 }, { x: radius, y: 0 },
-                    { x: -radius, y: -radius }, { x: radius, y: -radius },
-                    { x: -radius, y: radius }, { x: radius, y: radius }
-                );
-            }
-            const position = offsets.find((offset) => {
-                const left = initialLeft + offset.x - (width / 2);
-                const top = initialTop + offset.y - (height / 2);
-                const bounds = { left, top, right: left + width, bottom: top + height };
-                return left >= 4
-                    && top >= 4
-                    && bounds.right <= this.connectionLabelOverlay.clientWidth - 4
-                    && bounds.bottom <= this.connectionLabelOverlay.clientHeight - 4
-                    && !overlaps(bounds, obstacleBounds)
-                    && !overlaps(bounds, placedBounds);
-            }) || offsets[0];
-            label.style.left = `${initialLeft + position.x}px`;
-            label.style.top = `${initialTop + position.y}px`;
-            const left = initialLeft + position.x - (width / 2);
-            const top = initialTop + position.y - (height / 2);
-            placedBounds.push({ left, top, right: left + width, bottom: top + height });
-        });
     }
 
     isAssetLocked(cell) {
@@ -630,6 +633,7 @@ export class StudioMaxGraphAdapter {
 
     assetStyle(asset) {
         const appearance = asset.appearance[this.view];
+        const layout = asset.layout[this.view];
         const dashed = appearance.border_style !== 'solid';
         const dashPattern = appearance.border_style === 'dotted' ? '1 4' : '8 6';
         if (asset.image?.mode === 'image') {
@@ -637,15 +641,19 @@ export class StudioMaxGraphAdapter {
                 shape: 'rectangle', html: true, whiteSpace: 'wrap', overflow: 'visible',
                 fillColor: 'none', strokeColor: 'none', strokeWidth: 0, shadow: false,
                 fontColor: appearance.text_color, fontFamily: 'Roboto', fontSize: appearance.font_size,
-                align: appearance.text_align, verticalAlign: 'middle', spacing: 0, rotatable: true
+                align: appearance.text_align, verticalAlign: 'middle', spacing: 0, rotatable: true,
+                rotation: layout.rotation, flipH: layout.flip_h, flipV: layout.flip_v
             };
         }
         if (asset.is_container) {
             const startSize = { vpc: 52, 'availability-zone': 46, subnet: 42 }[asset.type] || 38;
             return {
                 shape: 'swimlane', html: true, rounded: appearance.shape === 'rounded', arcSize: 16, startSize,
-                fillColor: appearance.fill_color, fillOpacity: 78, strokeColor: appearance.border_color,
-                strokeWidth: appearance.border_width, dashed, dashPattern, fontColor: appearance.text_color,
+                fillColor: appearance.box_transparent ? 'none' : appearance.fill_color,
+                fillOpacity: appearance.box_transparent ? 0 : 78,
+                strokeColor: appearance.box_transparent ? 'none' : appearance.border_color,
+                strokeWidth: appearance.box_transparent ? 0 : appearance.border_width,
+                dashed, dashPattern, shadow: false, fontColor: appearance.text_color,
                 fontFamily: 'Roboto', fontSize: appearance.font_size, align: appearance.text_align,
                 verticalAlign: 'top', spacingLeft: 8,
                 collapsible: true, recursiveResize: false
@@ -654,16 +662,18 @@ export class StudioMaxGraphAdapter {
         const shape = appearance.shape === 'ellipse' ? 'ellipse' : 'rectangle';
         return {
             shape, html: true, rounded: appearance.shape === 'rounded', arcSize: 12,
-            whiteSpace: 'wrap', overflow: 'hidden', fillColor: appearance.fill_color,
-            strokeColor: appearance.border_color, strokeWidth: appearance.border_width,
-            dashed, dashPattern, shadow: true, fontColor: appearance.text_color,
+            whiteSpace: 'wrap', overflow: 'hidden', fillColor: appearance.box_transparent ? 'none' : appearance.fill_color,
+            strokeColor: appearance.box_transparent ? 'none' : appearance.border_color,
+            strokeWidth: appearance.box_transparent ? 0 : appearance.border_width,
+            dashed, dashPattern, shadow: !appearance.box_transparent, fontColor: appearance.text_color,
             fontFamily: 'Roboto', fontSize: appearance.font_size, align: appearance.text_align, verticalAlign: 'middle',
-            spacing: 0, rotatable: true
+            spacing: 0, rotatable: true, rotation: layout.rotation, flipH: layout.flip_h, flipV: layout.flip_v
         };
     }
 
     connectionStyle(connection) {
         const route = connection.routing?.[this.view] || { style: 'orthogonal' };
+        const appearance = connection.appearance?.[this.view] || {};
         const routeStyles = {
             orthogonal: { edgeStyle: 'orthogonalEdgeStyle', rounded: true },
             straight: { edgeStyle: 'none', rounded: false },
@@ -674,11 +684,12 @@ export class StudioMaxGraphAdapter {
 
         return {
             ...(routeStyles[route.style] || routeStyles.orthogonal), orthogonalLoop: true, jettySize: 'auto',
-            strokeColor: edgeColor(connection.type), strokeWidth: connection.type === 'replication' ? 4 : 2,
-            dashed: edgeDash(connection.type), endArrow: direction === 'target-to-source' ? 'none' : (direction === 'bidirectional' ? 'classic' : 'block'),
+            strokeColor: appearance.line_color || edgeColor(connection.type), strokeWidth: appearance.line_width || (connection.type === 'replication' ? 4 : 2),
+            dashed: appearance.line_style ? appearance.line_style !== 'solid' : edgeDash(connection.type),
+            dashPattern: appearance.line_style === 'dotted' ? '1 4' : '8 6', endArrow: direction === 'target-to-source' ? 'none' : (direction === 'bidirectional' ? 'classic' : 'block'),
             startArrow: direction === 'bidirectional' || direction === 'target-to-source' ? 'classic' : 'none',
             html: true, fontFamily: 'Roboto',
-            fontSize: 12, fontColor: '#253247', labelBackgroundColor: 'none', labelBorderColor: 'none',
+            fontSize: appearance.label_font_size || 12, fontColor: appearance.label_color || '#253247', labelBackgroundColor: 'none', labelBorderColor: 'none',
             whiteSpace: 'nowrap', overflow: 'visible', spacing: 4
         };
     }
@@ -713,7 +724,6 @@ export class StudioMaxGraphAdapter {
         const root = this.graph.getDefaultParent();
 
         this.clearImageHitAreas();
-        this.connectionLabelEntries = [];
         this.visibleAssets = visibleAssets;
         this.visibleAssetCells = cells;
         this.graph.batchUpdate(() => {
@@ -745,18 +755,21 @@ export class StudioMaxGraphAdapter {
                 const edge = this.graph.insertEdge({
                     parent: root,
                     id: `${connectionPrefix}${connection.id}`,
-                    value: '',
+                    value: escapeHtml(connection.label || connection.protocol || ''),
                     source: cells.get(connection.source),
                     target: cells.get(connection.target),
                     style: this.connectionStyle(connection)
                 });
-                this.connectionLabelEntries.push({ cell: edge, connection });
                 const route = connection.routing?.[view];
+                const geometry = edge.getGeometry().clone();
+                geometry.relative = true;
+                geometry.x = { start: -0.5, center: 0, end: 0.5 }[connection.appearance?.[view]?.label_position] || 0;
+                geometry.y = 0;
+                geometry.offset = new Point(0, connection.appearance?.[view]?.label_offset ?? -14);
                 if (route && route.points.length > 0) {
-                    const geometry = edge.getGeometry().clone();
                     geometry.points = route.points.map(function (point) { return new Point(point.x, point.y); });
-                    this.graph.getDataModel().setGeometry(edge, geometry);
                 }
+                this.graph.getDataModel().setGeometry(edge, geometry);
             });
         });
         this.setViewport(project.viewports[view]);
@@ -767,7 +780,6 @@ export class StudioMaxGraphAdapter {
         this.graph.setSelectionCells(selection);
         this.rendering = false;
         this.graph.refresh();
-        this.updateConnectionLabels();
         visibleAssets.filter(function (asset) {
             return asset.image?.mode === 'image';
         }).forEach((asset) => {
@@ -941,22 +953,6 @@ export class StudioMaxGraphAdapter {
         const canvas = new SvgCanvas2D(drawing);
         const exporter = new ImageExport();
         exporter.drawState(this.graph.getView().getState(this.graph.getDataModel().getRoot()), canvas);
-        Array.from(this.connectionLabelOverlay.children).forEach(function (label) {
-            const labelWidth = Number.parseFloat(label.style.width) || 120;
-            const labelHeight = Math.max(20, label.scrollHeight || 20);
-            const x = (Number.parseFloat(label.style.left) || 0) - (labelWidth / 2);
-            const y = (Number.parseFloat(label.style.top) || 0) - (labelHeight / 2);
-            const foreignObject = document.createElementNS(namespace, 'foreignObject');
-            const text = document.createElementNS(xhtmlNamespace, 'div');
-            foreignObject.setAttribute('x', String(x));
-            foreignObject.setAttribute('y', String(y));
-            foreignObject.setAttribute('width', String(labelWidth));
-            foreignObject.setAttribute('height', String(labelHeight));
-            text.textContent = label.textContent;
-            text.style.cssText = `display:flex;width:100%;height:100%;box-sizing:border-box;align-items:center;justify-content:center;overflow:visible;color:#253247;font:800 ${label.style.fontSize || '12px'}/1.15 Roboto,sans-serif;text-align:center;text-shadow:-1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff,0 0 4px #fff;white-space:normal`;
-            foreignObject.append(text);
-            svg.append(foreignObject);
-        });
         const mount = this.graph.container.parentElement || document.body;
         mount.append(svg);
         inlineExportStyles(svg);
@@ -993,10 +989,13 @@ export class StudioMaxGraphAdapter {
         this.emitViewport();
     }
 
-    /** @param {boolean} enabled Whether left-button dragging temporarily pans. */
+    /** @param {boolean} enabled Whether left-button dragging pans the canvas. */
     setSpacePanning(enabled) {
         const panning = this.graph.getPlugin('PanningHandler');
-        if (panning) panning.useLeftButtonForPanning = enabled === true;
+        if (panning) {
+            panning.useLeftButtonForPanning = enabled === true;
+            panning.ignoreCell = enabled === true;
+        }
         this.graph.container.classList.toggle('is-space-panning', enabled === true);
     }
 

@@ -53,16 +53,17 @@ The project-name control must remain a single compact editable field. Unexpected
 
 Panel collapse state and widths should persist locally. The canvas must reclaim available space when either panel collapses.
 
-Loading a released template normally prepares every populated projection with expanded automatic spacing, clears stale bend points from the pre-layout geometry, then fits the active projection after the workspace has rendered. A package may declare `layout_mode: preserve` for deliberate multi-boundary geometry; in that case Studio keeps the package layout and routing while still fitting the active projection. Auto Layout on a preserved project must retain the initial rows, columns, boundaries, and reading direction while correcting grid alignment, true overlaps, child containment, and connector routing. Fit centers the complete visible bounds rather than pinning them to the top-left. At compact zoom levels, Studio reduces icon and secondary-copy emphasis before primary asset labels. Relationship labels remain visible, may wrap, and use collision-aware clearance from source and destination boxes.
+Loading a released template normally prepares every populated projection with expanded automatic spacing, clears stale bend points from the pre-layout geometry, then fits the active projection after the workspace has rendered. Automatic layout computes horizontal sibling gaps from the relationship labels local to that row while keeping vertical rhythm compact; long labels must not globally widen unrelated lanes. Layout positions may extend beyond the nominal canvas dimensions when a complex hierarchy needs the space, and Fit must include those full visible bounds rather than clamping multiple assets onto the same edge. A package may declare `layout_mode: preserve` for deliberate multi-boundary geometry; in that case Studio keeps the package layout and routing while still fitting the active projection. Auto Layout on a preserved project must retain the initial rows, columns, boundaries, and reading direction while correcting grid alignment, true overlaps, child containment, and connector routing. Fit centers the complete visible bounds rather than pinning them to the top-left. All diagram text scales with the canvas viewport; relationship labels are native edge labels anchored just above the connector rather than interface-sized floating overlays. At compact zoom levels, Studio reduces icon and secondary-copy emphasis before primary asset labels.
 
 The mode navigation behaves as one compact floating, fully rounded segmented tab dock centered near the bottom of the viewport. It stays available across Design, Review, Inventory, and Share without reserving a full navigation row. The dock and its segments size themselves to their icon, label, and optional badge instead of stretching to equal or fixed widths. It must avoid the bottom-left minimap and bottom-right canvas settings, add enough bottom clearance to scrolling content, and respect mobile safe-area insets. Each segment uses an icon and short label without a permanent subtitle. Review and Inventory may show compact nonzero count badges derived from the current normalized project state. The active segment uses the primary purple treatment, while the shared container remains visually lighter than page content. Returning to Design must restore a usable graph viewport. Opening Review must render or resize its chart after the panel becomes visible. Opening Share must generate a current static preview without publishing a snapshot. Finding and inventory actions that locate modeled objects must return to Design before selecting and focusing those objects.
 
-The Design inspector uses progressive disclosure. Asset Properties exposes Basic by default, followed by relevant Placement, Network, Resources, Image, and Advanced sections. Provider-specific fields render inside the matching section without changing normalized keys. Kubernetes workloads expose image, replica, resource-limit, probe, autoscaling, disruption-budget, and service-account facts; namespaces expose network-policy and Pod Security facts; Services and storage expose their relevant type and class facts. Style remains a separate inspector tab. Relationship inspection uses Basic, Transport, and Routing sections with Basic expanded by default.
+The Design inspector uses progressive disclosure. Asset Properties exposes Basic by default, followed by relevant Placement, Network, Resources, Image, and Advanced sections. Provider-specific fields render inside the matching section without changing normalized keys. Kubernetes workloads expose image, replica, resource-limit, probe, autoscaling, disruption-budget, and service-account facts; namespaces expose network-policy and Pod Security facts; Services and storage expose their relevant type and class facts. Style, Text, and Arrange are separate inspector tabs: Style owns shape, a reversible transparent-box option, fill, line, and reusable presets; Text owns font family, emphasis, colour, size, horizontal and vertical alignment, label background/border, opacity, wrapping, automatic sizing, and spacing; Arrange owns layer order, size, position, proportional resizing, rotation, horizontal and vertical flip, normalized grouping, grid snapping, locking, duplication, and deletion. Rotation and flips are stored per projection in layout state. Group creates a real boundary with child hierarchy; Ungroup removes only that boundary and preserves its children. Do not expose additional controls until normalized state and rendering genuinely support them. Relationship inspection uses Basic, Transport, Style, and Routing sections with Basic expanded by default. Relationship Style stays focused on line colour, width and pattern plus label colour, size, path position, and offset; these values persist independently per projection.
 
 ## Diagram Interaction
 
 Current required behavior:
 
+- activate the Hand tool and drag anywhere on the canvas to pan the viewport
 - select a draggable asset or boundary
 - select a relationship to adjust it
 - drag to move
@@ -72,6 +73,7 @@ Current required behavior:
 - Command/Control plus Z undoes the last edit
 - mouse wheel zooms the stage
 - selection remains visible while properties or style are adjusted
+- preserve maxGraph's stable automatic connector paths across all packages and keep manually adjusted bend points authoritative; transparent assets mask connectors only beneath their visible icon and text content rather than globally rerouting the diagram
 
 Alt plus arrow-key resizing and one-percent modifier-wheel zoom are roadmap requirements until implemented and browser-verified. Do not document them as working controls before then.
 
@@ -80,6 +82,7 @@ Alt plus arrow-key resizing and one-percent modifier-wheel zoom are roadmap requ
 Controls must remain on or adjacent to the stage and must be wired:
 
 - select/move
+- hand/pan
 - connect
 - relationship type
 - duplicate

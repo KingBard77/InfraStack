@@ -42,6 +42,7 @@ test('asset appearance remains independent per projection and restores safely', 
     const server = example.assets.find(function (asset) { return asset.type === 'server'; });
     let styled = core.updateAssetAppearance(example, server.id, 'overview', {
         shape: 'ellipse',
+        box_transparent: false,
         fill_color: '#fff4cc',
         border_color: '#7c3aed',
         text_color: '#312e81',
@@ -49,6 +50,19 @@ test('asset appearance remains independent per projection and restores safely', 
         border_width: 5,
         font_size: 18,
         text_align: 'center',
+        font_family: 'Roboto',
+        font_bold: true,
+        font_italic: false,
+        font_underline: false,
+        text_background_enabled: false,
+        text_background_color: '#ffffff',
+        text_border_enabled: false,
+        text_border_color: '#cbd5e1',
+        text_opacity: 1,
+        word_wrap: false,
+        automatic_font_size: false,
+        vertical_align: 'middle',
+        text_spacing: 0,
         locked: true
     });
     const restored = core.normalizeProject(core.buildExportPayload(styled)).project;
@@ -56,6 +70,7 @@ test('asset appearance remains independent per projection and restores safely', 
 
     assert.deepEqual(restoredServer.appearance.overview, {
         shape: 'ellipse',
+        box_transparent: false,
         fill_color: '#fff4cc',
         border_color: '#7c3aed',
         text_color: '#312e81',
@@ -63,6 +78,19 @@ test('asset appearance remains independent per projection and restores safely', 
         border_width: 5,
         font_size: 18,
         text_align: 'center',
+        font_family: 'Roboto',
+        font_bold: true,
+        font_italic: false,
+        font_underline: false,
+        text_background_enabled: false,
+        text_background_color: '#ffffff',
+        text_border_enabled: false,
+        text_border_color: '#cbd5e1',
+        text_opacity: 1,
+        word_wrap: false,
+        automatic_font_size: false,
+        vertical_align: 'middle',
+        text_spacing: 0,
         locked: true
     });
     assert.equal(restoredServer.appearance.physical.shape, 'rounded');
@@ -73,6 +101,77 @@ test('asset appearance remains independent per projection and restores safely', 
     assert.equal(resetServer.appearance.overview.shape, 'rounded');
     assert.equal(resetServer.appearance.overview.fill_color, '#ffffff');
     assert.equal(resetServer.appearance.overview.locked, false);
+});
+
+test('advanced text and per-view connector appearance survive export and restore', function () {
+    let project = core.createExampleProject();
+    project = core.updateAssetAppearance(project, 'portal', 'overview', {
+        box_transparent: true,
+        font_family: 'Nunito', font_bold: false, font_italic: true, font_underline: true,
+        text_background_enabled: true, text_background_color: '#fef3c7', text_border_enabled: true,
+        text_border_color: '#d97706', text_opacity: 0.65, word_wrap: true,
+        automatic_font_size: true, vertical_align: 'bottom', text_spacing: 6
+    });
+    project = core.updateConnectionAppearance(project, 'link-cloud-portal', 'overview', {
+        line_color: '#9333ea', line_width: 5, line_style: 'dotted', label_color: '#581c87',
+        label_font_size: 16, label_position: 'end', label_offset: 24
+    });
+    const restored = core.normalizeProject(core.buildExportPayload(project)).project;
+    const text = restored.assets.find(function (asset) { return asset.id === 'portal'; }).appearance.overview;
+    const connector = restored.connections.find(function (connection) { return connection.id === 'link-cloud-portal'; }).appearance.overview;
+
+    assert.equal(text.font_family, 'Nunito');
+    assert.equal(text.box_transparent, true);
+    assert.equal(text.font_italic, true);
+    assert.equal(text.font_underline, true);
+    assert.equal(text.text_opacity, 0.65);
+    assert.equal(text.word_wrap, true);
+    assert.equal(text.vertical_align, 'bottom');
+    assert.deepEqual(connector, {
+        line_color: '#9333ea', line_width: 5, line_style: 'dotted', label_color: '#581c87',
+        label_font_size: 16, label_position: 'end', label_offset: 24
+    });
+});
+
+test('asset stacking order supports front, back, forward, and backward moves', function () {
+    const project = core.createExampleProject();
+    const originalIds = project.assets.map(function (asset) { return asset.id; });
+    const targetId = originalIds[2];
+    const front = core.reorderAssets(project, [targetId], 'front');
+    const back = core.reorderAssets(project, [targetId], 'back');
+    const forward = core.reorderAssets(project, [targetId], 'forward');
+    const backward = core.reorderAssets(project, [targetId], 'backward');
+
+    assert.equal(front.assets.at(-1).id, targetId);
+    assert.equal(back.assets[0].id, targetId);
+    assert.equal(forward.assets[3].id, targetId);
+    assert.equal(backward.assets[1].id, targetId);
+    assert.deepEqual(project.assets.map(function (asset) { return asset.id; }), originalIds);
+});
+
+test('rotation, flips, grouping, and ungrouping survive normalized state', function () {
+    const project = core.createExampleProject();
+    const transformed = core.updateAssetLayout(project, 'portal', 'overview', {
+        rotation: 90,
+        flip_h: true,
+        flip_v: true
+    });
+    const restored = core.normalizeProject(core.buildExportPayload(transformed)).project;
+    const portalLayout = restored.assets.find(function (asset) { return asset.id === 'portal'; }).layout.overview;
+    const grouped = core.groupAssets(restored, ['portal', 'cloud-firewall']);
+    const group = grouped.project.assets.find(function (asset) { return asset.id === grouped.groupId; });
+    const ungrouped = core.ungroupAssets(grouped.project, [grouped.groupId]);
+
+    assert.equal(portalLayout.rotation, 90);
+    assert.equal(portalLayout.flip_h, true);
+    assert.equal(portalLayout.flip_v, true);
+    assert.equal(group.type, 'group');
+    assert.equal(group.is_container, true);
+    assert.equal(group.parent_id, 'vpc-production');
+    assert.equal(grouped.project.assets.find(function (asset) { return asset.id === 'portal'; }).parent_id, group.id);
+    assert.deepEqual(new Set(ungrouped.assetIds), new Set(['cloud-firewall', 'portal']));
+    assert.equal(ungrouped.project.assets.some(function (asset) { return asset.id === group.id; }), false);
+    assert.equal(ungrouped.project.assets.find(function (asset) { return asset.id === 'portal'; }).parent_id, 'vpc-production');
 });
 
 test('container appearance rejects ellipse while preserving provider boundary defaults', function () {
@@ -129,7 +228,7 @@ test('multi-asset styles and named presets remain provider-neutral and restorabl
 test('box, icon, and reference geometry normalize and restore', function () {
     const example = core.createExampleProject();
     const server = example.assets.find(function (asset) { return asset.type === 'server'; });
-    let resized = core.updateAssetLayout(example, server.id, 'physical', { width: 244, height: 136, icon_size: 58 });
+    let resized = core.updateAssetLayout(example, server.id, 'physical', { width: 244, height: 136, icon_size: 58, rotation: -45, flip_h: true });
     resized = core.updateReference(resized, { name: 'office.png', mime_type: 'image/png', visible: true, locked: false, x: 90, y: 70, width: 1800, height: 900 });
     const restored = core.normalizeProject(core.buildExportPayload(resized)).project;
     const restoredServer = restored.assets.find(function (asset) { return asset.id === server.id; });
@@ -137,6 +236,8 @@ test('box, icon, and reference geometry normalize and restore', function () {
     assert.equal(restoredServer.layout.physical.width, 244);
     assert.equal(restoredServer.layout.physical.height, 136);
     assert.equal(restoredServer.layout.physical.icon_size, 58);
+    assert.equal(restoredServer.layout.physical.rotation, -45);
+    assert.equal(restoredServer.layout.physical.flip_h, true);
     assert.deepEqual(restored.reference, {
         name: 'office.png',
         mime_type: 'image/png',
@@ -346,7 +447,8 @@ test('connection endpoints, direction, and per-view routes validate and restore'
     });
     project = core.updateConnectionRoute(project, original.id, 'overview', {
         style: 'curved',
-        points: [{ x: 620, y: 430 }, { x: 760, y: 540 }]
+        points: [{ x: 620, y: 430 }, { x: 760, y: 540 }],
+        label_position: { x: 700, y: 390 }
     });
     const restored = core.normalizeProject(core.buildExportPayload(project)).project;
     const connection = restored.connections.find(function (item) { return item.id === original.id; });
@@ -357,9 +459,10 @@ test('connection endpoints, direction, and per-view routes validate and restore'
     assert.equal(connection.bidirectional, false);
     assert.deepEqual(connection.routing.overview, {
         style: 'curved',
-        points: [{ x: 620, y: 430 }, { x: 760, y: 540 }]
+        points: [{ x: 620, y: 430 }, { x: 760, y: 540 }],
+        label_position: { x: 700, y: 390 }
     });
-    assert.deepEqual(connection.routing.physical, { style: 'orthogonal', points: [] });
+    assert.deepEqual(connection.routing.physical, { style: 'orthogonal', points: [], label_position: null });
     assert.equal(core.validateConnection(project, 'portal', 'portal', 'api', original.id).valid, false);
     assert.equal(core.validateConnection(project, 'portal', 'app-az2', 'api', original.id).valid, false);
 });
@@ -419,6 +522,58 @@ test('auto layout arranges AWS ingress, nested boundaries, and operations rail',
         core.autoLayoutProject(arranged, 'overview').assets.map(function (item) { return item.layout.overview; }),
         arranged.assets.map(function (item) { return item.layout.overview; })
     );
+});
+
+test('auto layout reserves horizontal clearance for visible connector labels', function () {
+    const project = awsTemplates.createProject(core, 'aws-serverless');
+    const arranged = core.autoLayoutProject(project, 'overview');
+    const assets = new Map(arranged.assets.map(function (asset) { return [asset.id, asset]; }));
+    const required = core.connectionLabelClearance(arranged, 'overview');
+    const pairs = [['route53', 'cloudfront'], ['waf', 'lambda'], ['dynamodb', 'cloudwatch']];
+
+    pairs.forEach(function ([leftId, rightId]) {
+        const left = assets.get(leftId).layout.overview;
+        const right = assets.get(rightId).layout.overview;
+        const first = left.x <= right.x ? left : right;
+        const second = first === left ? right : left;
+        assert.ok(second.x - (first.x + first.width) >= required, `${leftId}/${rightId}`);
+    });
+    assert.ok(required >= 120);
+});
+
+test('auto layout keeps every released template free of leaf overlaps', function () {
+    const packageRoot = path.resolve(__dirname, '../assets/studio/packages');
+    const registry = JSON.parse(fs.readFileSync(path.join(packageRoot, 'registry.json'), 'utf8'));
+    const overlaps = [];
+    let templateCount = 0;
+
+    registry.packages.forEach(function (entry) {
+        const payload = JSON.parse(fs.readFileSync(path.join(packageRoot, entry.templates), 'utf8'));
+        payload.templates.forEach(function (template) {
+            templateCount += 1;
+            let project = core.normalizeProject(template.project).project;
+            project.layout_mode = template.layout_mode || project.layout_mode;
+            core.supportedViews.forEach(function (view) {
+                if (!project.assets.some(function (asset) { return asset.views.includes(view); })) return;
+                const arranged = core.autoLayoutProject(project, view);
+                const leaves = arranged.assets.filter(function (asset) {
+                    return !asset.is_container && asset.views.includes(view);
+                });
+                leaves.forEach(function (asset, index) {
+                    const left = asset.layout[view];
+                    leaves.slice(index + 1).forEach(function (candidate) {
+                        const right = candidate.layout[view];
+                        const width = Math.max(0, Math.min(left.x + left.width, right.x + right.width) - Math.max(left.x, right.x));
+                        const height = Math.max(0, Math.min(left.y + left.height, right.y + right.height) - Math.max(left.y, right.y));
+                        if (width * height > 0) overlaps.push(`${entry.id}/${template.id}/${view}/${asset.id}/${candidate.id}`);
+                    });
+                });
+            });
+        });
+    });
+
+    assert.equal(templateCount, 18);
+    assert.deepEqual(overlaps, []);
 });
 
 test('alignment and distribution preserve selected container descendants', function () {

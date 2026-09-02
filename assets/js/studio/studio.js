@@ -95,9 +95,14 @@ if (root && core && rules && improvements) {
         templateRestore: byId('studio-template-restore'),
         propertiesTab: byId('studio-properties-tab'),
         styleTab: byId('studio-style-tab'),
+        textTab: byId('studio-text-tab'),
+        arrangeTab: byId('studio-arrange-tab'),
         propertiesPanel: byId('studio-properties-panel'),
         stylePanel: byId('studio-style-panel'),
+        textPanel: byId('studio-text-panel'),
+        arrangePanel: byId('studio-arrange-panel'),
         selectTool: byId('studio-select-tool'),
+        panTool: byId('studio-pan-tool'),
         insertImage: byId('studio-insert-image'),
         viewSelect: byId('studio-view-select'),
         connectType: byId('studio-connect-type'),
@@ -184,6 +189,12 @@ if (root && core && rules && improvements) {
         fieldWidth: byId('studio-field-width'),
         fieldHeight: byId('studio-field-height'),
         fieldIconSize: byId('studio-field-icon-size'),
+        fieldPositionX: byId('studio-field-position-x'),
+        fieldPositionY: byId('studio-field-position-y'),
+        constrainProportions: byId('studio-constrain-proportions'),
+        arrangePosition: byId('studio-arrange-position'),
+        arrangeTransform: byId('studio-arrange-transform'),
+        fieldRotation: byId('studio-field-rotation'),
         imageAssetFile: byId('studio-image-asset-file'),
         imageProperties: byId('studio-image-properties'),
         fieldImageMode: byId('studio-field-image-mode'),
@@ -202,6 +213,7 @@ if (root && core && rules && improvements) {
         fieldImageIconSize: byId('studio-field-image-icon-size'),
         fieldImageLocked: byId('studio-field-image-locked'),
         fieldShape: byId('studio-field-shape'),
+        fieldBoxTransparent: byId('studio-field-box-transparent'),
         fieldFillColor: byId('studio-field-fill-color'),
         fieldBorderColor: byId('studio-field-border-color'),
         fieldTextColor: byId('studio-field-text-color'),
@@ -209,9 +221,24 @@ if (root && core && rules && improvements) {
         fieldBorderWidth: byId('studio-field-border-width'),
         fieldFontSize: byId('studio-field-font-size'),
         fieldTextAlign: byId('studio-field-text-align'),
+        fieldFontFamily: byId('studio-field-font-family'),
+        fieldFontBold: byId('studio-field-font-bold'),
+        fieldFontItalic: byId('studio-field-font-italic'),
+        fieldFontUnderline: byId('studio-field-font-underline'),
+        fieldTextBackgroundEnabled: byId('studio-field-text-background-enabled'),
+        fieldTextBackgroundColor: byId('studio-field-text-background-color'),
+        fieldTextBorderEnabled: byId('studio-field-text-border-enabled'),
+        fieldTextBorderColor: byId('studio-field-text-border-color'),
+        fieldTextOpacity: byId('studio-field-text-opacity'),
+        fieldWordWrap: byId('studio-field-word-wrap'),
+        fieldAutomaticFontSize: byId('studio-field-automatic-font-size'),
+        fieldVerticalAlign: byId('studio-field-vertical-align'),
+        fieldTextSpacing: byId('studio-field-text-spacing'),
         fieldAssetLocked: byId('studio-field-asset-locked'),
         styleSelectionSummary: byId('studio-style-selection-summary'),
-        styleDimensions: byId('studio-style-dimensions'),
+        textSelectionSummary: byId('studio-text-selection-summary'),
+        arrangeSelectionSummary: byId('studio-arrange-selection-summary'),
+        styleDimensions: byId('studio-arrange-dimensions'),
         stylePreset: byId('studio-style-preset'),
         applyStylePreset: byId('studio-apply-style-preset'),
         deleteStylePreset: byId('studio-delete-style-preset'),
@@ -222,6 +249,15 @@ if (root && core && rules && improvements) {
         duplicateItem: byId('studio-duplicate-item'),
         resetAssetStyle: byId('studio-reset-asset-style'),
         deleteItemStyle: byId('studio-delete-item-style'),
+        toFront: byId('studio-to-front'),
+        toBack: byId('studio-to-back'),
+        bringForward: byId('studio-bring-forward'),
+        sendBackward: byId('studio-send-backward'),
+        snapSelectionGrid: byId('studio-snap-selection-grid'),
+        flipHorizontal: byId('studio-flip-horizontal'),
+        flipVertical: byId('studio-flip-vertical'),
+        groupSelection: byId('studio-group-selection'),
+        ungroupSelection: byId('studio-ungroup-selection'),
         connectionEndpoints: byId('studio-connection-endpoints'),
         fieldConnectionSource: byId('studio-field-connection-source'),
         fieldConnectionTarget: byId('studio-field-connection-target'),
@@ -233,6 +269,13 @@ if (root && core && rules && improvements) {
         fieldConnectionRoute: byId('studio-field-connection-route'),
         resetConnectionRoute: byId('studio-reset-connection-route'),
         fieldBidirectional: byId('studio-field-bidirectional'),
+        fieldConnectionLineColor: byId('studio-field-connection-line-color'),
+        fieldConnectionLineWidth: byId('studio-field-connection-line-width'),
+        fieldConnectionLineStyle: byId('studio-field-connection-line-style'),
+        fieldConnectionLabelColor: byId('studio-field-connection-label-color'),
+        fieldConnectionLabelSize: byId('studio-field-connection-label-size'),
+        fieldConnectionLabelPosition: byId('studio-field-connection-label-position'),
+        fieldConnectionLabelOffset: byId('studio-field-connection-label-offset'),
         referenceImport: byId('studio-reference-import'),
         referenceFile: byId('studio-reference-file'),
         referenceVisible: byId('studio-reference-visible'),
@@ -301,6 +344,7 @@ if (root && core && rules && improvements) {
     };
     const appearanceControls = new Map([
         [elements.fieldShape, 'shape'],
+        [elements.fieldBoxTransparent, 'box_transparent'],
         [elements.fieldFillColor, 'fill_color'],
         [elements.fieldBorderColor, 'border_color'],
         [elements.fieldTextColor, 'text_color'],
@@ -308,6 +352,19 @@ if (root && core && rules && improvements) {
         [elements.fieldBorderWidth, 'border_width'],
         [elements.fieldFontSize, 'font_size'],
         [elements.fieldTextAlign, 'text_align'],
+        [elements.fieldFontFamily, 'font_family'],
+        [elements.fieldFontBold, 'font_bold'],
+        [elements.fieldFontItalic, 'font_italic'],
+        [elements.fieldFontUnderline, 'font_underline'],
+        [elements.fieldTextBackgroundEnabled, 'text_background_enabled'],
+        [elements.fieldTextBackgroundColor, 'text_background_color'],
+        [elements.fieldTextBorderEnabled, 'text_border_enabled'],
+        [elements.fieldTextBorderColor, 'text_border_color'],
+        [elements.fieldTextOpacity, 'text_opacity'],
+        [elements.fieldWordWrap, 'word_wrap'],
+        [elements.fieldAutomaticFontSize, 'automatic_font_size'],
+        [elements.fieldVerticalAlign, 'vertical_align'],
+        [elements.fieldTextSpacing, 'text_spacing'],
         [elements.fieldAssetLocked, 'locked']
     ]);
 
@@ -352,6 +409,7 @@ if (root && core && rules && improvements) {
     let selectedItems = [];
     let selected = null;
     let connectMode = false;
+    let panMode = false;
     let connectSourceId = null;
     let history = [];
     let future = [];
@@ -363,6 +421,7 @@ if (root && core && rules && improvements) {
     let overviewValuesVisible = false;
     let layoutFitTimer = null;
     let spacePanning = false;
+    let constrainedAspectRatio = null;
     let styleClipboard = null;
     let recoveryProject = loadRecoveryProject();
     let recoveryDismissedForSession = false;
@@ -581,7 +640,16 @@ if (root && core && rules && improvements) {
     function setSpacePanning(enabled) {
         if (spacePanning === enabled) return;
         spacePanning = enabled;
-        graphAdapter.setSpacePanning(enabled);
+        graphAdapter.setSpacePanning(panMode || spacePanning);
+    }
+
+    function activateCanvasTool(tool) {
+        panMode = tool === 'pan';
+        connectMode = tool === 'connect';
+        connectSourceId = null;
+        graphAdapter.setSpacePanning(panMode || spacePanning);
+        renderToolbar();
+        elements.stage.focus();
     }
 
     function updatePanelWidth(panel, width, persist = true) {
@@ -1506,7 +1574,7 @@ if (root && core && rules && improvements) {
             core.supportedViews.forEach(function (view) {
                 const visibleCount = prepared.assets.filter(function (asset) { return asset.views.includes(view); }).length;
                 if (visibleCount > 1) {
-                    prepared = core.autoLayoutProject(prepared, view, { gap: 72 });
+                    prepared = core.autoLayoutProject(prepared, view);
                     prepared.connections.forEach(function (connection) {
                         if (connection.routing?.[view]) connection.routing[view].points = [];
                     });
@@ -1670,14 +1738,14 @@ if (root && core && rules && improvements) {
 // [studio-inspector] Section: Start
 
     function switchInspectorTab(tab) {
-        activeInspectorTab = tab === 'style' ? 'style' : 'properties';
-        const propertiesActive = activeInspectorTab === 'properties';
-        elements.propertiesTab.classList.toggle('is-active', propertiesActive);
-        elements.styleTab.classList.toggle('is-active', !propertiesActive);
-        elements.propertiesTab.setAttribute('aria-selected', String(propertiesActive));
-        elements.styleTab.setAttribute('aria-selected', String(!propertiesActive));
-        elements.propertiesPanel.hidden = !propertiesActive;
-        elements.stylePanel.hidden = propertiesActive;
+        const tabs = ['properties', 'style', 'text', 'arrange'];
+        activeInspectorTab = tabs.includes(tab) ? tab : 'properties';
+        tabs.forEach(function (name) {
+            const active = activeInspectorTab === name;
+            elements[`${name}Tab`].classList.toggle('is-active', active);
+            elements[`${name}Tab`].setAttribute('aria-selected', String(active));
+            elements[`${name}Panel`].hidden = !active;
+        });
     }
 
     function providerForProject(candidate, fallback = defaultProvider) {
@@ -1756,7 +1824,7 @@ if (root && core && rules && improvements) {
         elements.connectionForm.hidden = !connection;
         elements.deleteItem.disabled = selectedItems.length === 0;
         elements.propertiesTab.disabled = multipleAssets;
-        if (multipleAssets && activeInspectorTab !== 'style') switchInspectorTab('style');
+        if (multipleAssets && activeInspectorTab === 'properties') switchInspectorTab('style');
         if (multipleAssets) elements.selectedType.textContent = `${assets.length} assets selected`;
         if (!asset && !connection && assets.length === 0) {
             elements.inspectorEmpty.querySelector('p').textContent = 'Select an asset, boundary, or relationship to edit it.';
@@ -1777,6 +1845,12 @@ if (root && core && rules && improvements) {
             elements.fieldWidth.value = String(Math.round(layout.width));
             elements.fieldHeight.value = String(Math.round(layout.height));
             elements.fieldIconSize.value = String(Math.round(layout.icon_size));
+            elements.fieldPositionX.value = String(Math.round(layout.x));
+            elements.fieldPositionY.value = String(Math.round(layout.y));
+            elements.fieldRotation.value = String(Math.round(layout.rotation));
+            if (!elements.constrainProportions.checked || !constrainedAspectRatio) {
+                constrainedAspectRatio = layout.width / layout.height;
+            }
             elements.fieldIconSize.disabled = asset.is_container;
             ['Role', 'Hostname', 'Address', 'Provider', 'Environment', 'Zone', 'Owner', 'Cpu', 'Memory', 'Storage'].forEach(function (name) {
                 elements[`field${name}`].value = asset.properties[name.toLowerCase()] || '';
@@ -1813,6 +1887,7 @@ if (root && core && rules && improvements) {
             const ellipseOption = elements.fieldShape.querySelector('option[value="ellipse"]');
             ellipseOption.disabled = containsContainer;
             elements.fieldShape.value = containsContainer && appearance.shape === 'ellipse' ? 'rounded' : appearance.shape;
+            elements.fieldBoxTransparent.checked = appearance.box_transparent;
             elements.fieldFillColor.value = appearance.fill_color;
             elements.fieldBorderColor.value = appearance.border_color;
             elements.fieldTextColor.value = appearance.text_color;
@@ -1820,18 +1895,43 @@ if (root && core && rules && improvements) {
             elements.fieldBorderWidth.value = String(appearance.border_width);
             elements.fieldFontSize.value = String(appearance.font_size);
             elements.fieldTextAlign.value = appearance.text_align;
+            elements.fieldFontFamily.value = appearance.font_family;
+            elements.fieldFontBold.checked = appearance.font_bold;
+            elements.fieldFontItalic.checked = appearance.font_italic;
+            elements.fieldFontUnderline.checked = appearance.font_underline;
+            elements.fieldTextBackgroundEnabled.checked = appearance.text_background_enabled;
+            elements.fieldTextBackgroundColor.value = appearance.text_background_color;
+            elements.fieldTextBorderEnabled.checked = appearance.text_border_enabled;
+            elements.fieldTextBorderColor.value = appearance.text_border_color;
+            elements.fieldTextOpacity.value = String(Math.round(appearance.text_opacity * 100));
+            elements.fieldWordWrap.checked = appearance.word_wrap;
+            elements.fieldAutomaticFontSize.checked = appearance.automatic_font_size;
+            elements.fieldVerticalAlign.value = appearance.vertical_align;
+            elements.fieldTextSpacing.value = String(appearance.text_spacing);
             elements.fieldAssetLocked.checked = assets.every(function (candidate) {
                 return candidate.appearance[project.active_view].locked;
             });
             elements.styleDimensions.hidden = multipleAssets;
-            elements.styleSelectionSummary.textContent = multipleAssets
+            elements.arrangePosition.hidden = multipleAssets;
+            elements.arrangeTransform.hidden = multipleAssets || assets.some(function (candidate) { return candidate.is_container; });
+            const selectionSummary = multipleAssets
                 ? `${assets.length} assets selected. Appearance changes apply to every selected asset in ${viewLabels[project.active_view]}.`
                 : `${styleAsset.label} · ${viewLabels[project.active_view]} style`;
+            elements.styleSelectionSummary.textContent = selectionSummary;
+            elements.textSelectionSummary.textContent = selectionSummary;
+            elements.arrangeSelectionSummary.textContent = multipleAssets
+                ? `${assets.length} assets selected`
+                : `${styleAsset.label} · ${viewLabels[project.active_view]} arrangement`;
             elements.duplicateItem.disabled = assets.length === 0;
             elements.resetAssetStyle.disabled = assets.length === 0;
             elements.deleteItemStyle.disabled = assets.length === 0;
             elements.copyAssetStyle.disabled = assets.length !== 1;
             elements.pasteAssetStyle.disabled = assets.length === 0 || !styleClipboard;
+            [elements.toFront, elements.toBack, elements.bringForward, elements.sendBackward, elements.snapSelectionGrid].forEach(function (button) {
+                button.disabled = assets.length === 0;
+            });
+            elements.groupSelection.disabled = assets.length < 2;
+            elements.ungroupSelection.disabled = !assets.some(function (candidate) { return candidate.type === 'group'; });
             renderStylePresets();
         }
         if (connection) {
@@ -1860,6 +1960,14 @@ if (root && core && rules && improvements) {
             elements.fieldConnectionProtocol.value = connection.protocol || '';
             elements.fieldConnectionBandwidth.value = connection.bandwidth || '';
             elements.fieldConnectionRoute.value = connection.routing?.[project.active_view]?.style || 'orthogonal';
+            const connectionAppearance = connection.appearance?.[project.active_view];
+            elements.fieldConnectionLineColor.value = connectionAppearance.line_color;
+            elements.fieldConnectionLineWidth.value = String(connectionAppearance.line_width);
+            elements.fieldConnectionLineStyle.value = connectionAppearance.line_style;
+            elements.fieldConnectionLabelColor.value = connectionAppearance.label_color;
+            elements.fieldConnectionLabelSize.value = String(connectionAppearance.label_font_size);
+            elements.fieldConnectionLabelPosition.value = connectionAppearance.label_position;
+            elements.fieldConnectionLabelOffset.value = String(connectionAppearance.label_offset);
             const bendCount = connection.routing?.[project.active_view]?.points?.length || 0;
             elements.resetConnectionRoute.disabled = bendCount === 0 && elements.fieldConnectionRoute.value === 'orthogonal';
         }
@@ -2305,8 +2413,10 @@ if (root && core && rules && improvements) {
         elements.inspectorCollapse.setAttribute('aria-label', 'Collapse inspector');
         elements.inspectorCollapse.title = 'Collapse inspector';
         elements.connect.classList.toggle('is-active', connectMode);
-        elements.selectTool.classList.toggle('is-active', !connectMode);
+        elements.panTool.classList.toggle('is-active', panMode);
+        elements.selectTool.classList.toggle('is-active', !connectMode && !panMode);
         elements.connect.setAttribute('aria-pressed', String(connectMode));
+        elements.panTool.setAttribute('aria-pressed', String(panMode));
         elements.wideScreen.classList.toggle('is-active', wideScreenMode);
         elements.wideScreen.setAttribute('aria-pressed', String(wideScreenMode));
         elements.wideScreen.setAttribute('aria-label', wideScreenMode ? 'Exit wide screen' : 'Enter wide screen');
@@ -2726,6 +2836,8 @@ if (root && core && rules && improvements) {
     });
     elements.propertiesTab.addEventListener('click', function () { switchInspectorTab('properties'); });
     elements.styleTab.addEventListener('click', function () { switchInspectorTab('style'); });
+    elements.textTab.addEventListener('click', function () { switchInspectorTab('text'); });
+    elements.arrangeTab.addEventListener('click', function () { switchInspectorTab('arrange'); });
     elements.templateRestore.addEventListener('click', function () { elements.importFile.click(); });
     elements.emptyTemplate.addEventListener('click', async function () {
         paletteCollapsed = false;
@@ -2774,11 +2886,9 @@ if (root && core && rules && improvements) {
         });
     });
     elements.selectTool.addEventListener('click', function () {
-        connectMode = false;
-        connectSourceId = null;
-        renderToolbar();
-        elements.stage.focus();
+        activateCanvasTool('select');
     });
+    elements.panTool.addEventListener('click', function () { activateCanvasTool('pan'); });
     elements.insertImage.addEventListener('click', function () { elements.imageAssetFile.click(); });
     elements.bottomZoomIn.addEventListener('click', function () { graphAdapter.zoom(1.2); });
     elements.bottomZoomOut.addEventListener('click', function () { graphAdapter.zoom(1 / 1.2); });
@@ -2837,6 +2947,10 @@ if (root && core && rules && improvements) {
         if (event.key === ' ' && !isTypingTarget(event.target) && root.contains(event.target)) {
             event.preventDefault();
             setSpacePanning(true);
+        }
+        if (event.key.toLowerCase() === 'h' && !isTypingTarget(event.target) && root.contains(event.target)) {
+            event.preventDefault();
+            activateCanvasTool('pan');
         }
         if (event.key === 'Alt') graphAdapter.setSnapBypass(true);
     });
@@ -2913,9 +3027,8 @@ if (root && core && rules && improvements) {
         renderPalette();
     });
     elements.connect.addEventListener('click', function () {
-        connectMode = !connectMode;
-        connectSourceId = null;
-        renderToolbar();
+        const nextConnectMode = !connectMode;
+        activateCanvasTool(nextConnectMode ? 'connect' : 'select');
         showMessage(connectMode ? 'Connect mode: choose source and destination assets.' : 'Connect mode off.');
     });
     elements.undo.addEventListener('click', undo);
@@ -3034,12 +3147,16 @@ if (root && core && rules && improvements) {
             });
         }
         next = core.updateAssetLayout(next, assetId, project.active_view, {
+            x: elements.fieldPositionX.value,
+            y: elements.fieldPositionY.value,
+            rotation: elements.fieldRotation.value,
             width: asset?.image ? elements.fieldImageWidth.value : elements.fieldWidth.value,
             height: asset?.image ? elements.fieldImageHeight.value : elements.fieldHeight.value,
             icon_size: asset?.image ? elements.fieldImageIconSize.value : elements.fieldIconSize.value
         });
         next = core.updateAssetAppearance(next, assetId, project.active_view, {
             shape: elements.fieldShape.value,
+            box_transparent: elements.fieldBoxTransparent.checked,
             fill_color: elements.fieldFillColor.value,
             border_color: elements.fieldBorderColor.value,
             text_color: elements.fieldTextColor.value,
@@ -3047,6 +3164,19 @@ if (root && core && rules && improvements) {
             border_width: elements.fieldBorderWidth.value,
             font_size: elements.fieldFontSize.value,
             text_align: elements.fieldTextAlign.value,
+            font_family: elements.fieldFontFamily.value,
+            font_bold: elements.fieldFontBold.checked,
+            font_italic: elements.fieldFontItalic.checked,
+            font_underline: elements.fieldFontUnderline.checked,
+            text_background_enabled: elements.fieldTextBackgroundEnabled.checked,
+            text_background_color: elements.fieldTextBackgroundColor.value,
+            text_border_enabled: elements.fieldTextBorderEnabled.checked,
+            text_border_color: elements.fieldTextBorderColor.value,
+            text_opacity: Number(elements.fieldTextOpacity.value) / 100,
+            word_wrap: elements.fieldWordWrap.checked,
+            automatic_font_size: elements.fieldAutomaticFontSize.checked,
+            vertical_align: elements.fieldVerticalAlign.value,
+            text_spacing: elements.fieldTextSpacing.value,
             locked: asset?.image ? elements.fieldImageLocked.checked : elements.fieldAssetLocked.checked
         });
         project = next;
@@ -3078,8 +3208,114 @@ if (root && core && rules && improvements) {
     function updateSelectionAppearanceFromControl(control) {
         const field = appearanceControls.get(control);
         if (!field) return;
-        const value = field === 'locked' ? control.checked : control.value;
+        const checkboxFields = ['locked', 'box_transparent', 'font_bold', 'font_italic', 'font_underline', 'text_background_enabled', 'text_border_enabled', 'word_wrap', 'automatic_font_size'];
+        const value = field === 'text_opacity'
+            ? Number(control.value) / 100
+            : (checkboxFields.includes(field) ? control.checked : control.value);
         applyAppearanceToSelection({ [field]: value });
+    }
+
+    function arrangeSelection(direction) {
+        const assetIds = selectedAssetIds();
+        if (!assetIds.length) return;
+        pushHistory('Arrange asset layers');
+        project = core.reorderAssets(project, assetIds, direction);
+        saveProject();
+        renderStage();
+        renderInspector();
+        graphAdapter.selectAssets(assetIds);
+    }
+
+    function snapSelectedAssetsToGrid() {
+        const assetIds = selectedAssetIds();
+        if (!assetIds.length) return;
+        pushHistory('Snap assets to grid');
+        assetIds.forEach(function (assetId) {
+            const asset = assetById(assetId);
+            const layout = asset?.layout[project.active_view];
+            if (!layout) return;
+            project = core.updateAssetLayout(project, assetId, project.active_view, {
+                x: Math.round(layout.x / gridSize) * gridSize,
+                y: Math.round(layout.y / gridSize) * gridSize,
+                width: Math.round(layout.width / gridSize) * gridSize,
+                height: Math.round(layout.height / gridSize) * gridSize
+            });
+        });
+        saveProject();
+        renderStage();
+        renderInspector();
+        graphAdapter.selectAssets(assetIds);
+        showMessage(`${assetIds.length} asset${assetIds.length === 1 ? '' : 's'} snapped to the ${gridSize}px grid.`, 'success');
+    }
+
+    function flipSelectedAssets(axis) {
+        const assets = selectedAssets().filter(function (asset) { return !asset.is_container; });
+        if (!assets.length) return;
+        pushHistory(`Flip assets ${axis}`);
+        assets.forEach(function (asset) {
+            const layout = asset.layout[project.active_view];
+            project = core.updateAssetLayout(project, asset.id, project.active_view, {
+                [axis === 'horizontal' ? 'flip_h' : 'flip_v']: axis === 'horizontal' ? !layout.flip_h : !layout.flip_v
+            });
+        });
+        saveProject();
+        renderStage();
+        renderInspector();
+        graphAdapter.selectAssets(assets.map(function (asset) { return asset.id; }));
+    }
+
+    function groupSelectedAssets() {
+        const assetIds = selectedAssetIds();
+        const result = core.groupAssets(project, assetIds);
+        if (!result.groupId) {
+            showMessage('Select at least two assets that can be grouped.', 'warning');
+            return;
+        }
+        pushHistory('Group assets');
+        project = result.project;
+        selectedItems = [{ kind: 'asset', id: result.groupId }];
+        selected = selectedItems[0];
+        saveProject();
+        render();
+        graphAdapter.selectAsset(result.groupId);
+        switchInspectorTab('arrange');
+    }
+
+    function ungroupSelectedAssets() {
+        const result = core.ungroupAssets(project, selectedAssetIds());
+        if (!result.assetIds.length) return;
+        pushHistory('Ungroup assets');
+        project = result.project;
+        selectedItems = result.assetIds.map(function (id) { return { kind: 'asset', id }; });
+        selected = selectedItems.length === 1 ? selectedItems[0] : null;
+        saveProject();
+        render();
+        graphAdapter.selectAssets(result.assetIds);
+        switchInspectorTab('arrange');
+    }
+
+    function synchronizeDimensionControl(control) {
+        const pairs = new Map([
+            [elements.fieldWidth, elements.fieldImageWidth],
+            [elements.fieldImageWidth, elements.fieldWidth],
+            [elements.fieldHeight, elements.fieldImageHeight],
+            [elements.fieldImageHeight, elements.fieldHeight],
+            [elements.fieldIconSize, elements.fieldImageIconSize],
+            [elements.fieldImageIconSize, elements.fieldIconSize]
+        ]);
+        const mirror = pairs.get(control);
+        if (mirror) mirror.value = control.value;
+        if (!elements.constrainProportions.checked || !constrainedAspectRatio) return;
+        if ([elements.fieldWidth, elements.fieldImageWidth].includes(control)) {
+            const height = Math.round(Number(control.value) / constrainedAspectRatio);
+            elements.fieldHeight.value = String(height);
+            elements.fieldImageHeight.value = String(height);
+        }
+        if ([elements.fieldHeight, elements.fieldImageHeight].includes(control)) {
+            const width = Math.round(Number(control.value) * constrainedAspectRatio);
+            elements.fieldWidth.value = String(width);
+            elements.fieldImageWidth.value = String(width);
+        }
     }
 
     function resetSelectedAssetStyle() {
@@ -3181,6 +3417,15 @@ if (root && core && rules && improvements) {
         project = core.updateConnectionRoute(project, selected.id, project.active_view, {
             style: elements.fieldConnectionRoute.value
         });
+        project = core.updateConnectionAppearance(project, selected.id, project.active_view, {
+            line_color: elements.fieldConnectionLineColor.value,
+            line_width: elements.fieldConnectionLineWidth.value,
+            line_style: elements.fieldConnectionLineStyle.value,
+            label_color: elements.fieldConnectionLabelColor.value,
+            label_font_size: elements.fieldConnectionLabelSize.value,
+            label_position: elements.fieldConnectionLabelPosition.value,
+            label_offset: elements.fieldConnectionLabelOffset.value
+        });
         saveProject();
         renderStage();
         renderOverview();
@@ -3219,7 +3464,8 @@ if (root && core && rules && improvements) {
     });
     elements.assetForm.addEventListener('input', function (event) {
         if (!['INPUT', 'SELECT'].includes(event.target.tagName)) return;
-        if ([elements.stylePreset, elements.stylePresetName].includes(event.target)) return;
+        if ([elements.stylePreset, elements.stylePresetName, elements.constrainProportions].includes(event.target)) return;
+        synchronizeDimensionControl(event.target);
         if (event.target === elements.fieldImageOpacity) {
             elements.fieldImageOpacityValue.value = `${elements.fieldImageOpacity.value}%`;
         }
@@ -3233,7 +3479,8 @@ if (root && core && rules && improvements) {
         }, 280);
     });
     elements.assetForm.addEventListener('change', function (event) {
-        if ([elements.stylePreset, elements.stylePresetName].includes(event.target)) return;
+        if ([elements.stylePreset, elements.stylePresetName, elements.constrainProportions].includes(event.target)) return;
+        synchronizeDimensionControl(event.target);
         window.clearTimeout(inspectorUpdateTimer);
         if (appearanceControls.has(event.target)) {
             updateSelectionAppearanceFromControl(event.target);
@@ -3261,6 +3508,20 @@ if (root && core && rules && improvements) {
         inspectorUpdateTimer = window.setTimeout(updateSelectedConnectionFromInspector, 280);
     });
     elements.resetConnectionRoute.addEventListener('click', resetSelectedConnectionRoute);
+    elements.constrainProportions.addEventListener('change', function () {
+        const width = Number(elements.fieldWidth.value);
+        const height = Number(elements.fieldHeight.value);
+        constrainedAspectRatio = width > 0 && height > 0 ? width / height : null;
+    });
+    elements.toFront.addEventListener('click', function () { arrangeSelection('front'); });
+    elements.toBack.addEventListener('click', function () { arrangeSelection('back'); });
+    elements.bringForward.addEventListener('click', function () { arrangeSelection('forward'); });
+    elements.sendBackward.addEventListener('click', function () { arrangeSelection('backward'); });
+    elements.snapSelectionGrid.addEventListener('click', snapSelectedAssetsToGrid);
+    elements.flipHorizontal.addEventListener('click', function () { flipSelectedAssets('horizontal'); });
+    elements.flipVertical.addEventListener('click', function () { flipSelectedAssets('vertical'); });
+    elements.groupSelection.addEventListener('click', groupSelectedAssets);
+    elements.ungroupSelection.addEventListener('click', ungroupSelectedAssets);
     elements.duplicateItem.addEventListener('click', function () {
         duplicateSelection(selectedAssetIds());
     });
@@ -3288,10 +3549,8 @@ if (root && core && rules && improvements) {
         }
         if (event.key === 'Escape') {
             event.preventDefault();
-            if (connectMode) {
-                connectMode = false;
-                connectSourceId = null;
-                renderToolbar();
+            if (connectMode || panMode) {
+                activateCanvasTool('select');
             } else {
                 graphAdapter.clearSelection();
             }

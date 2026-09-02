@@ -8,9 +8,14 @@ const InfraStackStudioCore = (function () {
     const assetShapes = ['rectangle', 'rounded', 'ellipse'];
     const assetBorderStyles = ['solid', 'dashed', 'dotted'];
     const assetTextAlignments = ['left', 'center', 'right'];
-    const appearanceFields = ['shape', 'fill_color', 'border_color', 'text_color', 'border_style', 'border_width', 'font_size', 'text_align'];
+    const assetVerticalAlignments = ['top', 'middle', 'bottom'];
+    const assetFontFamilies = ['Roboto', 'Nunito', 'monospace'];
+    const connectionLineStyles = ['solid', 'dashed', 'dotted'];
+    const connectionLabelPositions = ['start', 'center', 'end'];
+    const appearanceFields = ['shape', 'box_transparent', 'fill_color', 'border_color', 'text_color', 'border_style', 'border_width', 'font_size', 'text_align', 'font_family', 'font_bold', 'font_italic', 'font_underline', 'text_background_enabled', 'text_background_color', 'text_border_enabled', 'text_border_color', 'text_opacity', 'word_wrap', 'automatic_font_size', 'vertical_align', 'text_spacing'];
     const canvasSize = { width: 2400, height: 1400 };
     const containerParentTypes = {
+        group: ['domain', 'environment', 'vpc', 'availability-zone', 'subnet', 'rack', 'group'],
         domain: [],
         environment: ['domain'],
         vpc: ['domain', 'environment'],
@@ -102,12 +107,15 @@ const InfraStackStudioCore = (function () {
         const maximumIconSize = isContainer ? 96 : Math.max(24, Math.min(96, width - 60, height - 28));
 
         return {
-            x: clamp(layout.x, 12, canvasSize.width - 100, 60 + ((index % 5) * 190)),
-            y: clamp(layout.y, 12, canvasSize.height - 80, 60 + (Math.floor(index / 5) * 145)),
+            x: clamp(layout.x, 12, canvasSize.width * 2, 60 + ((index % 5) * 190)),
+            y: clamp(layout.y, 12, canvasSize.height * 2, 60 + (Math.floor(index / 5) * 145)),
             width: width,
             height: height,
             icon_size: clamp(layout.icon_size, 24, maximumIconSize, 36),
-            collapsed: layout.collapsed === true
+            collapsed: layout.collapsed === true,
+            rotation: clamp(layout.rotation, -180, 180, 0),
+            flip_h: layout.flip_h === true,
+            flip_v: layout.flip_v === true
         };
     }
 
@@ -145,6 +153,7 @@ const InfraStackStudioCore = (function () {
         const containerFontSize = { vpc: 16, 'availability-zone': 12, subnet: 11 }[type] || 13;
         return {
             shape: 'rounded',
+            box_transparent: false,
             fill_color: '#ffffff',
             border_color: defaultAssetBorderColor(type, isContainer),
             text_color: '#172033',
@@ -152,6 +161,19 @@ const InfraStackStudioCore = (function () {
             border_width: isContainer ? 2 : 1,
             font_size: isContainer ? containerFontSize : 12,
             text_align: 'left',
+            font_family: 'Roboto',
+            font_bold: true,
+            font_italic: false,
+            font_underline: false,
+            text_background_enabled: false,
+            text_background_color: '#ffffff',
+            text_border_enabled: false,
+            text_border_color: '#cbd5e1',
+            text_opacity: 1,
+            word_wrap: false,
+            automatic_font_size: false,
+            vertical_align: 'middle',
+            text_spacing: 0,
             locked: false
         };
     }
@@ -162,9 +184,12 @@ const InfraStackStudioCore = (function () {
         const shape = safeString(appearance.shape, 20).toLowerCase();
         const borderStyle = safeString(appearance.border_style, 20).toLowerCase();
         const textAlign = safeString(appearance.text_align, 20).toLowerCase();
+        const verticalAlign = safeString(appearance.vertical_align, 20).toLowerCase();
+        const fontFamily = safeString(appearance.font_family, 30);
 
         return {
             shape: assetShapes.includes(shape) && (!isContainer || shape !== 'ellipse') ? shape : defaults.shape,
+            box_transparent: appearance.box_transparent === true,
             fill_color: normalizeColor(appearance.fill_color, defaults.fill_color),
             border_color: normalizeColor(appearance.border_color, defaults.border_color),
             text_color: normalizeColor(appearance.text_color, defaults.text_color),
@@ -172,8 +197,60 @@ const InfraStackStudioCore = (function () {
             border_width: clamp(appearance.border_width, 1, 8, defaults.border_width),
             font_size: clamp(appearance.font_size, 9, 24, defaults.font_size),
             text_align: assetTextAlignments.includes(textAlign) ? textAlign : defaults.text_align,
+            font_family: assetFontFamilies.includes(fontFamily) ? fontFamily : defaults.font_family,
+            font_bold: appearance.font_bold !== false,
+            font_italic: appearance.font_italic === true,
+            font_underline: appearance.font_underline === true,
+            text_background_enabled: appearance.text_background_enabled === true,
+            text_background_color: normalizeColor(appearance.text_background_color, defaults.text_background_color),
+            text_border_enabled: appearance.text_border_enabled === true,
+            text_border_color: normalizeColor(appearance.text_border_color, defaults.text_border_color),
+            text_opacity: clamp(appearance.text_opacity, 0.1, 1, defaults.text_opacity),
+            word_wrap: appearance.word_wrap === true,
+            automatic_font_size: appearance.automatic_font_size === true,
+            vertical_align: assetVerticalAlignments.includes(verticalAlign) ? verticalAlign : defaults.vertical_align,
+            text_spacing: clamp(appearance.text_spacing, 0, 40, defaults.text_spacing),
             locked: appearance.locked === true
         };
+    }
+
+    function defaultConnectionAppearance(type) {
+        return {
+            line_color: {
+                network: '#1f2937', vpn: '#7c3aed', peering: '#2563eb', trust: '#dc2626',
+                api: '#0891b2', replication: '#16a34a', administration: '#d97706'
+            }[type] || '#64748b',
+            line_width: type === 'replication' ? 4 : 2,
+            line_style: ['vpn', 'peering', 'trust', 'administration'].includes(type) ? 'dashed' : 'solid',
+            label_color: '#253247',
+            label_font_size: 12,
+            label_position: 'center',
+            label_offset: -14
+        };
+    }
+
+    function normalizeConnectionAppearanceEntry(value, type) {
+        const appearance = value && typeof value === 'object' ? value : {};
+        const defaults = defaultConnectionAppearance(type);
+        const lineStyle = safeString(appearance.line_style, 20).toLowerCase();
+        const labelPosition = safeString(appearance.label_position, 20).toLowerCase();
+
+        return {
+            line_color: normalizeColor(appearance.line_color, defaults.line_color),
+            line_width: clamp(appearance.line_width, 1, 8, defaults.line_width),
+            line_style: connectionLineStyles.includes(lineStyle) ? lineStyle : defaults.line_style,
+            label_color: normalizeColor(appearance.label_color, defaults.label_color),
+            label_font_size: clamp(appearance.label_font_size, 9, 24, defaults.label_font_size),
+            label_position: connectionLabelPositions.includes(labelPosition) ? labelPosition : defaults.label_position,
+            label_offset: clamp(appearance.label_offset, -80, 80, defaults.label_offset)
+        };
+    }
+
+    function normalizeConnectionAppearance(value, type) {
+        const appearance = value && typeof value === 'object' ? value : {};
+        return Object.fromEntries(supportedViews.map(function (view) {
+            return [view, normalizeConnectionAppearanceEntry(appearance[view], type)];
+        }));
     }
 
     function normalizeAppearance(value, type, isContainer) {
@@ -356,10 +433,14 @@ const InfraStackStudioCore = (function () {
     function normalizeConnectionRoute(value) {
         const route = value && typeof value === 'object' ? value : {};
         const style = safeString(route.style, 20).toLowerCase();
+        const labelPosition = route.label_position && typeof route.label_position === 'object'
+            ? normalizeRoutePoint(route.label_position)
+            : null;
 
         return {
             style: connectionRouteStyles.includes(style) ? style : 'orthogonal',
-            points: (Array.isArray(route.points) ? route.points : []).slice(0, 12).map(normalizeRoutePoint)
+            points: (Array.isArray(route.points) ? route.points : []).slice(0, 12).map(normalizeRoutePoint),
+            label_position: labelPosition
         };
     }
 
@@ -403,7 +484,7 @@ const InfraStackStudioCore = (function () {
         }
 
         const allowedParents = asset.is_container ? containerParentTypes[asset.type] : null;
-        if (allowedParents && !allowedParents.includes(parent.type)) {
+        if (allowedParents && parent.type !== 'group' && !allowedParents.includes(parent.type)) {
             return { valid: false, reason: `${asset.type} cannot be nested inside ${parent.type}.` };
         }
 
@@ -450,7 +531,8 @@ const InfraStackStudioCore = (function () {
                 direction: direction,
                 protocol: safeString(connection.protocol, 40),
                 bandwidth: safeString(connection.bandwidth, 40),
-                routing: normalizeConnectionRouting(connection.routing)
+                routing: normalizeConnectionRouting(connection.routing),
+                appearance: normalizeConnectionAppearance(connection.appearance, type)
             });
 
             return connections;
@@ -759,6 +841,141 @@ const InfraStackStudioCore = (function () {
     }
 
     /**
+     * Reorders assets for deterministic canvas stacking.
+     *
+     * @param {object} project Current project.
+     * @param {string[]} assetIds Target asset IDs.
+     * @param {'front'|'back'|'forward'|'backward'} direction Stacking operation.
+     * @returns {object} Updated project.
+     */
+    function reorderAssets(project, assetIds, direction) {
+        const next = clone(project);
+        const ids = new Set(Array.isArray(assetIds) ? assetIds.map(String) : []);
+
+        if (ids.size === 0) return next;
+        if (direction === 'front') {
+            next.assets = next.assets.filter(function (asset) { return !ids.has(asset.id); }).concat(
+                next.assets.filter(function (asset) { return ids.has(asset.id); })
+            );
+        } else if (direction === 'back') {
+            next.assets = next.assets.filter(function (asset) { return ids.has(asset.id); }).concat(
+                next.assets.filter(function (asset) { return !ids.has(asset.id); })
+            );
+        } else if (direction === 'forward') {
+            for (let index = next.assets.length - 2; index >= 0; index -= 1) {
+                if (ids.has(next.assets[index].id) && !ids.has(next.assets[index + 1].id)) {
+                    [next.assets[index], next.assets[index + 1]] = [next.assets[index + 1], next.assets[index]];
+                }
+            }
+        } else if (direction === 'backward') {
+            for (let index = 1; index < next.assets.length; index += 1) {
+                if (ids.has(next.assets[index].id) && !ids.has(next.assets[index - 1].id)) {
+                    [next.assets[index], next.assets[index - 1]] = [next.assets[index - 1], next.assets[index]];
+                }
+            }
+        } else {
+            return next;
+        }
+        next.updated_at = new Date().toISOString();
+
+        return next;
+    }
+
+    /**
+     * Groups selected assets inside a normalized boundary.
+     *
+     * @param {object} project Current project.
+     * @param {string[]} assetIds Selected asset IDs.
+     * @returns {{project: object, groupId: (string|null)}} Updated project and group ID.
+     */
+    function groupAssets(project, assetIds) {
+        const next = clone(project);
+        const selected = new Set(Array.isArray(assetIds) ? assetIds.map(String) : []);
+        const assetMap = new Map(next.assets.map(function (asset) { return [asset.id, asset]; }));
+        const roots = next.assets.filter(function (asset) {
+            if (!selected.has(asset.id)) return false;
+            let parent = assetMap.get(asset.parent_id);
+            while (parent) {
+                if (selected.has(parent.id)) return false;
+                parent = assetMap.get(parent.parent_id);
+            }
+            return true;
+        });
+
+        if (roots.length < 2) return { project: next, groupId: null };
+        const groupId = createId('group');
+        const commonParent = roots.every(function (asset) { return asset.parent_id === roots[0].parent_id; })
+            ? roots[0].parent_id
+            : null;
+        const views = supportedViews.filter(function (view) {
+            return roots.some(function (asset) { return asset.views.includes(view); });
+        });
+        const layout = {};
+        supportedViews.forEach(function (view) {
+            const visible = roots.filter(function (asset) { return asset.views.includes(view); });
+            if (!visible.length) {
+                layout[view] = { x: 60, y: 60, width: 520, height: 330 };
+                return;
+            }
+            const left = Math.min(...visible.map(function (asset) { return asset.layout[view].x; }));
+            const top = Math.min(...visible.map(function (asset) { return asset.layout[view].y; }));
+            const right = Math.max(...visible.map(function (asset) { return asset.layout[view].x + asset.layout[view].width; }));
+            const bottom = Math.max(...visible.map(function (asset) { return asset.layout[view].y + asset.layout[view].height; }));
+            layout[view] = {
+                x: Math.max(12, left - 30),
+                y: Math.max(12, top - 52),
+                width: Math.max(260, right - left + 60),
+                height: Math.max(180, bottom - top + 82)
+            };
+        });
+        const group = normalizeAsset({
+            id: groupId,
+            type: 'group',
+            label: 'Group',
+            category: 'Group',
+            views,
+            is_container: true,
+            parent_id: commonParent,
+            properties: { role: 'Grouped diagram assets' },
+            layout
+        }, next.assets.length);
+        const insertAt = Math.min(...roots.map(function (asset) { return next.assets.indexOf(asset); }));
+        next.assets.splice(insertAt, 0, group);
+        roots.forEach(function (asset) { asset.parent_id = groupId; });
+        next.updated_at = new Date().toISOString();
+
+        return { project: normalizeProject(next).project, groupId };
+    }
+
+    /**
+     * Removes selected group boundaries while preserving their children.
+     *
+     * @param {object} project Current project.
+     * @param {string[]} groupIds Selected group IDs.
+     * @returns {{project: object, assetIds: string[]}} Updated project and released child IDs.
+     */
+    function ungroupAssets(project, groupIds) {
+        const next = clone(project);
+        const ids = new Set(Array.isArray(groupIds) ? groupIds.map(String) : []);
+        const groups = next.assets.filter(function (asset) { return ids.has(asset.id) && asset.type === 'group'; });
+        const released = [];
+
+        groups.forEach(function (group) {
+            next.assets.forEach(function (asset) {
+                if (asset.parent_id !== group.id) return;
+                asset.parent_id = group.parent_id;
+                released.push(asset.id);
+            });
+        });
+        next.assets = next.assets.filter(function (asset) {
+            return !groups.some(function (group) { return group.id === asset.id; });
+        });
+        if (groups.length) next.updated_at = new Date().toISOString();
+
+        return { project: normalizeProject(next).project, assetIds: released };
+    }
+
+    /**
      * Updates one asset appearance in one projection.
      *
      * @param {object} project Current project.
@@ -920,7 +1137,8 @@ const InfraStackStudioCore = (function () {
             direction: 'source-to-target',
             protocol: '',
             bandwidth: '',
-            routing: normalizeConnectionRouting({})
+            routing: normalizeConnectionRouting({}),
+            appearance: normalizeConnectionAppearance({}, connectionType)
         };
         next.connections.push(connection);
         next.updated_at = new Date().toISOString();
@@ -973,6 +1191,28 @@ const InfraStackStudioCore = (function () {
         connection.routing = normalizeConnectionRouting(connection.routing);
         next.updated_at = new Date().toISOString();
 
+        return next;
+    }
+
+    /**
+     * Updates one relationship appearance in one projection.
+     *
+     * @param {object} project Current project.
+     * @param {string} connectionId Target relationship ID.
+     * @param {string} view Projection to update.
+     * @param {object} changes Appearance changes.
+     * @returns {object} Updated project.
+     */
+    function updateConnectionAppearance(project, connectionId, view, changes) {
+        const next = clone(project);
+        const connection = next.connections.find(function (candidate) { return candidate.id === connectionId; });
+        if (!connection || !supportedViews.includes(view)) return next;
+        connection.appearance = normalizeConnectionAppearance(connection.appearance, connection.type);
+        connection.appearance[view] = normalizeConnectionAppearanceEntry({
+            ...connection.appearance[view],
+            ...changes
+        }, connection.type);
+        next.updated_at = new Date().toISOString();
         return next;
     }
 
@@ -1354,6 +1594,25 @@ const InfraStackStudioCore = (function () {
     }
 
     /**
+     * Returns horizontal spacing required for visible relationship labels.
+     *
+     * @param {object} project Current project.
+     * @param {string} view Active projection.
+     * @returns {number} Label-aware horizontal gap in canvas units.
+     */
+    function connectionLabelClearance(project, view) {
+        const assets = new Map(project.assets.filter(function (asset) {
+            return asset.views.includes(view);
+        }).map(function (asset) { return [asset.id, asset]; }));
+        const width = project.connections.reduce(function (maximum, connection) {
+            if (!assets.has(connection.source) || !assets.has(connection.target)) return maximum;
+            const text = connection.label || connection.protocol || '';
+            return Math.max(maximum, (text.length * 7) + 28);
+        }, 0);
+        return Math.max(96, Math.min(220, Math.ceil(width / 10) * 10));
+    }
+
+    /**
      * Tidies a package-owned layout without replacing its visual composition.
      *
      * @param {object} project Current project.
@@ -1389,16 +1648,16 @@ const InfraStackStudioCore = (function () {
                         const rightAsset = ordered[rightIndex];
                         const right = rightAsset.layout[view];
                         if (!layoutBoxesNeedClearance(left, right, gap)) continue;
-                        const horizontalDistance = Math.abs((right.x + (right.width / 2)) - (left.x + (left.width / 2)));
-                        const verticalDistance = Math.abs((right.y + (right.height / 2)) - (left.y + (left.height / 2)));
-                        if (horizontalDistance >= verticalDistance) {
-                            const direction = right.x + (right.width / 2) >= left.x + (left.width / 2) ? 1 : -1;
-                            const target = direction > 0 ? left.x + left.width + gap : left.x - right.width - gap;
-                            translateAssetTree(next, context, rightAsset.id, view, target - right.x, 0);
+                        const horizontalDirection = right.x + (right.width / 2) >= left.x + (left.width / 2) ? 1 : -1;
+                        const horizontalTarget = horizontalDirection > 0 ? left.x + left.width + gap : left.x - right.width - gap;
+                        const horizontalDelta = horizontalTarget - right.x;
+                        const verticalDirection = right.y + (right.height / 2) >= left.y + (left.height / 2) ? 1 : -1;
+                        const verticalTarget = verticalDirection > 0 ? left.y + left.height + gap : left.y - right.height - gap;
+                        const verticalDelta = verticalTarget - right.y;
+                        if (Math.abs(horizontalDelta) <= Math.abs(verticalDelta)) {
+                            translateAssetTree(next, context, rightAsset.id, view, horizontalDelta, 0);
                         } else {
-                            const direction = right.y + (right.height / 2) >= left.y + (left.height / 2) ? 1 : -1;
-                            const target = direction > 0 ? left.y + left.height + gap : left.y - right.height - gap;
-                            translateAssetTree(next, context, rightAsset.id, view, 0, target - right.y);
+                            translateAssetTree(next, context, rightAsset.id, view, 0, verticalDelta);
                         }
                     }
                 }
@@ -1439,7 +1698,8 @@ const InfraStackStudioCore = (function () {
         const metrics = new Map();
         const padding = 28;
         const header = 58;
-        const gap = clamp(options.gap, 40, 100, 40);
+        const verticalGap = clamp(options.gap, 40, 100, 48);
+        const baseHorizontalGap = clamp(options.horizontalGap, 72, 160, 96);
         const containerMinimums = {
             domain: [800, 500],
             environment: [760, 460],
@@ -1451,6 +1711,16 @@ const InfraStackStudioCore = (function () {
 
         if (!supportedViews.includes(view) || context.assets.length === 0) return next;
 
+        function labelGapForAssets(assets) {
+            const ids = new Set(assets.map(function (asset) { return asset.id; }));
+            const width = next.connections.reduce(function (maximum, connection) {
+                if (!ids.has(connection.source) || !ids.has(connection.target)) return maximum;
+                const text = connection.label || connection.protocol || '';
+                return Math.max(maximum, (text.length * 7) + 28);
+            }, 0);
+            return Math.max(baseHorizontalGap, Math.min(220, Math.ceil(width / 10) * 10));
+        }
+
         function measure(container) {
             const childAssets = sortAssetsForLayout(context.children.get(container.id) || [], view);
             const childContainers = childAssets.filter(function (asset) { return asset.is_container; });
@@ -1459,20 +1729,21 @@ const InfraStackStudioCore = (function () {
             const leafWidth = leaves.length ? Math.max(...leaves.map(function (asset) { return asset.layout[view].width; })) : 0;
             const leafHeight = leaves.length ? Math.max(...leaves.map(function (asset) { return asset.layout[view].height; })) : 0;
             const leafRows = leaves.length ? Math.ceil(leaves.length / leafColumns) : 0;
-            const leafLaneWidth = leaves.length ? (leafColumns * leafWidth) + ((leafColumns - 1) * gap) : 0;
-            const leafLaneHeight = leaves.length ? (leafRows * leafHeight) + ((leafRows - 1) * gap) : 0;
+            const leafGap = labelGapForAssets(leaves);
+            const leafLaneWidth = leaves.length ? (leafColumns * leafWidth) + ((leafColumns - 1) * leafGap) : 0;
+            const leafLaneHeight = leaves.length ? (leafRows * leafHeight) + ((leafRows - 1) * verticalGap) : 0;
             const childMetrics = childContainers.map(measure);
             const horizontal = childContainers.length <= 2 || childContainers.every(function (asset) {
                 return asset.type === 'availability-zone';
             });
-            const childWidth = horizontal ? childMetrics.reduce(function (total, item) { return total + item.width; }, 0) + (Math.max(0, childMetrics.length - 1) * gap) :
+            const childWidth = horizontal ? childMetrics.reduce(function (total, item) { return total + item.width; }, 0) + (Math.max(0, childMetrics.length - 1) * baseHorizontalGap) :
                 (childMetrics.length ? Math.max(...childMetrics.map(function (item) { return item.width; })) : 0);
             const childHeight = horizontal ? (childMetrics.length ? Math.max(...childMetrics.map(function (item) { return item.height; })) : 0) :
-                childMetrics.reduce(function (total, item) { return total + item.height; }, 0) + (Math.max(0, childMetrics.length - 1) * gap);
+                childMetrics.reduce(function (total, item) { return total + item.height; }, 0) + (Math.max(0, childMetrics.length - 1) * verticalGap);
             const minimums = containerMinimums[container.type] || [320, 200];
             const width = Math.max(minimums[0], Math.max(leafLaneWidth, childWidth) + (padding * 2));
-            const height = Math.max(minimums[1], header + padding + leafLaneHeight + (leaves.length && childContainers.length ? gap : 0) + childHeight + padding);
-            const result = { asset: container, leaves: leaves, children: childMetrics, horizontal: horizontal, width: Math.min(canvasSize.width - 24, width), height: Math.min(canvasSize.height - 24, height), leafWidth: leafWidth, leafHeight: leafHeight, leafColumns: leafColumns, leafLaneHeight: leafLaneHeight };
+            const height = Math.max(minimums[1], header + padding + leafLaneHeight + (leaves.length && childContainers.length ? verticalGap : 0) + childHeight + padding);
+            const result = { asset: container, leaves: leaves, children: childMetrics, horizontal: horizontal, width: Math.min(canvasSize.width - 24, width), height: Math.min(canvasSize.height - 24, height), leafWidth: leafWidth, leafHeight: leafHeight, leafColumns: leafColumns, leafLaneHeight: leafLaneHeight, leafGap: leafGap };
             metrics.set(container.id, result);
             return result;
         }
@@ -1490,23 +1761,23 @@ const InfraStackStudioCore = (function () {
                 const column = index % metric.leafColumns;
                 const row = Math.floor(index / metric.leafColumns);
                 const rowCount = Math.min(metric.leafColumns, metric.leaves.length - (row * metric.leafColumns));
-                const rowWidth = (rowCount * metric.leafWidth) + ((rowCount - 1) * gap);
-                asset.layout[view].x = x + padding + ((usableWidth - rowWidth) / 2) + (column * (metric.leafWidth + gap));
-                asset.layout[view].y = cursorY + (row * (metric.leafHeight + gap));
+                const rowWidth = (rowCount * metric.leafWidth) + ((rowCount - 1) * metric.leafGap);
+                asset.layout[view].x = x + padding + ((usableWidth - rowWidth) / 2) + (column * (metric.leafWidth + metric.leafGap));
+                asset.layout[view].y = cursorY + (row * (metric.leafHeight + verticalGap));
             });
-            if (metric.leaves.length) cursorY += metric.leafLaneHeight + (metric.children.length ? gap : 0);
+            if (metric.leaves.length) cursorY += metric.leafLaneHeight + (metric.children.length ? verticalGap : 0);
 
             if (metric.horizontal) {
-                const childWidth = metric.children.reduce(function (total, child) { return total + child.width; }, 0) + (Math.max(0, metric.children.length - 1) * gap);
+                const childWidth = metric.children.reduce(function (total, child) { return total + child.width; }, 0) + (Math.max(0, metric.children.length - 1) * baseHorizontalGap);
                 let cursorX = x + padding + Math.max(0, (usableWidth - childWidth) / 2);
                 metric.children.forEach(function (child) {
                     place(child, cursorX, cursorY);
-                    cursorX += child.width + gap;
+                    cursorX += child.width + baseHorizontalGap;
                 });
             } else {
                 metric.children.forEach(function (child) {
                     place(child, x + padding + Math.max(0, (usableWidth - child.width) / 2), cursorY);
-                    cursorY += child.height + gap;
+                    cursorY += child.height + verticalGap;
                 });
             }
         }
@@ -1556,13 +1827,13 @@ const InfraStackStudioCore = (function () {
         const ingressDistances = [...ingressGroups.keys()].sort(function (left, right) { return right - left; });
         const ingressHeight = ingressDistances.reduce(function (total, distance, index) {
             const rowHeight = Math.max(...ingressGroups.get(distance).map(function (asset) { return asset.layout[view].height; }));
-            return total + rowHeight + (index > 0 ? gap : 0);
+            return total + rowHeight + (index > 0 ? verticalGap : 0);
         }, 0);
         let rootX = 160;
-        const rootY = Math.max(450, 20 + ingressHeight + gap);
+        const rootY = Math.max(450, 20 + ingressHeight + verticalGap);
         rootMetrics.forEach(function (metric) {
             place(metric, rootX, rootY);
-            rootX += metric.width + Math.max(80, gap);
+            rootX += metric.width + baseHorizontalGap;
         });
         const primary = rootMetrics[0] || { width: 1100, height: 700 };
         const primaryX = rootContainers.length ? rootContainers[0].layout[view].x : 160;
@@ -1570,14 +1841,15 @@ const InfraStackStudioCore = (function () {
         ingressDistances.forEach(function (distance) {
             const assets = ingressGroups.get(distance);
             const ordered = sortAssetsForLayout(assets, view);
-            const rowWidth = ordered.reduce(function (total, asset) { return total + asset.layout[view].width; }, 0) + (Math.max(0, ordered.length - 1) * gap);
+            const rowGap = labelGapForAssets(ordered);
+            const rowWidth = ordered.reduce(function (total, asset) { return total + asset.layout[view].width; }, 0) + (Math.max(0, ordered.length - 1) * rowGap);
             let x = primaryX + ((primary.width - rowWidth) / 2);
             ordered.forEach(function (asset) {
                 asset.layout[view].x = x;
                 asset.layout[view].y = ingressY;
-                x += asset.layout[view].width + gap;
+                x += asset.layout[view].width + rowGap;
             });
-            ingressY += Math.max(...ordered.map(function (asset) { return asset.layout[view].height; })) + gap;
+            ingressY += Math.max(...ordered.map(function (asset) { return asset.layout[view].height; })) + verticalGap;
         });
         support.forEach(function (asset, index) {
             asset.layout[view].x = Math.min(canvasSize.width - asset.layout[view].width - 24, primaryX + primary.width + 80);
@@ -1620,6 +1892,9 @@ const InfraStackStudioCore = (function () {
         updateAsset: updateAsset,
         updateAssetImage: updateAssetImage,
         updateAssetLayout: updateAssetLayout,
+        reorderAssets: reorderAssets,
+        groupAssets: groupAssets,
+        ungroupAssets: ungroupAssets,
         updateAssetAppearance: updateAssetAppearance,
         updateAssetAppearances: updateAssetAppearances,
         resetAssetAppearance: resetAssetAppearance,
@@ -1627,6 +1902,7 @@ const InfraStackStudioCore = (function () {
         removeStylePreset: removeStylePreset,
         addConnection: addConnection,
         updateConnection: updateConnection,
+        updateConnectionAppearance: updateConnectionAppearance,
         validateConnection: validateConnection,
         updateConnectionRoute: updateConnectionRoute,
         removeConnection: removeConnection,
@@ -1639,6 +1915,7 @@ const InfraStackStudioCore = (function () {
         alignAssets: alignAssets,
         distributeAssets: distributeAssets,
         autoLayoutProject: autoLayoutProject,
+        connectionLabelClearance: connectionLabelClearance,
         buildExportPayload: buildExportPayload
     };
 }());

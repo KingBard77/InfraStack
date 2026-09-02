@@ -85,7 +85,7 @@ Each project preserves, when applicable:
 - accepted risks
 - style presets
 
-Templates may declare `layout_mode: preserve` when their package owns deliberate multi-boundary geometry that must not be replaced by the shared automatic layout during loading. This mode persists in normalized project state. Auto Layout then tidies the existing composition by snapping, separating true overlaps, containing children, and refreshing routes rather than rebuilding it. Other templates continue to use automatic preparation by default.
+Templates may declare `layout_mode: preserve` when their package owns deliberate multi-boundary geometry that must not be replaced by the shared automatic layout during loading. This mode persists in normalized project state. Auto Layout then tidies the existing composition by snapping, separating true overlaps, containing children, and refreshing routes rather than rebuilding it. Relationship labels render as native edge labels centered just above their connector so they remain attached and inherit canvas zoom; normalized legacy `label_position` values remain accepted for restore compatibility. Other templates continue to use automatic preparation by default.
 
 Shared container-platform facts include image references, replica counts, Service type, CPU and memory limits, probes, autoscaling, disruption budgets, network policy, Pod Security level, service accounts, and storage classes. These remain optional normalized properties so Kubernetes packages can use the same inventory, result, export, restore, share, and embed workflows.
 

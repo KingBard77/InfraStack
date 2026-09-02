@@ -72,7 +72,7 @@
                 "x": 360,
                 "y": 160,
                 "width": 1500,
-                "height": 1150,
+                "height": 820,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -80,7 +80,7 @@
                 "x": 360,
                 "y": 160,
                 "width": 1500,
-                "height": 1150,
+                "height": 430,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -88,7 +88,7 @@
                 "x": 360,
                 "y": 160,
                 "width": 1500,
-                "height": 1150,
+                "height": 820,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -134,7 +134,7 @@
                 "x": 450,
                 "y": 270,
                 "width": 970,
-                "height": 720,
+                "height": 620,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -150,7 +150,7 @@
                 "x": 450,
                 "y": 270,
                 "width": 970,
-                "height": 720,
+                "height": 620,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -158,7 +158,7 @@
                 "x": 450,
                 "y": 270,
                 "width": 970,
-                "height": 720,
+                "height": 650,
                 "icon_size": 28,
                 "collapsed": false
               }
@@ -198,8 +198,8 @@
                 "collapsed": false
               },
               "physical": {
-                "x": 470,
-                "y": 1020,
+                "x": 520,
+                "y": 300,
                 "width": 420,
                 "height": 230,
                 "icon_size": 28,
@@ -257,8 +257,8 @@
                 "collapsed": false
               },
               "physical": {
-                "x": 930,
-                "y": 1020,
+                "x": 1020,
+                "y": 300,
                 "width": 420,
                 "height": 230,
                 "icon_size": 28,
@@ -1064,6 +1064,126 @@
                 "collapsed": false
               }
             }
+          },
+          {
+            "id": "prod-worker-a",
+            "catalog_id": "kubernetes-worker-node",
+            "type": "kubernetes-worker-node",
+            "label": "Application Worker A",
+            "category": "Compute",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-pool-a",
+            "properties": {
+              "role": "Container workload capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-a",
+              "owner": "Platform Engineering",
+              "cpu": "16 vCPU",
+              "memory": "64Gi",
+              "monitoring": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 540,
+                "y": 1110,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 590,
+                "y": 390,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 540,
+                "y": 1110,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 540,
+                "y": 1110,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "prod-worker-b",
+            "catalog_id": "kubernetes-worker-node",
+            "type": "kubernetes-worker-node",
+            "label": "Application Worker B",
+            "category": "Compute",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "prod-pool-b",
+            "properties": {
+              "role": "Container workload capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-b",
+              "owner": "Platform Engineering",
+              "cpu": "16 vCPU",
+              "memory": "64Gi",
+              "monitoring": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1000,
+                "y": 1110,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1090,
+                "y": 390,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1000,
+                "y": 1110,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1000,
+                "y": 1110,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
           }
         ],
         "connections": [
@@ -1076,7 +1196,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "HTTPS",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 350,
+                  "y": 330
+                }
+              }
+            }
           },
           {
             "id": "prod-gateway-service",
@@ -1087,7 +1217,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "HTTP",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 755,
+                  "y": 455
+                }
+              }
+            }
           },
           {
             "id": "prod-service-deployment",
@@ -1098,7 +1238,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "HTTP",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1025,
+                  "y": 455
+                }
+              }
+            }
           },
           {
             "id": "prod-config-deployment",
@@ -1109,7 +1259,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 720,
+                  "y": 650
+                }
+              }
+            }
           },
           {
             "id": "prod-secret-deployment",
@@ -1120,7 +1280,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 980,
+                  "y": 500
+                }
+              }
+            }
           },
           {
             "id": "prod-identity-deployment",
@@ -1131,7 +1301,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1260,
+                  "y": 500
+                }
+              }
+            }
           },
           {
             "id": "prod-policy-deployment",
@@ -1142,7 +1322,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 700,
+                  "y": 710
+                }
+              }
+            }
           },
           {
             "id": "prod-hpa-deployment",
@@ -1153,7 +1343,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 900,
+                  "y": 660
+                }
+              }
+            }
           },
           {
             "id": "prod-pdb-deployment",
@@ -1164,7 +1364,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1260,
+                  "y": 660
+                }
+              }
+            }
           },
           {
             "id": "prod-deployment-dns",
@@ -1175,7 +1385,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "DNS",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1370,
+                  "y": 315
+                }
+              }
+            }
           },
           {
             "id": "prod-deployment-metrics",
@@ -1186,7 +1406,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1390,
+                  "y": 520
+                }
+              }
+            }
           },
           {
             "id": "prod-deployment-logging",
@@ -1197,7 +1427,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "overview": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1400,
+                  "y": 720
+                }
+              }
+            }
           }
         ],
         "accepted_risks": [],
@@ -1283,7 +1523,7 @@
                 "x": 320,
                 "y": 140,
                 "width": 1580,
-                "height": 1250,
+                "height": 900,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -1337,7 +1577,7 @@
                 "x": 430,
                 "y": 250,
                 "width": 1040,
-                "height": 820,
+                "height": 700,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -1353,7 +1593,7 @@
                 "x": 430,
                 "y": 250,
                 "width": 1040,
-                "height": 820,
+                "height": 700,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -1361,7 +1601,7 @@
                 "x": 430,
                 "y": 250,
                 "width": 1040,
-                "height": 820,
+                "height": 700,
                 "icon_size": 28,
                 "collapsed": false
               }
@@ -1401,8 +1641,8 @@
                 "collapsed": false
               },
               "physical": {
-                "x": 470,
-                "y": 1090,
+                "x": 430,
+                "y": 600,
                 "width": 430,
                 "height": 220,
                 "icon_size": 28,
@@ -1460,8 +1700,8 @@
                 "collapsed": false
               },
               "physical": {
-                "x": 950,
-                "y": 1090,
+                "x": 930,
+                "y": 600,
                 "width": 430,
                 "height": 220,
                 "icon_size": 28,
@@ -1894,7 +2134,7 @@
               },
               "physical": {
                 "x": 500,
-                "y": 750,
+                "y": 300,
                 "width": 190,
                 "height": 96,
                 "icon_size": 28,
@@ -1954,8 +2194,8 @@
                 "collapsed": false
               },
               "physical": {
-                "x": 1530,
-                "y": 330,
+                "x": 950,
+                "y": 300,
                 "width": 190,
                 "height": 96,
                 "icon_size": 28,
@@ -2014,8 +2254,8 @@
                 "collapsed": false
               },
               "physical": {
-                "x": 1530,
-                "y": 540,
+                "x": 1400,
+                "y": 300,
                 "width": 190,
                 "height": 96,
                 "icon_size": 28,
@@ -2274,6 +2514,126 @@
                 "collapsed": false
               }
             }
+          },
+          {
+            "id": "state-worker-a",
+            "catalog_id": "kubernetes-worker-node",
+            "type": "kubernetes-worker-node",
+            "label": "Stateful Worker A",
+            "category": "Compute",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-pool-a",
+            "properties": {
+              "role": "Container workload capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-a",
+              "owner": "Platform Engineering",
+              "cpu": "16 vCPU",
+              "memory": "64Gi",
+              "monitoring": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 540,
+                "y": 1180,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 550,
+                "y": 690,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 540,
+                "y": 1180,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 540,
+                "y": 1180,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
+          },
+          {
+            "id": "state-worker-b",
+            "catalog_id": "kubernetes-worker-node",
+            "type": "kubernetes-worker-node",
+            "label": "Stateful Worker B",
+            "category": "Compute",
+            "icon": "",
+            "views": [
+              "physical",
+              "availability"
+            ],
+            "is_container": false,
+            "parent_id": "state-pool-b",
+            "properties": {
+              "role": "Container workload capacity",
+              "provider": "kubernetes",
+              "environment": "production",
+              "zone": "zone-b",
+              "owner": "Platform Engineering",
+              "cpu": "16 vCPU",
+              "memory": "64Gi",
+              "monitoring": true,
+              "redundant": false,
+              "critical": true
+            },
+            "layout": {
+              "overview": {
+                "x": 1020,
+                "y": 1180,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "physical": {
+                "x": 1050,
+                "y": 690,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "network": {
+                "x": 1020,
+                "y": 1180,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              },
+              "availability": {
+                "x": 1020,
+                "y": 1180,
+                "width": 190,
+                "height": 96,
+                "icon_size": 28,
+                "collapsed": false
+              }
+            }
           }
         ],
         "connections": [
@@ -2286,7 +2646,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "TLS",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 745,
+                  "y": 455
+                }
+              }
+            }
           },
           {
             "id": "state-service-workload",
@@ -2297,7 +2667,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "TCP",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1025,
+                  "y": 315
+                }
+              }
+            }
           },
           {
             "id": "state-config-workload",
@@ -2308,7 +2688,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 700,
+                  "y": 650
+                }
+              }
+            }
           },
           {
             "id": "state-secret-workload",
@@ -2319,7 +2709,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 980,
+                  "y": 510
+                }
+              }
+            }
           },
           {
             "id": "state-identity-workload",
@@ -2330,7 +2730,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1260,
+                  "y": 510
+                }
+              }
+            }
           },
           {
             "id": "state-policy-workload",
@@ -2341,7 +2751,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1220,
+                  "y": 720
+                }
+              }
+            }
           },
           {
             "id": "state-pdb-workload",
@@ -2352,7 +2772,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 980,
+                  "y": 700
+                }
+              }
+            }
           },
           {
             "id": "state-workload-pvc",
@@ -2363,7 +2793,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 790,
+                  "y": 870
+                }
+              }
+            }
           },
           {
             "id": "state-pvc-pv",
@@ -2374,7 +2814,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1270,
+                  "y": 860
+                }
+              }
+            }
           },
           {
             "id": "state-pv-class",
@@ -2385,7 +2835,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1710,
+                  "y": 500
+                }
+              }
+            }
           },
           {
             "id": "state-workload-metrics",
@@ -2396,7 +2856,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1410,
+                  "y": 700
+                }
+              }
+            }
           },
           {
             "id": "state-workload-logging",
@@ -2407,7 +2877,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1410,
+                  "y": 910
+                }
+              }
+            }
           }
         ],
         "accepted_risks": [],
@@ -2842,7 +3322,7 @@
                 "x": 430,
                 "y": 480,
                 "width": 600,
-                "height": 360,
+                "height": 220,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -2850,7 +3330,7 @@
                 "x": 430,
                 "y": 480,
                 "width": 600,
-                "height": 360,
+                "height": 220,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -2858,7 +3338,7 @@
                 "x": 430,
                 "y": 480,
                 "width": 600,
-                "height": 360,
+                "height": 220,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -2866,7 +3346,7 @@
                 "x": 430,
                 "y": 480,
                 "width": 600,
-                "height": 360,
+                "height": 220,
                 "icon_size": 28,
                 "collapsed": false
               }
@@ -2901,7 +3381,7 @@
                 "x": 1100,
                 "y": 480,
                 "width": 600,
-                "height": 360,
+                "height": 220,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -2909,7 +3389,7 @@
                 "x": 1100,
                 "y": 480,
                 "width": 600,
-                "height": 360,
+                "height": 220,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -2917,7 +3397,7 @@
                 "x": 1100,
                 "y": 480,
                 "width": 600,
-                "height": 360,
+                "height": 220,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -2925,7 +3405,7 @@
                 "x": 1100,
                 "y": 480,
                 "width": 600,
-                "height": 360,
+                "height": 220,
                 "icon_size": 28,
                 "collapsed": false
               }
@@ -3379,10 +3859,10 @@
             },
             "layout": {
               "overview": {
-                "x": 430,
-                "y": 1070,
-                "width": 500,
-                "height": 190,
+                "x": 1050,
+                "y": 1020,
+                "width": 720,
+                "height": 250,
                 "icon_size": 28,
                 "collapsed": false
               },
@@ -3395,18 +3875,18 @@
                 "collapsed": false
               },
               "network": {
-                "x": 430,
-                "y": 1070,
-                "width": 500,
-                "height": 190,
+                "x": 1050,
+                "y": 1020,
+                "width": 720,
+                "height": 250,
                 "icon_size": 28,
                 "collapsed": false
               },
               "availability": {
-                "x": 430,
-                "y": 1070,
-                "width": 500,
-                "height": 190,
+                "x": 1050,
+                "y": 1020,
+                "width": 720,
+                "height": 250,
                 "icon_size": 28,
                 "collapsed": false
               }
@@ -3424,7 +3904,7 @@
               "availability"
             ],
             "is_container": false,
-            "parent_id": "foundation-cluster",
+            "parent_id": "foundation-system-ns",
             "properties": {
               "role": "Control plane, node, and workload telemetry",
               "provider": "kubernetes",
@@ -3438,8 +3918,8 @@
             },
             "layout": {
               "overview": {
-                "x": 1100,
-                "y": 1080,
+                "x": 1090,
+                "y": 1110,
                 "width": 190,
                 "height": 96,
                 "icon_size": 28,
@@ -3454,16 +3934,16 @@
                 "collapsed": false
               },
               "network": {
-                "x": 1100,
-                "y": 1080,
+                "x": 1090,
+                "y": 1110,
                 "width": 190,
                 "height": 96,
                 "icon_size": 28,
                 "collapsed": false
               },
               "availability": {
-                "x": 1100,
-                "y": 1080,
+                "x": 1090,
+                "y": 1110,
                 "width": 190,
                 "height": 96,
                 "icon_size": 28,
@@ -3483,7 +3963,7 @@
               "availability"
             ],
             "is_container": false,
-            "parent_id": "foundation-cluster",
+            "parent_id": "foundation-system-ns",
             "properties": {
               "role": "Control plane, audit, and workload logs",
               "provider": "kubernetes",
@@ -3497,8 +3977,8 @@
             },
             "layout": {
               "overview": {
-                "x": 1380,
-                "y": 1080,
+                "x": 1410,
+                "y": 1110,
                 "width": 190,
                 "height": 96,
                 "icon_size": 28,
@@ -3513,16 +3993,16 @@
                 "collapsed": false
               },
               "network": {
-                "x": 1380,
-                "y": 1080,
+                "x": 1410,
+                "y": 1110,
                 "width": 190,
                 "height": 96,
                 "icon_size": 28,
                 "collapsed": false
               },
               "availability": {
-                "x": 1380,
-                "y": 1080,
+                "x": 1410,
+                "y": 1110,
                 "width": 190,
                 "height": 96,
                 "icon_size": 28,
@@ -3541,7 +4021,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "HTTPS",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 655,
+                  "y": 205
+                }
+              }
+            }
           },
           {
             "id": "foundation-api-etcd",
@@ -3552,7 +4042,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "TLS",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 925,
+                  "y": 205
+                }
+              }
+            }
           },
           {
             "id": "foundation-scheduler-api",
@@ -3563,7 +4063,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "HTTPS",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1080,
+                  "y": 390
+                }
+              }
+            }
           },
           {
             "id": "foundation-controller-api",
@@ -3574,7 +4084,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "HTTPS",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1350,
+                  "y": 390
+                }
+              }
+            }
           },
           {
             "id": "foundation-api-node-a",
@@ -3585,7 +4105,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "HTTPS",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 650,
+                  "y": 505
+                }
+              }
+            }
           },
           {
             "id": "foundation-api-node-b",
@@ -3596,7 +4126,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "HTTPS",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1110,
+                  "y": 505
+                }
+              }
+            }
           },
           {
             "id": "foundation-kubelet-node-a",
@@ -3607,7 +4147,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 530,
+                  "y": 825
+                }
+              }
+            }
           },
           {
             "id": "foundation-kubelet-node-b",
@@ -3618,7 +4168,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 850,
+                  "y": 825
+                }
+              }
+            }
           },
           {
             "id": "foundation-runtime-node-a",
@@ -3629,7 +4189,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 760,
+                  "y": 860
+                }
+              }
+            }
           },
           {
             "id": "foundation-runtime-node-b",
@@ -3640,7 +4210,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1100,
+                  "y": 860
+                }
+              }
+            }
           },
           {
             "id": "foundation-cni-node-a",
@@ -3651,7 +4231,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 930,
+                  "y": 775
+                }
+              }
+            }
           },
           {
             "id": "foundation-cni-node-b",
@@ -3662,7 +4252,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1160,
+                  "y": 775
+                }
+              }
+            }
           },
           {
             "id": "foundation-csi-node-a",
@@ -3673,7 +4273,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1100,
+                  "y": 830
+                }
+              }
+            }
           },
           {
             "id": "foundation-csi-node-b",
@@ -3684,7 +4294,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1370,
+                  "y": 830
+                }
+              }
+            }
           },
           {
             "id": "foundation-dns-api",
@@ -3695,7 +4315,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "DNS",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1370,
+                  "y": 390
+                }
+              }
+            }
           },
           {
             "id": "foundation-metrics-control",
@@ -3706,7 +4336,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1260,
+                  "y": 1050
+                }
+              }
+            }
           },
           {
             "id": "foundation-logging-control",
@@ -3717,7 +4357,17 @@
             "bidirectional": false,
             "direction": "source-to-target",
             "protocol": "",
-            "bandwidth": ""
+            "bandwidth": "",
+            "routing": {
+              "availability": {
+                "style": "orthogonal",
+                "points": [],
+                "label_position": {
+                  "x": 1540,
+                  "y": 1050
+                }
+              }
+            }
           }
         ],
         "accepted_risks": [],

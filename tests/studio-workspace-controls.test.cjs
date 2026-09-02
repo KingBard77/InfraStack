@@ -135,6 +135,7 @@ test('Studio top toolbar contains only wired editor actions', function () {
         'studio-align-menu',
         'studio-distribute-menu',
         'studio-delete-selection',
+        'studio-pan-tool',
         'studio-connect',
         'studio-review-action',
         'studio-download-json',
@@ -160,6 +161,19 @@ test('Studio top toolbar contains only wired editor actions', function () {
     assert.match(js, /graphAdapter\.clearSelection\(\)/);
     assert.match(js, /graphAdapter\.zoomAt\(event\.deltaY/);
     assert.match(js, /setSpacePanning\(true\)/);
+    assert.match(js, /function activateCanvasTool\(tool\)/);
+    assert.match(js, /panMode = tool === 'pan'/);
+    assert.match(js, /graphAdapter\.setSpacePanning\(panMode \|\| spacePanning\)/);
+    assert.match(js, /elements\.panTool\.addEventListener\('click'/);
+    assert.match(js, /event\.key\.toLowerCase\(\) === 'h'/);
+    assert.match(graphAdapter, /panning\.ignoreCell = enabled === true/);
+    assert.match(graphAdapter, /panning\.addListener\(InternalEvent\.PAN_END/);
+    assert.match(graphAdapter, /const horizontalOnly = panning\.dx !== 0 && panning\.dy === 0/);
+    assert.match(graphAdapter, /const verticalOnly = panning\.dx === 0 && panning\.dy !== 0/);
+    assert.match(graphAdapter, /view\.setTranslate\(nextX, nextY\)/);
+    assert.match(studioCss, /\.studio-graph\.is-space-panning[^}]+cursor: grab !important/);
+    assert.match(studioCss, /\.studio-graph\.is-space-panning:active[^}]+cursor: grabbing !important/);
+    assert.match(twig, /<kbd>H<\/kbd><\/dt><dd>Use Hand tool/);
     assert.match(graphAdapter, /RubberBandHandler/);
     assert.match(graphAdapter, /zoomAt\(factor, clientX, clientY\)/);
     assert.match(graphAdapter, /selectAllVisible\(\)/);
@@ -204,7 +218,10 @@ test('Studio application shell exposes wired navigation, tabs, display, and canv
         'studio-templates-tab',
         'studio-properties-tab',
         'studio-style-tab',
+        'studio-text-tab',
+        'studio-arrange-tab',
         'studio-select-tool',
+        'studio-pan-tool',
         'studio-insert-image',
         'studio-grid-visible',
         'studio-snap-enabled',
@@ -323,6 +340,7 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
         'studio-field-connection-route',
         'studio-reset-connection-route',
         'studio-field-shape',
+        'studio-field-box-transparent',
         'studio-field-fill-color',
         'studio-field-border-color',
         'studio-field-text-color',
@@ -330,11 +348,50 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
         'studio-field-border-width',
         'studio-field-font-size',
         'studio-field-text-align',
+        'studio-field-font-family',
+        'studio-field-font-bold',
+        'studio-field-font-italic',
+        'studio-field-font-underline',
+        'studio-field-text-background-enabled',
+        'studio-field-text-background-color',
+        'studio-field-text-border-enabled',
+        'studio-field-text-border-color',
+        'studio-field-text-opacity',
+        'studio-field-word-wrap',
+        'studio-field-automatic-font-size',
+        'studio-field-vertical-align',
+        'studio-field-text-spacing',
+        'studio-connection-style',
+        'studio-field-connection-line-color',
+        'studio-field-connection-line-width',
+        'studio-field-connection-line-style',
+        'studio-field-connection-label-color',
+        'studio-field-connection-label-size',
+        'studio-field-connection-label-position',
+        'studio-field-connection-label-offset',
         'studio-field-asset-locked',
         'studio-duplicate-item',
         'studio-reset-asset-style',
         'studio-delete-item-style',
         'studio-style-selection-summary',
+        'studio-text-selection-summary',
+        'studio-arrange-selection-summary',
+        'studio-text-panel',
+        'studio-arrange-panel',
+        'studio-field-position-x',
+        'studio-field-position-y',
+        'studio-constrain-proportions',
+        'studio-to-front',
+        'studio-to-back',
+        'studio-bring-forward',
+        'studio-send-backward',
+        'studio-snap-selection-grid',
+        'studio-arrange-transform',
+        'studio-field-rotation',
+        'studio-flip-horizontal',
+        'studio-flip-vertical',
+        'studio-group-selection',
+        'studio-ungroup-selection',
         'studio-style-preset',
         'studio-apply-style-preset',
         'studio-delete-style-preset',
@@ -368,6 +425,30 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
     assert.match(js, /function renderContextualFields\(asset\)/);
     assert.match(js, /function contextualFieldGroup\(key\)/);
     assert.match(js, /function renderInspectorSectionRelevance\(asset, contextualCounts\)/);
+    assert.match(js, /const tabs = \['properties', 'style', 'text', 'arrange'\]/);
+    assert.match(js, /function arrangeSelection\(direction\)/);
+    assert.match(js, /core\.reorderAssets\(project, assetIds, direction\)/);
+    assert.match(js, /function snapSelectedAssetsToGrid\(\)/);
+    assert.match(js, /function synchronizeDimensionControl\(control\)/);
+    assert.match(js, /function flipSelectedAssets\(axis\)/);
+    assert.match(js, /function groupSelectedAssets\(\)/);
+    assert.match(js, /function ungroupSelectedAssets\(\)/);
+    assert.match(js, /core\.groupAssets\(project, assetIds\)/);
+    assert.match(js, /core\.ungroupAssets\(project, selectedAssetIds\(\)\)/);
+    assert.match(js, /elements\.textTab\.addEventListener\('click'/);
+    assert.match(js, /elements\.arrangeTab\.addEventListener\('click'/);
+    assert.match(model, /function reorderAssets\(project, assetIds, direction\)/);
+    assert.match(model, /function groupAssets\(project, assetIds\)/);
+    assert.match(model, /function ungroupAssets\(project, groupIds\)/);
+    assert.match(model, /function normalizeConnectionAppearanceEntry\(value, type\)/);
+    assert.match(model, /function updateConnectionAppearance\(project, connectionId, view, changes\)/);
+    assert.match(graphAdapter, /strokeColor: appearance\.line_color/);
+    assert.match(graphAdapter, /fontSize: appearance\.label_font_size/);
+    assert.match(graphAdapter, /asset\.appearance\.automatic_font_size/);
+    assert.match(graphAdapter, /asset\.appearance\.word_wrap/);
+    assert.match(graphAdapter, /appearance\.box_transparent \? 'none' : appearance\.fill_color/);
+    assert.match(graphAdapter, /rotation: layout\.rotation, flipH: layout\.flip_h, flipV: layout\.flip_v/);
+    assert.match(studioCss, /\.studio-inspector-tabs \{ grid-template-columns: repeat\(4, minmax\(0, 1fr\)\); \}/);
     assert.match(js, /elements\.fieldWidth\.max = asset\.is_container \? String\(core\.canvasSize\.width - 24\) : '1200'/);
     assert.match(js, /elements\.fieldHeight\.max = asset\.is_container \? String\(core\.canvasSize\.height - 24\) : '900'/);
     assert.match(js, /kubernetes_workload: \[/);
@@ -430,34 +511,32 @@ test('Studio exposes provider templates and infrastructure-aware inspector field
     assert.match(js, /resetSelectedConnectionRoute/);
     assert.match(js, /style: 'orthogonal',[\s\S]*points: \[\]/);
     assert.match(graphAdapter, /Point/);
-    assert.match(graphAdapter, /studio-connection-label-overlay/);
-    assert.match(graphAdapter, /studio-graph-connection-label/);
     assert.match(graphAdapter, /labelBackgroundColor: 'none'/);
-    assert.match(graphAdapter, /updateConnectionLabels\(\) \{/);
-    assert.match(graphAdapter, /state\?\.absolutePoints/);
-    assert.match(graphAdapter, /!collides\(candidate, obstacles\)/);
-    assert.match(graphAdapter, /!collides\(candidate, placed\)/);
-    assert.match(graphAdapter, /point\.horizontal/);
-    assert.match(graphAdapter, /\(width \/ 2\) \+ 54/);
-    assert.match(graphAdapter, /resolveConnectionLabelCollisions\(\) \{/);
-    assert.match(graphAdapter, /querySelectorAll\('\.studio-graph-card, \.studio-graph-boundary-label'\)/);
-    assert.match(graphAdapter, /for \(let radius = 20; radius <= 240; radius \+= 20\)/);
+    assert.match(graphAdapter, /value: escapeHtml\(connection\.label \|\| connection\.protocol \|\| ''\)/);
+    assert.match(graphAdapter, /geometry\.relative = true/);
+    assert.match(graphAdapter, /geometry\.x = \{ start: -0\.5, center: 0, end: 0\.5 \}/);
+    assert.match(graphAdapter, /geometry\.y = 0/);
+    assert.match(graphAdapter, /geometry\.offset = new Point\(0, connection\.appearance\?\.\[view\]\?\.label_offset \?\? -14\)/);
+    assert.doesNotMatch(graphAdapter, /studio-connection-label-overlay/);
+    assert.doesNotMatch(graphAdapter, /studio-graph-connection-label/);
     assert.match(js, /function prepareTemplateProject\(templateProject, layoutMode = 'auto'\)/);
     assert.match(js, /prepared\.layout_mode = layoutMode/);
     assert.match(js, /if \(layoutMode !== 'preserve'\)/);
     assert.match(js, /prepareTemplateProject\(templateProject, definition\.layout_mode\)/);
     assert.match(js, /project\.layout_mode === 'preserve'/);
     assert.match(model, /function tidyPreservedLayout\(project, view, options = \{\}\)/);
-    assert.match(js, /core\.autoLayoutProject\(prepared, view, \{ gap: 72 \}\)/);
+    assert.match(js, /core\.autoLayoutProject\(prepared, view\)/);
+    assert.match(model, /function labelGapForAssets\(assets\)/);
     assert.match(js, /connection\.routing\?\.\[view\][^\n]+points = \[\]/);
     assert.match(js, /function fitLoadedTemplate\(\)/);
     assert.match(graphAdapter, /const centeredX = horizontalPadding/);
     assert.match(graphAdapter, /classList\.toggle\('is-compact-zoom'/);
     assert.match(studioCss, /\.studio-graph\.is-overview-zoom \.studio-graph-card-copy small \{ display: none; \}/);
-    assert.match(graphAdapter, /value: ''/);
-    assert.match(studioCss, /\.studio-graph-connection-label \{[^}]*font: 800 12px\/1\.15[^}]*text-shadow:/);
-    assert.match(studioCss, /\.studio-connection-label-overlay \{[^}]*z-index: 25/);
-    assert.doesNotMatch(studioCss, /\.studio-graph-connection-label \{[^}]*(?:border|background|box-shadow):/);
+    assert.match(graphAdapter, /fontSize: appearance\.label_font_size \|\| 12/);
+    assert.doesNotMatch(graphAdapter, /geometry\.points = automaticObstacleRoute/);
+    assert.match(graphAdapter, /asset\.appearance\.box_transparent \? '#fbfcfe' : 'transparent'/);
+    assert.doesNotMatch(studioCss, /\.studio-graph-connection-label/);
+    assert.doesNotMatch(studioCss, /\.studio-connection-label-overlay/);
     assert.match(graphAdapter, /change instanceof GeometryChange/);
     assert.match(graphAdapter, /onConnectionEndpointsChange/);
     assert.match(graphAdapter, /onConnectionRouteChange/);
